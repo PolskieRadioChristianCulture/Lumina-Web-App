@@ -50,7 +50,7 @@
         }
         /* Responsive override for broadcast grid */
         @media (max-width: 768px) {
-            .broadcast-grid {
+            .cards-grid {
                 grid-template-columns: 1fr !important;
             }
         }
@@ -73,6 +73,9 @@
             opacity: 1;
         }
         .modal-content {
+            box-sizing: border-box;
+            max-height: 90dvh;
+            overflow-y: auto;
             background: rgba(20, 24, 35, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-top: 3px solid var(--gold-primary);
@@ -89,12 +92,14 @@
             transform: scale(1);
         }
         .modal-close {
+            min-width: 44px;
+            min-height: 44px;
             position: absolute;
             top: 20px;
             right: 20px;
             background: none;
             border: none;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255,255,255,0.8);
             font-size: 1.5rem;
             cursor: pointer;
             transition: color 0.2s;
@@ -103,6 +108,7 @@
             color: #fff;
         }
         .modal-title {
+            padding-right: 32px;
             font-family: 'Cinzel', serif;
             font-size: 1.5rem;
             color: #fff;
@@ -121,7 +127,7 @@
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 10px;
             padding: 15px;
-            color: var(--gold-primary);
+            color: var(--gold-primary, #C4A35A);
             font-family: monospace;
             font-size: 0.9rem;
             resize: none;
@@ -130,7 +136,8 @@
             box-sizing: border-box;
         }
         .copy-btn {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            min-height: 44px;
+            background: linear-gradient(135deg, var(--gold-primary, #C4A35A) 0%, var(--gold-dark, #aa820a) 100%);
             color: #000;
             border: none;
             border-radius: 10px;
@@ -146,7 +153,14 @@
         .copy-btn:hover {
             opacity: 0.9;
         }
+        #embedModal :focus-visible {
+            outline: 2px solid #C4A35A;
+            outline-offset: 3px;
+        }
         .toast-notification {
+            max-width: calc(100% - 32px);
+            box-sizing: border-box;
+            text-align: center;
             position: fixed;
             bottom: 30px;
             left: 50%;
@@ -176,12 +190,13 @@
         /* --- UNIFORM BROADCAST CARDS SYSTEM --- */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
             gap: 25px;
             align-items: stretch;
         }
 
         .broadcast-card {
+            min-width: 0;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 20px;
@@ -567,6 +582,7 @@
                 <p class="section-subtitle" style="font-size: 1.05rem; color: #a1a1aa; max-width: 800px; margin: 0 auto; line-height: 1.6;">
                     Chcesz szerzyć Słowo Boże na swoim własnym kanale? Udostępniamy w pełni darmowe, zoptymalizowane sceny przeglądarki dla programu OBS Studio oraz wsparcie technologii Chromecast / Smart TV.
                 </p>
+                <p style="color: #a1a1aa; line-height: 1.6; margin-top: 16px;">Wybierz scenę i sprawdź podgląd przed emisją. Katalog nie jest wskaźnikiem trwającej transmisji.</p>
             </div>
 
             <!-- SECTION 1: GŁÓWNE PASMA I KURSY BIBLIJNE (PL) -->
@@ -578,7 +594,7 @@
                     
                     <!-- Card 1: Master Live 24/7 (MCR Główny Kanał Nadawczy) -->
                     <div class="broadcast-card" style="border: 2px solid var(--gold-primary, #d4af37); box-shadow: 0 8px 30px rgba(212, 175, 55, 0.25); background: rgba(212, 175, 55, 0.03);">
-                        <a href="master-live.html" target="_blank" rel="noopener" class="card-img-wrapper" style="position: relative;" title="Oglądaj na żywo: Telewizja Christian Culture 24/7 (Master Live)">
+                        <a href="master-live.html" target="_blank" rel="noopener" class="card-img-wrapper" style="position: relative;" title="Otwórz scenę: Telewizja Christian Culture 24/7 (Master Live)">
                             <picture>
                                 <source srcset="tv24_master_live.webp" type="image/webp">
                                 <img src="tv24_master_live.png" alt="Telewizja Christian Culture 24/7 (Master Live)">
@@ -592,7 +608,7 @@
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -602,23 +618,23 @@
                                 <p class="card-desc">Oficjalny, całodobowy kanał telewizyjny Christian Culture. Automatyczne bezszwowe przełączanie pasm 24/7: Zjednoczeni za Polskę, Studium Biblijne, Apokalipsa, Uwielbienie, Totalny Atak oraz Nocne Czuwanie.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('master')" style="background: linear-gradient(135deg, rgba(212,175,55,0.35), rgba(212,175,55,0.15)); border-color: var(--gold-primary, #d4af37); color: #fff; font-weight: 900;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('master-live.html')" style="background: linear-gradient(135deg, rgba(212,175,55,0.35), rgba(212,175,55,0.15)); border-color: var(--gold-primary, #d4af37); color: #fff; font-weight: 900;"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('master-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('master')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('master-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card 2: Zjednoczeni za Polskę -->
                     <div class="broadcast-card" style="border-left: 4px solid var(--red-national, #dc143c);">
-                        <a href="zapolske-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Zjednoczeni za Polskę (16:9)">
+                        <a href="zapolske-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Zjednoczeni za Polskę (16:9)">
                             <img src="POLAND.jpg" alt="Zjednoczeni za Polskę">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -628,16 +644,16 @@
                                 <p class="card-desc">Dedykowany strumień modlitewny za Ojczyznę. Modlitwy poranne, intencje widzów wyświetlane automatycznie na żywo.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('zapolske')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('zapolske-live.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('zapolske-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('zapolske')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('zapolske-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card: TV Epafraz 24/7 (Ciągła Emisja 24 Playlist YouTube) -->
                     <div class="broadcast-card" style="border-left: 4px solid var(--gold-primary, #d4af37);">
-                        <a href="tv-epafraz-live.html" target="_blank" rel="noopener" class="card-img-wrapper" style="position: relative;" title="Oglądaj na żywo: TV Epafraz 24/7 (16:9)">
+                        <a href="tv-epafraz-live.html" target="_blank" rel="noopener" class="card-img-wrapper" style="position: relative;" title="Otwórz scenę: TV Epafraz 24/7 (16:9)">
                             <picture>
                                 <source srcset="tv_epafraz_thumb.webp" type="image/webp">
                                 <img src="tv_epafraz_thumb.png" alt="TV Epafraz 24/7 — Transmisja na Żywo">
@@ -651,7 +667,7 @@
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -661,7 +677,7 @@
                                 <p class="card-desc">Całodobowy kanał biblijny oparty na 24 wyselekcjonowanych seriach: Podcast Apokalipsa Palla, nauczania, proroctwa czasów końca, uwielbienie i filmy. Płynne automatyczne przejścia między playlistami 24/7/365.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('tv-epafraz-live.html')" style="background: linear-gradient(135deg, rgba(212,175,55,0.35), rgba(212,175,55,0.15)); border-color: var(--gold-primary, #d4af37); color: #fff; font-weight: 800;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('tv-epafraz-live.html')" style="background: linear-gradient(135deg, rgba(212,175,55,0.35), rgba(212,175,55,0.15)); border-color: var(--gold-primary, #d4af37); color: #fff; font-weight: 800;"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('tv-epafraz-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
                                 <button class="btn-icon-square" onclick="openEmbedModal('tv-epafraz-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
@@ -670,40 +686,40 @@
 
                     <!-- Card 3: Apokalipsa: Księga Nadziei -->
                     <div class="broadcast-card">
-                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Apokalipsa: Księga Nadziei (16:9)">
+                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Apokalipsa: Księga Nadziei (16:9)">
                             <img src="tlo_ksiega_nadziei.png" alt="Apokalipsa: Księga Nadziei">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(255, 193, 7, 0.2); color: #ffc107;">Kurs Biblijny • 10:00 & 22:00</span>
                                 <h4 class="card-title"><a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" rel="noopener">Apokalipsa: Księga Nadziei (16:9)</a></h4>
-                                <p class="card-desc">24-lekcyjny kompletny kurs biblijny o proroctwach Księgi Objawienia. Zegar cyklu i obsługa wygaszania.</p>
+                                <p class="card-desc">28 lekcji cyklu o proroctwach Księgi Objawienia. Otwórz podgląd i wybierz dostępne nagranie.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('ksiega-nadziei')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('apokalipsa-ksiega-nadziei-live.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('apokalipsa-ksiega-nadziei-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('ksiega-nadziei')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('apokalipsa-ksiega-nadziei-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card: Randki & Małżeństwo -->
                     <div class="broadcast-card" style="border-left: 4px solid #f43f5e;">
-                        <a href="randki-malzenstwo-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Randki & Małżeństwo (16:9)">
+                        <a href="randki-malzenstwo-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Randki & Małżeństwo (16:9)">
                             <img src="tv24_master_live.png" alt="Randki & Małżeństwo">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -713,23 +729,23 @@
                                 <p class="card-desc">18-odcinkowy kurs „Prawdziwe szczęście w rodzinie” Romana Chałupki. Narzeczeństwo, małżeństwo, rodzina i Boże zasady relacji.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('randki-malzenstwo')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('randki-malzenstwo-live.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('randki-malzenstwo-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('randki-malzenstwo')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('randki-malzenstwo-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card 4: Studium Telewizyjne Pisma Świętego -->
                     <div class="broadcast-card">
-                        <a href="studium-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Studium Telewizyjne Pisma Świętego">
+                        <a href="studium-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Studium Telewizyjne Pisma Świętego">
                             <img src="tlo_studium.png" alt="Studium Telewizyjne Pisma Świętego">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -739,23 +755,23 @@
                                 <p class="card-desc">572-odcinkowy cykl wykładów werset po wersecie. Systematyczny rozwój wiedzy biblijnej bez opóźnień.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('studium')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('studium-live.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('studium-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('studium')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('studium-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card: Totalny Atak — Wykłady Biblijne -->
                     <div class="broadcast-card" style="border-left: 4px solid #d4af37;">
-                        <a href="totalny-atak-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Totalny Atak — Prof. Walter Veith">
+                        <a href="totalny-atak-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Totalny Atak — Prof. Walter Veith">
                             <img src="walter_veith.png" alt="Totalny Atak — Prof. Walter Veith">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -765,23 +781,23 @@
                                 <p class="card-desc">Seria wykładów biblijnych, apologetycznych i profetycznych. Proroctwa, historia świata i walka dobra ze złem według Pisma Świętego.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('totalny-atak')"><i class="fa-solid fa-bolt"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('totalny-atak-live.html')"><i class="fa-solid fa-bolt"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('totalny-atak-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('totalny-atak')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('totalny-atak-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card: Chrześcijański Blok Filmowy -->
                     <div class="broadcast-card">
-                        <a href="kino-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Chrześcijański Blok Filmowy (16:9)">
+                        <a href="kino-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Chrześcijański Blok Filmowy (16:9)">
                             <img src="tlo_ksiega_nadziei.png" alt="Chrześcijański Blok Filmowy">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -791,9 +807,9 @@
                                 <p class="card-desc">Seanse filmowe i dokumentalne z przesłaniem. Emisja w weekendy od 18:00 oraz stały dostęp na życzenie.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('kino')"><i class="fa-solid fa-film"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('kino-live.html')"><i class="fa-solid fa-film"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('kino-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('kino')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('kino-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
@@ -810,14 +826,14 @@
                     
                     <!-- Card 5: Codzienne Uwielbienie -->
                     <div class="broadcast-card">
-                        <a href="spiewajmy-panu-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Codzienne Uwielbienie (16:9)">
+                        <a href="spiewajmy-panu-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Codzienne Uwielbienie (16:9)">
                             <img src="spiewajmy-panu-thumb.png" alt="Codzienne Uwielbienie">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -827,23 +843,23 @@
                                 <p class="card-desc">Codzienny dwugodzinny blok muzyczny. Utwory uwielbienia, pieśni chwały i nowości muzyczne Christian Culture Music.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('codzienne-uwielbienie')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('spiewajmy-panu-live.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('spiewajmy-panu-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('codzienne-uwielbienie')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('spiewajmy-panu-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card: Świadectwa — Historie Wiary -->
                     <div class="broadcast-card">
-                        <a href="swiadectwa-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Świadectwa — Historie Wiary (16:9)">
+                        <a href="swiadectwa-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Świadectwa — Historie Wiary (16:9)">
                             <img src="tlo_tv_live2.png" alt="Świadectwa — Historie Wiary">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -853,23 +869,23 @@
                                 <p class="card-desc">Poruszające historie nawróceń, uzdrowień i uwolnień. 11 wyselekcjonowanych filmów w rotacji na niedzielne wieczory.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('swiadectwa')"><i class="fa-solid fa-heart-pulse"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('swiadectwa-live.html')"><i class="fa-solid fa-heart-pulse"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('swiadectwa-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('swiadectwa')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('swiadectwa-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card 6: Muzyka Instrumentalna & Nocne Czuwanie -->
                     <div class="broadcast-card">
-                        <a href="nocne-czuwanie-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Muzyka Instrumentalna & Nocne Czuwanie">
+                        <a href="nocne-czuwanie-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Muzyka Instrumentalna & Nocne Czuwanie">
                             <img src="tlo_tv_nocna.jpg" alt="Muzyka Instrumentalna & Nocne Czuwanie">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -879,23 +895,23 @@
                                 <p class="card-desc">Głębokie wyciszenie, 1 unikalny film relaksacyjny z cyklu 23 pozycji na dobę. Przestrzeń modlitwy, kontemplacji i snu.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('czuwanie')"><i class="fa-solid fa-moon"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('nocne-czuwanie-live.html')"><i class="fa-solid fa-moon"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('nocne-czuwanie-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('czuwanie')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('nocne-czuwanie-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card 7: Biblia Śpiewana 16:9 -->
                     <div class="broadcast-card">
-                        <a href="biblia-spiewana-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Biblia Śpiewana (16:9)">
+                        <a href="biblia-spiewana-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Biblia Śpiewana (16:9)">
                             <img src="Logo_Biblia_Spiewana.jpg" alt="Biblia Śpiewana">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -905,23 +921,23 @@
                                 <p class="card-desc">Pozioma scena nadawcza dla programu Biblia Śpiewana (Śpiewane Przypowieści Salomona). Wyjątkowa oprawa muzyczna.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('biblia-spiewana')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('biblia-spiewana-live.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('biblia-spiewana-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
-                                <button class="btn-icon-square" onclick="openEmbedModal('biblia-spiewana')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('biblia-spiewana-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card: Instrumental Worship Music CC -->
                     <div class="broadcast-card" style="border-left: 4px solid #8E2DE2;">
-                        <a href="cctv24-worship.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Instrumental Worship Music CC (16:9)">
+                        <a href="cctv24-worship.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Instrumental Worship Music CC (16:9)">
                             <img src="worship_logo_thumb.jpg" alt="Instrumental Worship Music CC">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: #c084fc;"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle" style="background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%); color: #fff;"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text" style="border-color: rgba(142, 45, 226, 0.5);">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text" style="border-color: rgba(142, 45, 226, 0.5);">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -931,7 +947,7 @@
                                 <p class="card-desc">Nieprzerwany strumień muzyki instrumentalnej uwielbienia. Rotacja 31 wyselekcjonowanych kompozycji – idealna do modlitwy, kontemplacji i pracy.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('cctv24-worship.html')"><i class="fa-solid fa-music"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('cctv24-worship.html')"><i class="fa-solid fa-music"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('cctv24-worship.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
                                 <button class="btn-icon-square" onclick="openEmbedModal('cctv24-worship.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
@@ -950,14 +966,14 @@
                     
                     <!-- Card 8: Radio Biblia Audio 16:9 -->
                     <div class="broadcast-card">
-                        <a href="stream-scene.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Radio Biblia Audio (16:9)">
+                        <a href="stream-scene.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Radio Biblia Audio (16:9)">
                             <img src="Logo Biblia Audio CC.jpg" alt="Radio Biblia Audio Poziomo">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -967,7 +983,7 @@
                                 <p class="card-desc">Pozioma scena zintegrowana ze strumieniem audio radia Zeno.fm. Wizualizacja fal dźwiękowych, zegar z datownikiem i werset dnia.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('stream-scene.html')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('stream-scene.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('stream-scene.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
                                 <button class="btn-icon-square" onclick="openEmbedModal('stream-scene.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
@@ -976,14 +992,14 @@
 
                     <!-- Card 9: Radio Biblia Audio 9:16 -->
                     <div class="broadcast-card">
-                        <a href="stream-scene-vertical.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Radio Biblia Audio (9:16)">
+                        <a href="stream-scene-vertical.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Radio Biblia Audio (9:16)">
                             <img src="Logo Globalna Biblia Audio.jpg" alt="Radio Biblia Audio Pionowo">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -993,7 +1009,7 @@
                                 <p class="card-desc">Pionowa scena stworzona specjalnie dla formatów mobilnych na TikTok Live, YouTube Shorts i Instagram Reels.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('stream-scene-vertical.html')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('stream-scene-vertical.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('stream-scene-vertical.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
                                 <button class="btn-icon-square" onclick="openEmbedModal('stream-scene-vertical.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
@@ -1002,14 +1018,14 @@
 
                     <!-- Card 10: Dobrze że jesteś 9:16 -->
                     <div class="broadcast-card">
-                        <a href="dzj-vertical-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Dobrze, że jesteś (9:16)">
+                        <a href="dzj-vertical-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Dobrze, że jesteś (9:16)">
                             <img src="dzj-916-thumb.png" alt="Dobrze, że jesteś Pionowo">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -1019,7 +1035,7 @@
                                 <p class="card-desc">Pionowy wariant popularnego programu śniadaniowego zoptymalizowany dla urządzeń mobilnych i relacji.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('dzj-vertical-live.html')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('dzj-vertical-live.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('dzj-vertical-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
                                 <button class="btn-icon-square" onclick="openEmbedModal('dzj-vertical-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
@@ -1028,14 +1044,14 @@
 
                     <!-- Card 11: Biblia Śpiewana 9:16 -->
                     <div class="broadcast-card">
-                        <a href="biblia-spiewana-vertical.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Biblia Śpiewana (9:16)">
+                        <a href="biblia-spiewana-vertical.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Otwórz scenę: Biblia Śpiewana (9:16)">
                             <img src="Logo_Biblia_Spiewana.jpg" alt="Biblia Śpiewana Pionowo">
                             <div class="card-live-indicator">
                                 <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                                <span class="card-play-text">OTWÓRZ PODGLĄD</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -1045,7 +1061,7 @@
                                 <p class="card-desc">Pionowy szablon nadawczy Biblia Śpiewana dla widzów na YouTube Shorts, TikTok Live lub Instagram Reels.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('biblia-spiewana-vertical.html')"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('biblia-spiewana-vertical.html')"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('biblia-spiewana-vertical.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
                                 <button class="btn-icon-square" onclick="openEmbedModal('biblia-spiewana-vertical.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
@@ -1067,11 +1083,11 @@
                         <a href="cctv24-global.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Watch Live: Good to have you Global (16:9)">
                             <img src="GLOBAL.jpg" alt="Good to have you Global">
                             <div class="card-live-indicator" style="border-color: rgba(0, 162, 255, 0.4); color: #80c2ff;">
-                                <i class="fa-solid fa-play" style="color: #00a2ff;"></i> WATCH LIVE
+                                <i class="fa-solid fa-play" style="color: #00a2ff;"></i> OPEN PREVIEW
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle" style="background: linear-gradient(135deg, #00a2ff 0%, #0056b3 100%); color: #fff;"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text" style="border-color: rgba(0, 162, 255, 0.4);">WATCH LIVE</span>
+                                <span class="card-play-text" style="border-color: rgba(0, 162, 255, 0.4);">OPEN PREVIEW</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -1081,7 +1097,7 @@
                                 <p class="card-desc">Global English version of the breakfast show. Blue-navy themed styling, Christian Culture Global radio signal.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('cctv24-global.html')" style="border-color: rgba(0,162,255,0.4);"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('cctv24-global.html')" style="border-color: rgba(0,162,255,0.4);"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('cctv24-global.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
                                 <button class="btn-icon-square" onclick="openEmbedModal('cctv24-global.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
@@ -1093,11 +1109,11 @@
                         <a href="bibleaudio-global.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Watch Live: Bible Audio Global (16:9)">
                             <img src="Logo Globalna Biblia Audio.jpg" alt="Bible Audio Global">
                             <div class="card-live-indicator" style="border-color: rgba(0, 162, 255, 0.4); color: #80c2ff;">
-                                <i class="fa-solid fa-play" style="color: #00a2ff;"></i> WATCH LIVE
+                                <i class="fa-solid fa-play" style="color: #00a2ff;"></i> OPEN PREVIEW
                             </div>
                             <div class="card-play-overlay">
                                 <div class="card-play-btn-circle" style="background: linear-gradient(135deg, #00a2ff 0%, #0056b3 100%); color: #fff;"><i class="fa-solid fa-play"></i></div>
-                                <span class="card-play-text" style="border-color: rgba(0, 162, 255, 0.4);">WATCH LIVE</span>
+                                <span class="card-play-text" style="border-color: rgba(0, 162, 255, 0.4);">OPEN PREVIEW</span>
                             </div>
                         </a>
                         <div class="card-body">
@@ -1107,7 +1123,7 @@
                                 <p class="card-desc">Anglojęzyczny wirtualny stream modlitewny ze zsynchronizowanym sygnałem Bible Audio Global oraz intencjami widzów.</p>
                             </div>
                             <div class="card-actions">
-                                <button class="btn-obs" onclick="copyAndOpenOBS('bibleaudio-global.html')" style="border-color: rgba(0,162,255,0.4);"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-obs" onclick="copyAndOpenOBS('bibleaudio-global.html')" style="border-color: rgba(0,162,255,0.4);"><i class="fa-solid fa-play"></i> Kopiuj URL OBS</button>
                                 <button class="btn-icon-square" onclick="openChromecastModal('bibleaudio-global.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
                                 <button class="btn-icon-square" onclick="openEmbedModal('bibleaudio-global.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
                             </div>
@@ -1377,44 +1393,81 @@
             const embedTextArea = document.getElementById("embedCodeArea");
             const toast = document.getElementById("toastNotification");
 
-            window.copyAndOpenOBS = function(url) {
-                const baseUrl = (window.location.protocol === "file:" || !window.location.origin || window.location.origin === "null") ? "https://polskieradio.cc" : window.location.origin;
-                const fullUrl = baseUrl.replace(/\/$/, "") + "/" + url;
-                
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(fullUrl).then(() => {
-                        showToast("✅ Link OBS skopiowany! Wklej w OBS -> Dodaj źródło -> Przeglądarka");
-                    }).catch(() => {
-                        showToast("Otwieranie sceny OBS...");
-                    });
+            let returnFocus = null;
+            const modalTitle = document.getElementById('embedModalTitle');
+            const modalHelp = document.getElementById('embedModalHelp');
+            document.querySelectorAll('.broadcast-card button[title]').forEach(button => {
+                button.setAttribute('aria-label', button.getAttribute('title'));
+            });
+            function sceneUrl(url) {
+                // Only catalogue entries can be copied or embedded. No arbitrary iframe URLs.
+                const known = Array.from(document.querySelectorAll('.card-title a'))
+                    .some(link => link.getAttribute('href') === url);
+                if (!known) throw new Error('Unknown catalogue scene');
+                const origin = window.location.protocol === 'file:' ? 'https://polskieradio.cc' : window.location.origin;
+                return new URL('/' + url, origin).href;
+            }
+            function openCopyModal(value, title, help) {
+                returnFocus = document.activeElement;
+                modalTitle.textContent = title;
+                modalHelp.textContent = help;
+                embedTextArea.value = value;
+                embedModal.classList.add('show');
+                embedTextArea.focus();
+                embedTextArea.select();
+            }
+            async function copyText(value) {
+                try {
+                    if (!navigator.clipboard || !navigator.clipboard.writeText) return false;
+                    await navigator.clipboard.writeText(value);
+                    return true;
+                } catch { return false; }
+            }
+            // Historical handler name retained for existing catalogue buttons; never launches OBS.
+            window.copyAndOpenOBS = async function(url) {
+                const fullUrl = sceneUrl(url);
+                if (await copyText(fullUrl)) {
+                    showToast('Adres skopiowany. OBS → Źródła → Przeglądarka → URL.');
                 } else {
-                    showToast("Otwieranie sceny OBS...");
+                    openCopyModal(fullUrl, 'Adres sceny do OBS', 'Automatyczne kopiowanie jest niedostępne. Skopiuj zaznaczony adres i wklej go w OBS: Źródła → Przeglądarka → URL.');
                 }
-                window.open(fullUrl, '_blank');
             };
 
             window.openEmbedModal = function(url) {
-                const baseUrl = (window.location.protocol === "file:" || !window.location.origin || window.location.origin === "null") ? "https://polskieradio.cc" : window.location.origin;
-                const fullUrl = baseUrl.replace(/\/$/, "") + "/" + url;
+                const fullUrl = sceneUrl(url);
                 const iframeCode = `<iframe src="${fullUrl}" width="100%" height="600" style="border:0; border-radius:12px; box-shadow:0 15px 35px rgba(0,0,0,0.5);" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
-                if(embedTextArea) embedTextArea.value = iframeCode;
-                if(embedModal) embedModal.classList.add("show");
+                openCopyModal(iframeCode, 'Osadź scenę na stronie', 'Skopiuj kod HTML do swojej witryny. Przed publikacją sprawdź odtwarzanie i zgodność osadzania z ustawieniami Twojej strony.');
             };
 
             window.closeEmbedModal = function() {
                 if(embedModal) embedModal.classList.remove("show");
+                if(returnFocus && returnFocus.isConnected) returnFocus.focus();
             };
 
-            window.copyEmbedCode = function() {
-                if(embedTextArea) {
+            window.copyEmbedCode = async function() {
+                if (await copyText(embedTextArea.value)) {
+                    showToast('Skopiowano.');
+                    window.closeEmbedModal();
+                } else {
+                    modalHelp.textContent = 'Nie udało się skopiować automatycznie. Użyj „Kopiuj” dla zaznaczonego tekstu.';
+                    embedTextArea.focus();
                     embedTextArea.select();
-                    embedTextArea.setSelectionRange(0, 99999);
-                    navigator.clipboard.writeText(embedTextArea.value).then(() => {
-                        showToast("Skopiowano kod osadzania!");
-                        closeEmbedModal();
-                    });
                 }
             };
+            embedModal.addEventListener('keydown', event => {
+                if (event.key === 'Escape') {
+                    event.preventDefault();
+                    window.closeEmbedModal();
+                } else if (event.key === 'Tab') {
+                    const controls = Array.from(embedModal.querySelectorAll('button, textarea'));
+                    const first = controls[0], last = controls[controls.length - 1];
+                    if (event.shiftKey && document.activeElement === first) {
+                        event.preventDefault(); last.focus();
+                    } else if (!event.shiftKey && document.activeElement === last) {
+                        event.preventDefault(); first.focus();
+                    }
+                }
+            });
 
             window.shareOnFacebook = function(url) {
                 const baseUrl = (window.location.protocol === "file:" || !window.location.origin || window.location.origin === "null") ? "https://polskieradio.cc" : window.location.origin;
@@ -1443,20 +1496,20 @@
     </script>
 
     <!-- EMBED CODE MODAL -->
-    <div class="premium-modal" id="embedModal" onclick="if(event.target === this) closeEmbedModal();">
+    <div class="premium-modal" id="embedModal" role="dialog" aria-modal="true" aria-labelledby="embedModalTitle" aria-describedby="embedModalHelp" onclick="if(event.target === this) closeEmbedModal();">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeEmbedModal();">&times;</button>
-            <h3 class="modal-title">Osadź transmisję na stronie</h3>
+            <button class="modal-close" aria-label="Zamknij okno" onclick="closeEmbedModal();">&times;</button>
+            <h3 class="modal-title" id="embedModalTitle">Osadź scenę na stronie</h3>
             <div class="modal-body">
-                <p>Skopiuj poniższy kod HTML iframe i wklej go w kodzie swojej witryny, aby osadzić tę scenę na żywo:</p>
-                <textarea class="code-textarea" id="embedCodeArea" readonly onclick="this.select();"></textarea>
-                <button class="copy-btn" onclick="copyEmbedCode();">Skopiuj kod</button>
+                <p id="embedModalHelp">Skopiuj kod HTML do swojej witryny.</p>
+                <textarea class="code-textarea" id="embedCodeArea" aria-label="Tekst do skopiowania" readonly onclick="this.select();"></textarea>
+                <button class="copy-btn" onclick="copyEmbedCode();">Kopiuj</button>
             </div>
         </div>
     </div>
 
     <!-- TOAST SYSTEM NOTIFICATION -->
-    <div class="toast-notification" id="toastNotification">Skopiowano!</div>
+    <div class="toast-notification" id="toastNotification" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module" src="app.js?v=27"></script>
@@ -1469,7 +1522,7 @@
             
             <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px;">
                 <img src="chromecast.png" alt="Chromecast" style="height: 38px; width: auto; filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));">
-                <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; font-weight: 800; margin: 0;">PRZEŚLIJ EKRAM NA TV</h2>
+                <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; font-weight: 800; margin: 0;">PRZEŚLIJ EKRAN NA TV</h2>
             </div>
             
             <p style="color: rgba(255,255,255,0.8); font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px;">
@@ -1481,7 +1534,7 @@
                     <i class="fa-brands fa-chromecast" style="color: var(--gold-primary, #d4af37); font-size: 1.4rem;"></i>
                     <div>
                         <strong style="color: #fff; display: block; font-size: 0.95rem;">Google Chromecast & Android TV:</strong>
-                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">W menu przeglądarke Chrome wybierz <strong>"Prześlij..." (Cast)</strong> i wskaż swój telewizor.</span>
+                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">W menu przeglądarki Chrome wybierz <strong>"Prześlij..." (Cast)</strong> i wskaż swój telewizor.</span>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">

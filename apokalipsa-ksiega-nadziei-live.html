@@ -485,7 +485,7 @@
             <div class="header-right-badge" style="display: flex; align-items: center; gap: 12px;">
                 <button id="episodePickerBtn" onclick="openEpisodesModal()" style="background: rgba(212,175,55,0.15); border: 1.5px solid var(--gold-primary); color: #fff; border-radius: 20px; padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" title="Wybierz odcinek">
                     <i class="fa-solid fa-list-ol" style="font-size: 0.9rem;"></i>
-                    <span id="episodePickerLabel">LEKCJA 1 / 25</span>
+                    <span id="episodePickerLabel">WYBIERZ LEKCJĘ</span>
                 </button>
                 <button onclick="openChromecastModal('apokalipsa-ksiega-nadziei-live.html')" style="background: rgba(212,175,55,0.15); border: 1.5px solid var(--gold-primary); color: #fff; border-radius: 20px; padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" title="Prześlij na TV (Chromecast / AirPlay)">
                     <img src="chromecast.png" alt="Chromecast" style="height: 18px; width: auto;">
@@ -525,33 +525,148 @@
         let player = null;
         let initialJumpDone = false;
 
-        // ── 25 Lessons of Apokalipsa: Księga Nadziei (lesson 26 = upcoming, no video yet) ──
+        // Registered recordings; lesson 28 supplied by owner on 2026-10-17.
         const LESSONS_25 = [
-            { ep: 1,  id: '-d4bMk7wseU', title: 'Objawienie Jezusa Chrystusa — Księga, która odsłania' },
-            { ep: 2,  id: 'OhHcJoc-Cf0', title: 'Jezus pośród swojego Kościoła — Siedem Świeczników' },
-            { ep: 3,  id: 'YhEH-MyPGWE', title: 'Listy do Siedmiu Kościołów — Poselstwo na Dziś' },
-            { ep: 4,  id: '8wtK9oTZCd8', title: 'Tron Boży i Baranek — Centrum Wszechświata' },
-            { ep: 5,  id: 'mtZkw3vrqq4', title: 'Siedem Pieczęci — Przegląd Historii Świata' },
-            { ep: 6,  id: '1YLgnm-q4w4', title: 'Sto Czterdzieści Cztery Tysiące — Kim Są?' },
-            { ep: 7,  id: '6HInNVNK7qE', title: 'Wielki Tłum — Zbawieni Przez Krew Baranka' },
-            { ep: 8,  id: '5lKiIYGELOo', title: 'Siedem Trąb — Ostrzeżenia dla Świata' },
-            { ep: 9,  id: 'sP4KOpQc5Y8', title: 'Mała Książeczka — Słodko-Gorzka Ewangelia' },
-            { ep: 10, id: 'nCLU_guoStw', title: 'Dwóch Świadków — Słowo Boże i Duch Święty' },
-            { ep: 11, id: 'xPy-qmpt48g', title: 'Niewiasta i Smok — Wielki Konflikt Wieków' },
-            { ep: 12, id: '3fd2UCOQ-hA', title: 'Bestia z Morza — Potęga Religijna w Proroctwie' },
-            { ep: 13, id: 'UPITGh2oioc', title: 'Bestia z Ziemi — Fałszywy Prorok Ostatnich Dni' },
-            { ep: 14, id: 'THX1Ukgu67s', title: 'Znamię Bestii — Znak Lojalności w Czasach Końca' },
-            { ep: 15, id: 'lCSGO5bz1bE', title: 'Trzy Poselstwa Anielskie — Globalna Misja Kościoła' },
-            { ep: 16, id: 'RSAU-o3c3Xs', title: 'Babilon — System Fałszywej Religii' },
-            { ep: 17, id: '7idKgBkmFEU', title: 'Siedem Plag — Sąd Boży nad Babilonem' },
-            { ep: 18, id: 'D-sjkIkXeWk', title: 'Upadek Babilonu — Wyjdź z Niego, Ludu Mój!' },
-            { ep: 19, id: 'hHug_C6XDPU', title: 'Powrót Jezusa — Majestatyczne Przyjście Króla' },
-            { ep: 20, id: 'DPcH9KA3y9o', title: 'Tysiąc Lat — Milenium i Sąd Ostateczny' },
-            { ep: 21, id: 'EZni4JPyR30', title: 'Nowe Jeruzalem — Niebo na Ziemi' },
-            { ep: 22, id: '3-czDmZBfI4', title: 'Nowe Stworzenie — Wieczność z Bogiem' },
-            { ep: 23, id: 'ljQkyXw7zUA', title: 'Sabat w Apokalipsie — Znak Stwórcy' },
-            { ep: 24, id: 'XrkR6XdmXTM', title: 'Modlitwa i Stan Umarłych — Biblijna Nadzieja' },
-            { ep: 25, id: 'qocOjx5xfBs', title: 'Bądź Gotowy — Żyć w Blasku Chwały Bożej' }
+            {
+                "ep": 1,
+                "id": "-d4bMk7wseU",
+                "title": "Odsłonięcie (Wprowadzenie)"
+            },
+            {
+                "ep": 2,
+                "id": "OhHcJoc-Cf0",
+                "title": "Jezus pośród Kościoła"
+            },
+            {
+                "ep": 3,
+                "id": "YhEH-MyPGWE",
+                "title": "Efez i Smyrna – Trwałość w Ogniu"
+            },
+            {
+                "ep": 4,
+                "id": "8wtK9oTZCd8",
+                "title": "Tron Szatana i Tajemnica Izebel (Pergamon i Tiatyra)"
+            },
+            {
+                "ep": 5,
+                "id": "mtZkw3vrqq4",
+                "title": "Sardes i Filadelfia: Kościół Umarły vs Otwartych Drzwi"
+            },
+            {
+                "ep": 6,
+                "id": "1YLgnm-q4w4",
+                "title": "Laodycea – Globalny Problem Czasu Końca"
+            },
+            {
+                "ep": 7,
+                "id": "6HInNVNK7qE",
+                "title": "Wizja Nieba i Tron Boga (Apokalipsa 4)"
+            },
+            {
+                "ep": 8,
+                "id": "5lKiIYGELOo",
+                "title": "Diabelski Lombard – Zapieczętowana Księga i Baranek"
+            },
+            {
+                "ep": 9,
+                "id": "sP4KOpQc5Y8",
+                "title": "Czterej Jeźdźcy Apokalipsy (Pieczęcie 1–4)"
+            },
+            {
+                "ep": 10,
+                "id": "nCLU_guoStw",
+                "title": "Głos Spod Ołtarza – Piąta Pieczęć i Męczennicy"
+            },
+            {
+                "ep": 11,
+                "id": "xPy-qmpt48g",
+                "title": "Szósta Pieczęć – Znaki na Niebie i Ziemi"
+            },
+            {
+                "ep": 12,
+                "id": "3fd2UCOQ-hA",
+                "title": "Tajemnica 144 Tysięcy i Pieczęć Boga Żywego"
+            },
+            {
+                "ep": 13,
+                "id": "UPITGh2oioc",
+                "title": "Siedem Trąb Apokalipsy (Część 1): Ogień, Krew i Piołun"
+            },
+            {
+                "ep": 14,
+                "id": "THX1Ukgu67s",
+                "title": "Siedem Trąb Apokalipsy (Część 2): Sąd i Panowanie"
+            },
+            {
+                "ep": 15,
+                "id": "lCSGO5bz1bE",
+                "title": "Dwaj Świadkowie i Upadek Wielkiego Miasta (Apok. 11)"
+            },
+            {
+                "ep": 16,
+                "id": "RSAU-o3c3Xs",
+                "title": "Anioł z Książeczką i Słodko-Gorzkie Doświadczenie"
+            },
+            {
+                "ep": 17,
+                "id": "7idKgBkmFEU",
+                "title": "Tajemnica Niebiańskiej Świątyni – Mierzenie Świątyni i Ołtarza"
+            },
+            {
+                "ep": 18,
+                "id": "D-sjkIkXeWk",
+                "title": "Kosmiczny Bój – Niewiasta, Dziecię i Smok (Apok. 12)"
+            },
+            {
+                "ep": 19,
+                "id": "hHug_C6XDPU",
+                "title": "Niewiasta na Pustyni i Ostatek Jej Potomstwa (Apok. 12 cz. 2)"
+            },
+            {
+                "ep": 20,
+                "id": "DPcH9KA3y9o",
+                "title": "Bestia z Morza – Tajemnica Władzy Ujawniona (Apok. 13 cz. 1)"
+            },
+            {
+                "ep": 21,
+                "id": "EZni4JPyR30",
+                "title": "Bestia z Morza w Historii i Ranna Głowa (Apok. 13 cz. 2)"
+            },
+            {
+                "ep": 22,
+                "id": "3-czDmZBfI4",
+                "title": "Zwierzę z Ziemi – USA w Proroctwie i Głos Smoka (Apok. 13 cz. 3)"
+            },
+            {
+                "ep": 23,
+                "id": "ljQkyXw7zUA",
+                "title": "Obraz Bestii, Znak i Próba Wierności (Objawienie 13 & Daniel 3)"
+            },
+            {
+                "ep": 24,
+                "id": "XrkR6XdmXTM",
+                "title": "Pieczęć na Czole i Ręce – Wybór w Apokalipsie 13"
+            },
+            {
+                "ep": 25,
+                "id": "qocOjx5xfBs",
+                "title": "Tajemnicza Liczba 666 – Rozkodowanie z Dokumentów Historycznych"
+            },
+            {
+                "ep": 26,
+                "id": "ZQfzarxSDkU",
+                "title": "PIERWSZY ANIOŁ – WIECZNA EWANGELIA DLA ŚWIATA"
+            },
+            {
+                "ep": 27,
+                "id": "WCswnJ9taFQ",
+                "title": "TAJEMNICA JOM KIPPUR — DZIEŃ SĄDU I POJEDNANIA"
+            },
+            {
+                "ep": 28,
+                "id": "2JjWOb3bWiA",
+                "title": "Zapomniany Dzień Boga | Apokalipsa 14,7"
+            }
         ];
 
         // ── Helper: Calculate Day of Year (1-365) ──
@@ -570,13 +685,13 @@
             if (!lesson) return;
 
             const tagEl = document.getElementById('episodeTag');
-            if (tagEl) tagEl.textContent = 'KURS BIBLIJNY • LEKCJA ' + lesson.ep + ' z 25 — 24/7';
+            if (tagEl) tagEl.textContent = 'KURS BIBLIJNY • LEKCJA ' + lesson.ep + ' z ' + LESSONS_25.length + ' — 24/7';
 
             const titleEl = document.querySelector('.episode-title');
             if (titleEl) titleEl.textContent = lesson.title;
 
             const labelEl = document.getElementById('episodePickerLabel');
-            if (labelEl) labelEl.textContent = 'LEKCJA ' + lesson.ep + ' / 25';
+            if (labelEl) labelEl.textContent = 'LEKCJA ' + lesson.ep + ' / ' + LESSONS_25.length;
 
             renderEpisodesModalGrid(index);
         }
@@ -595,7 +710,7 @@
                     '<div class="ep-num-badge">' + lesson.ep + '</div>' +
                     '<div class="ep-info-wrap">' +
                         '<div class="ep-info-title">' + lesson.title + '</div>' +
-                        '<div class="ep-info-sub">Lekcja ' + lesson.ep + ' z 25' + (isActive ? ' • TERAZ' : '') + '</div>' +
+                        '<div class="ep-info-sub">Lekcja ' + lesson.ep + ' z ' + LESSONS_25.length + (isActive ? ' • TERAZ' : '') + '</div>' +
                     '</div>';
                 grid.appendChild(item);
             });
@@ -649,7 +764,7 @@
         // ── Init Player with YouTube API — start from rotation slot ──
         function onYouTubeIframeAPIReady() {
             const dayOfYear = getDayOfYear();
-            const startIndex = (dayOfYear - 1) % 25; // rotate start across 25 lessons
+            const startIndex = (dayOfYear - 1) % LESSONS_25.length;
 
             updateEpisodeUI(startIndex);
 
@@ -665,13 +780,11 @@
                     modestbranding: 1,
                     enablejsapi: 1,
                     mute: 1,
-                    listType: 'playlist',
-                    list: 'PLDA6geI28g8T0x5fNBe-WkTdZDgz5IYlR',
-                    index: startIndex,
                     cc_load_policy: 0,
                     iv_load_policy: 3,
                     origin: pageOrigin
                 },
+                videoId: LESSONS_25[startIndex].id,
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
@@ -681,15 +794,14 @@
 
         function onPlayerReady(event) {
             const dayOfYear = getDayOfYear();
-            const startIndex = (dayOfYear - 1) % 25;
+            const startIndex = (dayOfYear - 1) % LESSONS_25.length;
 
             disableCaptions();
 
             // Load playlist starting from today's rotation slot — 24/7 loop
             try {
                 event.target.loadPlaylist({
-                    list: 'PLDA6geI28g8T0x5fNBe-WkTdZDgz5IYlR',
-                    listType: 'playlist',
+                    playlist: LESSONS_25.map(lesson => lesson.id),
                     index: startIndex,
                     startSeconds: 0
                 });
@@ -781,7 +893,7 @@
             if (event.data === YT.PlayerState.ENDED) {
                 if (player && typeof player.getPlaylistIndex === 'function') {
                     const currentIdx = player.getPlaylistIndex();
-                    const nextIdx = (currentIdx + 1) % 25;
+                    const nextIdx = (currentIdx + 1) % LESSONS_25.length;
                     console.log("Episode ended. Advancing from " + currentIdx + " to " + nextIdx + " (24/7 loop)");
                     player.playVideoAt(nextIdx);
                     updateEpisodeUI(nextIdx);
