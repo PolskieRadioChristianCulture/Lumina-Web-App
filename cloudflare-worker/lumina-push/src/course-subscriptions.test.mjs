@@ -331,3 +331,21 @@ test('unsubscribe after first device request prevents remaining devices',async()
   await dispatchCourseLesson(f.deps);
   assert.equal(requests,1);assert.equal(f.record,null);
 });
+
+test('status syncs rotated token only for active subscribers; dispatch persists recovered tokens when empty',async()=>{
+  const f=fixture();
+  const sUnsub=await courseSubscriptionAction('student',{action:'status',fcmToken:'rotated-token-12345'},f.deps);
+  assert.equal(sUnsub.body.subscribed,false);
+  assert.equal(f.record,null);
+
+  const g=fixture({tokens:[]});
+  g.deps.tokens=async()=>['recovered-token-12345'];
+  const report=await dispatchCourseLesson(g.deps);
+  assert.equal(report.accepted,1);
+  assert.deepEqual(g.record.data.tokens,['recovered-token-12345']);
+
+  const sSub=await courseSubscriptionAction('student',{action:'status',fcmToken:'rotated-token-67890'},g.deps);
+  assert.equal(sSub.body.subscribed,true);
+  assert.deepEqual(g.record.data.tokens,['rotated-token-67890','recovered-token-12345']);
+});
+

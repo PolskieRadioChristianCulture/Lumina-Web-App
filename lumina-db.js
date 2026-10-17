@@ -345,6 +345,13 @@ export async function requestNotificationPermission(userUid) {
                             updatedAt: serverTimestamp()
                         }, { merge: true });
                         try { localStorage.setItem('lumina_fcm_token', token); } catch(e) {}
+                        if (typeof fetch === 'function' && typeof pushUser.getIdToken === 'function') {
+                            pushUser.getIdToken().then(idToken => fetch('https://lumina-push.nazirczarkes.workers.dev/v1/course/subscription', {
+                                method: 'POST',
+                                headers: { 'content-type': 'application/json', authorization: 'Bearer ' + idToken },
+                                body: JSON.stringify({ action: 'status', fcmToken: token })
+                            })).catch(() => {});
+                        }
                         console.log('[LUMINA Push] Token pomyślnie zarejestrowany w LuminaDeviceTokens w Firestore! 🕊️');
                     } catch(e) {
                         console.warn('[LUMINA Push] Error saving to LuminaDeviceTokens:', e);

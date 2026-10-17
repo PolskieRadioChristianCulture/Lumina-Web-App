@@ -309,6 +309,13 @@ function courseDeps(env, accessToken, currentHour = null) {
           if (sub?.data?.tokens && Array.isArray(sub.data.tokens) && sub.data.tokens.length > 0) {
             return sub.data.tokens;
           }
+          if (deliveryBudget >= 12) {
+            deliveryBudget--;
+            try {
+              const recovered = await getRecipientTokens(uid, '', accessToken, env);
+              if (Array.isArray(recovered) && recovered.length > 0) return recovered.slice(0, 10);
+            } catch (_) {}
+          }
           return [];
         } catch (_) { throw Error('course_device_lookup_failed'); }
       }

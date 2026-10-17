@@ -183,7 +183,15 @@ export async function courseSubscriptionAction(uid, body, deps) {
     return {status:200,body:{subscribed:false}};
   }
   const existing = await deps.store.get(uid);
-  if (body.action==='status') return {status:200,body:{subscribed:!!existing?.data.enabled,preferredHour:existing?.data.preferredHour ?? 7}};
+  if (body.action==='status') {
+    if (existing?.data.enabled && typeof body.fcmToken === 'string' && body.fcmToken.length >= 11 && body.fcmToken.length <= 512 && /^[A-Za-z0-9_:\-]+$/.test(body.fcmToken)) {
+      const existingTokens = Array.isArray(existing.data.tokens) ? existing.data.tokens : [];
+      if (!existingTokens.includes(body.fcmToken)) {
+        await deps.store.save(uid, { tokens: [...new Set([body.fcmToken, ...existingTokens])].slice(0, 10) }, existing.revision);
+      }
+    }
+    return {status:200,body:{subscribed:!!existing?.data.enabled,preferredHour:existing?.data.preferredHour ?? 7}};
+  }
   if (body.consent!==true) return {status:400,body:{error:'Wymagana świadoma zgoda na powiadomienia kursu.'}};
   if (body.fcmToken!==undefined && (typeof body.fcmToken!=='string' || body.fcmToken.length<11 || body.fcmToken.length>512 || !/^[A-Za-z0-9_:\-]+$/.test(body.fcmToken)))
     return {status:400,body:{error:'Nieprawidłowy token urządzenia.'}};
@@ -280,7 +288,7 @@ export async function dispatchCourseLesson(deps, now = Date.now()) {
       }
       const success = acceptedTokens.size>0 && outcomes.length>0 && outcomes.every(Boolean);
       const update = {leaseUntil:success ? 0 : now+Math.min(3600000,60000*2**Math.min(attempts,6)),acceptedLessonNumber:lesson.number,acceptedTokens:[...acceptedTokens]};
-      if (expiredTokens.size) update.tokens=tokens.filter(token=>!expiredTokens.has(token));
+      if (expiredTokens.size || (!current.data.tokens?.length && acceptedTokens.size)) update.tokens=tokens.filter(token=>!expiredTokens.has(token));
       if (success) update.lastLessonNumber=lesson.number;
       // Never recreate a subscription deleted while delivery was in flight.
       const saved=await deps.store.save(record.uid,update,current.revision);
