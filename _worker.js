@@ -1712,6 +1712,75 @@ export default {
       return res;
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CCN GLOBAL DISCOVERY (P0): Mapowanie ?art=<id> na kanoniczny Clean URL
+    // Wyszukiwarki klasyczne i roboty AI (NotebookLM, ChatGPT, Gemini, Claude)
+    // otrzymują natychmiastowe przekierowanie 301 na pełny semantyczny HTML SSG.
+    // ═══════════════════════════════════════════════════════════════════════════
+    if ((decodedP === '/news' || decodedP === '/news/' || decodedP === '/finanse' || decodedP === '/finanse/') && url.searchParams.has('art')) {
+      const artId = url.searchParams.get('art');
+      const CCN_SLUG_MAP = {
+        "art-cbdc-prawo-niedzielne-apokalipsa-13": "cbdc-prawo-niedzielne-apokalipsa-13",
+        "art-wojna-ukraina-jezus-pokoj-znaki-czasow": "wojna-ukraina-jezus-pokoj-znaki-czasow",
+        "art-tragedia-szkola-wyszkow-przemoc-biblia": "tragedia-szkola-wyszkow-przemoc-biblia",
+        "art-czy-swiat-potrzebuje-przebudzenia-duchowego": "czy-swiat-potrzebuje-przebudzenia-duchowego",
+        "art-czy-jezus-istnial-dowody-historyczne": "czy-jezus-istnial-dowody-historyczne",
+        "art-czy-ai-zastapi-ludzka-madrosc": "czy-ai-zastapi-ludzka-madrosc",
+        "art-dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych": "dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych",
+        "art-dekalog-dziesiec-przykazan-bozych-wujek-bjw": "dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog",
+        "art-ccn-halloween-deklaracja-christian-culture": "dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna",
+        "art-kultura-halloween-swiatlosc-vs-mrok": "kultura-zycia-i-swiatlosci-kontra-komercyjny-kult-mroku-kultura-chrzescijanska",
+        "art-historia-halloween-od-samhain-do-popkultury": "od-celtyckiego-samhain-do-amerykanskiego-przemyslu-strachu-fakty-i-mity",
+        "art-psychologia-halloween-neurobiologia-strachu": "psychologia-strachu-i-oswajanie-z-makabra-uklad-nerwowy-emocje-biblia",
+        "art-dzieci-halloween-jak-rozmawiac-alternatywa": "jak-rozmawiac-z-dziecmi-o-halloween-bez-straszenia-i-odrzucenia-poradnik-mamy",
+        "art-rodzina-chrzescijanski-dom-twierdza-pokoju": "chrzescijanski-dom-jako-twierdza-pokoju-budowanie-tradycji-zycia",
+        "art-wychowanie-nastolatki-odwaga-wiary-presja": "wychowanie-w-erze-popkulturowej-presji-ksztaltowanie-sumienia-u-nastolatkow",
+        "art-swiat-przeklady-biblii-wycliffe-2026": "swiat-544-jezyki-oczekujace-na-przeklad-i-4457-aktywnych-projektow-raport-2025-wycliffe",
+        "art-kraj-milosierdzie-diakonia-chsch-2026": "kraj-jesienna-mobilizacja-chrzescijanskich-organizacji-charytatywnych-w-polsce-wsparcie-dla-seniorow",
+        "art-swiat-archeologia-jerozolima-fosa-2026": "swiat-monumentalna-fosa-obronna-i-pieczec-z-okresu-pierwszej-swiatyni-w-jerozolimie-odkrycia-iaa",
+        "art-kraj-czytelnictwo-biblii-polska-2026": "kraj-renesans-czytelnictwa-pisma-swietego-w-polsce-towarzystwo-biblijne-i-cyfrowe-studium",
+        "art-swiat-przesladowania-chrzescijan-2026": "swiat-ponad-380-milionow-chrzescijan-doswiadcza-przesladowan-raport-open-doors-apel-o-solidarnosc",
+        "art-kraj-ekumenizm-biblia-polska-2026": "kraj-polska-rada-ekumeniczna-i-dni-biblijne-wspolna-troska-o-obecnosc-slowa-bozego-w-spoleczenstwie",
+        "art-kod-zrodlowy-reset-duszy": "kod-zrodlowy-duszy-jak-zresetowac-wewnetrzny-system-i-odrzucic-falszywy-blysk-sukcesu",
+        "art-prawda-bez-filtra-kobiety-godnosc": "prawda-bez-filtra-dlaczego-kobiety-uciekaja-w-iluzje-relacji-i-jak-odzyskac-godnosc",
+        "art-pokonac-goliata-8-krokow": "pokonac-goliata-8-krokow-zwyciezcy-z-doliny-leku-do-pelnej-wolnosci",
+        "art-bog-jest-miloscia-trudne-pytania": "czy-bog-naprawde-jest-miloscia-odpowiedz-na-najtrudniejsze-pytania-o-cierpienie-i-charakter-ojca",
+        "art-u-boku-diabla-etyka-korporacji": "u-boku-diabla-cyfrowe-korporacje-07-sekundy-uwagi-i-cena-jaka-placimy-za-sukces",
+        "art-z-biblia-za-pan-brat-dzien-17": "wiara-patrzaca-w-przyszlosc-grota-machpela-decyzja-rebeki-i-boza-opatrznosc-w-codziennosci-rdz-23-24",
+        "art-z-biblia-za-pan-brat-dzien-16": "bog-sam-zapewni-baranka-abraham-na-gorze-moria-typologia-ofiary-chrystusa-rdz-22",
+        "art-z-biblia-za-pan-brat-dzien-15": "bog-dotrzymuje-obietnic-wiernosc-stworcy-ponad-ludzkimi-slabosciami-rdz-20-21",
+        "art-z-biblia-za-pan-brat-dzien-14": "sodoma-sad-milosierdzie-i-ocalenie-lota-w-swietle-pisma-swietego-rdz-19-1-38",
+        "art-z-biblia-za-pan-brat-dzien-13": "czy-jest-cos-zbyt-trudnego-dla-pana-obietnica-wszechmocy-i-sprawiedliwe-sady-sodomy",
+        "art-z-biblia-za-pan-brat-dzien-12": "gdy-czlowiek-probuje-pomoc-bogu-hagar-ismael-i-bog-ktory-widzi-rdz-16-17",
+        "art-z-biblia-za-pan-brat-dzien-11": "uwierzyl-panu-anatomia-usprawiedliwienia-z-laski-w-ksiedze-rodzaju-15",
+        "art-z-biblia-za-pan-brat-dzien-10": "dwie-drogi-wyboru-abram-i-lot-oraz-zapowiedz-kaplanstwa-chrystusa",
+        "art-ksiazki-cezary-rogowski-kod-pokonac-goliata": "kod-zrodlowy-oraz-pokonac-goliata-bezplatne-ksiazki-cezary-rogowski",
+        "art-z-biblia-za-pan-brat-dzien-08": "wieza-babel-anatomia-ludzkiej-pychy-i-poczatek-historii-abrahama",
+        "art-z-biblia-za-pan-brat-dzien-07": "tecza-i-przymierze-nowy-poczatek-i-niezmienna-potrzeba-przemiany-serca",
+        "art-z-biblia-za-pan-brat-dzien-06": "arka-potop-wiernosc-boga-anatomia-bozego-sadu-i-ratunku",
+        "art-z-biblia-za-pan-brat-dzien-05": "chodzic-z-bogiem-posrod-swiata-zepsutego-rdz-5-6",
+        "art-z-biblia-za-pan-brat-dzien-04": "dwa-serca-dwie-drogi-kain-i-abel-rdz-4",
+        "art-z-biblia-za-pan-brat-dzien-03": "gdzie-jestes-anatomia-upadku-i-pierwsza-ewangelia-edenu",
+        "news-sds-odc-26-sad-dobra-nowina-20261002": "studio-dobrego-slowa-odc-26-dlaczego-sad-jest-dobra-nowina",
+        "news-ukraina-ochrona-cywilow-20261002": "news-ukraina-ochrona-cywilow-20261002",
+        "news-polska-budzet-20261002": "news-polska-budzet-20261002",
+        "news-onz-dzien-bez-przemocy-20261002": "news-onz-dzien-bez-przemocy-20261002",
+        "news-adwent-jestnadzieja-20261002": "news-adwent-jestnadzieja-20261002",
+        "art-kurs-apokalipsy-akademia": "ksiega-objawienia-kurs-apokalipsy-akademia-cc",
+        "art-historia-amazing-grace": "historia-hymnu-cudowna-boza-laska-amazing-grace",
+        "art-z-biblia-za-pan-brat-rdz-2-20261002": "z-biblia-za-pan-brat-szabat-i-odpowiedzialnosc-rdz-2",
+        "art-wyjscie-z-dlugow-zasady": "dluznik-jest-sluga-wierzyciela-7-krokow-do-wolnosci",
+        "art-budzet-domowy-z-madroscia": "planowanie-i-gospodarnosc-budzet-domowy",
+        "art-wlasciciel-czy-szafarz": "wlasciciel-czy-szafarz-sekret-obfitosci"
+      };
+      const slug = CCN_SLUG_MAP[artId] || artId;
+      const section = decodedP.startsWith('/finanse') ? 'finanse' : 'news';
+      const redirectTarget = new URL(request.url);
+      redirectTarget.pathname = `/${section}/${slug}`;
+      redirectTarget.search = '';
+      return Response.redirect(redirectTarget.toString(), 301);
+    }
+
     const THEMATIC_PORTALS = ['music', 'biblioteka', 'ogloszenia', 'ziu', 'kuchnia', 'nauka', 'historia', 'biologia', 'prawo', 'seks', 'biznes', 'kultura', 'wspolpraca', 'news', 'edukacja', 'psychologia', 'finanse', 'technologie', 'misje', 'apologetyka', 'si'];
     const portalMatch = THEMATIC_PORTALS.find(id => decodedP === `/${id}`);
     if (portalMatch) {
