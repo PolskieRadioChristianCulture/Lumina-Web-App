@@ -1493,6 +1493,39 @@ async function handlePersonalHubRoute(request, env) {
   return null;
 }
 
+async function handlePodcastsRoute(request, env) {
+  const url = new URL(request.url);
+  const path = url.pathname.replace(/\/$/, '');
+  const lowerPath = path.toLowerCase();
+
+  if (lowerPath === '/podcasty') {
+    const assetUrl = new URL(request.url);
+    assetUrl.pathname = '/podcasty.html';
+    assetUrl.search = '';
+    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), {
+      method: 'GET',
+      headers: { 'Accept': 'text/html' }
+    }));
+    const body = await assetResp.arrayBuffer();
+    return new Response(body, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
+  }
+
+  if (lowerPath === '/podcasts' || lowerPath === '/podcast') {
+    const redirectUrl = new URL(request.url);
+    redirectUrl.pathname = '/podcasty';
+    return Response.redirect(redirectUrl.toString(), 301);
+  }
+
+  return null;
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -1546,6 +1579,8 @@ export default {
     if (worshipRoute) return worshipRoute;
     const personalHubRoute = await handlePersonalHubRoute(request, env);
     if (personalHubRoute) return personalHubRoute;
+    const podcastsRoute = await handlePodcastsRoute(request, env);
+    if (podcastsRoute) return podcastsRoute;
 
     if (url.pathname.startsWith('/api/tresci-18/')) {
       return handleAdultContent(request, env, url);

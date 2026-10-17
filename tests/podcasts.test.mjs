@@ -56,12 +56,10 @@ test('Catalog data integrity (data/podcasts/catalog.json)', () => {
   });
 });
 
-test('HTML structure and accessibility (podcasty.html & podcasty/index.html)', () => {
+test('HTML structure and accessibility (podcasty.html)', () => {
   const htmlPath = path.join(ROOT, 'podcasty.html');
-  const indexHtmlPath = path.join(ROOT, 'podcasty/index.html');
 
   assert.ok(fs.existsSync(htmlPath), 'podcasty.html must exist');
-  assert.ok(fs.existsSync(indexHtmlPath), 'podcasty/index.html must exist');
 
   const html = fs.readFileSync(htmlPath, 'utf8');
 
@@ -104,7 +102,7 @@ test('Clean URLs & Redirects (_redirects)', () => {
   assert.ok(fs.existsSync(redirectsPath), '_redirects must exist');
 
   const content = fs.readFileSync(redirectsPath, 'utf8');
-  assert.ok(content.includes('/podcasty /podcasty.html 200'));
+  assert.ok(content.includes('/podcasty /podcasty 200'));
   assert.ok(content.includes('/podcasts /podcasty 301'));
 });
 
