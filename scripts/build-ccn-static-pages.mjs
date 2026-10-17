@@ -75,16 +75,20 @@ export function loadArticles(entryPath = ARTICLES_TS_PATH) {
   };
 }
 
-export function generateStaticFeedSnippet(articles, limit = 15) {
+export function generateStaticFeedSnippet(articles, limit = 15, portalOpts = {}) {
+  const baseSlug = portalOpts.baseSlug || 'news';
+  const portalName = portalOpts.portalName || 'CCN News';
+  const headingTitle = portalOpts.headingTitle || `Wydanie Bieżące ${portalName}`;
   const items = (articles || []).slice(0, limit);
   const articlesHtml = items.map(a => {
     const title = escapeHtml(a.title);
     const excerpt = escapeHtml(a.excerpt);
-    const author = escapeHtml(a.author?.name || 'Redakcja CCN News');
+    const author = escapeHtml(a.author?.name || 'Redakcja Christian Culture');
     const date = a.dateFormatted || (a.publishedAt ? a.publishedAt.slice(0, 10) : '2026-10-15');
     const isoDate = a.publishedAt || '2026-10-15';
+    const targetUrl = portalOpts.useDynamicSlug && a.slug ? `/${baseSlug}/${a.slug}` : (a.slug ? `/${baseSlug}/${a.slug}` : `/news/${a.id}`);
     return `        <article class="news-static-item" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;">
-          <h2 style="font-size:1.15rem;line-height:1.4;margin:0 0 8px 0;"><a href="/news/${a.slug}" style="color:#0f172a;text-decoration:none;font-weight:700;">${title}</a></h2>
+          <h2 style="font-size:1.15rem;line-height:1.4;margin:0 0 8px 0;"><a href="${targetUrl}" style="color:#0f172a;text-decoration:none;font-weight:700;">${title}</a></h2>
           <p style="font-size:0.92rem;color:#475569;line-height:1.55;margin:0 0 12px 0;">${excerpt}</p>
           <div style="font-size:0.8rem;color:#64748b;">
             <span>Autor: <strong>${author}</strong></span> &bull; 
@@ -93,8 +97,8 @@ export function generateStaticFeedSnippet(articles, limit = 15) {
         </article>`;
   }).join('\n');
 
-  return `      <main class="news-startup-articles" aria-label="Najnowsze publikacje CCN News" style="max-width:1248px;margin:24px auto;padding:0 16px;">
-        <h2 style="font-size:1.35rem;font-weight:800;margin-bottom:16px;color:#0f172a;border-bottom:2px solid #bb142e;padding-bottom:8px;">Wydanie Bieżące CCN News</h2>
+  return `      <main class="news-startup-articles" aria-label="Najnowsze publikacje ${portalName}" style="max-width:1248px;margin:24px auto;padding:0 16px;">
+        <h2 style="font-size:1.35rem;font-weight:800;margin-bottom:16px;color:#0f172a;border-bottom:2px solid #bb142e;padding-bottom:8px;">${headingTitle}</h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
 ${articlesHtml}
         </div>
@@ -1485,13 +1489,13 @@ ${JSON.stringify(jsonLd, null, 2)}
 }
 
 // 3. Update Sitemap with All Article URLs
-function updateSitemap(articles) {
+function updateSitemap(articles, portalSlug = 'news') {
   if (!fs.existsSync(SITEMAP_PATH)) return 0;
   let sitemapContent = fs.readFileSync(SITEMAP_PATH, 'utf8');
 
   let addedCount = 0;
   for (const a of articles) {
-    const loc = `https://polskieradio.cc/news/${a.slug}`;
+    const loc = `https://polskieradio.cc/${portalSlug}/${a.slug}`;
     if (!sitemapContent.includes(`<loc>${loc}</loc>`)) {
       const pubDate = a.publishedAt ? a.publishedAt.slice(0, 10) : '2026-10-15';
       const cleanImgUrl = a.imageUrl && a.imageUrl.startsWith('http') ? a.imageUrl : `https://polskieradio.cc${a.imageUrl && a.imageUrl.startsWith('/') ? '' : '/'}${a.imageUrl || ''}`;
@@ -1513,9 +1517,9 @@ function updateSitemap(articles) {
 
   if (addedCount > 0) {
     fs.writeFileSync(SITEMAP_PATH, sitemapContent, 'utf8');
-    console.log(`Sitemap: Added ${addedCount} new article URLs to sitemap.xml.`);
+    console.log(`Sitemap (${portalSlug}): Added ${addedCount} new article URLs to sitemap.xml.`);
   } else {
-    console.log(`Sitemap: All ${articles.length} article URLs already present in sitemap.xml.`);
+    console.log(`Sitemap (${portalSlug}): All ${articles.length} article URLs already present in sitemap.xml.`);
   }
   return addedCount;
 }
@@ -1554,6 +1558,7 @@ export async function buildCcnStaticPages() {
 
     generatedPages++;
   }
+  updateSitemap(articles, 'news');
 
   // Also generate static pages for CCN Finanse (/finanse/{slug})
   if (fs.existsSync(FINANSE_ARTICLES_TS_PATH)) {
@@ -1581,11 +1586,61 @@ export async function buildCcnStaticPages() {
         fs.mkdirSync(idDir, { recursive: true });
         fs.writeFileSync(path.join(idDir, 'index.html'), html, 'utf8');
       }
+      generatedPages++;
+    }
+    updateSitemap(finanseArticles, 'finanse');
+  }
+
+  // Generate static pages for Thematic Portals (/nauka, /historia, /prawo)
+  const portalsDataPath = path.join(ROOT, 'scripts/portals_data.cjs');
+  if (fs.existsSync(portalsDataPath)) {
+    const portalsModule = (await import('./portals_data.cjs')).default || (await import('./portals_data.cjs'));
+    const { PORTALS } = portalsModule;
+    const targetedThematics = ['nauka', 'historia', 'prawo'];
+    for (const portalId of targetedThematics) {
+      const portalConfig = PORTALS.find(p => p.id === portalId);
+      if (!portalConfig || !portalConfig.articles) continue;
+      const pArticles = portalConfig.articles;
+      console.log(`Loaded ${pArticles.length} articles from portals_data.cjs for CCN ${portalConfig.title.split('–')[0].trim()}`);
+      fs.mkdirSync(path.join(ROOT, portalId), { recursive: true });
+      for (const article of pArticles) {
+        const html = generateArticleHtml(article, pArticles, {
+          baseSlug: portalId,
+          portalName: portalConfig.shortTitle || portalConfig.title.split('–')[0].trim(),
+          portalUrl: `https://polskieradio.cc/${portalId}`
+        });
+
+        const slugFile = path.join(ROOT, portalId, `${article.slug}.html`);
+        fs.writeFileSync(slugFile, html, 'utf8');
+
+        const cleanDir = path.join(ROOT, portalId, article.slug);
+        fs.mkdirSync(cleanDir, { recursive: true });
+        fs.writeFileSync(path.join(cleanDir, 'index.html'), html, 'utf8');
+
+        if (article.id && article.id !== article.slug) {
+          const idFile = path.join(ROOT, portalId, `${article.id}.html`);
+          fs.writeFileSync(idFile, html, 'utf8');
+          const idDir = path.join(ROOT, portalId, article.id);
+          fs.mkdirSync(idDir, { recursive: true });
+          fs.writeFileSync(path.join(idDir, 'index.html'), html, 'utf8');
+        }
+
+        // Also alias in news/ if not already present
+        const newsSlugFile = path.join(ROOT, 'news', `${article.slug}.html`);
+        if (!fs.existsSync(newsSlugFile)) {
+          fs.writeFileSync(newsSlugFile, html, 'utf8');
+          const newsCleanDir = path.join(ROOT, 'news', article.slug);
+          fs.mkdirSync(newsCleanDir, { recursive: true });
+          fs.writeFileSync(path.join(newsCleanDir, 'index.html'), html, 'utf8');
+        }
+
+        generatedPages++;
+      }
+      updateSitemap(pArticles, portalId);
     }
   }
 
   console.log(`Generated static pages for ${generatedPages} articles.`);
-  updateSitemap(articles);
   console.log('--- CCN STATIC PAGES BUILD COMPLETE ---');
   return { generatedPages, totalArticles: articles.length };
 }
