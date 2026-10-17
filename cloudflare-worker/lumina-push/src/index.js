@@ -12,6 +12,7 @@ const GOOGLE_SCOPES = [
 ].join(' ');
 const MAX_TOKENS_PER_RECIPIENT = 10;
 const PUBLIC_ORIGIN = 'https://polskieradio.cc';
+export const COURSE_LEGACY_BACKFILL_CRON = '2,17,32,47 * * * *';
 
 function json(body, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(body), { status, headers: { ...JSON_HEADERS, ...extraHeaders } });
@@ -323,7 +324,10 @@ export default {
     if (currentHour!==null && currentHour<6) return;
     try {
     const token = await getGoogleAccessToken(env,true);
-    if (env.COURSE_LEGACY_BACKFILL_ENABLED==='true' && env.COURSE_SUBSCRIPTIONS) {
+    // Import has its own invocation and subrequest budget. A failing or
+    // incomplete Firestore migration must never gate the KV delivery cron.
+    if (event?.cron===COURSE_LEGACY_BACKFILL_CRON) {
+      if (env.COURSE_LEGACY_BACKFILL_ENABLED!=='true' || !env.COURSE_SUBSCRIPTIONS) return;
       const result=await backfillCourseSubscriptions({
         checkpoint:env.OWNER_PUSH_TEST_GUARD.getByName('course-legacy-backfill-v1'),
         legacy:firestoreCourseStore(env,token),
@@ -332,8 +336,7 @@ export default {
         tokens:(uid,profileId)=>getRecipientTokens(uid,profileId,token,env)
       });
       console.log(JSON.stringify({event:'course_legacy_backfill',...result}));
-      // Separate import and delivery to keep each tick within the free budget.
-      if (!result.complete) return;
+      return;
     }
     const deps=courseDeps(env,token,currentHour);
     // Bound each invocation below Workers Free subrequest limits. Continue
@@ -344,6 +347,10 @@ export default {
       if (!result.hasMore || !deps.canContinue()) break;
     }
     } catch (_) {
+      if (event?.cron===COURSE_LEGACY_BACKFILL_CRON) {
+        console.error(JSON.stringify({event:'course_legacy_backfill_error',currentHour,error:'import_failed'}));
+        throw Error('course_legacy_backfill_failed');
+      }
       console.error(JSON.stringify({event:'daily_course_dispatch_error',currentHour,error:'dispatch_failed'}));
       throw Error('course_dispatch_failed');
     }

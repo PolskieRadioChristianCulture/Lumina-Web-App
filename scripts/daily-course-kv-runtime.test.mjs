@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {build} from 'esbuild';
 import {Miniflare,Response as RuntimeResponse,convertV4MiniflareOptions} from 'miniflare';
-import {mkdtemp} from 'node:fs/promises';
+import {mkdtemp,readFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 
@@ -11,12 +11,13 @@ test('workerd KV + SQLite: quota independence, pagination, atomic leases, tombst
   const key=Buffer.from(await crypto.subtle.exportKey('pkcs8',pair.privateKey)).toString('base64');
   const pem='-----BEGIN '+'PRIVATE KEY-----\n'+key+'\n-----END '+'PRIVATE KEY-----';
   const bundled=await build({stdin:{contents:`
-    import worker from './cloudflare-worker/lumina-push/src/index.js';
+    import worker, {COURSE_LEGACY_BACKFILL_CRON} from './cloudflare-worker/lumina-push/src/index.js';
     import {kvCourseStore} from './cloudflare-worker/lumina-push/src/course-subscriptions.js';
     export {OwnerPushTestGuard} from './cloudflare-worker/lumina-push/src/owner-test-guard.js';
     export default {async fetch(request,env) {
       const p=new URL(request.url).pathname;
       if(p==='/tick'){await worker.scheduled({},env);return Response.json({ok:true});}
+      if(p==='/import'){await worker.scheduled({cron:COURSE_LEGACY_BACKFILL_CRON,scheduledTime:Date.parse('2026-10-16T07:02:00Z')},env);return Response.json({ok:true});}
       if(p==='/store'){const b=await request.json();const s=kvCourseStore(env.COURSE_SUBSCRIPTIONS,env.OWNER_PUSH_TEST_GUARD);
         return Response.json(await s[b.method](...b.args));}
       if(p==='/seed'){const b=await request.json();await env.COURSE_SUBSCRIPTIONS.put(b.key,JSON.stringify(b.data));return Response.json({ok:true});}
@@ -28,6 +29,7 @@ test('workerd KV + SQLite: quota independence, pagination, atomic leases, tombst
     kvNamespaces:['COURSE_SUBSCRIPTIONS'],
     durableObjects:{OWNER_PUSH_TEST_GUARD:{className:'OwnerPushTestGuard',useSQLite:true}},
     bindings:{COURSE_PUSH_ENABLED:'true',FIREBASE_PROJECT_ID:'synthetic',ALLOWED_ORIGIN:'https://polskieradio.cc',FIREBASE_WEB_API_KEY:'synthetic',
+      COURSE_LEGACY_BACKFILL_ENABLED:'true',
       FIREBASE_SERVICE_ACCOUNT_JSON:JSON.stringify({client_email:'synthetic@example.invalid',private_key:pem})},
     outboundService:async request=>{
       const url=new URL(request.url);
@@ -92,6 +94,9 @@ test('workerd KV + SQLite: quota independence, pagination, atomic leases, tombst
     assert.ok(pages>=2);assert.equal(seen.size,25);
     assert.equal((await call('cursor')).after,'');
     newest=10;
+    const importFailure=await mf.dispatchFetch('https://synthetic.invalid/import');
+    assert.equal(importFailure.status,500,'the isolated import encounters exhausted Firestore');
+    const failedImportReads=firestore;
     assert.equal((await mf.dispatchFetch('https://synthetic.invalid/tick')).status,200);
     assert.equal(sends,1,'student receives the next lesson exactly once');
     assert.equal((await mf.dispatchFetch('https://synthetic.invalid/tick')).status,200);
@@ -99,19 +104,26 @@ test('workerd KV + SQLite: quota independence, pagination, atomic leases, tombst
     assert.equal((await action({action:'unsubscribe'})).status,200);
     assert.equal((await action({action:'status'})).status,200);
     assert.equal(await call('get','student'),null);
-    assert.equal(firestore,0,'course never calls exhausted Firestore');
+    assert.ok(failedImportReads>0);
+    assert.equal(firestore,failedImportReads,'delivery never calls exhausted Firestore, even with import enabled');
     assert.equal((await action({action:'subscribe',consent:true,fcmToken:'x'.repeat(513)})).status,400);
     await mf.dispose();
     legacyMode=true;
-    workerOptions.bindings.COURSE_LEGACY_BACKFILL_ENABLED='true';
     mf=new Miniflare(convertV4MiniflareOptions({...workerOptions,resourcePersistencePath:persistence}));
-    assert.equal((await mf.dispatchFetch('https://synthetic.invalid/tick')).status,200);
+    assert.equal((await mf.dispatchFetch('https://synthetic.invalid/import')).status,200);
     assert.equal(sends,1,'import and delivery are separate bounded ticks');
+    assert.equal((await mf.dispatchFetch('https://synthetic.invalid/import')).status,200);
     for(let i=0;i<5;i++)assert.equal((await mf.dispatchFetch('https://synthetic.invalid/tick')).status,200);
     assert.equal(sends,2,'pre-migration consent receives its missed lesson exactly once');
     const completedReads=firestore;
-    await mf.dispatchFetch('https://synthetic.invalid/tick');
+    await mf.dispatchFetch('https://synthetic.invalid/import');
     assert.equal(firestore,completedReads,'completed migration performs no further Firestore reads');
     assert.equal((await call('get','old-student')).data.lastLessonNumber,10);
   } finally {await mf.dispose();}
+});
+
+test('production has separate delivery and import triggers matching the handler',async()=>{
+  const config=JSON.parse(await readFile('cloudflare-worker/lumina-push/wrangler.jsonc','utf8'));
+  const {COURSE_LEGACY_BACKFILL_CRON}=await import('../cloudflare-worker/lumina-push/src/index.js');
+  assert.deepEqual(config.triggers.crons,['*/5 * * * *',COURSE_LEGACY_BACKFILL_CRON]);
 });

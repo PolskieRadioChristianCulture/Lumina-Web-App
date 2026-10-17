@@ -105,6 +105,12 @@ test('cc-omni-search.js: all key MENU CC items are indexed in catalog', () => {
 
 test('cc-omni-search.js: VM execution of performSearch with synonyms, typos, and suggestions', async () => {
   const vm = await import('node:vm');
+  // The fixture below expects lesson 15 as "today". Keep the test clock
+  // independent of the release date instead of changing production search.
+  class FixtureDate extends Date {
+    constructor(...args) { super(...(args.length ? args : [2026, 9, 15, 12])); }
+    static now() { return new FixtureDate().getTime(); }
+  }
   const sandbox = {
     window: {
       location: { pathname: '/' },
@@ -119,7 +125,7 @@ test('cc-omni-search.js: VM execution of performSearch with synonyms, typos, and
     console: console,
     setTimeout: setTimeout,
     clearTimeout: clearTimeout,
-    Date: Date
+    Date: FixtureDate
   };
   vm.createContext(sandbox);
   vm.runInContext(omniSearchCode, sandbox);
@@ -146,7 +152,7 @@ test('cc-omni-search.js: VM execution of performSearch with synonyms, typos, and
   const r4 = search('Lekcja 99');
   assert.equal(r4.isSuggestion, true, 'isSuggestion must be true for missing number');
   assert.ok(r4.suggestionNote && r4.suggestionNote.includes('99'), 'suggestionNote mentions missing number 99');
-  const todayDay = new Date().getDate();
+  const todayDay = new FixtureDate().getDate();
   assert.ok(r4.items[0].title.includes(`Dzień ${todayDay}`) || r4.items[0].title.includes(`Lekcja ${todayDay}`) || r4.items[0].title.includes('Dzień 15') || r4.items[0].title.includes('Lekcja 15'), 'Proposes today lesson as top suggestion');
 
   // 5. Completely missing query
