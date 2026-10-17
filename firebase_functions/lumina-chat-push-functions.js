@@ -60,7 +60,7 @@ async function getTokensForUser(uidOrSlug) {
             }
         });
     } catch(err) {
-        logger.warn(`[Push] Błąd pobierania tokenów dla ${uidOrSlug}:`, err);
+        logger.warn(`[Push] Błąd pobierania tokenów dla [pominięto]:`);
     }
 
     // Awaryjny fallback do dokumentu profilu lumina_profiles/{id}
@@ -110,7 +110,7 @@ async function getAllActiveDeviceTokens(excludeUserIds = []) {
             if (token) tokens.add(token);
         });
     } catch(err) {
-        logger.error('[Push] Błąd pobierania wszystkich tokenów urządzeń:', err);
+        logger.error('[Push] Błąd pobierania wszystkich tokenów urządzeń:');
     }
 
     return [...tokens];
@@ -185,7 +185,8 @@ async function sendToTokens(tokens, { title, body, icon, image, url, tag, data =
         result.responses.forEach((resp, i) => {
             if (!resp.success) {
                 const errCode = resp.error?.code || '';
-                if (errCode.includes('registration-token-not-registered') || errCode.includes('invalid-argument')) {
+                // INVALID_ARGUMENT may describe the payload, not an expired device.
+                if (errCode === 'messaging/registration-token-not-registered') {
                     const deadToken = tokens[i];
                     cleanupPromises.push(
                         db.collection('LuminaDeviceTokens')
@@ -204,7 +205,7 @@ async function sendToTokens(tokens, { title, body, icon, image, url, tag, data =
 
         return { sent: result.successCount, failed: result.failureCount };
     } catch(err) {
-        logger.error('[Push] Błąd wysyłki multicast:', err);
+        logger.error('[Push] Błąd wysyłki multicast.', { failed: tokens.length });
         return { sent: 0, failed: tokens.length };
     }
 }
@@ -225,7 +226,7 @@ exports.onLuminaProfileCreated = onDocumentCreated(
         const rawAvatar = profile.avatar;
         const avatar = (rawAvatar && !rawAvatar.startsWith('data:')) ? rawAvatar : 'https://polskieradio.cc/lumina_icon.jpg';
 
-        logger.info(`[Push New User] Nowy profil zarejestrowany: ${name} (${city}), slug: ${slug}`);
+        logger.info(`[Push New User] Nowy profil zarejestrowany: [pominięto] ([pominięto]), slug: [pominięto]`);
 
         // Wyślij powiadomienie do wszystkich pozostałych użytkowników
         const tokens = await getAllActiveDeviceTokens([profileId, slug, profile.uid]);
@@ -252,7 +253,7 @@ exports.onLuminaProfileCreated = onDocumentCreated(
             ]
         });
 
-        logger.info(`[Push New User] Wysłano ${result.sent} powiadomień o nowym profilu ${name}, błędy: ${result.failed}`);
+        logger.info(`[Push New User] Wysłano ${result.sent} powiadomień o nowym profilu [pominięto], błędy: ${result.failed}`);
     }
 );
 
@@ -279,7 +280,7 @@ exports.onLuminaPostCreated = onDocumentCreated(
 
         // 2A. Jeśli wpis to oficjalne rozważanie Cuda Każdego Dnia (CKD) -> wysyłka do wszystkich subskrybentów
         if (isCkd) {
-            logger.info(`[Push Post/CKD] Wykryto publikację Cuda Każdego Dnia: ${post.title || authorName}`);
+            logger.info(`[Push Post/CKD] Wykryto publikację Cuda Każdego Dnia: [pominięto]`);
             const allTokens = await getAllActiveDeviceTokens([authorId, authorSlug]);
             if (!allTokens.length) return;
 
@@ -309,7 +310,7 @@ exports.onLuminaPostCreated = onDocumentCreated(
         }
 
         // 2B. Standardowy wpis użytkownika -> wysyłka DO OBSERWUJĄCYCH AUTORA
-        logger.info(`[Push Post] Nowy post od ${authorName} (${authorSlug}). Wyszukiwanie obserwujących...`);
+        logger.info(`[Push Post] Nowy post od [pominięto] ([pominięto]). Wyszukiwanie obserwujących...`);
 
         const followerIds = new Set();
 
@@ -335,15 +336,15 @@ exports.onLuminaPostCreated = onDocumentCreated(
                 }
             });
         } catch(err) {
-            logger.warn('[Push Post] Błąd odczytu obserwujących z lumina_likes:', err);
+            logger.warn('[Push Post] Błąd odczytu obserwujących z lumina_likes:');
         }
 
         if (followerIds.size === 0) {
-            logger.info(`[Push Post] Autor ${authorName} nie ma jeszcze obserwujących w lumina_likes.`);
+            logger.info(`[Push Post] Autor [pominięto] nie ma jeszcze obserwujących w lumina_likes.`);
             return;
         }
 
-        logger.info(`[Push Post] Znaleziono ${followerIds.size} obserwujących dla ${authorName}. Pobieranie tokenów...`);
+        logger.info(`[Push Post] Znaleziono ${followerIds.size} obserwujących dla [pominięto]. Pobieranie tokenów...`);
 
         const followerTokens = new Set();
         for (const followerId of followerIds) {
@@ -377,7 +378,7 @@ exports.onLuminaPostCreated = onDocumentCreated(
             ]
         });
 
-        logger.info(`[Push Post] Wysłano ${result.sent} powiadomień do obserwujących ${authorName}, błędy: ${result.failed}`);
+        logger.info(`[Push Post] Wysłano ${result.sent} powiadomień do obserwujących [pominięto], błędy: ${result.failed}`);
     }
 );
 
@@ -395,7 +396,7 @@ exports.onDirectMessageCreated = onDocumentCreated(
 
         const tokens = await getTokensForUser(receiverId);
         if (!tokens.length) {
-            logger.info(`[Push DM] Brak aktywnego tokenu FCM dla odbiorcy ${receiverId}.`);
+            logger.info(`[Push DM] Brak aktywnego tokenu FCM dla odbiorcy [pominięto].`);
             return;
         }
 
@@ -421,7 +422,7 @@ exports.onDirectMessageCreated = onDocumentCreated(
             ]
         });
 
-        logger.info(`[Push DM] ${senderId} → ${receiverId}: wysłano ${result.sent}, błędy ${result.failed}`);
+        logger.info(`[Push DM] [pominięto] → [pominięto]: wysłano ${result.sent}, błędy ${result.failed}`);
     }
 );
 
@@ -446,7 +447,7 @@ exports.onMessageRequestCreated = onDocumentCreated(
             data: { type: 'direct_message_request', senderId: request.senderId, requestId: event.params.requestId || '' },
             actions: [{ action: 'open', title: 'Zobacz prośbę' }, { action: 'reply', title: 'Otwórz rozmowy' }]
         });
-        logger.info(`[Push request] ${request.senderId} → ${request.receiverId}: wysłano ${result.sent}, błędy ${result.failed}`);
+        logger.info(`[Push request] [pominięto] → [pominięto]: wysłano ${result.sent}, błędy ${result.failed}`);
     }
 );
 
@@ -517,7 +518,7 @@ exports.onPublicChatMessageCreated = onDocumentCreated(
                     { action: 'open', title: '💬 Dołącz do rozmowy' }
                 ]
             });
-            logger.info(`[Push Public Chat] Wysłano ${result.sent} powiadomień grupowych od ${senderName}, błędy: ${result.failed}`);
+            logger.info(`[Push Public Chat] Wysłano ${result.sent} powiadomień grupowych od [pominięto], błędy: ${result.failed}`);
         }
     }
 );
@@ -547,7 +548,7 @@ exports.scheduledMorningDevotionPush = onSchedule(
                 }
                 dobrzeZeJestesDb = getFirestore(dzjApp);
             } catch (initErr) {
-                logger.warn('[Push 06:15] Brak bezpośredniego połączenia z cuda-398c0:', initErr.message);
+                logger.warn('[Push 06:15] Brak bezpośredniego połączenia z cuda-398c0:');
             }
 
             if (dobrzeZeJestesDb) {
@@ -564,7 +565,7 @@ exports.scheduledMorningDevotionPush = onSchedule(
                 }
             }
         } catch(err) {
-            logger.warn('[Push 06:15] Błąd pobierania rozważania z chmury:', err);
+            logger.warn('[Push 06:15] Błąd pobierania rozważania z chmury:');
         }
 
         const allTokens = await getAllActiveDeviceTokens([]);

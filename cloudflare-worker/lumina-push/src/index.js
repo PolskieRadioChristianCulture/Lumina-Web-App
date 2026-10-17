@@ -206,6 +206,14 @@ function notificationFor(kind, documentId, record) {
   };
 }
 
+function getWebpushHeaders(type) {
+  if (type === 'owner_push_test') return { Urgency: 'high', TTL: '300' };
+  if (type === 'daily_course_lesson') return { Urgency: 'high', TTL: '86400' };
+  if (type === 'direct_message' || type === 'direct_message_request') return { Urgency: 'high', TTL: '86400' };
+  if (type === 'tv_schedule' || type === 'radio_schedule') return { Urgency: 'normal', TTL: '3600' };
+  return { Urgency: 'normal', TTL: '43200' };
+}
+
 async function sendFcm(token, notification, accessToken, env, signal, detailed = false) {
   const data = {
     title: notification.title,
@@ -230,7 +238,7 @@ async function sendFcm(token, notification, accessToken, env, signal, detailed =
         notification: { title: notification.title, body: notification.body },
         data,
         webpush: {
-          headers: { Urgency: notification.type === 'daily_course_lesson' ? 'normal' : 'high', ...(notification.type === 'owner_push_test' ? {TTL:'300'} : {}) },
+          headers: getWebpushHeaders(notification.type),
           notification: {
             title: notification.title,
             body: notification.body,
