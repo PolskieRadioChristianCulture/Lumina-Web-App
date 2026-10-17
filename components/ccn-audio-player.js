@@ -1,9 +1,9 @@
 /**
- * CCN AUDIO PLAYER PREMIUM 2026 — REUSABLE ENGINE
+ * CCN AUDIO PLAYER PREMIUM 2026 — ROBUST PRODUCTION ENGINE
  * Obsługuje natywny strumień HTML5 (M4A/AAC/MP3 HTTP 200/206 Range),
- * rzeczywiste szczyty fali dźwiękowej (64-bar PCM peaks), pełną dostępność
- * klawiaturową WCAG (slider), prędkości 0.75x–2x, wyciszenie, głośność,
- * wyłączność jednego grającego odtwarzacza na stronie oraz fallback Google Drive.
+ * 64-słupkowy interaktywny waveform PCM, slider pozycji, prędkości 0.75×–2×,
+ * regulację głośności, wyciszenie, skróty klawiszowe (Space, Arrow keys),
+ * wyłączność jednego grającego strumienia oraz szufladę awaryjną Google Drive.
  *
  * Standard: CCN Global SEO & AI Search 2026 / ZERO COST / Zero atrap
  */
@@ -30,28 +30,49 @@
     if (!card || card.dataset.ccnPlayerInitialized === 'true') return;
     card.dataset.ccnPlayerInitialized = 'true';
 
-    const audio = card.querySelector('.ccn-audio-el');
-    const playBtn = card.querySelector('.ccn-play');
-    const wave = card.querySelector('.ccn-wave');
-    const head = card.querySelector('.ccn-playhead');
-    const nowEl = card.querySelector('.ccn-now');
-    const clockEl = card.querySelector('.ccn-clock');
-    const durEl = card.querySelector('.ccn-duration');
-    const speedBtn = card.querySelector('.ccn-speed');
-    const muteBtn = card.querySelector('.ccn-mute');
-    const volumeInput = card.querySelector('.ccn-volume-input');
-    const moreBtn = card.querySelector('.ccn-more');
-    const fallBox = card.querySelector('.ccn-fallback');
-    const driveFrame = card.querySelector('.ccn-drive-frame');
-    const statusEl = card.querySelector('.ccn-status');
+    let audio = card.querySelector('audio');
+    if (!audio) {
+      audio = document.createElement('audio');
+      audio.className = 'ccn-audio-el';
+      audio.preload = 'metadata';
+      audio.crossOrigin = 'anonymous';
+      card.prepend(audio);
+    }
 
-    if (!audio || !playBtn || !wave || !head) return;
-
-    const src = (card.dataset.audioUrl || '').trim();
+    const src = (card.dataset.audioSrc || card.dataset.audioUrl || audio.getAttribute('src') || '').trim();
     const driveId = (card.dataset.driveId || '').trim();
-    const metaDuration = parseFloat(card.dataset.durationSeconds || '0');
-    let speedIndex = 1;
+    const metaDuration = parseFloat(card.dataset.durationSeconds || '0') || 1071.368;
 
+    const playBtn = card.querySelector('[data-action="toggle"], .ccn-play-btn, .ccn-play');
+    const playIcon = playBtn ? playBtn.querySelector('[data-icon="play"]') : null;
+    const pauseIcon = playBtn ? playBtn.querySelector('[data-icon="pause"]') : null;
+
+    const wave = card.querySelector('[data-role="waveform"], .ccn-wave');
+    const seekRange = card.querySelector('[data-role="seek"], .ccn-range');
+    const playhead = card.querySelector('.ccn-playhead');
+
+    const nowEl = card.querySelector('[data-role="current-time"], .ccn-now, .elapsed');
+    const durEl = card.querySelector('[data-role="total-time"], .ccn-duration, [data-role="duration-label"]');
+    const clockEl = card.querySelector('.ccn-clock');
+    const statusEl = card.querySelector('[data-role="status"], .ccn-status');
+
+    const speedBtn = card.querySelector('[data-action="speed"], .ccn-speed');
+    const speedLabel = card.querySelector('[data-role="speed"]');
+
+    const muteBtn = card.querySelector('[data-action="mute"], .ccn-mute');
+    const volumeRange = card.querySelector('[data-role="volume"], .ccn-volume-input, input[type="range"]');
+
+    const backBtn = card.querySelector('[data-action="back15"], [data-action="back10"]');
+    const forwardBtn = card.querySelector('[data-action="forward15"], [data-action="forward10"]');
+
+    const fallbackBtn = card.querySelector('[data-action="toggle-fallback"], .ccn-more');
+    const fallbackDrawer = card.querySelector('[data-role="fallback"], .ccn-fallback');
+    const driveFrame = card.querySelector('[data-role="drive-iframe"], .ccn-drive-frame, iframe');
+
+    let speedIndex = 1;
+    let isSeeking = false;
+
+    // Pobierz lub sparsuj szczyty fali
     let peaks = DEFAULT_PEAKS;
     if (card.dataset.peaks) {
       try {
@@ -60,96 +81,146 @@
       } catch (_) {}
     }
 
-    // Wyczyść ewentualne stare słupki i wygeneruj słupki z prawdziwych szczytów PCM
-    wave.querySelectorAll('.ccn-bar').forEach(b => b.remove());
-    const bars = peaks.map(h => {
-      const b = document.createElement('span');
-      b.className = 'ccn-bar';
-      b.style.height = Math.max(12, Math.min(92, Number(h) || 25)) + '%';
-      b.setAttribute('aria-hidden', 'true');
-      wave.appendChild(b);
-      return b;
-    });
+    // Wygeneruj słupki fali dźwiękowej
+    let bars = [];
+    if (wave) {
+      wave.innerHTML = '';
+      bars = peaks.map((h, idx) => {
+        const b = document.createElement('span');
+        b.className = 'ccn-wave__bar ccn-bar';
+        b.style.height = Math.max(12, Math.min(96, Number(h) || 25)) + '%';
+        b.setAttribute('aria-hidden', 'true');
+        b.dataset.idx = String(idx);
+        wave.appendChild(b);
+        return b;
+      });
+    }
 
     function setStatus(msg) {
-      if (statusEl) statusEl.textContent = msg;
+      if (statusEl) {
+        const target = statusEl.querySelector('[data-role="status"]') || statusEl;
+        target.textContent = msg;
+      }
     }
 
     function getEffectiveDuration() {
       if (Number.isFinite(audio.duration) && audio.duration > 0) return audio.duration;
       if (Number.isFinite(metaDuration) && metaDuration > 0) return metaDuration;
-      return NaN;
+      return 1071.368;
     }
 
     function setFallbackOpen(open) {
-      if (!fallBox) return;
-      fallBox.classList.toggle('show', open);
-      if (moreBtn) moreBtn.setAttribute('aria-expanded', String(open));
+      if (!fallbackDrawer) return;
+      fallbackDrawer.classList.toggle('show', open);
+      if (fallbackBtn) fallbackBtn.setAttribute('aria-expanded', String(open));
       if (open && driveFrame && !driveFrame.src && driveId) {
         driveFrame.src = 'https://drive.google.com/file/d/' + encodeURIComponent(driveId) + '/preview';
       }
     }
 
+    function updatePlayButtonState(isPlaying) {
+      if (!playBtn) return;
+      playBtn.classList.toggle('is-playing', isPlaying);
+      if (playIcon && pauseIcon) {
+        if (isPlaying) {
+          playIcon.setAttribute('hidden', '');
+          pauseIcon.removeAttribute('hidden');
+        } else {
+          pauseIcon.setAttribute('hidden', '');
+          playIcon.removeAttribute('hidden');
+        }
+      } else {
+        playBtn.textContent = isPlaying ? '❚❚' : '▶';
+      }
+      playBtn.setAttribute('aria-label', isPlaying ? 'Wstrzymaj nagranie' : 'Odtwórz nagranie');
+    }
+
     function updateUi() {
+      if (isSeeking) return;
       const t = audio.currentTime || 0;
       const d = getEffectiveDuration();
       const ratio = Number.isFinite(d) && d > 0 ? Math.max(0, Math.min(1, t / d)) : 0;
-      head.style.left = (ratio * 100) + '%';
-      bars.forEach((b, idx) => {
-        b.classList.toggle('past', idx / bars.length < ratio);
-      });
-      if (nowEl) nowEl.textContent = formatTime(t);
-      if (clockEl) clockEl.textContent = formatTime(t) + ' / ' + (Number.isFinite(d) ? formatTime(d) : '--:--');
-      if (durEl && Number.isFinite(d)) durEl.textContent = formatTime(d);
-      wave.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
-      wave.setAttribute('aria-valuetext', formatTime(t));
-    }
 
-    if (src) {
-      audio.src = src;
-      audio.volume = 0.85;
-      setStatus('Nagranie gotowe do odtworzenia (' + (Number.isFinite(metaDuration) && metaDuration > 0 ? formatTime(metaDuration) : 'strumień HTTPS') + ').');
-    } else {
-      playBtn.disabled = true;
-      wave.classList.add('is-disabled');
-      wave.setAttribute('aria-disabled', 'true');
-      if (speedBtn) speedBtn.disabled = true;
-      if (muteBtn) muteBtn.disabled = true;
-      if (volumeInput) volumeInput.disabled = true;
-      setStatus('Źródło Google Drive — odtwórz w podglądzie poniżej.');
-      setFallbackOpen(true);
-    }
-
-    playBtn.addEventListener('click', async function () {
-      if (!src) return;
-      if (audio.paused) {
-        try {
-          // Zatrzymaj inne elementy <audio> na stronie (zasada jednego grającego strumienia)
-          document.querySelectorAll('audio').forEach(other => {
-            if (other !== audio && !other.paused) other.pause();
-          });
-          await audio.play();
-        } catch (err) {
-          setStatus('Nie można uruchomić bezpośredniego strumienia. Otwieram podgląd zapasowy Google Drive.');
-          setFallbackOpen(true);
-        }
-      } else {
-        audio.pause();
+      if (seekRange) {
+        seekRange.value = String(Math.round(ratio * 1000));
+        seekRange.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
+        seekRange.setAttribute('aria-valuetext', formatTime(t));
       }
-    });
+      if (playhead) {
+        playhead.style.left = (ratio * 100) + '%';
+      }
+      bars.forEach((b, idx) => {
+        const isPast = idx / bars.length <= ratio;
+        b.classList.toggle('is-played', isPast);
+        b.classList.toggle('past', isPast);
+      });
+
+      const formattedNow = formatTime(t);
+      const formattedDur = formatTime(d);
+
+      if (nowEl) nowEl.textContent = formattedNow;
+      if (clockEl) clockEl.textContent = formattedNow + ' / ' + formattedDur;
+      if (durEl) {
+        if (durEl.dataset.role === 'duration-label') {
+          durEl.textContent = 'Czas: ' + formattedDur;
+        } else {
+          durEl.textContent = formattedDur;
+        }
+      }
+    }
+
+    // Konfiguracja źródła
+    if (src) {
+      if (!audio.getAttribute('src') || audio.src !== src) {
+        audio.src = src;
+      }
+      audio.volume = 0.85;
+      setStatus('Gotowe do odtworzenia');
+    } else if (driveId) {
+      if (playBtn) playBtn.disabled = false;
+      setStatus('Źródło zapasowe Google Drive.');
+    } else {
+      if (playBtn) playBtn.disabled = true;
+      setStatus('Brak źródła nagrania.');
+    }
+
+    // Obsługa Play / Pause
+    if (playBtn) {
+      playBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        if (!src && driveId) {
+          setFallbackOpen(true);
+          return;
+        }
+        if (audio.paused) {
+          try {
+            document.querySelectorAll('audio').forEach(other => {
+              if (other !== audio && !other.paused) other.pause();
+            });
+            await audio.play();
+          } catch (err) {
+            console.warn('[CCN Player] Native play error, opening Google Drive fallback:', err);
+            setStatus('Przeglądarka zablokowała bezpośrednie odtwarzanie. Uruchamiam odtwarzacz Google Drive.');
+            setFallbackOpen(true);
+          }
+        } else {
+          audio.pause();
+        }
+      });
+    }
 
     audio.addEventListener('play', function () {
-      playBtn.innerHTML = '❚❚';
-      playBtn.setAttribute('aria-label', 'Wstrzymaj nagranie');
+      updatePlayButtonState(true);
       setStatus('Odtwarzanie artykułu audio…');
       window.dispatchEvent(new CustomEvent('ccn-audio-play', { detail: { id: card.id || src } }));
     });
 
     audio.addEventListener('pause', function () {
-      playBtn.innerHTML = '▶';
-      playBtn.setAttribute('aria-label', 'Odtwórz nagranie');
-      if (audio.currentTime > 0 && audio.currentTime < (getEffectiveDuration() || Infinity)) {
+      updatePlayButtonState(false);
+      if (audio.currentTime > 0 && audio.currentTime < (getEffectiveDuration() - 0.5)) {
         setStatus('Wstrzymano (' + formatTime(audio.currentTime) + ')');
+      } else {
+        setStatus('Pauza');
       }
     });
 
@@ -157,88 +228,131 @@
       setStatus('Buforowanie nagrania…');
     });
 
-    audio.addEventListener('error', function () {
-      setStatus('Strumień główny niedostępny — skorzystaj z odtwarzacza źródłowego Google Drive poniżej.');
-      setFallbackOpen(true);
-    });
-
     audio.addEventListener('loadedmetadata', function () {
       updateUi();
+      if (durEl) {
+        const d = getEffectiveDuration();
+        if (durEl.dataset.role === 'duration-label') {
+          durEl.textContent = 'Czas: ' + formatTime(d);
+        } else {
+          durEl.textContent = formatTime(d);
+        }
+      }
     });
 
     audio.addEventListener('timeupdate', updateUi);
 
     audio.addEventListener('ended', function () {
-      playBtn.innerHTML = '▶';
-      playBtn.setAttribute('aria-label', 'Odtwórz nagranie');
+      updatePlayButtonState(false);
+      audio.currentTime = 0;
+      updateUi();
       setStatus('Nagranie zakończone.');
     });
 
-    function seekToRatio(r) {
-      const d = getEffectiveDuration();
-      if (Number.isFinite(d) && d > 0) {
-        audio.currentTime = Math.max(0, Math.min(d, r * d));
-        updateUi();
-      }
-    }
-
-    wave.addEventListener('click', function (e) {
-      if (!src) return;
-      const rect = wave.getBoundingClientRect();
-      if (rect.width > 0) {
-        seekToRatio((e.clientX - rect.left) / rect.width);
-      }
+    audio.addEventListener('error', function (e) {
+      console.warn('[CCN Player] Audio element error:', e);
+      updatePlayButtonState(false);
+      setStatus('Strumień główny wymaga weryfikacji. Otwieram źródło zapasowe.');
+      setFallbackOpen(true);
     });
 
-    wave.addEventListener('keydown', function (e) {
-      if (!src) return;
-      const d = getEffectiveDuration();
-      if (!Number.isFinite(d) || d <= 0) return;
-      if (['ArrowLeft', 'ArrowDown', 'ArrowRight', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
-        e.preventDefault();
-        if (e.key === 'Home') audio.currentTime = 0;
-        else if (e.key === 'End') audio.currentTime = d;
-        else {
-          const delta = (e.key === 'ArrowLeft' || e.key === 'ArrowDown') ? -5 : 5;
-          audio.currentTime = Math.min(d, Math.max(0, (audio.currentTime || 0) + delta));
+    // Przewijanie przez kliknięcie w falę
+    if (wave) {
+      wave.addEventListener('click', function (e) {
+        const rect = wave.getBoundingClientRect();
+        if (rect.width > 0) {
+          const r = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+          const d = getEffectiveDuration();
+          audio.currentTime = r * d;
+          updateUi();
         }
-        updateUi();
-      }
-    });
-
-    if (speedBtn) {
-      speedBtn.addEventListener('click', function () {
-        speedIndex = (speedIndex + 1) % SPEEDS.length;
-        audio.playbackRate = SPEEDS[speedIndex];
-        speedBtn.textContent = SPEEDS[speedIndex] + '× ▾';
       });
     }
 
+    // Przewijanie przez suwak
+    if (seekRange) {
+      seekRange.addEventListener('input', function () {
+        isSeeking = true;
+        const r = Number(seekRange.value) / 1000;
+        const d = getEffectiveDuration();
+        const t = r * d;
+        if (nowEl) nowEl.textContent = formatTime(t);
+        bars.forEach((b, idx) => {
+          const isPast = idx / bars.length <= r;
+          b.classList.toggle('is-played', isPast);
+          b.classList.toggle('past', isPast);
+        });
+      });
+      seekRange.addEventListener('change', function () {
+        const r = Number(seekRange.value) / 1000;
+        const d = getEffectiveDuration();
+        audio.currentTime = r * d;
+        isSeeking = false;
+        updateUi();
+      });
+    }
+
+    // Skok -15s / +15s
+    if (backBtn) {
+      backBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        audio.currentTime = Math.max(0, (audio.currentTime || 0) - 15);
+        updateUi();
+      });
+    }
+    if (forwardBtn) {
+      forwardBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const d = getEffectiveDuration();
+        audio.currentTime = Math.min(d, (audio.currentTime || 0) + 15);
+        updateUi();
+      });
+    }
+
+    // Prędkość
+    if (speedBtn) {
+      speedBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        speedIndex = (speedIndex + 1) % SPEEDS.length;
+        const spd = SPEEDS[speedIndex];
+        audio.playbackRate = spd;
+        if (speedLabel) speedLabel.textContent = spd + '×';
+        else speedBtn.textContent = spd + '× ▾';
+      });
+    }
+
+    // Głośność i wyciszenie
+    if (volumeRange) {
+      volumeRange.addEventListener('input', function () {
+        const val = Number(volumeRange.value);
+        audio.volume = val;
+        audio.muted = (val === 0);
+        if (muteBtn) {
+          muteBtn.setAttribute('aria-label', audio.muted ? 'Włącz dźwięk' : 'Wycisz');
+        }
+      });
+    }
     if (muteBtn) {
-      muteBtn.addEventListener('click', function () {
+      muteBtn.addEventListener('click', function (e) {
+        e.preventDefault();
         audio.muted = !audio.muted;
-        muteBtn.textContent = audio.muted ? '🔇' : '◖))';
+        if (volumeRange) {
+          volumeRange.value = audio.muted ? '0' : String(audio.volume || 0.85);
+        }
         muteBtn.setAttribute('aria-label', audio.muted ? 'Włącz dźwięk' : 'Wycisz');
       });
     }
 
-    if (volumeInput) {
-      volumeInput.addEventListener('input', function () {
-        audio.volume = Number(volumeInput.value);
-        audio.muted = false;
-        if (muteBtn) {
-          muteBtn.textContent = '◖))';
-          muteBtn.setAttribute('aria-label', 'Wycisz');
-        }
+    // Szuflada zapasowa
+    if (fallbackBtn) {
+      fallbackBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const isCurrentlyOpen = fallbackDrawer && fallbackDrawer.classList.contains('show');
+        setFallbackOpen(!isCurrentlyOpen);
       });
     }
 
-    if (moreBtn) {
-      moreBtn.addEventListener('click', function () {
-        setFallbackOpen(!fallBox || !fallBox.classList.contains('show'));
-      });
-    }
-
+    // Globalne zatrzymanie innych odtwarzaczy
     window.addEventListener('ccn-audio-play', function (e) {
       const activeId = e.detail && e.detail.id;
       if (activeId && activeId !== (card.id || src) && !audio.paused) {
@@ -246,12 +360,38 @@
       }
     });
 
+    updatePlayButtonState(false);
     updateUi();
   }
 
   function initAllCcnPlayers() {
-    document.querySelectorAll('.ccn-player').forEach(initPlayerCard);
+    document.querySelectorAll('.ccn-player, [data-ccn-audio-player="true"]').forEach(initPlayerCard);
   }
+
+  // Globalne skróty klawiszowe (Space / Strzałki)
+  document.addEventListener('keydown', function (e) {
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable)) {
+      return;
+    }
+    const player = document.querySelector('.ccn-player, [data-ccn-audio-player="true"]');
+    if (!player) return;
+    const audio = player.querySelector('audio');
+    if (!audio) return;
+
+    if (e.code === 'Space') {
+      e.preventDefault();
+      const playBtn = player.querySelector('[data-action="toggle"], .ccn-play-btn, .ccn-play');
+      if (playBtn) playBtn.click();
+    } else if (e.code === 'ArrowLeft') {
+      e.preventDefault();
+      audio.currentTime = Math.max(0, (audio.currentTime || 0) - 15);
+    } else if (e.code === 'ArrowRight') {
+      e.preventDefault();
+      const d = audio.duration || 1071.368;
+      audio.currentTime = Math.min(d, (audio.currentTime || 0) + 15);
+    }
+  });
 
   window.initAllCcnPlayers = initAllCcnPlayers;
   if (document.readyState === 'loading') {

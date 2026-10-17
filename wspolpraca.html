@@ -22,13 +22,54 @@
     <meta name="description" content="Razem możemy dotrzeć dalej. Otwarty ekosystem chrześcijańskich mediów, technologii i treści. Dołącz jako zbór, twórca, medium, wolontariusz lub partner technologiczny." />
     <link rel="canonical" href="https://polskieradio.cc/wspolpraca" />
     <link rel="icon" type="image/png" href="/ccn-logo-square.png" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     
     <!-- Open Graph -->
     <meta property="og:title" content="Współpraca Misyjna – Centralny Hub Partnerstwa | Christian Culture" />
-    <meta property="og:description" content="Jeden sieje, drugi podlewa, a Bóg daje wzrost (1 Kor 3:6). Dołącz do otwartego partnerstwa chrześcijańskiego." />
+    <meta property="og:description" content="Jeden sieje, drugi podlewa, a Bóg daje wzrost (1 Kor 3:6). Dołącz do otwartego partnerstwa chrześcijańskiego w ekosystemie Christian Culture." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://polskieradio.cc/wspolpraca" />
     <meta property="og:image" content="https://polskieradio.cc/ccn-logo-square.png" />
+    <meta property="og:site_name" content="Christian Culture" />
+    <meta property="og:locale" content="pl_PL" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Współpraca Misyjna – Centralny Hub Partnerstwa | Christian Culture" />
+    <meta name="twitter:description" content="Otwarty ekosystem chrześcijańskich mediów, technologii i treści. Dołącz do misji dotarcia z Ewangelią do każdego człowieka." />
+    <meta name="twitter:image" content="https://polskieradio.cc/ccn-logo-square.png" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://polskieradio.cc/wspolpraca#webpage",
+          "url": "https://polskieradio.cc/wspolpraca",
+          "name": "Współpraca Misyjna – Centralny Hub Partnerstwa | Christian Culture",
+          "description": "Otwarty ekosystem chrześcijańskich mediów, technologii i treści ewangelizacyjnych. Dołącz jako zbór, twórca, medium lub wolontariusz.",
+          "inLanguage": "pl-PL",
+          "isPartOf": {
+            "@id": "https://polskieradio.cc/#website"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://polskieradio.cc/#organization",
+          "name": "Christian Culture",
+          "url": "https://polskieradio.cc",
+          "logo": "https://polskieradio.cc/ccn-logo-square.png",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "polskiercctv@gmail.com",
+            "contactType": "editorial and partnership coordination"
+          }
+        }
+      ]
+    }
+    </script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +77,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-      /* Hide ugly browser scrollbar globally while preserving smooth scrolling */
+      /* Hide browser scrollbar globally while preserving smooth scrolling */
       .no-scrollbar::-webkit-scrollbar,
       nav::-webkit-scrollbar,
       [class*="overflow-x-auto"]::-webkit-scrollbar {
@@ -67,22 +108,161 @@
         animation-play-state: paused !important;
       }
 
+      /* Style dla semantycznego podglądu statycznego */
+      .ccn-static-hub {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 24px 16px 48px;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        color: #18181b;
+        line-height: 1.65;
+      }
+      .ccn-static-hero {
+        background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+        color: #fff;
+        padding: 40px 24px;
+        border-radius: 20px;
+        border: 1px solid #27272a;
+        margin-bottom: 32px;
+        text-align: center;
+      }
+      .ccn-static-hero h1 {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(1.8rem, 4vw, 2.75rem);
+        font-weight: 800;
+        margin-bottom: 12px;
+        color: #ffffff;
+      }
+      .ccn-static-verse {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        color: #fbbf24;
+        font-size: 1.15rem;
+        margin-bottom: 16px;
+      }
+      .ccn-static-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin: 28px 0;
+      }
+      .ccn-static-card {
+        background: #ffffff;
+        border: 1px solid #e4e4e7;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      }
+      .ccn-static-card h3 {
+        color: #bb142e;
+        font-size: 1.2rem;
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-weight: 700;
+      }
+      .ccn-static-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        background: #fef2f2;
+        color: #bb142e;
+        border: 1px solid #fecaca;
+        border-radius: 9999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="/js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
     <script type="module" crossorigin src="/assets/wspolpraca-index-BqPFI-BN.js"></script>
-      <script defer src="/js/lumina-share.js"></script>
+    <script defer src="/js/lumina-share.js"></script>
   </head>
   <body class="bg-gray-50 text-gray-900 antialiased selection:bg-[#bb142e] selection:text-white">
     <div id="root">
-      <div id="wspolpraca-startup" role="status" style="max-width:34rem;margin:4rem auto;padding:1.5rem;font:16px/1.6 system-ui;color:#18181b;background:#fff;border-radius:1rem;border:1px solid #e4e4e7">
-        <h1 style="color:#bb142e;font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:bold">CCN Współpraca Misyjna</h1>
-        <p id="wspolpraca-startup-message">Ładowanie centralnego huba partnerstwa misyjnego…</p>
-        <p><button onclick="location.reload()" style="padding:10px 18px;border-radius:8px;background:#bb142e;color:#fff;border:none;cursor:pointer;font-weight:600">Odśwież stronę</button> <a href="https://polskieradio.cc" style="margin-left:12px;color:#52525b">Przejdź do radia</a></p>
-        <noscript>Włącz JavaScript w przeglądarce, aby wyświetlić hub współpracy.</noscript>
-      </div>
+      <!-- Semantyczny szkielet i pełna treść indeksowalna (SSG / Progressive Enhancement) -->
+      <main class="ccn-static-hub" aria-label="Współpraca Misyjna Christian Culture">
+        <header class="ccn-static-hero">
+          <div class="ccn-static-badge" style="background:rgba(255,255,255,0.1);color:#fbbf24;border-color:rgba(251,191,36,0.3);">
+            🤝 Centralny Hub Misyjny Partnerstwa
+          </div>
+          <h1>Razem możemy dotrzeć dalej</h1>
+          <p class="ccn-static-verse">
+            „Jeden sieje, drugi podlewa, a Bóg daje wzrost.” — <span style="font-style:normal;font-size:0.9rem;color:#d4d4d8;">1 Kor 3:6</span>
+          </p>
+          <p style="max-width:760px;margin:0 auto;color:#d4d4d8;font-size:1.05rem;">
+            Christian Culture buduje otwarty ekosystem chrześcijańskich mediów, technologii, treści i społeczności.
+            <strong>Nie chcemy wszystkiego robić sami.</strong> Łączymy zbory, twórców, media, organizacje i specjalistów,
+            aby Ewangelia Jezusa Chrystusa docierała z mocą i najwyższą jakością do każdego człowieka w Polsce i na świecie.
+          </p>
+        </header>
+
+        <section aria-label="Główne filary partnerstwa">
+          <h2 style="font-size:1.5rem;font-weight:800;color:#0f172a;border-bottom:2px solid #bb142e;padding-bottom:8px;margin-bottom:16px;">
+            Sześć Głównych Filarów Współpracy Misyjnej
+          </h2>
+          
+          <div class="ccn-static-grid">
+            <article class="ccn-static-card">
+              <span class="ccn-static-badge">⛪ Lokalne Ciało Chrystusa</span>
+              <h3>1. Kościoły i Wspólnoty Lokalne</h3>
+              <p>Otwieramy infrastrukturę Christian Culture dla Twojego zboru i parafii. Transmitujemy nabożeństwa, konferencje i spotkania modlitewne w 6 stacjach radia i telewizji CC TV, tworzymy podcasty kościelne oraz zapewniamy profile zborowe z mapą dojazdu i archiwum kazań.</p>
+            </article>
+
+            <article class="ccn-static-card">
+              <span class="ccn-static-badge">✍️ 100% Własności Twórcy</span>
+              <h3>2. Twórcy, Publicyści i Autorzy Treści</h3>
+              <p>Tworzysz wartościowe artykuły, rozważania, kazania lub słuchowiska? Dzielimy się zasięgami. Obowiązuje żelazna zasada Content Contribution Agreement: autor zachowuje pełne prawa autorskie do swoich publikacji, a CC wspiera ich profesjonalną redakcję i promocję.</p>
+            </article>
+
+            <article class="ccn-static-card">
+              <span class="ccn-static-badge">🌍 Synergia Królestwa</span>
+              <h3>3. Organizacje i Misje Ewangelizacyjne</h3>
+              <p>Współpracujemy z fundacjami, stowarzyszeniami i inicjatywami ewangelizacyjnymi. Realizujemy ogólnopolskie kampanie medialne, czuwania narodowe, akcje charytatywne oraz projekty tłumaczeniowe Pisma Świętego.</p>
+            </article>
+
+            <article class="ccn-static-card">
+              <span class="ccn-static-badge">🎙️ Niezależne Media</span>
+              <h3>4. Media Chrześcijańskie i Wydawcy</h3>
+              <p>Wzajemna wymiana pasm radiowych, retransmisje sygnału, wspólne studia panelowe i promocja literatury chrześcijańskiej. Budujemy solidarność medialną ponad podziałami organizacyjnymi.</p>
+            </article>
+
+            <article class="ccn-static-card">
+              <span class="ccn-static-badge">💻 Innowacja dla Ewangelii</span>
+              <h3>5. Partnerzy Technologiczni i Programiści</h3>
+              <p>Tworzymy nowoczesne aplikacje webowe PWA, silniki audio w standardzie Spotify, interlinearną MojaBiblia z kodami Stronga oraz zaawansowane narzędzia wyszukiwania i dystrybucji treści biblijnych.</p>
+            </article>
+
+            <article class="ccn-static-card">
+              <span class="ccn-static-badge">🤝 Służba i Wspólnota</span>
+              <h3>6. Wolontariusze, Lektorzy i Darczyńcy</h3>
+              <p>Zaangażuj swoje talenty: montaż audio/wideo, tłumaczenia, lektorat, grafika komputerowa lub modlitewne i finansowe wsparcie bieżących dzieł ewangelizacyjnych ekosystemu.</p>
+            </article>
+          </div>
+        </section>
+
+        <section aria-label="Zasady współpracy i kontakt" style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px;margin-top:28px;">
+          <h2 style="font-size:1.35rem;font-weight:800;color:#0f172a;margin-top:0;">Zasady Partnerstwa i Kontakt</h2>
+          <p>
+            Współpraca w ramach ekosystemu Christian Culture opiera się na wierności Pismu Świętemu, poszanowaniu godności każdego człowieka, pełnej przejrzystości oraz wolności od komercjalizacji Ewangelii. Służymy jednemu Zbawicielowi, budując przestrzeń braterstwa i wzajemnego szacunku.
+          </p>
+          <div style="margin-top:16px;padding:16px;background:#f8fafc;border-left:4px solid #bb142e;border-radius:6px;">
+            <strong>Kontakt z Redakcją i Koordynacją Misyjną:</strong><br>
+            Cezary Rogowski — Założyciel Christian Culture & Redaktor Naczelny CCN<br>
+            Adres e-mail: <a href="mailto:polskiercctv@gmail.com" style="color:#bb142e;font-weight:700;">polskiercctv@gmail.com</a> &bull; Oficjalna strona: <a href="https://polskieradio.cc" style="color:#bb142e;font-weight:700;">polskieradio.cc</a>
+          </div>
+        </section>
+
+        <!-- Element pomocniczy dla dynamicznego środowiska React -->
+        <div id="wspolpraca-startup" role="status" style="display:none;">
+          <h1>CCN Współpraca Misyjna</h1>
+          <p id="wspolpraca-startup-message">Panel współpracy misyjnej gotowy.</p>
+          <noscript><p>Włącz JavaScript w przeglądarce, aby korzystać z interaktywnego formularza zgłoszeniowego.</p></noscript>
+        </div>
+      </main>
     </div>
+
     <script>
       window.handleCredentialResponse = (response) => {
         const event = new CustomEvent('google-credential-response', { detail: { response } });
@@ -93,5 +273,8 @@
         if (message) message.textContent = 'Nie udało się załadować panelu. Odśwież stronę. W razie pytań napisz: polskiercctv@gmail.com.';
       }, 15000);
     </script>
+    <script defer src="/components/cc-omni-search.js?v=20261015_w"></script>
+    <script defer src="/js/cc-back-to-top.js?v=20261013_col2"></script>
+    <script defer src="/js/cc-favorites.js?v=20261015_topbar1"></script>
   </body>
 </html>

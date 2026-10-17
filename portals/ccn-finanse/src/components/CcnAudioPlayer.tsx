@@ -30,16 +30,17 @@ export const CcnAudioPlayer: React.FC<{ audio?: ArticleAudio }> = ({ audio }) =>
   const [speedIndex, setSpeedIndex] = useState(1);
   const [muted, setMuted] = useState(false);
   const [volume, setVolume] = useState(0.85);
-  const [showFallback, setShowFallback] = useState(!audio.audioUrl?.trim());
+  const directStreamUrl = (audio.audioUrl || (audio as any).src || '').trim();
+  const hasDirectStream = Boolean(directStreamUrl);
+  const [showFallback, setShowFallback] = useState(!hasDirectStream);
   const [statusMsg, setStatusMsg] = useState<string>(
-    audio.audioUrl?.trim()
+    hasDirectStream
       ? 'Źródło audio skonfigurowane. Naciśnij Odtwórz.'
       : 'Źródło Google Drive — odtwórz w podglądzie poniżej.'
   );
 
   const peaks = Array.isArray(audio.peaks) && audio.peaks.length > 8 ? audio.peaks : DEFAULT_PEAKS;
-  const hasDirectStream = Boolean(audio.audioUrl?.trim());
-  const playerId = `ccn-player-${audio.articleId}`;
+  const playerId = `ccn-player-${audio.articleId || 'default'}`;
 
   useEffect(() => {
     const onOtherPlay = (e: Event) => {
@@ -157,7 +158,7 @@ export const CcnAudioPlayer: React.FC<{ audio?: ArticleAudio }> = ({ audio }) =>
       <audio
         ref={audioRef}
         preload="metadata"
-        src={hasDirectStream ? audio.audioUrl : undefined}
+        src={hasDirectStream ? directStreamUrl : undefined}
         onPlay={() => {
           setIsPlaying(true);
           setStatusMsg('Odtwarzanie');

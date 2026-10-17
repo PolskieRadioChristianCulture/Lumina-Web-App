@@ -27,7 +27,7 @@
     <meta property="og:url" content="https://polskieradio.cc/news/wieza-babel-anatomia-ludzkiej-pychy-i-poczatek-historii-abrahama" />
     <meta property="og:title" content="WIEŻA BABEL — ANATOMIA LUDZKIEJ PYCHY I POCZĄTEK HISTORII ABRAHAMA – CCN News" />
     <meta property="og:description" content="Jedenasty rozdział Księgi Rodzaju analizuje budowę wieży Babel oraz przejście ku powołaniu Abrahama. Tekst stanowi uniwersalne ostrzeżenie przed budowaniem jedności i bezpieczeństwa w opozycji do Boga." />
-    <meta property="og:image" content="https://polskieradio.cchttps://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg" />
+    <meta property="og:image" content="https://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
     <meta property="article:published_time" content="2026-10-08" />
@@ -39,7 +39,7 @@
     <meta name="twitter:url" content="https://polskieradio.cc/news/wieza-babel-anatomia-ludzkiej-pychy-i-poczatek-historii-abrahama" />
     <meta name="twitter:title" content="WIEŻA BABEL — ANATOMIA LUDZKIEJ PYCHY I POCZĄTEK HISTORII ABRAHAMA – CCN News" />
     <meta name="twitter:description" content="Jedenasty rozdział Księgi Rodzaju analizuje budowę wieży Babel oraz przejście ku powołaniu Abrahama. Tekst stanowi uniwersalne ostrzeżenie przed budowaniem jedności i bezpieczeństwa w opozycji do Boga." />
-    <meta name="twitter:image" content="https://polskieradio.cchttps://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg" />
+    <meta name="twitter:image" content="https://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg" />
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -66,7 +66,7 @@
       "inLanguage": "pl-PL",
       "isAccessibleForFree": true,
       "image": [
-        "https://polskieradio.cchttps://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg"
+        "https://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg"
       ],
       "author": {
         "@type": "Person",
@@ -648,6 +648,12 @@
         box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
       }
       .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
+      .ccn-play-btn svg[hidden],
+      .ccn-player [hidden] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="play"] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="pause"] { display: block !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="pause"] { display: none !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="play"] { display: block !important; }
       .ccn-player__meta { min-width: 0; }
       .ccn-player__eyebrow {
         display: flex;
@@ -716,18 +722,18 @@
         user-select: none;
         padding: 4px 0;
       }
-      .ccn-wave__bar {
+      .ccn-wave__bar, .ccn-bar {
         width: 100%;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.17);
         transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
         min-height: 6px;
       }
-      .ccn-wave__bar.is-played {
+      .ccn-wave__bar.is-played, .ccn-bar.is-played, .ccn-wave__bar.past, .ccn-bar.past {
         background: linear-gradient(180deg, #ead39c, #c99d45);
         box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
       }
-      .ccn-wave__bar.is-active { transform: scaleY(1.06); }
+      .ccn-wave__bar.is-active, .ccn-bar.is-active { transform: scaleY(1.06); }
       .ccn-range {
         width: 100%;
         margin: 8px 0 2px;
@@ -909,7 +915,7 @@
             <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
             <span>X (Twitter)</span>
           </a>
-          <a href="https://polskieradio.cc/tablica?share_url=https%3A%2F%2Fpolskieradio.cc%2Fnews%2Fwieza-babel-anatomia-ludzkiej-pychy-i-poczatek-historii-abrahama&share_title=WIE%C5%BBA%20BABEL%20%E2%80%94%20ANATOMIA%20LUDZKIEJ%20PYCHY%20I%20POCZ%C4%84TEK%20HISTORII%20ABRAHAMA%20%E2%80%94%20CCN%20News%20%7C%20Christian%20Culture&share_image=https%3A%2F%2Fpolskieradio.cchttps%3A%2F%2Fpolskieradio.cc%2Fimages%2Facademy%2Fdaily%2Fkc_day_08_tower_of_babel.jpg" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-lumina" title="Udostępnij na Tablicy Społeczności LUMINA" aria-label="Udostępnij na LUMINA">
+          <a href="https://polskieradio.cc/tablica?share_url=https%3A%2F%2Fpolskieradio.cc%2Fnews%2Fwieza-babel-anatomia-ludzkiej-pychy-i-poczatek-historii-abrahama&share_title=WIE%C5%BBA%20BABEL%20%E2%80%94%20ANATOMIA%20LUDZKIEJ%20PYCHY%20I%20POCZ%C4%84TEK%20HISTORII%20ABRAHAMA%20%E2%80%94%20CCN%20News%20%7C%20Christian%20Culture&share_image=https%3A%2F%2Fpolskieradio.cc%2Fimages%2Facademy%2Fdaily%2Fkc_day_08_tower_of_babel.jpg" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-lumina" title="Udostępnij na Tablicy Społeczności LUMINA" aria-label="Udostępnij na LUMINA">
             <i class="fa-solid fa-cross" aria-hidden="true"></i>
             <span>Tablica LUMINA</span>
           </a>

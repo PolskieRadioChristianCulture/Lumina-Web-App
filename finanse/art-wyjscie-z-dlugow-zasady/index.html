@@ -27,7 +27,7 @@
     <meta property="og:url" content="https://polskieradio.cc/finanse/dluznik-jest-sluga-wierzyciela-7-krokow-do-wolnosci" />
     <meta property="og:title" content="Dłużnik jest sługą wierzyciela: 7 kroków do całkowitej wolności finansowej – CCN News" />
     <meta property="og:description" content="Kredyty konsumpcyjne i karty kredytowe stały się współczesną formą niewolnictwa. Jak według biblijnych zasad spłacić wszystkie długi i nigdy więcej do nich nie wracać." />
-    <meta property="og:image" content="https://polskieradio.cchttps://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
     <meta property="article:published_time" content="2026-10-03T06:00:00Z" />
@@ -39,7 +39,7 @@
     <meta name="twitter:url" content="https://polskieradio.cc/finanse/dluznik-jest-sluga-wierzyciela-7-krokow-do-wolnosci" />
     <meta name="twitter:title" content="Dłużnik jest sługą wierzyciela: 7 kroków do całkowitej wolności finansowej – CCN News" />
     <meta name="twitter:description" content="Kredyty konsumpcyjne i karty kredytowe stały się współczesną formą niewolnictwa. Jak według biblijnych zasad spłacić wszystkie długi i nigdy więcej do nich nie wracać." />
-    <meta name="twitter:image" content="https://polskieradio.cchttps://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80" />
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -66,7 +66,7 @@
       "inLanguage": "pl-PL",
       "isAccessibleForFree": true,
       "image": [
-        "https://polskieradio.cchttps://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80"
+        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80"
       ],
       "author": {
         "@type": "Person",
@@ -648,6 +648,12 @@
         box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
       }
       .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
+      .ccn-play-btn svg[hidden],
+      .ccn-player [hidden] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="play"] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="pause"] { display: block !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="pause"] { display: none !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="play"] { display: block !important; }
       .ccn-player__meta { min-width: 0; }
       .ccn-player__eyebrow {
         display: flex;
@@ -716,18 +722,18 @@
         user-select: none;
         padding: 4px 0;
       }
-      .ccn-wave__bar {
+      .ccn-wave__bar, .ccn-bar {
         width: 100%;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.17);
         transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
         min-height: 6px;
       }
-      .ccn-wave__bar.is-played {
+      .ccn-wave__bar.is-played, .ccn-bar.is-played, .ccn-wave__bar.past, .ccn-bar.past {
         background: linear-gradient(180deg, #ead39c, #c99d45);
         box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
       }
-      .ccn-wave__bar.is-active { transform: scaleY(1.06); }
+      .ccn-wave__bar.is-active, .ccn-bar.is-active { transform: scaleY(1.06); }
       .ccn-range {
         width: 100%;
         margin: 8px 0 2px;
@@ -909,7 +915,7 @@
             <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
             <span>X (Twitter)</span>
           </a>
-          <a href="https://polskieradio.cc/tablica?share_url=https%3A%2F%2Fpolskieradio.cc%2Ffinanse%2Fdluznik-jest-sluga-wierzyciela-7-krokow-do-wolnosci&share_title=D%C5%82u%C5%BCnik%20jest%20s%C5%82ug%C4%85%20wierzyciela%3A%207%20krok%C3%B3w%20do%20ca%C5%82kowitej%20wolno%C5%9Bci%20finansowej%20%E2%80%94%20CCN%20Finanse%20%7C%20Christian%20Culture&share_image=https%3A%2F%2Fpolskieradio.cchttps%3A%2F%2Fimages.unsplash.com%2Fphoto-1554224155-6726b3ff858f%3Fauto%3Dformat%26fit%3Dcrop%26w%3D1200%26q%3D80" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-lumina" title="Udostępnij na Tablicy Społeczności LUMINA" aria-label="Udostępnij na LUMINA">
+          <a href="https://polskieradio.cc/tablica?share_url=https%3A%2F%2Fpolskieradio.cc%2Ffinanse%2Fdluznik-jest-sluga-wierzyciela-7-krokow-do-wolnosci&share_title=D%C5%82u%C5%BCnik%20jest%20s%C5%82ug%C4%85%20wierzyciela%3A%207%20krok%C3%B3w%20do%20ca%C5%82kowitej%20wolno%C5%9Bci%20finansowej%20%E2%80%94%20CCN%20Finanse%20%7C%20Christian%20Culture&share_image=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1554224155-6726b3ff858f%3Fauto%3Dformat%26fit%3Dcrop%26w%3D1200%26q%3D80" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-lumina" title="Udostępnij na Tablicy Społeczności LUMINA" aria-label="Udostępnij na LUMINA">
             <i class="fa-solid fa-cross" aria-hidden="true"></i>
             <span>Tablica LUMINA</span>
           </a>

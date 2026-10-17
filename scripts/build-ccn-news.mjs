@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
-import { buildCcnStaticPages } from './build-ccn-static-pages.mjs';
+import { buildCcnStaticPages, loadArticles, generateStaticFeedSnippet } from './build-ccn-static-pages.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const source = path.join(root, 'portals/ccn-news');
@@ -13,7 +13,13 @@ if (result.status !== 0) process.exit(result.status || 1);
 for (const file of await readdir(path.join(source, 'dist/assets'))) {
   await copyFile(path.join(source, 'dist/assets', file), path.join(root, 'assets', file));
 }
-const html = (await readFile(path.join(source, 'dist/index.html'), 'utf8')).replace(/\r\n/g, '\n').replace(/[\t ]+$/gm, '');
+const { articles } = loadArticles();
+const feedSnippet = generateStaticFeedSnippet(articles, 15);
+let html = (await readFile(path.join(source, 'dist/index.html'), 'utf8')).replace(/\r\n/g, '\n').replace(/[\t ]+$/gm, '');
+html = html.replace(
+  '<span class="news-startup-status" role="status">Wczytywanie wiadomości</span>',
+  '<span class="news-startup-status" role="status">Wczytywanie wiadomości</span>\n' + feedSnippet
+);
 await writeFile(path.join(root, 'news.html'), html);
 await writeFile(path.join(root, 'news/index.html'), html);
 await copyFile(path.join(source, 'public/data/ccn-public-feed.json'), path.join(root, 'data/ccn-public-feed.json'));

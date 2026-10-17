@@ -27,7 +27,7 @@
     <meta property="og:url" content="https://polskieradio.cc/news/historia-hymnu-cudowna-boza-laska-amazing-grace" />
     <meta property="og:title" content="Historia hymnu „Cudowna Boża Łaska” (Amazing Grace): od handlarza niewolników do pieśni odkupienia – CCN News" />
     <meta property="og:description" content="Jak John Newton, bezwzględny kapitan statku niewolniczego, po dramatycznym sztormie doświadczył łaski Chrystusa i stworzył najbardziej poruszający hymn w dziejach muzyki chrześcijańskiej." />
-    <meta property="og:image" content="https://polskieradio.cchttps://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
     <meta property="article:published_time" content="2026-09-10" />
@@ -39,7 +39,7 @@
     <meta name="twitter:url" content="https://polskieradio.cc/news/historia-hymnu-cudowna-boza-laska-amazing-grace" />
     <meta name="twitter:title" content="Historia hymnu „Cudowna Boża Łaska” (Amazing Grace): od handlarza niewolników do pieśni odkupienia – CCN News" />
     <meta name="twitter:description" content="Jak John Newton, bezwzględny kapitan statku niewolniczego, po dramatycznym sztormie doświadczył łaski Chrystusa i stworzył najbardziej poruszający hymn w dziejach muzyki chrześcijańskiej." />
-    <meta name="twitter:image" content="https://polskieradio.cchttps://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80" />
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -66,7 +66,7 @@
       "inLanguage": "pl-PL",
       "isAccessibleForFree": true,
       "image": [
-        "https://polskieradio.cchttps://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80"
+        "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80"
       ],
       "author": {
         "@type": "Person",
@@ -648,6 +648,12 @@
         box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
       }
       .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
+      .ccn-play-btn svg[hidden],
+      .ccn-player [hidden] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="play"] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="pause"] { display: block !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="pause"] { display: none !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="play"] { display: block !important; }
       .ccn-player__meta { min-width: 0; }
       .ccn-player__eyebrow {
         display: flex;
@@ -716,18 +722,18 @@
         user-select: none;
         padding: 4px 0;
       }
-      .ccn-wave__bar {
+      .ccn-wave__bar, .ccn-bar {
         width: 100%;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.17);
         transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
         min-height: 6px;
       }
-      .ccn-wave__bar.is-played {
+      .ccn-wave__bar.is-played, .ccn-bar.is-played, .ccn-wave__bar.past, .ccn-bar.past {
         background: linear-gradient(180deg, #ead39c, #c99d45);
         box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
       }
-      .ccn-wave__bar.is-active { transform: scaleY(1.06); }
+      .ccn-wave__bar.is-active, .ccn-bar.is-active { transform: scaleY(1.06); }
       .ccn-range {
         width: 100%;
         margin: 8px 0 2px;
@@ -909,7 +915,7 @@
             <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
             <span>X (Twitter)</span>
           </a>
-          <a href="https://polskieradio.cc/tablica?share_url=https%3A%2F%2Fpolskieradio.cc%2Fnews%2Fhistoria-hymnu-cudowna-boza-laska-amazing-grace&share_title=Historia%20hymnu%20%E2%80%9ECudowna%20Bo%C5%BCa%20%C5%81aska%E2%80%9D%20(Amazing%20Grace)%3A%20od%20handlarza%20niewolnik%C3%B3w%20do%20pie%C5%9Bni%20odkupienia%20%E2%80%94%20CCN%20News%20%7C%20Christian%20Culture&share_image=https%3A%2F%2Fpolskieradio.cchttps%3A%2F%2Fimages.unsplash.com%2Fphoto-1511632765486-a01980e01a18%3Fw%3D1200%26q%3D80" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-lumina" title="Udostępnij na Tablicy Społeczności LUMINA" aria-label="Udostępnij na LUMINA">
+          <a href="https://polskieradio.cc/tablica?share_url=https%3A%2F%2Fpolskieradio.cc%2Fnews%2Fhistoria-hymnu-cudowna-boza-laska-amazing-grace&share_title=Historia%20hymnu%20%E2%80%9ECudowna%20Bo%C5%BCa%20%C5%81aska%E2%80%9D%20(Amazing%20Grace)%3A%20od%20handlarza%20niewolnik%C3%B3w%20do%20pie%C5%9Bni%20odkupienia%20%E2%80%94%20CCN%20News%20%7C%20Christian%20Culture&share_image=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1511632765486-a01980e01a18%3Fw%3D1200%26q%3D80" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-lumina" title="Udostępnij na Tablicy Społeczności LUMINA" aria-label="Udostępnij na LUMINA">
             <i class="fa-solid fa-cross" aria-hidden="true"></i>
             <span>Tablica LUMINA</span>
           </a>

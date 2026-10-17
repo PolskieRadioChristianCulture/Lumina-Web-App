@@ -662,6 +662,12 @@
         box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
       }
       .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
+      .ccn-play-btn svg[hidden],
+      .ccn-player [hidden] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="play"] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="pause"] { display: block !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="pause"] { display: none !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="play"] { display: block !important; }
       .ccn-player__meta { min-width: 0; }
       .ccn-player__eyebrow {
         display: flex;
@@ -730,18 +736,18 @@
         user-select: none;
         padding: 4px 0;
       }
-      .ccn-wave__bar {
+      .ccn-wave__bar, .ccn-bar {
         width: 100%;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.17);
         transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
         min-height: 6px;
       }
-      .ccn-wave__bar.is-played {
+      .ccn-wave__bar.is-played, .ccn-bar.is-played, .ccn-wave__bar.past, .ccn-bar.past {
         background: linear-gradient(180deg, #ead39c, #c99d45);
         box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
       }
-      .ccn-wave__bar.is-active { transform: scaleY(1.06); }
+      .ccn-wave__bar.is-active, .ccn-bar.is-active { transform: scaleY(1.06); }
       .ccn-range {
         width: 100%;
         margin: 8px 0 2px;
@@ -962,17 +968,19 @@
           class="ccn-player"
           data-ccn-audio-player="true"
           data-audio-src="/audio/ccn/cbdc-prawo-niedzielne-apokalipsa-13.m4a"
+          data-audio-url="/audio/ccn/cbdc-prawo-niedzielne-apokalipsa-13.m4a"
           data-audio-title="Programowalny pieniądz: CBDC a proroctwo Apokalipsy"
           data-audio-reader="AI Lektor"
           data-drive-id="1armTC6OXOU5XI6hZ9BkBR2amYrLeXCdr"
+          data-duration-seconds="1071.368"
           data-publication-status="published"
           data-peaks="[54,38,39,45,65,25,38,41,53,54,56,38,56,62,59,60,63,44,47,49,64,60,59,67,49,65,56,80,71,56,53,53,49,49,56,64,52,51,72,73,84,51,66,66,68,56,51,60,64,61,67,44,45,48,51,48,45,44,39,57,45,38,40,48]"
           aria-label="Odtwarzacz nagrania artykułu"
         >
-          <audio preload="metadata" crossorigin="anonymous"></audio>
+          <audio class="ccn-audio-el" preload="metadata" src="/audio/ccn/cbdc-prawo-niedzielne-apokalipsa-13.m4a" crossorigin="anonymous"></audio>
 
           <div class="ccn-player__top">
-            <button class="ccn-play-btn" type="button" data-action="toggle" aria-label="Odtwórz nagranie">
+            <button class="ccn-play-btn ccn-play" type="button" data-action="toggle" aria-label="Odtwórz nagranie">
               <svg viewBox="0 0 24 24" data-icon="play" aria-hidden="true">
                 <path d="M8 5.5v13l10.5-6.5L8 5.5z"></path>
               </svg>
@@ -996,7 +1004,7 @@
               </div>
             </div>
 
-            <div class="ccn-badge">CCN Finanse • Audio</div>
+            <div class="ccn-badge">CCN News • Audio</div>
           </div>
 
           <div class="ccn-wave-wrap">

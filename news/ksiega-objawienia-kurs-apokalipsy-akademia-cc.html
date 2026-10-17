@@ -27,7 +27,7 @@
     <meta property="og:url" content="https://polskieradio.cc/news/ksiega-objawienia-kurs-apokalipsy-akademia-cc" />
     <meta property="og:title" content="Księga Objawienia bez lęku: Nowy Kurs Apokalipsy w Akademii Biblijnej CC – CCN News" />
     <meta property="og:description" content="24 profesjonalne wykłady wideo, interaktywne quizy, odnośniki do kodów Stronga i imienne certyfikaty ukończenia. Sprawdź wyjątkowy program edukacyjny dostępny bezpłatnie na polskieradio.cc/akademia." />
-    <meta property="og:image" content="https://polskieradio.cchttps://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
     <meta property="article:published_time" content="2026-09-15" />
@@ -39,7 +39,7 @@
     <meta name="twitter:url" content="https://polskieradio.cc/news/ksiega-objawienia-kurs-apokalipsy-akademia-cc" />
     <meta name="twitter:title" content="Księga Objawienia bez lęku: Nowy Kurs Apokalipsy w Akademii Biblijnej CC – CCN News" />
     <meta name="twitter:description" content="24 profesjonalne wykłady wideo, interaktywne quizy, odnośniki do kodów Stronga i imienne certyfikaty ukończenia. Sprawdź wyjątkowy program edukacyjny dostępny bezpłatnie na polskieradio.cc/akademia." />
-    <meta name="twitter:image" content="https://polskieradio.cchttps://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80" />
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -66,7 +66,7 @@
       "inLanguage": "pl-PL",
       "isAccessibleForFree": true,
       "image": [
-        "https://polskieradio.cchttps://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80"
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80"
       ],
       "author": {
         "@type": "Person",
@@ -648,6 +648,12 @@
         box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
       }
       .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
+      .ccn-play-btn svg[hidden],
+      .ccn-player [hidden] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="play"] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="pause"] { display: block !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="pause"] { display: none !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="play"] { display: block !important; }
       .ccn-player__meta { min-width: 0; }
       .ccn-player__eyebrow {
         display: flex;
@@ -716,18 +722,18 @@
         user-select: none;
         padding: 4px 0;
       }
-      .ccn-wave__bar {
+      .ccn-wave__bar, .ccn-bar {
         width: 100%;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.17);
         transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
         min-height: 6px;
       }
-      .ccn-wave__bar.is-played {
+      .ccn-wave__bar.is-played, .ccn-bar.is-played, .ccn-wave__bar.past, .ccn-bar.past {
         background: linear-gradient(180deg, #ead39c, #c99d45);
         box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
       }
-      .ccn-wave__bar.is-active { transform: scaleY(1.06); }
+      .ccn-wave__bar.is-active, .ccn-bar.is-active { transform: scaleY(1.06); }
       .ccn-range {
         width: 100%;
         margin: 8px 0 2px;
@@ -909,7 +915,7 @@
             <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
             <span>X (Twitter)</span>
           </a>
-          <a href="https://polskieradio.cc/tablica?share_url=https%3A%2F%2Fpolskieradio.cc%2Fnews%2Fksiega-objawienia-kurs-apokalipsy-akademia-cc&share_title=Ksi%C4%99ga%20Objawienia%20bez%20l%C4%99ku%3A%20Nowy%20Kurs%20Apokalipsy%20w%20Akademii%20Biblijnej%20CC%20%E2%80%94%20CCN%20News%20%7C%20Christian%20Culture&share_image=https%3A%2F%2Fpolskieradio.cchttps%3A%2F%2Fimages.unsplash.com%2Fphoto-1451187580459-43490279c0fa%3Fw%3D1200%26q%3D80" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-lumina" title="Udostępnij na Tablicy Społeczności LUMINA" aria-label="Udostępnij na LUMINA">
+          <a href="https://polskieradio.cc/tablica?share_url=https%3A%2F%2Fpolskieradio.cc%2Fnews%2Fksiega-objawienia-kurs-apokalipsy-akademia-cc&share_title=Ksi%C4%99ga%20Objawienia%20bez%20l%C4%99ku%3A%20Nowy%20Kurs%20Apokalipsy%20w%20Akademii%20Biblijnej%20CC%20%E2%80%94%20CCN%20News%20%7C%20Christian%20Culture&share_image=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1451187580459-43490279c0fa%3Fw%3D1200%26q%3D80" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-lumina" title="Udostępnij na Tablicy Społeczności LUMINA" aria-label="Udostępnij na LUMINA">
             <i class="fa-solid fa-cross" aria-hidden="true"></i>
             <span>Tablica LUMINA</span>
           </a>

@@ -51,7 +51,7 @@ function formatIsoDuration(sec) {
 }
 
 // 1. Load articles using esbuild in-memory bundle
-function loadArticles(entryPath = ARTICLES_TS_PATH) {
+export function loadArticles(entryPath = ARTICLES_TS_PATH) {
   const result = esbuild.buildSync({
     entryPoints: [entryPath],
     bundle: true,
@@ -75,6 +75,32 @@ function loadArticles(entryPath = ARTICLES_TS_PATH) {
   };
 }
 
+export function generateStaticFeedSnippet(articles, limit = 15) {
+  const items = (articles || []).slice(0, limit);
+  const articlesHtml = items.map(a => {
+    const title = escapeHtml(a.title);
+    const excerpt = escapeHtml(a.excerpt);
+    const author = escapeHtml(a.author?.name || 'Redakcja CCN News');
+    const date = a.dateFormatted || (a.publishedAt ? a.publishedAt.slice(0, 10) : '2026-10-15');
+    const isoDate = a.publishedAt || '2026-10-15';
+    return `        <article class="news-static-item" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;">
+          <h2 style="font-size:1.15rem;line-height:1.4;margin:0 0 8px 0;"><a href="/news/${a.slug}" style="color:#0f172a;text-decoration:none;font-weight:700;">${title}</a></h2>
+          <p style="font-size:0.92rem;color:#475569;line-height:1.55;margin:0 0 12px 0;">${excerpt}</p>
+          <div style="font-size:0.8rem;color:#64748b;">
+            <span>Autor: <strong>${author}</strong></span> &bull; 
+            <time datetime="${isoDate}">${date}</time>
+          </div>
+        </article>`;
+  }).join('\n');
+
+  return `      <main class="news-startup-articles" aria-label="Najnowsze publikacje CCN News" style="max-width:1248px;margin:24px auto;padding:0 16px;">
+        <h2 style="font-size:1.35rem;font-weight:800;margin-bottom:16px;color:#0f172a;border-bottom:2px solid #bb142e;padding-bottom:8px;">Wydanie Bieżące CCN News</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;">
+${articlesHtml}
+        </div>
+      </main>`;
+}
+
 // 2. Generate Single Article HTML
 function generateArticleHtml(article, allArticles, portalOpts = {}) {
   const baseSlug = portalOpts.baseSlug || 'news';
@@ -83,7 +109,10 @@ function generateArticleHtml(article, allArticles, portalOpts = {}) {
   const canonicalUrl = `https://polskieradio.cc/${baseSlug}/${article.slug}`;
   const shareText = encodeURIComponent(`${article.title} — ${portalName} | Christian Culture`);
   const shareUrl = encodeURIComponent(canonicalUrl);
-  const shareImageUrl = encodeURIComponent(`https://polskieradio.cc${article.imageUrl}`);
+  const cleanImageUrl = article.imageUrl.startsWith('http')
+    ? article.imageUrl
+    : `https://polskieradio.cc${article.imageUrl.startsWith('/') ? '' : '/'}${article.imageUrl}`;
+  const shareImageUrl = encodeURIComponent(cleanImageUrl);
 
   const hasPublishedAudio = Boolean(
     article.audio &&
@@ -121,13 +150,13 @@ function generateArticleHtml(article, allArticles, portalOpts = {}) {
     "inLanguage": "pl-PL",
     "isAccessibleForFree": true,
     "image": [
-      `https://polskieradio.cc${article.imageUrl}`
+      cleanImageUrl
     ],
     "author": {
       "@type": "Person",
       "name": article.author.name,
       "jobTitle": article.author.role,
-      "image": `https://polskieradio.cc${article.author.avatarUrl}`,
+      "image": article.author.avatarUrl?.startsWith('http') ? article.author.avatarUrl : `https://polskieradio.cc${article.author.avatarUrl?.startsWith('/') ? '' : '/'}${article.author.avatarUrl || ''}`,
       "url": authorProfileUrl
     },
     "publisher": {
@@ -240,7 +269,7 @@ function generateArticleHtml(article, allArticles, portalOpts = {}) {
     <meta property="og:url" content="${canonicalUrl}" />
     <meta property="og:title" content="${escapeAttribute(article.title)} – CCN News" />
     <meta property="og:description" content="${escapeAttribute(article.excerpt)}" />
-    <meta property="og:image" content="https://polskieradio.cc${article.imageUrl}" />
+    <meta property="og:image" content="${cleanImageUrl}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
     <meta property="article:published_time" content="${article.publishedAt}" />
@@ -252,7 +281,7 @@ function generateArticleHtml(article, allArticles, portalOpts = {}) {
     <meta name="twitter:url" content="${canonicalUrl}" />
     <meta name="twitter:title" content="${escapeAttribute(article.title)} – CCN News" />
     <meta name="twitter:description" content="${escapeAttribute(article.excerpt)}" />
-    <meta name="twitter:image" content="https://polskieradio.cc${article.imageUrl}" />
+    <meta name="twitter:image" content="${cleanImageUrl}" />
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -778,6 +807,12 @@ ${JSON.stringify(jsonLd, null, 2)}
         box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
       }
       .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
+      .ccn-play-btn svg[hidden],
+      .ccn-player [hidden] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="play"] { display: none !important; }
+      .ccn-play-btn.is-playing svg[data-icon="pause"] { display: block !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="pause"] { display: none !important; }
+      .ccn-play-btn:not(.is-playing) svg[data-icon="play"] { display: block !important; }
       .ccn-player__meta { min-width: 0; }
       .ccn-player__eyebrow {
         display: flex;
@@ -846,18 +881,18 @@ ${JSON.stringify(jsonLd, null, 2)}
         user-select: none;
         padding: 4px 0;
       }
-      .ccn-wave__bar {
+      .ccn-wave__bar, .ccn-bar {
         width: 100%;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.17);
         transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
         min-height: 6px;
       }
-      .ccn-wave__bar.is-played {
+      .ccn-wave__bar.is-played, .ccn-bar.is-played, .ccn-wave__bar.past, .ccn-bar.past {
         background: linear-gradient(180deg, #ead39c, #c99d45);
         box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
       }
-      .ccn-wave__bar.is-active { transform: scaleY(1.06); }
+      .ccn-wave__bar.is-active, .ccn-bar.is-active { transform: scaleY(1.06); }
       .ccn-range {
         width: 100%;
         margin: 8px 0 2px;
@@ -1077,18 +1112,20 @@ ${JSON.stringify(jsonLd, null, 2)}
         <section
           class="ccn-player"
           data-ccn-audio-player="true"
-          data-audio-src="${escapeAttribute(article.audio.src)}"
+          data-audio-src="${escapeAttribute(article.audio.src || article.audio.audioUrl || '')}"
+          data-audio-url="${escapeAttribute(article.audio.src || article.audio.audioUrl || '')}"
           data-audio-title="${escapeAttribute(article.audio.title)}"
           data-audio-reader="${escapeAttribute(article.audio.reader || 'AI Lektor')}"
           data-drive-id="${escapeAttribute(article.audio.driveId || '')}"
+          data-duration-seconds="${escapeAttribute(String(article.audio.durationSeconds || 1071.368))}"
           data-publication-status="published"
           data-peaks="${escapeAttribute(JSON.stringify(article.audio.peaks || []))}"
           aria-label="Odtwarzacz nagrania artykułu"
         >
-          <audio preload="metadata" crossorigin="anonymous"></audio>
+          <audio class="ccn-audio-el" preload="metadata" src="${escapeAttribute(article.audio.src || article.audio.audioUrl || '')}" crossorigin="anonymous"></audio>
 
           <div class="ccn-player__top">
-            <button class="ccn-play-btn" type="button" data-action="toggle" aria-label="Odtwórz nagranie">
+            <button class="ccn-play-btn ccn-play" type="button" data-action="toggle" aria-label="Odtwórz nagranie">
               <svg viewBox="0 0 24 24" data-icon="play" aria-hidden="true">
                 <path d="M8 5.5v13l10.5-6.5L8 5.5z"></path>
               </svg>
@@ -1112,7 +1149,7 @@ ${JSON.stringify(jsonLd, null, 2)}
               </div>
             </div>
 
-            <div class="ccn-badge">CCN Finanse • Audio</div>
+            <div class="ccn-badge">${escapeHtml(portalName)} • Audio</div>
           </div>
 
           <div class="ccn-wave-wrap">
@@ -1323,13 +1360,14 @@ function updateSitemap(articles) {
     const loc = `https://polskieradio.cc/news/${a.slug}`;
     if (!sitemapContent.includes(`<loc>${loc}</loc>`)) {
       const pubDate = a.publishedAt ? a.publishedAt.slice(0, 10) : '2026-10-15';
+      const cleanImgUrl = a.imageUrl && a.imageUrl.startsWith('http') ? a.imageUrl : `https://polskieradio.cc${a.imageUrl && a.imageUrl.startsWith('/') ? '' : '/'}${a.imageUrl || ''}`;
       const entry = `  <url>
     <loc>${loc}</loc>
     <lastmod>${pubDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://polskieradio.cc${a.imageUrl}</image:loc>
+      <image:loc>${cleanImgUrl}</image:loc>
       <image:title>${escapeHtml(a.title)}</image:title>
     </image:image>
   </url>

@@ -75,11 +75,14 @@ export const INITIAL_ARTICLES: Article[] = [
       "primaryPortalUrl": "https://polskieradio.cc/finanse/cbdc-prawo-niedzielne-apokalipsa-13",
       "primaryPortalLabel": "CCN Finanse — Główne wydanie pełne",
       "audio": {
+          "articleId": "art-cbdc-prawo-niedzielne-apokalipsa-13",
           "src": "/audio/ccn/cbdc-prawo-niedzielne-apokalipsa-13.m4a",
+          "audioUrl": "/audio/ccn/cbdc-prawo-niedzielne-apokalipsa-13.m4a",
           "title": "Programowalny pieniądz: CBDC a proroctwo Apokalipsy",
           "reader": "AI Lektor",
           "durationSeconds": 1071.368,
           "driveId": "1armTC6OXOU5XI6hZ9BkBR2amYrLeXCdr",
+          "mimeType": "audio/mp4",
           "publicationStatus": "published",
           "peaks": [54,38,39,45,65,25,38,41,53,54,56,38,56,62,59,60,63,44,47,49,64,60,59,67,49,65,56,80,71,56,53,53,49,49,56,64,52,51,72,73,84,51,66,66,68,56,51,60,64,61,67,44,45,48,51,48,45,44,39,57,45,38,40,48]
       },
