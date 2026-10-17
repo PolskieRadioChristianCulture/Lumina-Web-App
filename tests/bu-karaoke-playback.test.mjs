@@ -115,6 +115,19 @@ test('HTML loads one canonical engine instead of the stale inline snapshot', () 
   assert.equal(window.document.querySelectorAll('script[src*="assets/bu/karaoke-top100.js"]').length, 1);
 });
 
+test('public player uses its programme name, not internal publication/review statuses', () => {
+  const html = fs.readFileSync(path.join(root, 'biblijne-uwielbienie.html'), 'utf8');
+  const start = html.indexOf("const statusTag = document.getElementById('player-status-tag');");
+  const end = html.indexOf('updateFavoritesUI();', start);
+  assert.ok(start >= 0 && end > start);
+  const tag = { textContent: '' };
+  for (const completenessStatus of ['Do weryfikacji', 'Kompletny', undefined]) {
+    vm.runInNewContext(html.slice(start, end), { document: { getElementById: () => tag }, track: { completenessStatus } });
+    assert.equal(tag.textContent, 'KARAOKE');
+  }
+  assert.match(html, /id="player-status-tag">KARAOKE</);
+});
+
 test('karaoke follows only the selected chapter and loaded video', async () => {
   const f = fixture();
   await f.load('GEN-001');

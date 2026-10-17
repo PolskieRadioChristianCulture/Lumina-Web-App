@@ -2779,7 +2779,7 @@
             <div class="track-meta-text">
               <span class="track-label-live">
                 <span class="live-dot" aria-hidden="true"></span>
-                <span id="player-status-tag">OFICJALNA PLAYLISTA</span>
+                <span id="player-status-tag">KARAOKE</span>
               </span>
               <span class="track-title-current" id="player-track-title">Księga Rodzaju 1 — Biblia Śpiewana (Cały Rozdział 1)</span>
               <span class="track-sub-details" id="player-track-subtitle">Księga Rodzaju · GEN-001 (Rodzaju 1:1–31) · 10:25</span>
@@ -3922,11 +3922,7 @@
 
       const statusTag = document.getElementById('player-status-tag');
       if (statusTag) {
-        if (track.completenessStatus === 'Do weryfikacji') {
-          statusTag.textContent = 'PUBLIKACJA POTWIERDZONA · TEKST: DO WERYFIKACJI';
-        } else {
-          statusTag.textContent = 'OFICJALNA PLAYLISTA';
-        }
+        statusTag.textContent = 'KARAOKE';
       }
 
       updateFavoritesUI();
