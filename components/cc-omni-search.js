@@ -200,7 +200,27 @@
     // Sklep & Zasoby
     'sklep': ['koszyk', 'zamówienie', 'współpraca', 'książki', 'literatura'],
     'ksiazki': ['książki', 'sklep', 'biblioteka', 'literatura'],
-    'książki': ['ksiazki', 'sklep', 'biblioteka', 'literatura']
+    'książki': ['ksiazki', 'sklep', 'biblioteka', 'literatura'],
+
+    // Finanse, Gospodarka & Wolność (CCN Finanse / Specyfikacja § 6)
+    'cbdc': ['cyfrowy pieniądz', 'cyfrowy pieniadz', 'waluta banku centralnego', 'pieniądz programowalny', 'nadzór finansowy', 'gotówka', 'prawo niedzielne', 'apokalipsa 13'],
+    'pieniadz': ['pieniądz', 'cbdc', 'waluta', 'finanse', 'gotówka', 'płatności', 'budżet', 'szafarz'],
+    'pieniądz': ['pieniadz', 'cbdc', 'waluta', 'finanse', 'gotówka', 'płatności', 'budżet', 'szafarz'],
+    'gotowka': ['gotówka', 'cbdc', 'cyfrowy pieniądz', 'płatności', 'wolność finansowa'],
+    'gotówka': ['gotowka', 'cbdc', 'cyfrowy pieniądz', 'płatności', 'wolność finansowa'],
+    'niedzielne': ['prawo niedzielne', 'sabat', 'szabat', 'wolność religijna', 'apokalipsa 13', 'dzień święty'],
+    'wolnosc': ['wolność', 'wolność religijna', 'wolność sumienia', 'prawa obywatelskie'],
+    'wolność': ['wolnosc', 'wolność religijna', 'wolność sumienia', 'prawa obywatelskie'],
+
+    // Etyka publiczna, Polityka & Państwo (Specyfikacja § 6)
+    'polityka': ['państwo i kościół', 'wolność sumienia', 'etyka publiczna', 'prawo religijne', 'rząd', 'władza'],
+    'panstwo': ['państwo', 'polityka', 'władza', 'prawo', 'obywatel'],
+    'państwo': ['panstwo', 'polityka', 'władza', 'prawo', 'obywatel'],
+
+    // Nowe technologie, Sztuczna Inteligencja & Praca (Specyfikacja § 6)
+    'ai': ['sztuczna inteligencja', 'si', 'automatyzacja', 'technologia', 'etyka technologii', 'praca', 'algorytmy'],
+    'praca': ['automatyzacja', 'zawód', 'etyka pracy', 'bezrobocie', 'ai', 'zarządzanie'],
+    'automatyzacja': ['ai', 'technologia', 'praca', 'robotyzacja']
   };
 
   // Damerau-Levenshtein distance (tolerancja literówek i przestawień liter)
