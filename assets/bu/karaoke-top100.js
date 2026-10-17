@@ -179,6 +179,204 @@
       flex-wrap: wrap;
       gap: 12px;
     }
+    .hero-karaoke-subtitle {
+      font-size: 12px;
+      font-weight: 500;
+      color: #8fa0b5;
+      display: inline-block;
+      margin-left: 4px;
+    }
+    .hero-karaoke-top-actions {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 60;
+    }
+    .hero-karaoke-panel-toggle-btn {
+      min-width: 44px;
+      min-height: 44px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 12px;
+      background: rgba(16, 24, 39, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(196, 163, 90, 0.4);
+      color: #e2cc9a;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hero-karaoke-panel-toggle-btn:hover {
+      background: rgba(23, 34, 56, 0.95);
+      border-color: #e2cc9a;
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(196, 163, 90, 0.25);
+      transform: translateY(-1px);
+    }
+    .hero-karaoke-panel-toggle-btn.is-active {
+      background: #c4a35a;
+      border-color: #e2cc9a;
+      color: #070b16;
+      box-shadow: 0 0 16px rgba(196, 163, 90, 0.5);
+    }
+    .hero-karaoke-panel-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 320px;
+      max-width: calc(100vw - 32px);
+      background: linear-gradient(145deg, rgba(16, 24, 39, 0.96) 0%, rgba(23, 34, 56, 0.98) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(196, 163, 90, 0.2);
+      padding: 16px;
+      z-index: 100;
+      flex-direction: column;
+      gap: 14px;
+      box-sizing: border-box;
+      animation: buDropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hero-karaoke-panel-dropdown.is-open {
+      display: flex !important;
+    }
+    @keyframes buDropdownFadeIn {
+      from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .hero-karaoke-panel-dropdown .dropdown-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(196, 163, 90, 0.2);
+    }
+    .hero-karaoke-panel-dropdown .dropdown-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e2cc9a;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: 'Cinzel', Georgia, serif;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #b5bfcd;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.15s ease;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: rgba(196, 163, 90, 0.4);
+    }
+    .hero-karaoke-panel-dropdown .dropdown-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #8fa0b5;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-mode-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(7, 12, 24, 0.7);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid rgba(196, 163, 90, 0.18);
+    }
+    .hero-karaoke-panel-dropdown .dropdown-mode-tabs .hero-mode-tab {
+      width: 100%;
+      min-height: 44px;
+      justify-content: flex-start;
+      border-radius: 8px;
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-row {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-btn-group {
+      display: flex;
+      gap: 6px;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-btn-group .hero-karaoke-ctrl-btn {
+      flex: 1;
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(196, 163, 90, 0.15);
+    }
+    .hero-karaoke-panel-dropdown .dropdown-action-btn {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-action-btn.fullscreen {
+      background: linear-gradient(135deg, rgba(196, 163, 90, 0.25) 0%, rgba(226, 204, 154, 0.15) 100%);
+      border-color: rgba(196, 163, 90, 0.5);
+      color: #ffe2a5;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-action-btn.fullscreen:hover {
+      background: #c4a35a;
+      color: #070b16;
+      border-color: #e2cc9a;
+      box-shadow: 0 4px 16px rgba(196, 163, 90, 0.35);
+    }
+    .hero-karaoke-panel-dropdown .dropdown-action-btn.close {
+      background: rgba(255, 75, 75, 0.12);
+      border-color: rgba(255, 75, 75, 0.3);
+      color: #ff9d9d;
+    }
+    .hero-karaoke-panel-dropdown .dropdown-action-btn.close:hover {
+      background: rgba(255, 75, 75, 0.25);
+      color: #ffffff;
+      border-color: rgba(255, 75, 75, 0.5);
+    }
     .hero-karaoke-heading {
       display: flex;
       align-items: center;
@@ -520,7 +718,13 @@
       padding: 0 !important;
       gap: 0 !important;
     }
-    .hero-karaoke-topbar,
+    .hero-karaoke-topbar {
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 6px;
+    }
     .hero-karaoke-selector-row,
     .hero-karaoke-license {
       display: none !important;
@@ -557,6 +761,7 @@
       background: rgba(5, 8, 17, var(--bu-worship-dim, 0.75));
       transition: background-color 0.25s ease;
     }
+        /* Fullscreen layout with Docked Master Player */
     #hero-karaoke-stage.is-fullscreen,
     #hero-karaoke-stage:fullscreen,
     #hero-karaoke-stage:-webkit-full-screen {
@@ -568,19 +773,16 @@
       height: 100vh !important;
       max-width: 100vw !important;
       max-height: 100vh !important;
-      padding: clamp(12px, 2.5vw, 24px) !important;
-      padding-top: max(clamp(12px, 2.5vw, 24px), env(safe-area-inset-top)) !important;
-      padding-bottom: max(clamp(12px, 2.5vw, 24px), env(safe-area-inset-bottom)) !important;
-      padding-left: max(clamp(12px, 2.5vw, 24px), env(safe-area-inset-left)) !important;
-      padding-right: max(clamp(12px, 2.5vw, 24px), env(safe-area-inset-right)) !important;
+      padding: clamp(10px, 2vw, 20px) !important;
+      padding-top: max(clamp(10px, 2vw, 20px), env(safe-area-inset-top)) !important;
+      padding-bottom: max(clamp(10px, 2vw, 20px), env(safe-area-inset-bottom)) !important;
+      padding-left: max(clamp(10px, 2vw, 20px), env(safe-area-inset-left)) !important;
+      padding-right: max(clamp(10px, 2vw, 20px), env(safe-area-inset-right)) !important;
       background: #050811 !important;
       overflow: hidden !important;
       display: flex !important;
       flex-direction: column !important;
       box-sizing: border-box !important;
-    }
-    body.has-karaoke-fullscreen {
-      overflow: hidden !important;
     }
     #hero-karaoke-stage.is-fullscreen .hero-karaoke-inner,
     #hero-karaoke-stage:fullscreen .hero-karaoke-inner,
@@ -591,16 +793,17 @@
       max-width: 1400px !important;
       width: 100% !important;
       margin: 0 auto !important;
-      border-radius: 20px !important;
-      background: rgba(8, 14, 26, 0.42) !important;
-      backdrop-filter: blur(8px) !important;
-      -webkit-backdrop-filter: blur(8px) !important;
-      border: 1px solid rgba(196, 163, 90, 0.3) !important;
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(226, 204, 154, 0.2) !important;
+      border: 0 !important;
+      border-radius: 18px !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
       display: flex !important;
       flex-direction: column !important;
-      gap: 12px !important;
-      padding: clamp(12px, 2vw, 20px) !important;
+      justify-content: space-between !important;
+      padding: 0 !important;
+      gap: 10px !important;
       overflow: hidden !important;
       box-sizing: border-box !important;
     }
@@ -608,24 +811,133 @@
     #hero-karaoke-stage:fullscreen .hero-karaoke-topbar,
     #hero-karaoke-stage:-webkit-full-screen .hero-karaoke-topbar {
       display: flex !important;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(196, 163, 90, 0.15);
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      width: 100% !important;
+      padding: 8px 12px !important;
+      border-bottom: 1px solid rgba(196, 163, 90, 0.15) !important;
+      background: rgba(8, 14, 26, 0.45) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border-radius: 14px !important;
+      z-index: 20 !important;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      flex-shrink: 0 !important;
     }
     #hero-karaoke-stage.is-fullscreen .hero-karaoke-viewport,
     #hero-karaoke-stage:fullscreen .hero-karaoke-viewport,
     #hero-karaoke-stage:-webkit-full-screen .hero-karaoke-viewport {
       max-height: none !important;
       flex: 1 !important;
-      background: rgba(5, 8, 17, 0.35) !important;
-      border: 1px solid rgba(196, 163, 90, 0.18) !important;
-      border-radius: 14px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
       mask-image: none !important;
       -webkit-mask-image: none !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      padding: clamp(10px, 2vh, 24px) clamp(12px, 3vw, 48px) !important;
+      z-index: 10 !important;
     }
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines {
+      width: 100% !important;
+      max-width: 1200px !important;
+      margin: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: clamp(10px, 1.8vh, 22px) !important;
+      padding: clamp(30px, 6vh, 80px) 0 !important;
+    }
+
+    /* Optimal Responsive Typography in Fullscreen Worship Mode */
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line {
+      width: 100% !important;
+      text-align: center !important;
+      font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+      font-size: clamp(22px, 3.2vw, 42px) !important;
+      line-height: 1.55 !important;
+      color: rgba(247, 244, 239, 0.45) !important;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9) !important;
+      background: transparent !important;
+      border: 0 !important;
+      padding: clamp(6px, 1.2vh, 16px) clamp(12px, 2vw, 28px) !important;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line.active {
+      font-size: clamp(28px, 4.4vw, 56px) !important;
+      font-weight: 700 !important;
+      color: #ffe2a5 !important;
+      text-shadow: 0 0 35px rgba(226, 204, 154, 0.75), 0 4px 20px rgba(0, 0, 0, 0.95) !important;
+      transform: scale(1.05) !important;
+      opacity: 1 !important;
+    }
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line .bu-word.is-singing {
+      color: #ffffff !important;
+      text-shadow: 0 0 30px rgba(255, 226, 165, 1), 0 0 12px rgba(196, 163, 90, 0.9) !important;
+    }
+    #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines .bu-line .bu-word.is-sung {
+      color: #e2cc9a !important;
+      text-shadow: 0 0 15px rgba(226, 204, 154, 0.5) !important;
+    }
+
+    #hero-karaoke-stage.is-fullscreen .patron-chapter-module, #hero-karaoke-stage.is-fullscreen .youtube-stage-drawer,
+    #hero-karaoke-stage.is-fullscreen .bu-karaoke-settings,
+    #hero-karaoke-stage.is-fullscreen .chapter-lyrics-trigger-btn {
+      display: none !important;
+    }
+    /* Master Player Dock in Fullscreen */
+    #hero-karaoke-stage.is-fullscreen #player-section {
+      width: 100% !important;
+      max-width: 1200px !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
+      z-index: 30 !important;
+      flex-shrink: 0 !important;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    #hero-karaoke-stage.is-fullscreen #player-section .master-player-card {
+      background: linear-gradient(135deg, rgba(16, 24, 39, 0.90) 0%, rgba(23, 34, 56, 0.95) 100%) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      border: 1px solid rgba(196, 163, 90, 0.4) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(196, 163, 90, 0.2) !important;
+      padding: 10px 18px !important;
+      margin: 0 !important;
+    }
+
+    /* ==========================================================================
+       AUTO-HIDE WHEN PLAYING (Zero Distraction Cinema / Worship Mode)
+       ========================================================================== */
+    #hero-karaoke-stage.is-fullscreen.bu-idle-hidden {
+      cursor: none !important;
+    }
+    #hero-karaoke-stage.is-fullscreen.bu-idle-hidden * {
+      cursor: none !important;
+    }
+    #hero-karaoke-stage.is-fullscreen.bu-idle-hidden .hero-karaoke-topbar {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(-24px) !important;
+    }
+    #hero-karaoke-stage.is-fullscreen.bu-idle-hidden #player-section {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(24px) !important;
+    }
+    #hero-karaoke-stage.is-fullscreen.bu-idle-hidden .hero-karaoke-selector-row,
+    #hero-karaoke-stage.is-fullscreen.bu-idle-hidden #hero-karaoke-sync-toolbar {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     .bu-text-mode-actions {
       display: flex;
       align-items: center;
@@ -875,7 +1187,7 @@
     .bu-karaoke-settings[open] > summary::after { transform: rotate(225deg); }
     .bu-karaoke-settings > summary:hover { background: rgba(196, 163, 90, 0.1); border-color: #c4a35a; }
     .bu-karaoke-settings > summary:focus-visible { outline: 3px solid #ffe2a5; outline-offset: 3px; }
-    .bu-text-mode-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 18px; max-width:1080px; margin:0 auto; width:100%; box-sizing:border-box; font-family:Segoe UI,system-ui,sans-serif; }
+    .bu-text-mode-bar { display: none !important; }
     .bu-text-mode-caption { color:#b4b0c0; font-size:12px; line-height:1.5; }
     .bu-text-mode-bar > div { display:flex; flex-shrink:0; gap:4px; padding:3px; border:1px solid #ffffff16; border-radius:12px; background:#151321; }
     .bu-text-mode-bar button { min-height:44px; padding:6px 12px; border:0; border-radius:8px; background:transparent; color:#c7c3d3; font:500 12px Segoe UI,system-ui,sans-serif; cursor:pointer; }
@@ -1553,73 +1865,18 @@
   }
 
   function renderTextModeBar(container, mode) {
-    let bar = document.getElementById('bu-text-mode-bar');
-    if (!bar) {
-      bar = document.createElement('div');
-      bar.id = 'bu-text-mode-bar';
-      bar.className = 'bu-text-mode-bar';
-      container.parentElement.before(bar);
-    }
-    bar.replaceChildren();
-    const caption = document.createElement('span');
-    caption.className = 'bu-text-mode-caption';
-    caption.textContent = mode === 'reading' ? 'Pełny tekst · UBG 2025' :
+    const subtitle = document.getElementById('hero-karaoke-subtitle');
+    const text = mode === 'reading' ? 'Pełny tekst · UBG 2025' :
       (state.sync?.lyricsKind === 'performed-adaptation' ? 'Tekst śpiewany · adaptacja biblijna' : 'Tekst śpiewany');
-    bar.appendChild(caption);
-    const actionsWrap = document.createElement('div');
-    actionsWrap.className = 'bu-text-mode-actions';
-
-    // Dimmer control for Fullscreen Worship Mode
-    const dimmer = document.createElement('div');
-    dimmer.id = 'bu-worship-dimmer';
-    dimmer.className = 'bu-worship-dimmer';
-    dimmer.setAttribute('role', 'group');
-    dimmer.setAttribute('aria-label', 'Przyciemnienie tła');
-    dimmer.style.display = state.isFullscreen ? 'inline-flex' : 'none';
-    const dimLabel = document.createElement('span');
-    dimLabel.className = 'dimmer-label';
-    dimLabel.textContent = 'Tło:';
-    dimmer.appendChild(dimLabel);
-    for (const [dimVal, dimTitle] of [[60, 'Subtelne (60%)'], [75, 'Skupienie (75% - domyślne)'], [90, 'Maksymalne (90%)']]) {
-      const dBtn = document.createElement('button');
-      dBtn.type = 'button';
-      dBtn.className = 'dimmer-btn' + ((state.worshipDim || 75) === dimVal ? ' is-active' : '');
-      dBtn.dataset.dim = String(dimVal);
-      dBtn.textContent = `${dimVal}%`;
-      dBtn.title = dimTitle;
-      dBtn.setAttribute('aria-label', `Przyciemnienie ${dimTitle}`);
-      dBtn.addEventListener('click', () => setDimmer(dimVal));
-      dimmer.appendChild(dBtn);
+    if (subtitle) {
+      subtitle.textContent = text;
     }
-    actionsWrap.appendChild(dimmer);
-
-    // Existing mode toggle controls [Śpiewaj] and [Czytaj Biblię]
-    const controls = document.createElement('div');
-    controls.setAttribute('role', 'group');
-    controls.setAttribute('aria-label', 'Sposób wyświetlania tekstu');
-    for (const [value, label] of [['sync', 'Śpiewaj'], ['reading', 'Czytaj Biblię']]) {
-      const button = document.createElement('button');
-      button.type = 'button'; button.textContent = label;
-      button.dataset.textMode = value;
-      button.setAttribute('aria-pressed', String(mode === value));
-      button.disabled = value === 'sync' && !state.sync;
-      button.addEventListener('click', () => setMode(value));
-      controls.appendChild(button);
+    // Zero duplication: bu-text-mode-bar has 0 duplicate buttons
+    let bar = document.getElementById('bu-text-mode-bar');
+    if (bar) {
+      bar.replaceChildren();
+      bar.style.display = 'none';
     }
-    actionsWrap.appendChild(controls);
-
-    // Fullscreen Worship Mode Button
-    const fsBtn = document.createElement('button');
-    fsBtn.type = 'button';
-    fsBtn.className = 'bu-fullscreen-btn';
-    fsBtn.id = 'bu-mode-fullscreen-btn';
-    fsBtn.title = state.isFullscreen ? 'Opuść pełny ekran (Esc)' : 'Tryb pełnoekranowy';
-    fsBtn.setAttribute('aria-label', state.isFullscreen ? 'Opuść tryb pełnoekranowy' : 'Włącz tryb pełnoekranowy');
-    fsBtn.innerHTML = state.isFullscreen ? SVG_MINIMIZE : SVG_MAXIMIZE;
-    fsBtn.addEventListener('click', () => toggleFullscreen());
-    actionsWrap.appendChild(fsBtn);
-
-    bar.appendChild(actionsWrap);
   }
 
   function renderReadingMode(container, lyrics) {
@@ -2083,6 +2340,18 @@
   const SVG_MAXIMIZE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
   const SVG_MINIMIZE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
 
+  function toggleControlsPanel(forceState) {
+    const panel = document.getElementById('hero-karaoke-panel-dropdown');
+    const btn = document.getElementById('btn-hero-panel-toggle');
+    if (!panel) return;
+    const shouldOpen = typeof forceState === 'boolean' ? forceState : !panel.classList.contains('is-open');
+    panel.classList.toggle('is-open', shouldOpen);
+    if (btn) {
+      btn.setAttribute('aria-expanded', String(shouldOpen));
+      btn.classList.toggle('is-active', shouldOpen);
+    }
+  }
+
   function setDimmer(percent) {
     const p = [60, 75, 90].includes(Number(percent)) ? Number(percent) : 75;
     state.worshipDim = p;
@@ -2103,11 +2372,102 @@
     });
   }
 
+  
+  let _idleTimer = null;
+
+  function isPlaybackActive() {
+    const playBtn = document.getElementById('master-play-btn');
+    if (playBtn && playBtn.classList.contains('is-playing')) return true;
+    try {
+      const p = player();
+      if (p && typeof p.getPlayerState === 'function') {
+        return p.getPlayerState() === 1; // 1 = YT.PlayerState.PLAYING
+      }
+    } catch {}
+    return false;
+  }
+
+  function resetIdleTimer() {
+    const stage = document.getElementById('hero-karaoke-stage');
+    if (!stage || !state.isFullscreen) return;
+
+    // Immediately restore navigation and controls on interaction
+    stage.classList.remove('bu-idle-hidden');
+
+    if (_idleTimer) {
+      clearTimeout(_idleTimer);
+      _idleTimer = null;
+    }
+
+    // Only hide if playback is active and dropdown settings panel is closed
+    const panel = document.getElementById('hero-karaoke-panel-dropdown');
+    const isPanelOpen = panel && panel.classList.contains('is-open');
+
+    if (isPlaybackActive() && !isPanelOpen) {
+      _idleTimer = setTimeout(() => {
+        if (state.isFullscreen && isPlaybackActive()) {
+          const p = document.getElementById('hero-karaoke-panel-dropdown');
+          if (!p || !p.classList.contains('is-open')) {
+            stage.classList.add('bu-idle-hidden');
+          }
+        }
+      }, 2200);
+    }
+  }
+
+  function onPlaybackStateChange(isPlaying) {
+    if (isPlaying) {
+      resetIdleTimer();
+    } else {
+      const stage = document.getElementById('hero-karaoke-stage');
+      if (stage) stage.classList.remove('bu-idle-hidden');
+      if (_idleTimer) {
+        clearTimeout(_idleTimer);
+        _idleTimer = null;
+      }
+    }
+  }
+
+  function dockPlayerForFullscreen(isFs) {
+    const stage = document.getElementById('hero-karaoke-stage');
+    const playerSection = document.getElementById('player-section');
+    if (!stage || !playerSection) return;
+
+    let placeholder = document.getElementById('player-section-placeholder');
+    if (isFs) {
+      if (!placeholder) {
+        placeholder = document.createElement('div');
+        placeholder.id = 'player-section-placeholder';
+        placeholder.style.display = 'none';
+        playerSection.before(placeholder);
+      }
+      const inner = stage.querySelector('.hero-karaoke-inner') || stage;
+      inner.appendChild(playerSection);
+    } else {
+      if (placeholder && placeholder.parentNode) {
+        placeholder.before(playerSection);
+        placeholder.remove();
+      }
+    }
+  }
+
   function setFullscreenState(isFs) {
     state.isFullscreen = Boolean(isFs);
+    toggleControlsPanel(false);
+    dockPlayerForFullscreen(state.isFullscreen);
+
     const stage = document.getElementById('hero-karaoke-stage');
     if (stage) {
       stage.classList.toggle('is-fullscreen', state.isFullscreen);
+      if (!state.isFullscreen) {
+        stage.classList.remove('bu-idle-hidden');
+        if (_idleTimer) {
+          clearTimeout(_idleTimer);
+          _idleTimer = null;
+        }
+      } else {
+        resetIdleTimer();
+      }
     }
     document.body.classList.toggle('has-karaoke-fullscreen', state.isFullscreen);
 
@@ -2118,15 +2478,19 @@
     ].filter(Boolean);
 
     buttons.forEach(btn => {
-      btn.innerHTML = state.isFullscreen ? SVG_MINIMIZE : SVG_MAXIMIZE;
       btn.setAttribute('title', state.isFullscreen ? 'Opuść pełny ekran (Esc)' : 'Tryb pełnoekranowy');
       btn.setAttribute('aria-label', state.isFullscreen ? 'Opuść tryb pełnoekranowy' : 'Włącz tryb pełnoekranowy');
+      const iconSpan = btn.querySelector('.btn-icon');
+      if (iconSpan) {
+        iconSpan.innerHTML = state.isFullscreen ? SVG_MINIMIZE : SVG_MAXIMIZE;
+      } else {
+        btn.innerHTML = state.isFullscreen ? SVG_MINIMIZE : SVG_MAXIMIZE;
+      }
+      const labelSpan = btn.querySelector('.btn-text');
+      if (labelSpan) {
+        labelSpan.textContent = state.isFullscreen ? 'Opuść pełny ekran (Esc)' : 'Tryb pełnoekranowy';
+      }
     });
-
-    const barDimmer = document.getElementById('bu-worship-dimmer');
-    if (barDimmer) {
-      barDimmer.style.display = state.isFullscreen ? 'inline-flex' : 'none';
-    }
 
     try {
       const savedDim = Number(localStorage.getItem('cc_worship_dimmer')) || 75;
@@ -2188,10 +2552,40 @@
   if (typeof document !== 'undefined') {
     document.addEventListener('fullscreenchange', onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+    
+    ['mousemove', 'pointermove', 'touchstart', 'pointerdown', 'keydown'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        if (state.isFullscreen) resetIdleTimer();
+      }, { passive: true });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('#master-play-btn') || e.target.closest('.mini-play-btn') || e.target.closest('.control-btn-play')) {
+        setTimeout(() => {
+          if (state.isFullscreen) resetIdleTimer();
+        }, 150);
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      const panel = document.getElementById('hero-karaoke-panel-dropdown');
+      const btn = document.getElementById('btn-hero-panel-toggle');
+      if (!panel || !panel.classList.contains('is-open')) return;
+      if (panel.contains(e.target) || btn?.contains(e.target)) return;
+      toggleControlsPanel(false);
+    });
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && state.isFullscreen) {
-        e.preventDefault();
-        toggleFullscreen();
+      if (e.key === 'Escape') {
+        const panel = document.getElementById('hero-karaoke-panel-dropdown');
+        if (panel && panel.classList.contains('is-open')) {
+          e.preventDefault();
+          toggleControlsPanel(false);
+          return;
+        }
+        if (state.isFullscreen) {
+          e.preventDefault();
+          toggleFullscreen();
+        }
       }
     });
   }
@@ -2255,33 +2649,19 @@
     startChapterKaraoke(targetId, requestedMode);
   }
 
-  function togglePlayerKaraoke(chapterId = null) {
-    const stage = document.getElementById('hero-karaoke-stage');
-    const playerKaraokeBtn = document.getElementById('btn-player-karaoke');
+  async function togglePlayerKaraoke(chapterId = null) {
     const cur = currentTrack();
     const targetId = chapterId || cur?.chapterId || state.chapterId || 'GEN-001';
+    const playerKaraokeBtn = document.getElementById('btn-player-karaoke');
 
-    const isVisible = stage && stage.style.display !== 'none' && stage.offsetParent !== null;
-
-    if (!state.userClickedToggleOnce && isVisible && state.chapterId === targetId) {
-      state.userClickedToggleOnce = true;
-      if (playerKaraokeBtn) playerKaraokeBtn.classList.add('is-karaoke-active');
-      openKaraoke(targetId);
-      return;
-    }
-    state.userClickedToggleOnce = true;
-
-    if (isVisible && state.chapterId === targetId) {
-      closeHeroKaraoke();
-      if (typeof window.showToast === 'function') {
-        window.showToast('Ukryto tekst Pisma Świętego');
-      }
+    if (state.isFullscreen) {
+      await toggleFullscreen();
+      if (playerKaraokeBtn) playerKaraokeBtn.classList.remove('is-karaoke-active');
     } else {
       if (playerKaraokeBtn) playerKaraokeBtn.classList.add('is-karaoke-active');
-      openKaraoke(targetId);
-      const heroSection = stage || document.getElementById('hero');
-      if (heroSection) {
-        heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      await startChapterKaraoke(targetId, null, true);
+      if (!state.isFullscreen) {
+        await toggleFullscreen();
       }
     }
   }
@@ -2548,6 +2928,11 @@
     updateVotingButtonState,
     openRanking: ranking,
     setMode,
+    setDimmer,
+    toggleControlsPanel,
+    onPlaybackStateChange,
+    resetIdleTimer,
+    dockPlayerForFullscreen,
     adjustFontSize,
     toggleFullscreen,
     closeHeroKaraoke,
