@@ -297,6 +297,38 @@ const CORE_PROJECTS = [
     featured: true
   },
   {
+    title: "Biblijne Uwielbienie — Cała Biblia w Muzyce (66 ksiąg, 1189 rozdziałów)",
+    category: "Muzyka i radio",
+    url: "https://polskieradio.cc/BiblijneUwielbienie",
+    description: "Oficjalny portal Biblijnego Uwielbienia Christian Culture. Odkrywaj całe Pismo Święte rozdział po rozdziale w pięknej muzyce. 38 utworów dostępnych w oficjalnej playliście YouTube (m.in. Księga Rodzaju, Przypowieści Salomona i Księga Kaznodziei), katalog 1189 rozdziałów, moduł Patron Rozdziału, ulubione i udostępnianie.",
+    tags: [
+      "biblijne uwielbienie", "uwielbienie", "biblia spiewana", "biblia śpiewana", "spiewana biblia", "śpiewana biblia",
+      "worship", "muzyka chrzescijanska", "muzyka chrześcijańska", "suno", "przypowiesci salomona", "przypowieści salomona",
+      "kaznodzieja", "piesn nad piesniami", "pieśń nad pieśniami", "spiewajmy panu", "śpiewajmy panu", "66 ksiag", "1189 rozdzialow",
+      "psalmy", "radio 24/7", "patron rozdzialu", "patron rozdziału", "rodzaju 1",
+      "karaoke", "karaoke biblijne", "spiewnik", "śpiewnik", "worship mode", "tryb pelnoekranowy", "tryb pełnoekranowy"
+    ],
+    featured: true
+  },
+  {
+    title: "Karaoke Biblijne & Śpiewnik Słowa Bożego — Biblijne Uwielbienie (Tryb Pełnoekranowy Worship Mode)",
+    category: "Muzyka i radio",
+    url: "https://polskieradio.cc/karaoke",
+    description: "Profesjonalny tryb pełnoekranowy Karaoke Biblijnego i Śpiewnik Słowa Bożego na polskieradio.cc/karaoke. Zsynchronizowany tekst biblijny słowo po słowie, akompaniament muzyczny, podświetlanie fraz, kinowy tryb uwielbienia (Fullscreen Worship Mode) z grafiką w blasku krzyża i 3-stopniowym dimmerem (60%, 75%, 90%) na komputery, telefony, tablety i telewizory TV.",
+    tags: [
+      "karaoke", "karaoke biblijne", "spiewnik", "śpiewnik", "spiewnik chrzescijanski", "śpiewnik chrześcijański",
+      "biblia spiewana", "biblia śpiewana", "spiewana biblia", "śpiewana biblia",
+      "uwielbienie", "biblijne uwielbienie", "worship", "worship mode",
+      "tryb pelnoekranowy", "tryb pełnoekranowy", "fullscreen", "fullscreen worship",
+      "tekst spiewany", "tekst śpiewany", "slowa piesni", "słowa pieśni",
+      "spiewaj", "śpiewaj", "czytaj biblie", "czytaj biblię",
+      "ubg 2025", "akompaniament", "podklad muzyczny", "podkład muzyczny",
+      "wspolne spiewanie", "wspólne śpiewanie", "piesni uwielbienia", "pieśni uwielbienia",
+      "nabozenstwo", "nabożeństwo", "telewizor", "tv", "projektor"
+    ],
+    featured: true
+  },
+  {
     title: "Studio Dobrego Słowa (SDS)",
     category: "Media i treści",
     url: "https://polskieradio.cc/studium",

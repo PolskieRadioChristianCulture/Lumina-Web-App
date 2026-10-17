@@ -525,6 +525,202 @@
     .hero-karaoke-license {
       display: none !important;
     }
+
+    /* FULLSCREEN WORSHIP MODE (Christian Culture — Biblijne Uwielbienie) */
+    .hero-karaoke-backdrop {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-backdrop,
+    #hero-karaoke-stage:fullscreen .hero-karaoke-backdrop,
+    #hero-karaoke-stage:-webkit-full-screen .hero-karaoke-backdrop {
+      display: block !important;
+    }
+    .hero-karaoke-backdrop-img {
+      position: absolute;
+      inset: -16px;
+      background-image: url('/images/biblijne-uwielbienie/worship-cross-fullscreen.webp');
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      filter: blur(3px);
+      transform: scale(1.04);
+    }
+    .hero-karaoke-backdrop-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 8, 17, var(--bu-worship-dim, 0.75));
+      transition: background-color 0.25s ease;
+    }
+    #hero-karaoke-stage.is-fullscreen,
+    #hero-karaoke-stage:fullscreen,
+    #hero-karaoke-stage:-webkit-full-screen {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 100000 !important;
+      margin: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      padding: clamp(12px, 2.5vw, 24px) !important;
+      padding-top: max(clamp(12px, 2.5vw, 24px), env(safe-area-inset-top)) !important;
+      padding-bottom: max(clamp(12px, 2.5vw, 24px), env(safe-area-inset-bottom)) !important;
+      padding-left: max(clamp(12px, 2.5vw, 24px), env(safe-area-inset-left)) !important;
+      padding-right: max(clamp(12px, 2.5vw, 24px), env(safe-area-inset-right)) !important;
+      background: #050811 !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      box-sizing: border-box !important;
+    }
+    body.has-karaoke-fullscreen {
+      overflow: hidden !important;
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-inner,
+    #hero-karaoke-stage:fullscreen .hero-karaoke-inner,
+    #hero-karaoke-stage:-webkit-full-screen .hero-karaoke-inner {
+      position: relative !important;
+      z-index: 2 !important;
+      height: 100% !important;
+      max-width: 1400px !important;
+      width: 100% !important;
+      margin: 0 auto !important;
+      border-radius: 20px !important;
+      background: rgba(8, 14, 26, 0.42) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      border: 1px solid rgba(196, 163, 90, 0.3) !important;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(226, 204, 154, 0.2) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      padding: clamp(12px, 2vw, 20px) !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-topbar,
+    #hero-karaoke-stage:fullscreen .hero-karaoke-topbar,
+    #hero-karaoke-stage:-webkit-full-screen .hero-karaoke-topbar {
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(196, 163, 90, 0.15);
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-viewport,
+    #hero-karaoke-stage:fullscreen .hero-karaoke-viewport,
+    #hero-karaoke-stage:-webkit-full-screen .hero-karaoke-viewport {
+      max-height: none !important;
+      flex: 1 !important;
+      background: rgba(5, 8, 17, 0.35) !important;
+      border: 1px solid rgba(196, 163, 90, 0.18) !important;
+      border-radius: 14px !important;
+      mask-image: none !important;
+      -webkit-mask-image: none !important;
+    }
+    .bu-text-mode-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .bu-fullscreen-btn {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #19263b;
+      color: #ffe2a5;
+      border: 1px solid rgba(196, 163, 90, 0.45);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .bu-fullscreen-btn:hover {
+      background: #233552;
+      border-color: #c4a35a;
+      box-shadow: 0 0 12px rgba(196, 163, 90, 0.35);
+      color: #ffffff;
+    }
+    .bu-fullscreen-btn:focus-visible {
+      outline: 2px solid #ffe2a5;
+      outline-offset: 2px;
+    }
+    .hero-karaoke-dimmer-control,
+    .bu-worship-dimmer {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      background: rgba(7, 12, 24, 0.7);
+      padding: 3px 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      margin-right: 4px;
+    }
+    #hero-karaoke-stage.is-fullscreen .hero-karaoke-dimmer-control,
+    #hero-karaoke-stage:fullscreen .hero-karaoke-dimmer-control,
+    #hero-karaoke-stage:-webkit-full-screen .hero-karaoke-dimmer-control,
+    #hero-karaoke-stage.is-fullscreen .bu-worship-dimmer,
+    #hero-karaoke-stage:fullscreen .bu-worship-dimmer,
+    #hero-karaoke-stage:-webkit-full-screen .bu-worship-dimmer {
+      display: inline-flex;
+    }
+    .dimmer-label {
+      font-size: 11px;
+      color: #c4a35a;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding-left: 2px;
+      padding-right: 4px;
+    }
+    .dimmer-btn {
+      min-width: 38px;
+      min-height: 32px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: transparent;
+      color: #cdd4e0;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dimmer-btn:hover {
+      color: #ffe2a5;
+      border-color: rgba(196, 163, 90, 0.4);
+    }
+    .dimmer-btn.is-active {
+      background: rgba(196, 163, 90, 0.25);
+      color: #ffe2a5;
+      border-color: #c4a35a;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    @media (max-width: 768px) {
+      .hero-karaoke-dimmer-control .dimmer-btn,
+      .bu-worship-dimmer .dimmer-btn {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+      .bu-text-mode-bar {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+    }
     .hero-karaoke-viewport {
       position: relative !important;
       max-height: clamp(210px, 28vh, 280px) !important;
@@ -964,7 +1160,8 @@
     lastActiveIdx: -1,
     tickInterval: null,
     loadVersion: 0,
-    isFullscreen: false
+    isFullscreen: false,
+    worshipDim: 75
   };
 
   function getSavedOffset(chapterId) {
@@ -1369,6 +1566,34 @@
     caption.textContent = mode === 'reading' ? 'Pełny tekst · UBG 2025' :
       (state.sync?.lyricsKind === 'performed-adaptation' ? 'Tekst śpiewany · adaptacja biblijna' : 'Tekst śpiewany');
     bar.appendChild(caption);
+    const actionsWrap = document.createElement('div');
+    actionsWrap.className = 'bu-text-mode-actions';
+
+    // Dimmer control for Fullscreen Worship Mode
+    const dimmer = document.createElement('div');
+    dimmer.id = 'bu-worship-dimmer';
+    dimmer.className = 'bu-worship-dimmer';
+    dimmer.setAttribute('role', 'group');
+    dimmer.setAttribute('aria-label', 'Przyciemnienie tła');
+    dimmer.style.display = state.isFullscreen ? 'inline-flex' : 'none';
+    const dimLabel = document.createElement('span');
+    dimLabel.className = 'dimmer-label';
+    dimLabel.textContent = 'Tło:';
+    dimmer.appendChild(dimLabel);
+    for (const [dimVal, dimTitle] of [[60, 'Subtelne (60%)'], [75, 'Skupienie (75% - domyślne)'], [90, 'Maksymalne (90%)']]) {
+      const dBtn = document.createElement('button');
+      dBtn.type = 'button';
+      dBtn.className = 'dimmer-btn' + ((state.worshipDim || 75) === dimVal ? ' is-active' : '');
+      dBtn.dataset.dim = String(dimVal);
+      dBtn.textContent = `${dimVal}%`;
+      dBtn.title = dimTitle;
+      dBtn.setAttribute('aria-label', `Przyciemnienie ${dimTitle}`);
+      dBtn.addEventListener('click', () => setDimmer(dimVal));
+      dimmer.appendChild(dBtn);
+    }
+    actionsWrap.appendChild(dimmer);
+
+    // Existing mode toggle controls [Śpiewaj] and [Czytaj Biblię]
     const controls = document.createElement('div');
     controls.setAttribute('role', 'group');
     controls.setAttribute('aria-label', 'Sposób wyświetlania tekstu');
@@ -1381,7 +1606,20 @@
       button.addEventListener('click', () => setMode(value));
       controls.appendChild(button);
     }
-    bar.appendChild(controls);
+    actionsWrap.appendChild(controls);
+
+    // Fullscreen Worship Mode Button
+    const fsBtn = document.createElement('button');
+    fsBtn.type = 'button';
+    fsBtn.className = 'bu-fullscreen-btn';
+    fsBtn.id = 'bu-mode-fullscreen-btn';
+    fsBtn.title = state.isFullscreen ? 'Opuść pełny ekran (Esc)' : 'Tryb pełnoekranowy';
+    fsBtn.setAttribute('aria-label', state.isFullscreen ? 'Opuść tryb pełnoekranowy' : 'Włącz tryb pełnoekranowy');
+    fsBtn.innerHTML = state.isFullscreen ? SVG_MINIMIZE : SVG_MAXIMIZE;
+    fsBtn.addEventListener('click', () => toggleFullscreen());
+    actionsWrap.appendChild(fsBtn);
+
+    bar.appendChild(actionsWrap);
   }
 
   function renderReadingMode(container, lyrics) {
@@ -1842,30 +2080,135 @@
     setTimeout(() => centerActiveLine(true), 40);
   }
 
-  function toggleFullscreen() {
+  const SVG_MAXIMIZE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+  const SVG_MINIMIZE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+
+  function setDimmer(percent) {
+    const p = [60, 75, 90].includes(Number(percent)) ? Number(percent) : 75;
+    state.worshipDim = p;
+    try {
+      localStorage.setItem('cc_worship_dimmer', String(p));
+    } catch {}
+    const dimAlpha = p === 60 ? '0.60' : (p === 90 ? '0.90' : '0.75');
+    const stage = document.getElementById('hero-karaoke-stage');
+    if (stage) {
+      stage.style.setProperty('--bu-worship-dim', dimAlpha);
+    }
+    document.documentElement.style.setProperty('--bu-worship-dim', dimAlpha);
+
+    document.querySelectorAll('.dimmer-btn').forEach(btn => {
+      const active = Number(btn.dataset.dim) === p;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  function setFullscreenState(isFs) {
+    state.isFullscreen = Boolean(isFs);
+    const stage = document.getElementById('hero-karaoke-stage');
+    if (stage) {
+      stage.classList.toggle('is-fullscreen', state.isFullscreen);
+    }
+    document.body.classList.toggle('has-karaoke-fullscreen', state.isFullscreen);
+
+    const buttons = [
+      document.getElementById('btn-hero-fullscreen'),
+      document.getElementById('bu-mode-fullscreen-btn'),
+      document.getElementById('btn-player-fullscreen')
+    ].filter(Boolean);
+
+    buttons.forEach(btn => {
+      btn.innerHTML = state.isFullscreen ? SVG_MINIMIZE : SVG_MAXIMIZE;
+      btn.setAttribute('title', state.isFullscreen ? 'Opuść pełny ekran (Esc)' : 'Tryb pełnoekranowy');
+      btn.setAttribute('aria-label', state.isFullscreen ? 'Opuść tryb pełnoekranowy' : 'Włącz tryb pełnoekranowy');
+    });
+
+    const barDimmer = document.getElementById('bu-worship-dimmer');
+    if (barDimmer) {
+      barDimmer.style.display = state.isFullscreen ? 'inline-flex' : 'none';
+    }
+
+    try {
+      const savedDim = Number(localStorage.getItem('cc_worship_dimmer')) || 75;
+      setDimmer(savedDim);
+    } catch {
+      setDimmer(75);
+    }
+
+    setTimeout(() => centerActiveLine(true), 60);
+  }
+
+  async function toggleFullscreen() {
     const stage = document.getElementById('hero-karaoke-stage');
     if (!stage) return;
-    state.isFullscreen = !state.isFullscreen;
-    stage.classList.toggle('is-fullscreen', state.isFullscreen);
 
-    const btn = document.getElementById('btn-hero-fullscreen');
-    if (btn) btn.textContent = state.isFullscreen ? '✕ Wyjdź' : '⛶';
-
-    if (state.isFullscreen && stage.requestFullscreen) {
-      stage.requestFullscreen().catch(() => {});
-    } else if (!state.isFullscreen && document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
+    if (stage.style.display === 'none') {
+      stage.style.display = 'block';
     }
-    setTimeout(() => centerActiveLine(true), 60);
+
+    const willBeFs = !state.isFullscreen;
+
+    if (willBeFs) {
+      setFullscreenState(true);
+      if (stage.requestFullscreen) {
+        try {
+          await stage.requestFullscreen();
+        } catch (err) {
+          console.warn('[BU Fullscreen] requestFullscreen fallback:', err);
+        }
+      } else if (stage.webkitRequestFullscreen) {
+        try {
+          await stage.webkitRequestFullscreen();
+        } catch (err) {
+          console.warn('[BU Fullscreen] webkitRequestFullscreen fallback:', err);
+        }
+      }
+    } else {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        try {
+          if (document.exitFullscreen) await document.exitFullscreen();
+          else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
+        } catch (err) {
+          console.warn('[BU Fullscreen] exitFullscreen error:', err);
+        }
+      }
+      setFullscreenState(false);
+    }
+  }
+
+  function onFullscreenChange() {
+    const isNativeFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+    if (!isNativeFs && state.isFullscreen) {
+      setFullscreenState(false);
+    } else if (isNativeFs && !state.isFullscreen) {
+      setFullscreenState(true);
+    }
+  }
+
+  if (typeof document !== 'undefined') {
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && state.isFullscreen) {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+    });
   }
 
   function closeHeroKaraoke() {
     ++state.loadVersion;
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      try {
+        if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen().catch(() => {});
+      } catch {}
+    }
+    setFullscreenState(false);
     const stage = document.getElementById('hero-karaoke-stage');
     if (stage) {
       stage.style.display = 'none';
       stage.classList.remove('is-fullscreen');
-      state.isFullscreen = false;
     }
     const tb = document.getElementById('hero-karaoke-sync-toolbar');
     if (tb) tb.style.display = 'none';

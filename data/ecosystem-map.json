@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "Biblijne Uwielbienie: Pełnoekranowy tryb uwielbienia (Fullscreen Worship Mode z grafiką Uwielbienie w blasku krzyża i 3-stopniowym dimmerem 60%/75%/90%), alternatywny adres /karaoke oraz pełne indeksowanie w wyszukiwarce @w",
+      "date": "2026-10-17",
+      "agent": "A"
+    },
+    {
       "topic": "Biblijne Uwielbienie: CC Karaoke Ultra-Precision 3.0 — Stały horyzont wokalny (Fixed Vocal Horizon na 40% viewportu), symetryczny stage padding, eliminacja znikania tekstu w pauzach (ciągłość wokalu i lookahead priming 550ms), zero layout shift oraz auto-wznowienie śledzenia",
       "date": "2026-10-16",
       "agent": "A"
@@ -249,7 +254,7 @@
       "agent": "A"
     },
     {
-      "topic": "Mission Control: Zidentyfikowanie etapu nagłówków MC403 i raport diagnostyczny do Skrzynki Agentów",
+      "topic": "Zaplecze Operacyjne: Zidentyfikowanie etapu nagłówków MC403 i raport diagnostyczny do Skrzynki Agentów",
       "date": "2026-10-13",
       "agent": "A"
     },
@@ -319,7 +324,7 @@
       "agent": "A"
     },
     {
-      "topic": "Aktualizacja Mission Control v1.4.5: Wdrożenie precyzyjnej diagnostyki komunikacji",
+      "topic": "Aktualizacja Panelu Operacyjnego v1.4.5: Wdrożenie precyzyjnej diagnostyki komunikacji",
       "date": "2026-10-13",
       "agent": "A"
     },
@@ -1809,6 +1814,51 @@
         "music-main",
         "biblia-spiewana",
         "cctv24-worship"
+      ]
+    },
+    {
+      "id": "biblijne-uwielbienie",
+      "branchId": "muzyka-produkcja",
+      "name": "Biblijne Uwielbienie & Karaoke Biblijne",
+      "shortDesc": "Cała Biblia w muzyce (1189 rozdziałów), profesjonalny tryb Fullscreen Worship Mode i zsynchronizowany śpiewnik.",
+      "fullDesc": "Oficjalny portal Biblijnego Uwielbienia oraz Karaoke Biblijnego na polskieradio.cc/BiblijneUwielbienie (alias /karaoke). Odkrywaj całe Pismo Święte w muzyce: 38 utworów w playliście YouTube, sub-sekundowa synchronizacja słów, tryb pełnoekranowy Worship Mode z blaskiem krzyża i 3-poziomowym dimmerem, baza 1189 rozdziałów i moduł Patrona Rozdziału.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/BiblijneUwielbienie",
+      "aliases": [
+        "https://polskieradio.cc/karaoke",
+        "/karaoke",
+        "/spiewnik",
+        "/uwielbienie"
+      ],
+      "status": "active",
+      "lang": "pl",
+      "icon": "🎵",
+      "category": "Muzyka & Produkcja",
+      "verifiedDate": "2026-10-17",
+      "keywords": [
+        "karaoke",
+        "karaoke biblijne",
+        "spiewnik",
+        "śpiewnik",
+        "biblijne uwielbienie",
+        "biblia spiewana",
+        "biblia śpiewana",
+        "uwielbienie",
+        "worship",
+        "worship mode",
+        "fullscreen worship",
+        "tekst spiewany",
+        "slowa piesni",
+        "śpiewaj",
+        "czytaj biblie",
+        "ubg 2025"
+      ],
+      "connections": [
+        "music-main",
+        "spiewajmy-panu",
+        "biblia-audio",
+        "moje-centrum-cc",
+        "mojabiblia"
       ]
     },
     {

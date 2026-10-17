@@ -167,10 +167,14 @@
     'werset': ['słowo', 'cytat', 'mojabiblia', 'werset dnia', 'pismo'],
 
     // Muzyka, Radio & Transmisje
-    'muzyka': ['worship', 'pieśni', 'uwielbienie', 'radio', 'ambient', 'sleep', 'hymny'],
-    'worship': ['uwielbienie', 'pieśni', 'muzyka', 'cctv24 worship', 'live'],
-    'spiewana': ['śpiewana', 'biblia śpiewana', 'muzyka', 'pieśni'],
-    'śpiewana': ['spiewana', 'biblia śpiewana', 'muzyka', 'pieśni'],
+    'muzyka': ['worship', 'pieśni', 'uwielbienie', 'radio', 'ambient', 'sleep', 'hymny', 'karaoke'],
+    'worship': ['uwielbienie', 'pieśni', 'muzyka', 'cctv24 worship', 'live', 'karaoke', 'worship mode'],
+    'spiewana': ['śpiewana', 'biblia śpiewana', 'muzyka', 'pieśni', 'karaoke', 'śpiewnik'],
+    'śpiewana': ['spiewana', 'biblia śpiewana', 'muzyka', 'pieśni', 'karaoke', 'śpiewnik'],
+    'karaoke': ['śpiewnik', 'spiewnik', 'biblijne uwielbienie', 'biblia śpiewana', 'uwielbienie', 'worship mode', 'tekst pieśni', 'śpiewaj'],
+    'spiewnik': ['śpiewnik', 'karaoke', 'biblijne uwielbienie', 'pieśni', 'tekst pieśni', 'uwielbienie', 'worship', 'śpiewaj'],
+    'śpiewnik': ['spiewnik', 'karaoke', 'biblijne uwielbienie', 'pieśni', 'tekst pieśni', 'uwielbienie', 'worship', 'śpiewaj'],
+    'uwielbienie': ['karaoke', 'śpiewnik', 'spiewnik', 'worship', 'pieśni', 'muzyka', 'cctv24 worship', 'live', 'biblijne uwielbienie'],
     'radio': ['stacja', 'audycja', 'transmisja', 'live', 'cctv24', 'śniadaniowa', 'zapolske'],
     'audycja': ['radio', 'podcast', 'śniadaniowa', 'nagrania'],
 

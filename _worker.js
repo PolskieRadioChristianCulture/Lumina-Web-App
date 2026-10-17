@@ -1346,8 +1346,19 @@ async function handleBiblijneUwielbienieRoute(request, env) {
     return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
   }
 
-  // 2. Skrót /uwielbienie przekieruj 301 na kanoniczny /BiblijneUwielbienie
-  if (path.toLowerCase() === '/uwielbienie') {
+  // 2. Skróty i aliasy (/uwielbienie, /karaoke, /spiewnik, /śpiewnik, /biblijneuwielbienie) przekieruj 301 na kanoniczny /BiblijneUwielbienie
+  let decodedPath = path.toLowerCase();
+  try {
+    decodedPath = decodeURIComponent(path).toLowerCase();
+  } catch (e) {}
+
+  if (
+    decodedPath === '/uwielbienie' ||
+    decodedPath === '/karaoke' ||
+    decodedPath === '/spiewnik' ||
+    decodedPath === '/śpiewnik' ||
+    decodedPath === '/biblijneuwielbienie'
+  ) {
     const redirectUrl = new URL(request.url);
     redirectUrl.pathname = '/BiblijneUwielbienie';
     return Response.redirect(redirectUrl.toString(), 301);

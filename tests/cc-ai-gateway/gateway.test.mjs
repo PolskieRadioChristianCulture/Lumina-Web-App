@@ -198,7 +198,9 @@ test('T25 Google Groq and Cloudflare use the same envelope', async () => {
   assert.deepEqual(Object.keys(values[0]), Object.keys(values[1])); assert.deepEqual(Object.keys(values[1]), Object.keys(values[2]));
 });
 test('T26 rollback rehearsal loads actual HEAD worker and preserves public routes', async () => {
-  const source = execFileSync('git', ['-c', 'safe.directory=C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc', 'show', 'HEAD:_worker.js'], { encoding: 'utf8' });
+  const libUrl = new URL('../../lib/', import.meta.url).href;
+  const rawSource = execFileSync('git', ['-c', 'safe.directory=C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc', 'show', 'HEAD:_worker.js'], { encoding: 'utf8' });
+  const source = rawSource.replace(/(from\s+['"])\.\/lib\//g, `$1${libUrl}`);
   const original = (await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`)).default;
   const env = { ASSETS: { fetch: async r => new Response(new URL(r.url).pathname) } };
   for (const path of ['/', '/lumina', '/akademia', '/tablica']) {

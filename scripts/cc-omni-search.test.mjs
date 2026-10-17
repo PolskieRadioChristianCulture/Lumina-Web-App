@@ -159,6 +159,15 @@ test('cc-omni-search.js: VM execution of performSearch with synonyms, typos, and
   const r5 = search('nieznanybrakujacyhasloxyz');
   assert.equal(r5.isSuggestion, true, 'isSuggestion must be true for unknown phrase');
   assert.ok(r5.items.length > 0, 'Provides fallback proposals');
+
+  // 6. Karaoke & Śpiewnik Słowa Bożego
+  const r6 = search('karaoke');
+  assert.equal(r6.isSuggestion, false, 'isSuggestion must be false for karaoke');
+  assert.ok(r6.items.some(i => i.url.includes('/karaoke') || i.url.includes('/BiblijneUwielbienie')), 'karaoke finds Karaoke / BiblijneUwielbienie');
+
+  const r7 = search('śpiewnik');
+  assert.equal(r7.isSuggestion, false, 'isSuggestion must be false for śpiewnik');
+  assert.ok(r7.items.some(i => i.url.includes('/karaoke') || i.url.includes('/BiblijneUwielbienie')), 'śpiewnik finds Karaoke / BiblijneUwielbienie');
 });
 
 

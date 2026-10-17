@@ -80,10 +80,16 @@ test('Biblijne Uwielbienie: 5. Integralność bazy danych playlisty', () => {
   }
 });
 
-test('Biblijne Uwielbienie: 6. Ochrona istniejących kanałów nadawczych', () => {
+test('Biblijne Uwielbienie: 6. Ochrona istniejących kanałów nadawczych i trasy /karaoke', () => {
   const redirects = fs.readFileSync(path.join(ROOT, '_redirects'), 'utf8');
   assert.ok(redirects.includes('/biblia-spiewana /biblia-spiewana-live.html 200'), 'Trasa /biblia-spiewana nie może zostać zmieniona');
   assert.ok(redirects.includes('/BiblijneUwielbienie /biblijne-uwielbienie 200') || redirects.includes('/BiblijneUwielbienie /biblijne-uwielbienie.html 200'), 'Trasa /BiblijneUwielbienie musi być zarejestrowana');
+  assert.ok(redirects.includes('/karaoke /BiblijneUwielbienie 301'), 'Trasa /karaoke musi przekierowywać na /BiblijneUwielbienie');
+  assert.ok(redirects.includes('/spiewnik /BiblijneUwielbienie 301'), 'Trasa /spiewnik musi przekierowywać na /BiblijneUwielbienie');
+
+  const worker = fs.readFileSync(path.join(ROOT, '_worker.js'), 'utf8');
+  assert.ok(worker.includes("decodedPath === '/karaoke'"), '_worker.js musi obsługiwać przekierowanie /karaoke');
+  assert.ok(worker.includes("decodedPath === '/spiewnik'"), '_worker.js musi obsługiwać przekierowanie /spiewnik');
 });
 
 test('Biblijne Uwielbienie: 7. Brak fikcyjnych statystyk i obietnic (Zero-QA)', () => {
