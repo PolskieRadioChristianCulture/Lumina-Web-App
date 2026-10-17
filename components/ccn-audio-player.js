@@ -44,29 +44,31 @@
     const metaDuration = parseFloat(card.dataset.durationSeconds || '0') || 1071.368;
 
     const playBtn = card.querySelector('[data-action="toggle"], .ccn-play-btn, .ccn-play');
+    const playIconSpan = playBtn ? playBtn.querySelector('.ccn-play-icon, [data-icon="state"]') : null;
     const playIcon = playBtn ? playBtn.querySelector('[data-icon="play"]') : null;
     const pauseIcon = playBtn ? playBtn.querySelector('[data-icon="pause"]') : null;
 
     const wave = card.querySelector('[data-role="waveform"], .ccn-wave');
     const seekRange = card.querySelector('[data-role="seek"], .ccn-range');
-    const playhead = card.querySelector('.ccn-playhead');
 
     const nowEl = card.querySelector('[data-role="current-time"], .ccn-now, .elapsed');
+    const nowAltEl = card.querySelector('[data-role="current-time-alt"]');
     const durEl = card.querySelector('[data-role="total-time"], .ccn-duration, [data-role="duration-label"]');
     const clockEl = card.querySelector('.ccn-clock');
     const statusEl = card.querySelector('[data-role="status"], .ccn-status');
 
-    const speedBtn = card.querySelector('[data-action="speed"], .ccn-speed');
+    const speedBtn = card.querySelector('[data-action="speed"], .ccn-speed, .ccn-speed-btn');
     const speedLabel = card.querySelector('[data-role="speed"]');
 
-    const muteBtn = card.querySelector('[data-action="mute"], .ccn-mute');
-    const volumeRange = card.querySelector('[data-role="volume"], .ccn-volume-input, input[type="range"]');
+    const muteBtn = card.querySelector('[data-action="mute"], .ccn-mute, .ccn-mute-btn');
+    const muteIconSpan = muteBtn ? muteBtn.querySelector('.ccn-mute-icon') : null;
+    const volumeRange = card.querySelector('[data-role="volume"], .ccn-vol-input, .ccn-volume-input, input[type="range"]');
 
     const backBtn = card.querySelector('[data-action="back15"], [data-action="back10"]');
     const forwardBtn = card.querySelector('[data-action="forward15"], [data-action="forward10"]');
 
-    const fallbackBtn = card.querySelector('[data-action="toggle-fallback"], .ccn-more');
-    const fallbackDrawer = card.querySelector('[data-role="fallback"], .ccn-fallback');
+    const fallbackBtn = card.querySelector('[data-action="toggle-fallback"], .ccn-fallback-toggle-btn, .ccn-more');
+    const fallbackDrawer = card.querySelector('[data-role="fallback"], .ccn-drive-fallback, .ccn-fallback');
     const driveFrame = card.querySelector('[data-role="drive-iframe"], .ccn-drive-frame, iframe');
 
     let speedIndex = 1;
@@ -81,14 +83,19 @@
       } catch (_) {}
     }
 
-    // Wygeneruj słupki fali dźwiękowej
+    // Wygeneruj słupki fali dźwiękowej oraz playhead
+    let playhead = null;
     let bars = [];
     if (wave) {
       wave.innerHTML = '';
+      playhead = document.createElement('div');
+      playhead.className = 'ccn-playhead';
+      wave.appendChild(playhead);
+
       bars = peaks.map((h, idx) => {
         const b = document.createElement('span');
         b.className = 'ccn-wave__bar ccn-bar';
-        b.style.height = Math.max(12, Math.min(96, Number(h) || 25)) + '%';
+        b.style.height = Math.max(12, Math.min(92, Number(h) || 25)) + '%';
         b.setAttribute('aria-hidden', 'true');
         b.dataset.idx = String(idx);
         wave.appendChild(b);
@@ -121,7 +128,9 @@
     function updatePlayButtonState(isPlaying) {
       if (!playBtn) return;
       playBtn.classList.toggle('is-playing', isPlaying);
-      if (playIcon && pauseIcon) {
+      if (playIconSpan) {
+        playIconSpan.textContent = isPlaying ? '❚❚' : '▶';
+      } else if (playIcon && pauseIcon) {
         if (isPlaying) {
           playIcon.setAttribute('hidden', '');
           pauseIcon.removeAttribute('hidden');
@@ -133,6 +142,14 @@
         playBtn.textContent = isPlaying ? '❚❚' : '▶';
       }
       playBtn.setAttribute('aria-label', isPlaying ? 'Wstrzymaj nagranie' : 'Odtwórz nagranie');
+    }
+
+    function updateMuteButtonState(isMuted) {
+      if (!muteBtn) return;
+      if (muteIconSpan) {
+        muteIconSpan.textContent = isMuted ? '×' : '◖))';
+      }
+      muteBtn.setAttribute('aria-label', isMuted ? 'Włącz dźwięk' : 'Wycisz');
     }
 
     function updateUi() {
@@ -149,6 +166,10 @@
       if (playhead) {
         playhead.style.left = (ratio * 100) + '%';
       }
+      if (wave) {
+        wave.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
+        wave.setAttribute('aria-valuetext', formatTime(t));
+      }
       bars.forEach((b, idx) => {
         const isPast = idx / bars.length <= ratio;
         b.classList.toggle('is-played', isPast);
@@ -159,6 +180,7 @@
       const formattedDur = formatTime(d);
 
       if (nowEl) nowEl.textContent = formattedNow;
+      if (nowAltEl) nowAltEl.textContent = formattedNow;
       if (clockEl) clockEl.textContent = formattedNow + ' / ' + formattedDur;
       if (durEl) {
         if (durEl.dataset.role === 'duration-label') {
@@ -175,10 +197,10 @@
         audio.src = src;
       }
       audio.volume = 0.85;
-      setStatus('Gotowe do odtworzenia');
+      setStatus('Źródło audio skonfigurowane. Naciśnij Odtwórz.');
     } else if (driveId) {
       if (playBtn) playBtn.disabled = false;
-      setStatus('Źródło zapasowe Google Drive.');
+      setStatus('Źródło Google Drive — odtwórz w podglądzie poniżej.');
     } else {
       if (playBtn) playBtn.disabled = true;
       setStatus('Brak źródła nagrania.');
@@ -200,7 +222,7 @@
             await audio.play();
           } catch (err) {
             console.warn('[CCN Player] Native play error, opening Google Drive fallback:', err);
-            setStatus('Przeglądarka zablokowała bezpośrednie odtwarzanie. Uruchamiam odtwarzacz Google Drive.');
+            setStatus('Nie można uruchomić nagrania. Użyj podglądu źródłowego Google Drive.');
             setFallbackOpen(true);
           }
         } else {
@@ -211,17 +233,13 @@
 
     audio.addEventListener('play', function () {
       updatePlayButtonState(true);
-      setStatus('Odtwarzanie artykułu audio…');
+      setStatus('Odtwarzanie');
       window.dispatchEvent(new CustomEvent('ccn-audio-play', { detail: { id: card.id || src } }));
     });
 
     audio.addEventListener('pause', function () {
       updatePlayButtonState(false);
-      if (audio.currentTime > 0 && audio.currentTime < (getEffectiveDuration() - 0.5)) {
-        setStatus('Wstrzymano (' + formatTime(audio.currentTime) + ')');
-      } else {
-        setStatus('Pauza');
-      }
+      setStatus('Pauza');
     });
 
     audio.addEventListener('waiting', function () {
@@ -246,13 +264,13 @@
       updatePlayButtonState(false);
       audio.currentTime = 0;
       updateUi();
-      setStatus('Nagranie zakończone.');
+      setStatus('Nagranie zakończone');
     });
 
     audio.addEventListener('error', function (e) {
       console.warn('[CCN Player] Audio element error:', e);
       updatePlayButtonState(false);
-      setStatus('Strumień główny wymaga weryfikacji. Otwieram źródło zapasowe.');
+      setStatus('Błąd pobierania strumienia. Otwórz źródłowe nagranie w Google Drive.');
       setFallbackOpen(true);
     });
 
@@ -264,6 +282,21 @@
           const r = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
           const d = getEffectiveDuration();
           audio.currentTime = r * d;
+          updateUi();
+        }
+      });
+
+      wave.addEventListener('keydown', function (e) {
+        const d = getEffectiveDuration();
+        if (!src || !Number.isFinite(d)) return;
+        if (['ArrowLeft', 'ArrowDown', 'ArrowRight', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
+          e.preventDefault();
+          if (e.key === 'Home') audio.currentTime = 0;
+          else if (e.key === 'End') audio.currentTime = d;
+          else {
+            const delta = (e.key === 'ArrowLeft' || e.key === 'ArrowDown') ? -5 : 5;
+            audio.currentTime = Math.min(d, Math.max(0, (audio.currentTime || 0) + delta));
+          }
           updateUi();
         }
       });
@@ -316,7 +349,7 @@
         speedIndex = (speedIndex + 1) % SPEEDS.length;
         const spd = SPEEDS[speedIndex];
         audio.playbackRate = spd;
-        if (speedLabel) speedLabel.textContent = spd + '×';
+        if (speedLabel) speedLabel.textContent = spd + '× ▾';
         else speedBtn.textContent = spd + '× ▾';
       });
     }
@@ -327,9 +360,7 @@
         const val = Number(volumeRange.value);
         audio.volume = val;
         audio.muted = (val === 0);
-        if (muteBtn) {
-          muteBtn.setAttribute('aria-label', audio.muted ? 'Włącz dźwięk' : 'Wycisz');
-        }
+        updateMuteButtonState(audio.muted);
       });
     }
     if (muteBtn) {
@@ -339,7 +370,7 @@
         if (volumeRange) {
           volumeRange.value = audio.muted ? '0' : String(audio.volume || 0.85);
         }
-        muteBtn.setAttribute('aria-label', audio.muted ? 'Włącz dźwięk' : 'Wycisz');
+        updateMuteButtonState(audio.muted);
       });
     }
 
@@ -361,6 +392,7 @@
     });
 
     updatePlayButtonState(false);
+    updateMuteButtonState(false);
     updateUi();
   }
 

@@ -119,11 +119,11 @@ function generateArticleHtml(article, allArticles, portalOpts = {}) {
     : `https://polskieradio.cc${article.imageUrl.startsWith('/') ? '' : '/'}${article.imageUrl}`;
   const shareImageUrl = encodeURIComponent(cleanImageUrl);
 
+  const audioSrc = article.audio ? (article.audio.src || article.audio.audioUrl || '').trim() : '';
   const hasPublishedAudio = Boolean(
     article.audio &&
-    article.audio.publicationStatus === 'published' &&
-    typeof article.audio.src === 'string' &&
-    article.audio.src.trim().length > 0
+    (article.audio.publicationStatus === 'published' || !article.audio.publicationStatus) &&
+    audioSrc.length > 0
   );
 
   // Related articles (pick 3 other articles)
@@ -760,384 +760,293 @@ ${JSON.stringify(jsonLd, null, 2)}
         white-space: nowrap;
       }
 
-      /* CCN Audio Player Premium 2026 */
+      /* ==========================================================================
+         CCN AUDIO PLAYER PREMIUM — ZUNIFIKOWANY STANDARD GRUPY CCN 2026
+         ========================================================================== */
       .ccn-player[hidden] { display: none !important; }
       .ccn-player {
         position: relative;
         overflow: hidden;
         margin: 1.5rem 0 2rem;
-        border-radius: 22px;
-        border: 1px solid rgba(215, 179, 106, 0.22);
+        border-radius: 14px;
+        border: 1px solid rgba(196, 163, 90, 0.5);
         background:
-          radial-gradient(circle at 12% 0%, rgba(215, 179, 106, 0.16), transparent 36%),
-          linear-gradient(180deg, rgba(19, 25, 38, 0.96), rgba(11, 15, 23, 0.98));
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-        padding: 20px;
-        color: #f5f3ee;
+          radial-gradient(ellipse at 45% 40%, rgba(172, 126, 56, 0.16), transparent 55%),
+          linear-gradient(115deg, #28231e, #1d1e23 55%, #292930);
+        box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45), inset 0 1px rgba(255, 255, 255, 0.12);
+        padding: 20px 22px;
+        color: #F5F2EE;
       }
-      .ccn-player::before {
-        content: "";
-        position: absolute;
-        inset: 0 0 auto 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(234, 211, 156, 0.68), transparent);
-        pointer-events: none;
-      }
-      .ccn-player__top {
+      .ccn-player-grid {
         display: grid;
-        grid-template-columns: auto 1fr auto;
-        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
         align-items: center;
+        gap: 18px;
       }
-      .ccn-play-btn {
-        width: 58px;
-        height: 58px;
-        min-width: 58px;
-        min-height: 58px;
-        border-radius: 999px;
-        border: 1px solid rgba(234, 211, 156, 0.5);
-        background:
-          radial-gradient(circle at 30% 25%, #f4e4bc, #d7b36a 58%, #9f7932 100%);
-        color: #17120a;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 12px 30px rgba(215, 179, 106, 0.28);
-        transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
-      }
-      .ccn-play-btn:hover {
-        transform: translateY(-1px);
-        filter: brightness(1.04);
-        box-shadow: 0 16px 34px rgba(215, 179, 106, 0.36);
-      }
-      .ccn-play-btn svg { width: 23px; height: 23px; fill: currentColor; }
-      .ccn-play-btn svg[hidden],
-      .ccn-player [hidden] { display: none !important; }
-      .ccn-play-btn.is-playing svg[data-icon="play"] { display: none !important; }
-      .ccn-play-btn.is-playing svg[data-icon="pause"] { display: block !important; }
-      .ccn-play-btn:not(.is-playing) svg[data-icon="pause"] { display: none !important; }
-      .ccn-play-btn:not(.is-playing) svg[data-icon="play"] { display: block !important; }
-      .ccn-player__meta { min-width: 0; }
       .ccn-player__eyebrow {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px 12px;
-        align-items: center;
-        color: #ead39c;
+        color: #D1AA66;
         font-size: 11px;
-        font-weight: 800;
-        letter-spacing: .16em;
+        font-weight: 700;
+        letter-spacing: 0.035em;
         text-transform: uppercase;
-        margin-bottom: 5px;
-      }
-      .ccn-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 999px;
-        background: #ead39c;
-        box-shadow: 0 0 0 5px rgba(215, 179, 106, 0.14);
-        display: inline-block;
+        margin-bottom: 4px;
       }
       .ccn-player__title {
-        margin: 0;
-        font-size: clamp(16px, 2vw, 19px);
-        line-height: 1.3;
-        font-weight: 760;
-        color: #f5f3ee;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(18px, 2vw, 22px);
+        line-height: 1.15;
+        font-weight: 500;
+        margin: 6px 0 8px 0;
+        color: #f1eeec;
       }
-      .ccn-player__sub {
-        margin-top: 4px;
-        color: #9ca6ba;
-        font-size: 13px;
+      .ccn-player__meta {
+        font-size: 11px;
+        color: #ad9d88;
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px 14px;
         align-items: center;
+        gap: 4px;
       }
-      .ccn-badge {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.04);
-        color: #f5f3ee;
-        padding: 7px 11px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 650;
-        white-space: nowrap;
+      .ccn-player__reader {
+        color: #dfbb78;
+        font-weight: 700;
       }
-      .ccn-wave-wrap {
-        margin-top: 18px;
-        padding: 14px 14px 10px;
-        border-radius: 16px;
-        background: rgba(6, 9, 15, 0.56);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        overflow: hidden;
+      .ccn-player__mid {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        grid-column: span 2;
+      }
+      .ccn-play-btn {
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        min-height: 56px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        border: 1px solid #ffdf9a;
+        background: radial-gradient(circle at 30% 25%, #fff2cb, #ebbf75 48%, #a57632);
+        color: #28201a;
+        box-shadow: 0 0 24px rgba(224, 167, 74, 0.55), 0 0 43px rgba(178, 135, 64, 0.24), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 1;
+        transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      }
+      .ccn-play-btn:hover {
+        transform: scale(1.03);
+        filter: brightness(1.06);
+        box-shadow: 0 0 30px rgba(224, 167, 74, 0.75), 0 0 50px rgba(178, 135, 64, 0.35);
+      }
+      .ccn-play-btn:active {
+        transform: scale(0.97);
+      }
+      .ccn-play-btn .ccn-play-icon {
+        margin-left: 2px;
+        display: inline-block;
+      }
+      .ccn-play-btn.is-playing .ccn-play-icon {
+        margin-left: 0;
+      }
+      .ccn-wave-col {
+        flex: 1;
+        min-width: 0;
       }
       .ccn-wave {
-        position: relative;
-        height: 54px;
+        height: 60px;
         display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
         gap: clamp(1px, 0.4vw, 2.5px);
+        align-items: center;
+        position: relative;
         cursor: pointer;
-        user-select: none;
         touch-action: pan-y;
         overflow: hidden;
-        padding: 4px 0;
+      }
+      .ccn-playhead {
+        position: absolute;
+        top: 1px;
+        bottom: 1px;
+        width: 2px;
+        left: 0%;
+        background: #f8ce7f;
+        pointer-events: none;
+        box-shadow: 0 0 12px #e0a74a;
+        transition: left .08s linear;
+        z-index: 2;
       }
       .ccn-wave__bar, .ccn-bar {
         flex: 1 1 0;
         min-width: 0;
         max-width: 6px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.17);
-        transition: background-color .12s ease, transform .16s ease, opacity .16s ease;
-        min-height: 5px;
+        border-radius: 3px;
+        background: #5b5c61;
+        transition: background-color .12s ease, transform .14s ease;
       }
       .ccn-wave__bar.is-played, .ccn-bar.is-played, .ccn-wave__bar.past, .ccn-bar.past {
-        background: linear-gradient(180deg, #ead39c, #c99d45);
-        box-shadow: 0 0 12px rgba(215, 179, 106, 0.25);
-      }
-      .ccn-wave__bar.is-active, .ccn-bar.is-active { transform: scaleY(1.06); }
-      .ccn-playhead {
-        position: absolute;
-        top: 2px;
-        bottom: 2px;
-        width: 2px;
-        left: 0%;
-        background: #f8ce7f;
-        border-radius: 999px;
-        pointer-events: none;
-        box-shadow: 0 0 10px #e0a74a, 0 0 20px rgba(224, 167, 74, 0.6);
-        transition: left .08s linear;
-        z-index: 2;
-      }
-      .ccn-range {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 100%;
-        height: 4px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.14);
-        outline: none;
-        margin: 10px 0 4px;
-        cursor: pointer;
-      }
-      .ccn-range::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #f8ce7f;
-        box-shadow: 0 0 8px #e0a74a;
-        cursor: pointer;
-        transition: transform .12s ease;
-      }
-      .ccn-range::-webkit-slider-thumb:hover {
-        transform: scale(1.25);
-      }
-      .ccn-range::-moz-range-thumb {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #f8ce7f;
-        border: none;
-        box-shadow: 0 0 8px #e0a74a;
-        cursor: pointer;
+        background: linear-gradient(#fce2a9, #c99540);
+        box-shadow: 0 0 7px rgba(201, 155, 82, 0.44);
       }
       .ccn-time-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #9ca6ba;
-        font-size: 12px;
+        color: #aba8ab;
+        font-size: 10px;
         font-variant-numeric: tabular-nums;
         margin-top: 4px;
       }
-      .ccn-controls {
-        margin-top: 14px;
+      .ccn-time-now {
+        color: #e0b76e;
+      }
+      .ccn-player__side {
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-end;
       }
-      .ccn-controls__left,
-      .ccn-controls__right {
+      .ccn-player__actions {
         display: flex;
-        flex-wrap: wrap;
         gap: 8px;
         align-items: center;
       }
-      .ccn-chip-btn {
-        min-height: 44px;
-        padding: 0 13px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(255, 255, 255, 0.04);
-        color: #f5f3ee;
-        font-size: 13px;
-        font-weight: 650;
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background .15s ease, border-color .15s ease, transform .15s ease;
-      }
-      .ccn-chip-btn:hover {
-        background: rgba(215, 179, 106, 0.12);
-        border-color: rgba(215, 179, 106, 0.38);
-        transform: translateY(-1px);
-      }
-      .ccn-chip-btn svg { width: 16px; height: 16px; fill: currentColor; }
-      .ccn-volume {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+      .ccn-speed-btn {
+        font-size: 12px;
+        background: #343437;
+        border: 1px solid #555;
+        color: #d1d2d6;
+        border-radius: 100px;
         padding: 0 12px;
         min-height: 44px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(255, 255, 255, 0.04);
-      }
-      .ccn-volume input[type="range"] { width: 84px; accent-color: #d7b36a; cursor: pointer; }
-      .ccn-status {
-        margin-top: 12px;
-        font-size: 12px;
-        color: #9ca6ba;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 8px;
+        min-width: 56px;
+        cursor: pointer;
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
+        gap: 4px;
+        transition: background .15s ease;
       }
-      .ccn-status strong { color: #ead39c; font-weight: 700; }
+      .ccn-speed-btn:hover {
+        background: #444448;
+        color: #ffffff;
+      }
+      .ccn-mute-btn {
+        background: none;
+        border: 1px solid rgba(196, 163, 90, 0.3);
+        color: #d1d2d6;
+        border-radius: 9px;
+        min-width: 44px;
+        min-height: 44px;
+        cursor: pointer;
+        font-size: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .15s ease, border-color .15s ease;
+      }
+      .ccn-mute-btn:hover {
+        background: rgba(196, 163, 90, 0.15);
+        border-color: rgba(196, 163, 90, 0.6);
+        color: #fce2a9;
+      }
+      .ccn-fallback-toggle-btn {
+        background: none;
+        border: 1px solid rgba(196, 163, 90, 0.3);
+        color: #d1d2d6;
+        border-radius: 9px;
+        min-width: 44px;
+        min-height: 44px;
+        cursor: pointer;
+        font-size: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .15s ease, border-color .15s ease;
+      }
+      .ccn-fallback-toggle-btn:hover {
+        background: rgba(196, 163, 90, 0.15);
+        border-color: rgba(196, 163, 90, 0.6);
+        color: #fce2a9;
+      }
+      .ccn-vol-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #d1d2d6;
+      }
+      .ccn-vol-input {
+        width: 96px;
+        accent-color: #d7b579;
+        cursor: pointer;
+      }
+      .ccn-player-status {
+        padding-top: 8px;
+        font-size: 11px;
+        color: #c5bdaf;
+      }
       .ccn-drive-fallback {
-        margin-top: 14px;
-        border-radius: 16px;
-        overflow: hidden;
-        border: 1px solid rgba(215, 179, 106, 0.24);
-        background: #090d14;
+        border-top: 1px solid #6d5c3b;
+        margin-top: 12px;
+        padding-top: 14px;
+        font-size: 12px;
+        color: #c4c3c5;
         display: none;
       }
-      .ccn-drive-fallback.is-visible,
-      .ccn-drive-fallback.show { display: block; }
-      .ccn-drive-fallback__head {
-        padding: 10px 14px;
-        font-size: 12px;
-        color: #9ca6ba;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        align-items: center;
+      .ccn-drive-fallback.show,
+      .ccn-drive-fallback.is-visible {
+        display: block;
       }
       .ccn-drive-fallback iframe {
         width: 100%;
-        height: 88px;
+        min-height: 130px;
         border: 0;
+        background: #151515;
+        border-radius: 8px;
         display: block;
-        background: #090d14;
+      }
+      .ccn-drive-fallback a {
+        color: #eec987;
+        text-decoration: underline;
       }
       @media (max-width: 640px) {
         .ccn-player {
-          padding: 14px 12px 12px;
-          border-radius: 16px;
-          margin: 1.2rem 0 1.5rem;
+          padding: 16px 14px 14px;
+          border-radius: 14px;
         }
-        .ccn-player__top {
-          grid-template-columns: 48px 1fr;
-          gap: 12px;
-          align-items: center;
-        }
-        .ccn-play-btn {
-          width: 48px;
-          height: 48px;
-          min-width: 48px;
-          min-height: 48px;
-        }
-        .ccn-play-btn svg {
-          width: 19px;
-          height: 19px;
-        }
-        .ccn-badge {
-          display: none !important;
-        }
-        .ccn-player__eyebrow {
-          font-size: 10px;
-          gap: 6px 8px;
-          margin-bottom: 3px;
-        }
-        .ccn-player__title {
-          font-size: 14px;
-          line-height: 1.35;
-          white-space: normal;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-        .ccn-player__sub {
-          font-size: 11px;
-          gap: 4px 8px;
-          margin-top: 3px;
-        }
-        .ccn-wave-wrap {
-          margin-top: 12px;
-          padding: 10px 8px 6px;
-          border-radius: 12px;
-        }
-        .ccn-wave {
-          height: 44px;
-        }
-        .ccn-controls {
+        .ccn-player-grid {
+          display: flex;
           flex-direction: column;
           align-items: stretch;
+          gap: 14px;
+        }
+        .ccn-player__mid {
+          grid-column: span 1;
+          gap: 12px;
+        }
+        .ccn-play-btn {
+          width: 50px;
+          height: 50px;
+          min-width: 50px;
+          min-height: 50px;
+          font-size: 18px;
+        }
+        .ccn-wave {
+          height: 54px;
+        }
+        .ccn-player__side {
+          flex-direction: row;
+          justify-content: flex-end;
+          align-items: center;
           gap: 8px;
-          margin-top: 10px;
-        }
-        .ccn-controls__left {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1.25fr;
-          gap: 6px;
           width: 100%;
         }
-        .ccn-controls__left .ccn-chip-btn {
-          justify-content: center;
-          min-height: 42px;
-          font-size: 12px;
-          padding: 0 4px;
+        .ccn-vol-label {
+          display: flex;
         }
-        .ccn-controls__right {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 6px;
-          width: 100%;
-        }
-        .ccn-controls__right .ccn-chip-btn {
-          justify-content: center;
-          min-height: 42px;
-          font-size: 11px;
-          padding: 0 4px;
-          text-align: center;
-        }
-        .ccn-volume {
-          display: none !important;
-        }
-        .ccn-shortcuts-hint {
-          display: none !important;
-        }
-        .ccn-status {
-          justify-content: center;
-          font-size: 11px;
-          text-align: center;
-          margin-top: 8px;
+        .ccn-vol-input {
+          width: 72px;
         }
       }
     </style>
@@ -1247,7 +1156,7 @@ ${JSON.stringify(jsonLd, null, 2)}
         </div>` : ''}
 
         ${hasPublishedAudio ? `
-        <!-- CCN Audio Player Premium 2026 -->
+        <!-- CCN Audio Player Standard 2026 -->
         <section
           class="ccn-player"
           data-ccn-audio-player="true"
@@ -1259,116 +1168,88 @@ ${JSON.stringify(jsonLd, null, 2)}
           data-duration-seconds="${escapeAttribute(String(article.audio.durationSeconds || 1071.368))}"
           data-publication-status="published"
           data-peaks="${escapeAttribute(JSON.stringify(article.audio.peaks || []))}"
-          aria-label="Odtwarzacz nagrania artykułu"
+          aria-label="Posłuchaj artykułu"
         >
           <audio class="ccn-audio-el" preload="metadata" src="${escapeAttribute(article.audio.src || article.audio.audioUrl || '')}" crossorigin="anonymous"></audio>
 
-          <div class="ccn-player__top">
-            <button class="ccn-play-btn ccn-play" type="button" data-action="toggle" aria-label="Odtwórz nagranie">
-              <svg viewBox="0 0 24 24" data-icon="play" aria-hidden="true">
-                <path d="M8 5.5v13l10.5-6.5L8 5.5z"></path>
-              </svg>
-              <svg viewBox="0 0 24 24" data-icon="pause" aria-hidden="true" hidden>
-                <path d="M6.5 5h4v14h-4V5zm7 0h4v14h-4V5z"></path>
-              </svg>
-            </button>
-
-            <div class="ccn-player__meta">
-              <div class="ccn-player__eyebrow">
-                <span class="ccn-dot"></span>
-                <span>CCN Audio Edition</span>
-                <span>•</span>
-                <span data-role="reader">${escapeHtml(article.audio.reader || 'AI Lektor')}</span>
-              </div>
+          <div class="ccn-player-grid">
+            <div class="ccn-player__info">
+              <div class="ccn-player__eyebrow">POSŁUCHAJ ARTYKUŁU</div>
               <h2 class="ccn-player__title" data-role="title">${escapeHtml(article.audio.title)}</h2>
-              <div class="ccn-player__sub">
-                <span>Wersja do odsłuchu artykułu</span>
-                <span>•</span>
-                <span data-role="duration-label">Czas: ${formatDurationClock(article.audio.durationSeconds)}</span>
+              <div class="ccn-player__meta">
+                <span>Czyta:</span>
+                <strong class="ccn-player__reader" data-role="reader">${escapeHtml(article.audio.reader || 'AI Lektor')}</strong>
+                <span>·</span>
+                <span>Czas:</span>
+                <span data-role="duration-label">${formatDurationClock(article.audio.durationSeconds)}</span>
               </div>
             </div>
 
-            <div class="ccn-badge">${escapeHtml(portalName)} • Audio</div>
-          </div>
-
-          <div class="ccn-wave-wrap">
-            <div class="ccn-wave" data-role="waveform" aria-hidden="true"></div>
-            <input
-              class="ccn-range"
-              type="range"
-              min="0"
-              max="1000"
-              value="0"
-              step="1"
-              data-role="seek"
-              aria-label="Przewijanie nagrania"
-            />
-            <div class="ccn-time-row">
-              <span data-role="current-time">00:00</span>
-              <span data-role="total-time">${formatDurationClock(article.audio.durationSeconds)}</span>
-            </div>
-          </div>
-
-          <div class="ccn-controls">
-            <div class="ccn-controls__left">
-              <button class="ccn-chip-btn" type="button" data-action="back15" aria-label="Cofnij o 15 sekund">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6a6 6 0 0 1-6 6 6 6 0 0 1-5.65-4H4.26A8 8 0 0 0 12 21a8 8 0 0 0 0-16z"></path></svg>
-                <span>-15s</span>
+            <div class="ccn-player__mid">
+              <button class="ccn-play-btn ccn-play" type="button" data-action="toggle" aria-label="Odtwórz nagranie" title="Odtwórz / Pauza">
+                <span class="ccn-play-icon" data-icon="state">▶</span>
               </button>
 
-              <button class="ccn-chip-btn" type="button" data-action="forward15" aria-label="Przewiń o 15 sekund">
-                <span>+15s</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6a6 6 0 0 0 6 6 6 6 0 0 0 5.65-4h2.09A8 8 0 0 1 12 21a8 8 0 0 1 0-16z"></path></svg>
-              </button>
-
-              <button class="ccn-chip-btn" type="button" data-action="speed" aria-label="Zmień prędkość odtwarzania">
-                <span>Prędkość:</span>
-                <strong data-role="speed">1×</strong>
-              </button>
+              <div class="ccn-wave-col">
+                <div class="ccn-wave" data-role="waveform" role="slider" aria-label="Pozycja odtwarzania" tabindex="0">
+                  <div class="ccn-playhead"></div>
+                </div>
+                <div class="ccn-time-row">
+                  <span class="ccn-time-now" data-role="current-time">00:00</span>
+                  <span data-role="time-status">
+                    <span data-role="current-time-alt">00:00</span> / <span data-role="total-time">${formatDurationClock(article.audio.durationSeconds)}</span>
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div class="ccn-controls__right">
-              <div class="ccn-volume">
-                <button class="ccn-chip-btn" style="min-height:32px;padding:0 8px;border:0;background:transparent" type="button" data-action="mute" aria-label="Wycisz lub włącz dźwięk">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+            <div class="ccn-player__side">
+              <div class="ccn-player__actions">
+                <button class="ccn-speed-btn" type="button" data-action="speed" aria-label="Prędkość odtwarzania" title="Zmień prędkość">
+                  <span data-role="speed">1× ▾</span>
                 </button>
-                <input type="range" min="0" max="1" step="0.01" value="1" data-role="volume" aria-label="Głośność" />
+
+                <button class="ccn-mute-btn" type="button" data-action="mute" aria-label="Wycisz lub włącz dźwięk" title="Wycisz / Dźwięk">
+                  <span class="ccn-mute-icon">◖))</span>
+                </button>
+
+                ${article.audio.driveId ? `
+                <button class="ccn-fallback-toggle-btn" type="button" data-action="toggle-fallback" aria-expanded="false" title="Opcje źródła / Odtwarzacz zapasowy">
+                  <span>☷</span>
+                </button>` : ''}
               </div>
 
-              ${article.audio.driveId ? `
-              <button class="ccn-chip-btn" type="button" data-action="toggle-fallback">
-                <span>Odtwarzacz zapasowy</span>
-              </button>
-
-              <a
-                class="ccn-chip-btn"
-                data-role="external-link"
-                href="https://drive.google.com/file/d/${escapeAttribute(article.audio.driveId)}/view?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>Źródło nagrania</span>
-              </a>` : ''}
+              <label class="ccn-vol-label">
+                <span>◖</span>
+                <input class="ccn-vol-input" type="range" min="0" max="1" step="0.05" value="0.85" data-role="volume" aria-label="Głośność" />
+              </label>
             </div>
           </div>
 
-          <div class="ccn-status">
-            <span data-role="status">Gotowe do odtworzenia</span>
-            <span class="ccn-shortcuts-hint">Skróty: <strong>Spacja</strong> odtwórz/pauza • <strong>←/→</strong> 15 s</span>
+          <div class="ccn-player-status" role="status" data-role="status">
+            Źródło audio skonfigurowane. Naciśnij Odtwórz.
           </div>
 
           ${article.audio.driveId ? `
           <div class="ccn-drive-fallback" data-role="fallback">
-            <div class="ccn-drive-fallback__head">
-              <span>Zapasowy odtwarzacz Google Drive (gdy przeglądarka blokuje bezpośredni strumień audio)</span>
-              <a href="https://drive.google.com/file/d/${escapeAttribute(article.audio.driveId)}/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color:#ead39c;text-decoration:none;font-weight:700;">Otwórz w nowej karcie</a>
-            </div>
+            <p style="margin-bottom: 8px;">
+              <strong>Zapasowe źródło Google Drive:</strong> Możesz również odsłuchać lub pobrać nagranie bezpośrednio z Dysku Google.
+            </p>
             <iframe
-              title="Odtwarzacz zapasowy nagrania CCN"
+              title="Podgląd nagrania na Dysku Google"
               loading="lazy"
               allow="autoplay"
               data-role="drive-iframe"
             ></iframe>
+            <p style="margin-top: 8px;">
+              <a
+                href="https://drive.google.com/file/d/${escapeAttribute(article.audio.driveId)}/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Otwórz oryginalny plik audio w Google Drive ↗
+              </a>
+            </p>
           </div>` : ''}
         </section>` : ''}
 
