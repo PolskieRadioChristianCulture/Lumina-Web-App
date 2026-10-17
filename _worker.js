@@ -1127,7 +1127,16 @@ async function serveAgentsMap(request) {
 // ──────────────────────────────────────────────────────────────────────────
 const SUPPORT_ORIGIN = 'https://polskieradio.cc';
 const SUPPORT_SOURCES = new Set(['patronite', 'youtube', 'bank', 'blik', 'revolut', 'zrzutka']);
-const SUPPORT_ALIASES = new Set(['/wsparcie', '/pomoc', '/darowizna', '/donate']);
+const SUPPORT_ALIASES = new Set([
+  '/patron', '/patronat', '/patroni',
+  '/mecenas', '/mecenat', '/mecenasi',
+  '/wesprzyj', '/wsparcie', '/pomoc',
+  '/darowizna', '/darowizny', '/dar', '/ofiara', '/ofiary',
+  '/dziesiecina', '/dziesięcina',
+  '/donate', '/donation', '/donations',
+  '/support',
+  '/patronite', '/zrzutka', '/zrzutki'
+]);
 
 function supportNormalizeName(value) {
   return String(value || '').normalize('NFC').replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069<>]/g, '').trim().slice(0, 60);
@@ -1327,8 +1336,14 @@ async function handleSupportRoute(request, env) {
       },
     });
   }
-  // Bezkonfliktowe aliasy z README.md
-  if (SUPPORT_ALIASES.has(path) || url.pathname === '/wspieraj.html') {
+  // Bezkonfliktowe aliasy z README.md oraz popularne linki alternatywne (/patron, /mecenas, /wesprzyj itd.)
+  let decodedPath = path.toLowerCase();
+  try {
+    decodedPath = decodeURIComponent(path).toLowerCase();
+  } catch (e) {}
+  const basePath = decodedPath.replace(/\.html$/, '');
+
+  if (SUPPORT_ALIASES.has(decodedPath) || SUPPORT_ALIASES.has(basePath) || url.pathname === '/wspieraj.html') {
     const targetUrl = new URL(request.url);
     targetUrl.pathname = '/wspieraj';
     return Response.redirect(targetUrl.toString(), 301);
