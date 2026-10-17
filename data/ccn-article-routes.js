@@ -53,6 +53,8 @@ export default {
     "czy-bog-naprawde-jest-miloscia-odpowiedz-na-najtrudniejsze-pytania-o-cierpienie-i-charakter-ojca": "/news/czy-bog-naprawde-jest-miloscia-odpowiedz-na-najtrudniejsze-pytania-o-cierpienie-i-charakter-ojca",
     "art-u-boku-diabla-etyka-korporacji": "/news/u-boku-diabla-cyfrowe-korporacje-07-sekundy-uwagi-i-cena-jaka-placimy-za-sukces",
     "u-boku-diabla-cyfrowe-korporacje-07-sekundy-uwagi-i-cena-jaka-placimy-za-sukces": "/news/u-boku-diabla-cyfrowe-korporacje-07-sekundy-uwagi-i-cena-jaka-placimy-za-sukces",
+    "art-z-biblia-za-pan-brat-dzien-19": "/news/gdy-probujemy-pomoc-bogu-oszustwem-anatomia-podstepu-jakuba-i-teologia-prawdy-rdz-27",
+    "gdy-probujemy-pomoc-bogu-oszustwem-anatomia-podstepu-jakuba-i-teologia-prawdy-rdz-27": "/news/gdy-probujemy-pomoc-bogu-oszustwem-anatomia-podstepu-jakuba-i-teologia-prawdy-rdz-27",
     "art-z-biblia-za-pan-brat-dzien-18": "/news/jakub-ezaw-i-studnie-izaaka-anatomia-wartosci-pokusy-chwili-i-przymierza-pokoju-rdz-25-26",
     "jakub-ezaw-i-studnie-izaaka-anatomia-wartosci-pokusy-chwili-i-przymierza-pokoju-rdz-25-26": "/news/jakub-ezaw-i-studnie-izaaka-anatomia-wartosci-pokusy-chwili-i-przymierza-pokoju-rdz-25-26",
     "art-z-biblia-za-pan-brat-dzien-17": "/news/wiara-patrzaca-w-przyszlosc-grota-machpela-decyzja-rebeki-i-boza-opatrznosc-w-codziennosci-rdz-23-24",
