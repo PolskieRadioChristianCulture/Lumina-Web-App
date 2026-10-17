@@ -18,11 +18,12 @@ function fixture(options = {}) {
     <button id="tab-mode-reading"></button><button id="tab-mode-sync"></button>
     <span id="hero-sync-status-indicator"></span>
     <div id="hero-karaoke-viewport"><div id="hero-karaoke-lines"></div></div>
-  </div></div><div id="player-section"><div class="master-player-card"><div class="player-deck"></div></div></div>`;
+  </div></div><div id="player-section"><div class="master-player-card"><div class="player-deck"></div><iframe id="yt-player-target"></iframe></div></div>`;
   let seconds = 0;
   let duration = 100;
   let tick;
   let videoId = 'video-A';
+  let intervals = 0;
   const seeks = [];
   const pending = new Map();
   window.PLAYLIST_DATA = [{ chapterId: 'GEN-001', videoId: 'video-A' }];
@@ -42,15 +43,53 @@ function fixture(options = {}) {
     return { ok: true, json: async () => url.includes('/bible/') ? lyrics(id) : url.includes('/bu-karaoke/') ? sync(id) : { items: [] } };
   };
   const context = vm.createContext({ window, document, localStorage: window.localStorage,
-    fetch, console, URL, setInterval: callback => { tick = callback; return 1; }, clearInterval: () => { tick = null; },
+    fetch, console, URL, setInterval: callback => { intervals++; tick = callback; return 1; }, clearInterval: () => { tick = null; },
     alert: () => {}, setTimeout, clearTimeout });
   vm.runInContext(source, context);
   return { window, document, seeks, pending, api: window.CC_BU_FEATURES,
     setTime: value => { seconds = value; tick?.(); }, setDuration: value => { duration = value; },
-    setVideo: value => { videoId = value; }, tick: () => tick?.(), sync,
+    setVideo: value => { videoId = value; }, tick: () => tick?.(), sync, intervals: () => intervals,
     active: () => document.querySelector('.bu-line.active')?.dataset.index,
     load: id => window.startChapterKaraoke(id, 'sync') };
 }
+
+test('fullscreen preserves the iframe, player, playhead, cue and single sync timer', async () => {
+  const f = fixture();
+  await f.load('GEN-001');
+  f.setTime(12);
+  const iframe = f.document.getElementById('yt-player-target');
+  const parent = iframe.parentNode;
+  const sectionParent = f.document.getElementById('player-section').parentNode;
+  const player = f.window.ytPlayer;
+  const intervals = f.intervals();
+  let requested = null;
+  f.document.documentElement.requestFullscreen = async function () { requested = this; };
+  for (let i = 0; i < 3; i++) {
+    await f.api.toggleFullscreen();
+    assert.equal(requested, f.document.documentElement);
+    assert.equal(f.document.getElementById('yt-player-target'), iframe);
+    assert.equal(iframe.parentNode, parent);
+    assert.equal(f.document.getElementById('player-section').parentNode, sectionParent);
+    assert.equal(f.window.ytPlayer, player);
+    assert.equal(player.getCurrentTime(), 12);
+    assert.equal(f.active(), '1');
+    assert.equal(f.intervals(), intervals);
+    await f.api.toggleFullscreen();
+    assert.equal(f.document.body.classList.contains('has-karaoke-fullscreen'), false);
+  }
+  f.setTime(32);
+  assert.equal(f.active(), '3');
+  f.setTime(2);
+  assert.equal(f.active(), '0');
+});
+
+test('HTML loads one canonical engine instead of the stale inline snapshot', () => {
+  const html = fs.readFileSync(path.join(root, 'biblijne-uwielbienie.html'), 'utf8');
+  const window = new Window();
+  window.document.body.innerHTML = html;
+  assert.equal(window.document.getElementById('bu-karaoke-inline-v4').type, 'application/x-cc-legacy-karaoke');
+  assert.equal(window.document.querySelectorAll('script[src*="assets/bu/karaoke-top100.js"]').length, 1);
+});
 
 test('karaoke follows only the selected chapter and loaded video', async () => {
   const f = fixture();

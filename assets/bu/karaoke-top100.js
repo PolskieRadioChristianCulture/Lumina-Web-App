@@ -663,8 +663,10 @@
       margin: 0 auto !important;
       display: flex !important;
       flex-direction: column !important;
-      justify-content: center !important;
+      justify-content: flex-start !important;
       align-items: center !important;
+      min-height: 0 !important;
+      margin-bottom: var(--bu-player-dock-height, 150px) !important;
       background: transparent !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
@@ -679,6 +681,7 @@
       z-index: 10 !important;
     }
     #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines {
+      flex-shrink: 0 !important;
       width: 100% !important;
       max-width: 1200px !important;
       margin: auto !important;
@@ -772,16 +775,20 @@
       display: none !important;
     }
     /* Master Player Dock in Fullscreen */
-    #hero-karaoke-stage.is-fullscreen #player-section {
+    body.has-karaoke-fullscreen #player-section.is-karaoke-docked {
+      position: fixed !important;
+      bottom: max(8px, env(safe-area-inset-bottom)) !important;
+      left: 0 !important;
+      right: 0 !important;
       width: 100% !important;
       max-width: 1200px !important;
       margin: 0 auto !important;
       padding: 0 !important;
-      z-index: 30 !important;
+      z-index: 100001 !important;
       flex-shrink: 0 !important;
       transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
-    #hero-karaoke-stage.is-fullscreen #player-section .master-player-card {
+    body.has-karaoke-fullscreen #player-section.is-karaoke-docked .master-player-card {
       background: linear-gradient(135deg, rgba(16, 24, 39, 0.90) 0%, rgba(23, 34, 56, 0.95) 100%) !important;
       backdrop-filter: blur(20px) !important;
       -webkit-backdrop-filter: blur(20px) !important;
@@ -790,6 +797,11 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(196, 163, 90, 0.2) !important;
       padding: 10px 18px !important;
       margin: 0 !important;
+    }
+    body.has-karaoke-fullscreen #player-section .patron-chapter-module,
+    body.has-karaoke-fullscreen #player-section .youtube-stage-drawer,
+    body.has-karaoke-fullscreen #player-section .bu-karaoke-settings {
+      display: none !important;
     }
 
     /* ==========================================================================
@@ -806,7 +818,7 @@
       pointer-events: none !important;
       transform: translateY(-24px) !important;
     }
-    #hero-karaoke-stage.is-fullscreen.bu-idle-hidden #player-section {
+    body.has-karaoke-fullscreen:has(#hero-karaoke-stage.bu-idle-hidden) #player-section.is-karaoke-docked {
       opacity: 0 !important;
       pointer-events: none !important;
       transform: translateY(24px) !important;
@@ -849,7 +861,7 @@
       #hero-karaoke-stage.is-fullscreen .hero-karaoke-topbar .hero-karaoke-subtitle {
         display: none !important;
       }
-      #hero-karaoke-stage.is-fullscreen #player-section .master-player-card {
+      body.has-karaoke-fullscreen #player-section.is-karaoke-docked .master-player-card {
         padding: 4px 12px !important;
       }
       #hero-karaoke-stage.is-fullscreen #hero-karaoke-lines {
@@ -1488,21 +1500,22 @@
 
   function isMatchingTrack() {
     const track = currentTrack();
-    if (!track) return true;
-    if (track.chapterId && state.chapterId && track.chapterId !== state.chapterId) {
+    if (track?.chapterId && state.chapterId && track.chapterId !== state.chapterId) {
       return false;
+    }
+    const expectedVideo = state.sync?.videoId || track?.videoId;
+    if (expectedVideo) {
+      try {
+        const loadedVideo = player()?.getVideoData?.()?.video_id;
+        if (!loadedVideo || loadedVideo !== expectedVideo) return false;
+      } catch { return false; }
     }
     return true;
   }
 
   function getLineScrollTop(line, vp) {
-    let top = 0;
-    let curr = line;
-    while (curr && curr !== vp) {
-      top += curr.offsetTop;
-      curr = curr.offsetParent;
-    }
-    return top;
+    // offsetParent may skip the scrolling viewport entirely in fullscreen.
+    return line.getBoundingClientRect().top - vp.getBoundingClientRect().top + vp.scrollTop;
   }
 
   let activeScrollAnimation = null;
@@ -2063,8 +2076,9 @@
         statusEl.textContent = '♫ Przerwa muzyczna ···';
         statusEl.style.color = '#ffe2a5';
       } else {
-        statusEl.textContent = isPrimed ? 'Za chwilę' : isHolding ? 'Pauza' : 'Śpiewaj z tekstem';
-        statusEl.style.color = '#4ade80';
+        const label = isPrimed ? 'Za chwilę' : isHolding ? 'Pauza' : 'Śpiewaj z tekstem';
+        statusEl.textContent = state.sync.status === 'SYNC_REVIEW' ? `${label} · synchronizacja do odsłuchu` : label;
+        statusEl.style.color = state.sync.status === 'SYNC_REVIEW' ? '#fbbf24' : '#4ade80';
       }
     }
 
@@ -2405,26 +2419,18 @@
   }
 
   function dockPlayerForFullscreen(isFs) {
-    const stage = document.getElementById('hero-karaoke-stage');
     const playerSection = document.getElementById('player-section');
-    if (!stage || !playerSection) return;
+    // Reparenting an iframe destroys its browsing context and can reset YouTube.
+    // Fullscreen uses a stable common ancestor; docking is presentation only.
+    playerSection?.classList.toggle('is-karaoke-docked', Boolean(isFs));
+  }
 
-    let placeholder = document.getElementById('player-section-placeholder');
-    if (isFs) {
-      if (!placeholder) {
-        placeholder = document.createElement('div');
-        placeholder.id = 'player-section-placeholder';
-        placeholder.style.display = 'none';
-        playerSection.before(placeholder);
-      }
-      const inner = stage.querySelector('.hero-karaoke-inner') || stage;
-      inner.appendChild(playerSection);
-    } else {
-      if (placeholder && placeholder.parentNode) {
-        placeholder.before(playerSection);
-        placeholder.remove();
-      }
-    }
+  // Reserve only the space actually used by the stable player dock.
+  if (typeof ResizeObserver !== 'undefined') {
+    const dock = document.getElementById('player-section');
+    if (dock) new ResizeObserver(() => {
+      document.getElementById('hero-karaoke-stage')?.style.setProperty('--bu-player-dock-height', `${dock.getBoundingClientRect().height + 16}px`);
+    }).observe(dock);
   }
 
   function setFullscreenState(isFs) {
@@ -2495,15 +2501,16 @@
 
     if (willBeFs) {
       setFullscreenState(true);
-      if (stage.requestFullscreen) {
+      const fullscreenRoot = document.documentElement;
+      if (fullscreenRoot.requestFullscreen) {
         try {
-          await stage.requestFullscreen();
+          await fullscreenRoot.requestFullscreen();
         } catch (err) {
           console.warn('[BU Fullscreen] requestFullscreen fallback:', err);
         }
-      } else if (stage.webkitRequestFullscreen) {
+      } else if (fullscreenRoot.webkitRequestFullscreen) {
         try {
-          await stage.webkitRequestFullscreen();
+          await fullscreenRoot.webkitRequestFullscreen();
         } catch (err) {
           console.warn('[BU Fullscreen] webkitRequestFullscreen fallback:', err);
         }
@@ -2522,7 +2529,7 @@
   }
 
   function onFullscreenChange() {
-    const isNativeFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+    const isNativeFs = (document.fullscreenElement || document.webkitFullscreenElement) === document.documentElement;
     if (!isNativeFs && state.isFullscreen) {
       setFullscreenState(false);
     } else if (isNativeFs && !state.isFullscreen) {

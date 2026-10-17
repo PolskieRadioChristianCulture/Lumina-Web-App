@@ -5,6 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
+    "test:karaoke-p0": "node --test tests/bu-karaoke-playback.test.mjs tests/bu-live-clock.test.mjs tests/bu-karaoke-vocal.test.mjs tests/bu-karaoke-top100.test.mjs tests/bu-karaoke-sync2.test.mjs tests/bu-karaoke-precision.test.mjs",
     "test:source-integrity": "node --test scripts/cc-source-check.test.mjs",
     "dev": "node server.js",
     "dev:lumina": "vite",

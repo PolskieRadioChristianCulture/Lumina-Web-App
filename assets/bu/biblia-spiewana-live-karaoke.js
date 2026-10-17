@@ -184,29 +184,8 @@
       }
     }
 
-    if (playlist.length > 0) {
-      const totalDur = playlist.reduce((acc, t) => acc + (t.duration || 240), 0) || 9294;
-      let rem = Math.floor(Date.now() / 1000) % totalDur;
-      let chosen = playlist[0];
-      for (const item of playlist) {
-        const d = item.duration || 240;
-        if (rem < d) {
-          chosen = item;
-          break;
-        }
-        rem -= d;
-      }
-      if (chosen) {
-        const chId = resolveChapterFromTrack(chosen, '');
-        return {
-          track: chosen,
-          chapterId: chId,
-          title: chosen.title || (chId ? formatChapterTitle(chId) : 'Biblia Śpiewana')
-        };
-      }
-    }
-
-    return { track: null, chapterId: 'PRO-001', title: formatChapterTitle('PRO-001') };
+    // A schedule is not proof that this audio has loaded that track.
+    return { track: null, chapterId: null, title: 'Oczekiwanie na odtwarzacz audio' };
   }
 
   function formatChapterTitle(chapterId) {
@@ -1663,18 +1642,9 @@
     }
 
     const audio = getStreamAudio();
-    let rawTime = audio ? Number(audio.currentTime || 0) : 0;
-    // Jeżeli odtwarzacz oczekuje jeszcze na gest użytkownika lub ładowanie metadanych,
-    // synchronizuj bezpośrednio z 24/7 zegarem emisji kanału LIVE
-    if (rawTime < 0.2 && (!audio || audio.paused) && !state.manualChapterOverride) {
-      if (Number.isFinite(window.currentWorshipTrackOffset)) {
-        const elapsedSinceSync = window.currentWorshipTrackSyncedAtMs
-          ? Math.max(0, (Date.now() - window.currentWorshipTrackSyncedAtMs) / 1000)
-          : 0;
-        const trackDur = window.currentWorshipTrack?.duration || 300;
-        rawTime = Math.min(trackDur - 0.5, window.currentWorshipTrackOffset + elapsedSinceSync);
-      }
-    }
+    // Follow only the audio playhead, including pauses and buffering.
+    const rawTime = Number(audio?.currentTime);
+    if (!audio || !Number.isFinite(rawTime)) return;
 
     const now = rawTime + (state.offsetMs || 0) / 1000;
     const segments = state.sync.lines;
