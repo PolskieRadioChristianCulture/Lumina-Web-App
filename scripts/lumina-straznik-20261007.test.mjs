@@ -407,7 +407,7 @@ test('LUMI KIDS pilotaż /lumi-kids/app/: tylko kolekcje kids_*, bez innerHTML, 
   assert.doesNotMatch(h + j, /@icloud\.com/i);
   const cols = [...j.matchAll(/(?:collection|doc)\(db,\s*'([a-z_]+)/g)].map(m => m[1]);
   assert.ok(cols.length > 5);
-  const allowed = new Set(['lumina_direct_messages', 'lumina_chats', 'lumina_message_requests', 'lumina_profiles']);
+  const allowed = new Set(['lumina_direct_messages', 'lumina_chats', 'lumina_message_requests', 'lumina_profiles', 'LuminaDeviceTokens']);
   for (const c of cols) assert.ok(/^kids_/.test(c) || allowed.has(c), 'LUMI KIDS: niedozwolona kolekcja ' + c);
   assert.doesNotMatch(j, /kids_conversations/, 'jeden magazyn wiadomości — wspólny DM LUMINA');
   assert.match(j, /sendEmailVerification/);
@@ -456,4 +456,44 @@ test('LUMI KIDS hero: grafika bez napisów + żywy HTML, bez zdjęcia dziecka; a
   const { applyPageStandard } = await import('./cc-page-standard.mjs');
   const raw = '<html><body>x</body></html>';
   assert.equal(applyPageStandard('lumi-kids/app/index.html', raw), raw);
+});
+
+test('LUMI KIDS: powiadomienie na urządzeniu dziecka otwiera tylko /lumi-kids/app/, gdzie indziej bez zmian', async () => {
+  const vm = await import('node:vm');
+  const src = await readFile('firebase-messaging-sw.js', 'utf8');
+  const run = async (kidsDevice) => {
+    const listeners = {}, opened = [];
+    vm.runInNewContext(src, {
+      self: { location: { origin: 'https://polskieradio.cc' }, addEventListener: (t, f) => { listeners[t] = f; }, registration: { showNotification: async () => {} } },
+      URL, console: { log() {}, warn() {} }, importScripts: () => { throw Error('offline'); },
+      caches: { open: async () => ({ match: async () => (kidsDevice ? {} : undefined) }) },
+      clients: { matchAll: async () => [], openWindow: async (u) => opened.push(u) },
+    });
+    let pending;
+    listeners.notificationclick({ action: '', notification: { data: { type: 'direct_message', senderId: 'cezaryrgowski', messageId: 'm1' }, close() {} }, stopImmediatePropagation() {}, waitUntil: (p) => { pending = p; } });
+    await pending;
+    return opened[0];
+  };
+  assert.equal(await run(true), 'https://polskieradio.cc/lumi-kids/app/');
+  assert.equal(await run(false), 'https://polskieradio.cc/lumina?openChat=cezaryrgowski&messageId=m1');
+});
+
+test('LUMI KIDS: zdjęcie dziecka tylko prywatnie (miniatura w kids_profiles), PWA i powiadomienia z tokenem konta', async () => {
+  const j = await readFile('lumi-kids/app/app.js', 'utf8');
+  const h = await readFile('lumi-kids/app/index.html', 'utf8');
+  assert.match(j, /setDoc\(doc\(db, 'kids_profiles', childUid\), \{ photo: dataUrl/);
+  assert.match(j, /cv\.width = 256/);
+  assert.doesNotMatch(j, /getStorage|uploadBytes|firebase-storage\.js/);
+  assert.match(j, /setDoc\(doc\(db, 'LuminaDeviceTokens', key\), \{\s*token, uid: me\.uid/);
+  assert.match(j, /caches\.open\('lumi-kids-device'\)/);
+  assert.match(h, /rel="manifest" href="\/lumi-kids\/app\/manifest\.webmanifest"/);
+  const pub = await readFile('lumi-kids/index.html', 'utf8');
+  assert.doesNotMatch(pub, /data:image|dawidek-photo/i);
+});
+
+test('LUMI KIDS: brak publicznego wizerunku i danych osobowych dziecka w kodzie (aplikacja, okienka LUMI)', async () => {
+  for (const f of ['lumi-kids/app/app.js', 'components/lumi-direct-dock-adapter.js', 'lumi-kids/index.html']) {
+    const src = await readFile(f, 'utf8');
+    assert.doesNotMatch(src, /dawidek-avatar|dawidek-photo|birthDate|data urodzenia|Dawid Rogowski|Rogowskiego/i, f);
+  }
 });

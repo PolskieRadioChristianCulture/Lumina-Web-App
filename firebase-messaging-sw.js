@@ -315,9 +315,36 @@ self.addEventListener('push', (event) => {
 // ══════════════════════════════════════════════════════════════════════════
 // NOTIFICATION CLICK HANDLER — DEEP-LINKING TO PAGES & CHAT
 // ══════════════════════════════════════════════════════════════════════════
+// LUMI KIDS (Strażnik Claude, 2026-10-18): na urządzeniu oznaczonym przez aplikację LUMI KIDS
+// każde powiadomienie otwiera wyłącznie /lumi-kids/app/ — dziecko nie trafia do portalu LUMINA.
+function isLumiKidsDevice() {
+    try {
+        return caches.open('lumi-kids-device').then((c) => c.match('/__lumi-kids-device')).then((r) => !!r).catch(() => false);
+    } catch (_) { return Promise.resolve(false); }
+}
+function openLumiKids() {
+    const target = self.location.origin + '/lumi-kids/app/';
+    return clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+        for (const c of list) {
+            if (c.url && c.url.indexOf('/lumi-kids/app') !== -1 && 'focus' in c) return c.focus();
+        }
+        return clients.openWindow ? clients.openWindow(target) : null;
+    });
+}
 function handleLuminaNotificationClick(event) {
     event.stopImmediatePropagation();
     event.notification.close();
+    event.waitUntil(isLumiKidsDevice().then((kids) => {
+        if (kids) return openLumiKids();
+        const inner = [];
+        handleLuminaNotificationClickDefault({
+            action: event.action, notification: event.notification,
+            stopImmediatePropagation() {}, waitUntil(p) { inner.push(p); }
+        });
+        return Promise.all(inner);
+    }));
+}
+function handleLuminaNotificationClickDefault(event) {
     const action = event.action;
     const notificationData = event.notification.data || {};
     const fcmPayload = notificationData.FCM_MSG;

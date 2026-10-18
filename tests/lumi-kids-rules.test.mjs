@@ -179,3 +179,20 @@ test('Zgłoszenie do pilotażu: tylko własne, zweryfikowane konto, poprawne pol
   await seed();
   await assertFails(setDoc(doc(child(), `kids_waitlist/${CHILD}`), ok(CHILD, KID_EMAIL)));
 });
+
+test('T17. Zdjęcie dziecka (kids_profiles.photo): widzą je tylko dziecko i zatwierdzeni; dziecko nie podmieni zdjęcia', async () => {
+  await seed();
+  await assertSucceeds(setDoc(doc(admin(), `kids_profiles/${CHILD}`), { displayName: 'Dziecko', photo: 'data:image/webp;base64,AAAA' }));
+  await assertSucceeds(getDoc(doc(child(), `kids_profiles/${CHILD}`)));
+  await assertSucceeds(getDoc(doc(mom(), `kids_profiles/${CHILD}`)));
+  await assertFails(getDoc(doc(stranger(), `kids_profiles/${CHILD}`)));
+  await assertFails(getDoc(doc(env.unauthenticatedContext().firestore(), `kids_profiles/${CHILD}`)));
+  await assertFails(setDoc(doc(child(), `kids_profiles/${CHILD}`), { displayName: 'Dziecko', photo: 'data:image/webp;base64,BBBB' }));
+});
+
+test('Powiadomienia: dziecko zapisuje własny token urządzenia, nie cudzy; nikt poza administracją go nie odczyta', async () => {
+  await seed();
+  await assertSucceeds(setDoc(doc(child(), 'LuminaDeviceTokens/tok1'), { token: 't', uid: CHILD, enabled: true }));
+  await assertFails(setDoc(doc(child(), 'LuminaDeviceTokens/tok2'), { token: 't', uid: PARENT, enabled: true }));
+  await assertFails(getDoc(doc(stranger(), 'LuminaDeviceTokens/tok1')));
+});

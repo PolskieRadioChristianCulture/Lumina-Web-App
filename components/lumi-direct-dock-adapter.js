@@ -26,15 +26,16 @@
                     participants.find(p => p && p !== myUid && p !== myId) ||
                     chat.otherSlug || chat.otherId || 'uzytkownik';
 
-    const isDawid = otherId === 'gm3maVXebCRQ8hLpze63HLRtAkn2' || chat.kidsFamily;
+    // Rodzinna rozmowa LUMI KIDS: nazwa i miniatura tylko z prywatnego dokumentu rozmowy (bez publicznych plików z wizerunkiem dziecka).
+    const isDawid = chat.kidsFamily === true;
 
-    const name = (isDawid ? (chat.otherName || 'Dawid Rogowski · LUMI KIDS') : null) ||
+    const name = (isDawid ? (chat[`name_${otherId}`] || chat.otherName || 'Rozmowa rodzinna · LUMI KIDS') : null) ||
                  chat.otherName || 
                  chat[`name_${otherId}`] || 
                  (otherId === chat.lastSenderId ? chat.lastSenderName : null) || 
                  (otherId === 'radiocc' ? 'Christian Culture' : (otherId === 'cezaryrgowski' ? 'Cezary Rogowski' : (otherId === 'wiolettarogowska' ? 'Wioletta Rogowska' : otherId)));
 
-    const avatarUrl = (isDawid ? (chat.otherAvatar || '/lumi-kids/assets/dawidek-avatar.webp') : null) ||
+    const avatarUrl = (isDawid ? (chat[`avatar_${otherId}`] || chat.otherAvatar || '/lumi-kids/assets/lumi-kids-logo.svg') : null) ||
                       chat.otherAvatar || 
                       chat[`avatar_${otherId}`] || 
                       (otherId === chat.lastSenderId ? chat.lastSenderAvatar : null) || 

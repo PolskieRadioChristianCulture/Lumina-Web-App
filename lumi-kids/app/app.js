@@ -16,6 +16,7 @@ import {
   getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, orderBy, limit, getDocs,
   onSnapshot, addDoc, serverTimestamp, deleteField
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getMessaging, getToken, isSupported as messagingSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
 
 // Flaga funkcjonalna po stronie klienta. Właściwa flaga to kids_pilot/config.enabled (serwer).
 const LUMI_KIDS_PILOT_ENABLED = true;
@@ -109,7 +110,7 @@ function fmtTime(ts) {
   motionBtn.addEventListener('click', () => { off = !off; try { localStorage.setItem('lumikids.noMotion', off ? '1' : '0'); } catch (e) {} apply(); });
   apply();
 })();
-logoutBtn.addEventListener('click', async () => { clearSubs(); await signOut(auth); });
+logoutBtn.addEventListener('click', async () => { clearSubs(); try { await caches.delete('lumi-kids-device'); } catch (e) {} await signOut(auth); });
 
 // ── Ekrany logowania ─────────────────────────────────────────────────────────
 function screenLogin(msg) {
@@ -208,7 +209,9 @@ function screenVerify(user) {
 // Rodzic pisze w zwykłym LUMI Messenger, dziecko tutaj — oba widoki czytają i zapisują
 // te same dokumenty `lumina_direct_messages` w jednej rozmowie `chatId`.
 const PUSH_URL = 'https://lumina-push.nazirczarkes.workers.dev';
-const KIDS_AVATAR = '/lumi-kids/assets/dawidek-avatar.webp';
+const KIDS_AVATAR = '/lumi-kids/assets/lumi-kids-logo.svg';
+// Prywatność dziecka: zdjęcie tylko jako miniatura w kids_profiles (reguły), nigdy publiczny plik.
+function privatePhoto(u) { return typeof u === 'string' && /^data:image\/(webp|jpeg|png);base64,/.test(u) ? u : ''; }
 
 // Kopia normalizeChatUserId z lumina-db.js — identyfikator rozmowy musi być identyczny w obu aplikacjach.
 function normId(idOrSlug) {
@@ -328,7 +331,7 @@ async function loadNames(uids) {
       if (s.exists()) {
         const d = s.data();
         names[u] = d.displayName || '';
-        avatars[u] = d.avatarUrl || '';
+        avatars[u] = privatePhoto(d.photo) || privatePhoto(d.avatarUrl) || (typeof d.avatarUrl === 'string' && /^\/avatar_[a-z_]+\.jpg$/.test(d.avatarUrl) ? d.avatarUrl : '');
       } else {
         names[u] = '';
         avatars[u] = '';
@@ -343,9 +346,7 @@ function nameOf(uid, fallback) { return names[uid] || fallback || 'Bliska osoba'
 function avatarOf(uid, fallbackName, small) {
   let url = avatars[uid];
   if (!url) {
-    if (uid === 'gm3maVXebCRQ8hLpze63HLRtAkn2') {
-      url = '/lumi-kids/assets/dawidek-avatar.webp';
-    } else if (normId(uid) === 'cezaryrgowski' || uid === '1zHaEXihQZgz8nzebR0DyC7wLG93' || (fallbackName && String(fallbackName).toLowerCase().includes('tata'))) {
+    if (normId(uid) === 'cezaryrgowski' || uid === '1zHaEXihQZgz8nzebR0DyC7wLG93' || (fallbackName && String(fallbackName).toLowerCase().includes('tata'))) {
       url = '/avatar_cezary.jpg';
     } else if (normId(uid) === 'wiolettarogowska' || uid === 'lr7E9IsM6VaABLvMcrjAN5Lvn0j2' || (fallbackName && String(fallbackName).toLowerCase().includes('mama'))) {
       url = '/avatar_wioletta_official.jpg';
@@ -443,6 +444,57 @@ function popupMessageToast(senderUid, senderName, text, onOpen) {
 }
 
 // ── Widok dziecka ────────────────────────────────────────────────────────────
+// ── Powiadomienia przy zamkniętej aplikacji (to samo FCM co LUMINA) ─────────
+const VAPID_KEY = 'BD_YXGFbonkuMphLzVdYqADfcPX4TMnN4PowO2eu673JnZQR3RJRMM3F8nJN9Zpk8qQlSb4VEcFN39KXlZ85TPw';
+const SW_URL = '/firebase-messaging-sw.js?v=4.1.6_20260914_fullsync';
+function pushState() {
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) return 'unsupported';
+  return Notification.permission; // granted | denied | default
+}
+async function markKidsDevice() {
+  // Na tym urządzeniu kliknięcie powiadomienia otwiera wyłącznie LUMI KIDS (obsługuje to service worker).
+  try { const c = await caches.open('lumi-kids-device'); await c.put('/__lumi-kids-device', new Response('1')); } catch (e) {}
+}
+async function enablePush() {
+  if (pushState() === 'unsupported' || !(await messagingSupported().catch(() => false))) return 'unsupported';
+  const perm = await Notification.requestPermission();
+  if (perm !== 'granted') return perm;
+  await markKidsDevice();
+  const reg = await navigator.serviceWorker.register(SW_URL, { scope: '/', updateViaCache: 'none' });
+  await navigator.serviceWorker.ready;
+  const token = await getToken(getMessaging(app), { vapidKey: VAPID_KEY, serviceWorkerRegistration: reg });
+  if (!token || !auth.currentUser || auth.currentUser.uid !== me.uid) return 'error';
+  const key = token.replace(/[^a-zA-Z0-9_-]/g, '').slice(-32);
+  const platform = /Android/i.test(navigator.userAgent) ? 'android' : (/iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'ios' : 'web');
+  await setDoc(doc(db, 'LuminaDeviceTokens', key), {
+    token, uid: me.uid, slug: await myKey(), userSlug: await myKey(), userName: nameOf(me.uid, ''),
+    platform, userAgent: navigator.userAgent || 'unknown', enabled: true, lastSeenAt: serverTimestamp(), updatedAt: serverTimestamp()
+  }, { merge: true });
+  return 'granted';
+}
+function pushCard() {
+  const st = pushState();
+  const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+  if (st === 'unsupported' && ios && !standalone) {
+    return h('section', { class: 'card' }, h('h2', { text: '🔔 Powiadomienia' }),
+      h('p', { class: 'small', text: 'Na iPhonie: w Safari stuknij „Udostępnij” → „Do ekranu początkowego”, otwórz LUMI KIDS z ikonki i wróć tutaj, aby włączyć powiadomienia.' }));
+  }
+  if (st === 'unsupported') return null;
+  const out = h('div');
+  const btn = h('button', { class: 'btn ghost block', type: 'button', text: st === 'granted' ? '🔔 Powiadomienia włączone — odśwież na tym urządzeniu' : '🔔 Włącz powiadomienia', onclick: async () => {
+    busy(btn, true);
+    let r = 'error';
+    try { r = await enablePush(); } catch (e) { r = 'error'; }
+    busy(btn, false);
+    out.replaceChildren(r === 'granted' ? note('Gotowe! Wiadomości od rodzica pokażą się także przy zamkniętej aplikacji.', 'good')
+      : r === 'denied' ? note('Powiadomienia są zablokowane w ustawieniach przeglądarki. Poproś rodzica o pomoc.', 'err')
+      : note('Nie udało się włączyć powiadomień na tym urządzeniu.', 'err'));
+  } });
+  return h('section', { class: 'card' }, h('h2', { text: '🔔 Powiadomienia' }),
+    h('p', { class: 'muted small', text: 'Dzięki nim zobaczysz wiadomość od rodzica, nawet gdy LUMI KIDS jest zamknięte.' }), btn, out);
+}
+
 async function screenChild() {
   const contacts = (cfg.contacts || []).filter(u => u !== me.uid && cfg.familyChats && cfg.familyChats[u]);
   await loadNames([me.uid, ...contacts]);
@@ -459,8 +511,10 @@ async function screenChild() {
         h('div', {}, h('h1', { text: 'Cześć, ' + nameOf(me.uid, 'Dawidek') + '! 👋' }), h('span', { class: 'badge', text: '🛡️ Za zgodą rodzica' })))),
     h('section', { class: 'card' }, h('h2', { text: 'Moje kontakty' }),
       contacts.length ? list : note('Rodzic jeszcze nie dodał rozmowy. Poproś rodzica o otwarcie rozmowy w panelu.', 'info')),
-    contacts.length ? h('button', { class: 'btn help block', type: 'button', text: '🛟 Potrzebuję pomocy', onclick: () => helpScreen(contacts[0]) }) : null
+    contacts.length ? h('button', { class: 'btn help block', type: 'button', text: '🛟 Potrzebuję pomocy', onclick: () => helpScreen(contacts[0]) }) : null,
+    contacts.length ? pushCard() : null
   );
+  if (pushState() === 'granted') { markKidsDevice(); enablePush().catch(() => {}); }
   watchConfig();
 }
 
@@ -661,9 +715,9 @@ async function createFamilyDM(childUid, contactUid) {
   const childKey = normId(childUid);
   const chatId = familyChatId(contactKey, childUid);
   await loadNames([childUid, contactUid]);
-  const childNameStr = names[childUid] || (childUid === 'gm3maVXebCRQ8hLpze63HLRtAkn2' ? 'Dawid Rogowski' : 'Dziecko');
+  const childNameStr = names[childUid] || 'Dziecko';
   const childLabel = childNameStr + ' · LUMI KIDS';
-  const childAvatar = avatars[childUid] || (childUid === 'gm3maVXebCRQ8hLpze63HLRtAkn2' ? '/lumi-kids/assets/dawidek-avatar.webp' : KIDS_AVATAR);
+  const childAvatar = privatePhoto(avatars[childUid]) || KIDS_AVATAR;
   const contactName = prof.name || nameOf(contactUid, 'Rodzic');
   await setDoc(doc(db, 'lumina_message_requests', chatId), {
     chatId, senderAuthUid: contactUid, receiverAuthUid: childUid, participants: [contactUid, childUid],
@@ -678,6 +732,26 @@ async function createFamilyDM(childUid, contactUid) {
     otherName: childLabel, otherAvatar: childAvatar
   }, { merge: true });
   return chatId;
+}
+
+// Zdjęcie dziecka: tylko prywatnie (kids_profiles + rodzinne rozmowy), małe (256 px), bez publicznego adresu URL.
+async function fileToSmallDataUrl(file) {
+  if (!file || !/^image\/(jpeg|png|webp|heic|heif)$/i.test(file.type || '')) throw new Error('type');
+  const bmp = await createImageBitmap(file);
+  const side = Math.min(bmp.width, bmp.height);
+  const cv = document.createElement('canvas'); cv.width = 256; cv.height = 256;
+  cv.getContext('2d').drawImage(bmp, (bmp.width - side) / 2, Math.max(0, (bmp.height - side) / 2 - side * 0.08), side, side, 0, 0, 256, 256);
+  let url = cv.toDataURL('image/webp', 0.82);
+  if (!url.startsWith('data:image/webp')) url = cv.toDataURL('image/jpeg', 0.82);
+  if (url.length > 180000) throw new Error('size');
+  return url;
+}
+async function setChildPhoto(childUid, dataUrl) {
+  await setDoc(doc(db, 'kids_profiles', childUid), { photo: dataUrl || '', avatarUrl: '', updatedAt: serverTimestamp() }, { merge: true });
+  avatars[childUid] = dataUrl || '';
+  const fc = (cfg && cfg.familyChats) || {};
+  await Promise.all(Object.values(fc).map(chatId => setDoc(doc(db, 'lumina_chats', chatId), {
+    ['avatar_' + childUid]: dataUrl || KIDS_AVATAR, otherAvatar: dataUrl || KIDS_AVATAR }, { merge: true }).catch(() => {})));
 }
 
 async function screenParent() {
@@ -699,11 +773,17 @@ async function screenParent() {
     await save({ familyChats: fc });
   };
   await loadNames([me.uid, c.childUid, ...c.contacts].filter(Boolean));
+  // Sprzątanie: wcześniejsza wersja wskazywała publiczny plik ze zdjęciem dziecka — usuwamy to odwołanie.
+  if (c.childUid) {
+    try {
+      const kp = await getDoc(doc(db, 'kids_profiles', c.childUid));
+      const old = kp.exists() ? kp.data().avatarUrl : '';
+      if (typeof old === 'string' && old.indexOf('/lumi-kids/assets/') === 0) await setChildPhoto(c.childUid, privatePhoto(kp.data().photo));
+    } catch (e) {}
+  }
 
   const DAWID_UID = 'gm3maVXebCRQ8hLpze63HLRtAkn2';
-  const DAWID_NAME = 'Dawid Rogowski';
-  const DAWID_BIRTH = '18 sierpnia 2018';
-  const DAWID_AVATAR = '/lumi-kids/assets/dawidek-avatar.webp';
+  const DAWID_NAME = 'Dawidek';
 
   const myName = h('input', { type: 'text', id: 'myname', maxlength: '40', value: names[me.uid] || 'Tata' });
   const childName = h('input', { type: 'text', id: 'childname', maxlength: '40', value: names[c.childUid] || (c.childUid === DAWID_UID || !c.childUid ? DAWID_NAME : 'Dziecko') });
@@ -736,11 +816,9 @@ async function screenParent() {
     try {
       await setDoc(doc(db, 'kids_profiles', DAWID_UID), {
         displayName: DAWID_NAME,
-        birthDate: '2018-08-18',
-        avatarUrl: DAWID_AVATAR,
         emoji: '⛵',
         updatedAt: serverTimestamp()
-      });
+      }, { merge: true });
       const contacts = Array.from(new Set([...(c.contacts || []), me.uid, 'lr7E9IsM6VaABLvMcrjAN5Lvn0j2']));
       await save({ childUid: DAWID_UID, enabled: true, revoked: false, contacts, familyChats: {} });
       await ensureChats(DAWID_UID, contacts);
@@ -755,10 +833,10 @@ async function screenParent() {
   const isDawidActive = c.childUid === DAWID_UID && c.enabled && !c.revoked;
   const dawidCard = h('section', { class: 'card pop', style: isDawidActive ? 'border:2px solid #1f9d74;background:#f3fbf7;' : 'border:2px solid #2f7cf6;background:#f5f9ff;' },
     h('div', { class: 'who' },
-      avatar(DAWID_NAME, false, DAWID_AVATAR),
+      avatarOf(DAWID_UID, DAWID_NAME, false),
       h('div', {},
-        h('h2', { style: 'margin:0;color:var(--ink);', text: '🧒 Profil Dawida Rogowskiego' }),
-        h('p', { class: 'muted small', style: 'margin:3px 0 0;', text: 'Data urodzenia: ' + DAWID_BIRTH + ' · Konto Auth gotowe' }),
+        h('h2', { style: 'margin:0;color:var(--ink);', text: '🧒 Profil Dawidka' }),
+        h('p', { class: 'muted small', style: 'margin:3px 0 0;', text: 'Konto gotowe' }),
         h('span', { class: 'badge', style: isDawidActive ? 'background:#d1f4e0;color:#0d6938;margin-top:4px;' : 'background:#e0edff;color:#1852aa;margin-top:4px;', text: isDawidActive ? '✓ AKTYWNY W PILOTAŻU' : '⭐ GOTOWY DO JEDNOKLIKOWEJ AKTYWACJI' }))
     ),
     !isDawidActive ? h('p', { style: 'margin:12px 0 8px;font-size:0.95rem;line-height:1.4;', text: 'Konto w Firebase Auth, hasło i żeglarskie zdjęcie profilowe są już skonfigurowane. Kliknij poniżej, aby jednym kliknięciem przypisać Dawidka do pilotażu i natychmiast utworzyć rodzinną rozmowę 1:1 w LUMI Messenger.' }) : null,
@@ -808,6 +886,18 @@ async function screenParent() {
         active ? h('button', { class: 'btn danger', type: 'button', text: '🔒 Cofnij dostęp dziecka', onclick: async () => { if (confirm('Cofnąć dostęp? Dziecko natychmiast przestanie widzieć i wysyłać wiadomości. Historia zostanie zachowana.')) { await save({ enabled: false, revoked: true }, 'Dostęp cofnięty'); screenParent(); } } }) : null,
         c.childUid && !active ? h('button', { class: 'btn ok', type: 'button', text: '▶ Przywróć dostęp', onclick: async () => { await save({ enabled: true, revoked: false }, 'Dostęp przywrócony'); screenParent(); } }) : null)),
     dawidCard,
+    c.childUid ? h('section', { class: 'card' },
+      h('h2', { text: 'Zdjęcie dziecka (prywatne)' }),
+      h('p', { class: 'muted small', text: 'Widzą je tylko: dziecko, Ty i zatwierdzone kontakty — w LUMI KIDS i w Waszej rozmowie w LUMI Messenger. Nie trafia na żadną publiczną stronę ani do wyszukiwarek. Zapisujemy małą miniaturę (256 px).' }),
+      h('div', { class: 'row' }, avatarOf(c.childUid, names[c.childUid] || 'D', false),
+        h('label', { class: 'btn ghost', for: 'kidphoto', text: avatars[c.childUid] ? 'Zmień zdjęcie' : 'Dodaj zdjęcie' }),
+        h('input', { type: 'file', id: 'kidphoto', accept: 'image/jpeg,image/png,image/webp', class: 'sr', onchange: async (ev) => {
+          const f = ev.target.files && ev.target.files[0]; if (!f) return;
+          try { const url = await fileToSmallDataUrl(f); await setChildPhoto(c.childUid, url); toast('Zdjęcie zapisane prywatnie'); }
+          catch (e) { toast(e && e.message === 'type' ? 'Wybierz zdjęcie JPG, PNG lub WEBP.' : 'Nie udało się zapisać zdjęcia.'); }
+          screenParent();
+        } }),
+        avatars[c.childUid] ? h('button', { class: 'btn ghost', type: 'button', text: 'Usuń zdjęcie', onclick: async () => { try { await setChildPhoto(c.childUid, ''); toast('Zdjęcie usunięte'); } catch (e) { toast(friendly(e)); } screenParent(); } }) : null)) : null,
     h('section', { class: 'card grid2' },
       h('div', {}, h('label', { for: 'myname', text: 'Twoja nazwa widoczna dla dziecka' }), myName,
         h('button', { class: 'btn ghost block', type: 'button', text: 'Zapisz', onclick: async () => {

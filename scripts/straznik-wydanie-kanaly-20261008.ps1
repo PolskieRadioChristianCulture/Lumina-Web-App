@@ -53,6 +53,13 @@ $Files = @(
     'lumi-kids\styles.css',
     'lumi-kids\script.js',
     'lumi-kids\zgloszenie.js',
+    'lumi-kids\app\manifest.webmanifest',
+    'lumi-kids\app\icons\lumi-kids-192.png',
+    'lumi-kids\app\icons\lumi-kids-512.png',
+    'lumi-kids\app\icons\lumi-kids-180.png',
+    'lumi-kids\assets\dawidek-avatar.webp',
+    'lumi-kids\assets\dawidek-avatar.png',
+    'firebase-messaging-sw.js',
     'lumi-kids\assets\lumi-kids-hero-1672.webp',
     'lumi-kids\assets\lumi-kids-hero-1672.jpg',
     'lumi-kids\assets\lumi-kids-hero-1200.webp',
@@ -100,7 +107,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): LUMI KIDS × LUMI Messenger: jeden wspólny wątek DM rodzic–dziecko (bramka dziecka w regułach) + hero 16:9 bez napisów w grafice" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): LUMI KIDS: prywatne zdjęcie dziecka (bez publicznego pliku i danych osobowych w kodzie), powiadomienia przy zamkniętej aplikacji, PWA" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -120,7 +127,7 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI KIDS wspolny DM + hero" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI KIDS prywatnosc + push" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"
