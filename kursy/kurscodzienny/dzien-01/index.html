@@ -160,6 +160,7 @@
   <!-- Universal CC Global Auth -->
   <script src="/js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
   <link rel="stylesheet" href="/css/lumina-courses.css?v=20261008_desktop_icons_v2" />
+  <script src="/js/cc-course-theme.js?v=20261008_desktop_icons_v3" defer></script>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
 
@@ -185,6 +186,11 @@
         <button type="button" id="btn-reader-font" onclick="toggleReaderFont()" class="kc-reader-pill" title="Zmień krój pisma: Lora (Książkowa szeryfowa) / Inter (Ekranowa bezszeryfowa)">
           <i class="fa-solid fa-font text-amber-400 text-xs"></i>
           <span id="reader-font-label" class="hidden sm:inline font-semibold">Krój: Lora</span>
+        </button>
+
+<!-- Przełącznik motywu (Jasny / Ciemny) -->
+        <button type="button" id="btn-theme-toggle" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+          <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
         </button>
 
         <!-- Font Zoom Controls (A- / A+) -->
@@ -901,6 +907,62 @@
           <a href="sms:+48608337477" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 hover:text-white hover:border-amber-400 font-bold text-xs uppercase tracking-wider min-h-[44px] transition">
             <i class="fa-solid fa-comment-sms"></i>
             <span>Wyślij SMS</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+        <!-- ── WEZWANIE DO DZIAŁANIA: ZOSTAŃ PATRONEM TEJ LEKCJI ── -->
+    <section class="kc-card border-amber-500/30 bg-gradient-to-br from-[#12100a] via-[#0E121A] to-[#07090E] shadow-xl">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-crown text-amber-400" aria-hidden="true"></i>
+        <span>Patronat nad Słowem • Wezwanie do działania</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-2">Zostań patronem tej lekcji</h2>
+      <p class="text-zinc-300 text-sm leading-relaxed mb-6">
+        Wszystkie materiały i lekcje w Christian Culture są w 100% bezpłatne. Możesz jednak zostać patronem tej lekcji i ponieść Boże Słowo dalej na 3 proste sposoby:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Filar 1: Udostępnij w mediach społecznościowych -->
+        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">1</span>
+              <h3 class="font-bold text-white text-sm">Udostępnij w mediach</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Dotrzyj do swoich znajomych i społeczności w sieci.</p>
+          </div>
+          <a href="/tablica?share=dzien-01" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs hover:bg-amber-500/30 transition min-h-[44px]">
+            <span class="text-base font-display font-bold">L</span> Udostępnij na Tablicy
+          </a>
+        </div>
+
+        <!-- Filar 2: Wyślij kilku znajomym -->
+        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">2</span>
+              <h3 class="font-bold text-white text-sm">Wyślij kilku znajomym</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Przekaż link bliskim, którzy potrzebują dziś zachęty.</p>
+          </div>
+          <a href="https://wa.me/?text=Z%20Bibli%C4%85%20za%20Pan%20Brat%20%E2%80%94%20Dzie%C5%84%201%3A%20https%3A%2F%2Fpolskieradio.cc%2Fakademia%2Fkurscodzienny%2Fdzien-01" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs hover:bg-emerald-500/30 transition min-h-[44px]">
+            <i class="fa-brands fa-whatsapp text-sm" aria-hidden="true"></i> Wyślij na WhatsApp
+          </a>
+        </div>
+
+        <!-- Filar 3: Przekaż uznanie (finansowe) -->
+        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">3</span>
+              <h3 class="font-bold text-white text-sm">Przekaż uznanie (finansowe)</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Wesprzyj nagrania lektora TTS, studio i technologię misji.</p>
+          </div>
+          <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold text-xs hover:bg-rose-500/30 transition min-h-[44px]">
+            <span>❤️</span> Zostań Patronem
           </a>
         </div>
       </div>

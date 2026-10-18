@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8" />
@@ -70,7 +70,7 @@
   <script src="/components/cc-support-footer.js" defer></script>
 
   <!-- LUMINA Courses Styling System -->
-  <link rel="stylesheet" href="/css/lumina-courses.css?v=20260928_champagne1" />
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20261008_desktop_icons_v3" />
 
   <style>
     .cin-course-tab {
@@ -117,6 +117,7 @@
     }
   </style>
 
+  <script src="/js/cc-course-theme.js?v=20261008_desktop_icons_v3" defer></script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
@@ -166,30 +167,35 @@
         </div>
       </a>
       <span class="text-zinc-600 hidden lg:inline">/</span>
-      <nav class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-zinc-400" aria-label="Nawigacja kursów">
-        <a href="#hero-section" class="hover:text-brand-gold transition-colors">CINEMATIC JOURNEY</a>
-        <a href="#stages-section" class="hover:text-brand-gold transition-colors">5 ETAPÓW</a>
-        <a href="javascript:void(0)" onclick="switchCourseTab('28krokow')" class="hover:text-brand-gold transition-colors">28 KROKÓW</a>
-        <a href="javascript:void(0)" onclick="switchCourseTab('apokalipsa')" class="hover:text-brand-gold text-amber-400 font-bold transition-colors">✝ APOKALIPSA</a>
-        <a href="javascript:void(0)" onclick="switchCourseTab('kurscodzienny')" class="hover:text-brand-gold text-amber-300 font-bold transition-colors">📖 Z BIBLIĄ ZA PAN BRAT</a>
-        <a href="/lumina" class="hover:text-brand-gold transition-colors">SPOŁECZNOŚĆ</a>
-        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors">BIBLIA ONLINE</a>
-        <a href="/biznes" class="hover:text-brand-gold transition-colors">BIZNES</a>
-        <a href="/kultura" class="hover:text-brand-gold transition-colors">KULTURA</a>
+      <nav class="hidden md:flex items-center gap-4 lg:gap-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 overflow-hidden" aria-label="Nawigacja kursów">
+        <a href="#hero-section" class="hover:text-brand-gold transition-colors whitespace-nowrap">CINEMATIC JOURNEY</a>
+        <a href="#stages-section" class="hover:text-brand-gold transition-colors whitespace-nowrap">5 ETAPÓW</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('28krokow')" class="hover:text-brand-gold transition-colors whitespace-nowrap">28 KROKÓW</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('apokalipsa')" class="hover:text-brand-gold text-amber-400 font-bold transition-colors whitespace-nowrap">✝ APOKALIPSA</a>
+        <a href="javascript:void(0)" onclick="switchCourseTab('kurscodzienny')" class="hover:text-brand-gold text-amber-300 font-bold transition-colors whitespace-nowrap">📖 Z BIBLIĄ ZA PAN BRAT</a>
+        <a href="/lumina" class="hover:text-brand-gold transition-colors whitespace-nowrap">SPOŁECZNOŚĆ</a>
+        <a href="/mojabiblia" class="hover:text-brand-gold transition-colors whitespace-nowrap">BIBLIA ONLINE</a>
       </nav>
     </div>
 
-    <!-- Universal CC Auth & Action -->
-    <div class="flex items-center gap-3">
-      <!-- Diploma Trigger Button (Visible when 28/28 completed) -->
-      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[44px] flex items-center gap-1.5 shadow-lg shadow-amber-900/40">
-        <span>🎓 MÓJ DYPLOM</span>
+    <!-- Universal CC Auth & Action (Icon-First Standard) -->
+    <div class="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+      <button type="button" id="btn-topbar-diploma" class="hidden px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider transition min-h-[38px] items-center gap-1.5 shadow-lg shadow-amber-900/40">
+        <span class="diploma-icon">🎓</span>
+        <span class="diploma-label">MÓJ DYPLOM</span>
       </button>
 
+      <!-- Przełącznik motywu (Jasny / Ciemny) - Czysta okrągła ikona 38x38px -->
+      <button type="button" id="btn-theme-toggle" onclick="toggleCourseTheme()" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+        <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
+      </button>
+
+      <!-- Wsparcie Patronite - Czysta okrągła ikona 38x38px -->
       <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="cin-btn-support" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
         <span class="support-icon text-sm">❤️</span>
-        <span class="support-text hidden sm:inline">Wspieraj Misję</span>
+        <span class="support-text sr-only">Wspieraj Misję</span>
       </a>
+
       <!-- CC Global Auth Connector Injection Point -->
       <div id="cc-auth-nav-container" class="cc-auth-widget-container"></div>
     </div>
@@ -206,7 +212,7 @@
         <button type="button" id="tab-btn-apokalipsa" onclick="switchCourseTab('apokalipsa')" class="cin-course-tab" role="tab" aria-selected="false">
           <span class="text-sm">✝</span>
           <span>APOKALIPSA – KSIĘGA NADZIEI</span>
-          <span class="cin-tab-badge">27 LEKCJI</span>
+          <span class="cin-tab-badge">28 LEKCJI</span>
         </button>
         <button type="button" id="tab-btn-kurscodzienny" onclick="switchCourseTab('kurscodzienny')" class="cin-course-tab" role="tab" aria-selected="false">
           <span class="text-sm">📖</span>
@@ -456,16 +462,17 @@
 
   
   <!-- ═════════════════════════════════════════════════════════════════
-       WIDOK KURSU 2: APOKALIPSA – KSIĘGA NADZIEI (27 LEKCJI)
+       WIDOK KURSU 2: APOKALIPSA – KSIĘGA NADZIEI (28 LEKCJI)
   ═════════════════════════════════════════════════════════════════ -->
-  <div id="course-view-apokalipsa" class="hidden">
+  <span id="apokalipsa" class="block -mt-20 pt-20" style="position:relative;top:-80px;"></span>
+  <div id="course-view-apokalipsa" data-anchor="apokalipsa" class="hidden">
     
     <!-- HERO APOKALIPSA -->
     <section class="cin-hero scroll-mt-20">
       <div class="cin-hero-inner">
         <div class="cin-hero-content">
           <div class="cin-journey-tag">
-            <span class="text-amber-400">●</span> <span>STUDIO DOBREGO SŁOWA • 27 LEKCJI • SOLA SCRIPTURA</span>
+            <span class="text-amber-400">●</span> <span>STUDIO DOBREGO SŁOWA • 28 LEKCJI • SOLA SCRIPTURA</span>
           </div>
 
           <h1 class="cin-hero-title">
@@ -495,7 +502,7 @@
               <span>→</span>
             </a>
             <a href="#katalog-apokalipsa" class="cin-btn-secondary min-h-[48px]">
-              <span>PRZEGLĄDAJ 27 LEKCJI ↓</span>
+              <span>PRZEGLĄDAJ 28 LEKCJI ↓</span>
             </a>
           </div>
         </div>
@@ -514,10 +521,10 @@
           <div class="flex-1 text-center md:text-left">
             <h2 class="font-serif font-bold text-white text-xl sm:text-2xl mb-2">Czy Apokalipsa jest księgą strachu?</h2>
             <p class="text-zinc-400 text-sm leading-relaxed mb-3">
-              Bestie, plagi, tajemnicze liczby... Dla wielu ludzi to powód do lęku. Jednak pierwsze słowa tej księgi brzmią: <strong class="text-white">„Objawienie Jezusa Chrystusa…”</strong> (Ap 1:1). Każda z 27 lekcji zawiera pełne studium biblijne, zbadanie tła historycznego, chrystocentryczną puentę, interaktywny quiz oraz modlitwę.
+              Bestie, plagi, tajemnicze liczby... Dla wielu ludzi to powód do lęku. Jednak pierwsze słowa tej księgi brzmią: <strong class="text-white">„Objawienie Jezusa Chrystusa…”</strong> (Ap 1:1). Każda z 28 lekcji zawiera pełne studium biblijne, zbadanie tła historycznego, chrystocentryczną puentę, interaktywny quiz oraz modlitwę.
             </p>
             <div class="flex items-center gap-4 justify-center md:justify-start text-xs font-semibold text-amber-300">
-              <span>✓ 27 dedykowanych podstron</span>
+              <span>✓ 28 dedykowanych podstron</span>
               <span>✓ 15 sekcji w każdej lekcji</span>
               <span>✓ Wykłady wideo YouTube</span>
             </div>
@@ -531,12 +538,12 @@
           <div>
             <h2 class="font-serif text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
               <span class="text-brand-gold">✦</span>
-              <span>27 Lekcji Kursu — Jedna Podstrona na Lekcję</span>
+              <span>28 Lekcji Kursu — Jedna Podstrona na Lekcję</span>
             </h2>
             <p class="text-xs text-zinc-400">Wybierz dowolną lekcję, aby otworzyć jej pełną treść ze studium, wideo i quizem.</p>
           </div>
           <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-amber-400">
-            27 Lekcji Dostępnych
+            28 Lekcji Dostępnych
           </span>
         </div>
 
@@ -544,7 +551,7 @@
           
     <a href="/akademia/apokalipsa/lekcja-01" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 01 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 01 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>34:37</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -564,7 +571,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-02" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 02 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 02 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>47:58</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -584,7 +591,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-03" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 03 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 03 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>41:41</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -604,7 +611,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-04" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 04 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 04 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>52:23</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -624,7 +631,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-05" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 05 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 05 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>39:12</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -644,7 +651,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-06" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 06 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 06 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>39:49</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -664,7 +671,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-07" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 07 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 07 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>38:40</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -684,7 +691,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-08" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 08 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 08 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>44:08</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -704,7 +711,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-09" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 09 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 09 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>42:09</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -724,7 +731,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-10" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 10 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 10 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>43:51</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -744,7 +751,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-11" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 11 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 11 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>47:27</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -764,7 +771,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-12" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 12 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 12 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>50:04</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -784,7 +791,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-13" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 13 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 13 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>44:00</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -804,7 +811,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-14" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 14 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 14 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>44:35</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -824,7 +831,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-15" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 15 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 15 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>51:49</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -844,7 +851,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-16" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 16 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 16 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>42:26</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -864,7 +871,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-17" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 17 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 17 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>48:00</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -884,7 +891,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-18" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 18 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 18 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>47:24</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -904,7 +911,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-19" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 19 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 19 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>54:30</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -924,7 +931,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-20" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 20 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 20 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>48:22</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -944,7 +951,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-21" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 21 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 21 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>1:01:48</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -964,7 +971,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-22" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 22 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 22 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>50:22</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -984,7 +991,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-23" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 23 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 23 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>50:12</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -1004,7 +1011,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-24" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 24 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 24 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>31:18</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -1024,7 +1031,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-25" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 25 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 25 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>52:02</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -1044,7 +1051,7 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-26" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 26 / 27</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 26 / 28</span>
         <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>51:51</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
@@ -1064,8 +1071,8 @@
     </a>
     <a href="/akademia/apokalipsa/lekcja-27" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
       <div class="flex items-center justify-between gap-2 mb-3">
-        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 27 / 27</span>
-        <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">PREMIERA</span>
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 27 / 28</span>
+        <span class="text-[11px] text-zinc-500 font-mono"><i class="fa-solid fa-play text-red-500 mr-1 text-[9px]"></i>58:45</span>
       </div>
       <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
         TAJEMNICA JOM KIPPUR — Dzień sądu i pojednania
@@ -1075,6 +1082,26 @@
         <span class="text-zinc-500 flex items-center gap-1.5">
           <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
           <span>Kpł 16; Dn 7; Ap 14:7</span>
+        </span>
+        <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <span>Studiuj</span>
+          <span>→</span>
+        </span>
+      </div>
+    </a>
+    <a href="/akademia/apokalipsa/lekcja-28" class="group block p-5 rounded-2xl bg-[#0E121A] border border-white/10 hover:border-amber-500/50 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <span class="font-display text-xs font-bold text-brand-gold tracking-widest">LEKCJA 28 / 28</span>
+        <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">PREMIERA</span>
+      </div>
+      <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+        ZAPOMNIANY DZIEŃ BOGA — Apokalipsa 14:7
+      </h3>
+      <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">Apokalipsa 14:7 i 2 Mojżeszowa 20:8–11 — Pieczęć Stwórcy, IV Przykazanie i wielki spór o autorytet Boga</p>
+      <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+        <span class="text-zinc-500 flex items-center gap-1.5">
+          <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+          <span>Ap 14:7; Wj 20:8–11; Rdz 2:1–3</span>
         </span>
         <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
           <span>Studiuj</span>
@@ -1120,12 +1147,12 @@
 
         <!-- Hero Actions -->
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="/akademia/kurscodzienny/dzien-04" class="cin-btn-primary min-h-[48px]">
-            <span>CZYTAJ DZIEŃ 4 (4 PAŹDZIERNIKA)</span>
+          <a href="/akademia/kurscodzienny/dzien-15" class="cin-btn-primary min-h-[48px]">
+            <span>CZYTAJ DZIEŃ 15 (15 PAŹDZIERNIKA)</span>
             <span>→</span>
           </a>
-          <a href="/akademia/kurscodzienny/dzien-03" class="cin-btn-secondary min-h-[48px]">
-            <span>← DZIEŃ 3</span>
+          <a href="/akademia/kurscodzienny/dzien-14" class="cin-btn-secondary min-h-[48px]">
+            <span>← DZIEŃ 14</span>
           </a>
           <a href="#katalog-kurscodzienny" class="cin-btn-secondary min-h-[48px]">
             <span>PRZEGLĄDAJ DNI MIESIĄCA ↓</span>
@@ -1169,7 +1196,7 @@
             <p class="text-xs text-zinc-400">Codziennie nowa lekcja z Pisma Świętego. Zacznij od Dnia 1 już teraz.</p>
           </div>
           <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-amber-400">
-            Dni 1–4 Dostępne (Październik 2026)
+            Dni 1–14 Dostępne (Październik 2026)
           </span>
         </div>
 
@@ -1282,10 +1309,10 @@
             </div>
 
             <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
-              DWA SERCA, DWIE DROGI
+              DWA SERCA, DWIE DROGI — Kain i Abel
             </h3>
             <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
-              Kain i Abel, religijność bez serca, ostrzeżenie przed grzechem u drzwi i krew Jezusa (Rdz 4:1–26).
+              Bóg patrzy na intencję serca, a nie na zewnętrzną formę religijności. Ostrzeżenie przed grzechem czającym się u drzwi (Rdz 4:7).
             </p>
             <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
               <span class="text-zinc-500 flex items-center gap-1.5">
@@ -1299,8 +1326,472 @@
             </div>
           </a>
 
+          <!-- KARTA DZIEŃ 5 -->
+          <a href="/akademia/kurscodzienny/dzien-05" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 05 • 5 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_05_henoch_noe.jpg" alt="Dzień 5: CHODZIĆ Z BOGIEM — Henoch i Noe" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              CHODZIĆ Z BOGIEM — Henoch i Noe
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Gdy świat odchodzi od Boga, Henoch „chodził z Bogiem", a Noe „znalazł łaskę w oczach Pana" (Rdz 5:1–6:8).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 5:1–6:8</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 6 -->
+          <a href="/akademia/kurscodzienny/dzien-14" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 06 • 6 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_06_ark_flood_noah.jpg" alt="Dzień 6: ARKA — Sąd i ratunek — Noe, potop i Bóg, który pamięta" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              ARKA: SĄD I RATUNEK — Noe i Potop
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Potop obnażył powagę grzechu, ale Bóg przygotował drogę ratunku. W centrum historii: „Bóg pamiętał o Noem" (Rdz 6:9–8:22).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 6:9–8:22</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 7 -->
+          <a href="/akademia/kurscodzienny/dzien-07" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 07 • 7 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_07_rainbow_covenant.jpg" alt="Dzień 7: TĘCZA: BÓG ZAWIERA PRZYMIERZE — Nowy początek, ta sama ludzka potrzeba" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              TĘCZA: BÓG ZAWIERA PRZYMIERZE — Nowy Początek
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Przymierze z całą ziemią i znak tęczy. Upadek Noego w winnicy pokazuje, że potrzebujemy Nowego Przymierza w Chrystusie (Rdz 9:1–29).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 9:1–29</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 8 -->
+          <a href="/akademia/kurscodzienny/dzien-08" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 08 • 8 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_08_tower_of_babel.jpg" alt="Dzień 8: BABEL: KIEDY CZŁOWIEK CHCE UCZYNIĆ SOBIE IMIĘ — Rdz 10:1–11:32" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              BABEL: KIEDY CZŁOWIEK CHCE UCZYNIĆ SOBIE IMIĘ
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Babel pokazuje człowieka budującego bezpieczeństwo bez Boga. Bóg rozprasza ten projekt pychy i otwiera drogę do Abrahama (Rdz 10–11).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 10:1–11:32</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 9 -->
+          <a href="/akademia/kurscodzienny/dzien-09" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 09 • 9 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_09_abram_calling.jpg" alt="Dzień 9: WYJDŹ! WIARA, KTÓRA RUSZA W DROGĘ — Rdz 12:1–20" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              WYJDŹ! WIARA, KTÓRA RUSZA W DROGĘ
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Wiara zaczyna się od zaufania Bożemu Słowu. Powołanie Abrama, próba głodu w Egipcie i przymierze łaski w Chrystusie (Rdz 12).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 12:1–20</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 10 -->
+          <a href="/akademia/kurscodzienny/dzien-10" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 10 • 10 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_10_abram_lot.jpg" alt="Dzień 10: DWIE DROGI WYBORU — Rdz 13:1–14:24" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              DWIE DROGI WYBORU
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Abram i Lot — gdy oczy widzą jedno, a wiara dostrzega więcej. Wybór pokoju, akcja ratunkowa i Melchizedek (Rdz 13–14).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 13:1–14:24</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 11 -->
+          <a href="/akademia/kurscodzienny/dzien-11" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 11 • 11 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_11_abram_gwiazdy.jpg" alt="Dzień 11: UWIERZYŁ PANU — Rdz 15:1–21" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              UWIERZYŁ PANU
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Abraham, gwiazdy i przymierze łaski — człowiek nie zostaje usprawiedliwiony z uczynków, lecz z wiary (Rdz 15).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 15:1–21</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 12 -->
+          <a href="/akademia/kurscodzienny/dzien-12" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 12 • 12 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_12_hagar_pustynia.jpg" alt="Dzień 12: GDY CZŁOWIEK PRÓBUJE POMÓC BOGU — Rdz 16:1–17:27" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              GDY CZŁOWIEK PRÓBUJE POMÓC BOGU
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Hagar, Ismael i Abraham — obietnica, cierpliwość i Bóg, który widzi (Rdz 16–17).
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 16:1–17:27</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 13 -->
+          <a href="/akademia/kurscodzienny/dzien-13" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 13 • 13 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_13_mamre_goscie.jpg" alt="Dzień 13: CZY JEST COŚ ZBYT TRUDNEGO DLA PANA? — Rdz 18:1–33" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              CZY JEST COŚ ZBYT TRUDNEGO DLA PANA?
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Bóg dotrzymuje obietnic, a Abraham wstawia się za grzesznikami — Rdz 18:1–33.
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 18:1–33</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 14 -->
+          <a href="/akademia/kurscodzienny/dzien-14" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 14 • 14 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_14_sodoma_lot.jpg" alt="Dzień 14: SODOMA: ŁASKA, SĄD I RATUNEK — Rdz 19:1–38" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              SODOMA: ŁASKA, SĄD I RATUNEK
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Gdy Bóg wyprowadza człowieka z miejsca zagłady — Rdz 19:1–38.
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 19:1–38</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+          <!-- KARTA DZIEŃ 15 -->
+          <a href="/akademia/kurscodzienny/dzien-15" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 15 • 15 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_15_isaac_obietnica.jpg" alt="Dzień 15: BÓG DOTRZYMUJE OBIETNICY — Rdz 20:1–21:34" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              BÓG DOTRZYMUJE OBIETNICY
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Gdy ludzkie możliwości się kończą, Boża wierność pozostaje — Rdz 20:1–21:34.
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 20:1–21:34</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 16 -->
+          <a href="/akademia/kurscodzienny/dzien-16" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 16 • 16 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_16_baranek_moria.jpg" alt="Dzień 16: BÓG SAM ZAPEWNI BARANKA — Rdz 22:1–24" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              BÓG SAM ZAPEWNI BARANKA
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Abraham i Izaak — wiara poddana największej próbie — Rdz 22:1–24.
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 22:1–24</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- KARTA DZIEŃ 17 -->
+          <a href="/akademia/kurscodzienny/dzien-17" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 17 • 17 PAŹDZIERNIKA 2026</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>
+            </div>
+
+            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
+            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/30">
+              <img src="/images/academy/daily/kc_day_17_machpela_rebeka.jpg" alt="Dzień 17: WIARA PATRZĄCA W PRZYSZŁOŚĆ — Rdz 23:1–24:67" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
+            </div>
+
+            <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
+              WIARA PATRZĄCA W PRZYSZŁOŚĆ
+            </h3>
+            <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+              Śmierć Sary, grota Machpela i spotkanie Izaaka z Rebeką — Rdz 23:1–24:67.
+            </p>
+            <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+              <span class="text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
+                <span>Księga Rodzaju 23:1–24:67</span>
+              </span>
+              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>Studiuj</span>
+                <span>→</span>
+              </span>
+            </div>
+          </a>
+
+
+
+
         </div>
       </section>
+
+          <!-- ── WEZWANIE DO DZIAŁANIA: ZOSTAŃ PATRONEM KURSU CODZIENNEGO ── -->
+    <section class="mt-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#12100a] via-[#0E121A] to-[#07090E] border border-amber-500/30 text-center shadow-xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-widest mb-3">
+        <i class="fa-solid fa-crown text-amber-400" aria-hidden="true"></i>
+        <span>PATRONAT NAD SŁOWEM • WEZWANIE DO DZIAŁANIA</span>
+      </div>
+      <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-2">
+        Zostań patronem Kursu Codziennego
+      </h2>
+      <p class="text-sm text-zinc-300 max-w-2xl mx-auto mb-8">
+        Cały kurs i wszystkie lekcje w Christian Culture są w 100% bezpłatne. Ty decydujesz, czy chcesz pomóc nam rozwijać to dzieło i dotrzeć do kolejnych ludzi. Trzy proste filary działania:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+        <!-- Filar 1: Udostępnij w mediach społecznościowych -->
+        <div class="p-5 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">1</span>
+              <h3 class="font-bold text-white text-sm">Udostępnij w mediach</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Zaproś swoich znajomych do codziennej wędrówki z Pismem Świętym.</p>
+          </div>
+          <a href="/tablica?share_title=Z%20Bibli%C4%85%20za%20Pan%20Brat&share_url=https%3A%2F%2Fpolskieradio.cc%2Fakademia%2Fkurscodzienny" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs hover:bg-amber-500/30 transition min-h-[44px]">
+            <span class="text-base font-display font-bold">L</span> Udostępnij na Tablicy
+          </a>
+        </div>
+
+        <!-- Filar 2: Wyślij kilku znajomym -->
+        <div class="p-5 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">2</span>
+              <h3 class="font-bold text-white text-sm">Wyślij kilku znajomym</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Przekaż link osobom, które chcą systematycznie poznawać Biblię.</p>
+          </div>
+          <a href="https://wa.me/?text=Zapraszam%20do%20codziennego%20kursu%20biblijnego%20%E2%80%9EZ%20Bibli%C4%85%20za%20Pan%20Brat%E2%80%9D%3A%20https%3A%2F%2Fpolskieradio.cc%2Fakademia%2Fkurscodzienny" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs hover:bg-emerald-500/30 transition min-h-[44px]">
+            <i class="fa-brands fa-whatsapp text-sm" aria-hidden="true"></i> Wyślij na WhatsApp
+          </a>
+        </div>
+
+        <!-- Filar 3: Przekaż uznanie (finansowe) -->
+        <div class="p-5 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">3</span>
+              <h3 class="font-bold text-white text-sm">Przekaż uznanie (finansowe)</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Wesprzyj produkcję audio TTS, rozwój portalu i bezpłatne materiały.</p>
+          </div>
+          <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold text-xs hover:bg-rose-500/30 transition min-h-[44px]">
+            <span>❤️</span> Zostań Patronem
+          </a>
+        </div>
+      </div>
+    </section>
+
 
       <!-- 66 MIESIĘCY MINI BANNER -->
       <section class="mt-14 p-6 sm:p-8 rounded-3xl bg-zinc-950 border border-brand-line text-center">
@@ -1433,6 +1924,10 @@
         <button type="button" id="btn-achievement-share" class="cin-btn-primary w-full sm:w-auto px-6 py-3 min-h-[48px]">
           <span>Udostępnij Osiągnięcie</span>
         </button>
+        <button type="button" class="lumina-share-btn-l w-full sm:w-auto" data-lumina-share="true" data-title="✨ Zdobyłem nowe osiągnięcie w LUMINA Bible Academy!" data-text="Kolejny krok w studium biblijnym ukończony. Dołącz do bezpłatnego kursu Pisma Świętego na polskieradio.cc/akademia" data-url="https://polskieradio.cc/akademia" title="Opublikuj na Tablicy Społeczności LUMINA">
+          <span class="lumina-badge-l-icon">L</span>
+          <span>Tablica LUMINA</span>
+        </button>
         <button type="button" id="btn-achievement-close" class="cin-btn-secondary w-full sm:w-auto px-6 py-3 min-h-[48px]">
           <span>Zamknij</span>
         </button>
@@ -1541,6 +2036,10 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
           <span>Udostępnij</span>
         </button>
+        <button type="button" class="lumina-share-btn-l" data-lumina-share="true" data-title="🎓 Mój Dyplom LUMINA Bible Academy" data-text="Właśnie ukończyłem program studium Pisma Świętego w LUMINA Bible Academy! 🕊️ Sprawdź bezpłatny kurs." data-url="https://polskieradio.cc/akademia" title="Opublikuj na Tablicy Społeczności LUMINA">
+          <span class="lumina-badge-l-icon">L</span>
+          <span>Tablica LUMINA</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1569,6 +2068,7 @@
 
   <!-- ── GLOBAL CC AUTH CONNECTOR ── -->
   <script defer src="/js/cc-global-auth.js?v=20261007_auth_v2"></script>
+  <script defer src="/js/lumina-share.js"></script>
 
   <!-- ── COURSE ENGINE SCRIPT ── -->
   <script type="module" src="/js/lumina-courses-engine.js?v=20260927_seq1"></script>

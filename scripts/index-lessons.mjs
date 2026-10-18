@@ -13,17 +13,50 @@ const data = JSON.parse(rawData);
 // 1. Lekcje Kursu Codziennego "Z Biblią za Pan Brat"
 const dailyLessons = [
   {
-    title: "Z Biblią za Pan Brat — Dzień 15 (Lekcja 15 na dziś): Bóg Dotrzymuje Obietnicy (Narodziny Izaaka, Rdz 20–21)",
+    title: "Z Biblią za Pan Brat — Dzień 18 (Lekcja 18 na dziś): Jakub i Ezaw — Czego naprawdę pragniesz? (Rdz 25:1–26:35)",
     category: "Biblia i formacja",
-    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-15",
-    description: "Kurs Codzienny Pisma Świętego — Dzień 15 (Lekcja 15 na dziś, 15 października 2026). Gdy ludzkie możliwości się kończą, Boża wierność pozostaje — Rdz 20:1–21:34. Narodziny Izaaka, przymierze z Abrahamem i triumf Bożej obietnicy.",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-18",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 18 (Lekcja 18 na dziś, 18 października 2026). Abraham odchodzi, Ezaw sprzedaje pierworództwo za miskę soczewicy, Izaak kopie studnie w Gerarze — Rdz 25:1–26:35. Chwilowe pragnienia nie powinny przesłaniać duchowego dziedzictwa.",
     tags: [
-      "lekcja 15", "lekcja 15 na dziś", "lekcja na dziś", "dzień 15", "dzien 15",
-      "rozważanie 15", "rozważanie na dziś", "słowo na dziś", "narodziny izaaka",
-      "rdz 20", "rdz 21", "obietnica boża", "z biblią za pan brat", "kurs codzienny",
-      "akademia biblijna", "15 października 2026", "dzisiaj", "dziś"
+      "lekcja 18", "lekcja 18 na dziś", "lekcja na dziś", "dzień 18", "dzien 18",
+      "rozważanie 18", "rozważanie na dziś", "słowo na dziś", "jakub i ezaw", "pierworództwo",
+      "rdz 25", "rdz 26", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "18 października 2026", "dzisiaj", "dziś"
     ],
     featured: true
+  },
+  {
+    title: "Z Biblią za Pan Brat — Dzień 17 (Lekcja 17): Wiara patrząca w przyszłość (Rdz 23:1–24:67)",
+    category: "Biblia i formacja",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-17",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 17 (Lekcja 17). Śmierć Sary, grota Machpela i spotkanie Izaaka z Rebeką — Rdz 23:1–24:67.",
+    tags: [
+      "lekcja 17", "dzień 17", "dzien 17", "rozważanie 17", "słowo na dziś",
+      "machpela", "rebeka", "izaak", "z biblią za pan brat", "kurs codzienny"
+    ],
+    featured: false
+  },
+  {
+    title: "Z Biblią za Pan Brat — Dzień 16 (Lekcja 16): Bóg sam zapewni Baranka (Rdz 22:1–24)",
+    category: "Biblia i formacja",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-16",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 16 (Lekcja 16). Abraham i Izaak na górze Moria — wiara poddana największej próbie — Rdz 22:1–24.",
+    tags: [
+      "lekcja 16", "dzień 16", "dzien 16", "rozważanie 16", "moria", "baranek", "ofiara izaaka",
+      "z biblią za pan brat", "kurs codzienny"
+    ],
+    featured: false
+  },
+  {
+    title: "Z Biblią za Pan Brat — Dzień 15 (Lekcja 15): Bóg Dotrzymuje Obietnicy (Narodziny Izaaka, Rdz 20–21)",
+    category: "Biblia i formacja",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-15",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 15 (Lekcja 15). Gdy ludzkie możliwości się kończą, Boża wierność pozostaje — Rdz 20:1–21:34.",
+    tags: [
+      "lekcja 15", "dzień 15", "dzien 15", "rozważanie 15", "narodziny izaaka",
+      "rdz 20", "rdz 21", "z biblią za pan brat", "kurs codzienny"
+    ],
+    featured: false
   },
   {
     title: "Z Biblią za Pan Brat — Dzień 14 (Lekcja 14): Boża Sprawiedliwość i Ocalenie (Rdz 18–19)",
