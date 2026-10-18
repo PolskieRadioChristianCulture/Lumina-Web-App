@@ -1,7 +1,8 @@
 /**
  * LUMI KIDS — zamknięty pilotaż rodzinny (Strażnik Claude, 2026-10-18)
  *
- * Bezpieczeństwo egzekwują reguły Firestore po stronie serwera (kolekcje kids_*).
+ * Bezpieczeństwo egzekwują reguły Firestore po stronie serwera (kids_* + bramka dziecka w DM LUMINA).
+ * Rodzic i dziecko piszą w JEDNYM wątku lumina_direct_messages (rodzic: zwykły LUMI Messenger).
  * Ten plik tylko wyświetla to, na co reguły pozwolą. Nie zawiera żadnych adresów
  * dzieci ani haseł. Hasło ustawia użytkownik w Firebase Auth (bezpieczne haszowanie
  * po stronie Google). Treści wiadomości nie są nigdzie logowane.
@@ -81,16 +82,12 @@ function friendly(err) {
   return 'Coś poszło nie tak. Spróbuj ponownie.';
 }
 function busy(btn, on) { if (btn) { btn.disabled = on; btn.setAttribute('aria-busy', on ? 'true' : 'false'); } }
-function convId(childUid, contactUid) { return childUid + '_' + contactUid; }
 function fmtTime(ts) {
   const d = ts && typeof ts.toDate === 'function' ? ts.toDate() : null;
   if (!d) return 'teraz';
   const today = new Date().toDateString() === d.toDateString();
   return (today ? '' : d.toLocaleDateString('pl-PL') + ' ') + d.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
 }
-function lastSeenKey(cid) { return 'lumikids.seen.' + (me ? me.uid : '') + '.' + cid; }
-function getSeen(cid) { try { return Number(localStorage.getItem(lastSeenKey(cid)) || 0); } catch (e) { return 0; } }
-function setSeen(cid, ms) { try { localStorage.setItem(lastSeenKey(cid), String(ms)); } catch (e) {} }
 
 // Animacje można wyłączyć (WCAG 2.2 — 2.3.3).
 (function motion() {
@@ -194,9 +191,66 @@ function screenVerify(user) {
 }
 
 // ── Start po zalogowaniu ─────────────────────────────────────────────────────
+
+// ── Wspólny wątek DM LUMINA (jedno źródło prawdy) ────────────────────────────
+// Rodzic pisze w zwykłym LUMI Messenger, dziecko tutaj — oba widoki czytają i zapisują
+// te same dokumenty `lumina_direct_messages` w jednej rozmowie `chatId`.
+const PUSH_URL = 'https://lumina-push.nazirczarkes.workers.dev';
+const KIDS_AVATAR = '/lumi-kids/assets/lumi-kids-logo.svg';
+
+// Kopia normalizeChatUserId z lumina-db.js — identyfikator rozmowy musi być identyczny w obu aplikacjach.
+function normId(idOrSlug) {
+  if (!idOrSlug) return 'guest';
+  const str = String(idOrSlug).trim().toLowerCase();
+  if (['cezaryrgowski', 'cezary', 'nazirczarkes@gmail.com', 'studiodees7@gmail.com', 'nazirczarkes', '1zhaexihqzgz8nzebr0dyc7wlg93',
+    'sectuwwrsv8pnkhsrxgyivjbajn1', 'u5seqt54fcnocfcxjirckowjhqc2', 'u_cezary_official', 'u_cezary'].includes(str)) return 'cezaryrgowski';
+  if (['radiocc', 'christianculture', 'radiochristianculture@gmail.com', 'christian culture', 'lgibw6jrf0wbeln6zpqu2pfrlcx1'].includes(str)) return 'radiocc';
+  if (['wiolettarogowska', 'wioletta', 'lr7e9ism6vaablvmcrjan5lvn0j2', 'j4aqs5wspawssjtj04jlqchpieg1'].includes(str) || str.split('@')[0] === 'wioletta1240') return 'wiolettarogowska';
+  if (str === 'andrzejthiel' || str === 'andrzej') return 'andrzejthiel';
+  if (['robertlukaszpio', 'robertukaszpio', 'u_robertukaszpio_5668', 'bratrobert', 'brat_robert', 'robert_lukasz_pio', 'robert-lukasz-pio', 'jidflt3g8ohgpcowmcljaz9i5d42'].includes(str)) return 'robertlukaszpio';
+  return str;
+}
+function familyChatId(contactKey, childUid) { return [normId(contactKey), normId(childUid)].sort().join('_'); }
+function msgMillis(m) { return (m.timestamp && m.timestamp.toMillis ? m.timestamp.toMillis() : 0) || Number(m.createdAt) || 0; }
+function newId() { return (crypto.randomUUID ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(36).slice(2))).replace(/[^A-Za-z0-9-]/g, ''); }
+
+async function lookupLuminaProfile(uid) {
+  try {
+    const s = await getDocs(query(collection(db, 'lumina_profiles'), where('uid', '==', uid), limit(1)));
+    if (!s.empty) { const d = s.docs[0].data(); return { slug: d.slug || s.docs[0].id, name: d.name || d.displayName || '' }; }
+  } catch (e) {}
+  return { slug: uid, name: '' };
+}
+
+async function pushNotify(messageId) {
+  try {
+    const t = await auth.currentUser.getIdToken();
+    await fetch(PUSH_URL + '/v1/push/direct/' + encodeURIComponent(messageId), { method: 'POST', headers: { Authorization: 'Bearer ' + t } });
+  } catch (e) { /* wiadomość jest już zapisana — brak push jej nie cofa */ }
+}
+
+function watchMessages(chatId, onList, onError) {
+  const base = [where('participants', 'array-contains', me.uid), where('chatId', '==', chatId)];
+  let stop = () => {};
+  const handle = (snap) => {
+    const list = [];
+    snap.forEach(d => { if (!d.metadata.hasPendingWrites) list.push({ id: d.id, ref: d.ref, ...d.data() }); });
+    list.sort((a, b) => msgMillis(a) - msgMillis(b));
+    onList(list.slice(-300));
+  };
+  stop = onSnapshot(query(collection(db, 'lumina_direct_messages'), ...base, orderBy('timestamp', 'desc'), limit(300)), handle, (err) => {
+    if (err && err.code === 'failed-precondition') {
+      // Brak indeksu złożonego — ten sam wątek bez sortowania po stronie serwera.
+      stop = onSnapshot(query(collection(db, 'lumina_direct_messages'), ...base, limit(300)), handle, onError);
+    } else onError(err);
+  });
+  return () => stop();
+}
+
+// ── Start po zalogowaniu ─────────────────────────────────────────────────────
 async function loadConfig() {
   try { const s = await getDoc(doc(db, 'kids_pilot/config')); return s.exists() ? s.data() : null; }
-  catch (e) { return undefined; } // brak uprawnień
+  catch (e) { return undefined; }
 }
 
 async function tryClaimInvite(user) {
@@ -212,16 +266,28 @@ async function tryClaimInvite(user) {
   return 'none';
 }
 
+function noAccess(user, title, text) {
+  render(h('section', { class: 'card center pop' },
+    h('div', { style: 'font-size:3rem', 'aria-hidden': 'true', text: '🔒' }),
+    h('h1', { text: title }),
+    h('p', { class: 'muted', text }),
+    h('p', { class: 'small', text: 'Jeśli rodzic chce dodać Cię jako zaufany kontakt, przekaż mu ten identyfikator:' }),
+    h('p', {}, h('code', { text: user.uid }), ' ', h('button', { class: 'btn ghost', type: 'button', text: 'Kopiuj', onclick: async () => { try { await navigator.clipboard.writeText(user.uid); toast('Skopiowano'); } catch (e) { toast('Zaznacz i skopiuj ręcznie'); } } })),
+    h('a', { class: 'btn ghost', href: '/lumi-kids/', text: 'O LUMI KIDS' })));
+}
+
 async function start(user) {
   clearSubs(); me = user; logoutBtn.hidden = false;
-  if (!LUMI_KIDS_PILOT_ENABLED) { render(h('section', { class: 'card', }, note('Pilotaż jest wyłączony.', 'info'))); return; }
+  if (!LUMI_KIDS_PILOT_ENABLED) { render(h('section', { class: 'card' }, note('Pilotaż jest wyłączony.', 'info'))); return; }
   if (isGuardian(user)) return screenParent();
   const isPwd = user.providerData.some(p => p.providerId === 'password');
   if (isPwd && !user.emailVerified) return screenVerify(user);
   cfg = await loadConfig();
-  if (cfg && cfg.enabled && cfg.childUid === user.uid) return screenChild();
-  if (cfg && cfg.enabled && Array.isArray(cfg.contacts) && cfg.contacts.includes(user.uid)) return screenContact();
-  // Może to dziecko z zaproszeniem, jeszcze niezatwierdzone przez rodzica:
+  if (cfg && cfg.childUid === user.uid) {
+    if (cfg.enabled && !cfg.revoked) return screenChild();
+    return noAccess(user, 'Dostęp jest wstrzymany', 'Rodzic wstrzymał teraz dostęp do LUMI KIDS. Porozmawiaj z rodzicem.');
+  }
+  if (cfg && cfg.enabled && !cfg.revoked && Array.isArray(cfg.contacts) && cfg.contacts.includes(user.uid)) return screenContact();
   let state = 'none';
   if (isPwd && user.emailVerified) { try { state = await tryClaimInvite(user); } catch (e) { state = 'none'; } }
   if (state === 'claimed' || state === 'waiting') {
@@ -232,18 +298,11 @@ async function start(user) {
       h('button', { class: 'btn primary', type: 'button', text: 'Sprawdź ponownie', onclick: () => start(user) })));
     return;
   }
-  render(h('section', { class: 'card center pop' },
-    h('div', { style: 'font-size:3rem', 'aria-hidden': 'true', text: '🔒' }),
-    h('h1', { text: 'Brak dostępu do LUMI KIDS' }),
-    h('p', { class: 'muted', text: 'LUMI KIDS to zamknięty pilotaż rodzinny. Dostęp daje wyłącznie rodzic.' }),
-    h('p', { class: 'small', text: 'Jeśli rodzic chce dodać Cię jako zaufany kontakt, przekaż mu ten identyfikator:' }),
-    h('p', {}, h('code', { text: user.uid }), ' ', h('button', { class: 'btn ghost', type: 'button', text: 'Kopiuj', onclick: async () => { try { await navigator.clipboard.writeText(user.uid); toast('Skopiowano'); } catch (e) { toast('Zaznacz i skopiuj ręcznie'); } } })),
-    h('a', { class: 'btn ghost', href: '/lumi-kids/', text: 'O LUMI KIDS' })));
+  noAccess(user, 'Brak dostępu do LUMI KIDS', 'LUMI KIDS to zamknięty pilotaż rodzinny. Dostęp daje wyłącznie rodzic.');
 }
 
-// ── Nazwy w obrębie pilotażu ─────────────────────────────────────────────────
 async function loadNames(uids) {
-  await Promise.all(uids.filter(u => !(u in names)).map(async (u) => {
+  await Promise.all(uids.filter(u => u && !(u in names)).map(async (u) => {
     try { const s = await getDoc(doc(db, 'kids_profiles', u)); names[u] = s.exists() ? (s.data().displayName || '') : ''; }
     catch (e) { names[u] = ''; }
   }));
@@ -252,79 +311,130 @@ function nameOf(uid, fallback) { return names[uid] || fallback || 'Bliska osoba'
 
 // ── Widok dziecka ────────────────────────────────────────────────────────────
 async function screenChild() {
-  const contacts = (cfg.contacts || []).filter(u => u !== me.uid);
+  const contacts = (cfg.contacts || []).filter(u => u !== me.uid && cfg.familyChats && cfg.familyChats[u]);
   await loadNames([me.uid, ...contacts]);
   const list = h('ul', { class: 'contacts', 'aria-label': 'Moje zatwierdzone kontakty' });
-  const counters = {};
   for (const c of contacts) {
     const cnt = h('span', { class: 'count', hidden: true, 'aria-label': 'nowe wiadomości' });
-    counters[c] = cnt;
-    list.append(h('li', {}, h('button', { class: 'contact', type: 'button', onclick: () => openChat(me.uid, c, nameOf(c, 'Rodzic'), screenChild) },
+    list.append(h('li', {}, h('button', { class: 'contact', type: 'button', onclick: () => openChat(cfg.familyChats[c], c, nameOf(c, 'Rodzic'), screenChild) },
       avatar(nameOf(c, 'Rodzic'), true), h('span', { class: 'name', text: nameOf(c, 'Rodzic') }), h('span', { class: 'badge', text: '✓ Zatwierdzony' }), cnt)));
+    watchUnread(cfg.familyChats[c], cnt);
   }
   render(
     h('section', { class: 'card pop' },
       h('div', { class: 'who' }, avatar(nameOf(me.uid, 'Ja')),
         h('div', {}, h('h1', { text: 'Cześć, ' + nameOf(me.uid, 'kolego') + '!' }), h('span', { class: 'badge', text: '🛡️ Za zgodą rodzica' })))),
     h('section', { class: 'card' }, h('h2', { text: 'Moje kontakty' }),
-      contacts.length ? list : note('Rodzic jeszcze nie dodał kontaktów.', 'info')),
-    h('button', { class: 'btn help block', type: 'button', text: '🛟 Potrzebuję pomocy', onclick: () => helpDialog(contacts[0]) })
+      contacts.length ? list : note('Rodzic jeszcze nie dodał rozmowy. Poproś rodzica o otwarcie rozmowy w panelu.', 'info')),
+    contacts.length ? h('button', { class: 'btn help block', type: 'button', text: '🛟 Potrzebuję pomocy', onclick: () => helpScreen(contacts[0]) }) : null
   );
-  for (const c of contacts) watchUnread(convId(me.uid, c), counters[c]);
+  watchConfig();
 }
 
-function helpDialog(firstContact) {
-  render(h('section', { class: 'card center pop' },
-    h('div', { style: 'font-size:3rem', 'aria-hidden': 'true', text: '💜' }),
-    h('h1', { text: 'Potrzebujesz pomocy?' }),
-    h('p', { text: 'Jeśli coś Cię niepokoi albo ktoś sprawił, że czujesz się źle — powiedz rodzicowi lub innej zaufanej osobie dorosłej. Zawsze możesz napisać do rodzica.' }),
-    h('p', { class: 'muted small', text: 'W nagłej sytuacji zadzwoń pod 112. Telefon zaufania dla dzieci i młodzieży: 116 111 (bezpłatny).' }),
-    firstContact ? h('button', { class: 'btn primary block', type: 'button', text: 'Napisz do rodzica', onclick: () => openChat(me.uid, firstContact, nameOf(firstContact, 'Rodzic'), screenChild) }) : null,
+function helpScreen(contactUid) {
+  clearSubs();
+  const out = h('div');
+  const send = h('button', { class: 'btn primary block', type: 'button', text: '📨 Wyślij rodzicowi: „Potrzebuję pomocy”', onclick: async () => {
+    busy(send, true);
+    const ok = await sendDm(cfg.familyChats[contactUid], contactUid, 'Potrzebuję pomocy 🛟 Odezwij się, proszę.', null);
+    busy(send, false);
+    out.replaceChildren(ok ? note('Wysłano do: ' + nameOf(contactUid, 'rodzic') + '. Wiadomość jest zapisana i rodzic zobaczy ją w LUMI.', 'good')
+      : note('Nie udało się wysłać. Sprawdź internet i spróbuj jeszcze raz — albo powiedz to dorosłemu obok.', 'err'));
+  } });
+  render(h('section', { class: 'card pop' },
+    h('div', { class: 'center', style: 'font-size:3rem', 'aria-hidden': 'true', text: '💜' }),
+    h('h1', { class: 'center', text: 'Potrzebujesz pomocy?' }),
+    send, out,
+    h('button', { class: 'btn ghost block', type: 'button', text: '💬 Otwórz rozmowę', onclick: () => openChat(cfg.familyChats[contactUid], contactUid, nameOf(contactUid, 'Rodzic'), screenChild) }),
+    h('h2', { text: 'Jeśli rodzic nie odpowiada' }),
+    h('p', { text: 'Ta wiadomość nie jest alarmem i nikt nie czuwa przy niej przez całą dobę. Jeśli rodzic nie odpisuje, a sprawa jest ważna — idź od razu do innej zaufanej osoby dorosłej (np. drugiego rodzica, babci, nauczyciela).' }),
+    h('p', { text: 'Gdy dzieje się coś groźnego: zadzwoń pod 112. Telefon zaufania dla dzieci i młodzieży: 116 111 (bezpłatnie).' }),
     h('button', { class: 'btn ghost block', type: 'button', text: '← Wróć', onclick: () => screenChild() })));
 }
 
-// Powiadomienia w aplikacji: licznik nieprzeczytanych (dla tego urządzenia).
-function watchUnread(cid, el) {
-  const q = query(collection(db, 'kids_conversations', cid, 'messages'), orderBy('createdAt', 'desc'), limit(30));
-  let first = true;
-  unsubs.push(onSnapshot(q, (snap) => {
-    const seen = getSeen(cid);
-    let n = 0;
-    snap.forEach(d => { const m = d.data(); const ms = m.createdAt && m.createdAt.toMillis ? m.createdAt.toMillis() : 0; if (m.senderUid !== me.uid && ms > seen) n++; });
+function watchUnread(chatId, el) {
+  let first = true, prev = 0;
+  unsubs.push(watchMessages(chatId, (list) => {
+    const n = list.filter(m => m.receiverAuthUid === me.uid && !(m.isRead && m.status === 'read')).length;
     if (el) { el.hidden = n === 0; el.textContent = n > 9 ? '9+' : String(n); }
-    if (!first && n > 0 && activeConv !== cid) toast('💬 Nowa wiadomość');
-    first = false;
+    if (!first && n > prev && activeConv !== chatId) toast('💬 Nowa wiadomość');
+    first = false; prev = n;
     document.title = (n > 0 ? '(' + n + ') ' : '') + 'LUMI KIDS';
   }, () => { if (el) el.hidden = true; }));
 }
 
-// ── Widok zatwierdzonego kontaktu (np. mama) ─────────────────────────────────
+// Cofnięcie zgody zamyka widoki natychmiast (reguły i tak odrzucą odczyt i zapis).
+function watchConfig() {
+  unsubs.push(onSnapshot(doc(db, 'kids_pilot/config'), (s) => {
+    const c = s.exists() ? s.data() : null;
+    const ok = c && c.enabled && !c.revoked && (c.childUid === me.uid || (c.contacts || []).includes(me.uid));
+    if (!ok) { clearSubs(); activeConv = null; start(me); }
+  }, () => { clearSubs(); activeConv = null; start(me); }));
+}
+
+// ── Zatwierdzony kontakt (dorosły) — korzysta ze zwykłego LUMI Messenger ────
 async function screenContact() {
-  await loadNames([cfg.childUid, me.uid]);
-  const childName = nameOf(cfg.childUid, 'Dziecko');
+  await loadNames([cfg.childUid]);
+  const chatId = cfg.familyChats && cfg.familyChats[me.uid];
   render(h('section', { class: 'card pop' },
-    h('h1', { text: 'LUMI KIDS' }),
-    h('p', { class: 'muted', text: 'Jesteś zatwierdzonym kontaktem.' }),
-    h('button', { class: 'contact', type: 'button', onclick: () => openChat(cfg.childUid, me.uid, childName, screenContact) },
-      avatar(childName, true), h('span', { class: 'name', text: childName }), h('span', { class: 'badge', text: 'Rozmowa' }))));
+    h('h1', { text: 'Rozmowa rodzinna' }),
+    h('p', { class: 'muted', text: 'Jesteś zatwierdzonym kontaktem. Rozmowa z ' + nameOf(cfg.childUid, 'dzieckiem') + ' jest w Twoim zwykłym LUMI Messenger (okienka prywatne) — możesz też pisać tutaj.' }),
+    h('div', { class: 'row' },
+      h('a', { class: 'btn primary', href: '/mess', text: 'Otwórz LUMI Messenger' }),
+      chatId ? h('button', { class: 'btn ghost', type: 'button', text: '💬 Rozmowa tutaj', onclick: () => openChat(chatId, cfg.childUid, nameOf(cfg.childUid, 'Dziecko'), screenContact) }) : null)));
 }
 
-// ── Czat 1:1 ─────────────────────────────────────────────────────────────────
-async function ensureConv(childUid, contactUid) {
-  const cid = convId(childUid, contactUid);
-  const ref = doc(db, 'kids_conversations', cid);
-  try { const s = await getDoc(ref); if (s.exists()) return cid; } catch (e) { /* może nie istnieć */ }
-  await setDoc(ref, { participants: [childUid, contactUid], createdAt: serverTimestamp() });
-  return cid;
+// ── Wysyłka (schemat zgodny z LUMINA) ────────────────────────────────────────
+let myKeyCache = null;
+async function myKey() {
+  if (myKeyCache) return myKeyCache;
+  if (cfg && cfg.childUid === me.uid) return (myKeyCache = normId(me.uid));
+  const p = await lookupLuminaProfile(me.uid);
+  return (myKeyCache = normId(p.slug || me.uid));
+}
+const sending = new Set();
+async function sendDm(chatId, otherUid, text, replyTo) {
+  const t = String(text || '').trim().slice(0, 1000);
+  if (!t || !chatId) return false;
+  const key = await myKey();
+  const otherKey = chatId.split('_').length === 2 ? chatId.split('_').find(p => p !== key) || normId(otherUid) : normId(otherUid);
+  const id = newId();
+  if (sending.has(t + chatId)) return false; // podwójne kliknięcie
+  sending.add(t + chatId);
+  const myName = nameOf(me.uid, me.displayName || 'LUMI KIDS');
+  const msg = {
+    clientMessageId: id, chatId, senderAuthUid: me.uid, receiverAuthUid: otherUid, participants: [me.uid, otherUid],
+    senderId: key, senderUid: me.uid, senderName: myName, senderAvatar: KIDS_AVATAR, senderBadge: '⭐ LUMI KIDS',
+    receiverId: otherKey, users: Array.from(new Set([key, otherKey, me.uid])),
+    text: t, type: 'text', status: 'sent', isRead: false, readAt: null, readBy: [], readByName: null,
+    delivered: false, deliveredAt: null, createdAt: Date.now(), timestamp: serverTimestamp(),
+    dateStr: new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }),
+    ...(replyTo ? { replyToMessageId: replyTo.id, replyToSenderName: replyTo.name || '', replyToSenderId: replyTo.senderId || '', replyToText: String(replyTo.text || '').slice(0, 300) } : {})
+  };
+  try {
+    const ref = doc(db, 'lumina_direct_messages', id);
+    try { await setDoc(ref, msg); }
+    catch (e) {
+      // Retransmisja po zerwanym połączeniu: jeśli dokument już istnieje, to jest ta sama wiadomość.
+      const s = await getDoc(ref).catch(() => null);
+      if (!(s && s.exists())) throw e;
+    }
+    updateDoc(doc(db, 'lumina_chats', chatId), {
+      lastMessageText: t, lastMessageTimestamp: serverTimestamp(), lastSenderId: key, lastSenderName: myName,
+      lastSenderAvatar: KIDS_AVATAR, lastMessageType: 'text'
+    }).catch(() => {});
+    pushNotify(id);
+    return true;
+  } catch (e) { return false; }
+  finally { sending.delete(t + chatId); }
 }
 
-async function openChat(childUid, contactUid, title, back) {
+// ── Czat 1:1 w tym samym wątku co LUMI Messenger ────────────────────────────
+async function openChat(chatId, otherUid, title, back) {
   clearSubs();
-  let cid;
-  try { cid = await ensureConv(childUid, contactUid); }
-  catch (e) { render(h('section', { class: 'card' }, note(friendly(e), 'err'), h('button', { class: 'btn ghost', type: 'button', text: '← Wróć', onclick: () => back() }))); return; }
-  activeConv = cid;
+  activeConv = chatId;
   let replyTo = null;
+  const myK = await myKey();
   const listEl = h('div', { class: 'list', role: 'log', 'aria-label': 'Wiadomości', 'aria-live': 'polite' });
   const text = h('textarea', { id: 'msg', rows: '1', maxlength: '1000', placeholder: 'Napisz wiadomość…', 'aria-label': 'Treść wiadomości' });
   const replyBox = h('div', { class: 'replying', hidden: true });
@@ -332,13 +442,13 @@ async function openChat(childUid, contactUid, title, back) {
   const err = h('div');
   const form = h('form', { class: 'composer', onsubmit: async (e) => {
     e.preventDefault();
-    const t = text.value.trim(); if (!t) return;
+    const t = text.value.trim(); if (!t || sendBtn.disabled) return;
     busy(sendBtn, true); err.replaceChildren();
-    const data = { senderUid: me.uid, text: t.slice(0, 1000), createdAt: serverTimestamp(), reactions: {} };
-    if (replyTo) data.replyTo = replyTo;
-    try { await addDoc(collection(db, 'kids_conversations', cid, 'messages'), data); text.value = ''; setReply(null); }
-    catch (e2) { err.replaceChildren(note(friendly(e2), 'err')); }
-    finally { busy(sendBtn, false); text.focus(); }
+    const ok = await sendDm(chatId, otherUid, t, replyTo);
+    busy(sendBtn, false);
+    if (ok) { text.value = ''; setReply(null); }
+    else err.replaceChildren(note('Wiadomość NIE została wysłana. Sprawdź internet i spróbuj ponownie.', 'err'));
+    text.focus();
   } }, replyBox, h('div', { class: 'row' }, text, sendBtn), err);
   text.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
 
@@ -355,70 +465,97 @@ async function openChat(childUid, contactUid, title, back) {
       avatar(title, true), h('span', { class: 'title', text: title })),
     listEl, form));
 
-  const q = query(collection(db, 'kids_conversations', cid, 'messages'), orderBy('createdAt', 'asc'), limit(300));
-  unsubs.push(onSnapshot(q, (snap) => {
+  let marking = false;
+  unsubs.push(watchMessages(chatId, (list) => {
     const atBottom = listEl.scrollHeight - listEl.scrollTop - listEl.clientHeight < 80;
     listEl.replaceChildren();
-    let newest = 0;
-    snap.forEach((d) => {
-      const m = d.data();
-      const mine = m.senderUid === me.uid;
-      const ms = m.createdAt && m.createdAt.toMillis ? m.createdAt.toMillis() : Date.now();
-      newest = Math.max(newest, ms);
-      const reacts = Object.values(m.reactions || {});
-      const myR = (m.reactions || {})[me.uid];
+    for (const m of list) {
+      const mine = m.senderAuthUid === me.uid;
+      const reactions = m.reactions && typeof m.reactions === 'object' ? m.reactions : {};
+      const mineR = (emoji) => Array.isArray(reactions[emoji]) && reactions[emoji].some(u => (typeof u === 'string' ? u : u && u.id) === myK);
+      const shown = Object.entries(reactions).filter(([, v]) => Array.isArray(v) && v.length).map(([e, v]) => e + (v.length > 1 ? v.length : ''));
       const acts = h('div', { class: 'acts' },
-        h('button', { type: 'button', 'aria-label': 'Odpowiedz z cytatem', title: 'Odpowiedz', text: '↩︎', onclick: () => { setReply({ id: d.id, text: String(m.text || '').slice(0, 200), senderUid: m.senderUid }); text.focus(); } }),
-        ...EMOJI.slice(0, 5).map(e => h('button', { type: 'button', 'aria-pressed': String(myR === e), 'aria-label': 'Reakcja ' + e, text: e, onclick: async () => {
-          try { await updateDoc(d.ref, { ['reactions.' + me.uid]: myR === e ? deleteField() : e }); } catch (e3) { toast(friendly(e3)); }
+        h('button', { type: 'button', 'aria-label': 'Odpowiedz z cytatem', title: 'Odpowiedz', text: '↩︎', onclick: () => { setReply({ id: m.id, text: String(m.text || '').slice(0, 300), name: m.senderName || '', senderId: m.senderId || '' }); text.focus(); } }),
+        ...EMOJI.slice(0, 5).map(e => h('button', { type: 'button', 'aria-pressed': String(mineR(e)), 'aria-label': 'Reakcja ' + e, text: e, onclick: async () => {
+          const next = {};
+          for (const [k, v] of Object.entries(reactions)) next[k] = (Array.isArray(v) ? v : []).filter(u => (typeof u === 'string' ? u : u && u.id) !== myK || k !== e);
+          if (!mineR(e)) next[e] = [...(next[e] || []), { id: myK, name: nameOf(me.uid, 'Ja') }];
+          for (const k of Object.keys(next)) if (!next[k].length) delete next[k];
+          try { await updateDoc(m.ref, { reactions: next }); } catch (e3) { toast(friendly(e3)); }
         } })));
+      const status = mine ? (m.isRead || m.status === 'read' ? ' · ✓✓ przeczytane' : ' · ✓ wysłane') : '';
       listEl.append(h('div', { class: 'b' + (mine ? ' me' : '') },
-        m.replyTo ? h('div', { class: 'quote', text: m.replyTo.text }) : null,
-        h('div', { text: m.text }),
-        h('div', { class: 'meta' }, h('span', { text: (mine ? 'Ja' : title) + ' · ' + fmtTime(m.createdAt) }), reacts.length ? h('span', { class: 'reacts', 'aria-label': 'Reakcje', text: reacts.join(' ') }) : null),
+        m.replyToText ? h('div', { class: 'quote', text: (m.replyToSenderName ? m.replyToSenderName + ': ' : '') + m.replyToText }) : null,
+        h('div', { text: m.text || '' }),
+        h('div', { class: 'meta' }, h('span', { text: (mine ? 'Ja' : (m.senderName || title)) + ' · ' + fmtTime(m.timestamp) + status }), shown.length ? h('span', { class: 'reacts', 'aria-label': 'Reakcje', text: shown.join(' ') }) : null),
         acts));
-    });
-    if (!snap.size) listEl.append(h('p', { class: 'muted center', text: 'Napisz pierwszą wiadomość 👋' }));
-    setSeen(cid, newest || Date.now());
-    if (atBottom || snap.docChanges().some(c => c.type === 'added')) listEl.scrollTop = listEl.scrollHeight;
-  }, (e) => {
-    // Odebranie dostępu (reguły) zamyka rozmowę natychmiast.
+    }
+    if (!list.length) listEl.append(h('p', { class: 'muted center', text: 'Napisz pierwszą wiadomość 👋' }));
+    if (atBottom || list.length) listEl.scrollTop = listEl.scrollHeight;
+    // Potwierdzenie przeczytania wiadomości, które naprawdę są na ekranie.
+    const unread = list.filter(m => m.receiverAuthUid === me.uid && !(m.isRead && m.status === 'read'));
+    if (unread.length && !marking && document.visibilityState === 'visible') {
+      marking = true;
+      Promise.all(unread.map(m => updateDoc(m.ref, { isRead: true, status: 'read', readAt: Date.now(), readByName: nameOf(me.uid, ''), readBy: Array.from(new Set([...(Array.isArray(m.readBy) ? m.readBy : []), myK])) }).catch(() => {})))
+        .finally(() => { marking = false; });
+    }
+  }, () => {
     clearSubs(); activeConv = null;
     render(h('section', { class: 'card center' }, h('div', { style: 'font-size:3rem', 'aria-hidden': 'true', text: '🔒' }),
-      h('h1', { text: 'Rozmowa jest niedostępna' }), h('p', { class: 'muted', text: 'Rodzic zmienił ustawienia dostępu.' }),
+      h('h1', { text: 'Rozmowa jest niedostępna' }), h('p', { class: 'muted', text: 'Rodzic zmienił ustawienia dostępu albo nie ma połączenia.' }),
       h('button', { class: 'btn primary', type: 'button', text: 'Odśwież', onclick: () => start(me) })));
   }));
-  // Na bieżąco obserwuj konfigurację: cofnięcie dostępu zamyka widok także bez nowych wiadomości.
-  if (!isGuardian(me)) {
-    unsubs.push(onSnapshot(doc(db, 'kids_pilot/config'), (s) => {
-      const c = s.exists() ? s.data() : null;
-      const ok = c && c.enabled && c.childUid && (c.childUid === me.uid || (c.contacts || []).includes(me.uid));
-      if (!ok) { clearSubs(); activeConv = null; start(me); }
-    }, () => { clearSubs(); activeConv = null; start(me); }));
-  }
+  if (!isGuardian(me)) watchConfig();
   text.focus();
 }
 
 // ── Panel rodzica ────────────────────────────────────────────────────────────
+// Tworzy (lub naprawia) rodzinny wątek DM w LUMINA: zaakceptowana prośba + pokój z nazwą dziecka.
+async function createFamilyDM(childUid, contactUid) {
+  const prof = await lookupLuminaProfile(contactUid);
+  const contactKey = normId(prof.slug || contactUid);
+  const childKey = normId(childUid);
+  const chatId = familyChatId(contactKey, childUid);
+  await loadNames([childUid, contactUid]);
+  const childLabel = nameOf(childUid, 'Dziecko') + ' · LUMI KIDS';
+  const contactName = prof.name || nameOf(contactUid, 'Rodzic');
+  await setDoc(doc(db, 'lumina_message_requests', chatId), {
+    chatId, senderAuthUid: contactUid, receiverAuthUid: childUid, participants: [contactUid, childUid],
+    senderId: contactKey, receiverId: childKey, senderName: contactName, previewText: 'Rozmowa rodzinna LUMI KIDS',
+    status: 'accepted', acceptedAt: serverTimestamp(), acceptedBy: me.uid, createdAt: Date.now(), kidsFamily: true
+  }, { merge: true });
+  await setDoc(doc(db, 'lumina_chats', chatId), {
+    chatId, participants: [contactUid, childUid], users: [contactKey, contactUid, childUid],
+    conversationState: 'accepted', kidsFamily: true,
+    ['name_' + childUid]: childLabel, ['avatar_' + childUid]: KIDS_AVATAR,
+    ['name_' + contactKey]: contactName, ['name_' + contactUid]: contactName,
+    otherName: childLabel, otherAvatar: KIDS_AVATAR
+  }, { merge: true });
+  return chatId;
+}
+
 async function screenParent() {
   clearSubs();
   const ref = doc(db, 'kids_pilot/config');
   let c = null;
-  try { const s = await getDoc(ref); c = s.exists() ? s.data() : null; } catch (e) { render(h('section', { class: 'card' }, note('Brak uprawnień opiekuna (reguły LUMI KIDS nie są jeszcze wdrożone albo konto nie jest potwierdzone).', 'err'))); return; }
-  if (!c) c = { enabled: false, childUid: '', contacts: [me.uid] };
+  try { const s = await getDoc(ref); c = s.exists() ? s.data() : null; } catch (e) { render(h('section', { class: 'card' }, note('Brak uprawnień opiekuna (konto nie jest potwierdzone lub reguły nie są wdrożone).', 'err'))); return; }
+  if (!c) c = { enabled: false, revoked: false, childUid: '', contacts: [me.uid], familyChats: {} };
   if (!Array.isArray(c.contacts)) c.contacts = [];
+  if (!c.familyChats || typeof c.familyChats !== 'object') c.familyChats = {};
   cfg = c;
   const save = async (patch, msg) => {
-    try { await setDoc(ref, { ...cfg, ...patch, updatedAt: serverTimestamp(), updatedBy: me.uid }); toast(msg || 'Zapisano'); screenParent(); }
-    catch (e) { toast(friendly(e)); }
+    try { await setDoc(ref, { ...cfg, ...patch, updatedAt: serverTimestamp(), updatedBy: me.uid }); cfg = { ...cfg, ...patch }; if (msg) toast(msg); }
+    catch (e) { toast(friendly(e)); throw e; }
+  };
+  const ensureChats = async (childUid, contacts) => {
+    const fc = { ...(cfg.familyChats || {}) };
+    for (const u of contacts) fc[u] = await createFamilyDM(childUid, u);
+    await save({ familyChats: fc });
   };
   await loadNames([me.uid, c.childUid, ...c.contacts].filter(Boolean));
 
-  // Moja nazwa widoczna dla dziecka
   const myName = h('input', { type: 'text', id: 'myname', maxlength: '40', value: names[me.uid] || 'Tata' });
   const childName = h('input', { type: 'text', id: 'childname', maxlength: '40', value: names[c.childUid] || 'Dawidek' });
-
-  // Zaproszenia
   const invEmail = h('input', { type: 'email', id: 'invemail', autocomplete: 'off' });
   const invTable = h('tbody');
   try {
@@ -426,9 +563,16 @@ async function screenParent() {
     inv.forEach((d) => {
       const v = d.data();
       const approve = v.status === 'claimed' && v.claimedUid !== c.childUid
-        ? h('button', { class: 'btn ok', type: 'button', text: 'Zatwierdź konto dziecka', onclick: async () => {
-            await save({ childUid: v.claimedUid, enabled: true, contacts: Array.from(new Set([...(c.contacts || []), me.uid])) }, 'Konto dziecka zatwierdzone');
-            try { await setDoc(doc(db, 'kids_profiles', v.claimedUid), { displayName: childName.value.trim() || 'Dziecko', updatedAt: serverTimestamp() }); } catch (e) {}
+        ? h('button', { class: 'btn ok', type: 'button', text: 'Zatwierdź konto dziecka', onclick: async (ev) => {
+            busy(ev.currentTarget, true);
+            try {
+              await setDoc(doc(db, 'kids_profiles', v.claimedUid), { displayName: childName.value.trim().slice(0, 40) || 'Dziecko', updatedAt: serverTimestamp() });
+              const contacts = Array.from(new Set([...(c.contacts || []), me.uid]));
+              await save({ childUid: v.claimedUid, enabled: true, revoked: false, contacts, familyChats: {} });
+              await ensureChats(v.claimedUid, contacts);
+              toast('Konto dziecka zatwierdzone — rozmowa rodzinna gotowa');
+            } catch (e) { /* toast już pokazany */ }
+            screenParent();
           } })
         : null;
       const cancel = v.status === 'pending' ? h('button', { class: 'btn ghost', type: 'button', text: 'Anuluj', onclick: async () => { await updateDoc(d.ref, { status: 'revoked' }); screenParent(); } }) : null;
@@ -436,14 +580,13 @@ async function screenParent() {
     });
   } catch (e) { invTable.append(h('tr', {}, h('td', { colspan: '3', text: 'Nie udało się wczytać zaproszeń.' }))); }
 
-  // Zgłoszenia rodzin do pilotażu
   const waitBody = h('tbody');
   try {
     const ws = await getDocs(query(collection(db, 'kids_waitlist'), limit(100)));
     const rows = ws.docs.map(d => ({ ref: d.ref, ...d.data() })).sort((a, b) => ((b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0) - (a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0)));
     for (const w of rows) {
       waitBody.append(h('tr', {},
-        h('td', {}, h('strong', { text: w.parentName || '' }), h('br'), h('a', { href: 'mailto:' + encodeURIComponent(w.email || '').replace('%40', '@'), text: w.email || '' })),
+        h('td', {}, h('strong', { text: w.parentName || '' }), h('br'), h('a', { href: 'mailto:' + String(w.email || ''), text: w.email || '' })),
         h('td', { text: String(w.childrenCount || '') }),
         h('td', { text: w.message || '—' }),
         h('td', { text: (w.createdAt && w.createdAt.toDate ? w.createdAt.toDate().toLocaleDateString('pl-PL') : '') + (w.status === 'seen' ? ' · przejrzane' : '') },
@@ -457,30 +600,33 @@ async function screenParent() {
   for (const u of c.contacts) {
     contactsList.append(h('li', { class: 'contact' }, avatar(nameOf(u, u === me.uid ? 'Ja' : 'Kontakt'), true),
       h('span', { class: 'name', text: nameOf(u, u === me.uid ? 'Ja (rodzic)' : 'Kontakt') + (u === me.uid ? ' — Ty' : '') }),
-      u !== me.uid ? h('button', { class: 'btn ghost', type: 'button', text: 'Usuń', onclick: () => save({ contacts: c.contacts.filter(x => x !== u) }, 'Kontakt usunięty — dostęp cofnięty natychmiast') }) : null));
+      u !== me.uid ? h('button', { class: 'btn ghost', type: 'button', text: 'Usuń', onclick: async () => { await save({ contacts: c.contacts.filter(x => x !== u) }, 'Kontakt usunięty — dziecko nie może już do niego pisać'); screenParent(); } }) : null));
   }
 
-  const status = c.enabled && c.childUid ? note('Pilotaż AKTYWNY — dziecko ma dostęp do rozmów z zatwierdzonymi kontaktami.', 'good')
-    : note(c.childUid ? 'Pilotaż WSTRZYMANY — dziecko nie ma teraz dostępu.' : 'Brak zatwierdzonego konta dziecka. Wyślij zaproszenie poniżej.', 'info');
+  const active = c.childUid && c.enabled && !c.revoked;
+  const status = active ? note('Pilotaż AKTYWNY — dziecko rozmawia tylko z zatwierdzonymi kontaktami.', 'good')
+    : note(c.childUid ? 'Dostęp dziecka WSTRZYMANY — nie może czytać ani wysyłać wiadomości.' : 'Brak zatwierdzonego konta dziecka. Wyślij zaproszenie poniżej.', 'info');
+  const myChat = c.familyChats && c.familyChats[me.uid];
 
   render(
     h('section', { class: 'card pop' },
       h('div', { class: 'who' }, h('span', { class: 'avatar', 'aria-hidden': 'true', text: '👪' }), h('div', {}, h('h1', { text: 'Panel rodzica' }), h('p', { class: 'muted', text: 'Masz pełną kontrolę. Każda zmiana działa od razu.' }))),
       status,
+      c.childUid ? h('p', { class: 'small', text: 'Rozmowa z dzieckiem jest w Twoim zwykłym LUMI Messenger (okienka prywatne) jako „' + (names[c.childUid] || 'Dziecko') + ' · LUMI KIDS”. To ten sam wątek co tutaj.' }) : null,
       h('div', { class: 'row' },
-        c.childUid ? h('button', { class: 'btn primary', type: 'button', text: '💬 Rozmowa z ' + (names[c.childUid] || 'dzieckiem'), disabled: !c.enabled || !c.contacts.includes(me.uid), onclick: () => openChat(c.childUid, me.uid, names[c.childUid] || 'Dziecko', screenParent) }) : null,
-        c.childUid && c.enabled ? h('button', { class: 'btn ghost', type: 'button', text: '⏸ Wstrzymaj dostęp', onclick: () => save({ enabled: false }, 'Dostęp wstrzymany') }) : null,
-        c.childUid && !c.enabled ? h('button', { class: 'btn ok', type: 'button', text: '▶ Wznów dostęp', onclick: () => save({ enabled: true }, 'Dostęp wznowiony') }) : null,
-        c.childUid ? h('button', { class: 'btn danger', type: 'button', text: '🔒 Cofnij dostęp dziecka', onclick: () => { if (confirm('Cofnąć dostęp konta dziecka? Rozmowy zostaną zachowane, ale dziecko nic nie zobaczy, dopóki ponownie nie zatwierdzisz konta.')) save({ childUid: '', enabled: false }, 'Dostęp cofnięty'); } }) : null)),
+        c.childUid && myChat ? h('button', { class: 'btn primary', type: 'button', text: '💬 Rozmowa z ' + (names[c.childUid] || 'dzieckiem'), onclick: () => openChat(myChat, c.childUid, (names[c.childUid] || 'Dziecko'), screenParent) }) : null,
+        c.childUid && !myChat ? h('button', { class: 'btn primary', type: 'button', text: 'Utwórz rozmowę rodzinną', onclick: async (ev) => { busy(ev.currentTarget, true); try { await ensureChats(c.childUid, Array.from(new Set([...c.contacts, me.uid]))); await save({ contacts: Array.from(new Set([...c.contacts, me.uid])) }); } catch (e) {} screenParent(); } }) : null,
+        c.childUid ? h('a', { class: 'btn ghost', href: '/mess', text: 'Otwórz LUMI Messenger' }) : null,
+        active ? h('button', { class: 'btn danger', type: 'button', text: '🔒 Cofnij dostęp dziecka', onclick: async () => { if (confirm('Cofnąć dostęp? Dziecko natychmiast przestanie widzieć i wysyłać wiadomości. Historia zostanie zachowana.')) { await save({ enabled: false, revoked: true }, 'Dostęp cofnięty'); screenParent(); } } }) : null,
+        c.childUid && !active ? h('button', { class: 'btn ok', type: 'button', text: '▶ Przywróć dostęp', onclick: async () => { await save({ enabled: true, revoked: false }, 'Dostęp przywrócony'); screenParent(); } }) : null)),
     h('section', { class: 'card grid2' },
       h('div', {}, h('label', { for: 'myname', text: 'Twoja nazwa widoczna dla dziecka' }), myName,
         h('button', { class: 'btn ghost block', type: 'button', text: 'Zapisz', onclick: async () => {
-          if (!c.contacts.includes(me.uid)) await save({ contacts: [...c.contacts, me.uid] });
-          try { await setDoc(doc(db, 'kids_profiles', me.uid), { displayName: myName.value.trim().slice(0, 40) || 'Rodzic', updatedAt: serverTimestamp() }); toast('Zapisano'); } catch (e) { toast(friendly(e)); }
+          try { await setDoc(doc(db, 'kids_profiles', me.uid), { displayName: myName.value.trim().slice(0, 40) || 'Rodzic', updatedAt: serverTimestamp() }); names[me.uid] = myName.value.trim(); toast('Zapisano'); } catch (e) { toast(friendly(e)); }
         } })),
       h('div', {}, h('label', { for: 'childname', text: 'Imię dziecka w aplikacji' }), childName,
         h('button', { class: 'btn ghost block', type: 'button', text: 'Zapisz', disabled: !c.childUid, onclick: async () => {
-          try { await setDoc(doc(db, 'kids_profiles', c.childUid), { displayName: childName.value.trim().slice(0, 40) || 'Dziecko', updatedAt: serverTimestamp() }); toast('Zapisano'); } catch (e) { toast(friendly(e)); }
+          try { await setDoc(doc(db, 'kids_profiles', c.childUid), { displayName: childName.value.trim().slice(0, 40) || 'Dziecko', updatedAt: serverTimestamp() }); names[c.childUid] = childName.value.trim(); if (c.contacts.length) await ensureChats(c.childUid, c.contacts); toast('Zapisano'); } catch (e) { toast(friendly(e)); }
         } }))),
     h('section', { class: 'card' },
       h('h2', { text: 'Zaproszenie konta dziecka' }),
@@ -493,17 +639,18 @@ async function screenParent() {
         catch (e2) { toast(friendly(e2)); }
       } }, h('label', { for: 'invemail', class: 'sr', text: 'E-mail dziecka' }), invEmail, h('button', { class: 'btn primary', type: 'submit', text: 'Zaproś' })),
       h('p', { class: 'muted small', text: 'Link dla dziecka: ' + APP_URL + ' → „Mam zaproszenie — pierwsze logowanie”.' }),
-      h('table', {}, h('thead', {}, h('tr', {}, h('th', { text: 'E-mail' }), h('th', { text: 'Stan' }), h('th', { text: '' }))), invTable)),
+      h('div', { style: 'overflow-x:auto' }, h('table', {}, h('thead', {}, h('tr', {}, h('th', { text: 'E-mail' }), h('th', { text: 'Stan' }), h('th', { text: '' }))), invTable))),
     h('section', { class: 'card' },
       h('h2', { text: 'Zatwierdzone kontakty' }),
-      h('p', { class: 'muted small', text: 'Dziecko rozmawia wyłącznie z tymi osobami. Bez wyszukiwarki, bez obcych.' }),
+      h('p', { class: 'muted small', text: 'Dziecko rozmawia wyłącznie z tymi osobami — każda w swoim zwykłym LUMI Messenger. Bez wyszukiwarki, bez obcych.' }),
       contactsList,
-      h('form', { class: 'row', novalidate: true, style: 'margin-top:12px', onsubmit: (e) => {
+      h('form', { class: 'row', novalidate: true, style: 'margin-top:12px', onsubmit: async (e) => {
         e.preventDefault();
         const u = contactUid.value.trim();
         if (!/^[A-Za-z0-9]{20,40}$/.test(u)) { toast('To nie wygląda na identyfikator konta.'); return; }
         if (u === c.childUid) { toast('To konto dziecka.'); return; }
-        save({ contacts: Array.from(new Set([...c.contacts, u])) }, 'Kontakt zatwierdzony');
+        try { await save({ contacts: Array.from(new Set([...c.contacts, u])) }); if (c.childUid) await ensureChats(c.childUid, [u]); toast('Kontakt zatwierdzony — rozmowa utworzona'); } catch (e2) {}
+        screenParent();
       } }, h('label', { for: 'cuid', class: 'sr', text: 'Identyfikator konta kontaktu' }), contactUid, h('button', { class: 'btn ghost', type: 'submit', text: 'Dodaj kontakt' })),
       h('p', { class: 'muted small', text: 'Np. mama: niech zaloguje się na tej stronie swoim kontem — zobaczy swój identyfikator, który tu wkleisz.' })),
     h('section', { class: 'card' },
@@ -514,7 +661,7 @@ async function screenParent() {
 }
 
 onAuthStateChanged(auth, (user) => {
-  clearSubs(); names = {}; activeConv = null;
+  clearSubs(); names = {}; activeConv = null; myKeyCache = null;
   if (!user) { me = null; logoutBtn.hidden = true; screenLogin(); return; }
   start(user).catch(() => render(h('section', { class: 'card' }, note('Nie udało się wczytać LUMI KIDS. Odśwież stronę.', 'err'))));
 });

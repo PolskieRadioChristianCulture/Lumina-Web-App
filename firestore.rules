@@ -139,8 +139,9 @@ service cloud.firestore {
     }
 
     // ── LUMI KIDS (pilotaż rodzinny, Strażnik Claude 2026-10-18) ──────────────────────
-    // Konfiguracja pilotażu: kids_pilot/config { enabled, childUid, contacts[] }.
-    // Zapis WYŁĄCZNIE Master Admin (opiekun). Brak dokumentu = pilotaż wyłączony.
+    // kids_pilot/config { enabled, revoked, childUid, contacts[], familyChats{} } — zapis WYŁĄCZNIE opiekun
+    // (Master Admin). Brak dokumentu = pilotaż wyłączony. Dziecko i rodzic rozmawiają w JEDNYM,
+    // zwykłym wątku DM LUMINA (lumina_direct_messages) — bez drugiego magazynu wiadomości.
     function kidsConfigPath() {
       return /databases/$(database)/documents/kids_pilot/config;
     }
@@ -148,32 +149,32 @@ service cloud.firestore {
       return isAuthenticated() && exists(kidsConfigPath()) &&
         get(kidsConfigPath()).data.get('childUid', '') == request.auth.uid;
     }
-    // Konto dziecka nie może pisać w publicznych częściach LUMINA (profil, wpisy, czat ogólny, DM).
+    // Konto dziecka nie może pisać w publicznych częściach LUMINA (profil, wpisy, czat ogólny, prośby o kontakt).
     function notKidsChild() {
       return !kidsIsChild();
     }
-    function kidsActive() {
-      return isMember() && exists(kidsConfigPath()) &&
+    function kidsEnabled() {
+      return exists(kidsConfigPath()) &&
         get(kidsConfigPath()).data.get('enabled', false) == true &&
+        get(kidsConfigPath()).data.get('revoked', false) != true;
+    }
+    function kidsActive() {
+      return isMember() && kidsEnabled() &&
         get(kidsConfigPath()).data.get('childUid', '') is string &&
         get(kidsConfigPath()).data.get('childUid', '') != '';
     }
-    // Para dozwolona: [dziecko, zatwierdzony kontakt] — sprawdzane przy KAŻDYM odczycie i zapisie,
-    // więc cofnięcie dostępu (enabled=false, childUid='', usunięcie kontaktu) działa natychmiast.
-    function kidsPairAllowed(participants) {
-      let cfg = get(kidsConfigPath()).data;
-      return participants is list && participants.size() == 2 &&
-        participants[0] == cfg.childUid &&
-        participants[1] in cfg.get('contacts', []) &&
-        participants[1] != cfg.childUid &&
-        request.auth.uid in participants;
+    // Odczyt/aktualizacja DM: zwykli użytkownicy bez zmian; dziecko tylko gdy pilotaż aktywny
+    // (cofnięcie zgody natychmiast odcina odczyt i zapis).
+    function kidsChildGate() {
+      return !kidsIsChild() || kidsEnabled();
     }
-    function kidsConvAllowed(convId) {
-      let p = /databases/$(database)/documents/kids_conversations/$(convId);
-      return kidsActive() && exists(p) && kidsPairAllowed(get(p).data.participants);
-    }
-    function kidsEmoji() {
-      return ['❤️', '👍', '😊', '😂', '🙏', '👏', '😮', '😢'];
+    // Dziecko może napisać WYŁĄCZNIE do zatwierdzonego kontaktu, tylko tekst (bez zdjęć i załączników).
+    function kidsChildMayDm(data) {
+      return kidsIsChild() && kidsEnabled() &&
+        data.receiverAuthUid in get(kidsConfigPath()).data.get('contacts', []) &&
+        data.get('type', 'text') == 'text' &&
+        !('imageUrl' in data) &&
+        data.text.size() > 0 && data.text.size() <= 1000;
     }
 
     function acceptedConversation(chatId, participants) {
@@ -279,9 +280,9 @@ service cloud.firestore {
     }
 
     match /lumina_direct_messages/{messageId} {
-      allow read: if isMasterAdmin() || isMessageParticipant(resource.data);
+      allow read: if isMasterAdmin() || (isMessageParticipant(resource.data) && kidsChildGate());
       allow create: if isMasterAdmin() || (
-        isMember() && notKidsChild() &&
+        isMember() && (notKidsChild() || kidsChildMayDm(request.resource.data)) &&
         request.resource.data.senderAuthUid == request.auth.uid &&
         request.resource.data.receiverAuthUid is string &&
         request.resource.data.participants is list &&
@@ -292,7 +293,7 @@ service cloud.firestore {
         request.resource.data.text.size() <= 4000
       );
       allow update: if isMasterAdmin() || (
-        isMessageParticipant(resource.data) &&
+        isMessageParticipant(resource.data) && kidsChildGate() &&
         request.resource.data.diff(resource.data).affectedKeys().hasOnly([
           'isRead', 'status', 'readAt', 'readByName', 'readBy', 'reactions', 'seenBy'
         ])
@@ -303,7 +304,7 @@ service cloud.firestore {
     }
 
     match /lumina_message_requests/{requestId} {
-      allow read: if isMasterAdmin() || isMessageParticipant(resource.data);
+      allow read: if isMasterAdmin() || (isMessageParticipant(resource.data) && kidsChildGate());
       allow create: if isMasterAdmin() || (
         isMember() && notKidsChild() &&
         request.resource.data.senderAuthUid == request.auth.uid &&
@@ -315,7 +316,7 @@ service cloud.firestore {
         directMessageAllowed(request.resource.data)
       );
       allow update: if isMasterAdmin() || (
-        isMember() && resource.data.receiverAuthUid == request.auth.uid &&
+        isMember() && notKidsChild() && resource.data.receiverAuthUid == request.auth.uid &&
         resource.data.status == 'pending' &&
         request.resource.data.status in ['accepted', 'declined', 'blocked'] &&
         (request.resource.data.status != 'accepted' ||
@@ -343,7 +344,7 @@ service cloud.firestore {
     }
 
     match /lumina_chats/{chatId} {
-      allow read: if isMasterAdmin() || isMessageParticipant(resource.data);
+      allow read: if isMasterAdmin() || (isMessageParticipant(resource.data) && kidsChildGate());
       allow create: if isMasterAdmin() || (
         isMember() && notKidsChild() &&
         request.resource.data.participants is list &&
@@ -353,7 +354,7 @@ service cloud.firestore {
       );
       // P0: all fields used by isMessageParticipant are immutable for members.
       allow update: if isMasterAdmin() || (
-        isMessageParticipant(resource.data) &&
+        isMessageParticipant(resource.data) && kidsChildGate() &&
         !request.resource.data.diff(resource.data).affectedKeys().hasAny([
           'participants', 'users', 'senderAuthUid', 'receiverAuthUid'
         ]) &&
@@ -364,7 +365,7 @@ service cloud.firestore {
       allow delete: if isMasterAdmin();
 
       match /messages/{messageId} {
-        allow read: if isMasterAdmin() || isMessageParticipant(resource.data);
+        allow read: if isMasterAdmin() || (isMessageParticipant(resource.data) && kidsChildGate());
         allow create: if isMasterAdmin() || (
           isMember() && notKidsChild() &&
           request.resource.data.senderAuthUid == request.auth.uid &&
@@ -728,43 +729,6 @@ service cloud.firestore {
         request.resource.data.displayName.size() > 0 && request.resource.data.displayName.size() <= 40 &&
         request.resource.data.get('emoji', '') is string && request.resource.data.get('emoji', '').size() <= 8
       );
-    }
-
-    match /kids_conversations/{convId} {
-      allow read: if isMasterAdmin() || (kidsActive() && kidsPairAllowed(resource.data.participants));
-      allow create: if kidsActive() &&
-        kidsPairAllowed(request.resource.data.participants) &&
-        convId == request.resource.data.participants[0] + '_' + request.resource.data.participants[1] &&
-        request.resource.data.keys().hasOnly(['participants', 'createdAt']) &&
-        request.resource.data.createdAt == request.time;
-      allow update: if false;
-      allow delete: if isMasterAdmin();
-
-      match /messages/{messageId} {
-        allow read: if isMasterAdmin() || kidsConvAllowed(convId);
-        allow create: if kidsConvAllowed(convId) &&
-          request.resource.data.senderUid == request.auth.uid &&
-          request.resource.data.keys().hasOnly(['senderUid', 'text', 'createdAt', 'replyTo', 'reactions']) &&
-          request.resource.data.text is string &&
-          request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 1000 &&
-          request.resource.data.createdAt == request.time &&
-          request.resource.data.get('reactions', {}) == {} &&
-          (!('replyTo' in request.resource.data) || (
-            request.resource.data.replyTo is map &&
-            request.resource.data.replyTo.keys().hasOnly(['id', 'text', 'senderUid']) &&
-            request.resource.data.replyTo.id is string &&
-            request.resource.data.replyTo.text is string && request.resource.data.replyTo.text.size() <= 200 &&
-            request.resource.data.replyTo.senderUid is string
-          ));
-        // Reakcje: każdy uczestnik zmienia wyłącznie własną reakcję, z zamkniętej listy emoji.
-        allow update: if kidsConvAllowed(convId) &&
-          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reactions']) &&
-          request.resource.data.reactions is map &&
-          request.resource.data.reactions.diff(resource.data.get('reactions', {})).affectedKeys().hasOnly([request.auth.uid]) &&
-          (!(request.auth.uid in request.resource.data.reactions) ||
-            request.resource.data.reactions[request.auth.uid] in kidsEmoji());
-        allow delete: if isMasterAdmin();
-      }
     }
 
     match /{document=**} {

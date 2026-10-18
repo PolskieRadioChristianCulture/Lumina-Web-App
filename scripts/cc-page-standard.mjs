@@ -5,7 +5,7 @@ export const FAVORITES_SCRIPT = '/js/cc-favorites.js?v=20261015_topbar1';
 
 export function applyPageStandard(file, html) {
   const name = file.replaceAll('\\', '/').toLowerCase();
-  if (!name.endsWith('.html') || /(?:live|stream|obs|embed|admin|mission.control|pilot|cctv24)/.test(name)) return html;
+  if (!name.endsWith('.html') || /(?:live|stream|obs|embed|admin|mission.control|pilot|cctv24|lumi-kids\/app)/.test(name)) return html;
   if (!/<body\b/i.test(html) || !/<\/body\s*>/i.test(html)) return html;
   if (/http-equiv\s*=\s*["']refresh["']/i.test(html)) return html;
   // Refresh the shared chat loader even when back-to-top is already installed.

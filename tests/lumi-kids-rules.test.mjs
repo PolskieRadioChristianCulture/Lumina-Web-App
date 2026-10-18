@@ -18,16 +18,28 @@ const admin = () => db(PARENT, ADMIN_TOKEN);
 const child = () => db(CHILD, pwd(KID_EMAIL));
 const mom = () => db(MOM, goog('mama.testowa@example.com'));
 const stranger = () => db(STRANGER, goog('obcy@example.com'));
-const CONV = `${CHILD}_${PARENT}`;
+const CHAT = 'cezaryrgowski_' + CHILD.toLowerCase();
+const MOMCHAT = 'mamatestowa_' + CHILD.toLowerCase();
+
 
 async function seed(cfg = {}) {
   await env.withSecurityRulesDisabled(async (c) => {
     const f = c.firestore();
-    await setDoc(doc(f, 'kids_pilot/config'), { enabled: true, childUid: CHILD, contacts: [PARENT, MOM], ...cfg });
-    await setDoc(doc(f, `kids_conversations/${CONV}`), { participants: [CHILD, PARENT], createdAt: new Date() });
-    await setDoc(doc(f, `kids_conversations/${CONV}/messages/m1`), { senderUid: PARENT, text: 'Cześć!', createdAt: new Date(), reactions: {} });
+    await setDoc(doc(f, 'kids_pilot/config'), { enabled: true, childUid: CHILD, contacts: [PARENT, MOM], familyChats: { [PARENT]: CHAT, [MOM]: MOMCHAT }, ...cfg });
+    for (const [chatId, other] of [[CHAT, PARENT], [MOMCHAT, MOM]]) {
+      await setDoc(doc(f, `lumina_message_requests/${chatId}`), { chatId, senderAuthUid: other, receiverAuthUid: CHILD, participants: [other, CHILD], status: 'accepted', kidsFamily: true });
+      await setDoc(doc(f, `lumina_chats/${chatId}`), { chatId, participants: [other, CHILD], users: [other, CHILD], conversationState: 'accepted', kidsFamily: true });
+    }
+    await setDoc(doc(f, 'lumina_direct_messages/m1'), dm(PARENT, CHILD, CHAT, 'Cześć!', true));
+    await setDoc(doc(f, 'lumina_profiles/' + STRANGER), { uid: STRANGER, name: 'Obcy' });
   });
 }
+function dm(from, to, chatId, text, server = false) {
+  return { clientMessageId: 'c-' + Math.random(), chatId, senderAuthUid: from, receiverAuthUid: to, participants: [from, to],
+    senderId: from.toLowerCase(), senderName: 'Test', receiverId: to.toLowerCase(), users: [from, to], text, type: 'text',
+    status: 'sent', isRead: false, reactions: {}, createdAt: Date.now(), timestamp: server ? new Date() : serverTimestamp() };
+}
+const myDms = (f, uid, chatId) => getDocs(query(collection(f, 'lumina_direct_messages'), where('participants', 'array-contains', uid), where('chatId', '==', chatId)));
 
 before(async () => {
   env = await initializeTestEnvironment({ projectId: 'demo-lumi-kids', firestore: { rules: readFileSync(RULES, 'utf8'), host: '127.0.0.1', port: 8080 } });
@@ -35,90 +47,94 @@ before(async () => {
 after(async () => { await env.cleanup(); });
 beforeEach(async () => { await env.clearFirestore(); });
 
-test('1. Dziecko loguje się i czyta własną rozmowę z rodzicem', async () => {
+test('T01/T02. Dziecko czyta wspólny wątek DM z rodzicem (ten sam magazyn co LUMINA)', async () => {
   await seed();
   await assertSucceeds(getDoc(doc(child(), 'kids_pilot/config')));
-  await assertSucceeds(getDocs(collection(child(), `kids_conversations/${CONV}/messages`)));
+  await assertSucceeds(myDms(child(), CHILD, CHAT));
 });
 
-test('2. Niezatwierdzony użytkownik nie ma dostępu do LUMI KIDS', async () => {
+test('T02. Rodzic (zwykła LUMINA) wysyła do dziecka; zatwierdzony kontakt (mama) też', async () => {
   await seed();
+  await assertSucceeds(addDoc(collection(admin(), 'lumina_direct_messages'), dm(PARENT, CHILD, CHAT, 'TEST-RODZIC-1')));
+  await assertSucceeds(addDoc(collection(mom(), 'lumina_direct_messages'), dm(MOM, CHILD, MOMCHAT, 'TEST-MAMA-1')));
+});
+
+test('T03. Dziecko odpowiada rodzicowi w tym samym wątku (z cytatem) i aktualizuje podgląd rozmowy', async () => {
+  await seed();
+  await assertSucceeds(setDoc(doc(child(), 'lumina_direct_messages/k1'), { ...dm(CHILD, PARENT, CHAT, 'TEST-DZIECKO-1'), replyToMessageId: 'm1', replyToSenderName: 'Tata', replyToText: 'Cześć!' }));
+  await assertSucceeds(updateDoc(doc(child(), `lumina_chats/${CHAT}`), { lastMessageText: 'TEST-DZIECKO-1', lastSenderId: CHILD.toLowerCase() }));
+  await assertSucceeds(myDms(admin(), PARENT, CHAT));
+});
+
+test('T10. Idempotencja: ponowny zapis tego samego identyfikatora wiadomości przez dziecko jest odrzucony (jeden rekord)', async () => {
+  await seed();
+  await assertSucceeds(setDoc(doc(child(), 'lumina_direct_messages/same1'), dm(CHILD, PARENT, CHAT, 'raz')));
+  await assertFails(setDoc(doc(child(), 'lumina_direct_messages/same1'), dm(CHILD, PARENT, CHAT, 'drugi raz')));
+});
+
+test('Walidacja zapisu dziecka: zdjęcie, za długi tekst, podszycie, pusty tekst', async () => {
+  await seed();
+  const c = collection(child(), 'lumina_direct_messages');
+  await assertFails(addDoc(c, { ...dm(CHILD, PARENT, CHAT, 'foto'), imageUrl: 'https://example.com/a.jpg' }));
+  await assertFails(addDoc(c, { ...dm(CHILD, PARENT, CHAT, 'x'), type: 'image' }));
+  await assertFails(addDoc(c, dm(CHILD, PARENT, CHAT, 'x'.repeat(1001))));
+  await assertFails(addDoc(c, dm(CHILD, PARENT, CHAT, '')));
+  await assertFails(addDoc(c, { ...dm(CHILD, PARENT, CHAT, 'udaję tatę'), senderAuthUid: PARENT }));
+});
+
+test('T07. Dziecko nie napisze do niezatwierdzonej osoby; obcy nie napisze do dziecka ani nie przyjmie go dziecko', async () => {
+  await seed();
+  const sc = 'obcy_' + CHILD.toLowerCase();
+  await env.withSecurityRulesDisabled(async (c) => {
+    await setDoc(doc(c.firestore(), `lumina_message_requests/${sc}`), { chatId: sc, senderAuthUid: STRANGER, receiverAuthUid: CHILD, participants: [STRANGER, CHILD], status: 'pending', previewText: 'hej' });
+  });
+  await assertFails(addDoc(collection(child(), 'lumina_direct_messages'), dm(CHILD, STRANGER, sc, 'hej')));
+  await assertFails(addDoc(collection(stranger(), 'lumina_direct_messages'), dm(STRANGER, CHILD, sc, 'hej')));
+  await assertFails(updateDoc(doc(child(), `lumina_message_requests/${sc}`), { status: 'accepted', acceptedAt: serverTimestamp(), acceptedBy: CHILD }));
+  await assertFails(addDoc(collection(child(), 'lumina_message_requests'), { chatId: 'x', senderAuthUid: CHILD, receiverAuthUid: STRANGER, participants: [CHILD, STRANGER], previewText: 'hej', status: 'pending' }));
+});
+
+test('T08. Osoba trzecia nie odczyta wątku rodzinnego ani jego podglądu', async () => {
+  await seed();
+  await assertFails(getDoc(doc(stranger(), 'lumina_direct_messages/m1')));
+  await assertFails(getDoc(doc(stranger(), `lumina_chats/${CHAT}`)));
+  await assertFails(myDms(stranger(), CHILD, CHAT));
+  await assertFails(getDocs(collection(stranger(), 'lumina_direct_messages')));
   await assertFails(getDoc(doc(stranger(), 'kids_pilot/config')));
-  await assertFails(getDoc(doc(stranger(), `kids_conversations/${CONV}`)));
-  await assertFails(getDocs(collection(stranger(), `kids_conversations/${CONV}/messages`)));
 });
 
-test('3. Rodzic wysyła wiadomość do dziecka', async () => {
-  await seed();
-  await assertSucceeds(addDoc(collection(admin(), `kids_conversations/${CONV}/messages`), { senderUid: PARENT, text: 'Jak w szkole?', createdAt: serverTimestamp(), reactions: {} }));
+test('T09. Cofnięcie zgody odcina dziecku odczyt, wysyłkę, reakcje i podgląd — konto dziecka nadal zablokowane publicznie', async () => {
+  await seed({ enabled: false, revoked: true });
+  await assertFails(myDms(child(), CHILD, CHAT));
+  await assertFails(getDoc(doc(child(), 'lumina_direct_messages/m1')));
+  await assertFails(addDoc(collection(child(), 'lumina_direct_messages'), dm(CHILD, PARENT, CHAT, 'hej')));
+  await assertFails(updateDoc(doc(child(), 'lumina_direct_messages/m1'), { isRead: true, status: 'read' }));
+  await assertFails(updateDoc(doc(child(), `lumina_chats/${CHAT}`), { lastMessageText: 'x' }));
+  await assertFails(addDoc(collection(child(), 'lumina_public_chat_messages'), { senderAuthUid: CHILD, text: 'hej' }));
 });
 
-test('4. Dziecko odpowiada rodzicowi (z cytatem)', async () => {
-  await seed();
-  await assertSucceeds(addDoc(collection(child(), `kids_conversations/${CONV}/messages`), {
-    senderUid: CHILD, text: 'Dobrze!', createdAt: serverTimestamp(), reactions: {},
-    replyTo: { id: 'm1', text: 'Cześć!', senderUid: PARENT },
-  }));
-});
-
-test('5. Walidacja zapisu: podszywanie, pusta/za długa treść, stary czas', async () => {
-  await seed();
-  const c = collection(child(), `kids_conversations/${CONV}/messages`);
-  await assertFails(addDoc(c, { senderUid: PARENT, text: 'udaję tatę', createdAt: serverTimestamp(), reactions: {} }));
-  await assertFails(addDoc(c, { senderUid: CHILD, text: '', createdAt: serverTimestamp(), reactions: {} }));
-  await assertFails(addDoc(c, { senderUid: CHILD, text: 'x'.repeat(1001), createdAt: serverTimestamp(), reactions: {} }));
-  await assertFails(addDoc(c, { senderUid: CHILD, text: 'hej', createdAt: new Date(0), reactions: {} }));
-  await assertFails(addDoc(c, { senderUid: CHILD, text: 'hej', createdAt: serverTimestamp(), reactions: {}, imageUrl: 'https://x' }));
-});
-
-test('6. Cofnięcie dostępu natychmiast blokuje odczyt i zapis', async () => {
-  await seed({ enabled: false });
-  await assertFails(getDocs(collection(child(), `kids_conversations/${CONV}/messages`)));
-  await assertFails(addDoc(collection(child(), `kids_conversations/${CONV}/messages`), { senderUid: CHILD, text: 'hej', createdAt: serverTimestamp(), reactions: {} }));
-  await env.clearFirestore();
-  await seed({ childUid: '' });
-  await assertFails(getDocs(collection(child(), `kids_conversations/${CONV}/messages`)));
-});
-
-test('7. Obcy nie odczyta ani nie wyśle, nie założy rozmowy z dzieckiem', async () => {
-  await seed();
-  await assertFails(addDoc(collection(stranger(), `kids_conversations/${CONV}/messages`), { senderUid: STRANGER, text: 'hej', createdAt: serverTimestamp(), reactions: {} }));
-  await assertFails(setDoc(doc(stranger(), `kids_conversations/${CHILD}_${STRANGER}`), { participants: [CHILD, STRANGER], createdAt: serverTimestamp() }));
-  await assertFails(getDoc(doc(stranger(), `kids_profiles/${CHILD}`)));
-});
-
-test('7b. Zatwierdzony kontakt (mama) zakłada własną rozmowę; dziecko nie zmieni listy kontaktów', async () => {
-  await seed();
-  await assertSucceeds(setDoc(doc(mom(), `kids_conversations/${CHILD}_${MOM}`), { participants: [CHILD, MOM], createdAt: serverTimestamp() }));
-  await assertFails(getDocs(collection(mom(), `kids_conversations/${CONV}/messages`)));
-  await assertFails(updateDoc(doc(child(), 'kids_pilot/config'), { contacts: [PARENT, MOM, STRANGER] }));
-  await assertFails(updateDoc(doc(child(), 'kids_pilot/config'), { enabled: true }));
-});
-
-test('8. Konto dziecka nie może tworzyć publicznego profilu, wpisów ani pisać na czacie ogólnym', async () => {
+test('T13/T14. Konto dziecka bez czatu publicznego i profilu; zwykli użytkownicy i ich DM bez zmian', async () => {
   await seed();
   await assertFails(setDoc(doc(child(), `lumina_profiles/${CHILD}`), { uid: CHILD, name: 'Dziecko' }));
   await assertFails(addDoc(collection(child(), 'lumina_public_chat_messages'), { senderAuthUid: CHILD, text: 'hej' }));
   await assertFails(addDoc(collection(child(), 'user_posts'), { authorUid: CHILD, title: 'x' }));
-  // Zwykły użytkownik LUMINA nadal może (brak regresji):
+  await assertFails(setDoc(doc(child(), 'lumina_chats/nowy'), { participants: [CHILD, PARENT] }));
   await assertSucceeds(addDoc(collection(stranger(), 'lumina_public_chat_messages'), { senderAuthUid: STRANGER, text: 'hej' }));
   await assertSucceeds(setDoc(doc(stranger(), `lumina_profiles/${STRANGER}`), { uid: STRANGER, name: 'Ktoś' }));
+  // Zwykły DM dorosłych (zaakceptowana rozmowa) nadal działa:
+  await env.withSecurityRulesDisabled(async (c) => {
+    await setDoc(doc(c.firestore(), 'lumina_message_requests/a_b'), { chatId: 'a_b', senderAuthUid: STRANGER, receiverAuthUid: MOM, participants: [STRANGER, MOM], status: 'accepted' });
+  });
+  await assertSucceeds(addDoc(collection(stranger(), 'lumina_direct_messages'), dm(STRANGER, MOM, 'a_b', 'dorośli')));
+  await assertSucceeds(myDms(mom(), MOM, 'a_b'));
 });
 
-test('8b. Bez dokumentu konfiguracji zwykły LUMINA działa, a LUMI KIDS jest zamknięte', async () => {
+test('Bez konfiguracji pilotażu LUMINA działa normalnie, a LUMI KIDS jest zamknięte', async () => {
   await assertSucceeds(addDoc(collection(stranger(), 'lumina_public_chat_messages'), { senderAuthUid: STRANGER, text: 'hej' }));
   await assertFails(getDoc(doc(child(), 'kids_pilot/config')));
-  await assertFails(setDoc(doc(child(), `kids_conversations/${CONV}`), { participants: [CHILD, PARENT], createdAt: serverTimestamp() }));
 });
 
-test('9. Bezpośrednie zapytanie (API) o całą kolekcję nie omija autoryzacji', async () => {
-  await seed();
-  await assertFails(getDocs(collection(stranger(), 'kids_conversations')));
-  await assertFails(getDocs(collection(child(), 'kids_invites')));
-  await assertFails(getDocs(collection(stranger(), 'kids_profiles')));
-});
-
-test('10. Zaproszenie: tylko zweryfikowany właściciel adresu (hasło) przyjmuje je dla siebie', async () => {
+test('T01. Zaproszenie: tylko zweryfikowany właściciel adresu (hasło) przyjmuje je dla siebie', async () => {
   await env.withSecurityRulesDisabled(async (c) => {
     await setDoc(doc(c.firestore(), 'kids_invites/inv1'), { email: KID_EMAIL, status: 'pending', createdBy: PARENT });
   });
@@ -136,17 +152,16 @@ test('10. Zaproszenie: tylko zweryfikowany właściciel adresu (hasło) przyjmuj
   await assertSucceeds(setDoc(doc(admin(), 'kids_pilot/config'), { enabled: true, childUid: CHILD, contacts: [PARENT] }));
 });
 
-test('11. Reakcje: tylko własna, z listy emoji, bez zmiany treści', async () => {
+
+test('Reakcje i odczytanie: dziecko reaguje i oznacza wiadomość rodzica jako przeczytaną', async () => {
   await seed();
-  const m = doc(child(), `kids_conversations/${CONV}/messages/m1`);
-  await assertSucceeds(updateDoc(m, { [`reactions.${CHILD}`]: '❤️' }));
-  await assertFails(updateDoc(m, { [`reactions.${PARENT}`]: '❤️' }));
-  await assertFails(updateDoc(m, { [`reactions.${CHILD}`]: '💣' }));
+  const m = doc(child(), 'lumina_direct_messages/m1');
+  await assertSucceeds(updateDoc(m, { reactions: { '❤️': [{ id: CHILD.toLowerCase(), name: 'Dziecko' }] } }));
+  await assertSucceeds(updateDoc(m, { isRead: true, status: 'read', readAt: Date.now(), readBy: [CHILD.toLowerCase()] }));
   await assertFails(updateDoc(m, { text: 'zmienione' }));
-  await assertSucceeds(updateDoc(m, { [`reactions.${CHILD}`]: deleteField() }));
 });
 
-test('12. Zgłoszenie do pilotażu: tylko własne, zweryfikowane konto, poprawne pola; czyta autor i administrator', async () => {
+test('Zgłoszenie do pilotażu: tylko własne, zweryfikowane konto, poprawne pola; czyta autor i administrator', async () => {
   const ok = (uid, email) => ({ uid, email, parentName: 'Rodzic Testowy', childrenCount: 2, message: '', consent: true, status: 'new', createdAt: serverTimestamp() });
   const p = db('parentX', goog('rodzic.x@example.com'));
   await assertFails(setDoc(doc(p, 'kids_waitlist/innyUid'), ok('innyUid', 'rodzic.x@example.com')));

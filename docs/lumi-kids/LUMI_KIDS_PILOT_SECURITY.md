@@ -2,6 +2,8 @@
 
 **Data:** 2026-10-18 · **Zakres:** pilotaż rodzinny, jedno konto dziecka, opiekun = właściciel projektu
 
+> **Aktualizacja 2026-10-18 (wersja „jeden wątek”):** zgodnie z planem CLAUDE_CODE_MASTER_PLAN rodzic korzysta ze zwykłego LUMI Messenger, a dziecko z LUMI KIDS — oboje piszą w **jednym** prywatnym wątku DM LUMINA (`lumina_direct_messages`, `lumina_chats/{chatId}`, `lumina_message_requests/{chatId}` ze statusem `accepted`). Osobny magazyn `kids_conversations` został usunięty. Panel rodzica tworzy wątek rodzinny i zapisuje `kids_pilot/config.familyChats[contactUid] = chatId`; w okienkach prywatnych rodzica rozmowa ma nazwę „Imię · LUMI KIDS”. Reguły: `kidsChildGate()` (odczyt/aktualizacja DM przez dziecko tylko gdy pilotaż aktywny), `kidsChildMayDm()` (zapis tylko do zatwierdzonych kontaktów, tylko tekst ≤1000 znaków), dziecko nie przyjmuje próśb o rozmowę od innych. Cofnięcie zgody = `enabled:false, revoked:true` (konto dziecka pozostaje zablokowane w publicznej LUMINA). Testy T01–T14 w `tests/lumi-kids-rules.test.mjs`. Hero: tło bez napisów (usunięte z ilustracji bez zasłaniania), treści i przyciski w HTML.
+
 ## Zasady (wszystkie egzekwowane po stronie serwera — reguły Firestore)
 
 | Wymaganie | Realizacja |

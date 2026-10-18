@@ -393,7 +393,7 @@ test('LUMI KIDS /lumi-kids/: tylko makieta — noindex, bez zdjęć dziecka, bez
   const j = await readFile('lumi-kids/script.js', 'utf8');
   assert.match(h, /name="robots" content="noindex,nofollow"/);
   assert.match(h, /WERSJA DEMONSTRACYJNA/);
-  assert.doesNotMatch(h, /dawidek-photo|lumi-kids-hero/);
+  assert.doesNotMatch(h, /dawidek-photo|lumi-kids-hero\.png/);
   assert.doesNotMatch(h + j, /@icloud\.com|password|haslo/i);
   assert.doesNotMatch(j, /fetch\s*\(|localStorage|sessionStorage|WebSocket|indexedDB|firebase/i);
   assert.match(h, /src="\/lumi-kids\/script\.js\?v=/);
@@ -407,15 +407,20 @@ test('LUMI KIDS pilotaż /lumi-kids/app/: tylko kolekcje kids_*, bez innerHTML, 
   assert.doesNotMatch(h + j, /@icloud\.com/i);
   const cols = [...j.matchAll(/(?:collection|doc)\(db,\s*'([a-z_]+)/g)].map(m => m[1]);
   assert.ok(cols.length > 5);
-  for (const c of cols) assert.match(c, /^kids_/, 'LUMI KIDS nie dotyka kolekcji LUMINA: ' + c);
+  const allowed = new Set(['lumina_direct_messages', 'lumina_chats', 'lumina_message_requests', 'lumina_profiles']);
+  for (const c of cols) assert.ok(/^kids_/.test(c) || allowed.has(c), 'LUMI KIDS: niedozwolona kolekcja ' + c);
+  assert.doesNotMatch(j, /kids_conversations/, 'jeden magazyn wiadomości — wspólny DM LUMINA');
   assert.match(j, /sendEmailVerification/);
   assert.match(j, /emailVerified/);
 });
 
 test('LUMI KIDS reguły: izolacja pilotażu i blokada konta dziecka w publicznej LUMINA', async () => {
   const r = await readFile('firestore.rules', 'utf8');
-  for (const m of ['kids_pilot', 'kids_invites', 'kids_profiles', 'kids_conversations']) assert.match(r, new RegExp('match /' + m + '/'));
-  assert.ok((r.match(/notKidsChild\(\)/g) || []).length >= 9);
+  for (const m of ['kids_pilot', 'kids_invites', 'kids_profiles', 'kids_waitlist']) assert.match(r, new RegExp('match /' + m + '/'));
+  assert.doesNotMatch(r, /match \/kids_conversations\//);
+  assert.ok((r.match(/notKidsChild\(\)/g) || []).length >= 10);
+  assert.ok((r.match(/kidsChildGate\(\)/g) || []).length >= 6);
+  assert.match(r, /notKidsChild\(\) \|\| kidsChildMayDm\(request\.resource\.data\)/);
   assert.match(r, /email_verified == true &&\s*request\.auth\.token\.firebase\.sign_in_provider == 'password'/);
   assert.doesNotMatch(r, /match \/kids_[a-z_]+\/[^}]*allow (read|write)[^;]*: if true/);
 });
@@ -438,4 +443,17 @@ test('LUMI KIDS: zgłoszenie rodziny do pilotażu — tylko rodzic, bez danych d
   assert.doesNotMatch(z, /childName|childAge|dateOfBirth|pesel/i);
   assert.match(r, /match \/kids_waitlist\/\{uid\}/);
   assert.match(r, /request\.resource\.data\.email == request\.auth\.token\.email/);
+});
+
+test('LUMI KIDS hero: grafika bez napisów + żywy HTML, bez zdjęcia dziecka; aplikacja bez wstrzykiwanej wyszukiwarki portalu', async () => {
+  const h = await readFile('lumi-kids/index.html', 'utf8');
+  assert.match(h, /class="kids-hero"/);
+  assert.match(h, /<h1 id="kids-hero-heading">Małe rozmowy\./);
+  assert.match(h, /lumi-kids-hero-1672\.webp/);
+  assert.match(h, /lumi-kids-hero-mobile\.webp/);
+  assert.match(h, /alt="" width="1672" height="941"/);
+  assert.match(h, /href="\/lumi-kids\/app\/"/);
+  const { applyPageStandard } = await import('./cc-page-standard.mjs');
+  const raw = '<html><body>x</body></html>';
+  assert.equal(applyPageStandard('lumi-kids/app/index.html', raw), raw);
 });
