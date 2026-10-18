@@ -8,7 +8,7 @@
   'use strict';
 
   const MAX_TEXT_LENGTH = 4000;
-  const DEFAULT_PREFS = { autoOpen: true };
+  const DEFAULT_PREFS = { autoOpen: false };
 
   function safePrefs() {
     try {
@@ -522,11 +522,18 @@
         };
       }
 
-      // Obsługa kliknięć w chat heads
+      // Obsługa kliknięć w chat heads (kliknięcie otwiera lub zamyka okno)
       this.containerEl.querySelectorAll('.ldd-head').forEach(btn => {
         btn.onclick = () => {
           const chatId = btn.getAttribute('data-chat-id');
-          if (chatId) this.openConversation(chatId);
+          if (!chatId) return;
+          if (this.activeId === chatId) {
+            // Kliknięcie w aktywny awatar minimalizuje/zamyka okno czatu
+            this.activeId = null;
+            this.render();
+          } else {
+            this.openConversation(chatId);
+          }
         };
       });
 

@@ -166,7 +166,7 @@ export function LumiDirectDock({ adapter, rightOffsetPx = 88, bottomOffsetPx = 1
       </form>
     </div>}
     <div className="ldd-dock" aria-label="Skróty rozmów prywatnych">
-      {ordered.filter(c => !hidden.includes(c.id)).slice(0,6).map(c => <button type="button" key={c.id} className={`ldd-head ${activeId === c.id ? 'ldd-selected' : ''}`} onClick={() => openConversation(c.id)} title={`Rozmowa z ${c.participant.name}`} aria-label={`Otwórz rozmowę z ${c.participant.name}, nieprzeczytane: ${c.unreadCount}`}>
+      {ordered.filter(c => !hidden.includes(c.id)).slice(0,6).map(c => <button type="button" key={c.id} className={`ldd-head ${activeId === c.id ? 'ldd-selected' : ''}`} onClick={() => activeId === c.id ? setActiveId(null) : openConversation(c.id)} title={`Rozmowa z ${c.participant.name}`} aria-label={`Otwórz rozmowę z ${c.participant.name}, nieprzeczytane: ${c.unreadCount}`}>
         {c.participant.avatarUrl ? <img src={c.participant.avatarUrl} alt="" /> : <span>{c.participant.name.charAt(0)}</span>}
         {c.unreadCount > 0 && <b className="ldd-count">{c.unreadCount > 99 ? '99+' : c.unreadCount}</b>}
       </button>)}

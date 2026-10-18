@@ -196,9 +196,8 @@ test('Lumi Direct Dock Controller: state, auto-open policy, and DOM interaction'
   ctrl.syncUser();
   assert.equal(ctrl.userId, 'adam_testowy');
 
-  // Default requested by owner; existing explicit opt-out still works.
-  assert.equal(ctrl.prefs.autoOpen, true, 'New incoming private conversations open by default as requested by owner');
-  ctrl.prefs.autoOpen = false;
+  // Default requested by owner (2026-10-18): bubble appears by default without auto-opening window.
+  assert.equal(ctrl.prefs.autoOpen, false, 'New incoming private conversations show avatar bubble by default without auto-opening window');
 
   // Sprawdź minimalizację i zamykanie
   ctrl.openConversation('adam_testowy_ewa_testowa');

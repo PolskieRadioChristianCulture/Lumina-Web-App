@@ -163,16 +163,28 @@ test('dock renders avatar shortcut, opens on click and recovers a broken image',
   c.destroy();
 });
 
-test('new incoming room opens by default, restores closed shortcut, explicit opt-out remains',async()=>{
-  for(const pref of [undefined,false]) {
+test('new incoming room shows avatar bubble by default without opening, opt-in opens, head click toggles',async()=>{
+  for(const pref of [undefined,true]) {
     const {w,c,emit,room}=dockFixture({autoOpen:pref});
     emit([]); emit([room]);
-    assert.equal(c.activeId,pref===false?null:room.id);
-    if(pref!==false){
+    assert.equal(c.activeId,pref===true?room.id:null);
+    const head = w.document.querySelector('.ldd-head');
+    assert.ok(head, 'Avatar bubble appears in dock');
+    if(pref===true){
       w.document.querySelector('.ldd-btn-close').click();
       assert.equal(w.document.querySelector('.ldd-head'),null);
       emit([{...room,lastMessageAt:'2026-10-18T08:01:00Z'}]);
       assert.equal(c.activeId,room.id);
+      assert.ok(w.document.querySelector('.ldd-head'));
+    } else {
+      // Kliknięcie w bąbelek otwiera okno
+      head.click();
+      assert.equal(c.activeId,room.id);
+      assert.ok(w.document.querySelector('.ldd-window'));
+      // Ponowne kliknięcie w bąbelek zamyka okno
+      w.document.querySelector('.ldd-head').click();
+      assert.equal(c.activeId,null);
+      assert.equal(w.document.querySelector('.ldd-window'),null);
       assert.ok(w.document.querySelector('.ldd-head'));
     }
     c.destroy();
