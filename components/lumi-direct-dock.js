@@ -43,6 +43,12 @@
   let dockAudioCtx = null;
   function playDockChime() {
     try {
+      // Jeden dźwięk na wiadomość: jeśli portal LUMINA zagrał przed chwilą, okienka LUMI milczą (i odwrotnie).
+      const nowMs = Date.now();
+      if (typeof window !== 'undefined') {
+        if (window._lastLuminaChimeTime && nowMs - window._lastLuminaChimeTime < 4000) return;
+        window._lastLuminaChimeTime = nowMs;
+      }
       const AudioCtx = typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext);
       if (!AudioCtx) return;
       if (!dockAudioCtx) dockAudioCtx = new AudioCtx();

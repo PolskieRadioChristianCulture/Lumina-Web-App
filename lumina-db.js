@@ -4143,7 +4143,8 @@ export function subscribeToUserChats(userId, onUpdate) {
 export function playNotificationChime() {
     try {
         const now = Date.now();
-        if (window._lastLuminaChimeTime && (now - window._lastLuminaChimeTime < 1800)) {
+        // Jeden dźwięk na wiadomość: ten sam znacznik czasu respektują okienka LUMI (dock) i LUMI KIDS.
+        if (window._lastLuminaChimeTime && (now - window._lastLuminaChimeTime < 4000)) {
             return; // Zabezpieczenie przed nałożeniem dźwięków (Debounce)
         }
         window._lastLuminaChimeTime = now;

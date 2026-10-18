@@ -83,3 +83,8 @@ body.no-motion *,body.no-motion *::before,body.no-motion *::after{animation:none
 .msg-popup-text{margin:2px 0 0;font-size:.88rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .msg-popup-btn{min-height:40px;padding:6px 14px;font-size:.88rem;border-radius:12px;flex-shrink:0}
 img.avatar{object-fit:cover;object-position:center;padding:0}
+/* iOS / HarmonyOS: wysokość widoku z paskiem narzędzi, wycięcia ekranu, bez powiększania pól */
+@supports (height:100dvh){.chat{height:calc(100dvh - 170px)}}
+.composer{padding-bottom:max(10px,env(safe-area-inset-bottom))}
+input,textarea,select{font-size:max(16px,1em)}
+html{-webkit-tap-highlight-color:transparent}

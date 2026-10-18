@@ -360,6 +360,9 @@ function avatarOf(uid, fallbackName, small) {
 let audioCtx = null;
 function playChime() {
   try {
+    const nowMs = Date.now();
+    if (window._lastLuminaChimeTime && nowMs - window._lastLuminaChimeTime < 4000) return;
+    window._lastLuminaChimeTime = nowMs;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
     if (!audioCtx) audioCtx = new AudioContext();
@@ -472,8 +475,14 @@ async function enablePush() {
   }, { merge: true });
   return 'granted';
 }
+function isHarmony() { return /HarmonyOS|OpenHarmony|ArkWeb|HuaweiBrowser|HMSCore/i.test(navigator.userAgent || ''); }
 function pushCard() {
   const st = pushState();
+  if (isHarmony()) {
+    return h('section', { class: 'card' }, h('h2', { text: '🔔 Powiadomienia (telefon Huawei)' }),
+      h('p', { class: 'small', text: 'Na telefonach Huawei z HarmonyOS powiadomienia przy zamkniętej aplikacji mogą nie docierać. Gdy LUMI KIDS jest otwarte, nowe wiadomości pojawiają się od razu z dźwiękiem. Dodaj LUMI KIDS do ekranu startowego, żeby otwierać je jednym dotknięciem.' }),
+      st !== 'unsupported' ? h('button', { class: 'btn ghost block', type: 'button', text: '🔔 Spróbuj włączyć powiadomienia', onclick: async (ev) => { busy(ev.currentTarget, true); let r = 'error'; try { r = await enablePush(); } catch (e) {} busy(ev.currentTarget, false); toast(r === 'granted' ? 'Włączone — sprawdźmy, czy przychodzą.' : 'Na tym telefonie powiadomienia nie są dostępne.'); } }) : null);
+  }
   const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   const standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
   if (st === 'unsupported' && ios && !standalone) {
