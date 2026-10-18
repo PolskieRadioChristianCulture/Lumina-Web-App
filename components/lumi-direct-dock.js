@@ -56,6 +56,7 @@
       this.prefs = safePrefs();
       this.settingsOpen = false;
       this.hidden = [];
+      this.revealed = new Set();
 
       this.readAttemptSet = new Set();
       this.unsubIncoming = null;
@@ -104,6 +105,7 @@
       this.messages = {};
       this.drafts = {};
       this.hidden = [];
+      this.revealed.clear();
       this.error = '';
       this.readAttemptSet.clear();
 
@@ -143,17 +145,21 @@
           const wasInitialized = receivedRooms;
           receivedRooms = true;
           this.conversations = event.conversations.filter(c => c.type === 'direct' && c.participant && c.participant.id !== this.userId);
-          const changed = this.conversations.filter(c => previous.has(c.id)
-            ? previous.get(c.id).lastMessageAt !== c.lastMessageAt : wasInitialized);
-          this.hidden = this.hidden.filter(id => !changed.some(c => c.id === id && c.unreadCount > 0));
+          // The initial snapshot is history, never a new private notification.
+          const changed = this.conversations.filter(c => wasInitialized && c.lastMessageAt
+            && c.lastMessageSenderId && c.lastMessageSenderId !== this.userId
+            && (!previous.has(c.id) || previous.get(c.id).lastMessageAt !== c.lastMessageAt));
+          changed.forEach(c => this.revealed.add(c.id));
+          this.hidden = this.hidden.filter(id => !changed.some(c => c.id === id));
           if (this.prefs.autoOpen && document.visibilityState !== 'hidden') {
-            const incoming = changed.find(c => c.unreadCount > 0);
+            const incoming = changed[0];
             if (incoming) this.openConversation(incoming.id);
           }
           this.render();
           return;
         }
         if (!event || !event.message || event.message.senderId === this.userId) return;
+        this.revealed.add(event.conversationId);
 
         // Nowa wiadomość przywraca ukryty chat head
         this.hidden = this.hidden.filter(v => v !== event.conversationId);
@@ -176,7 +182,7 @@
           this.messages[event.conversationId] = currentList.concat([event.message]).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
         }
 
-        // Polityka Auto-open: domyślnie wyłączona
+        // Respect the saved automatic-opening preference.
         if (this.prefs.autoOpen) {
           this.adapter.listDirectConversations().then((items) => {
             this.conversations = (items || []).filter(c => c.type === 'direct' && c.participant && c.participant.id !== this.userId);
@@ -306,8 +312,15 @@
 
       const activeConvo = this.conversations.find(c => c.id === this.activeId);
       const orderedConvos = this.conversations.slice().sort((a, b) => (b.lastMessageAt || '').localeCompare(a.lastMessageAt || ''));
-      const visibleHeads = orderedConvos.filter(c => !this.hidden.includes(c.id)).slice(0, 6);
-      const extraCount = orderedConvos.length > 6 ? (orderedConvos.length - 6) : 0;
+      const eligibleHeads = orderedConvos.filter(c => this.revealed.has(c.id) && !this.hidden.includes(c.id));
+      const visibleHeads = eligibleHeads.slice(0, 6);
+      const extraCount = Math.max(0, eligibleHeads.length - 6);
+      if (!visibleHeads.length && !activeConvo) {
+        this.settingsOpen = false;
+        this.containerEl.innerHTML = '';
+        this.containerEl.style.display = 'none';
+        return;
+      }
       const currentDraft = this.activeId ? (this.drafts[this.activeId] || '') : '';
       const currentMessages = this.activeId ? (this.messages[this.activeId] || []) : [];
 
@@ -325,6 +338,7 @@
                 <small>${p.isOnline ? '● Aktywny teraz' : 'Wiadomość prywatna'}</small>
               </div>
               <button type="button" class="ldd-btn-min" aria-label="Minimalizuj rozmowę">−</button>
+              <button type="button" class="ldd-prefs" aria-label="Ustawienia prywatnych powiadomień" title="Ustawienia">⚙</button>
               <button type="button" class="ldd-btn-close" aria-label="Zamknij rozmowę">×</button>
             </header>
             <div class="ldd-history" aria-label="Historia rozmowy" role="log" aria-live="polite">
@@ -367,7 +381,6 @@
             `;
           }).join('')}
           ${extraCount > 0 ? `<span class="ldd-more" title="Pozostałe rozmowy dostępne w LUMI Messenger">+${extraCount}</span>` : ''}
-          <button type="button" class="ldd-prefs" aria-label="Ustawienia prywatnych powiadomień" title="Ustawienia">⚙</button>
         </div>
       `;
 

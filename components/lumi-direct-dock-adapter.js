@@ -98,7 +98,8 @@
                 type: 'direct',
                 participant,
                 unreadCount: Math.max(0, unread),
-                lastMessageAt: toIsoDate(c.lastMessageTimestamp)
+                lastMessageAt: c.lastMessageTimestamp ? toIsoDate(c.lastMessageTimestamp) : '',
+                lastMessageSenderId: c.lastSenderId || null
               };
             }).filter(Boolean);
 
@@ -183,7 +184,8 @@
               type: 'direct', participant,
               unreadCount: Math.max(0, typeof c.unreadCount?.[myId] === 'number'
                 ? c.unreadCount[myId] : (c.lastSenderId && c.lastSenderId !== myId && !c.isRead ? 1 : 0)),
-              lastMessageAt: toIsoDate(c.lastMessageTimestamp)
+              lastMessageAt: c.lastMessageTimestamp ? toIsoDate(c.lastMessageTimestamp) : '',
+              lastMessageSenderId: c.lastSenderId || null
             };
           }).filter(Boolean);
           onMessage({ conversations });

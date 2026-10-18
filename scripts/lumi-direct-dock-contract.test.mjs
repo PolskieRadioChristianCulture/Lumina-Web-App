@@ -17,7 +17,7 @@ test('release replaces combined weekly JS cache with one authoritative messaging
     assert.equal(result.headers.get('Cache-Control'),'no-cache, no-store, must-revalidate');
     assert.equal(await result.text(),'script');
   }
-  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_directfix2/);
+  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_directfix3/);
 });
 function adapter(db) {
   const scope = { LuminaDB: db, setTimeout: () => 0, clearTimeout() {} };
@@ -140,14 +140,14 @@ function dockFixture({autoOpen, withAdapter = true} = {}) {
   w.eval(controllerSource);
   const c = new w.LumiDirectDockController({adapter:a});
   c.init();
-  const room = {id:'alice_radiocc',type:'direct',participant:{id:'radiocc',name:'Christian Culture',avatarUrl:'/logo_radio_cc.jpg'},unreadCount:1,lastMessageAt:'2026-10-18T08:00:00Z'};
+  const room = {id:'alice_radiocc',type:'direct',participant:{id:'radiocc',name:'Christian Culture',avatarUrl:'/logo_radio_cc.jpg'},unreadCount:1,lastMessageAt:'2026-10-18T08:00:00Z',lastMessageSenderId:'radiocc'};
   return {w,c,emit:rooms=>incoming({conversations:rooms}),room};
 }
 
 test('dock renders avatar shortcut, opens on click and recovers a broken image', async()=>{
-  const {w,c,emit,room}=dockFixture();
-  emit([room]);
-  assert.equal(c.activeId,null,'history snapshot does not open old conversations');
+  const {w,c,emit,room}=dockFixture({autoOpen:false});
+  emit([]); emit([room]);
+  assert.equal(c.activeId,null,'explicit opt-out shows only the incoming avatar');
   const head=w.document.querySelector('.ldd-head');
   assert.ok(head);
   assert.equal(head.querySelector('img').getAttribute('src'),'/logo_radio_cc.jpg');
@@ -200,4 +200,27 @@ test('dock stays above existing full screen messenger and mobile navigation',()=
   const css=fs.readFileSync('css/lumi-direct-dock.css','utf8');
   assert.match(css,/z-index:2147483646/);
   assert.match(css,/bottom:max\(88px,calc\(env\(safe-area-inset-bottom\) \+ 76px\)\)/);
+});
+
+test('default dock hides all history and settings; only a new incoming sender is revealed',async()=>{
+  const {w,c,emit,room}=dockFixture({autoOpen:false});
+  const other={...room,id:'alice_other',participant:{id:'other',name:'Other',avatarUrl:'/lumina_icon.jpg'},lastMessageSenderId:'other'};
+  emit([room,other]);
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(w.document.querySelector('.ldd-head'),null);
+  assert.equal(w.document.querySelector('.ldd-prefs'),null);
+  assert.equal(w.document.querySelector('.ldd-more'),null);
+  assert.equal(w.document.querySelector('.ldd-root').style.display,'none');
+  emit([{...room,lastMessageAt:'2026-10-18T08:01:00Z',lastMessageSenderId:'alice'},other]);
+  assert.equal(w.document.querySelector('.ldd-head'),null,'outgoing message does not reveal a shortcut');
+  emit([{...room,lastMessageAt:'2026-10-18T08:02:00Z'},other]);
+  assert.equal(w.document.querySelectorAll('.ldd-head').length,1);
+  assert.equal(w.document.querySelector('.ldd-head').getAttribute('data-chat-id'),room.id);
+  assert.equal(w.document.querySelector('.ldd-prefs'),null,'no floating settings wheel');
+  w.document.querySelector('.ldd-head').click();
+  w.document.querySelector('.ldd-btn-close').click();
+  assert.equal(w.document.querySelector('.ldd-root').style.display,'none');
+  emit([{...room,lastMessageAt:'2026-10-18T08:02:00Z'},other]);
+  assert.equal(w.document.querySelector('.ldd-head'),null,'same snapshot does not restore a dismissed avatar');
+  c.destroy();
 });
