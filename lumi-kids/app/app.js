@@ -31,7 +31,9 @@ const CONFIG = {
 };
 // Opiekunowie = konta Master Admin (ta sama lista co w regułach). Reguły i tak sprawdzają to po stronie serwera.
 const GUARDIAN_EMAILS = ['nazirczarkes@gmail.com', 'radiochristianculture@gmail.com', 'czarekrogowski3@gmail.com',
-  'polskieradiocc@gmail.com', 'studiodees7@gmail.com', 'polskiercctv@gmail.com', 'wioletta1240@gmail.com'];
+  'polskieradiocc@gmail.com', 'studiodees7@gmail.com', 'polskiercctv@gmail.com'];
+// Mama jest zatwierdzonym KONTAKTEM dziecka (rozmowa rodzinna), nie opiekunem z uprawnieniami administratora.
+const MAMA_UID = 'lr7E9IsM6VaABLvMcrjAN5Lvn0j2';
 const EMOJI = ['❤️', '👍', '😊', '😂', '🙏', '👏', '😮', '😢'];
 const APP_URL = location.origin + '/lumi-kids/app/';
 
@@ -781,6 +783,15 @@ async function screenParent() {
     for (const u of contacts) fc[u] = await createFamilyDM(childUid, u);
     await save({ familyChats: fc });
   };
+  // Mama zawsze ma rozmowę rodzinną z dzieckiem — panel rodzica uzupełnia to sam, bez ręcznego dodawania.
+  if (c.childUid && c.enabled && !c.revoked && (!c.contacts.includes(MAMA_UID) || !c.familyChats[MAMA_UID])) {
+    try {
+      await save({ contacts: Array.from(new Set([...c.contacts, MAMA_UID])) });
+      c.contacts = cfg.contacts;
+      await ensureChats(c.childUid, [MAMA_UID]);
+      c.familyChats = cfg.familyChats;
+    } catch (e) { /* komunikat pokazany przez save() */ }
+  }
   await loadNames([me.uid, c.childUid, ...c.contacts].filter(Boolean));
   // Sprzątanie: wcześniejsza wersja wskazywała publiczny plik ze zdjęciem dziecka — usuwamy to odwołanie.
   if (c.childUid) {
@@ -828,7 +839,7 @@ async function screenParent() {
         emoji: '⛵',
         updatedAt: serverTimestamp()
       }, { merge: true });
-      const contacts = Array.from(new Set([...(c.contacts || []), me.uid, 'lr7E9IsM6VaABLvMcrjAN5Lvn0j2']));
+      const contacts = Array.from(new Set([...(c.contacts || []), me.uid, MAMA_UID]));
       await save({ childUid: DAWID_UID, enabled: true, revoked: false, contacts, familyChats: {} });
       await ensureChats(DAWID_UID, contacts);
       toast('✅ Profil Dawidka aktywowany! Rozmowa rodzinna jest gotowa.');

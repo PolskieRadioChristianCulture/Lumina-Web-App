@@ -540,3 +540,13 @@ test('LUMI KIDS: brak publicznego wizerunku i danych osobowych dziecka w kodzie 
     assert.doesNotMatch(src, /dawidek-avatar|dawidek-photo|birthDate|data urodzenia|Dawid Rogowski|Rogowskiego/i, f);
   }
 });
+
+test('Mama: kontakt rodzinny LUMI KIDS bez roli Master Admin (reguły i aplikacja)', async () => {
+  const rules = await readFile('firestore.rules', 'utf8');
+  const app = await readFile('lumi-kids/app/app.js', 'utf8');
+  const admin = rules.slice(rules.indexOf('function isMasterAdmin()'), rules.indexOf('function ownsProfile('));
+  assert.doesNotMatch(admin, /wioletta1240/);
+  assert.doesNotMatch(app.slice(app.indexOf('const GUARDIAN_EMAILS'), app.indexOf('const EMOJI')), /wioletta1240/);
+  assert.match(app, /c\.contacts\.includes\(MAMA_UID\)/);
+  assert.match(app, /ensureChats\(c\.childUid, \[MAMA_UID\]\)/);
+});

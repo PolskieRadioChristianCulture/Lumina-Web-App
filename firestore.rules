@@ -21,8 +21,7 @@ service cloud.firestore {
           request.auth.token.email == 'czarekrogowski3@gmail.com' ||
           request.auth.token.email == 'polskieradiocc@gmail.com' ||
           request.auth.token.email == 'studiodees7@gmail.com' ||
-          request.auth.token.email == 'polskiercctv@gmail.com' ||
-          request.auth.token.email == 'wioletta1240@gmail.com'))
+          request.auth.token.email == 'polskiercctv@gmail.com'))
       );
     }
 
