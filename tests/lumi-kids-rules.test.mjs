@@ -1,6 +1,7 @@
 // LUMI KIDS — testy reguł Firestore na emulatorze (konta i dane fikcyjne).
 // Uruchomienie (wymaga Javy): npx firebase emulators:exec --only firestore --project demo-lumi-kids "node --test tests/lumi-kids-rules.test.mjs"
 import { test, before, after, beforeEach } from 'node:test';
+import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { initializeTestEnvironment, assertSucceeds, assertFails } from '@firebase/rules-unit-testing';
 import { doc, getDoc, setDoc, updateDoc, addDoc, collection, getDocs, query, where, serverTimestamp, deleteField } from 'firebase/firestore';
@@ -240,4 +241,20 @@ test('Społeczność 4: odrzuconą prośbę odbiorca może później przyjąć; 
   await assertFails(updateDoc(doc(ua(), `lumina_message_requests/${ABCHAT}`), { status: 'accepted', acceptedBy: UA, acceptedAt: serverTimestamp() }));
   await assertSucceeds(updateDoc(doc(ub(), `lumina_message_requests/${ABCHAT}`), { status: 'accepted', acceptedBy: UB, acceptedAt: serverTimestamp() }));
   await assertSucceeds(setDoc(doc(ub(), 'lumina_direct_messages/d1'), dm(UB, UA, ABCHAT, 'Jednak porozmawiajmy')));
+});
+
+
+test('Regresja syn → mama: zwykle konto mamy czyta pelna tresc i odpowiada w tym samym pokoju; obcy nadal nie czyta', async () => {
+  await seed();
+  const original = 'Wiadomosc syna dla mamy — pełna treść';
+  await assertSucceeds(setDoc(doc(child(), 'lumina_direct_messages/child-to-mom'), dm(CHILD, MOM, MOMCHAT, original)));
+  const first = await assertSucceeds(myDms(mom(), MOM, MOMCHAT));
+  assert.equal(first.docs.find(d => d.id === 'child-to-mom').data().text, original);
+  await assertSucceeds(setDoc(doc(mom(), 'lumina_direct_messages/mom-reply'), dm(MOM, CHILD, MOMCHAT, 'Odpowiedz mamy')));
+  const again = await assertSucceeds(myDms(mom(), MOM, MOMCHAT));
+  assert.equal(again.size, 2);
+  assert.equal(again.docs.find(d => d.id === 'child-to-mom').data().text, original);
+  const outsider = await assertSucceeds(myDms(stranger(), STRANGER, MOMCHAT));
+  assert.equal(outsider.empty, true);
+  await assertFails(getDoc(doc(stranger(), 'lumina_direct_messages/child-to-mom')));
 });

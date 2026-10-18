@@ -11180,12 +11180,15 @@
                 });
             }
 
-            try {
+            if (!Array.isArray(window.cloudProfilesCache)) try {
                 // 2. Fetch from Firestore REST API as fallback
                 const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_profiles?pageSize=100';
-                const res = await fetch(restUrl);
-                if (res.ok) {
-                    const json = await res.json();
+                if (!window._luminaPublicDirectoryRest || Date.now() >= window._luminaPublicDirectoryRest.until) {
+                    window._luminaPublicDirectoryRest = { until: Date.now() + 60000,
+                        promise: fetch(restUrl).then(async res => res.ok ? res.json() : null).catch(() => null) };
+                }
+                const json = await window._luminaPublicDirectoryRest.promise;
+                if (json) {
                     if (json.documents) {
                         json.documents.forEach(doc => {
                             const f = doc.fields || {};

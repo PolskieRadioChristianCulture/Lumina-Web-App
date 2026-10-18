@@ -1,3 +1,4 @@
+import { createPresenceChannel } from './js/lumina-presence-channel.js';
 // Initialize global window container immediately
 window.LuminaDB = window.LuminaDB || {};
 // ══════════════════════════════════════════════════════════════════════════
@@ -7391,6 +7392,8 @@ window.LuminaDB.toggleFollow = toggleFollow;
 // ══════════════════════════════════════════════════════════════════════════
 
 let presenceHeartbeatTimer = null;
+let presenceNextPingAt = 0;
+let presenceLastUid = null;
 
 export function startPresenceHeartbeat() {
     if (!db || presenceHeartbeatTimer) return;
@@ -7407,7 +7410,10 @@ export function startPresenceHeartbeat() {
     const sendPing = async () => {
         try {
             const u = currentUserState || (window.LuminaDB?.getCurrentUser ? window.LuminaDB.getCurrentUser() : null);
-            if (!u || u.isAnonymous || !u.uid) return;
+            if (!u || u.isAnonymous || !u.uid || document.visibilityState === 'hidden') return;
+            if (presenceLastUid === u.uid && Date.now() < presenceNextPingAt) return;
+            presenceLastUid = u.uid;
+            presenceNextPingAt = Date.now() + 60000;
             const p = currentProfileState;
             const sessionId = getSessionId();
             const docId = (u && u.uid) ? u.uid : sessionId;
@@ -7430,47 +7436,32 @@ export function startPresenceHeartbeat() {
                 lastActive: serverTimestamp(),
                 lastActiveMillis: Date.now()
             }, { merge: true });
-        } catch(e) {}
+        } catch(e) {
+            if (e?.code === 'resource-exhausted') presenceNextPingAt = Date.now() + 300000;
+        }
     };
 
     sendPing();
-    presenceHeartbeatTimer = setInterval(sendPing, 30000);
+    presenceHeartbeatTimer = setInterval(sendPing, 60000);
+    document.addEventListener('visibilitychange', sendPing);
+    onAuthChange(sendPing);
 
-    // Clean up on leave
-    window.addEventListener('beforeunload', () => {
-        try {
-            const u = currentUserState;
-            const sessionId = sessionStorage.getItem('lumina_presence_session_id');
-            const docId = (u && u.uid) ? u.uid : sessionId;
-            if (docId && db) {
-                deleteDoc(doc(db, 'lumina_presence', docId)).catch(() => {});
-            }
-        } catch(e) {}
-    });
+    // Let the confirmed timestamp expire. Deleting one UID on tab close would
+    // incorrectly mark a second active device offline and creates an extra write.
 }
+
+let sharedPresenceChannel = null;
 
 export function subscribeToOnlinePresence(callback) {
     if (!db || typeof callback !== 'function') return () => {};
-    let rows = [], available = false, stopped = false;
-    const emit = () => {
-        if (stopped) return;
-        const now = Date.now();
-        const members = rows.map(data => {
-            const millis = data.lastActive?.toMillis?.() ||
-                (data.lastActive?.toDate ? data.lastActive.toDate().getTime() : data.lastActiveMillis || 0);
-            return { ...data, online: Boolean(available && data.isLoggedIn === true && data.uid &&
-                millis > 0 && millis <= now + 5000 && millis >= now - 90000) };
-        });
-        callback(members.filter(p => p.online), { available, members });
-    };
-    const stop = onSnapshot(collection(db, 'lumina_presence'), { includeMetadataChanges: true }, snap => {
-        rows = [];
-        snap.forEach(d => { if (!d.metadata?.hasPendingWrites) rows.push({ id: d.id, ...d.data() }); });
-        available = snap.metadata?.fromCache === false;
-        emit();
-    }, () => { available = false; emit(); });
-    const clock = setInterval(emit, 15000);
-    return () => { stopped = true; clearInterval(clock); stop(); };
+    if (!sharedPresenceChannel) sharedPresenceChannel = createPresenceChannel({
+        document, now: Date.now, setInterval, clearInterval,
+        listen: (receive, fail) => onSnapshot(query(collection(db, 'lumina_presence'),
+            where('lastActive', '>=', new Date(Date.now() - 90000)),
+            orderBy('lastActive', 'desc'), limit(200)),
+            { includeMetadataChanges: true }, receive, fail)
+    });
+    return sharedPresenceChannel(callback);
 }
 
 // Auto-start heartbeat for every visitor
@@ -7525,22 +7516,9 @@ export function listenToFounderTelemetry(callback) {
 
         if (unsubPresence) unsubPresence();
 
-        unsubPresence = onSnapshot(collection(db, 'lumina_presence'), (pSnap) => {
-            const ninetySecAgo = Date.now() - 90000;
-            let onlineTotal = 0;
-            let onlineLoggedIn = 0;
-
-            pSnap.forEach(pDoc => {
-                const pData = pDoc.data();
-                const millis = pData.lastActiveMillis || (pData.lastActive?.toDate ? pData.lastActive.toDate().getTime() : 0);
-                if (millis >= ninetySecAgo) {
-                    onlineTotal++;
-                    if (pData.isLoggedIn) onlineLoggedIn++;
-                }
-            });
-
-            if (onlineTotal === 0) onlineTotal = 1;
-
+        unsubPresence = subscribeToOnlinePresence((onlineMembers, presenceInfo) => {
+            const onlineTotal = onlineMembers.length;
+            const onlineLoggedIn = onlineTotal;
             const sumGender = femaleCount + maleCount;
             const femalePercent = sumGender > 0 ? Math.round((femaleCount / sumGender) * 100) : 50;
             const malePercent = sumGender > 0 ? (100 - femalePercent) : 50;
@@ -7549,6 +7527,7 @@ export function listenToFounderTelemetry(callback) {
                 totalMembers,
                 onlineTotal,
                 onlineLoggedIn,
+                presenceAvailable: presenceInfo.available,
                 femaleCount,
                 maleCount,
                 femalePercent,

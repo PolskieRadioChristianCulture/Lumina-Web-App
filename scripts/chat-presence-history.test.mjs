@@ -1,16 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';import {Window} from 'happy-dom';
 const source=fs.readFileSync('lumina-db.js','utf8');
 const presenceSource=fs.readFileSync('js/lumina-member-presence.js','utf8');
-test('presence requires server data; time expiry and a connection error remove online without new reads',()=>{
- const a=source.indexOf('export function subscribeToOnlinePresence('),b=source.indexOf('// Auto-start heartbeat',a);let receive,fail,tick,reads=0,stopped=false,now=200000;const output=[];
- const ctx={db:{},Date:{now:()=>now},collection:()=>({}),onSnapshot:(_c,_opts,cb,err)=>{reads++;receive=cb;fail=err;return()=>stopped=true;},setInterval:cb=>{tick=cb;return 1;},clearInterval:()=>{}};
- const subscribe=vm.runInNewContext('('+source.slice(a,b).replace('export function','function')+')',ctx);const stop=subscribe((list,meta)=>output.push({list,meta}));
- const emit=cache=>receive({metadata:{fromCache:cache},forEach:cb=>[{uid:'A',slug:'alice',isLoggedIn:true,lastActiveMillis:199000},{uid:'B',slug:'bob',isLoggedIn:true,lastActiveMillis:100},{uid:'C',slug:'guest',isLoggedIn:false,lastActiveMillis:199000}].forEach(data=>cb({id:data.uid,data:()=>data,metadata:{hasPendingWrites:false}}))});
- emit(true);assert.equal(output.at(-1).list.length,0);assert.equal(output.at(-1).meta.available,false);
- emit(false);assert.equal(output.at(-1).list.length,1);assert.equal(output.at(-1).list[0].uid,'A');
- now+=91000;tick();assert.equal(output.at(-1).list.length,0);assert.equal(reads,1);
- fail();assert.equal(output.at(-1).meta.available,false);stop();assert.equal(stopped,true);
-});
 test('community dots use celadon, red and unknown; strips contain only real online members and survive list rerender',async()=>{
  const w=new Window();let receive;w.LuminaDB={subscribeToOnlinePresence:cb=>{receive=cb;return()=>{};},getCurrentUser:()=>({uid:'ME'}),normalizeChatUserId:x=>String(x).toLowerCase()};
  w.document.write('<div id="tablicaOnlineAvatarsContainer"></div><div id="dmConversationsList"><span data-lumina-presence-id="A" data-lumina-presence-slug="alice"></span><span data-lumina-presence-id="B" data-lumina-presence-slug="bob"></span><span data-lumina-presence-id="C" data-lumina-presence-slug="unknown"></span></div>');

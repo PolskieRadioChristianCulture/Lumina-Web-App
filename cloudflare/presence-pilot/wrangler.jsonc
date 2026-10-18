@@ -1,0 +1,11 @@
+{
+  "name": "cc-presence-local-lab",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-13",
+  "workers_dev": false,
+  "preview_urls": false,
+  "vars": { "PRESENCE_PILOT_MODE": "disabled" },
+  "durable_objects": { "bindings": [{ "name": "PRESENCE_LAB", "class_name": "PresenceLab" }] },
+  "migrations": [{ "tag": "lab-v1", "new_sqlite_classes": ["PresenceLab"] }],
+  "observability": { "enabled": true, "traces": { "enabled": true } }
+}
