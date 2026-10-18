@@ -198,13 +198,19 @@
           };
 
           if (typeof db.subscribeToDirectMessages === 'function') {
+            // Strażnik 2026-10-18: historia składa się z kilku nasłuchów (główny, kopia, starszy format).
+            // Pierwsza paczka bywa niepełna — czekamy, aż napływ się uspokoi, zamiast brać pierwszą.
+            let latest = [];
+            let quiet = null;
             unsub = db.subscribeToDirectMessages(conversationId, (messages) => {
-              finish(messages);
+              latest = Array.isArray(messages) ? messages : [];
+              if (quiet) clearTimeout(quiet);
+              quiet = setTimeout(() => finish(latest), 700);
             });
             if (settled && typeof unsub === 'function') unsub();
             setTimeout(() => {
-              finish([]);
-            }, 3000);
+              finish(latest);
+            }, 4000);
           } else {
             finish([]);
           }
@@ -321,22 +327,26 @@
         const db = global.LuminaDB;
         if (!myId || !db || !conversationId) return () => {};
 
-        let lastSeenId = null;
+        // Strażnik 2026-10-18: przekazujemy KAŻDĄ nową lub zmienioną wiadomość (nie tylko ostatnią),
+        // więc okienko ma pełną historię także wtedy, gdy wiadomości napływają z kilku źródeł naraz.
+        const seen = new Map();
 
         if (typeof db.subscribeToDirectMessages === 'function') {
           return db.subscribeToDirectMessages(conversationId, (messages) => {
             if (!Array.isArray(messages) || !messages.length) return;
-            const lastMsg = messages[messages.length - 1];
-            const revision = lastMsg && JSON.stringify([lastMsg.id, lastMsg.isRead, lastMsg.status, lastMsg.delivered]);
-            if (lastMsg && revision !== lastSeenId) {
-              lastSeenId = revision;
+            for (const m of messages) {
+              const id = String(m.id || m.clientMessageId || '');
+              if (!id) continue;
+              const revision = JSON.stringify([m.isRead, m.status, m.delivered, m.text]);
+              if (seen.get(id) === revision) continue;
+              seen.set(id, revision);
               onMessage({
-                id: String(lastMsg.id || Date.now()),
-                conversationId: lastMsg.chatId || conversationId,
-                senderId: lastMsg.senderId || lastMsg.senderAuthUid || 'unknown',
-                text: String(lastMsg.text || ''),
-                createdAt: toIsoDate(lastMsg.createdAt || lastMsg.timestamp),
-                deliveryStatus: (lastMsg.isRead || lastMsg.status === 'read') ? 'read' : ((lastMsg.delivered || lastMsg.status === 'delivered') ? 'delivered' : 'sent')
+                id,
+                conversationId: m.chatId || conversationId,
+                senderId: m.senderId || m.senderAuthUid || 'unknown',
+                text: String(m.text || ''),
+                createdAt: toIsoDate(m.createdAt || m.timestamp),
+                deliveryStatus: (m.isRead || m.status === 'read') ? 'read' : ((m.delivered || m.status === 'delivered') ? 'delivered' : 'sent')
               });
             }
           });
