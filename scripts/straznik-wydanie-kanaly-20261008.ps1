@@ -92,7 +92,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): LUMI KIDS: zamknięty pilotaż rodzinny /lumi-kids/app/ (zaproszenie, panel rodzica, czat 1:1) + reguły kids_* z izolacją konta dziecka" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): LUMI KIDS: krótkie adresy /kids i /kids/app + test reguł w osobnym katalogu" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -112,7 +112,7 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI KIDS pilot" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI KIDS aliasy i reguly" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"
@@ -127,9 +127,16 @@ if (-not (Get-Command java -ErrorAction SilentlyContinue)) {
 }
 $RulesOk = $false
 if (Get-Command java -ErrorAction SilentlyContinue) {
-    npm.cmd i --no-save --silent @firebase/rules-unit-testing firebase 2>&1 | Out-Null
-    $o = (npx.cmd --yes firebase-tools@15.32.1 emulators:exec --only firestore --project demo-lumi-kids "node --test tests/lumi-kids-rules.test.mjs" 2>&1 | Out-String); $rk = $LASTEXITCODE; Write-Host $o
-    $o = (npx.cmd --yes firebase-tools@15.32.1 emulators:exec --only firestore --project demo-p0 "node scripts/p0-rules-test.mjs firestore.rules" 2>&1 | Out-String); $rp = $LASTEXITCODE; Write-Host $o
+    # Biblioteki testowe w osobnym katalogu tymczasowym — bez zmian w node_modules projektu.
+    $RT = Join-Path $env:TEMP 'cc-rules-test'
+    New-Item -ItemType Directory -Force -Path $RT | Out-Null
+    $o = (npm.cmd i --prefix $RT --no-audit --no-fund @firebase/rules-unit-testing@5.0.2 firebase@12.19.0 2>&1 | Out-String); Write-Host $o
+    Copy-Item -Force (Join-Path $Repo 'tests\lumi-kids-rules.test.mjs') (Join-Path $RT 'lumi-kids-rules.test.mjs')
+    Copy-Item -Force (Join-Path $Repo 'scripts\p0-rules-test.mjs') (Join-Path $RT 'p0-rules-test.mjs')
+    $env:RULES_FILE = (Join-Path $Repo 'firestore.rules')
+    $kt = (Join-Path $RT 'lumi-kids-rules.test.mjs'); $pt = (Join-Path $RT 'p0-rules-test.mjs')
+    $o = (npx.cmd --yes firebase-tools@15.32.1 emulators:exec --only firestore --project demo-lumi-kids "node --test `"$kt`"" 2>&1 | Out-String); $rk = $LASTEXITCODE; Write-Host $o
+    $o = (npx.cmd --yes firebase-tools@15.32.1 emulators:exec --only firestore --project demo-p0 "node `"$pt`" `"$env:RULES_FILE`"" 2>&1 | Out-String); $rp = $LASTEXITCODE; Write-Host $o
     if ($rk -eq 0 -and $rp -eq 0) {
         Ok "reguły: testy LUMI KIDS i P0 przeszły w emulatorze"
         $o = (npx.cmd --yes firebase-tools@15.32.1 deploy --only firestore:rules --project lumina-cc 2>&1 | Out-String); $rr = $LASTEXITCODE; Write-Host $o

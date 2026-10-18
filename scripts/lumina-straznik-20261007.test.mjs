@@ -419,3 +419,9 @@ test('LUMI KIDS reguły: izolacja pilotażu i blokada konta dziecka w publicznej
   assert.match(r, /email_verified == true &&\s*request\.auth\.token\.firebase\.sign_in_provider == 'password'/);
   assert.doesNotMatch(r, /match \/kids_[a-z_]+\/[^}]*allow (read|write)[^;]*: if true/);
 });
+
+test('LUMI KIDS: krótkie adresy /kids i /kids/app prowadzą do /lumi-kids/', async () => {
+  const w = await readFile('_worker.js', 'utf8');
+  assert.match(w, /kidsAlias = \/\^\\\/\(kids\|lumikids/);
+  assert.match(w, /kidsAlias\[2\] \? '\/lumi-kids\/app\/' : '\/lumi-kids\/'/);
+});

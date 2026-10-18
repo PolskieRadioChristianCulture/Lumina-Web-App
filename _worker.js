@@ -1681,6 +1681,16 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    // LUMI KIDS: krótkie adresy (np. /kids) → /lumi-kids/ oraz /kids/app → /lumi-kids/app/
+    {
+      const kidsAlias = /^\/(kids|lumikids|lumi_kids|lumi-kid|lumi\.kids|lumi%20kids|lumi kids)(\/app)?\/?$/i.exec(decodedP);
+      if (kidsAlias) {
+        const redirectUrl = new URL(request.url);
+        redirectUrl.pathname = kidsAlias[2] ? '/lumi-kids/app/' : '/lumi-kids/';
+        return Response.redirect(redirectUrl.toString(), 301);
+      }
+    }
+
     if (decodedP === '/ogłoszenia' || decodedP === '/tablica-ogloszen') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/ogloszenia';
