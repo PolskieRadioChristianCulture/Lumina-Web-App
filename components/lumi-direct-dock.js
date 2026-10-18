@@ -342,6 +342,11 @@
     }
 
     render() {
+      try {
+        const lingeringBanner = document.getElementById('lumina-chat-notification-banner');
+        if (lingeringBanner) lingeringBanner.remove();
+      } catch (_) {}
+
       if (!this.userId) {
         if (this.containerEl) this.containerEl.style.display = 'none';
         return;
@@ -568,6 +573,10 @@
 
   // Funkcja fabryczna montująca dock w powłoce aplikacji
   function mountLumiDirectDock(options = {}) {
+    try {
+      const lingeringBanner = document.getElementById('lumina-chat-notification-banner');
+      if (lingeringBanner) lingeringBanner.remove();
+    } catch (_) {}
     if (global._lumiDirectDockInstance) return global._lumiDirectDockInstance;
     // Do not cache an inert instance when an external loader runs out of order.
     if (!options.adapter && typeof global.createDirectMessagingAdapter !== 'function') return null;

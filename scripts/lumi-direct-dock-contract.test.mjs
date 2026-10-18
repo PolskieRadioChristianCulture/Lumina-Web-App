@@ -163,6 +163,23 @@ test('dock renders avatar shortcut, opens on click and recovers a broken image',
   c.destroy();
 });
 
+test('notification banner is disabled in favor of avatar bubble; legacy banner is suppressed', async()=>{
+  const css = fs.readFileSync('css/lumi-direct-dock.css', 'utf8');
+  assert.match(css, /#lumina-chat-notification-banner\{display:none!important/);
+
+  const dbCode = fs.readFileSync('lumina-db.js', 'utf8');
+  assert.match(dbCode, /Baner powiadomień wyłączony na polecenie Dowódcy/);
+
+  const w = new Window();
+  w.document.body.innerHTML = '<div id="lumina-chat-notification-banner">Old banner</div>';
+  w.eval(controllerSource);
+  const c = new w.LumiDirectDockController({adapter:{getCurrentUserId:()=>'u1',listDirectConversations:async()=>[],subscribeIncomingDM:()=>()=>null,subscribeConversation:()=>()=>null,listMessages:async()=>[],markRead:async()=>false}});
+  c.init();
+  c.render();
+  assert.equal(w.document.getElementById('lumina-chat-notification-banner'), null, 'Lingering banner removed from DOM');
+  c.destroy();
+});
+
 test('new incoming room shows avatar bubble by default without opening, opt-in opens, head click toggles',async()=>{
   for(const pref of [undefined,true]) {
     const {w,c,emit,room}=dockFixture({autoOpen:pref});

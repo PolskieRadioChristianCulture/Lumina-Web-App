@@ -4238,8 +4238,12 @@ function safeChatNotificationAvatar(value) {
     } catch (error) { return '/lumina_icon.jpg'; }
 }
 
-export function showInAppChatBanner({ title, body, avatar, senderName, senderId, type, messageId }) {
+export function showInAppChatBanner({ title, body, avatar, senderName, senderId, type, messageId, force = false }) {
     if (typeof document === 'undefined') return;
+    // Dyrektywa Dowódcy (2026-10-18): Baner powiadamiania wyłączony na rzecz bąbelka Lumi Direct Dock
+    if (!force && typeof window !== 'undefined' && (window.LumiDirectDockController || window._lumiDirectDockInstance || window._luminaDisableChatBanner || document.querySelector('.ldd-root'))) {
+        return;
+    }
     let banner = document.getElementById('lumina-chat-notification-banner');
     if (!banner) {
         banner = document.createElement('div');
@@ -4478,10 +4482,9 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
         }
     } catch(e) {}
 
-    // 4. In-app chat bubble
-    if (isChatNotification) {
-        showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
-    }
+    // 4. In-app chat: Baner powiadomień wyłączony na polecenie Dowódcy (2026-10-18).
+    // Nowe wiadomości są sygnalizowane wyłącznie dyskretnym bąbelkiem Lumi Direct Dock (chat head).
+    // Legacy showInAppChatBanner nie jest już wywoływany automatycznie.
 
     // 5. OS drawer is useful while the page is hidden; while visible it would
     // duplicate the in-app chat bubble.
