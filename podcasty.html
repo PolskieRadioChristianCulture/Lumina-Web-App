@@ -32,6 +32,51 @@
   <meta property="twitter:description" content="Oficjalna platforma podcastowa Christian Culture Network. Słuchaj inspirujących rozmów, codziennych rozważań i Słowa Bożego.">
   <meta property="twitter:image" content="https://polskieradio.cc/assets/podcasts/hero-podcasts.jpg">
 
+  <!-- Schema.org Structured Data (AEO / GEO / Google Rich Snippets) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://polskieradio.cc/podcasty#webpage",
+        "url": "https://polskieradio.cc/podcasty",
+        "name": "Podcasty Christian Culture • Słuchaj audycji, rozważań i muzyki online",
+        "description": "Oficjalna zintegrowana platforma audio ekosystemu Christian Culture Network. Podcast Spotify Osobowość Plus, nagranie master M4A z Dysku Google oraz 15 albumów studyjnych Spotify.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://polskieradio.cc/#website",
+          "name": "Polskie Radio Christian Culture",
+          "url": "https://polskieradio.cc"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Christian Culture Network",
+          "url": "https://polskieradio.cc"
+        }
+      },
+      {
+        "@type": "PodcastSeries",
+        "name": "Osobowość Plus — Zostań najlepszą wersją siebie",
+        "url": "https://open.spotify.com/show/4iMs8lyni0poJEiZNCfRsW",
+        "description": "Oficjalny podcast serii Osobowość Plus na platformie Spotify. Rozwój osobisty w świetle wartości chrześcijańskich.",
+        "author": {
+          "@type": "Organization",
+          "name": "Christian Culture"
+        }
+      },
+      {
+        "@type": "AudioObject",
+        "name": "Cyfrowy ekosystem Christian Culture Network",
+        "description": "Oficjalne nagranie audio prezentujące architekturę, misję i zintegrowany cyfrowy ekosystem Christian Culture Network.",
+        "contentUrl": "https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/view",
+        "encodingFormat": "audio/x-m4a",
+        "duration": "PT14M32S"
+      }
+    ]
+  }
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,6 +84,9 @@
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/assets/podcasts/podcasts.css">
+
+  <!-- Universal Omni Search Component (@w) -->
+  <script src="/components/cc-omni-search.js" defer></script>
 
   <!-- Client Controller Script -->
   <script src="/assets/podcasts/podcasts.js" defer></script>
@@ -65,7 +113,7 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input type="search" id="podcast-search-input" class="cc-search-input" placeholder="Szukaj albumów, audycji, tematów... (Ctrl+K)" aria-label="Wyszukaj w podcastach" />
+      <input type="search" id="podcast-search-input" class="cc-search-input" placeholder="Szukaj w podcastach lub naciśnij Ctrl+K dla @w..." aria-label="Wyszukaj w podcastach" />
       <button id="podcast-search-clear" class="cc-search-filter-btn" style="display:none;" aria-label="Wyczyść wyszukiwanie">✕</button>
     </div>
 
@@ -188,6 +236,30 @@
         <button class="cc-filter-chip" data-category="favorites">Ulubione</button>
       </nav>
 
+      <!-- PASEK STATYSTYK I DANYCH (RIBBON) -->
+      <div class="cc-stats-ribbon" aria-label="Statystyki platformy audio">
+        <div class="cc-stat-item">
+          <span class="cc-stat-dot"></span>
+          <span>18 oficjalnych pozycji studyjnych</span>
+        </div>
+        <div class="cc-stat-item">
+          <span class="cc-stat-dot"></span>
+          <span>1 Podcast Spotify Show</span>
+        </div>
+        <div class="cc-stat-item">
+          <span class="cc-stat-dot"></span>
+          <span>1 Nagranie Master Dysk Google</span>
+        </div>
+        <div class="cc-stat-item">
+          <span class="cc-stat-dot"></span>
+          <span>15 Albumów Muzycznych</span>
+        </div>
+        <div class="cc-stat-item">
+          <span class="cc-stat-dot"></span>
+          <span>1 Profil Artysty Spotify</span>
+        </div>
+      </div>
+
       <!-- SEKCJA 1: OFICJALNY PODCAST SPOTIFY -->
       <section id="podcast-spotify-section" class="cc-direct-stage-section">
         <div class="cc-section-header">
@@ -213,7 +285,27 @@
               loading="lazy">
             </iframe>
           </div>
+
+          <!-- Kluczowe tematy odcinków -->
+          <div class="cc-episode-highlights" aria-label="Wyróżnione tematy odcinków">
+            <div class="cc-highlight-pill">
+              <span class="cc-highlight-icon">🎙️</span>
+              <span>Odcinek 1: Bliżej Boga Być • Fundament Wiary</span>
+            </div>
+            <div class="cc-highlight-pill">
+              <span class="cc-highlight-icon">🌱</span>
+              <span>Odcinek 2: Budowanie Wartości w Codziennym Życiu</span>
+            </div>
+            <div class="cc-highlight-pill">
+              <span class="cc-highlight-icon">🕊️</span>
+              <span>Odcinek 3: Duchowy Rozwój i Wewnętrzny Pokój Serca</span>
+            </div>
+          </div>
+
           <div class="cc-direct-actions">
+            <button class="cc-btn-link" id="spotify-show-share-btn" style="cursor: pointer;" title="Udostępnij podcast">
+              <span>🔗 Udostępnij podcast</span>
+            </button>
             <a href="https://open.spotify.com/show/4iMs8lyni0poJEiZNCfRsW" target="_blank" rel="noopener noreferrer" class="cc-btn-link">
               <span>Otwórz w aplikacji Spotify</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6h-2v6H5V5z"/></svg>
@@ -234,7 +326,7 @@
           <div class="cc-direct-player-header">
             <span class="cc-direct-tag">DYSK GOOGLE • OFICJALNE NAGRANIE MASTER M4A</span>
             <h3 class="cc-direct-title">Cyfrowy ekosystem Christian Culture Network</h3>
-            <p class="cc-direct-desc">Autorskie nagranie audio prezentujące misję i zintegrowaną architekturę Christian Culture Network (M4A • 28.1 MB). Działa bezpośrednio dla każdego użytkownika bez konieczności logowania.</p>
+            <p class="cc-direct-desc">Autorskie nagranie audio prezentujące misję i zintegrowaną architekturę Christian Culture Network (M4A • 28.1 MB, czas: 14:32). Działa bezpośrednio dla każdego użytkownika bez konieczności logowania.</p>
           </div>
           <div class="cc-iframe-responsive-wrap cc-gdrive-wrap">
             <iframe id="live-gdrive-m4a-frame"
@@ -248,9 +340,15 @@
             </iframe>
           </div>
           <div class="cc-direct-actions">
+            <a href="https://drive.google.com/uc?export=download&id=14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0" target="_blank" rel="noopener noreferrer" class="cc-btn-download" title="Pobierz nagranie audio M4A bezpośrednio na urządzenie">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+              <span>Pobierz plik M4A (28.1 MB)</span>
+            </a>
+            <button class="cc-btn-link" id="gdrive-share-btn" style="cursor: pointer;" title="Udostępnij nagranie">
+              <span>🔗 Udostępnij</span>
+            </button>
             <a href="https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/view" target="_blank" rel="noopener noreferrer" class="cc-btn-link">
-              <span>Otwórz nagranie na Dysku Google w nowej karcie</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6h-2v6H5V5z"/></svg>
+              <span>Otwórz na Dysku Google ↗</span>
             </a>
           </div>
         </div>
@@ -282,8 +380,11 @@
             </iframe>
           </div>
           <div class="cc-direct-actions">
-            <button class="cc-btn-link" id="active-deck-modal-btn" style="cursor: pointer; border: 1px solid var(--cc-border);">
+            <button class="cc-btn-link" id="active-deck-modal-btn" style="cursor: pointer;" title="Powiększ odtwarzacz w oknie dialogowym">
               <span>⛶ Powiększ odtwarzacz</span>
+            </button>
+            <button class="cc-btn-link" id="active-deck-share-btn" style="cursor: pointer;" title="Udostępnij ten album">
+              <span>🔗 Udostępnij album</span>
             </button>
             <a id="active-deck-link" href="https://open.spotify.com/album/5cfX59E2Y0xjT7nfj9m8fX" target="_blank" rel="noopener noreferrer" class="cc-btn-link">
               <span>Otwórz w aplikacji Spotify</span>
@@ -335,7 +436,7 @@
     </aside>
   </div>
 
-  <!-- MASTER AUDIO STATUS BAR (DÓŁ EKRANU — RZECZYWISTY STATUS AUDIO DOCK) -->
+  <!-- MASTER AUDIO STATUS BAR (DÓŁ EKRANU) -->
   <footer class="cc-player-bar" id="master-player-bar" aria-label="Status aktywnego odtwarzacza">
     <div class="cc-docked-bar">
       <div class="cc-dock-status-info">
@@ -383,5 +484,8 @@
       </div>
     </div>
   </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="cc-toast" class="cc-toast" role="status" aria-live="polite"></div>
 </body>
 </html>

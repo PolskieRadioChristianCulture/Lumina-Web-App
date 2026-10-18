@@ -1772,3 +1772,186 @@ body {
 .cc-btn-dock-jump:hover {
   background: var(--cc-gold-hover);
 }
+
+
+/* ==========================================================================
+   ADVANCED UX & SHARING & ACCESSIBILITY ENHANCEMENTS (P1 2026)
+   ========================================================================== */
+.cc-direct-stage-section,
+#music-catalog-section,
+#odkrywaj,
+.cc-catalog-card {
+  scroll-margin-top: calc(var(--cc-header-height) + 18px);
+}
+
+/* Statistics Ribbon */
+.cc-stats-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: rgba(13, 32, 49, 0.45);
+  border: 1px solid var(--cc-border);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: var(--cc-text-secondary);
+}
+
+.cc-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cc-stat-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cc-gold);
+}
+
+/* Episode Highlights Under Show Player */
+.cc-episode-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.cc-highlight-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(7, 19, 33, 0.7);
+  border: 1px solid rgba(196, 163, 90, 0.15);
+  border-radius: 10px;
+  font-size: 13px;
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.cc-highlight-pill:hover {
+  border-color: var(--cc-gold);
+  background: rgba(196, 163, 90, 0.1);
+}
+
+.cc-highlight-icon {
+  color: var(--cc-gold);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Direct Download Button */
+.cc-btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--cc-border);
+  transition: all 0.2s ease;
+}
+
+.cc-btn-download:hover {
+  background: rgba(196, 163, 90, 0.18);
+  border-color: var(--cc-gold);
+  color: var(--cc-gold-light);
+}
+
+/* Share Button */
+.cc-btn-share {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--cc-border);
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.cc-btn-share:hover {
+  background: rgba(196, 163, 90, 0.2);
+  border-color: var(--cc-gold);
+  color: var(--cc-gold);
+}
+
+/* Toast Notification */
+.cc-toast {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  background: #0d2031;
+  color: #ffffff;
+  border: 1px solid var(--cc-gold);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cc-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Omni Search Bridge Box when no local matches */
+.cc-omni-bridge-box {
+  grid-column: 1 / -1;
+  padding: 36px 24px;
+  text-align: center;
+  background: rgba(13, 32, 49, 0.5);
+  border: 1px dashed var(--cc-gold);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.cc-omni-bridge-btn {
+  min-height: 46px;
+  padding: 8px 24px;
+  background: var(--cc-gold);
+  color: #071321;
+  font-weight: 700;
+  font-size: 14px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.cc-omni-bridge-btn:hover {
+  background: var(--cc-gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(196, 163, 90, 0.35);
+}

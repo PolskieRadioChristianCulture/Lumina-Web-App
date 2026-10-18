@@ -34,6 +34,7 @@
     setupEventListeners();
     await loadCatalog();
     renderAll();
+    handleDeepLinking();
   }
 
   function cacheDom() {
@@ -71,6 +72,12 @@
     el.embedCloseBtn = document.getElementById('embed-modal-close');
     el.embedBody = document.getElementById('embed-modal-body');
     el.embedExtLink = document.getElementById('embed-modal-ext-link');
+
+    // Toast & Share Elements
+    el.toast = document.getElementById('cc-toast');
+    el.spotifyShowShareBtn = document.getElementById('spotify-show-share-btn');
+    el.gdriveShareBtn = document.getElementById('gdrive-share-btn');
+    el.activeDeckShareBtn = document.getElementById('active-deck-share-btn');
   }
 
   function loadPersistedState() {
@@ -211,6 +218,113 @@
           toggleFavorite(state.activeDeckItem.id);
         }
       });
+    }
+
+    // Share: Spotify Show
+    if (el.spotifyShowShareBtn) {
+      el.spotifyShowShareBtn.addEventListener('click', () => {
+        const url = `${window.location.origin}/podcasty#podcast-spotify-section`;
+        shareItem(
+          'Podcast Spotify Osobowość Plus • Christian Culture',
+          'Słuchaj oficjalnego podcastu Osobowość Plus w portalu audio Christian Culture:',
+          url
+        );
+      });
+    }
+
+    // Share: Google Drive Master Audio
+    if (el.gdriveShareBtn) {
+      el.gdriveShareBtn.addEventListener('click', () => {
+        const url = `${window.location.origin}/podcasty#gdrive-audio-section`;
+        shareItem(
+          'Cyfrowy ekosystem Christian Culture Network • Nagranie Master M4A',
+          'Posłuchaj autorskiego nagrania audio o architekturze Christian Culture:',
+          url
+        );
+      });
+    }
+
+    // Share: Active Deck Album/Artist
+    if (el.activeDeckShareBtn) {
+      el.activeDeckShareBtn.addEventListener('click', () => {
+        if (!state.activeDeckItem) return;
+        const url = `${window.location.origin}/podcasty?album=${encodeURIComponent(state.activeDeckItem.id)}`;
+        shareItem(
+          `${state.activeDeckItem.title} • Christian Culture`,
+          `Posłuchaj oficjalnego wydania ${state.activeDeckItem.title} w portalu podcastów i muzyki CC:`,
+          url
+        );
+      });
+    }
+  }
+
+  // Toast Notification
+  let toastTimeout = null;
+  function showToast(message) {
+    if (!el.toast) return;
+    el.toast.textContent = message;
+    el.toast.classList.add('is-visible');
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      el.toast.classList.remove('is-visible');
+    }, 3000);
+  }
+
+  // Native / Clipboard Sharing
+  async function shareItem(title, text, url) {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast('✓ Skopiowano link do schowka!');
+        return;
+      } catch (e) {
+        console.warn('Clipboard write failed:', e);
+      }
+    }
+    prompt('Skopiuj poniższy link:', url);
+  }
+
+  // Social Distribution & Deep Linking handler
+  function handleDeepLinking() {
+    try {
+      const url = new URL(window.location.href);
+      const albumParam = url.searchParams.get('album') || url.searchParams.get('id');
+      const hash = url.hash;
+
+      if (albumParam) {
+        const found = state.catalog?.spotifyAlbums?.find(a => a.id === albumParam) ||
+                      state.catalog?.spotifyArtist?.find(a => a.id === albumParam);
+        if (found) {
+          mountDeckItem(found, true);
+          return;
+        }
+      }
+
+      if (hash) {
+        if (hash === '#podcast-spotify-section' || hash === '#gdrive-audio-section' || hash === '#music-catalog-section') {
+          const target = document.querySelector(hash);
+          if (target) {
+            setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
+            return;
+          }
+        }
+        const cleanId = hash.replace(/^#/, '');
+        const foundHash = state.catalog?.spotifyAlbums?.find(a => a.id === cleanId) ||
+                          state.catalog?.spotifyArtist?.find(a => a.id === cleanId);
+        if (foundHash) {
+          mountDeckItem(foundHash, true);
+        }
+      }
+    } catch (e) {
+      console.warn('Deep link handling failed:', e);
     }
   }
 
@@ -416,11 +530,33 @@
     if (!el.spotifyGrid) return;
 
     if (!items.length) {
-      el.spotifyGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; padding: 32px; text-align: center; color: #8da2b5; font-size: 15px; background: rgba(13, 32, 49, 0.4); border-radius: 14px; border: 1px dashed var(--cc-border);">
-          Brak albumów spełniających wybrane kryteria. Skorzystaj z filtrów powyżej lub posłuchaj oficjalnego podcastu.
-        </div>
-      `;
+      if (state.searchQuery) {
+        el.spotifyGrid.innerHTML = `
+          <div class="cc-omni-bridge-box" style="grid-column: 1 / -1; padding: 28px; text-align: center; background: rgba(13, 32, 49, 0.5); border: 1px dashed var(--cc-gold-muted); border-radius: 14px;">
+            <p style="color: #cbd5e1; margin-bottom: 12px; font-size: 15px;">Nie znaleziono w lokalnej dyskografii: <strong>"${escapeHtml(state.searchQuery)}"</strong></p>
+            <button id="podcast-omni-search-btn" class="cc-omni-bridge-btn" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; background: var(--cc-gold); color: #071321; font-weight: 600; font-size: 14px; border: none; cursor: pointer; min-height: 44px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <span>Szukaj "${escapeHtml(state.searchQuery)}" w całym ekosystemie Christian Culture (@w)</span>
+            </button>
+          </div>
+        `;
+        const omniBtn = el.spotifyGrid.querySelector('#podcast-omni-search-btn');
+        if (omniBtn) {
+          omniBtn.addEventListener('click', () => {
+            if (window.CCOmniSearch && typeof window.CCOmniSearch.openSearch === 'function') {
+              window.CCOmniSearch.openSearch(state.searchQuery);
+            } else {
+              window.location.href = '/szukaj?q=' + encodeURIComponent(state.searchQuery);
+            }
+          });
+        }
+      } else {
+        el.spotifyGrid.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 32px; text-align: center; color: #8da2b5; font-size: 15px; background: rgba(13, 32, 49, 0.4); border-radius: 14px; border: 1px dashed var(--cc-border);">
+            Brak albumów spełniających wybrane kryteria. Skorzystaj z filtrów powyżej lub posłuchaj oficjalnego podcastu.
+          </div>
+        `;
+      }
       return;
     }
 
@@ -445,6 +581,9 @@
             </button>
             <button class="cc-card-btn-modal" data-action="modal" title="Powiększ odtwarzacz w oknie" aria-label="Powiększ">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+            </button>
+            <button class="cc-btn-share" data-action="share" title="Udostępnij album" aria-label="Udostępnij ${escapeHtml(item.title)}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
             </button>
             <button class="cc-ep-action-btn ${isFav ? 'is-active' : ''}" data-fav-id="${escapeHtml(item.id)}" aria-label="Dodaj do ulubionych" aria-pressed="${isFav}">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
@@ -472,6 +611,18 @@
         if (e.target.closest('[data-action="modal"]')) {
           e.stopPropagation();
           openEmbedModal(item);
+          return;
+        }
+
+        // Share button
+        if (e.target.closest('[data-action="share"]')) {
+          e.stopPropagation();
+          const shareUrl = `${window.location.origin}/podcasty?album=${encodeURIComponent(iid)}`;
+          shareItem(
+            `${item.title} • Christian Culture`,
+            `Posłuchaj oficjalnego wydania ${item.title} w portalu podcastów i muzyki CC:`,
+            shareUrl
+          );
           return;
         }
 
@@ -605,6 +756,9 @@
     state,
     mountDeckItem,
     openEmbedModal,
-    closeEmbedModal
+    closeEmbedModal,
+    handleDeepLinking,
+    shareItem,
+    showToast
   };
 })();

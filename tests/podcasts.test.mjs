@@ -75,6 +75,40 @@ test('HTML structure and real live players (podcasty.html)', () => {
   // Assets
   assert.ok(html.includes('/assets/podcasts/podcasts.css'));
   assert.ok(html.includes('/assets/podcasts/podcasts.js'));
+
+  // SEO & Schema.org JSON-LD (Pillar 4)
+  assert.ok(html.includes('application/ld+json'), 'Schema.org JSON-LD must be embedded');
+  assert.ok(html.includes('"@type": "PodcastSeries"'), 'Schema includes PodcastSeries');
+  assert.ok(html.includes('"@type": "AudioObject"'), 'Schema includes AudioObject');
+
+  // Direct Audio Download link (Pillar 1)
+  assert.ok(html.includes('drive.google.com/uc?export=download&id=14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0'), 'Direct M4A download link exists');
+
+  // Social Sharing & Toast (Pillar 2)
+  assert.ok(html.includes('id="spotify-show-share-btn"'), 'Spotify show share button exists');
+  assert.ok(html.includes('id="gdrive-share-btn"'), 'Google Drive share button exists');
+  assert.ok(html.includes('id="active-deck-share-btn"'), 'Active deck share button exists');
+  assert.ok(html.includes('id="cc-toast"'), 'Toast element exists');
+
+  // Universal Search Engine Component (@w - Pillar 3)
+  assert.ok(html.includes('/components/cc-omni-search.js'), 'cc-omni-search.js component is loaded');
+
+  // Curated UX (Pillar 5)
+  assert.ok(html.includes('class="cc-stats-ribbon"'), 'Stats ribbon exists');
+  assert.ok(html.includes('class="cc-episode-highlights"'), 'Episode highlights exist');
+});
+
+test('SEO & AI Search Discovery files (sitemap.xml & llms.txt)', () => {
+  const sitemapPath = path.join(ROOT, 'sitemap.xml');
+  assert.ok(fs.existsSync(sitemapPath), 'sitemap.xml must exist');
+  const sitemap = fs.readFileSync(sitemapPath, 'utf8');
+  assert.ok(sitemap.includes('<loc>https://polskieradio.cc/podcasty</loc>'), 'sitemap.xml indexes /podcasty');
+
+  const llmsPath = path.join(ROOT, 'llms.txt');
+  assert.ok(fs.existsSync(llmsPath), 'llms.txt must exist');
+  const llms = fs.readFileSync(llmsPath, 'utf8');
+  assert.ok(llms.includes('https://polskieradio.cc/podcasty'), 'llms.txt indexes /podcasty');
+  assert.ok(llms.includes('Podcasty Christian Culture & Dyskografia Muzyczna'), 'llms.txt includes description');
 });
 
 test('Security Headers & CSP frame-src allow Spotify and Google Drive', () => {
@@ -104,12 +138,18 @@ test('Stylesheets and JS Controller (assets/podcasts)', () => {
   assert.ok(css.includes('--cc-bg: #071321;'), 'Dark navy theme color');
   assert.ok(css.includes('--cc-gold: #c4a35a;'), 'Champagne gold accent color');
   assert.ok(css.includes('min-height: 44px;') || css.includes('min-width: 44px;'), 'Touch target standard >= 44px');
+  assert.ok(css.includes('scroll-margin-top: calc(var(--cc-header-height) + 18px);'), 'Anchor offset prevents header overlap');
+  assert.ok(css.includes('.cc-toast'), 'Toast styles present');
 
   const js = fs.readFileSync(jsPath, 'utf8');
   assert.ok(js.includes('CCPodcastsApp'), 'Namespace CCPodcastsApp exists');
   assert.ok(js.includes('mountDeckItem'), 'mountDeckItem function exists');
   assert.ok(js.includes('openEmbedModal'), 'Modal loader exists');
   assert.ok(js.includes('closeEmbedModal'), 'Modal close exists');
+  assert.ok(js.includes('handleDeepLinking'), 'handleDeepLinking function exists');
+  assert.ok(js.includes('shareItem'), 'shareItem function exists');
+  assert.ok(js.includes('showToast'), 'showToast function exists');
+  assert.ok(js.includes('podcast-omni-search-btn'), 'Omni-search bridge integration exists');
 });
 
 test('Clean URLs & Redirects (_redirects)', () => {
