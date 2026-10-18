@@ -359,7 +359,7 @@
             ${this.error ? `<p class="ldd-error" role="alert">${escapeHtml(this.error)}</p>` : ''}
             <form class="ldd-compose">
               <label class="ldd-sr" for="ldd-compose-field">Napisz prywatną wiadomość</label>
-              <textarea id="ldd-compose-field" rows="1" maxlength="${MAX_TEXT_LENGTH}" placeholder="Aa · Wiadomość…">${escapeHtml(currentDraft)}</textarea>
+              <textarea id="ldd-compose-field" rows="1" maxlength="${MAX_TEXT_LENGTH}" placeholder="Wiadomość…">${escapeHtml(currentDraft)}</textarea>
               <button type="submit" ${this.busy || !currentDraft.trim() ? 'disabled' : ''} aria-label="Wyślij wiadomość">➤</button>
             </form>
           </div>

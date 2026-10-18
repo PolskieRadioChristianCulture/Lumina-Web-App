@@ -1515,7 +1515,9 @@ div#directMessagesModal .lumina-messenger-modal-card.is-fullscreen,
   display: inline-flex !important;
   align-items: center !important;
   gap: 4px !important;
-  min-height: 24px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  justify-content: center !important;
   transition: all 0.15s ease !important;
   touch-action: manipulation !important;
 }

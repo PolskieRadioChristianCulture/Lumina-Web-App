@@ -4778,7 +4778,7 @@
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="/css/lumina-theme.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-components.css?v=20260825_urszula_real_face_v370">
-    <link rel="stylesheet" href="/css/lumina-chat-premium.css?v=20261014_lumi1">
+    <link rel="stylesheet" href="/css/lumina-chat-premium.css?v=20261018_headerfix1">
     <link rel="stylesheet" href="/css/lumina-profile.css?v=1786937908032">
     <link rel="stylesheet" href="/css/lumina-feed.css?v=20260916_sort_touch_v3">
     <link rel="stylesheet" href="/css/lumina-modals.css?v=1786937908032">
@@ -13110,6 +13110,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 sp.setAttribute('aria-label', 'Dodaj reakcję ' + em);
 
                 const handleSelect = (ev) => {
+                    if (isCleaningUp) return;
                     if (ev) {
                         ev.preventDefault();
                         ev.stopPropagation();

@@ -12,12 +12,12 @@ test('release replaces combined weekly JS cache with one authoritative messaging
   const start = source.indexOf('// Pages combines matching _headers rules');
   const end = source.indexOf("if (url.pathname === '/api/admin/agents-map')", start);
   const handler = vm.runInNewContext('(async (request,env)=>{const url=new URL(request.url);' + source.slice(start,end) + ';return null;})', { URL, Response });
-  for (const path of ['/lumina-db.js?v=old','/components/lumi-direct-dock.js?v=old','/components/lumi-direct-dock-adapter.js?v=old','/components/cc-support-footer.js','/firebase-messaging-sw.js']) {
+  for (const path of ['/lumina-db.js?v=old','/components/lumi-direct-dock.js?v=old','/components/lumi-direct-dock-adapter.js?v=old','/components/cc-support-footer.js','/firebase-messaging-sw.js','/css/lumina-chat-premium.css?v=old','/css/lumi-direct-dock.css?v=old']) {
     const result = await handler({url:'https://polskieradio.cc'+path,method:'GET'}, {ASSETS:{fetch:async()=>new Response('script',{headers:{'Cache-Control':'public, max-age=604800, no-cache'}})}});
     assert.equal(result.headers.get('Cache-Control'),'no-cache, no-store, must-revalidate');
     assert.equal(await result.text(),'script');
   }
-  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_directfix3/);
+  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_directfix4/);
 });
 function adapter(db) {
   const scope = { LuminaDB: db, setTimeout: () => 0, clearTimeout() {} };
@@ -222,5 +222,20 @@ test('default dock hides all history and settings; only a new incoming sender is
   assert.equal(w.document.querySelector('.ldd-root').style.display,'none');
   emit([{...room,lastMessageAt:'2026-10-18T08:02:00Z'},other]);
   assert.equal(w.document.querySelector('.ldd-head'),null,'same snapshot does not restore a dismissed avatar');
+  c.destroy();
+});
+
+test('composer has a plain placeholder without resize artifacts; mess shares the canonical loader',async()=>{
+  const {w,c,emit,room}=dockFixture({autoOpen:false});
+  emit([]);emit([room]);w.document.querySelector('.ldd-head').click();
+  assert.equal(w.document.querySelector('#ldd-compose-field').getAttribute('placeholder'),'Wiadomość…');
+  assert.match(fs.readFileSync('css/lumi-direct-dock.css','utf8'),/resize:none;/);
+  const {renderLumiPage}=await import('./lumi-page.mjs');
+  const html=renderLumiPage(fs.readFileSync('lumina.html','utf8'));
+  assert.doesNotMatch(html,/<script[^>]+src="[^\"]*lumi-direct-dock/);
+  assert.match(html,/cc-support-footer\.js/);
+  for(const path of ['lumina.html','lumina-profile.html','lumina-tablica.html','lumina-tablica-light.html','lumina.cezaryrgowski.html','lumina.wiolettarogowska.html']) {
+    assert.match(fs.readFileSync(path,'utf8'),/lumina-chat-premium\.css\?v=20261018_headerfix1/);
+  }
   c.destroy();
 });

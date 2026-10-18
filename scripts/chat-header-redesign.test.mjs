@@ -105,3 +105,30 @@ test('Header DOM hierarchy and widths 320, 375, 430, 600, 900 mount successfully
   }
 });
 
+
+test('actual header functions toggle fullscreen/settings and reaction picker dispatches once',async()=>{
+  const { Window } = await import('happy-dom');
+  const html=await readFile('lumina.html','utf8');
+  const w=new Window({url:'https://polskieradio.cc/mess'});
+  w.document.body.innerHTML='<div id="directMessagesModal"><div class="modal-card lumina-messenger-modal-card"><button id="btnChatFullscreen"><i id="iconChatFullscreen"></i></button><button id="reaction" data-message-id="m1"></button></div></div><div id="chatSettingsModal" inert aria-hidden="true"><span id="chatSettingsName"></span></div>';
+  const fullscreen=html.slice(html.indexOf('        function toggleChatFullscreen()'),html.indexOf('// Wyjście z fullscreen'));
+  w.eval(fullscreen);
+  w.toggleChatFullscreen();assert.ok(w.document.getElementById('directMessagesModal').classList.contains('is-fullscreen'));
+  w.toggleChatFullscreen();assert.ok(!w.document.getElementById('directMessagesModal').classList.contains('is-fullscreen'));
+  const settingsStart=html.indexOf('window.openChatSettingsModal = function');
+  w.eval(html.slice(settingsStart,html.indexOf('// Gwarancja przechwycenia',settingsStart)));
+  w.openChatSettingsModal();
+  assert.equal(w.document.getElementById('chatSettingsModal').getAttribute('aria-hidden'),'false');
+  assert.equal(w.document.getElementById('chatSettingsModal').style.display,'flex');
+  const pickerStart=html.indexOf('window.toggleReactionPicker = function');
+  w.eval(html.slice(pickerStart,html.indexOf('// ══════════ EMOJI DRAWER',pickerStart)));
+  const calls=[];w.handleChatReaction=(...args)=>calls.push(args);
+  const button=w.document.getElementById('reaction');
+  w.toggleReactionPicker(button,'public','public','m1');
+  assert.equal(w.document.querySelectorAll('.lumina-reaction-picker button').length,12);
+  const emoji=w.document.querySelector('.lumina-reaction-picker button');
+  emoji.click();emoji.dispatchEvent(new w.Event('touchend'));
+  assert.equal(calls.length,1);assert.deepEqual(calls[0],['public','public','m1','❤️']);
+  assert.equal(w.document.querySelector('.lumina-reaction-picker'),null);
+  await w.happyDOM.close();
+});
