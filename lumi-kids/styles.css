@@ -2,3 +2,17 @@
 
 /* Real pilot child profile photo, displayed only in the protected demo preview */
 .kid-photo{display:block;object-fit:cover;object-position:center 30%;border:3px solid white;box-shadow:0 0 0 2px #b2d6ff;flex-shrink:0}
+.signup{display:flex;justify-content:center}
+.signup-card{width:100%;max-width:640px;background:#fff;border-radius:28px;box-shadow:var(--shadow);padding:28px 22px;margin:0 auto}
+.signup-card h2{margin:10px 0 8px}
+.signup-card p{color:var(--muted);line-height:1.65}
+.signup-card label{display:block;font-weight:700;margin:14px 0 6px;color:var(--navy)}
+.signup-card input[type=text],.signup-card select,.signup-card textarea{width:100%;min-height:50px;border:2px solid #d6e2f3;border-radius:14px;padding:12px 14px;font:inherit;color:var(--navy);background:#fbfdff}
+.signup-card textarea{min-height:96px;resize:vertical}
+.signup-card .check{display:flex;gap:10px;align-items:flex-start;font-weight:500;color:var(--navy)}
+.signup-card .check input{width:24px;height:24px;margin-top:2px;flex:0 0 auto}
+.signup-card .msg{padding:12px 14px;border-radius:14px;margin:12px 0;font-weight:650}
+.signup-card .msg.err{background:#ffe9ec;color:#8d1626}
+.signup-card .msg.good{background:#e1f6ee;color:#0f5d43}
+.signup-card .msg.info{background:#e6f1ff;color:#163f78}
+.signup-card .btn{width:100%}

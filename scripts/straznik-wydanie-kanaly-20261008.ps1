@@ -52,6 +52,7 @@ $Files = @(
     'lumi-kids\index.html',
     'lumi-kids\styles.css',
     'lumi-kids\script.js',
+    'lumi-kids\zgloszenie.js',
     'lumi-kids\assets\lumi-kids-logo.svg',
     'lumi-kids\assets\lumi-kids-koncepcja.jpg',
     'lumi-kids\app\index.html',
@@ -92,7 +93,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): LUMI KIDS: krótkie adresy /kids i /kids/app + test reguł w osobnym katalogu" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): LUMI KIDS: formularz zgłoszenia rodziny do pilotażu (kids_waitlist) + lista zgłoszeń w panelu rodzica" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -112,7 +113,7 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI KIDS aliasy i reguly" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI KIDS zgloszenia" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"

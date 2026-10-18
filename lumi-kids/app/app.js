@@ -436,6 +436,22 @@ async function screenParent() {
     });
   } catch (e) { invTable.append(h('tr', {}, h('td', { colspan: '3', text: 'Nie udało się wczytać zaproszeń.' }))); }
 
+  // Zgłoszenia rodzin do pilotażu
+  const waitBody = h('tbody');
+  try {
+    const ws = await getDocs(query(collection(db, 'kids_waitlist'), limit(100)));
+    const rows = ws.docs.map(d => ({ ref: d.ref, ...d.data() })).sort((a, b) => ((b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0) - (a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0)));
+    for (const w of rows) {
+      waitBody.append(h('tr', {},
+        h('td', {}, h('strong', { text: w.parentName || '' }), h('br'), h('a', { href: 'mailto:' + encodeURIComponent(w.email || '').replace('%40', '@'), text: w.email || '' })),
+        h('td', { text: String(w.childrenCount || '') }),
+        h('td', { text: w.message || '—' }),
+        h('td', { text: (w.createdAt && w.createdAt.toDate ? w.createdAt.toDate().toLocaleDateString('pl-PL') : '') + (w.status === 'seen' ? ' · przejrzane' : '') },
+          w.status !== 'seen' ? h('button', { class: 'btn ghost', type: 'button', text: 'Przejrzane', onclick: async () => { try { await updateDoc(w.ref, { status: 'seen' }); screenParent(); } catch (e) { toast(friendly(e)); } } }) : null)));
+    }
+    if (!rows.length) waitBody.append(h('tr', {}, h('td', { colspan: '4', text: 'Brak zgłoszeń.' })));
+  } catch (e) { waitBody.append(h('tr', {}, h('td', { colspan: '4', text: 'Nie udało się wczytać zgłoszeń.' }))); }
+
   const contactUid = h('input', { type: 'text', id: 'cuid', autocomplete: 'off', placeholder: 'identyfikator konta (UID)' });
   const contactsList = h('ul', { class: 'contacts' });
   for (const u of c.contacts) {
@@ -489,7 +505,11 @@ async function screenParent() {
         if (u === c.childUid) { toast('To konto dziecka.'); return; }
         save({ contacts: Array.from(new Set([...c.contacts, u])) }, 'Kontakt zatwierdzony');
       } }, h('label', { for: 'cuid', class: 'sr', text: 'Identyfikator konta kontaktu' }), contactUid, h('button', { class: 'btn ghost', type: 'submit', text: 'Dodaj kontakt' })),
-      h('p', { class: 'muted small', text: 'Np. mama: niech zaloguje się na tej stronie swoim kontem — zobaczy swój identyfikator, który tu wkleisz.' }))
+      h('p', { class: 'muted small', text: 'Np. mama: niech zaloguje się na tej stronie swoim kontem — zobaczy swój identyfikator, który tu wkleisz.' })),
+    h('section', { class: 'card' },
+      h('h2', { text: 'Zgłoszenia rodzin do pilotażu' }),
+      h('p', { class: 'muted small', text: 'Z formularza na polskieradio.cc/kids. Bez danych dzieci — kontakt z rodzicem e-mailem.' }),
+      h('div', { style: 'overflow-x:auto' }, h('table', {}, h('thead', {}, h('tr', {}, h('th', { text: 'Rodzic' }), h('th', { text: 'Dzieci' }), h('th', { text: 'Wiadomość' }), h('th', { text: 'Data' }))), waitBody)))
   );
 }
 

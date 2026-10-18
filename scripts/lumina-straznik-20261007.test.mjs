@@ -425,3 +425,17 @@ test('LUMI KIDS: krótkie adresy /kids i /kids/app prowadzą do /lumi-kids/', as
   assert.match(w, /kidsAlias = \/\^\\\/\(kids\|lumikids/);
   assert.match(w, /kidsAlias\[2\] \? '\/lumi-kids\/app\/' : '\/lumi-kids\/'/);
 });
+
+test('LUMI KIDS: zgłoszenie rodziny do pilotażu — tylko rodzic, bez danych dziecka, tylko kids_waitlist', async () => {
+  const h = await readFile('lumi-kids/index.html', 'utf8');
+  const z = await readFile('lumi-kids/zgloszenie.js', 'utf8');
+  const r = await readFile('firestore.rules', 'utf8');
+  assert.match(h, /id="zgloszenie"/);
+  assert.match(h, /src="\/lumi-kids\/zgloszenie\.js\?v=/);
+  assert.doesNotMatch(z, /innerHTML|insertAdjacentHTML|console\./);
+  const cols = [...z.matchAll(/(?:collection|doc)\(db,\s*'([a-z_]+)/g)].map(m => m[1]);
+  assert.deepEqual([...new Set(cols)], ['kids_waitlist']);
+  assert.doesNotMatch(z, /childName|childAge|dateOfBirth|pesel/i);
+  assert.match(r, /match \/kids_waitlist\/\{uid\}/);
+  assert.match(r, /request\.resource\.data\.email == request\.auth\.token\.email/);
+});

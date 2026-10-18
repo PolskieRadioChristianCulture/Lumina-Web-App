@@ -145,3 +145,22 @@ test('11. Reakcje: tylko własna, z listy emoji, bez zmiany treści', async () =
   await assertFails(updateDoc(m, { text: 'zmienione' }));
   await assertSucceeds(updateDoc(m, { [`reactions.${CHILD}`]: deleteField() }));
 });
+
+test('12. Zgłoszenie do pilotażu: tylko własne, zweryfikowane konto, poprawne pola; czyta autor i administrator', async () => {
+  const ok = (uid, email) => ({ uid, email, parentName: 'Rodzic Testowy', childrenCount: 2, message: '', consent: true, status: 'new', createdAt: serverTimestamp() });
+  const p = db('parentX', goog('rodzic.x@example.com'));
+  await assertFails(setDoc(doc(p, 'kids_waitlist/innyUid'), ok('innyUid', 'rodzic.x@example.com')));
+  await assertFails(setDoc(doc(p, 'kids_waitlist/parentX'), ok('parentX', 'ktos.inny@example.com')));
+  await assertFails(setDoc(doc(p, 'kids_waitlist/parentX'), { ...ok('parentX', 'rodzic.x@example.com'), consent: false }));
+  await assertFails(setDoc(doc(p, 'kids_waitlist/parentX'), { ...ok('parentX', 'rodzic.x@example.com'), childName: 'Jaś' }));
+  await assertFails(setDoc(doc(db('anonX', { firebase: { sign_in_provider: 'anonymous' } }), 'kids_waitlist/anonX'), ok('anonX', 'a@example.com')));
+  await assertFails(setDoc(doc(db('parentY', pwd('rodzic.y@example.com', false)), 'kids_waitlist/parentY'), ok('parentY', 'rodzic.y@example.com')));
+  await assertSucceeds(setDoc(doc(p, 'kids_waitlist/parentX'), ok('parentX', 'rodzic.x@example.com')));
+  await assertFails(updateDoc(doc(p, 'kids_waitlist/parentX'), { status: 'approved' }));
+  await assertSucceeds(getDoc(doc(p, 'kids_waitlist/parentX')));
+  await assertFails(getDoc(doc(stranger(), 'kids_waitlist/parentX')));
+  await assertFails(getDocs(collection(stranger(), 'kids_waitlist')));
+  await assertSucceeds(getDocs(collection(admin(), 'kids_waitlist')));
+  await seed();
+  await assertFails(setDoc(doc(child(), `kids_waitlist/${CHILD}`), ok(CHILD, KID_EMAIL)));
+});
