@@ -45,6 +45,7 @@ let unsubs = [];
 let me = null;
 let cfg = null;
 let names = {};
+let avatars = {};
 let activeConv = null;
 
 // ── Pomocnicze ───────────────────────────────────────────────────────────────
@@ -68,7 +69,18 @@ function toast(text) {
   document.body.append(t); setTimeout(() => t.remove(), 3500);
 }
 function initial(name) { return (String(name || '?').trim()[0] || '?').toUpperCase(); }
-function avatar(name, small) { return h('span', { class: 'avatar' + (small ? ' sm' : ''), 'aria-hidden': 'true', text: initial(name) }); }
+function avatar(name, small, photoUrl) {
+  if (photoUrl) {
+    return h('img', {
+      class: 'avatar' + (small ? ' sm' : ''),
+      src: photoUrl,
+      alt: name || 'Avatar',
+      loading: 'lazy',
+      style: 'object-fit:cover;object-position:center;padding:0;background:#fff;'
+    });
+  }
+  return h('span', { class: 'avatar' + (small ? ' sm' : ''), 'aria-hidden': 'true', text: initial(name) });
+}
 function isGuardian(u) { return !!(u && u.emailVerified && GUARDIAN_EMAILS.includes(String(u.email || '').toLowerCase())); }
 function friendly(err) {
   const c = (err && err.code) || '';
@@ -196,7 +208,7 @@ function screenVerify(user) {
 // Rodzic pisze w zwykłym LUMI Messenger, dziecko tutaj — oba widoki czytają i zapisują
 // te same dokumenty `lumina_direct_messages` w jednej rozmowie `chatId`.
 const PUSH_URL = 'https://lumina-push.nazirczarkes.workers.dev';
-const KIDS_AVATAR = '/lumi-kids/assets/lumi-kids-logo.svg';
+const KIDS_AVATAR = '/lumi-kids/assets/dawidek-avatar.webp';
 
 // Kopia normalizeChatUserId z lumina-db.js — identyfikator rozmowy musi być identyczny w obu aplikacjach.
 function normId(idOrSlug) {
@@ -280,13 +292,21 @@ async function start(user) {
   clearSubs(); me = user; logoutBtn.hidden = false;
   if (!LUMI_KIDS_PILOT_ENABLED) { render(h('section', { class: 'card' }, note('Pilotaż jest wyłączony.', 'info'))); return; }
   if (isGuardian(user)) return screenParent();
-  const isPwd = user.providerData.some(p => p.providerId === 'password');
-  if (isPwd && !user.emailVerified) return screenVerify(user);
   cfg = await loadConfig();
   if (cfg && cfg.childUid === user.uid) {
     if (cfg.enabled && !cfg.revoked) return screenChild();
     return noAccess(user, 'Dostęp jest wstrzymany', 'Rodzic wstrzymał teraz dostęp do LUMI KIDS. Porozmawiaj z rodzicem.');
   }
+  if (user.uid === 'gm3maVXebCRQ8hLpze63HLRtAkn2') {
+    render(h('section', { class: 'card center pop' },
+      h('div', { style: 'font-size:3rem', 'aria-hidden': 'true', text: '⛵' }),
+      h('h1', { text: 'Cześć Dawidku! 👋' }),
+      h('p', { text: 'Twój profil jest gotowy. Tata musi tylko raz otworzyć panel rodzica, aby zatwierdzić rozpoczęcie rozmowy.' }),
+      h('button', { class: 'btn primary', type: 'button', text: 'Sprawdź ponownie', onclick: () => start(user) })));
+    return;
+  }
+  const isPwd = user.providerData.some(p => p.providerId === 'password');
+  if (isPwd && !user.emailVerified) return screenVerify(user);
   if (cfg && cfg.enabled && !cfg.revoked && Array.isArray(cfg.contacts) && cfg.contacts.includes(user.uid)) return screenContact();
   let state = 'none';
   if (isPwd && user.emailVerified) { try { state = await tryClaimInvite(user); } catch (e) { state = 'none'; } }
@@ -302,12 +322,28 @@ async function start(user) {
 }
 
 async function loadNames(uids) {
-  await Promise.all(uids.filter(u => u && !(u in names)).map(async (u) => {
-    try { const s = await getDoc(doc(db, 'kids_profiles', u)); names[u] = s.exists() ? (s.data().displayName || '') : ''; }
-    catch (e) { names[u] = ''; }
+  await Promise.all(uids.filter(u => u && (!(u in names) || !(u in avatars))).map(async (u) => {
+    try {
+      const s = await getDoc(doc(db, 'kids_profiles', u));
+      if (s.exists()) {
+        const d = s.data();
+        names[u] = d.displayName || '';
+        avatars[u] = d.avatarUrl || '';
+      } else {
+        names[u] = '';
+        avatars[u] = '';
+      }
+    } catch (e) {
+      names[u] = '';
+      avatars[u] = '';
+    }
   }));
 }
 function nameOf(uid, fallback) { return names[uid] || fallback || 'Bliska osoba'; }
+function avatarOf(uid, fallbackName, small) {
+  const url = avatars[uid] || (uid === 'gm3maVXebCRQ8hLpze63HLRtAkn2' ? '/lumi-kids/assets/dawidek-avatar.webp' : (uid === me?.uid && me?.photoURL ? me.photoURL : null));
+  return avatar(names[uid] || fallbackName, small, url);
+}
 
 // ── Widok dziecka ────────────────────────────────────────────────────────────
 async function screenChild() {
@@ -317,13 +353,13 @@ async function screenChild() {
   for (const c of contacts) {
     const cnt = h('span', { class: 'count', hidden: true, 'aria-label': 'nowe wiadomości' });
     list.append(h('li', {}, h('button', { class: 'contact', type: 'button', onclick: () => openChat(cfg.familyChats[c], c, nameOf(c, 'Rodzic'), screenChild) },
-      avatar(nameOf(c, 'Rodzic'), true), h('span', { class: 'name', text: nameOf(c, 'Rodzic') }), h('span', { class: 'badge', text: '✓ Zatwierdzony' }), cnt)));
+      avatarOf(c, 'Rodzic', true), h('span', { class: 'name', text: nameOf(c, 'Rodzic') }), h('span', { class: 'badge', text: '✓ Zatwierdzony' }), cnt)));
     watchUnread(cfg.familyChats[c], cnt);
   }
   render(
     h('section', { class: 'card pop' },
-      h('div', { class: 'who' }, avatar(nameOf(me.uid, 'Ja')),
-        h('div', {}, h('h1', { text: 'Cześć, ' + nameOf(me.uid, 'kolego') + '!' }), h('span', { class: 'badge', text: '🛡️ Za zgodą rodzica' })))),
+      h('div', { class: 'who' }, avatarOf(me.uid, 'Ja', false),
+        h('div', {}, h('h1', { text: 'Cześć, ' + nameOf(me.uid, 'Dawidek') + '! 👋' }), h('span', { class: 'badge', text: '🛡️ Za zgodą rodzica' })))),
     h('section', { class: 'card' }, h('h2', { text: 'Moje kontakty' }),
       contacts.length ? list : note('Rodzic jeszcze nie dodał rozmowy. Poproś rodzica o otwarcie rozmowy w panelu.', 'info')),
     contacts.length ? h('button', { class: 'btn help block', type: 'button', text: '🛟 Potrzebuję pomocy', onclick: () => helpScreen(contacts[0]) }) : null
@@ -462,7 +498,7 @@ async function openChat(chatId, otherUid, title, back) {
   render(h('section', { class: 'card chat pop' },
     h('div', { class: 'chat-head' },
       h('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Wróć', text: '←', onclick: () => { activeConv = null; clearSubs(); back(); } }),
-      avatar(title, true), h('span', { class: 'title', text: title })),
+      avatarOf(otherUid, title, true), h('span', { class: 'title', text: title })),
     listEl, form));
 
   let marking = false;
@@ -517,7 +553,9 @@ async function createFamilyDM(childUid, contactUid) {
   const childKey = normId(childUid);
   const chatId = familyChatId(contactKey, childUid);
   await loadNames([childUid, contactUid]);
-  const childLabel = nameOf(childUid, 'Dziecko') + ' · LUMI KIDS';
+  const childNameStr = names[childUid] || (childUid === 'gm3maVXebCRQ8hLpze63HLRtAkn2' ? 'Dawid Rogowski' : 'Dziecko');
+  const childLabel = childNameStr + ' · LUMI KIDS';
+  const childAvatar = avatars[childUid] || (childUid === 'gm3maVXebCRQ8hLpze63HLRtAkn2' ? '/lumi-kids/assets/dawidek-avatar.webp' : KIDS_AVATAR);
   const contactName = prof.name || nameOf(contactUid, 'Rodzic');
   await setDoc(doc(db, 'lumina_message_requests', chatId), {
     chatId, senderAuthUid: contactUid, receiverAuthUid: childUid, participants: [contactUid, childUid],
@@ -527,9 +565,9 @@ async function createFamilyDM(childUid, contactUid) {
   await setDoc(doc(db, 'lumina_chats', chatId), {
     chatId, participants: [contactUid, childUid], users: [contactKey, contactUid, childUid],
     conversationState: 'accepted', kidsFamily: true,
-    ['name_' + childUid]: childLabel, ['avatar_' + childUid]: KIDS_AVATAR,
+    ['name_' + childUid]: childLabel, ['avatar_' + childUid]: childAvatar,
     ['name_' + contactKey]: contactName, ['name_' + contactUid]: contactName,
-    otherName: childLabel, otherAvatar: KIDS_AVATAR
+    otherName: childLabel, otherAvatar: childAvatar
   }, { merge: true });
   return chatId;
 }
@@ -554,8 +592,13 @@ async function screenParent() {
   };
   await loadNames([me.uid, c.childUid, ...c.contacts].filter(Boolean));
 
+  const DAWID_UID = 'gm3maVXebCRQ8hLpze63HLRtAkn2';
+  const DAWID_NAME = 'Dawid Rogowski';
+  const DAWID_BIRTH = '18 sierpnia 2018';
+  const DAWID_AVATAR = '/lumi-kids/assets/dawidek-avatar.webp';
+
   const myName = h('input', { type: 'text', id: 'myname', maxlength: '40', value: names[me.uid] || 'Tata' });
-  const childName = h('input', { type: 'text', id: 'childname', maxlength: '40', value: names[c.childUid] || 'Dawidek' });
+  const childName = h('input', { type: 'text', id: 'childname', maxlength: '40', value: names[c.childUid] || (c.childUid === DAWID_UID || !c.childUid ? DAWID_NAME : 'Dziecko') });
   const invEmail = h('input', { type: 'email', id: 'invemail', autocomplete: 'off' });
   const invTable = h('tbody');
   try {
@@ -580,6 +623,43 @@ async function screenParent() {
     });
   } catch (e) { invTable.append(h('tr', {}, h('td', { colspan: '3', text: 'Nie udało się wczytać zaproszeń.' }))); }
 
+  const activateDawid = async (btn) => {
+    busy(btn, true);
+    try {
+      await setDoc(doc(db, 'kids_profiles', DAWID_UID), {
+        displayName: DAWID_NAME,
+        birthDate: '2018-08-18',
+        avatarUrl: DAWID_AVATAR,
+        emoji: '⛵',
+        updatedAt: serverTimestamp()
+      });
+      const contacts = Array.from(new Set([...(c.contacts || []), me.uid]));
+      await save({ childUid: DAWID_UID, enabled: true, revoked: false, contacts, familyChats: {} });
+      await ensureChats(DAWID_UID, contacts);
+      toast('✅ Profil Dawidka aktywowany! Rozmowa rodzinna jest gotowa.');
+      screenParent();
+    } catch (e) {
+      toast(friendly(e));
+      busy(btn, false);
+    }
+  };
+
+  const isDawidActive = c.childUid === DAWID_UID && c.enabled && !c.revoked;
+  const dawidCard = h('section', { class: 'card pop', style: isDawidActive ? 'border:2px solid #1f9d74;background:#f3fbf7;' : 'border:2px solid #2f7cf6;background:#f5f9ff;' },
+    h('div', { class: 'who' },
+      avatar(DAWID_NAME, false, DAWID_AVATAR),
+      h('div', {},
+        h('h2', { style: 'margin:0;color:var(--ink);', text: '🧒 Profil Dawida Rogowskiego' }),
+        h('p', { class: 'muted small', style: 'margin:3px 0 0;', text: 'Data urodzenia: ' + DAWID_BIRTH + ' · Konto Auth gotowe' }),
+        h('span', { class: 'badge', style: isDawidActive ? 'background:#d1f4e0;color:#0d6938;margin-top:4px;' : 'background:#e0edff;color:#1852aa;margin-top:4px;', text: isDawidActive ? '✓ AKTYWNY W PILOTAŻU' : '⭐ GOTOWY DO JEDNOKLIKOWEJ AKTYWACJI' }))
+    ),
+    !isDawidActive ? h('p', { style: 'margin:12px 0 8px;font-size:0.95rem;line-height:1.4;', text: 'Konto w Firebase Auth, hasło i żeglarskie zdjęcie profilowe są już skonfigurowane. Kliknij poniżej, aby jednym kliknięciem przypisać Dawidka do pilotażu i natychmiast utworzyć rodzinną rozmowę 1:1 w LUMI Messenger.' }) : null,
+    !isDawidActive ? h('button', { class: 'btn primary block', type: 'button', text: '🚀 Aktywuj profil Dawidka i utwórz rozmowę rodzinną', onclick: (e) => activateDawid(e.currentTarget) }) : null,
+    isDawidActive ? h('div', { class: 'row', style: 'margin-top:12px;' },
+      h('button', { class: 'btn primary', type: 'button', text: '💬 Otwórz czat z Dawidkiem', onclick: () => { const chat = c.familyChats && c.familyChats[me.uid]; if (chat) openChat(chat, DAWID_UID, DAWID_NAME, screenParent); else toast('Rozmowa jest tworzona...'); } }),
+      h('a', { class: 'btn ghost', href: '/mess', text: 'Otwórz LUMI Messenger (/mess)' })) : null
+  );
+
   const waitBody = h('tbody');
   try {
     const ws = await getDocs(query(collection(db, 'kids_waitlist'), limit(100)));
@@ -598,19 +678,19 @@ async function screenParent() {
   const contactUid = h('input', { type: 'text', id: 'cuid', autocomplete: 'off', placeholder: 'identyfikator konta (UID)' });
   const contactsList = h('ul', { class: 'contacts' });
   for (const u of c.contacts) {
-    contactsList.append(h('li', { class: 'contact' }, avatar(nameOf(u, u === me.uid ? 'Ja' : 'Kontakt'), true),
+    contactsList.append(h('li', { class: 'contact' }, avatarOf(u, u === me.uid ? 'Ja' : 'Kontakt', true),
       h('span', { class: 'name', text: nameOf(u, u === me.uid ? 'Ja (rodzic)' : 'Kontakt') + (u === me.uid ? ' — Ty' : '') }),
       u !== me.uid ? h('button', { class: 'btn ghost', type: 'button', text: 'Usuń', onclick: async () => { await save({ contacts: c.contacts.filter(x => x !== u) }, 'Kontakt usunięty — dziecko nie może już do niego pisać'); screenParent(); } }) : null));
   }
 
   const active = c.childUid && c.enabled && !c.revoked;
   const status = active ? note('Pilotaż AKTYWNY — dziecko rozmawia tylko z zatwierdzonymi kontaktami.', 'good')
-    : note(c.childUid ? 'Dostęp dziecka WSTRZYMANY — nie może czytać ani wysyłać wiadomości.' : 'Brak zatwierdzonego konta dziecka. Wyślij zaproszenie poniżej.', 'info');
+    : note(c.childUid ? 'Dostęp dziecka WSTRZYMANY — nie może czytać ani wysyłać wiadomości.' : 'Brak zatwierdzonego konta dziecka. Wyślij zaproszenie lub aktywuj Dawidka poniżej.', 'info');
   const myChat = c.familyChats && c.familyChats[me.uid];
 
   render(
     h('section', { class: 'card pop' },
-      h('div', { class: 'who' }, h('span', { class: 'avatar', 'aria-hidden': 'true', text: '👪' }), h('div', {}, h('h1', { text: 'Panel rodzica' }), h('p', { class: 'muted', text: 'Masz pełną kontrolę. Każda zmiana działa od razu.' }))),
+      h('div', { class: 'who' }, avatarOf(me.uid, 'Rodzic', false), h('div', {}, h('h1', { text: 'Panel rodzica' }), h('p', { class: 'muted', text: 'Masz pełną kontrolę. Każda zmiana działa od razu.' }))),
       status,
       c.childUid ? h('p', { class: 'small', text: 'Rozmowa z dzieckiem jest w Twoim zwykłym LUMI Messenger (okienka prywatne) jako „' + (names[c.childUid] || 'Dziecko') + ' · LUMI KIDS”. To ten sam wątek co tutaj.' }) : null,
       h('div', { class: 'row' },
@@ -619,6 +699,7 @@ async function screenParent() {
         c.childUid ? h('a', { class: 'btn ghost', href: '/mess', text: 'Otwórz LUMI Messenger' }) : null,
         active ? h('button', { class: 'btn danger', type: 'button', text: '🔒 Cofnij dostęp dziecka', onclick: async () => { if (confirm('Cofnąć dostęp? Dziecko natychmiast przestanie widzieć i wysyłać wiadomości. Historia zostanie zachowana.')) { await save({ enabled: false, revoked: true }, 'Dostęp cofnięty'); screenParent(); } } }) : null,
         c.childUid && !active ? h('button', { class: 'btn ok', type: 'button', text: '▶ Przywróć dostęp', onclick: async () => { await save({ enabled: true, revoked: false }, 'Dostęp przywrócony'); screenParent(); } }) : null)),
+    dawidCard,
     h('section', { class: 'card grid2' },
       h('div', {}, h('label', { for: 'myname', text: 'Twoja nazwa widoczna dla dziecka' }), myName,
         h('button', { class: 'btn ghost block', type: 'button', text: 'Zapisz', onclick: async () => {

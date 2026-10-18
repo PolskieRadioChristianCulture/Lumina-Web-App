@@ -13211,6 +13211,29 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             } catch(e) {}
 
+            // 3. P0: Dołącz aktywne wątki rodzinne LUMI KIDS i zatwierdzone rozmowy z Firestore
+            if (window._luminaUserChatsCache && Array.isArray(window._luminaUserChatsCache)) {
+                const myUser = window.LuminaDB?.getCurrentUser();
+                const myProfile = window.LuminaDB?.getCurrentProfile();
+                const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
+                const myId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
+                window._luminaUserChatsCache.forEach(chat => {
+                    if (!chat) return;
+                    const usersList = Array.isArray(chat.users) ? chat.users : [];
+                    const partsList = Array.isArray(chat.participants) ? chat.participants : [];
+                    const otherSlug = usersList.find(u => u && u !== myId && u !== myUser?.uid) ||
+                                      partsList.find(p => p && p !== myUser?.uid);
+                    if (!otherSlug) return;
+                    const isFamily = Boolean(chat.kidsFamily);
+                    const name = chat.otherName || chat['name_' + otherSlug] || (isFamily ? 'Dawid Rogowski · LUMI KIDS' : otherSlug);
+                    const avatar = chat.otherAvatar || chat['avatar_' + otherSlug] || (isFamily ? '/lumi-kids/assets/dawidek-avatar.webp' : 'lumina_icon.jpg');
+                    const badge = isFamily ? '⭐ LUMI KIDS' : '✨ Rozmowa';
+                    const job = chat.lastMessageText || (isFamily ? 'Rozmowa rodzinna LUMI KIDS' : 'Rozmowa prywatna LUMINA ✨');
+                    const isMission = false;
+                    map.set(otherSlug, { slug: otherSlug, name, job, city: 'Polska', avatar, badge, isMission, uid: otherSlug, isFamily });
+                });
+            }
+
             return Array.from(map.values());
         }
 
@@ -13227,6 +13250,23 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     });
                 }
             }, 1000);
+
+            // Realtime nasłuch aktywnych rozmów użytkownika (w tym rodzinnych LUMI KIDS)
+            let _userChatsUnsub = null;
+            function hookUserChats() {
+                if (_userChatsUnsub) { try { _userChatsUnsub(); } catch(e){} _userChatsUnsub = null; }
+                const user = window.LuminaDB?.getCurrentUser();
+                if (!user || user.isAnonymous || !window.LuminaDB?.subscribeToUserChats) return;
+                const myId = window.LuminaDB.normalizeChatUserId(user.uid || user.slug);
+                _userChatsUnsub = window.LuminaDB.subscribeToUserChats(myId, (chats) => {
+                    window._luminaUserChatsCache = chats;
+                    if (typeof renderDmUsersAndConversations === 'function') {
+                        renderDmUsersAndConversations();
+                    }
+                });
+            }
+            setTimeout(hookUserChats, 1200);
+            window.addEventListener('lumina:auth-changed', hookUserChats);
         }
 
         function filterCommunityUsersForDm(query) {
@@ -13346,11 +13386,12 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 return true;
             });
 
-            // Sortowanie: pokoje z nieprzeczytanymi wiadomościami ZAWSZE na samej górze!
+            // Sortowanie: pokoje z nieprzeczytanymi wiadomościami ZAWSZE na samej górze, potem rozmowy rodzinne!
             filtered.sort((a, b) => {
                 const unreadA = getUnreadForUser(a);
                 const unreadB = getUnreadForUser(b);
                 if (unreadA !== unreadB) return unreadB - unreadA;
+                if (Boolean(a.isFamily) !== Boolean(b.isFamily)) return a.isFamily ? -1 : 1;
                 if (a.isMission !== b.isMission) return a.isMission ? -1 : 1;
                 return (a.name || '').localeCompare(b.name || '');
             });
@@ -13369,11 +13410,13 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const isDefaultAvatar = !avatarRaw || avatarRaw === 'lumina_icon.jpg' || avatarRaw === 'lumina_icon';
                 const avatarKey = (!isDefaultAvatar) ? `avatar_${avatarRaw}` : null;
 
-                // Sprawdź czy już widzieliśmy ten profil
-                if (uidKey    && seenDms.has(uidKey))    return false;
-                if (slugKey   && seenDms.has(slugKey))   return false;
-                if (avatarKey && seenDms.has(avatarKey)) return false;
-                if (nameKey   && seenDms.has(nameKey) && !u.isMission) return false;
+                // Sprawdź czy już widzieliśmy ten profil (rodzina nigdy nie jest deduplikowana)
+                if (!u.isFamily) {
+                    if (uidKey    && seenDms.has(uidKey))    return false;
+                    if (slugKey   && seenDms.has(slugKey))   return false;
+                    if (avatarKey && seenDms.has(avatarKey)) return false;
+                    if (nameKey   && seenDms.has(nameKey) && !u.isMission) return false;
+                }
 
                 // Rejestruj wszystkie klucze tego profilu
                 if (uidKey)                        seenDms.add(uidKey);
@@ -13534,7 +13577,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             btnIcon.className = 'fa-solid fa-paper-plane';
         };
 
-        function openChatWith(name, avatar, slug, targetMessageId) {
+        function openChatWith(name, avatar, slug, targetMessageId, targetUid) {
             window._keepActiveChat = true;
             try {
             if (targetMessageId) window._targetChatMessageId = targetMessageId;
@@ -13601,7 +13644,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 targetId: toId,
                 targetName: nameEl?.textContent || name,
                 targetAvatar: avatarEl?.src || avatar,
-                targetUid: (slug === 'u_robertukaszpio_5668' || toId === 'robertlukaszpio') ? 'jIdflt3G8ohgpCoWmCLJAZ9i5d42' : null
+                targetUid: targetUid || ((slug === 'u_robertukaszpio_5668' || toId === 'robertlukaszpio') ? 'jIdflt3G8ohgpCoWmCLJAZ9i5d42' : (/^[A-Za-z0-9_-]{20,40}$/.test(slug) ? slug : null))
             };
 
             const box = document.getElementById('activeChatMessagesBox');

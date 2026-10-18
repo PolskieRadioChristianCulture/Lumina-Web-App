@@ -724,10 +724,12 @@ service cloud.firestore {
       ));
       allow write: if isMasterAdmin() || (
         kidsActive() && request.auth.uid == uid &&
-        request.resource.data.keys().hasOnly(['displayName', 'emoji', 'updatedAt']) &&
+        request.resource.data.keys().hasOnly(['displayName', 'emoji', 'avatarUrl', 'birthDate', 'updatedAt']) &&
         request.resource.data.displayName is string &&
         request.resource.data.displayName.size() > 0 && request.resource.data.displayName.size() <= 40 &&
-        request.resource.data.get('emoji', '') is string && request.resource.data.get('emoji', '').size() <= 8
+        request.resource.data.get('emoji', '') is string && request.resource.data.get('emoji', '').size() <= 8 &&
+        (!('avatarUrl' in request.resource.data) || (request.resource.data.avatarUrl is string && request.resource.data.avatarUrl.size() <= 200)) &&
+        (!('birthDate' in request.resource.data) || (request.resource.data.birthDate is string && request.resource.data.birthDate.size() <= 30))
       );
     }
 
