@@ -54,6 +54,15 @@ $Files = @(
     'lumi-kids\script.js',
     'lumi-kids\assets\lumi-kids-logo.svg',
     'lumi-kids\assets\lumi-kids-koncepcja.jpg',
+    'lumi-kids\app\index.html',
+    'lumi-kids\app\app.css',
+    'lumi-kids\app\app.js',
+    'firestore.rules',
+    'tests\lumi-kids-rules.test.mjs',
+    'docs\lumi-kids\LUMI_KIDS_PILOT_ARCHITECTURE.md',
+    'docs\lumi-kids\LUMI_KIDS_PILOT_SECURITY.md',
+    'docs\lumi-kids\LUMI_KIDS_PILOT_TEST_REPORT.md',
+    'docs\lumi-kids\LUMI_KIDS_PILOT_RELEASE_CHECKLIST.md',
     'CLAUDE.md',
     'scripts\straznik-wydanie-kanaly-20261008.ps1',
     'WYDANIE-KANALY.bat'
@@ -83,7 +92,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): LUMI okienka prywatne (imię i zdjęcie rozmówcy z profilu) + LUMI KIDS: strona zapowiedzi /lumi-kids/ (makieta, bez zdjęć dziecka)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): LUMI KIDS: zamknięty pilotaż rodzinny /lumi-kids/app/ (zaproszenie, panel rodzica, czat 1:1) + reguły kids_* z izolacją konta dziecka" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -103,10 +112,32 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI dock + LUMI KIDS preview" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI KIDS pilot" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"
+
+Krok "4b Reguły Firestore LUMI KIDS — test w emulatorze, potem wdrożenie (lumina-cc)"
+# Bezpieczeństwo: reguły wdrażamy WYŁĄCZNIE gdy oba zestawy testów przejdą w emulatorze.
+# Bez wdrożonych reguł aplikacja LUMI KIDS jest zamknięta (zasada fail-closed) — portal działa normalnie.
+if (-not (Get-Command java -ErrorAction SilentlyContinue)) {
+    foreach ($jbr in @('C:\Program Files\Android\Android Studio\jbr', 'C:\Program Files\Android\Android Studio\jre')) {
+        if (Test-Path (Join-Path $jbr 'bin\java.exe')) { $env:JAVA_HOME = $jbr; $env:Path = (Join-Path $jbr 'bin') + ';' + $env:Path; break }
+    }
+}
+$RulesOk = $false
+if (Get-Command java -ErrorAction SilentlyContinue) {
+    npm.cmd i --no-save --silent @firebase/rules-unit-testing firebase 2>&1 | Out-Null
+    $o = (npx.cmd --yes firebase-tools@15.32.1 emulators:exec --only firestore --project demo-lumi-kids "node --test tests/lumi-kids-rules.test.mjs" 2>&1 | Out-String); $rk = $LASTEXITCODE; Write-Host $o
+    $o = (npx.cmd --yes firebase-tools@15.32.1 emulators:exec --only firestore --project demo-p0 "node scripts/p0-rules-test.mjs firestore.rules" 2>&1 | Out-String); $rp = $LASTEXITCODE; Write-Host $o
+    if ($rk -eq 0 -and $rp -eq 0) {
+        Ok "reguły: testy LUMI KIDS i P0 przeszły w emulatorze"
+        $o = (npx.cmd --yes firebase-tools@15.32.1 deploy --only firestore:rules --project lumina-cc 2>&1 | Out-String); $rr = $LASTEXITCODE; Write-Host $o
+        if ($rr -eq 0) { $RulesOk = $true; Ok "reguły LUMI KIDS wdrożone (lumina-cc)" }
+        else { Write-Host "  ! Wdrożenie reguł nie powiodło się (np. brak logowania Firebase). Strona działa, LUMI KIDS pozostaje zamknięte." -ForegroundColor Yellow }
+    } else { Write-Host "  ! Testy reguł NIE przeszły — reguły NIE zostały wdrożone. LUMI KIDS pozostaje zamknięte." -ForegroundColor Yellow }
+} else { Write-Host "  ! Brak Javy — test emulatora niemożliwy, reguły NIE zostały wdrożone. LUMI KIDS pozostaje zamknięte." -ForegroundColor Yellow }
+Write-Host "  REGULY_LUMI_KIDS_WDROZONE=$RulesOk"
 
 Krok "5/5 Wpis w JOMA_HANDOFFS.md"
 if (Test-Path $Joma) {

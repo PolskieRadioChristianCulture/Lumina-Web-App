@@ -398,3 +398,24 @@ test('LUMI KIDS /lumi-kids/: tylko makieta — noindex, bez zdjęć dziecka, bez
   assert.doesNotMatch(j, /fetch\s*\(|localStorage|sessionStorage|WebSocket|indexedDB|firebase/i);
   assert.match(h, /src="\/lumi-kids\/script\.js\?v=/);
 });
+
+test('LUMI KIDS pilotaż /lumi-kids/app/: tylko kolekcje kids_*, bez innerHTML, bez sekretów, noindex', async () => {
+  const h = await readFile('lumi-kids/app/index.html', 'utf8');
+  const j = await readFile('lumi-kids/app/app.js', 'utf8');
+  assert.match(h, /name="robots" content="noindex,nofollow"/);
+  assert.doesNotMatch(j, /innerHTML|insertAdjacentHTML|document\.write|console\./);
+  assert.doesNotMatch(h + j, /@icloud\.com/i);
+  const cols = [...j.matchAll(/(?:collection|doc)\(db,\s*'([a-z_]+)/g)].map(m => m[1]);
+  assert.ok(cols.length > 5);
+  for (const c of cols) assert.match(c, /^kids_/, 'LUMI KIDS nie dotyka kolekcji LUMINA: ' + c);
+  assert.match(j, /sendEmailVerification/);
+  assert.match(j, /emailVerified/);
+});
+
+test('LUMI KIDS reguły: izolacja pilotażu i blokada konta dziecka w publicznej LUMINA', async () => {
+  const r = await readFile('firestore.rules', 'utf8');
+  for (const m of ['kids_pilot', 'kids_invites', 'kids_profiles', 'kids_conversations']) assert.match(r, new RegExp('match /' + m + '/'));
+  assert.ok((r.match(/notKidsChild\(\)/g) || []).length >= 9);
+  assert.match(r, /email_verified == true &&\s*request\.auth\.token\.firebase\.sign_in_provider == 'password'/);
+  assert.doesNotMatch(r, /match \/kids_[a-z_]+\/[^}]*allow (read|write)[^;]*: if true/);
+});
