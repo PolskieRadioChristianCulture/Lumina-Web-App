@@ -38,37 +38,39 @@
     #ccUnifiedChatHost{position:fixed;inset:0;z-index:2147483000;background:#090e1a;display:flex;flex-direction:column;color:#f8fafc;font:14px system-ui}
     #ccUnifiedChatHost[hidden]{display:none!important}
     #ccUnifiedChatFrame{width:100%!important;height:100%!important;flex:1;min-height:0;border:0;background:#090e1a}
-    .cc-chat-radio{display:inline-flex;align-items:center;gap:6px;padding:3px 6px 3px 4px;background:rgba(15,23,42,0.85);border:1px solid rgba(196,163,90,0.4);border-radius:20px;color:#f8fafc;font:12px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.08);flex-shrink:1;max-width:100%;margin:0 6px 0 auto!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .25s ease}
-    .cc-chat-radio.is-playing{border-color:rgba(16,185,129,0.7);box-shadow:0 0 12px rgba(16,185,129,0.3),inset 0 1px 0 rgba(255,255,255,0.12)}
-    .cc-chat-radio button{background:linear-gradient(135deg,#facc15 0%,#eab308 100%);color:#0f172a;border:0;border-radius:14px;min-height:36px;min-width:44px;padding:0 10px;font-size:11px;font-weight:700;letter-spacing:.02em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 2px 6px rgba(250,204,21,0.3);transition:all .2s ease;white-space:nowrap;font-family:inherit}
+    .cc-chat-radio{display:inline-flex;align-items:center;gap:6px;padding:3px 4px 3px 8px;background:rgba(255,255,255,0.04);border:1px solid rgba(196,163,90,0.3);border-radius:12px;color:#f8fafc;font:12px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;box-shadow:0 2px 6px rgba(0,0,0,0.25);flex-shrink:1;max-width:100%;margin:0 6px 0 auto!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .2s ease;height:38px;box-sizing:border-box}
+    .cc-chat-radio.is-playing{border-color:rgba(16,185,129,0.6);box-shadow:0 0 10px rgba(16,185,129,0.25)}
+    .cc-chat-radio button{order:3;background:linear-gradient(135deg,#C4A35A 0%,#a88438 100%);color:#0b0f19;border:0;border-radius:9px;height:30px;min-height:30px;min-width:44px;padding:0 12px;font-size:11px;font-weight:750;letter-spacing:.02em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 6px rgba(196,163,90,0.25);transition:all .2s ease;white-space:nowrap;font-family:inherit;box-sizing:border-box}
     .cc-chat-radio button::before{content:'▶';font-size:9px;line-height:1}
-    .cc-chat-radio.is-playing button{background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:#fff;box-shadow:0 2px 6px rgba(16,185,129,0.4)}
+    .cc-chat-radio.is-playing button{background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:#fff;box-shadow:0 2px 6px rgba(16,185,129,0.35)}
     .cc-chat-radio.is-playing button::before{content:'⏸'}
     .cc-chat-radio button:disabled{opacity:.55;cursor:wait}
-    .cc-chat-radio select{background:rgba(2,6,23,0.75);color:#f8fafc;border:1px solid rgba(196,163,90,0.35);border-radius:14px;min-height:36px;padding:0 8px;font:inherit;font-size:11px;font-weight:600;cursor:pointer;outline:none;max-width:160px}
-    .cc-chat-radio select:focus{border-color:#facc15;box-shadow:0 0 0 2px rgba(250,204,21,0.25)}
-    .cc-chat-radio select option{background:#0f172a;color:#f8fafc}
-    .cc-chat-radio-bars{display:inline-flex;align-items:flex-end;gap:2px;height:14px;padding:0 4px}
-    .cc-chat-radio-bars span{width:2.5px;background:#94a3b8;border-radius:1px;height:4px;transition:height .2s ease}
+    .cc-chat-radio button:focus:not(:focus-visible),.cc-chat-radio select:focus:not(:focus-visible){outline:none;box-shadow:none}
+    .cc-chat-radio button:focus-visible{outline:2px solid #C4A35A;outline-offset:2px}
+    .cc-chat-radio select{order:1;background:transparent;color:#f8fafc;border:none;border-radius:8px;height:32px;min-height:32px;padding:0 6px;font:inherit;font-size:11px;font-weight:600;cursor:pointer;outline:none;max-width:160px;box-sizing:border-box;box-shadow:none;appearance:none;-webkit-appearance:none;-moz-appearance:none}
+    .cc-chat-radio select:focus-visible{outline:2px solid #C4A35A;outline-offset:1px}
+    .cc-chat-radio select option{background:#101425;color:#f8fafc}
+    .cc-chat-radio-bars{order:2;display:inline-flex;align-items:flex-end;gap:2px;height:12px;padding:0 3px}
+    .cc-chat-radio-bars span{width:2.5px;background:rgba(255,255,255,0.3);border-radius:1px;height:4px;transition:height .2s ease}
     .cc-chat-radio.is-playing .cc-chat-radio-bars span{background:#10b981;animation:ccRadioBarBounce 1s ease-in-out infinite alternate}
     .cc-chat-radio.is-playing .cc-chat-radio-bars span:nth-child(1){animation-delay:0s;height:12px}
     .cc-chat-radio.is-playing .cc-chat-radio-bars span:nth-child(2){animation-delay:.2s;height:14px}
     .cc-chat-radio.is-playing .cc-chat-radio-bars span:nth-child(3){animation-delay:.4s;height:8px}
     @keyframes ccRadioBarBounce{0%{height:4px}100%{height:14px}}
     .cc-chat-radio output{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    .cc-chat-header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important}
+    .cc-chat-header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;background:#101425!important;border-bottom:1px solid rgba(255,255,255,0.08)!important}
     .cc-chat-header-brand{flex:0 1 auto!important;min-width:0!important}
     .cc-chat-header .cc-chat-radio, .chat-header-bar .cc-chat-radio{margin:0 6px 0 auto!important}
-    @media (max-width: 480px) {
-      .cc-chat-header{gap:4px!important;padding:10px 8px!important}
-      .cc-chat-header-brand{min-width:0!important;flex:0 1 auto!important}
-      .cc-chat-header-sub{display:none!important}
-      .cc-chat-header-title{font-size:0.82rem!important}
-      .cc-chat-header-icon{width:30px!important;height:30px!important;min-width:30px!important}
-      .cc-chat-radio{margin:0 4px 0 auto!important;padding:2px 4px!important}
-      .cc-chat-radio select{max-width:95px!important;font-size:10px!important;padding:0 4px!important}
-      .cc-chat-radio button{padding:0 6px!important;font-size:10px!important;min-width:36px!important}
-      .cc-chat-radio-bars{display:none!important}
+    @media (max-width: 599px) {
+      .cc-chat-header{flex-wrap:wrap!important;gap:8px 0!important;padding:max(10px,env(safe-area-inset-top)) 12px 10px!important}
+      .cc-chat-header-brand{order:1!important;flex:1 1 auto!important;min-width:0!important}
+      .cc-chat-header-actions{order:2!important;flex:0 0 auto!important;margin-left:auto!important}
+      .cc-chat-header-sub{display:flex!important;font-size:0.72rem!important}
+      .cc-chat-header-title{font-size:0.95rem!important}
+      .cc-chat-header-icon{width:34px!important;height:34px!important;min-width:34px!important;border-radius:10px!important}
+      .cc-chat-header .cc-chat-radio{order:3!important;flex:1 0 100%!important;width:100%!important;margin:4px 0 0!important;display:flex!important;justify-content:space-between!important}
+      .cc-chat-header .cc-chat-radio select{flex:1 1 auto!important;min-width:0!important;max-width:none!important;font-size:12px!important;padding:0 6px!important}
+      .cc-chat-header .cc-chat-radio button{flex:0 0 auto!important;padding:0 12px!important}
     }
     body.cc-mess-embedded #lumiLanding,body.cc-mess-embedded #lumiIntroOverlay{display:none!important}
     body.cc-mess-embedded .modal-overlay.open{inset:0!important;height:100dvh!important;max-height:100dvh!important}

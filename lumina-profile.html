@@ -4165,26 +4165,31 @@
     <div class="modal-overlay" id="directMessagesModal">
         <div class="modal-card lumina-messenger-modal-card" style="padding: 0; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; background: #0b1120; border: 1.5px solid rgba(168,85,247,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.85);">
             
-            <!-- Top Header & Dual Tabs Bar -->
-            <div class="chat-header-bar" style="padding: 14px 18px 10px 18px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.08);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#ec4899,#8b5cf6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem; box-shadow:0 4px 12px rgba(236,72,153,0.4);">
+                        <!-- Top Header & Dual Tabs Bar -->
+            <div class="chat-header-bar">
+                <div class="chat-header-top-row">
+                    <div class="chat-header-brand">
+                        <div class="chat-header-logo-icon">
                             <i class="fa-solid fa-comments"></i>
                         </div>
-                        <div>
-                            <h3 style="font-size: 1.12rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">LUMI Messenger</h3>
-                            <div style="font-size: 0.72rem; color: #10b981; display:flex; align-items:center; gap:4px;">
-                                <span style="width:6px; height:6px; border-radius:50%; background:#10b981; display:inline-block;"></span> Na żywo w Chrystusie ✨ </div>
+                        <div class="chat-header-titles">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <h3>LUMI Messenger</h3>
+                                <span id="chatHeaderUnreadBadge" style="display:none; align-items:center; gap:4px; background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:10px; line-height:1.2;"></span>
+                            </div>
+                            <div class="chat-header-sub">
+                                <span></span> Na żywo w Chrystusie ✨
+                            </div>
                         </div>
                     </div>
-                    <div class="chat-header-actions" style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-                        <button id="btnChatFullscreen" type="button" onclick="toggleChatFullscreen()" title="Pełny ekran czatu" class="chat-fullscreen-btn" style="align-items:center; justify-content:center; width:36px; height:36px; min-width:36px; max-width:36px; min-height:36px; max-height:36px; border-radius:10px; border:1px solid rgba(168,85,247,0.35); background:rgba(168,85,247,0.12); color:#c084fc; font-size:0.95rem; cursor:pointer; transition:all 0.2s; flex:0 0 36px; flex-shrink:0; padding:0; margin:0; box-sizing:border-box;"><i class="fa-solid fa-expand" id="iconChatFullscreen"></i></button>
-                        <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="chat-header-actions">
+                        <button id="btnChatSettingsModal" type="button" onclick="openChatSettingsModal()" title="Ustawienia czatu i wylogowanie" class="chat-settings-btn" aria-label="Ustawienia czatu"><i class="fa-solid fa-gear"></i></button>
+                        <button id="btnChatFullscreen" type="button" onclick="toggleChatFullscreen()" title="Pełny ekran czatu" class="chat-fullscreen-btn" aria-label="Pełny ekran czatu"><i class="fa-solid fa-expand" id="iconChatFullscreen"></i></button>
+                        <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" aria-label="Zamknij czat" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                 </div>
 
-                <!-- Navigation Tabs: [ ✨ Czat Ogólny (Publiczny) ] [ ✨ Prywatne (1:1) ] -->
+<!-- Navigation Tabs: [ ✨ Czat Ogólny (Publiczny) ] [ ✨ Prywatne (1:1) ] -->
                 <div style="display:flex; background:rgba(255,255,255,0.05); padding:4px; border-radius:14px; gap:6px;">
                     <button type="button" id="tabBtnPublicChat" onclick="switchMessengerMainTab('public')" style="flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0; box-shadow:0 2px 8px rgba(236,72,153,0.3); transition:all 0.2s; touch-action:manipulation;">
                         <i class="fa-solid fa-earth-europe"></i> <span class="tab-label">Czat Ogólny (Publiczny)</span>

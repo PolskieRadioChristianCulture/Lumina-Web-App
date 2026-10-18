@@ -1672,4 +1672,502 @@ div#directMessagesModal .lumina-messenger-modal-card.is-fullscreen,
   -webkit-touch-callout: none !important;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   LUMI MESSENGER — REDESIGN NAGŁÓWKA PREMIUM (Zero-QA)
+   Standard: Ciemny granat #101425, akcent złota #C4A35A, brak podwójnej ramki,
+   ujednolicone przyciski 36px (dotyk 44px), responsywny układ 2 rzędów na mobile.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Kontenery elastyczne dla Container Queries */
+.lumina-messenger-modal-card,
+#directMessagesModal .modal-card,
+#ccGlobalChatOverlay .cc-chat-drawer {
+    container-type: inline-size;
+    container-name: lumiChat;
+}
+
+/* Belka nagłówka — jednolity ciemny granat #101425 */
+#directMessagesModal .chat-header-bar,
+.cc-chat-header,
+html body.lumi-standalone .chat-header-bar,
+html body.lumi-standalone .cc-chat-header {
+    background: #101425 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    padding: 12px 16px 10px 16px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+/* Wiersz główny nagłówka */
+#directMessagesModal .chat-header-bar > div:first-child,
+.cc-chat-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+    box-sizing: border-box !important;
+}
+
+/* Brand / Logo + Tytuł + Subtitle */
+.chat-header-brand,
+#directMessagesModal .chat-header-bar > div:first-child > div:first-child,
+.cc-chat-header-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-width: 0 !important;
+    text-decoration: none !important;
+}
+
+/* Logo LUMI — subtelny akcent złota CC, brak krzykliwego różu/fioletu */
+.chat-header-logo-icon,
+#directMessagesModal .chat-header-bar > div:first-child > div:first-child > div:first-child,
+.cc-chat-header-icon {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    border-radius: 10px !important;
+    background: linear-gradient(135deg, rgba(196, 163, 90, 0.22) 0%, rgba(16, 20, 37, 0.95) 100%) !important;
+    border: 1px solid rgba(196, 163, 90, 0.4) !important;
+    color: #C4A35A !important;
+    font-size: 0.95rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 36px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    transition: transform 0.2s ease, border-color 0.2s ease !important;
+}
+
+/* Tytuł "LUMI Messenger" — elegancka, czytelna hierarchia */
+#directMessagesModal .chat-header-bar h3,
+.cc-chat-header-title {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 1.02rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.01em !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Podpis "Na żywo w Chrystusie ✨" */
+.chat-header-sub,
+.cc-chat-header-sub,
+#directMessagesModal .chat-header-bar > div:first-child > div:first-child > div:last-child > div:last-child {
+    font-size: 0.72rem !important;
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    line-height: 1.2 !important;
+    margin-top: 2px !important;
+    white-space: nowrap !important;
+}
+
+/* Kropka statusu na żywo */
+.chat-header-sub span:first-child,
+.cc-chat-live-dot,
+#directMessagesModal .chat-header-bar > div:first-child > div:first-child > div:last-child > div:last-child span:first-child {
+    width: 6px !important;
+    height: 6px !important;
+    min-width: 6px !important;
+    min-height: 6px !important;
+    border-radius: 50% !important;
+    background: #10b981 !important;
+    display: inline-block !important;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   2. ELIMINACJA PODWÓJNEJ RAMKI RADIO PL & NOWOCZESNY MINI ODTWARZACZ
+   ══════════════════════════════════════════════════════════════════════════ */
+.cc-chat-radio,
+html body.lumi-standalone .cc-chat-radio,
+html body.lumi-standalone .cc-chat-header > .cc-chat-radio {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 3px 4px 3px 8px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(196, 163, 90, 0.3) !important;
+    border-radius: 12px !important;
+    color: #f8fafc !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+    box-sizing: border-box !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    height: 38px !important;
+    max-height: 38px !important;
+}
+
+.cc-chat-radio.is-playing,
+html body.lumi-standalone .cc-chat-radio.is-playing {
+    border-color: rgba(16, 185, 129, 0.6) !important;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Wybór stacji: CAŁKOWICIE USUNIĘTA ZDUBELOWANA RAMKA */
+.cc-chat-radio select,
+html body.lumi-standalone .cc-chat-radio select {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #f1f5f9 !important;
+    font-family: inherit !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    padding: 0 6px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    min-height: 32px !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    text-overflow: ellipsis !important;
+    order: 1 !important;
+}
+
+.cc-chat-radio select option {
+    background: #101425 !important;
+    color: #ffffff !important;
+    padding: 6px 10px !important;
+}
+
+/* Słupki audio */
+.cc-chat-radio-bars {
+    order: 2 !important;
+    display: inline-flex !important;
+    align-items: flex-end !important;
+    gap: 2px !important;
+    height: 12px !important;
+    padding: 0 3px !important;
+}
+
+.cc-chat-radio-bars span {
+    width: 2.5px !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-radius: 1px !important;
+    height: 4px !important;
+    transition: height 0.2s ease !important;
+}
+
+.cc-chat-radio.is-playing .cc-chat-radio-bars span {
+    background: #10b981 !important;
+}
+
+/* Przycisk Słuchaj / Wstrzymaj */
+.cc-chat-radio button,
+html body.lumi-standalone .cc-chat-radio button {
+    order: 3 !important;
+    background: linear-gradient(135deg, #C4A35A 0%, #a88438 100%) !important;
+    color: #0b0f19 !important;
+    border: none !important;
+    border-radius: 9px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    min-width: 44px !important;
+    padding: 0 12px !important;
+    font-family: inherit !important;
+    font-size: 0.76rem !important;
+    font-weight: 750 !important;
+    letter-spacing: 0.02em !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    box-shadow: 0 2px 6px rgba(196, 163, 90, 0.25) !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+}
+
+.cc-chat-radio button:hover {
+    filter: brightness(1.1) !important;
+    box-shadow: 0 3px 8px rgba(196, 163, 90, 0.35) !important;
+}
+
+.cc-chat-radio button:active {
+    transform: scale(0.96) !important;
+}
+
+.cc-chat-radio.is-playing button,
+html body.lumi-standalone .cc-chat-radio.is-playing button {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35) !important;
+}
+
+/* Dostępny fokus klawiatury — brak przypadkowego obrysu przy kliknięciu myszą */
+.cc-chat-radio select:focus:not(:focus-visible),
+.cc-chat-radio button:focus:not(:focus-visible),
+#directMessagesModal .chat-settings-btn:focus:not(:focus-visible),
+#directMessagesModal .chat-fullscreen-btn:focus:not(:focus-visible),
+#directMessagesModal .modal-close-btn:focus:not(:focus-visible),
+.cc-chat-icon-btn:focus:not(:focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.cc-chat-radio select:focus-visible {
+    outline: 2px solid #C4A35A !important;
+    outline-offset: 1px !important;
+    border-radius: 6px !important;
+}
+
+.cc-chat-radio button:focus-visible {
+    outline: 2px solid #C4A35A !important;
+    outline-offset: 2px !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   3. UJEDNOLICENIE PRZYCISKÓW AKCJI (Ustawienia, Fullscreen, Zamknięcie)
+   ══════════════════════════════════════════════════════════════════════════ */
+.chat-header-actions,
+.cc-chat-header-actions {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+}
+
+#directMessagesModal .chat-settings-btn,
+#directMessagesModal button#btnChatSettingsModal,
+#directMessagesModal .chat-fullscreen-btn,
+#directMessagesModal button#btnChatFullscreen,
+#directMessagesModal .modal-close-btn,
+.cc-chat-icon-btn,
+.cc-chat-close-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+    flex: 0 0 36px !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    touch-action: manipulation !important;
+}
+
+/* Ergonomia dotyku min 44x44px (WCAG 2.2 AA) */
+#directMessagesModal .chat-settings-btn::after,
+#directMessagesModal .chat-fullscreen-btn::after,
+#directMessagesModal .modal-close-btn::after,
+.cc-chat-icon-btn::after {
+    content: '' !important;
+    position: absolute !important;
+    top: -4px !important;
+    bottom: -4px !important;
+    left: -4px !important;
+    right: -4px !important;
+}
+
+#directMessagesModal .chat-settings-btn:hover,
+#directMessagesModal button#btnChatSettingsModal:hover,
+#directMessagesModal .chat-fullscreen-btn:hover,
+#directMessagesModal button#btnChatFullscreen:hover,
+.cc-chat-icon-btn:hover {
+    background: rgba(196, 163, 90, 0.15) !important;
+    border-color: rgba(196, 163, 90, 0.4) !important;
+    color: #C4A35A !important;
+}
+
+#directMessagesModal .modal-close-btn:hover,
+.cc-chat-close-btn:hover {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    color: #fca5a5 !important;
+}
+
+#directMessagesModal .chat-settings-btn:focus-visible,
+#directMessagesModal .chat-fullscreen-btn:focus-visible,
+#directMessagesModal .modal-close-btn:focus-visible,
+.cc-chat-icon-btn:focus-visible {
+    outline: 2px solid #C4A35A !important;
+    outline-offset: 2px !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   4. RESPONSYWNOŚĆ: 1 RZĄD NA DESKTOP, 2 UPORZĄDKOWANE RZĘDY NA MOBILE
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Desktop / Szeroki ekran (>= 600px) */
+@media (min-width: 600px) {
+    #directMessagesModal .chat-header-bar > div:first-child,
+    .cc-chat-header {
+        flex-wrap: nowrap !important;
+    }
+    .chat-header-brand,
+    #directMessagesModal .chat-header-bar > div:first-child > div:first-child,
+    .cc-chat-header-brand {
+        order: 1 !important;
+        flex: 0 1 auto !important;
+    }
+    .cc-chat-radio,
+    html body.lumi-standalone .cc-chat-radio,
+    html body.lumi-standalone .cc-chat-header > .cc-chat-radio {
+        order: 2 !important;
+        flex: 0 1 auto !important;
+        width: auto !important;
+        margin: 0 8px 0 auto !important;
+    }
+    .chat-header-actions,
+    .cc-chat-header-actions {
+        order: 3 !important;
+        flex: 0 0 auto !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Mobile / Wąski ekran (< 600px): 2 rzędy */
+@media (max-width: 599px) {
+    #directMessagesModal .chat-header-bar,
+    .cc-chat-header {
+        padding: max(10px, env(safe-area-inset-top)) 12px 10px 12px !important;
+    }
+    #directMessagesModal .chat-header-bar > div:first-child,
+    .cc-chat-header {
+        flex-wrap: wrap !important;
+        gap: 8px 0 !important;
+        margin-bottom: 6px !important;
+    }
+    /* Rząd 1: Brand po lewej, Actions po prawej */
+    .chat-header-brand,
+    #directMessagesModal .chat-header-bar > div:first-child > div:first-child,
+    .cc-chat-header-brand {
+        order: 1 !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+    }
+    .chat-header-actions,
+    .cc-chat-header-actions {
+        order: 2 !important;
+        flex: 0 0 auto !important;
+        margin-left: auto !important;
+    }
+    /* Rząd 2: Radio na pełną szerokość */
+    .cc-chat-radio,
+    html body.lumi-standalone .cc-chat-radio,
+    html body.lumi-standalone .cc-chat-header > .cc-chat-radio {
+        order: 3 !important;
+        flex: 1 0 100% !important;
+        width: 100% !important;
+        margin: 4px 0 0 0 !important;
+        display: flex !important;
+        justify-content: space-between !important;
+    }
+    .cc-chat-radio select,
+    html body.lumi-standalone .cc-chat-radio select {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+    }
+    .cc-chat-radio button,
+    html body.lumi-standalone .cc-chat-radio button {
+        flex: 0 0 auto !important;
+    }
+}
+
+/* Precyzyjne dopasowanie dla kontenerów (Container Queries) */
+@container lumiChat (min-width: 600px) {
+    #directMessagesModal .chat-header-bar > div:first-child,
+    .cc-chat-header {
+        flex-wrap: nowrap !important;
+    }
+    .chat-header-brand,
+    #directMessagesModal .chat-header-bar > div:first-child > div:first-child,
+    .cc-chat-header-brand {
+        order: 1 !important;
+        flex: 0 1 auto !important;
+    }
+    .cc-chat-radio,
+    html body.lumi-standalone .cc-chat-radio,
+    html body.lumi-standalone .cc-chat-header > .cc-chat-radio {
+        order: 2 !important;
+        flex: 0 1 auto !important;
+        width: auto !important;
+        margin: 0 8px 0 auto !important;
+    }
+    .chat-header-actions,
+    .cc-chat-header-actions {
+        order: 3 !important;
+        flex: 0 0 auto !important;
+        margin-left: 0 !important;
+    }
+}
+
+@container lumiChat (max-width: 599px) {
+    #directMessagesModal .chat-header-bar > div:first-child,
+    .cc-chat-header {
+        flex-wrap: wrap !important;
+        gap: 8px 0 !important;
+    }
+    .chat-header-brand,
+    #directMessagesModal .chat-header-bar > div:first-child > div:first-child,
+    .cc-chat-header-brand {
+        order: 1 !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+    }
+    .chat-header-actions,
+    .cc-chat-header-actions {
+        order: 2 !important;
+        flex: 0 0 auto !important;
+        margin-left: auto !important;
+    }
+    .cc-chat-radio,
+    html body.lumi-standalone .cc-chat-radio,
+    html body.lumi-standalone .cc-chat-header > .cc-chat-radio {
+        order: 3 !important;
+        flex: 1 0 100% !important;
+        width: 100% !important;
+        margin: 4px 0 0 0 !important;
+        display: flex !important;
+        justify-content: space-between !important;
+    }
+    .cc-chat-radio select,
+    html body.lumi-standalone .cc-chat-radio select {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+    }
+    .cc-chat-radio button,
+    html body.lumi-standalone .cc-chat-radio button {
+        flex: 0 0 auto !important;
+    }
+}
+
+
 
