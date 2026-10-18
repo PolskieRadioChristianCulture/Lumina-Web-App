@@ -341,8 +341,103 @@ async function loadNames(uids) {
 }
 function nameOf(uid, fallback) { return names[uid] || fallback || 'Bliska osoba'; }
 function avatarOf(uid, fallbackName, small) {
-  const url = avatars[uid] || (uid === 'gm3maVXebCRQ8hLpze63HLRtAkn2' ? '/lumi-kids/assets/dawidek-avatar.webp' : (uid === me?.uid && me?.photoURL ? me.photoURL : null));
+  let url = avatars[uid];
+  if (!url) {
+    if (uid === 'gm3maVXebCRQ8hLpze63HLRtAkn2') {
+      url = '/lumi-kids/assets/dawidek-avatar.webp';
+    } else if (normId(uid) === 'cezaryrgowski' || uid === '1zHaEXihQZgz8nzebR0DyC7wLG93' || (fallbackName && String(fallbackName).toLowerCase().includes('tata'))) {
+      url = '/avatar_cezary.jpg';
+    } else if (uid === me?.uid && me?.photoURL) {
+      url = me.photoURL;
+    }
+  }
   return avatar(names[uid] || fallbackName, small, url);
+}
+
+let audioCtx = null;
+function playChime() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(() => {});
+    }
+    const now = audioCtx.currentTime;
+    const osc1 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(698.46, now);
+    gain1.gain.setValueAtTime(0.001, now);
+    gain1.gain.exponentialRampToValueAtTime(0.2, now + 0.04);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc1.connect(gain1);
+    gain1.connect(audioCtx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.36);
+
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(880.00, now + 0.12);
+    gain2.gain.setValueAtTime(0.001, now + 0.12);
+    gain2.gain.exponentialRampToValueAtTime(0.25, now + 0.16);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+    osc2.connect(gain2);
+    gain2.connect(audioCtx.destination);
+    osc2.start(now + 0.12);
+    osc2.stop(now + 0.72);
+  } catch (e) {}
+}
+
+window.addEventListener('click', () => {
+  try {
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+  } catch (e) {}
+}, { passive: true });
+
+function popupMessageToast(senderUid, senderName, text, onOpen) {
+  playChime();
+  const existing = document.getElementById('lumiKidsMsgPopup');
+  if (existing) existing.remove();
+
+  const preview = String(text || '').slice(0, 70);
+  const toastEl = h('div', {
+    id: 'lumiKidsMsgPopup',
+    class: 'msg-popup-banner pop',
+    role: 'alert',
+    onclick: () => {
+      toastEl.remove();
+      if (typeof onOpen === 'function') onOpen();
+    }
+  },
+    avatarOf(senderUid, senderName, false),
+    h('div', { class: 'msg-popup-body' },
+      h('div', { class: 'msg-popup-title' },
+        h('strong', { text: senderName }),
+        h('span', { class: 'badge', text: 'Nowa wiadomość' })
+      ),
+      h('p', { class: 'msg-popup-text', text: preview || 'Napisał do Ciebie wiadomość 👋' })
+    ),
+    h('button', {
+      type: 'button',
+      class: 'btn primary msg-popup-btn',
+      text: 'Odpisz 💬',
+      onclick: (e) => {
+        e.stopPropagation();
+        toastEl.remove();
+        if (typeof onOpen === 'function') onOpen();
+      }
+    })
+  );
+
+  document.body.appendChild(toastEl);
+  setTimeout(() => {
+    if (toastEl.parentNode) {
+      toastEl.classList.add('fade-out');
+      setTimeout(() => toastEl.remove(), 400);
+    }
+  }, 7000);
 }
 
 // ── Widok dziecka ────────────────────────────────────────────────────────────
@@ -354,7 +449,7 @@ async function screenChild() {
     const cnt = h('span', { class: 'count', hidden: true, 'aria-label': 'nowe wiadomości' });
     list.append(h('li', {}, h('button', { class: 'contact', type: 'button', onclick: () => openChat(cfg.familyChats[c], c, nameOf(c, 'Rodzic'), screenChild) },
       avatarOf(c, 'Rodzic', true), h('span', { class: 'name', text: nameOf(c, 'Rodzic') }), h('span', { class: 'badge', text: '✓ Zatwierdzony' }), cnt)));
-    watchUnread(cfg.familyChats[c], cnt);
+    watchUnread(cfg.familyChats[c], cnt, c);
   }
   render(
     h('section', { class: 'card pop' },
@@ -388,12 +483,21 @@ function helpScreen(contactUid) {
     h('button', { class: 'btn ghost block', type: 'button', text: '← Wróć', onclick: () => screenChild() })));
 }
 
-function watchUnread(chatId, el) {
+function watchUnread(chatId, el, contactUid) {
   let first = true, prev = 0;
   unsubs.push(watchMessages(chatId, (list) => {
-    const n = list.filter(m => m.receiverAuthUid === me.uid && !(m.isRead && m.status === 'read')).length;
+    const unreadMsgs = list.filter(m => m.receiverAuthUid === me.uid && !(m.isRead && m.status === 'read'));
+    const n = unreadMsgs.length;
     if (el) { el.hidden = n === 0; el.textContent = n > 9 ? '9+' : String(n); }
-    if (!first && n > prev && activeConv !== chatId) toast('💬 Nowa wiadomość');
+    if (!first && n > prev && activeConv !== chatId) {
+      const latest = unreadMsgs[unreadMsgs.length - 1];
+      const senderUid = (latest && latest.senderAuthUid) || contactUid;
+      const senderName = nameOf(senderUid, 'Tata');
+      const text = latest ? latest.text : 'Nowa wiadomość';
+      popupMessageToast(senderUid, senderName, text, () => {
+        openChat(chatId, contactUid, senderName, screenChild);
+      });
+    }
     first = false; prev = n;
     document.title = (n > 0 ? '(' + n + ') ' : '') + 'LUMI KIDS';
   }, () => { if (el) el.hidden = true; }));
@@ -530,6 +634,7 @@ async function openChat(chatId, otherUid, title, back) {
     if (atBottom || list.length) listEl.scrollTop = listEl.scrollHeight;
     // Potwierdzenie przeczytania wiadomości, które naprawdę są na ekranie.
     const unread = list.filter(m => m.receiverAuthUid === me.uid && !(m.isRead && m.status === 'read'));
+    if (unread.length) playChime();
     if (unread.length && !marking && document.visibilityState === 'visible') {
       marking = true;
       Promise.all(unread.map(m => updateDoc(m.ref, { isRead: true, status: 'read', readAt: Date.now(), readByName: nameOf(me.uid, ''), readBy: Array.from(new Set([...(Array.isArray(m.readBy) ? m.readBy : []), myK])) }).catch(() => {})))

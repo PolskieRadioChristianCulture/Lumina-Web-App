@@ -26,12 +26,16 @@
                     participants.find(p => p && p !== myUid && p !== myId) ||
                     chat.otherSlug || chat.otherId || 'uzytkownik';
 
-    const name = chat.otherName || 
+    const isDawid = otherId === 'gm3maVXebCRQ8hLpze63HLRtAkn2' || chat.kidsFamily;
+
+    const name = (isDawid ? (chat.otherName || 'Dawid Rogowski · LUMI KIDS') : null) ||
+                 chat.otherName || 
                  chat[`name_${otherId}`] || 
                  (otherId === chat.lastSenderId ? chat.lastSenderName : null) || 
                  (otherId === 'radiocc' ? 'Christian Culture' : (otherId === 'cezaryrgowski' ? 'Cezary Rogowski' : (otherId === 'wiolettarogowska' ? 'Wioletta Rogowska' : otherId)));
 
-    const avatarUrl = chat.otherAvatar || 
+    const avatarUrl = (isDawid ? (chat.otherAvatar || '/lumi-kids/assets/dawidek-avatar.webp') : null) ||
+                      chat.otherAvatar || 
                       chat[`avatar_${otherId}`] || 
                       (otherId === chat.lastSenderId ? chat.lastSenderAvatar : null) || 
                       (otherId === 'radiocc' ? '/logo_radio_cc.jpg' : (otherId === 'cezaryrgowski' ? '/avatar_cezary_official.jpg' : (otherId === 'wiolettarogowska' ? '/avatar_wioletta_official.jpg' : '/lumina_icon.jpg')));
@@ -42,7 +46,7 @@
       avatarUrl: avatarUrl || 'lumina_icon.jpg',
       isOnline: Boolean(chat.isOnline || chat[`isOnline_${otherId}`]),
       // Strażnik 2026-10-18: brak imienia/zdjęcia w danych rozmowy → uzupełniamy z profilu rozmówcy.
-      _needsProfile: !name || name === otherId || /lumina_icon\.jpg$/.test(avatarUrl || '')
+      _needsProfile: !isDawid && (!name || name === otherId || /lumina_icon\.jpg$/.test(avatarUrl || ''))
     };
   }
 

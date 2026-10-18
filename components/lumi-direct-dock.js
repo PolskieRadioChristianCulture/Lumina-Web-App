@@ -40,6 +40,50 @@
       .replace(/'/g, '&#39;');
   }
 
+  let dockAudioCtx = null;
+  function playDockChime() {
+    try {
+      const AudioCtx = typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext);
+      if (!AudioCtx) return;
+      if (!dockAudioCtx) dockAudioCtx = new AudioCtx();
+      if (dockAudioCtx.state === 'suspended') {
+        dockAudioCtx.resume().catch(() => {});
+      }
+      const now = dockAudioCtx.currentTime;
+      const osc1 = dockAudioCtx.createOscillator();
+      const gain1 = dockAudioCtx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(698.46, now);
+      gain1.gain.setValueAtTime(0.001, now);
+      gain1.gain.exponentialRampToValueAtTime(0.18, now + 0.04);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc1.connect(gain1);
+      gain1.connect(dockAudioCtx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.36);
+
+      const osc2 = dockAudioCtx.createOscillator();
+      const gain2 = dockAudioCtx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(880.00, now + 0.12);
+      gain2.gain.setValueAtTime(0.001, now + 0.12);
+      gain2.gain.exponentialRampToValueAtTime(0.22, now + 0.16);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+      osc2.connect(gain2);
+      gain2.connect(dockAudioCtx.destination);
+      osc2.start(now + 0.12);
+      osc2.stop(now + 0.72);
+    } catch (_) {}
+  }
+
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('click', () => {
+      try {
+        if (dockAudioCtx && dockAudioCtx.state === 'suspended') dockAudioCtx.resume().catch(() => {});
+      } catch (_) {}
+    }, { passive: true });
+  }
+
   class LumiDirectDockController {
     constructor(options = {}) {
       this.adapter = options.adapter || (typeof global.createDirectMessagingAdapter === 'function' ? global.createDirectMessagingAdapter() : null);
@@ -151,6 +195,9 @@
             && (!previous.has(c.id) || previous.get(c.id).lastMessageAt !== c.lastMessageAt));
           changed.forEach(c => this.revealed.add(c.id));
           this.hidden = this.hidden.filter(id => !changed.some(c => c.id === id));
+          if (changed.length > 0) {
+            playDockChime();
+          }
           if (this.prefs.autoOpen && document.visibilityState !== 'hidden') {
             const incoming = changed[0];
             if (incoming) this.openConversation(incoming.id);
@@ -160,6 +207,7 @@
         }
         if (!event || !event.message || event.message.senderId === this.userId) return;
         this.revealed.add(event.conversationId);
+        playDockChime();
 
         // Nowa wiadomość przywraca ukryty chat head
         this.hidden = this.hidden.filter(v => v !== event.conversationId);
