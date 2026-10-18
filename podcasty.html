@@ -77,16 +77,21 @@
   }
   </script>
 
-  <!-- Fonts -->
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/assets/podcasts/podcasts.css">
 
   <!-- Universal Omni Search Component (@w) -->
   <script src="/components/cc-omni-search.js" defer></script>
+
+  <!-- Google Identity Services & Universal CC / Lumina Auth -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="/js/cc-global-auth.js?v=20261013_auth_notifsafe1" defer></script>
 
   <!-- Client Controller Script -->
   <script src="/assets/podcasts/podcasts.js" defer></script>
@@ -122,13 +127,8 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
         <span>Radio LIVE</span>
       </a>
-      <a href="/lumina" class="cc-user-pill" title="Społeczność LUMINA">
-        <img src="/images/news/author_cezary.jpg" alt="Dowódca Nazir" class="cc-user-avatar" />
-        <div class="cc-user-info">
-          <span class="cc-user-name">Dowódca Nazir</span>
-          <span class="cc-user-motto">Christian Culture</span>
-        </div>
-      </a>
+      <!-- Universal Christian Culture & LUMINA Auth Widget -->
+      <div class="cc-auth-widget-container" data-cc-auth-mount="true"></div>
     </div>
   </header>
 
