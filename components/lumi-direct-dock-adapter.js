@@ -40,8 +40,50 @@
       id: otherId,
       name: name || 'Rozmówca LUMINA',
       avatarUrl: avatarUrl || 'lumina_icon.jpg',
-      isOnline: Boolean(chat.isOnline || chat[`isOnline_${otherId}`])
+      isOnline: Boolean(chat.isOnline || chat[`isOnline_${otherId}`]),
+      // Strażnik 2026-10-18: brak imienia/zdjęcia w danych rozmowy → uzupełniamy z profilu rozmówcy.
+      _needsProfile: !name || name === otherId || /lumina_icon\.jpg$/.test(avatarUrl || '')
     };
+  }
+
+  // ── Imię i zdjęcie rozmówcy z jego profilu LUMINA (Strażnik, 2026-10-18) ──
+  // Wcześniej tylko 3 konta miały wpisane na stałe zdjęcie; pozostali widzieli logo LUMINA,
+  // a gdy w rozmowie brakowało imienia — techniczny identyfikator (np. u_jan_1234).
+  const PROFILE_CACHE = new Map();
+  async function lookupProfile(id) {
+    if (!id) return null;
+    if (PROFILE_CACHE.has(id)) return PROFILE_CACHE.get(id);
+    const db = global.LuminaDB;
+    const task = (async () => {
+      try {
+        if (!db || typeof db.getProfileFromCloud !== 'function') return null;
+        const pr = await Promise.race([db.getProfileFromCloud(id), new Promise(r => setTimeout(() => r(null), 2500))]);
+        if (!pr) return null;
+        const name = String(pr.name || pr.displayName || '').trim();
+        const avatar = String(pr.avatar || pr.photoURL || '').trim();
+        return { name: name || null, avatarUrl: /^(https:\/\/|\/|[\w.-]+\.(jpe?g|png|webp|gif)$)/i.test(avatar) ? avatar : null };
+      } catch (_) { return null; }
+    })();
+    PROFILE_CACHE.set(id, task);
+    return task;
+  }
+  function displaySafe(list) {
+    (list || []).forEach(c => {
+      const p = c && c.participant;
+      if (p && p._needsProfile && p.name === p.id) p.name = 'Rozmówca LUMINA';
+    });
+    return list;
+  }
+  async function enrichConversations(list) {
+    await Promise.all((list || []).map(async c => {
+      const p = c && c.participant;
+      if (!p || !p._needsProfile) return;
+      const pr = await lookupProfile(p.id);
+      if (pr && pr.name) p.name = pr.name;
+      if (pr && pr.avatarUrl) p.avatarUrl = pr.avatarUrl;
+      p._needsProfile = false;
+    }));
+    return displaySafe(list);
   }
 
   function createDirectMessagingAdapter() {
@@ -103,7 +145,7 @@
               };
             }).filter(Boolean);
 
-            resolve(dockConversations);
+            enrichConversations(dockConversations).then(resolve, () => resolve(displaySafe(dockConversations)));
           };
 
           if (typeof db.subscribeToUserChats === 'function') {
@@ -188,7 +230,12 @@
               lastMessageSenderId: c.lastSenderId || null
             };
           }).filter(Boolean);
-          onMessage({ conversations });
+          onMessage({ conversations: displaySafe(conversations.map(c => Object.assign({}, c, { participant: Object.assign({}, c.participant) }))) });
+          if (conversations.some(c => c.participant && c.participant._needsProfile)) {
+            enrichConversations(conversations).then(list => {
+              if (!stopped && this.getCurrentUserId() === myId) onMessage({ conversations: list });
+            }).catch(() => {});
+          }
         });
         return () => { stopped = true; if (typeof stop === 'function') stop(); };
       },

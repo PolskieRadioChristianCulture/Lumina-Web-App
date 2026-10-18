@@ -379,3 +379,22 @@ test('MojaBiblia: polskie znaczenia słów, uczciwa lista przekładów i wyszuki
   const idx = JSON.parse(await readFile('data/bible/szukaj-ubg.json', 'utf8'));
   assert.ok(idx.r.length > 30000, 'indeks obejmuje całą Biblię');
 });
+
+test('LUMI Direct Dock: imię i zdjęcie rozmówcy z profilu, nigdy techniczny identyfikator', async () => {
+  const a = await readFile('components/lumi-direct-dock-adapter.js', 'utf8');
+  assert.match(a, /async function lookupProfile\(id\)/);
+  assert.match(a, /getProfileFromCloud/);
+  assert.match(a, /p\.name = 'Rozmówca LUMINA'/);
+  assert.match(a, /enrichConversations\(dockConversations\)/);
+});
+
+test('LUMI KIDS /lumi-kids/: tylko makieta — noindex, bez zdjęć dziecka, bez kont, haseł i adresów', async () => {
+  const h = await readFile('lumi-kids/index.html', 'utf8');
+  const j = await readFile('lumi-kids/script.js', 'utf8');
+  assert.match(h, /name="robots" content="noindex,nofollow"/);
+  assert.match(h, /WERSJA DEMONSTRACYJNA/);
+  assert.doesNotMatch(h, /dawidek-photo|lumi-kids-hero/);
+  assert.doesNotMatch(h + j, /@icloud\.com|password|haslo/i);
+  assert.doesNotMatch(j, /fetch\s*\(|localStorage|sessionStorage|WebSocket|indexedDB|firebase/i);
+  assert.match(h, /src="\/lumi-kids\/script\.js\?v=/);
+});

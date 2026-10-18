@@ -1,4 +1,4 @@
-# ═══════════════════════════════════════════════════════════════════════
+﻿# ═══════════════════════════════════════════════════════════════════════
 # WYDANIE STRAŻNIKA — KANAŁY NADAWCZE 2026-10-08 (Claude, Cowork)
 # Prawdziwe dane na antenie: pogoda, Mission Control, wiadomości, intencje
 # • standard ciągłości emisji • kanał główny OBS • cctv24-worship.
@@ -48,6 +48,12 @@ $Files = @(
     'js\lumina-member-home.js', 'lumina-bottom-nav.js',
     'ogloszenia\index.html', 'ogloszenia.html', 'assets\ogloszenia-index-cc20261013.js', 'assets\ogloszenia-index-cc20261013b.js', 'js\cc-ogloszenia-data.js', 'js\cc-ogloszenia-store.js',
     'mojabiblia.html', 'mojabiblia-engine.js', 'data\bible\glosy-pl.json', 'data\bible\szukaj-ubg.json', 'scripts\build-bible-search.mjs', 'tests\mojabiblia-regression.test.mjs',
+    'components\lumi-direct-dock-adapter.js',
+    'lumi-kids\index.html',
+    'lumi-kids\styles.css',
+    'lumi-kids\script.js',
+    'lumi-kids\assets\lumi-kids-logo.svg',
+    'lumi-kids\assets\lumi-kids-koncepcja.jpg',
     'CLAUDE.md',
     'scripts\straznik-wydanie-kanaly-20261008.ps1',
     'WYDANIE-KANALY.bat'
@@ -77,7 +83,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): MojaBiblia — polskie znaczenia słów w interlinii, uczciwa lista przekładów (tylko UBG), wyszukiwarka pełnotekstowa wersetów" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): LUMI okienka prywatne (imię i zdjęcie rozmówcy z profilu) + LUMI KIDS: strona zapowiedzi /lumi-kids/ (makieta, bez zdjęć dziecka)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -97,7 +103,7 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-13 MojaBiblia" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 LUMI dock + LUMI KIDS preview" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"
