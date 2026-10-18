@@ -126,6 +126,13 @@ if (!akademiaHtml.includes('<!-- KARTA DZIEŃ 18 -->')) {
 fs.writeFileSync(akademiaPath, akademiaHtml, 'utf8');
 console.log('✅ Zaktualizowano akademia.html');
 
+// Zsynchronizuj akademia/index.html, kursy.html oraz kursy/index.html
+fs.writeFileSync(path.join(ROOT, 'akademia/index.html'), akademiaHtml, 'utf8');
+fs.writeFileSync(path.join(ROOT, 'kursy.html'), akademiaHtml, 'utf8');
+fs.mkdirSync(path.join(ROOT, 'kursy'), { recursive: true });
+fs.writeFileSync(path.join(ROOT, 'kursy/index.html'), akademiaHtml, 'utf8');
+console.log('✅ Zsynchronizowano akademia/index.html, kursy.html oraz kursy/index.html');
+
 // 2. Pobierz wszystkie karty z akademia.html i zaktualizuj akademia/kurscodzienny.html
 const cardsMatch = akademiaHtml.match(/<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">([\s\S]*?)<\/div>\s*<\/section>\s*<!-- ── WEZWANIE DO DZIAŁANIA/);
 
@@ -170,7 +177,8 @@ ${allCardsHtml}
   kurscodziennyHtml = kurscodziennyHtml.replace(gridRegex, updatedGrid);
 
   fs.writeFileSync(kurscodziennyPath, kurscodziennyHtml, 'utf8');
-  console.log('✅ Zaktualizowano akademia/kurscodzienny.html (pełna lista dni 1–18 + 19)');
+  fs.writeFileSync(path.join(ROOT, 'akademia/kurscodzienny/index.html'), kurscodziennyHtml, 'utf8');
+  console.log('✅ Zaktualizowano akademia/kurscodzienny.html oraz akademia/kurscodzienny/index.html');
 
   // Zsynchronizuj z kursy/kurscodzienny.html oraz kursy/kurscodzienny/index.html
   fs.mkdirSync(path.dirname(kursyHtml), { recursive: true });
