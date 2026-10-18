@@ -130,6 +130,7 @@
     }
 
     destroy() {
+      if (this._disposeDrag) this._disposeDrag();
       if (typeof this.unsubIncoming === 'function') {
         try { this.unsubIncoming(); } catch (_) {}
       }
@@ -348,6 +349,7 @@
     }
 
     render() {
+      if (this._dragging) { this._renderAfterDrag = true; return; }
       try {
         const lingeringBanner = document.getElementById('lumina-chat-notification-banner');
         if (lingeringBanner) lingeringBanner.remove();
@@ -365,6 +367,7 @@
         this.containerEl.style.setProperty('--ldd-right', `${this.rightOffsetPx}px`);
         this.containerEl.style.setProperty('--ldd-bottom', `${this.bottomOffsetPx}px`);
         document.body.appendChild(this.containerEl);
+        this.enableDrag();
       }
 
       this.containerEl.style.display = '';
@@ -453,6 +456,8 @@
             </label>
             <p>Możesz wyłączyć automatyczne otwieranie. Skrót z awatarem pozostanie dostępny.</p>
             <button type="button" id="lddBtnRestoreHidden">Przywróć zamknięte skróty</button>
+            <p>Bąbelki z awatarami możesz przeciągnąć palcem lub myszą w dowolne miejsce ekranu.</p>
+            <button type="button" id="lddBtnResetPosition">Przywróć bąbelki na domyślne miejsce</button>
           </div>
         `;
       }
@@ -470,6 +475,7 @@
         };
       });
       this.attachEvents();
+      this.applyPosition();
 
       // Automatyczne przewinięcie do dołu w oknie rozmowy
       if (activeConvo) {
@@ -480,8 +486,149 @@
       }
     }
 
+    // ── Przesuwanie bąbelków (Strażnik 2026-10-18) ─────────────────────────────
+    // Bąbelki z awatarami można przeciągnąć palcem lub myszą w dowolne miejsce ekranu.
+    // Położenie zapamiętuje ta przeglądarka; okno rozmowy otwiera się w stronę środka ekranu.
+    loadPosition() {
+      try {
+        const p = JSON.parse(localStorage.getItem('lumi_dock_position_v1') || 'null');
+        if (p && (p.side === 'l' || p.side === 'r') && (p.vside === 't' || p.vside === 'b') && Number.isFinite(p.h) && Number.isFinite(p.v)) return p;
+      } catch (_) {}
+      return null;
+    }
+
+    savePosition(p) {
+      try {
+        if (p) localStorage.setItem('lumi_dock_position_v1', JSON.stringify(p));
+        else localStorage.removeItem('lumi_dock_position_v1');
+      } catch (_) {}
+    }
+
+    applyPosition() {
+      const el = this.containerEl;
+      if (!el || this._dragging || !el.style || !el.classList || typeof el.classList.toggle !== 'function') return;
+      const p = this.loadPosition();
+      el.style.transform = '';
+      el.classList.toggle('ldd-left', !!p && p.side === 'l');
+      el.classList.toggle('ldd-top', !!p && p.vside === 't');
+      el.classList.toggle('ldd-moved', !!p);
+      if (!p) {
+        el.style.left = el.style.top = el.style.right = el.style.bottom = '';
+        return;
+      }
+      el.style.left = p.side === 'l' ? `${Math.max(0, p.h)}px` : 'auto';
+      el.style.right = p.side === 'r' ? `${Math.max(0, p.h)}px` : 'auto';
+      el.style.top = p.vside === 't' ? `${Math.max(0, p.v)}px` : 'auto';
+      el.style.bottom = p.vside === 'b' ? `${Math.max(0, p.v)}px` : 'auto';
+      // Zawsze w całości na ekranie (obrót telefonu, zmiana rozmiaru okna, otwarte okno rozmowy).
+      try {
+        const r = el.getBoundingClientRect();
+        const vw = window.innerWidth || document.documentElement.clientWidth;
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const m = 8;
+        let dx = 0, dy = 0;
+        if (r.width && r.right > vw - m) dx = (vw - m) - r.right;
+        if (r.width && r.left + dx < m) dx = m - r.left;
+        if (r.height && r.bottom > vh - m) dy = (vh - m) - r.bottom;
+        if (r.height && r.top + dy < m) dy = m - r.top;
+        if (dx || dy) el.style.transform = `translate(${Math.round(dx)}px, ${Math.round(dy)}px)`;
+      } catch (_) {}
+    }
+
+    enableDrag() {
+      const el = this.containerEl;
+      if (!el || el._lddDrag || typeof el.addEventListener !== 'function') return;
+      el._lddDrag = true;
+      let start = null;
+      const release = (gesture) => {
+        try { gesture.target.releasePointerCapture(gesture.id); } catch (_) {}
+      };
+      const down = (e) => {
+        if (start || e.isPrimary === false || (e.button !== undefined && e.button !== 0)) return;
+        const head = e.target?.closest?.('.ldd-head');
+        if (!head) return;
+        const r = el.getBoundingClientRect();
+        start = { x:e.clientX, y:e.clientY, left:r.left, top:r.top,
+          id:e.pointerId, target:head, moved:false };
+        // Capture before the first move, so a fast gesture cannot lose the bubble.
+        try { head.setPointerCapture(e.pointerId); } catch (_) {}
+      };
+      const move = (e) => {
+        if (!start || e.pointerId !== start.id) return;
+        const dx=e.clientX-start.x, dy=e.clientY-start.y;
+        if (!start.moved) {
+          if (Math.hypot(dx,dy) < 8) return;
+          start.moved=true;
+          this._dragging=true;
+          el.classList.add('ldd-dragging');
+          el.style.transform='';
+          el.style.right=el.style.bottom='auto';
+        }
+        e.preventDefault();
+        const r=el.getBoundingClientRect();
+        const maxX=Math.max(8,global.innerWidth-r.width-8);
+        const maxY=Math.max(8,global.innerHeight-r.height-8);
+        el.style.left=Math.round(Math.min(maxX,Math.max(8,start.left+dx)))+'px';
+        el.style.top=Math.round(Math.min(maxY,Math.max(8,start.top+dy)))+'px';
+      };
+      const finish = (e) => {
+        if (!start || (e && e.pointerId !== start.id)) return;
+        const gesture=start; start=null;
+        release(gesture);
+        if (!gesture.moved) return;
+        this._dragging=false;
+        el.classList.remove('ldd-dragging');
+        this._suppressClickUntil=Date.now()+400;
+        if (e?.type !== 'pointercancel') {
+          const r=el.getBoundingClientRect();
+          const d=el.querySelector('.ldd-dock')?.getBoundingClientRect() || r;
+          const vw=global.innerWidth, vh=global.innerHeight;
+          const side=d.left+d.width/2 < vw/2 ? 'l' : 'r';
+          const vside=d.top+d.height/2 < vh/2 ? 't' : 'b';
+          this.savePosition({side,vside,h:Math.max(8,Math.round(side==='l'?r.left:vw-r.right)),
+            v:Math.max(8,Math.round(vside==='t'?d.top:vh-d.bottom))});
+        }
+        this.applyPosition();
+        if (this._renderAfterDrag) { this._renderAfterDrag=false; this.render(); }
+      };
+      const click = (e) => {
+        if (this._suppressClickUntil && Date.now()<this._suppressClickUntil) {
+          e.preventDefault(); e.stopPropagation(); this._suppressClickUntil=0;
+        }
+      };
+      const imageDrag = (e) => { if (e.target?.closest?.('.ldd-head')) e.preventDefault(); };
+      const resize = () => { if (start) finish({pointerId:start.id,type:'pointercancel'}); this.applyPosition(); };
+      el.addEventListener('pointerdown',down);
+      el.addEventListener('click',click,true);
+      el.addEventListener('dragstart',imageDrag);
+      global.addEventListener('pointermove',move,{passive:false});
+      global.addEventListener('pointerup',finish);
+      global.addEventListener('pointercancel',finish);
+      global.addEventListener('resize',resize,{passive:true});
+      this._disposeDrag = () => {
+        if (start) release(start);
+        start=null; this._dragging=false;
+        el.removeEventListener('pointerdown',down);
+        el.removeEventListener('click',click,true);
+        el.removeEventListener('dragstart',imageDrag);
+        global.removeEventListener('pointermove',move);
+        global.removeEventListener('pointerup',finish);
+        global.removeEventListener('pointercancel',finish);
+        global.removeEventListener('resize',resize);
+        el._lddDrag=false;
+      };
+    }
+
     attachEvents() {
       if (!this.containerEl) return;
+
+      const resetPosBtn = this.containerEl.querySelector('#lddBtnResetPosition');
+      if (resetPosBtn) {
+        resetPosBtn.onclick = () => {
+          this.savePosition(null);
+          this.render();
+        };
+      }
 
       // Obsługa przycisków nagłówka
       const minBtn = this.containerEl.querySelector('.ldd-btn-min');

@@ -557,19 +557,19 @@
       const dockCss = document.createElement('link');
       dockCss.id = 'lumiDirectDockCss';
       dockCss.rel = 'stylesheet';
-      dockCss.href = '/css/lumi-direct-dock.css?v=20261018_directfix4';
+      dockCss.href = '/css/lumi-direct-dock.css?v=20261018_drag2';
       document.head.appendChild(dockCss);
     }
     if (!window.LumiDirectDockController && !document.getElementById('lumiDirectDockAdapterScript') && !document.querySelector('script[src*="lumi-direct-dock-adapter"]')) {
       const adapterScript = document.createElement('script');
       adapterScript.id = 'lumiDirectDockAdapterScript';
-      adapterScript.src = '/components/lumi-direct-dock-adapter.js?v=20261018_directfix4';
+      adapterScript.src = '/components/lumi-direct-dock-adapter.js?v=20261018_drag2';
       // Dynamically inserted scripts are async: defer does not order them.
       adapterScript.onload = () => {
         if (document.getElementById('lumiDirectDockScript')) return;
         const dockScript = document.createElement('script');
         dockScript.id = 'lumiDirectDockScript';
-        dockScript.src = '/components/lumi-direct-dock.js?v=20261018_directfix4';
+        dockScript.src = '/components/lumi-direct-dock.js?v=20261018_drag2';
         document.head.appendChild(dockScript);
       };
       document.head.appendChild(adapterScript);

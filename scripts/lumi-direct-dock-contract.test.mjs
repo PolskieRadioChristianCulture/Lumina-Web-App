@@ -17,7 +17,7 @@ test('release replaces combined weekly JS cache with one authoritative messaging
     assert.equal(result.headers.get('Cache-Control'),'no-cache, no-store, must-revalidate');
     assert.equal(await result.text(),'script');
   }
-  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_directfix4/);
+  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_drag2/);
 });
 function adapter(db) {
   const scope = { LuminaDB: db, setTimeout: () => 0, clearTimeout() {} };
@@ -144,6 +144,27 @@ function dockFixture({autoOpen, withAdapter = true} = {}) {
   return {w,c,emit:rooms=>incoming({conversations:rooms}),room};
 }
 
+test('avatar bubbles can be dragged anywhere; the drag does not open a chat and the place is remembered', async()=>{
+  const {w,c,emit,room}=dockFixture({autoOpen:false});
+  emit([]); emit([room]);
+  const head=w.document.querySelector('.ldd-head');
+  const ev=(type,x,y)=>new w.PointerEvent(type,{bubbles:true,cancelable:true,pointerId:7,isPrimary:true,button:0,clientX:x,clientY:y});
+  head.dispatchEvent(ev('pointerdown',300,500));
+  head.dispatchEvent(ev('pointermove',120,140));
+  assert.ok(c.containerEl.classList.contains('ldd-dragging'));
+  head.dispatchEvent(ev('pointerup',120,140));
+  const saved=JSON.parse(w.localStorage.getItem('lumi_dock_position_v1'));
+  assert.ok(saved && ['l','r'].includes(saved.side) && ['t','b'].includes(saved.vside));
+  head.click();
+  assert.equal(c.activeId,null,'click that ends a drag must not open the conversation');
+  c._suppressClickUntil=0;
+  w.document.querySelector('.ldd-head').click();
+  assert.equal(c.activeId,room.id);
+  c.savePosition(null); c.render();
+  assert.equal(w.localStorage.getItem('lumi_dock_position_v1'),null);
+  assert.equal(c.containerEl.style.left,'');
+});
+
 test('dock renders avatar shortcut, opens on click and recovers a broken image', async()=>{
   const {w,c,emit,room}=dockFixture({autoOpen:false});
   emit([]); emit([room]);
@@ -266,5 +287,36 @@ test('composer has a plain placeholder without resize artifacts; mess shares the
   for(const path of ['lumina.html','lumina-profile.html','lumina-tablica.html','lumina-tablica-light.html','lumina.cezaryrgowski.html','lumina.wiolettarogowska.html']) {
     assert.match(fs.readFileSync(path,'utf8'),/lumina-chat-premium\.css\?v=20261018_headerfix2/);
   }
+  c.destroy();
+});
+
+test('drag captures immediately, clamps to viewport, survives render and cleans up',()=>{
+  const {w,c,emit,room}=dockFixture({autoOpen:false});emit([]);emit([room]);
+  let captured=null,released=null;
+  const head=w.document.querySelector('.ldd-head');
+  head.setPointerCapture=id=>captured=id;head.releasePointerCapture=id=>released=id;
+  const rect=()=>{const left=parseFloat(c.containerEl.style.left)||100,top=parseFloat(c.containerEl.style.top)||100;return{left,top,right:left+60,bottom:top+60,width:60,height:60};};
+  c.containerEl.getBoundingClientRect=rect;c.containerEl.querySelector('.ldd-dock').getBoundingClientRect=rect;
+  const ev=(type,x,y,id=7)=>new w.PointerEvent(type,{bubbles:true,cancelable:true,pointerId:id,isPrimary:true,button:0,pointerType:'touch',clientX:x,clientY:y});
+  head.dispatchEvent(ev('pointerdown',110,110));assert.equal(captured,7);
+  w.dispatchEvent(ev('pointermove',-300,-300));
+  assert.equal(c.containerEl.style.left,'8px');assert.equal(c.containerEl.style.top,'8px');
+  c.render();assert.equal(w.document.querySelector('.ldd-head'),head,'snapshot render waits for gesture end');
+  w.dispatchEvent(ev('pointerup',-300,-300));assert.equal(released,7);assert.equal(c._dragging,false);
+  assert.equal(c.loadPosition().h,8);assert.equal(c.loadPosition().v,8);
+  const saved=w.localStorage.getItem('lumi_dock_position_v1');
+  c.destroy();w.dispatchEvent(ev('pointermove',800,500));
+  assert.equal(w.localStorage.getItem('lumi_dock_position_v1'),saved);
+});
+
+test('tap still opens, cancellation does not persist a drag, malformed saved coordinates are ignored',()=>{
+  const {w,c,emit,room}=dockFixture({autoOpen:false});emit([]);emit([room]);
+  const head=w.document.querySelector('.ldd-head');
+  const ev=(type,x,y)=>new w.PointerEvent(type,{bubbles:true,cancelable:true,pointerId:1,isPrimary:true,button:0,clientX:x,clientY:y});
+  head.dispatchEvent(ev('pointerdown',30,30));w.dispatchEvent(ev('pointermove',32,31));w.dispatchEvent(ev('pointerup',32,31));head.click();
+  assert.equal(c.activeId,room.id);
+  const h=w.document.querySelector('.ldd-head');h.dispatchEvent(ev('pointerdown',30,30));w.dispatchEvent(ev('pointermove',120,120));
+  w.dispatchEvent(ev('pointercancel',120,120));assert.equal(c._dragging,false);assert.equal(c.loadPosition(),null);
+  w.localStorage.setItem('lumi_dock_position_v1',JSON.stringify({side:'l',vside:'t',h:'12',v:12}));assert.equal(c.loadPosition(),null);
   c.destroy();
 });
