@@ -30,7 +30,7 @@ const CONFIG = {
 };
 // Opiekunowie = konta Master Admin (ta sama lista co w regułach). Reguły i tak sprawdzają to po stronie serwera.
 const GUARDIAN_EMAILS = ['nazirczarkes@gmail.com', 'radiochristianculture@gmail.com', 'czarekrogowski3@gmail.com',
-  'polskieradiocc@gmail.com', 'studiodees7@gmail.com', 'polskiercctv@gmail.com'];
+  'polskieradiocc@gmail.com', 'studiodees7@gmail.com', 'polskiercctv@gmail.com', 'wioletta1240@gmail.com'];
 const EMOJI = ['❤️', '👍', '😊', '😂', '🙏', '👏', '😮', '😢'];
 const APP_URL = location.origin + '/lumi-kids/app/';
 
@@ -347,6 +347,8 @@ function avatarOf(uid, fallbackName, small) {
       url = '/lumi-kids/assets/dawidek-avatar.webp';
     } else if (normId(uid) === 'cezaryrgowski' || uid === '1zHaEXihQZgz8nzebR0DyC7wLG93' || (fallbackName && String(fallbackName).toLowerCase().includes('tata'))) {
       url = '/avatar_cezary.jpg';
+    } else if (normId(uid) === 'wiolettarogowska' || uid === 'lr7E9IsM6VaABLvMcrjAN5Lvn0j2' || (fallbackName && String(fallbackName).toLowerCase().includes('mama'))) {
+      url = '/avatar_wioletta_official.jpg';
     } else if (uid === me?.uid && me?.photoURL) {
       url = me.photoURL;
     }
@@ -492,7 +494,8 @@ function watchUnread(chatId, el, contactUid) {
     if (!first && n > prev && activeConv !== chatId) {
       const latest = unreadMsgs[unreadMsgs.length - 1];
       const senderUid = (latest && latest.senderAuthUid) || contactUid;
-      const senderName = nameOf(senderUid, 'Tata');
+      const defaultName = (senderUid === 'lr7E9IsM6VaABLvMcrjAN5Lvn0j2' || normId(senderUid) === 'wiolettarogowska') ? 'Mama' : 'Tata';
+      const senderName = nameOf(senderUid, defaultName);
       const text = latest ? latest.text : 'Nowa wiadomość';
       popupMessageToast(senderUid, senderName, text, () => {
         openChat(chatId, contactUid, senderName, screenChild);
@@ -738,7 +741,7 @@ async function screenParent() {
         emoji: '⛵',
         updatedAt: serverTimestamp()
       });
-      const contacts = Array.from(new Set([...(c.contacts || []), me.uid]));
+      const contacts = Array.from(new Set([...(c.contacts || []), me.uid, 'lr7E9IsM6VaABLvMcrjAN5Lvn0j2']));
       await save({ childUid: DAWID_UID, enabled: true, revoked: false, contacts, familyChats: {} });
       await ensureChats(DAWID_UID, contacts);
       toast('✅ Profil Dawidka aktywowany! Rozmowa rodzinna jest gotowa.');
