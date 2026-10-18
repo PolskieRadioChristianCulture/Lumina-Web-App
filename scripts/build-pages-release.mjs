@@ -65,7 +65,7 @@ const resolvedOutput = path.resolve(OUTPUT);
 if (path.dirname(resolvedOutput) !== path.resolve(ROOT) || path.basename(resolvedOutput) !== '.pages-release') {
   throw new Error('Nieprawidłowy katalog wydania.');
 }
-fs.rmSync(resolvedOutput, { recursive: true, force: true });
+fs.rmSync(resolvedOutput, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 });
 fs.mkdirSync(resolvedOutput, { recursive: true });
 
 const tracked = execFileSync('git', ['ls-files', '-z'], {
@@ -117,8 +117,30 @@ function scan(directory) {
       continue;
     }
     if (!textExtensions.has(path.extname(entry.name).toLowerCase())) continue;
-    if (fs.statSync(absolute).size > 5 * 1024 * 1024) continue;
-    const content = fs.readFileSync(absolute, 'utf8');
+    let stat;
+    for (let r = 0; r < 5; r++) {
+      try {
+        stat = fs.statSync(absolute);
+        break;
+      } catch (err) {
+        if (r === 4) break;
+        const wait = Date.now() + 50;
+        while (Date.now() < wait) {}
+      }
+    }
+    if (!stat || stat.size > 5 * 1024 * 1024) continue;
+    let content;
+    for (let r = 0; r < 5; r++) {
+      try {
+        content = fs.readFileSync(absolute, 'utf8');
+        break;
+      } catch (err) {
+        if (r === 4) break;
+        const wait = Date.now() + 50;
+        while (Date.now() < wait) {}
+      }
+    }
+    if (!content) continue;
     const matched = SECRET_PATTERNS.find((pattern) => pattern.test(content));
     if (matched) throw new Error(`Wydanie przerwane: wykryto sekret w ${path.relative(resolvedOutput, absolute)}.`);
   }
