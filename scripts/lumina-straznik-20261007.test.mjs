@@ -475,7 +475,50 @@ test('LUMI KIDS: powiadomienie na urządzeniu dziecka otwiera tylko /lumi-kids/a
     return opened[0];
   };
   assert.equal(await run(true), 'https://polskieradio.cc/lumi-kids/app/');
-  assert.equal(await run(false), 'https://polskieradio.cc/lumina?openChat=cezaryrgowski&messageId=m1');
+  assert.equal(await run(false), 'https://polskieradio.cc/mess?openChat=cezaryrgowski&messageId=m1');
+});
+
+test('Powiadomienie czatu: Odpowiedz/Otwórz Czat prowadzą do pokoju w /mess, karta tablicy nie jest przejmowana', async () => {
+  const vm = await import('node:vm');
+  const src = await readFile('firebase-messaging-sw.js', 'utf8');
+  const run = async (action, windows) => {
+    const listeners = {}, opened = [], navigated = [], posted = [];
+    const wins = windows.map((url) => ({ url, focus: async () => {}, navigate: async (u) => navigated.push(u), postMessage: (m) => posted.push([url, m]) }));
+    vm.runInNewContext(src, {
+      self: { location: { origin: 'https://polskieradio.cc' }, addEventListener: (t, f) => { listeners[t] = f; }, registration: { showNotification: async () => {} } },
+      URL, console: { log() {}, warn() {} }, importScripts: () => { throw Error('offline'); },
+      caches: { open: async () => ({ match: async () => undefined }) },
+      clients: { matchAll: async () => wins, openWindow: async (u) => opened.push(u) },
+      setTimeout,
+    });
+    let pending;
+    listeners.notificationclick({ action, notification: { data: { FCM_MSG: { data: { type: 'direct_message', senderId: 'syn1', senderName: 'Syn', messageId: 'm9' } } }, close() {} }, stopImmediatePropagation() {}, waitUntil: (p) => { pending = p; } });
+    await pending;
+    return { opened, navigated, posted };
+  };
+  const board = await run('open', ['https://polskieradio.cc/lumina-tablica.html']);
+  assert.deepEqual(board.navigated, []);
+  assert.equal(board.opened[0], 'https://polskieradio.cc/mess?openChat=syn1&messageId=m9&name=Syn');
+  const reply = await run('reply', ['https://polskieradio.cc/lumina-tablica.html']);
+  assert.equal(reply.opened[0], 'https://polskieradio.cc/mess?openChat=syn1&messageId=m9&name=Syn&reply=1');
+  const mess = await run('open', ['https://polskieradio.cc/lumina-tablica.html', 'https://polskieradio.cc/mess']);
+  assert.deepEqual(mess.opened, []);
+  assert.equal(mess.posted.length, 1);
+  assert.equal(mess.posted[0][0], 'https://polskieradio.cc/mess');
+  assert.equal(mess.posted[0][1].chatData.senderId, 'syn1');
+});
+
+test('Czat: rozmowa rodzinna LUMI KIDS trafia na listę LUMI Messengera bez danych dziecka w kodzie', async () => {
+  const html = await readFile('lumina.html', 'utf8');
+  const db = await readFile('lumina-db.js', 'utf8');
+  assert.match(db, /window\._luminaFamilyChats = family/);
+  assert.match(db, /lumina:family-chats/);
+  assert.match(html, /addEventListener\('lumina:family-chats'/);
+  assert.match(html, /hookUserChats\._tries/);
+  assert.doesNotMatch(html, /Dawid Rogowski|dawidek-avatar/);
+  assert.doesNotMatch(db, /addDoc\(collection\(db, 'lumina_notifications'\)/);
+  assert.doesNotMatch(db, /addDoc\(collection\(db, `lumina_chats\/\$\{normalizedChatId\}\/messages`\)/);
+  assert.match(db, /export function markChatRoomRead\(/);
 });
 
 test('LUMI KIDS: zdjęcie dziecka tylko prywatnie (miniatura w kids_profiles), PWA i powiadomienia z tokenem konta', async () => {

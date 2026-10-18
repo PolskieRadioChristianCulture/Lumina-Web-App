@@ -152,7 +152,8 @@ test('ordinary Web Push continues to render without Firebase envelope', async ()
 });
 
 for (const [name, data, expected] of [
-    ['Firebase direct-message click', { FCM_MSG: { data: { type: 'direct_message', senderId: 'anna', messageId: 'm1' } } }, '/lumina?openChat=anna&messageId=m1'],
+    ['Firebase direct-message click', { FCM_MSG: { data: { type: 'direct_message', senderId: 'anna', messageId: 'm1' } } }, '/mess?openChat=anna&messageId=m1'],
+    ['direct-message click carries sender name to the room', { type: 'direct_message', senderId: 'kid1', senderName: 'Syn', messageId: 'm2' }, '/mess?openChat=kid1&messageId=m2&name=Syn'],
     ['public chat with sender', { type: 'public_chat', senderId: 'anna' }, '/lumina?openPublicChat=1'],
     ['foreign redirect rejected', { url: 'https://example.org/' }, '/lumina'],
     ['daily course opens its canonical lesson', { type:'daily_course_lesson', url:'https://polskieradio.cc/akademia/kurscodzienny/dzien-08' }, '/akademia/kurscodzienny/dzien-08'],
@@ -166,6 +167,14 @@ for (const [name, data, expected] of [
         assert.equal(w.opened[0], 'https://polskieradio.cc' + expected);
     });
 }
+
+test('reply action opens the exact room with the composer, not the board', async () => {
+    const w = worker();
+    let pending;
+    w.listeners.notificationclick({ action: 'reply', notification: { data: { type: 'direct_message', senderId: 'kid1', messageId: 'm3' }, close() {} }, stopImmediatePropagation() {}, waitUntil: p => { pending = p; } });
+    await pending;
+    assert.equal(w.opened[0], 'https://polskieradio.cc/mess?openChat=kid1&messageId=m3&reply=1');
+});
 
 async function register({ failSave = false, signedIn = true } = {}) {
     const source = fs.readFileSync(path.join(root, 'lumina-db.js'), 'utf8');

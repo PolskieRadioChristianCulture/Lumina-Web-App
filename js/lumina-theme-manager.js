@@ -9,6 +9,9 @@
 
     function getPreferredTheme() {
         try {
+            // Strony generowane w wariancie jasnym (np. lumina-tablica-light.html) blokują motyw.
+            var lock = document.documentElement && document.documentElement.getAttribute('data-lumina-theme-lock');
+            if (lock === 'light' || lock === 'dark') return lock;
             if (typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string' && window.location.pathname.includes('/mess')) {
                 return 'dark';
             }

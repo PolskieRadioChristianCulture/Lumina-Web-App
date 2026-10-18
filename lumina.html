@@ -13225,8 +13225,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                       partsList.find(p => p && p !== myUser?.uid);
                     if (!otherSlug) return;
                     const isFamily = Boolean(chat.kidsFamily);
-                    const name = chat.otherName || chat['name_' + otherSlug] || (isFamily ? 'Dawid Rogowski · LUMI KIDS' : otherSlug);
-                    const avatar = chat.otherAvatar || chat['avatar_' + otherSlug] || (isFamily ? '/lumi-kids/assets/dawidek-avatar.webp' : 'lumina_icon.jpg');
+                    const name = chat.otherName || chat['name_' + otherSlug] || (isFamily ? 'Rozmowa rodzinna · LUMI KIDS' : otherSlug);
+                    const avatar = chat.otherAvatar || chat['avatar_' + otherSlug] || (isFamily ? '/lumi-kids/assets/lumi-kids-logo.svg' : 'lumina_icon.jpg');
                     const badge = isFamily ? '⭐ LUMI KIDS' : '✨ Rozmowa';
                     const job = chat.lastMessageText || (isFamily ? 'Rozmowa rodzinna LUMI KIDS' : 'Rozmowa prywatna LUMINA ✨');
                     const isMission = false;
@@ -13256,7 +13256,13 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             function hookUserChats() {
                 if (_userChatsUnsub) { try { _userChatsUnsub(); } catch(e){} _userChatsUnsub = null; }
                 const user = window.LuminaDB?.getCurrentUser();
-                if (!user || user.isAnonymous || !window.LuminaDB?.subscribeToUserChats) return;
+                if (!user || user.isAnonymous || !window.LuminaDB?.subscribeToUserChats) {
+                    // Sesja Firebase odtwarza się asynchronicznie — ponów, zamiast zostawić listę bez rozmów rodzinnych.
+                    hookUserChats._tries = (hookUserChats._tries || 0) + 1;
+                    if (hookUserChats._tries < 40) setTimeout(hookUserChats, 1500);
+                    return;
+                }
+                hookUserChats._tries = 0;
                 const myId = window.LuminaDB.normalizeChatUserId(user.uid || user.slug);
                 _userChatsUnsub = window.LuminaDB.subscribeToUserChats(myId, (chats) => {
                     window._luminaUserChatsCache = chats;
@@ -13267,6 +13273,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             }
             setTimeout(hookUserChats, 1200);
             window.addEventListener('lumina:auth-changed', hookUserChats);
+            window.addEventListener('lumina:family-chats', () => {
+                if (typeof renderDmUsersAndConversations === 'function') renderDmUsersAndConversations();
+            });
         }
 
         function filterCommunityUsersForDm(query) {
@@ -13305,7 +13314,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const listEl = document.getElementById('dmConversationsList');
             if (!listEl) return;
 
-            const users = await fetchCommunityUsersDirectory();
+            const baseUsers = await fetchCommunityUsersDirectory();
+            // Rodzinne rozmowy LUMI KIDS: dziecko nie ma publicznego profilu, więc dopisujemy je z rozmów rodzica.
+            const familyRooms = Array.isArray(window._luminaFamilyChats) ? window._luminaFamilyChats : [];
+            const baseIds = new Set((baseUsers || []).map(u => String(u.uid || u.slug || '').toLowerCase()));
+            const users = familyRooms.filter(f => f.uid && !baseIds.has(String(f.uid).toLowerCase())).map(f => ({
+                slug: f.uid, uid: f.uid, name: f.name, avatar: f.avatar,
+                badge: '⭐ LUMI KIDS · rodzina', job: 'Prywatna rozmowa rodzinna', isMission: false, isFamily: true
+            })).concat(baseUsers || []);
             const myUser = window.LuminaDB?.getCurrentUser();
             const myProfile = window.LuminaDB?.getCurrentProfile();
             const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
@@ -13411,6 +13427,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const avatarKey = (!isDefaultAvatar) ? `avatar_${avatarRaw}` : null;
 
                 // Sprawdź czy już widzieliśmy ten profil (rodzina nigdy nie jest deduplikowana)
+                if (u.isFamily && uidKey && seenDms.has(uidKey)) return false;
                 if (!u.isFamily) {
                     if (uidKey    && seenDms.has(uidKey))    return false;
                     if (slugKey   && seenDms.has(slugKey))   return false;
@@ -13662,6 +13679,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             // Clear unread notifications/badges for this specific room
             try {
                 localStorage.setItem(`lumina_chat_read_${chatId}`, String(Date.now()));
+                try { window.LuminaDB?.markChatRoomRead?.(chatId); } catch (_) {}
                 const normRoomKey = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : chatId;
                 localStorage.setItem(`lumina_chat_read_${normRoomKey}`, String(Date.now()));
 
@@ -14971,16 +14989,22 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     (function(){
         window._targetChatMessageId = null;
 
-        function openChatByTargetUser(targetUser, messageId) {
+        function openChatByTargetUser(targetUser, messageId, hint) {
             if (!targetUser) return;
             const normUser = String(targetUser).trim();
             if (messageId) window._targetChatMessageId = messageId;
+            hint = hint || {};
 
             let attempts = 0;
             const tryOpen = () => {
                 attempts++;
-                let name = (normUser === 'cezaryrgowski') ? 'Cezary Rogowski' : ((normUser === 'wiolettarogowska') ? 'Wioletta Rogowska' : 'Rozmówca');
-                let avatar = (normUser === 'cezaryrgowski') ? 'avatar_cezary_official.jpg' : ((normUser === 'wiolettarogowska') ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg');
+                // Czat wymaga odtworzonej sesji — czekamy na nią (do ~15 s), zamiast otwierać pusty ekran.
+                const sessionUser = window.LuminaDB?.getCurrentUser?.();
+                if ((!sessionUser || sessionUser.isAnonymous) && attempts < 100) { setTimeout(tryOpen, 150); return; }
+                let name = (normUser === 'cezaryrgowski') ? 'Cezary Rogowski' : ((normUser === 'wiolettarogowska') ? 'Wioletta Rogowska' : (hint.name || 'Rozmówca'));
+                let avatar = (normUser === 'cezaryrgowski') ? 'avatar_cezary_official.jpg' : ((normUser === 'wiolettarogowska') ? 'avatar_wioletta_official.jpg' : (hint.avatar || 'lumina_icon.jpg'));
+                const fam = (Array.isArray(window._luminaFamilyChats) ? window._luminaFamilyChats : []).find(f => String(f.uid).toLowerCase() === normUser.toLowerCase());
+                if (fam) { name = fam.name || name; avatar = fam.avatar || avatar; }
 
                 if (window._cloudProfilesMap && window._cloudProfilesMap[normUser]) {
                     name = window._cloudProfilesMap[normUser].name || name;
@@ -14998,7 +15022,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
                 if (typeof window.openChatWith === 'function') {
                     window.openChatWith(name, avatar, normUser, messageId);
-                } else if (attempts < 30) {
+                    if (hint.reply) setTimeout(() => {
+                        const box = document.querySelector('#directMessagesModal.open textarea, #directMessagesModal.open input[type="text"]:not([type="search"])');
+                        try { box && box.focus(); } catch (_) {}
+                    }, 700);
+                } else if (attempts < 130) {
                     setTimeout(tryOpen, 150);
                 }
             };
@@ -15022,7 +15050,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (msgId) window._targetChatMessageId = msgId;
 
             if (chatUser) {
-                openChatByTargetUser(chatUser, msgId);
+                const safeAvatar = (() => { const a = searchParams.get('avatar') || ''; return /^(\/|https:\/\/polskieradio\.cc\/|https:\/\/firebasestorage\.googleapis\.com\/)/.test(a) ? a : ''; })();
+                openChatByTargetUser(chatUser, msgId, { name: (searchParams.get('name') || '').slice(0, 80), avatar: safeAvatar, reply: searchParams.get('reply') === '1' });
+                // Usuń parametry, żeby powrót do karty (focus) nie otwierał rozmowy ponownie.
+                try {
+                    const clean = new URL(window.location.href);
+                    ['openChat', 'chatWith', 'chat', 'partnerId', 'messageId', 'msgId', 'name', 'avatar', 'reply'].forEach(k => clean.searchParams.delete(k));
+                    history.replaceState(history.state, '', clean.pathname + (clean.search || '') + (clean.hash && !clean.hash.includes('=') ? clean.hash : ''));
+                } catch (_) {}
             } else if (openPublic) {
                 let attempts = 0;
                 const tryOpenPublic = () => {
@@ -15046,7 +15081,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const chatData = event.data.chatData || {};
                 const senderId = chatData.senderId || chatData.openChat;
                 if (senderId) {
-                    openChatByTargetUser(senderId, chatData.messageId);
+                    openChatByTargetUser(senderId, chatData.messageId, { name: chatData.senderName || '', reply: !!chatData.reply });
                 }
             }
         };

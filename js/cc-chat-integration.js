@@ -81,9 +81,14 @@
   `;
   document.head.appendChild(style);
   let host, frame, previousOverflow, opener, request = { tab: 'public' };
-  function openCurrent(next = request) {
+  function openCurrent(next = request, tries = 0) {
     request = next;
     const user = window.LuminaDB?.getCurrentUser?.();
+    // Sesja Firebase w osadzonym /mess odtwarza się chwilę — rozmowa z konkretną osobą czeka na nią (do ~10 s).
+    if (next.partner && (!user || user.isAnonymous) && tries < 50) {
+      setTimeout(() => { if (request === next) openCurrent(next, tries + 1); }, 200);
+      return;
+    }
     const drawer = document.getElementById('ccGlobalChatOverlay');
     if (drawer) {
       drawer.classList.remove('is-open');

@@ -3695,26 +3695,14 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         }, { merge: true });
         await batch.commit();
 
-        // Only confirmed persistence permits push and the legacy backup copy.
+        // Only confirmed persistence permits push.
+        // Strażnik 2026-10-18: jedna kopia wiadomości (lumina_direct_messages). Kopia zapasowa
+        // lumina_chats/{id}/messages nie jest już zapisywana — starsze kopie są nadal czytane i scalane.
         await triggerLuminaPush('direct', msgRef.id);
-        addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg)
-            .catch(() => console.warn('Lumina Direct Chat: kopia zapasowa wymaga ponownej synchronizacji.'));
 
-        // Add real-time notification document in Firestore for recipient
-        try {
-            addDoc(collection(db, 'lumina_notifications'), {
-                recipientId: receiverId,
-                senderId: fromId,
-                senderName: senderName,
-                senderAvatar: senderAvatar,
-                title: `Masz wiadomość od ${senderName}`,
-                body: fullMsg.text || 'Wysłał nową wiadomość 💬',
-                type: 'chat_direct',
-                chatId: normalizedChatId,
-                isRead: false,
-                createdAt: serverTimestamp()
-            }).catch(() => {});
-        } catch(notifErr) {}
+        // Strażnik 2026-10-18: powiadomienie odbiorcy = podgląd rozmowy (lumina_chats) + push z Workera.
+        // Dawny zapis do lumina_notifications był odrzucany przez reguły dla zwykłych kont (tylko admin)
+        // i dublował powiadomienie u administratorów — usunięty.
         // Sposób C: Kontekstowe mikro-zaproszenie do włączenia powiadomień
         try {
             if (typeof window.showLuminaContextualPushPrompt === 'function') {
@@ -3736,6 +3724,48 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 
 // ── Oznaczanie wiadomości prywatnych jako Przeczytane (Real-time Read Receipts ✓✓) ──
 const activeDirectReadReceipts = new Set();
+// ── Stan „przeczytane” rozmowy synchronizowany między urządzeniami (Strażnik 2026-10-18) ──
+// lumina_chats/{chatId}.readAt_<uid> = czas serwera ostatniego odczytu. localStorage pozostaje szybką kopią.
+function chatTimeMs(v) {
+    if (!v) return 0;
+    if (typeof v === 'number') return v;
+    if (typeof v.toMillis === 'function') return v.toMillis();
+    if (v.seconds) return v.seconds * 1000;
+    return 0;
+}
+export function getChatRoomReadTime(chatId, data, extraKeys = []) {
+    const uid = currentUserState?.uid;
+    let local = 0;
+    try {
+        for (const k of [chatId, ...extraKeys].filter(Boolean)) {
+            local = Math.max(local, parseInt(localStorage.getItem(`lumina_chat_read_${k}`) || '0', 10) || 0);
+        }
+    } catch (_) {}
+    const server = uid && data ? chatTimeMs(data[`readAt_${uid}`]) : 0;
+    return Math.max(local, server);
+}
+// Jedna definicja „nieprzeczytanej rozmowy” dla portalu, okienek LUMI i licznika na ikonie czatu.
+export function isChatRoomUnread(chatId, data, myId = null) {
+    if (!data) return false;
+    const me = normalizeChatUserId(myId || currentProfileState?.slug || currentUserState?.uid || '');
+    const sender = normalizeChatUserId(data.lastSenderId);
+    if (!sender || sender === 'guest' || sender === me || data.lastSenderId === currentUserState?.uid) return false;
+    const msgTime = chatTimeMs(data.lastMessageTimestamp) || chatTimeMs(data.createdAt);
+    return msgTime > getChatRoomReadTime(chatId, data, [sender, data.lastSenderId]);
+}
+const roomReadWrites = new Map();
+export function markChatRoomRead(chatId) {
+    const user = currentUserState;
+    if (!chatId) return;
+    const now = Date.now();
+    try { localStorage.setItem(`lumina_chat_read_${chatId}`, String(now)); } catch (_) {}
+    if (!db || !user?.uid || user.isAnonymous) return;
+    if (now - (roomReadWrites.get(chatId) || 0) < 5000) return; // bez zalewania zapisami
+    roomReadWrites.set(chatId, now);
+    updateDoc(doc(db, 'lumina_chats', chatId), { [`readAt_${user.uid}`]: serverTimestamp() })
+        .catch(() => { /* starsze rozmowy bez zaakceptowanej prośby: zostaje kopia lokalna */ });
+}
+
 export async function markDirectMessagesAsRead(chatId, currentUserId, currentUserName, readContext) {
     const user = currentUserState;
     if (!db || !chatId || !currentUserId || !user?.uid || user.isAnonymous) return false;
@@ -3757,6 +3787,8 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
     const normalizedChatId = parts.length === 2 ? getChatId(parts[0], parts[1]) : chatId;
     const normMyId = normalizeChatUserId(currentUserId);
     const myName = currentUserName || 'Użytkownik LUMINA';
+    // Rozmowa jest widoczna na ekranie — zapisz odczyt także na serwerze (inne urządzenia zgaszą licznik).
+    try { if (typeof markChatRoomRead === 'function') markChatRoomRead(normalizedChatId); } catch (_) {}
     // Confirm only incoming messages actually rendered from this room's cache.
     // Never manufacture a read receipt while offline or before the server commit.
     let visibleIds;
@@ -4606,12 +4638,9 @@ export function startRealtimeChatNotificationsListener() {
                             : senderId;
                         const normOther = normalizeChatUserId(otherUser);
 
-                        const lastReadTime = Math.max(
-                            parseInt(localStorage.getItem(`lumina_chat_read_${chatId}`) || '0', 10),
-                            parseInt(localStorage.getItem(`lumina_chat_read_${normOther}`) || '0', 10),
-                            parseInt(localStorage.getItem(`lumina_chat_read_${senderId}`) || '0', 10),
-                            parseInt(localStorage.getItem(`lumina_chat_read_${data.lastSenderId}`) || '0', 10)
-                        );
+                        const lastReadTime = (typeof getChatRoomReadTime === 'function')
+                            ? getChatRoomReadTime(chatId, data, [normOther, senderId, data.lastSenderId])
+                            : Math.max(...[chatId, normOther, senderId, data.lastSenderId].map(k => parseInt(localStorage.getItem(`lumina_chat_read_${k}`) || '0', 10) || 0));
                         const msgTime = data.lastMessageTimestamp?.seconds ? (data.lastMessageTimestamp.seconds * 1000) : (data.createdAt || 0);
 
                         if (msgTime > lastReadTime) {
@@ -4627,6 +4656,27 @@ export function startRealtimeChatNotificationsListener() {
                     }
                 });
 
+                // Rodzinne rozmowy LUMI KIDS (dziecko nie ma publicznego profilu) — lista dla okna czatu.
+                try {
+                    const family = [];
+                    snap.forEach(d => {
+                        const x = d.data();
+                        if (x.kidsFamily !== true) return;
+                        const other = (Array.isArray(x.participants) ? x.participants : []).find(p => p && p !== uid);
+                        if (!other) return;
+                        family.push({
+                            chatId: d.id, uid: other,
+                            name: x[`name_${other}`] || x.otherName || 'Rozmowa rodzinna · LUMI KIDS',
+                            avatar: x[`avatar_${other}`] || x.otherAvatar || '/lumi-kids/assets/lumi-kids-logo.svg'
+                        });
+                    });
+                    const famSig = JSON.stringify(family);
+                    window._luminaFamilyChats = family;
+                    if (famSig !== window._luminaFamilyChatsSig) {
+                        window._luminaFamilyChatsSig = famSig;
+                        try { window.dispatchEvent(new CustomEvent('lumina:family-chats')); } catch (_) {}
+                    }
+                } catch (_) {}
                 window._luminaUnreadRoomsMap = unreadMap;
                 try {
                     localStorage.setItem('lumina_unread_rooms_json', JSON.stringify(unreadJson));
@@ -4682,6 +4732,7 @@ export function startRealtimeChatNotificationsListener() {
                 });
             }, (err) => { if (isCurrentSession()) console.warn('Private Chat notif listener notice:', err); }));
 
+            // (Strażnik 2026-10-18) Nowe wiadomości nie zapisują już lumina_notifications — nasłuch zostaje tylko dla starszych wpisów.
             // 3. Listen directly to lumina_notifications collection for recipient
             try {
                 const notifsQuery = query(
@@ -7217,6 +7268,9 @@ window.LuminaDB = Object.assign(window.LuminaDB || {}, {
     triggerLuminaPushNotification,
     showSystemDrawerNotification,
     startRealtimeChatNotificationsListener,
+    isChatRoomUnread,
+    getChatRoomReadTime,
+    markChatRoomRead,
     MISSION_BROADCAST_CHANNELS,
     getMissionBroadcastChannel,
     getMissionAccounts,

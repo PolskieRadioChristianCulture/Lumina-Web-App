@@ -10897,6 +10897,7 @@
 
             try {
                 localStorage.setItem(`lumina_chat_read_${chatId}`, String(Date.now()));
+                try { window.LuminaDB?.markChatRoomRead?.(chatId); } catch (_) {}
                 const normRoomKey = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : chatId;
                 localStorage.setItem(`lumina_chat_read_${normRoomKey}`, String(Date.now()));
 
@@ -11762,5 +11763,7 @@
     </button>
     <script src="/js/lumina-photo-nudge.js?v=20261011_1" defer></script>
     <script src="/js/cc-favorites.js" defer></script>
+<!-- Strażnik 2026-10-18: czat tej strony = jeden wspólny LUMI Messenger (/mess) -->
+<script defer id="ccChatIntegrationScript" src="/js/cc-chat-integration.js?v=20261018_pushroom"></script>
 </body>
 </html>

@@ -19,6 +19,7 @@ function Ok($t)   { Write-Host "  ✔ $t" -ForegroundColor Green }
 function Stop($t) { Write-Host "`n✖ $t" -ForegroundColor Red; Write-Host "  Nic dalej nie zostało opublikowane. Claude odczyta WYDANIE-KANALY.log." -ForegroundColor Yellow; Stop-Transcript | Out-Null; Read-Host "Naciśnij Enter, aby zamknąć"; exit 1 }
 
 node scripts/build-bible-search.mjs; if ($LASTEXITCODE -ne 0) { Stop "indeks wyszukiwarki Biblii nie powstał" }
+node scripts/build-tablica-light.mjs; if ($LASTEXITCODE -ne 0) { Stop "jasna tablica nie została wygenerowana" }
 
 $Files = @(
     'apokalipsa-ksiega-nadziei-live-YT.html',
@@ -81,7 +82,10 @@ $Files = @(
     'docs\lumi-kids\LUMI_KIDS_PILOT_RELEASE_CHECKLIST.md',
     'CLAUDE.md',
     'scripts\straznik-wydanie-kanaly-20261008.ps1',
-    'WYDANIE-KANALY.bat'
+    'WYDANIE-KANALY.bat',
+    'scripts\build-tablica-light.mjs', 'lumina-tablica-light.html', 'lumina-tablica.html', 'lumina-profile.html',
+    'js\lumina-theme-manager.js', 'js\cc-chat-integration.js', 'components\cc-global-chat-button.js',
+    'lumina-db.js', 'components\lumi-direct-dock-adapter.js', 'scripts\push-regression.test.cjs'
 ) | Where-Object { Test-Path (Join-Path $Repo $_) }
 
 Krok "1/5 Synchronizacja z GitHubem (origin/main)"
@@ -108,7 +112,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): Okienka LUMI: pełna historia rozmowy po otwarciu (wcześniej tylko ostatnia wiadomość)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): czat — powiadomienie otwiera konkretny pokój w /mess; rozmowa rodzinna LUMI KIDS na liście; jedna kopia wiadomości; odczyt między urządzeniami" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -128,7 +132,7 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 okienka LUMI pelna historia" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-18 czat push pokoj, rodzina na liscie, sync odczytu" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"

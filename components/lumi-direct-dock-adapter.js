@@ -91,6 +91,16 @@
     return displaySafe(list);
   }
 
+  // Jedna definicja nieprzeczytanej rozmowy dla całego ekosystemu (lumina-db: isChatRoomUnread,
+  // stan „przeczytane” zapisany na serwerze — zgadza się między telefonem a komputerem).
+  function unreadFor(c, myId) {
+    const db = global.LuminaDB;
+    if (db && typeof db.isChatRoomUnread === 'function') return db.isChatRoomUnread(c.chatId || c.id, c, myId) ? 1 : 0;
+    return (c.unreadCount && typeof c.unreadCount[myId] === 'number')
+      ? c.unreadCount[myId]
+      : (c.lastSenderId && c.lastSenderId !== myId && !c.isRead ? 1 : 0);
+  }
+
   function createDirectMessagingAdapter() {
     return {
       getCurrentUserId() {
@@ -136,9 +146,7 @@
               // Sprawdź czy partner nie jest zablokowany
               if (blockedUsers.includes(participant.id)) return null;
 
-              const unread = (c.unreadCount && typeof c.unreadCount[myId] === 'number')
-                ? c.unreadCount[myId]
-                : (c.lastSenderId && c.lastSenderId !== myId && !c.isRead ? 1 : 0);
+              const unread = unreadFor(c, myId);
 
               return {
                 id: c.chatId || c.id,
@@ -235,8 +243,7 @@
             return {
               id: c.chatId || c.id,
               type: 'direct', participant,
-              unreadCount: Math.max(0, typeof c.unreadCount?.[myId] === 'number'
-                ? c.unreadCount[myId] : (c.lastSenderId && c.lastSenderId !== myId && !c.isRead ? 1 : 0)),
+              unreadCount: Math.max(0, unreadFor(c, myId)),
               lastMessageAt: c.lastMessageTimestamp ? toIsoDate(c.lastMessageTimestamp) : '',
               lastMessageSenderId: c.lastSenderId || null
             };

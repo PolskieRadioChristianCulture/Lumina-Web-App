@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="pl" data-lumina-theme="light">
+<html lang="pl" data-lumina-theme="light" data-lumina-theme-lock="light">
+<!-- PLIK GENEROWANY przez scripts/build-tablica-light.mjs z lumina-tablica.html — nie edytuj ręcznie -->
 <head>
     <!-- RSS Auto-Discovery (Apple Podcasts, Spotify, Feed Readers) -->
     <link rel="alternate" type="application/rss+xml" title="Polskie Radio Christian Culture • Podcast RSS" href="https://polskieradio.cc/podcast.xml">
@@ -16,7 +17,11 @@
     </script>
     <!-- Google Analytics -->
     <script src="js/lumina-identity-guard.js" defer></script>
+    <!-- 🛡️ Strażnik Standardów 2026-10-07: stabilny render tablicy, prawdziwi ludzie na karuzeli, oszczędne wideo, kreator profilu -->
+    <script src="js/lumina-stable-render.js?v=20261007_guardian2"></script>
     <script src="js/lumina-community-people.js?v=20261011_all_members1" defer></script>
+    <script src="js/lumina-media-economy.js?v=20261007_guardian2" defer></script>
+    <script src="js/lumina-onboarding.js?v=20261007_guardian2" defer></script>
     <script src="js/lumina-mission-blik.js"></script>
     <script>
 
@@ -332,7 +337,7 @@
                 const punct = domain.match(/[.,;!?:)]+$/);
                 if (punct) {
                     trailing = punct[0];
-                    cleanUrl = domain.slice(0, -trailing.length);
+                    domain = domain.slice(0, -trailing.length);
                 }
                 let displayDomain = domain.replace(/^www\./, '');
                 if (displayDomain.length > 38) displayDomain = displayDomain.substring(0, 35) + '…';
@@ -438,8 +443,8 @@
             image: 'promo_dzj.jpg',
             streamUrl: 'cctv24-worship-live.html?muted=1&mute=1&in_mcr=1',
             isLiveBroadcastPost: true,
-            likes: 215,
-            amen: 192,
+            likes: 0,
+            amen: 0,
             _pinned: true,
             _isReflection: true
         };
@@ -2480,7 +2485,7 @@
         .rich-og-thumb-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 16 / 9;
             overflow: hidden;
             background: #0b1329;
             display: flex;
@@ -2490,7 +2495,7 @@
         .rich-og-thumb {
             width: 100%;
             height: 100%;
-            object-fit: contain !important;
+            object-fit: cover !important;
             background: #0f172a;
             display: block;
             transition: transform 0.4s ease;
@@ -2499,6 +2504,7 @@
             transform: scale(1.03);
         }
         .rich-og-card-store .rich-og-thumb-wrapper {
+            aspect-ratio: 1 / 1;
             background: #ffffff !important;
         }
         .rich-og-card-store .rich-og-thumb {
@@ -2953,8 +2959,8 @@
             align-items: center;
             justify-content: space-between;
             padding: 8px 14px;
-            background: #faf8f5;
-            border-top: 1px solid rgba(28, 25, 23, 0.08);
+            background: rgba(11, 18, 33, 0.55);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
             gap: 10px;
@@ -2975,13 +2981,13 @@
             gap: 6px;
             font-size: 0.76rem;
             font-weight: 700;
-            color: #78716c;
+            color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             user-select: none;
         }
         .post-share-dock-label i {
-            color: #8c6d23;
+            color: var(--cc-gold, #D4A94A);
             font-size: 0.82rem;
         }
         .post-share-dock-actions {
@@ -2999,9 +3005,9 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(184, 142, 62, 0.3);
-            background: #ffffff;
-            color: #44403c;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: #cbd5e1;
             font-size: 0.90rem;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -3013,7 +3019,7 @@
         }
         .post-share-btn:hover {
             transform: translateY(-2px) scale(1.06);
-            box-shadow: 0 4px 12px rgba(28, 25, 23, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
         }
         .post-share-btn .glyph-l {
             font-family: 'Cinzel', 'Montserrat', serif, system-ui;
@@ -3037,7 +3043,7 @@
         .post-share-btn.share-wa:hover {
             background: #25D366;
             border-color: #25D366;
-            color: #ffffff;
+            color: #0b141a;
             box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
         }
         .post-share-btn.share-fb:hover {
@@ -3054,27 +3060,53 @@
         }
         .post-share-btn.share-x:hover {
             background: #000000;
-            border-color: #000000;
+            border-color: rgba(255, 255, 255, 0.6);
             color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
         .post-share-btn.share-mail:hover {
-            background: #8c6d23;
-            border-color: #8c6d23;
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(140, 109, 35, 0.3);
+            background: #e2cc9a;
+            border-color: #e2cc9a;
+            color: #161b26;
+            box-shadow: 0 0 12px rgba(226, 204, 154, 0.4);
         }
         .post-share-btn.share-copy:hover {
-            background: #8c6d23;
-            border-color: #8c6d23;
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(140, 109, 35, 0.3);
+            background: var(--cc-gold, #D4A94A);
+            border-color: var(--cc-gold, #D4A94A);
+            color: #07090E;
+            box-shadow: 0 0 12px rgba(212, 169, 74, 0.4);
         }
         .post-share-btn.share-more:hover {
             background: linear-gradient(135deg, #f59e0b, #d97706);
             border-color: #f59e0b;
             color: #000000;
             box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+        }
+        html[data-lumina-theme="light"] .post-share-dock,
+        body.light-mode .post-share-dock {
+            background: #faf8f5 !important;
+            border-top: 1px solid rgba(28, 25, 23, 0.08) !important;
+        }
+        html[data-lumina-theme="light"] .post-share-dock-label,
+        body.light-mode .post-share-dock-label {
+            color: #78716c !important;
+        }
+        html[data-lumina-theme="light"] .post-share-btn:not(.share-lumina),
+        body.light-mode .post-share-btn:not(.share-lumina) {
+            background: #ffffff !important;
+            border: 1px solid rgba(184, 142, 62, 0.3) !important;
+            color: #44403c !important;
+        }
+        html[data-lumina-theme="light"] .post-share-btn.share-lumina,
+        body.light-mode .post-share-btn.share-lumina {
+            background: linear-gradient(135deg, #b3182d 0%, #8f0f22 100%) !important;
+            border: 1.5px solid #d4af37 !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 8px rgba(166, 18, 41, 0.45), 0 0 8px rgba(212, 175, 55, 0.3) !important;
+        }
+        html[data-lumina-theme="light"] .post-share-btn.share-lumina .glyph-l,
+        body.light-mode .post-share-btn.share-lumina .glyph-l {
+            color: #ffffff !important;
         }
         @media (max-width: 768px) {
             .post-share-dock {
@@ -3925,21 +3957,21 @@
             line-height: 1.4 !important;
             vertical-align: middle !important;
             word-break: break-all !important;
-            background: rgba(2, 132, 199, 0.08) !important;
-            border: 1px solid rgba(2, 132, 199, 0.3) !important;
-            color: #0284c7 !important;
+            background: rgba(56, 189, 248, 0.10) !important;
+            border: 1px solid rgba(56, 189, 248, 0.28) !important;
+            color: #38bdf8 !important;
             text-decoration: none !important;
             text-decoration-line: none !important;
             border-bottom: none !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .reflection-link:hover, .post-rich-link:hover, .lumina-post-link:hover {
-            background: rgba(2, 132, 199, 0.16) !important;
-            border-color: rgba(2, 132, 199, 0.55) !important;
-            color: #0369a1 !important;
+            background: rgba(56, 189, 248, 0.20) !important;
+            border-color: rgba(56, 189, 248, 0.6) !important;
+            color: #bae6fd !important;
             transform: translateY(-1.5px) !important;
-            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.18) !important;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25) !important;
             text-decoration: none !important;
             text-decoration-line: none !important;
             border-bottom: none !important;
@@ -5173,8 +5205,20 @@
     <link rel="stylesheet" href="/css/lumina-mini-player.css?v=20261013_fab_col_v1">
     <link rel="stylesheet" href="/css/lumina-board-editorial.css?v=20260928_1">
     <link rel="stylesheet" href="/css/lumina-light-edition.css?v=20261013_fab_col_v1">
+    <script>
+    (function() {
+        try {
+            var p = new URLSearchParams(window.location.search);
+            var saved = localStorage.getItem('lumina_theme');
+            if (p.get('theme') === 'dark' || (!p.get('theme') && saved === 'dark')) {
+                document.documentElement.setAttribute('data-lumina-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-lumina-theme', 'light');
+            }
+        } catch(e) {}
+    })();
+    </script>
     <script src="/js/lumina-theme-manager.js?v=20261007_guardian2"></script>
-    <script src="js/lumina-stable-render.js?v=20261007_guardian2"></script>
     <!-- STRAŻNIK (2026-10-11): miejsce na mobilny pasek ZAŁÓŻ KONTO | LOGOWANIE rezerwowane od pierwszego
          wyświetlenia — pasek wstawiany później przez lumina-bottom-nav.js nie przesuwa już tablicy (CLS). -->
     <script>try{if(localStorage.getItem('lumina_user_session')==='active')document.documentElement.classList.add('cc-authed')}catch(e){}</script>
@@ -5217,7 +5261,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
 }
 </style>
 </head>
-<body class="theme-lumina-light">
+<body>
 
     <!-- Audio Player for Radio CC -->
 
@@ -5439,6 +5483,45 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     <a href="https://my-store-1009741.creator-spring.com/listing/alleluja?product=375" target="_blank" rel="noopener noreferrer" class="btn-916-action" style="background: linear-gradient(135deg, #0284c7, #2563eb); box-shadow: 0 4px 16px rgba(2, 132, 199, 0.45); font-weight: 800; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 14px; border-radius: 12px; font-size: 0.86rem; transition: transform 0.2s, box-shadow 0.2s;">
                         <i class="fa-solid fa-cart-shopping"></i> Kup w Oficjalnym Sklepie CC ➜
                     </a>
+                </div>
+            </div>
+
+            <!-- ══════════ KARTA 9:16: BEZPŁATNE KSIĄŻKI ZAŁOŻYCIELA CC ══════════ -->
+            <div class="card-916 founder-books-card-916" style="border: 1.5px solid rgba(250, 204, 21, 0.55); box-shadow: 0 14px 38px rgba(0,0,0,0.75), 0 0 25px rgba(250, 204, 21, 0.25); margin-bottom: 18px;">
+                <div class="card-916-header" style="background: linear-gradient(90deg, rgba(212, 175, 55, 0.35), rgba(168, 85, 247, 0.2));">
+                    <span class="badge-patron" style="color: #fef08a;"><i class="fa-solid fa-book-open"></i> Książki Założyciela</span>
+                    <span style="font-size: 0.65rem; color: #facc15; font-weight: 900; background: rgba(250,204,21,0.18); border: 1px solid rgba(250,204,21,0.4); padding: 2px 8px; border-radius: 8px; text-transform: uppercase;">100% Free</span>
+                </div>
+                <div class="card-916-media-wrap" style="position: relative; aspect-ratio: 9/16; width: 100%; overflow: hidden; background: #070b14;">
+                    <div style="position: absolute; inset: 0; display: flex; flex-direction: column; padding: 14px; background: linear-gradient(180deg, rgba(11,24,56,0.6) 0%, rgba(7,11,20,0.96) 60%, #070b14 100%); z-index: 1;">
+                        
+                        <!-- Miniaturki 3D obu książek obok siebie -->
+                        <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 6px; margin-bottom: 12px;">
+                            <a href="/kod" style="width: 48%; display: block; border-radius: 8px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.7); border: 1px solid rgba(168,85,247,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+                                <img src="assets/kod-zrodlowy-book-3d-400.webp" alt="Kod Źródłowy" style="width: 100%; height: auto; display: block;" loading="lazy">
+                            </a>
+                            <a href="/pokonac-goliata" style="width: 48%; display: block; border-radius: 8px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.7); border: 1px solid rgba(245,158,11,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+                                <img src="assets/pokonac-goliata-book-3d-400.webp" alt="Pokonać Goliata" style="width: 100%; height: auto; display: block;" loading="lazy">
+                            </a>
+                        </div>
+
+                        <div class="card-916-title" style="color: #fef08a; font-size: 1.05rem; font-weight: 800; line-height: 1.3; margin-bottom: 4px; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">
+                            Cezary Rogowski — Autorskie Książki
+                        </div>
+                        <div class="card-916-sub" style="font-size: 0.76rem; line-height: 1.45; color: #cbd5e1; margin-bottom: 12px;">
+                            Powieść <b>„Kod Źródłowy”</b> oraz poradnik duchowego zwycięstwa <b>„Pokonać Goliata”</b>. E-booki PDF/EPUB, czytnik online i audio — w 100% bezpłatne.
+                        </div>
+
+                        <!-- Przyciski bezpośrednie -->
+                        <div style="display: flex; flex-direction: column; gap: 7px; margin-top: auto; width: 100%;">
+                            <a href="/kod" target="_blank" rel="noopener noreferrer" class="btn-916-action" style="background: linear-gradient(135deg, #a855f7, #7e22ce); color: #fff; font-weight: 800; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(168,85,247,0.4);">
+                                <i class="fa-solid fa-book-open"></i> Kod Źródłowy (E-book) ➔
+                            </a>
+                            <a href="/pokonac-goliata" target="_blank" rel="noopener noreferrer" class="btn-916-action" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 800; font-size: 0.82rem; padding: 10px 12px; border-radius: 10px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(245,158,11,0.4);">
+                                <i class="fa-solid fa-shield-halved"></i> Pokonać Goliata (8 Kroków) ➔
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -6098,6 +6181,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             </script>
 
             <!-- ══════════ PASEK SZYBKIEJ PUBLIKACJI („CO DOBREGO U CIEBIE?”) ══════════ -->
+            <div id="luminaMemberWelcome" class="lumina-member-welcome"></div>
+            <script defer src="/js/lumina-member-welcome.js?v=20261009_welcome1"></script>
             <div class="quick-post-bar-container" id="luminaQuickPostBar">
                 <div class="quick-post-bar-top">
                     <div class="quick-post-avatar-wrap" onclick="openQuickPostComposer()" title="Otwórz okno publikacji wpisu">
@@ -7644,7 +7729,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Dla Randkowiczów & Par 💖',
                 authorAvatar: 'avatar_wioletta_official.webp',
                 createdAt: 'Polecane dla Randkowiczów',
-                likes: 412,
+                likes: 0,
                 amen: 378
             },
             {
@@ -7659,7 +7744,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Mega Hity Kina 24/7 ✨',
                 authorAvatar: 'logo_vod_cc.jpg',
                 createdAt: 'Repertuar Filmowy',
-                likes: 384,
+                likes: 0,
                 amen: 342
             },
 
@@ -7675,7 +7760,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Nowy Kanał TV ✨✨',
                 authorAvatar: 'logo_cctv.png',
                 createdAt: 'Premiera 2026',
-                likes: 245,
+                likes: 0,
                 amen: 219
             },
             {
@@ -7690,7 +7775,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Oficjalna Misja Radiowa ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Misja Radiowa 24/7',
-                likes: 134,
+                likes: 0,
                 amen: 112
             },
             {
@@ -7705,7 +7790,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Wsparcie Dzieła CC ✨',
                 authorAvatar: 'lumina_icon.jpg',
                 createdAt: 'Kolekcja Sezonowa',
-                likes: 88,
+                likes: 0,
                 amen: 56
             },
             {
@@ -7720,7 +7805,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Wykłady Biblijne & Profetyczne ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Nowość w Ramówce',
-                likes: 184,
+                likes: 0,
                 amen: 162
             },
             {
@@ -7735,7 +7820,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Słowo Boże w Muzyce ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Nowość Muzyczna',
-                likes: 145,
+                likes: 0,
                 amen: 128
             },
             {
@@ -7752,7 +7837,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Założyciel Christian Culture ✨',
                 authorAvatar: 'avatar_cezary_official.jpg',
                 createdAt: 'Wydarzenie Narodowe',
-                likes: 178,
+                likes: 0,
                 amen: 165
             },
             {
@@ -7767,7 +7852,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Aplikacja Mobilna ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Darmowa Aplikacja',
-                likes: 119,
+                likes: 0,
                 amen: 94
             },
             {
@@ -7782,7 +7867,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Kanał Misyjny YouTube 🌸',
                 authorAvatar: 'logo_cc_women.jpg',
                 createdAt: 'Kanał YouTube',
-                likes: 96,
+                likes: 0,
                 amen: 82
             },
             {
@@ -7797,7 +7882,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Kurs Biblijny TV ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Pasmo Telewizyjne',
-                likes: 104,
+                likes: 0,
                 amen: 91
             },
             {
@@ -7812,7 +7897,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Edukacja Biblijna ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Codzienne Pasmo Studyjne',
-                likes: 85,
+                likes: 0,
                 amen: 73
             },
             {
@@ -7827,7 +7912,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Muzyka Uwielbienia ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Pasmo Modlitewne',
-                likes: 142,
+                likes: 0,
                 amen: 130
             },
             {
@@ -7842,7 +7927,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Program Muzyczny ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Program Telewizyjny',
-                likes: 110,
+                likes: 0,
                 amen: 99
             },
             {
@@ -7857,7 +7942,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Zdrowy Styl Życia ✨',
                 authorAvatar: 'lumina_icon.jpg',
                 createdAt: 'Strefa Zdrowia',
-                likes: 72,
+                likes: 0,
                 amen: 51
             },
             {
@@ -7872,7 +7957,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Akcesoria Misyjne ✨',
                 authorAvatar: 'lumina_icon.jpg',
                 createdAt: 'Kolekcja Kubków',
-                likes: 81,
+                likes: 0,
                 amen: 60
             },
             {
@@ -7887,7 +7972,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Literatura Chrześcijańska ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Biblioteka Misyjna',
-                likes: 93,
+                likes: 0,
                 amen: 85
             },
             {
@@ -7902,7 +7987,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Mobilne Radio ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Aplikacja Webowa',
-                likes: 84,
+                likes: 0,
                 amen: 69
             },
             {
@@ -7917,7 +8002,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Wsparcie Misyjne ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Mecenat Ewangelizacyjny',
-                likes: 195,
+                likes: 0,
                 amen: 182
             },
             {
@@ -7932,7 +8017,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Badanie Pisma ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Narzędzia Biblijne',
-                likes: 142,
+                likes: 0,
                 amen: 128
             },
             {
@@ -7947,7 +8032,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Streaming 24/7 ✨',
                 authorAvatar: 'logo_radio_cc.jpg',
                 createdAt: 'Odtwarzacz Audio',
-                likes: 187,
+                likes: 0,
                 amen: 164
             },
             {
@@ -7962,7 +8047,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Transmisje TV ✨',
                 authorAvatar: 'logo_cctv.png',
                 createdAt: 'Smart TV Hub',
-                likes: 210,
+                likes: 0,
                 amen: 195
             },
             {
@@ -7977,7 +8062,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Edycja 2027 ✨',
                 authorAvatar: 'lumina_icon.jpg',
                 createdAt: 'Kreator Ścienny',
-                likes: 115,
+                likes: 0,
                 amen: 98
             },
             {
@@ -7992,7 +8077,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Wsparcie Duchowe ✨',
                 authorAvatar: 'icon.png',
                 createdAt: 'Czynna Codziennie',
-                likes: 254,
+                likes: 0,
                 amen: 240
             },
             {
@@ -8007,7 +8092,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 authorRole: 'Retransmisja & OBS ✨',
                 authorAvatar: 'logo_cctv.png',
                 createdAt: 'Dla Twórców i Kościołów',
-                likes: 98,
+                likes: 0,
                 amen: 87
             }
         ];
@@ -8370,8 +8455,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 title: '🎬 Rolka Wiary: Nowa Kolekcja Alleluja — Noś Wiarę z Odwagą!',
                 text: '„Bo nie wstydzę się Ewangelii Chrystusowej, jest ona bowiem mocą Bożą ku zbawieniu każdego, kto wierzy.” (Rz 1, 16) ✨ Zobacz naszą najnowszą kolekcję chrześcijańską. Każdy wzór to świadectwo żywej wiary na co dzień!',
                 image: 'reklama_sklep_alleluja.mp4',
-                likes: 84,
-                amen: 95,
+                likes: 0,
+                amen: 0,
                 _isFeedVideo: true,
                 _sortTs: Date.now() - 25 * 60 * 1000
             });
@@ -8387,8 +8472,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 title: '🎬 Rolka Wiary: Na Początku Było Słowo • Cezary Rogowski',
                 text: '„W Nim było życie, a życie było światłością ludzi. A światłość świeci w ciemności, a ciemność jej nie ogarnęła.” (J 1, 4-5) ✨ Boże Słowo rozświetla każdą drogę i napełnia serce pokojem!',
                 image: 'tlo_profilowe_cezary.mp4',
-                likes: 112,
-                amen: 128,
+                likes: 0,
+                amen: 0,
                 _isFeedVideo: true,
                 _sortTs: Date.now() - 55 * 60 * 1000
             });
@@ -8404,8 +8489,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 title: '🎬 Rolka Kina CC: Zwiastuny i Hity Chrześcijańskiego Kina VOD',
                 text: 'Odkryj najpiękniejsze filmy z wartościami na naszej platformie VOD! Wzruszające historie, świadectwa wiary i biblijne opowieści dla całej rodziny. Oglądaj na polskieradio.cc/vod! ✨🎬',
                 image: 'vod_hity_kina.mp4',
-                likes: 71,
-                amen: 82,
+                likes: 0,
+                amen: 0,
                 _isFeedVideo: true,
                 _sortTs: Date.now() - 3 * 3600 * 1000
             });
@@ -8422,8 +8507,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 title: '✨ NOWOŚĆ! CCTV24 INSTRUMENTAL WORSHIP 24/7 – Muzyka Uwielbienia & Kontemplacji',
                 text: 'Z radością i wdzięcznością Bogu oddajemy w Wasze ręce nowy całodobowy kanał wideo & audio: CCTV24 INSTRUMENTAL WORSHIP! ✨✨\n\nPrzenieś się w przestrzeń głębokiej modlitwy, pokoju serca i Bożej obecności. 24 godziny na dobę bez przerw i bez reklam – najpiękniejsze instrumentalne utwory uwielbienia, wersety Pisma Świętego i filmowe scenerie stworzenia w jakości HD.\n\nKliknij i oglądaj na żywo w nowym oknie:\n✨ https://polskieradio.cc/cctv24-worship.html\n\nNiech ten kanał będzie dla Was źródłem wyciszenia, odpoczynku i nieustannego uwielbienia naszego Pana! ✨✨',
                 image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
-                likes: 215,
-                amen: 198,
+                likes: 0,
+                amen: 0,
                 _sortTs: new Date(2026, 7, 21, 12, 0).getTime()
             });
 
@@ -8449,8 +8534,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                         image: cudaCur.imageUrl || 'cuda_kazdego_dnia_current.jpg',
                         sourceUrl: cudaCur.sourceUrl || '',
                         sourceSlug: cudaCur.slug || '',
-                        likes: 342,
-                        amen: 320,
+                        likes: 0,
+                        amen: 0,
                         _sortTs: extractSortTs({ time: cDate }) || Date.now()
                     });
                 }
@@ -8477,8 +8562,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'CUDA KAŻDEGO DNIA! 27 SIERPNIA 2026. MODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nMODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI!\n\nKiedy się modlisz, Bóg otwiera drzwi. Zupełnie niespodziewane drzwi i często nie te, o których myśleliśmy i o które się modliliśmy! Bóg ma swoje, Jemu tylko wiadome sposoby, ale to twoja modlitwa sprawia, że to co niemożliwe staje się możliwe.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg27,
-                    likes: 291,
-                    amen: 264,
+                    likes: 0,
+                    amen: 0,
                     _sortTs: new Date(2026, 7, 27, 6, 0).getTime()
                 });
             } catch(e) {}
@@ -8502,7 +8587,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'CUDA KAŻDEGO DNIA! 25 SIERPNIA 2026. MODLITWA JEST NAJPOTĘŻNIEJSZĄ BRONIĄ!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nMODLITWA JEST NAJPOTĘŻNIEJSZĄ BRONIĄ!\n\nW mediach dużo ostatnio mówi się o broni, o skutecznych sposobach walki i obrony. Tuż obok naszych granic trwa wojna, w której obie strony nieustannie pracują nad coraz nowszymi wynalazkami, które mają przeważyć szalę zwycięstwa. Systemy ochrony powietrznej, rakiety dalekiego zasięgu, drony itp. umożliwiają ochronę przed atakami, ale też precyzyjne niszczenie celów. Czy wiesz, że trwa znacznie ważniejsza, choć niewidoczna dla naszych oczu wojna? W której chodzi nie tylko o twoje doczesne życie, ale i to wieczne?\n\nPisze o tym Apostoł Paweł: „Nie walczymy przeciwko ludziom…, ale złym władcom niewidzialnego świata, potężnym siłom demonicznym i złym książętom ciemności rządzącymi tym światem…” (Ef.6,12). Powiesz: „To koniec ze mną”, „jestem za słaby”, „nie mam czym walczyć”. Bóg nie zostawił cię bezbronnym. Masz najbardziej skuteczną broń, która nie tylko cię ochroni, ale i dzięki której będziesz mógł skutecznie niszczyć diabelskie twierdze: „Gdyż oręż nasz, którym walczymy, nie jest cielesny, lecz ma moc burzenia warowni dla sprawy Bożej” (2 Kor. 10,4).\n\nW co w takim razie Bóg ciebie i mnie wyposażył, byśmy nie zginęli na tej wojnie, a raczej zwyciężali? Dał nam swoje Słowo, które jest mieczem (zob. Ef.6,17) i przywilej modlitwy. Modlitwa jest najpotężniejszą bronią chrześcijan. Jej moc nie pochodzi od człowieka ani nie opiera się na ludzkich siłach, ale na Bogu, który ma wszelką władzę, mądrość i miłość. On czeka byś zaczął się modlić, bo wtedy masz wpływ na to co Bóg robi w tym świecie, ale też w tobie. Bardzo prawdziwe jest to, co odkryła między innymi Matka Teresa: “Kiedyś myślałam, że modlitwa zmienia świat wokół nas. Dziś wiem, że najpierw zmienia nas samych, a potem to my zmieniamy świat”.\n\nTak, Bóg często zaczyna swoje działanie od przemiany naszego serca, postawy i sposobu patrzenia. Kiedy zwalniamy i rozmawiamy z Bogiem, On może pokazać nam kto najbardziej potrzebuje miłości i jak możemy na tę potrzebę odpowiedzieć. Bądź otwarty dzisiaj na Jego impulsy. Módl się nieustannie, od chwili, kiedy się budzisz do momentu, kiedy idziesz spać. Módl się z wiarą i oczekuj, że Bóg będzie działał.\n\n„Ojcze, wierzę, że Ty działasz, nawet kiedy tego nie widzę. Wierze, że modląc się burzę warownie wroga, które pobudował w moim sercu, moim umyśle. Niech moc Twojego Ducha działa we mnie i w życiu moich bliskich. Z Tobą mogę żyć zwycięsko!”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg25,
-                    likes: 265,
+                    likes: 0,
                     amen: 238
                 });
             } catch(e) {}
@@ -8526,7 +8611,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'CUDA KAŻDEGO DNIA! 24 SIERPNIA 2026. KIEDY BRAKUJE SŁÓW!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nKIEDY BRAKUJE SŁÓW!\n\nZnaleźliście się kiedyś w sytuacji, w której zabrakło wam słów? Pewnie niejeden raz, prawda? Tak bywa w chwilach ogromnego wzruszenia, radości, gdy spełnia się marzenie, na które czekaliśmy całe życie, czy gdy próbujemy wyrazić wdzięczność za czyjeś poświecenie. Ale też w chwilach ogromnego smutku, kiedy lekarz mówi „to nowotwór”, gdy tracimy kogoś bliskiego, gdy cierpimy fizycznie. W takich chwilach nasza modlitwa też często bywa ograniczona do kilku słów: „Panie kocham Cię!”, „Dziękuję!”, „Panie pomóż!”, „Panie, zmiłuj się”. I wiesz, twój Ojciec w niebie wie o tym i wcale nie oczekuje wielu słów. Jezus powiedział: „…wasz Ojciec wie, czego potrzebujecie, zanim Go poprosicie” (Mt.6,8).\n\nCo więcej, kiedy nie macie siły wołać, doświadczacie bólu, wylaliście już wszystkie łzy lub po prostu czujecie się zagubieni i zdezorientowani, Bóg słyszy was nawet jeśli nie wydajecie głosu. On słyszy wasze serce, a Jego Duch jest przy was i wspiera was. Czytamy: „Podobnie i Duch wspiera nas w niemocy naszej; nie wiemy bowiem, o co się modlić, jak należy, ale sam Duch wstawia się za nami w niewysłowionych westchnieniach” (Rz.8,26).\n\nMasz Ojca, który cię nie zostawi nigdy. On się troszczy o ciebie. On chce cię podnieść, zabrać twoje ciężary, twoją chorobę i przynieść uleczenie ducha, duszy i ciała. On mówi do ciebie dzisiaj: „Znam cię. Wiem, kiedy siedzisz i kiedy wstajesz. I jeszcze nie ma słowa na twoim języku żebym Ja go już nie znał (Ps.139,3-4). A jednak pragnę słyszeć wasz głos. Cieszę się, kiedy mówicie do mnie, tak jak kochający rodzic cieszy się słysząc głos swojego dziecka. Co chcielibyście abym uczynił dla was dzisiaj?”\n\nŻyczę wam, byście doświadczyli dzisiaj Jego cudownej obecności. Dotyku Jego silnych, pełnych miłości ramion, w których znajdziecie pocieszenie, podniesienie, nadzieję i siłę do kolejnego dnia.\n\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg24,
-                    likes: 248,
+                    likes: 0,
                     amen: 214
                 });
             } catch(e) {}
@@ -8550,7 +8635,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'CUDA KAŻDEGO DNIA! 23 SIERPNIA 2026. ON SŁYSZY TWÓJ GŁOS!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nON SŁYSZY TWÓJ GŁOS!\n\nCzy wiesz, że pingwiny cesarskie i królewskie potrafią rozpoznać głos własnych piskląt spośród tysięcy młodych, zgromadzonych w tak zwanych żłobkach? Fascynujące! Jak to możliwe? Okazuje się, że pisklęta potrafią wydawać dźwięki o dwóch różnych częstotliwościach jednocześnie, co tworzy wyjątkowy „odcisk dźwiękowy”, który przypomina cyfrowy kod. Rodzice i pisklęta, jeszcze zanim się wyklują, uczą się tych dźwięków, by później móc wyfiltrować częstotliwości swojego malucha spośród hałasu tysięcy innych ptaków.\n\nChoć jesteś jednym z tysięcy, jesteś słyszany! Psalmista pisał: „Miłuję Pana, bo usłyszał mój głos błagalny, bo nakłonił ku mnie swego ucha w dniu mego wołania” (Ps 116,1). Twój głos ma znaczenie, bo kiedy wołasz twój Ojciec w niebie odpowiada. Twój głos odróżnia się od wszystkich innych. Twoje pragnienie serca, twoja potrzeba ma dla Niego znaczenie. Bo kocha cię bardzo osobiście i czule. Chce okazywać ci łaskę przebaczenia, zaspakajać twoją potrzebę miłości, bezpieczeństwa, pokoju.\n\nKiedy będziesz wołał, On „skryje cię w dniu niedoli w szałasie swoim, schowa w ukryciu namiotu swego, postawi wysoko na skale” (Ps 27, 5). Wołaj do Niego w chwilach dobrych i złych. Kiedy jest ci dobrze i kiedy jest źle. Nie ma nic ważniejszego w co mógłbyś inwestować swoje życie tu na ziemi niż pielęgnowanie relacji ze swoim Bogiem. Bo choć wszystko przeminie, ona będzie trwała wiecznie!\n\nPamiętasz co Jezus powiedział do Marty, która w swojej chęci usłużenia Mu kompletnie się pogubiła? „Marto droga, tak wiele spraw cię zaprząta! A przecież jedno tylko się liczy w życiu naprawdę. Maria to właśnie wybrała i nie będzie tego pozbawiona” (Łk 10,41-42). Co wybrała? Budowanie relacji ze swoim Panem i Przyjacielem. Jezus tęskni by spędzać z tobą czas. On ma tyle miłości, którą chce się z tobą podzielić. Czy masz czas by się zatrzymać, spędzić go u Jego stóp i przyjąć to co On ma dla ciebie na dzisiaj?\n\n„Ojcze, dziękuję Ci, że Twoje uszy są nakierowane na mój głos, który rozpoznajesz z daleka. Że słyszysz i odpowiadasz. Że znasz mnie i moją sytuację i będziesz działał w moim imieniu. Chcę inwestować w naszą relację. Pokieruj moim sercem i pomóż mi dzisiaj wybierać to, co przybliża mnie do Ciebie, nie oddala. Dziękuję, że otaczasz mnie łaską i miłością, bo Taki jesteś”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg23,
-                    likes: 215,
+                    likes: 0,
                     amen: 189
                 });
             } catch(e) {}
@@ -8574,7 +8659,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'CUDA KAŻDEGO DNIA! 22 SIERPNIA 2026. ZAMIEŃ TROSKĘ W MODLITWĘ!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nZAMIEŃ TROSKĘ W MODLITWĘ!\n\nBardzo spodobało mi się, co pisze autorka Carrie Mars: „Lubię patrzeć, jak szybko jestem w stanie zamienić myśl w modlitwę. Zauważam myśl, która mogłaby wskoczyć do pociągu niepokoju, ale zamiast tego kieruję ją ku Bogu”. Apostoł Paweł pisał: „Niczym się już nie zamartwiajcie, lecz w każdej modlitwie i błaganiu z dziękczynieniem przedstawiajcie Bogu wasze prośby. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie” (Flp.4,6). Coś cię martwi w tej chwili? Co to jest? Nazwij to i szybko zamień tę troskę w modlitwę. Czy wiesz, co tworzy najwięcej niepokoju w naszym życiu? To wyciąganie przedwczesnych wniosków co do okoliczności życiowych. Przypuśćmy, że członek rodziny spóźnia się do domu. Ty zaczynasz wyobrażać sobie różne rzeczy, panikujesz. Zamiast tego raczej pomódl się: „Boże, miej Go w swojej opiece”. Doświadczyłam tego i wiem, że Boży pokój potrafi pokonać największy strach.\n\nKtoś ma mieć operację? Módl się: „Panie, daj mądrość lekarzom, by właściwie przeprowadzili zabieg. Pomóż mu wrócić do pełnego zdrowia”. Bardzo lubię ten moment, kiedy mam przed sobą trudną sprawę, rozmowę i mogę ją delegować Bogu. Mówię wtedy: „Panie, zajmij się tym. Daj mi mądrość, światło, rozeznanie, cierpliwość, których potrzebuję. Pokieruj moimi myślami”. Czujesz, że brakuje ci energii, dopadło cię wyczerpanie, zniechęcenie? Mów: „Panie, dodaj mi siły i wytrwałości, pomóż się wyciszyć i odpocząć”. Jaką modlitwę chcesz przynieś dzisiaj Bogu? Niech to będzie twoim nowym nawykiem – błyskawiczne przekształcanie zmartwienia w modlitwę.\n\n„Panie, ucz mnie, jak przychodzić od razu do Ciebie, kiedy pojawiają się troski czy zmartwienia – i jak oddawać je Tobie. Wiem, że Ty się najlepiej zajmiesz wszystkimi problemami. Bądź ze mną dzisiaj i kieruj moimi myślami. Amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg22,
-                    likes: 194,
+                    likes: 0,
                     amen: 172
                 });
             } catch(e) {}
@@ -8598,7 +8683,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'CUDA KAŻDEGO DNIA! 21 SIERPNIA 2026. KIEROWNICA CZY KOŁO ZAPASOWE?',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nKIEROWNICA CZY KOŁO ZAPASOWE?\n\nCorrie ten Boom postawiła bardzo ciekawe pytanie: „Czym jest dla ciebie modlitwa, kierownicą czy kołem zapasowym?”. Jedna z naszych studentek kursu „Jak się modlić?” napisała: „Kurs bardzo mi pomógł zrozumieć znaczenie modlitwy w moim życiu… Odkąd zaczęłam modlić się więcej, codziennie i od serca, planując i uwzględniając wszystkie szczegóły, które poznałam, czuję, jak Duch Święty mnie dotyka. Teraz nie wyobrażam sobie ani pół dnia bez tego. Nie mogę zrozumieć, jak wcześniej czasami o niej zapominałam. Po kursie modlitwa stała się sensowna i zajęła ważne miejsce w mojej codzienności”. Inny kursant pisze: „Dziękuję Wam bardzo za ten kurs, otworzył mi oczy na to, co znaczy prawdziwie się modlić. Nie chodzi o to, by klepać jakieś regułki, ale by prawdziwie, z czystym sercem i oddaniem spotykać się z Bogiem codziennie, w każdej chwili swojego życia”.\n\nNajlepszą radą, jaką możesz znaleźć dla siebie, w Bożym Słowie, jest ta: „Nieustannie się módlcie, w każdej sprawie i we wszelkich okolicznościach dziękujcie Najwyższemu” (1Tes.5,17-18). Jakie są twoje okoliczności dzisiaj? Niesprzyjające modlitwie? Bo masz dużo zajęć, nie możesz znaleźć spokojnej chwili dla siebie? Myślisz, że modlitwa wymaga jakiejś specjalnej oprawy? Bóg chce być z tobą w kontakcie zawsze i wszędzie! Nieustannie! Wow! Czy to możliwe? Możliwe! A wiesz dlaczego? Dlatego że On jest wszędzie z tobą – tuż obok jak dobry towarzysz. W samochodzie, w autobusie, kiedy zmywasz czy zmieniasz pieluchę dziecku. Kiedy się budzisz i kiedy idziesz spać. Pragnie uczestniczyć we wszystkim, co robisz, myślisz. Chce pomóc ci rozładowywać emocje. Służy swoją mądrością, kiedy nie wiesz, co robić, co powiedzieć, prostuje drogę, kiedy masz wątpliwości czy czujesz zagubienie. Zsyła pociechę i pokój. Nie uważasz, że to niezwykłe? Wielki, wszechmocny Bóg tak blisko dla ciebie! Co za ogromny przywilej. On uwielbia, kiedy z Nim rozmawiasz, słyszy cię w każdej chwili. Czego dzisiaj potrzebujesz? Możesz po prostu zawołać „Panie, pomóż”, możesz dziękować i uwielbiać Go za to, kim jest, za piękno stworzenia, które podziwiasz. Bóg czeka na twój głos, i chce czynić w twoim życiu cuda. Jak pisze Dan Hayes: „Jedno wiem, że kiedy się modlę, zbiegi okoliczności się zdarzają, kiedy się nie modlę, nie mają miejsca”.\n\n„Panie, dziękuję Ci za przywilej modlitwy. Że mogę przychodzić bezpośrednio do Ciebie ze wszystkim i w każdej chwili. Ty nigdy nie jesteś zmęczony, nie masz mnie dość. Żadna sprawa nie wydaje Ci się zbyt mała czy błaha. Jak Ojciec zawsze służysz mądrą radą i wsparciem. Chcę całym sercem trwać przy Tobie, przynosić Ci wszystko i słyszeć, co mówisz. Dziękuję, Ojcze, że jesteś ze mną i nigdy mnie nie zostawiasz. W imieniu Pana Jezusa, amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg21,
-                    likes: 186,
+                    likes: 0,
                     amen: 164
                 });
             } catch(e) {}
@@ -8622,7 +8707,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'CUDA KAŻDEGO DNIA! 20 SIERPNIA 2026. WSZYSTKO MOŻNA ZMIENIĆ!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nWSZYSTKO MOŻNA ZMIENIĆ!\n\nPorozmawiajmy jeszcze trochę o tym, co działa w naszym życiu, a co nie i dlaczego. Bo przecież nie chcemy karmić się wiedzą teoretyczną, ale taką, która sprawdza się w codzienności, prawda?\n\nZadajesz sobie czasem takie pytania? Czy sposób, w jaki wychowuję dziecko, działa? Czy może muszę coś zmienić? Czy moje małżeństwo działa? Czy sposób, w jaki się komunikujemy, rozwiązujemy konflikty, współpracujemy ze sobą jest efektywny? Czy może powinniśmy coś zmienić? Czy moje życie z Bogiem działa? Wierzysz i ufasz, trzymasz się Jego Prawdy i Jego obietnic, czy raczej czujesz frustrację, słabość, zmęczenie ciągłym staraniem się, które nie przynosi efektów? Może mówisz: „Nie, nie działa, ale nie mam pojęcia, jak to zmienić”? „Moje stare sposoby nie działają. Co robić?” Nie widzisz rozwiązania, bo za mocno tkwisz w starych nawykach, koleinach zachowań, z których tak trudno wyjść. Wydaje ci się, że już nic nie da się zmienić i tak widocznie musi być?\n\nFascynuje mnie, jak pomocne bywa spojrzenie z zewnątrz. Pewnie znasz, program „Kuchenne rewolucje”. To świetny przykład tego, jak potrafimy być ślepi na własne przywary, złe skłonności czy zaniedbania. Właściciel restauracji najczęściej mówi: „Próbowaliśmy już wszystkiego i nie ma efektów”. Bardzo rzadko widzi problem w sobie, a jeszcze rzadziej jest gotów się z nim skonfrontować. Bunt, złość, „jak ona śmie mnie krytykować” – to najczęstsze reakcje. W takich sytuacjach mamy tendencję, by zrzucać winę na okoliczności, na kogoś innego.\n\nA przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem wszystko jest możliwe” – jak zapewnia Jego Słowo (Łk.1,37). Wszystko, czyli nawet to, co tobie, wydaje się już niemożliwe do zmiany. Co to jest w twoim życiu? Potrzebujesz świeżego spojrzenia kogoś z zewnątrz? Szukaj pomocy, porady, porozmawiaj z kimś zaufanym. Nie zostawiaj tego, czekając, aż samo się ułoży.\n\n„Panie, dodaj mi wiary, że z Tobą wszystko jest możliwe! Moje stare sposoby nie działają. Potrzebuję Ciebie w moim życiu. Pokaż mi co wymaga zmiany i pomóż z pokorą przyjąć prawdę. Postaw na mojej drodze kogoś, kto pomoże mi wrócić na właściwe tory i otworzyć się na to co Ty mówisz do mnie”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg,
-                    likes: 142,
+                    likes: 0,
                     amen: 129
                 });
             } catch(e) {}
@@ -8648,7 +8733,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'Fundament Bożej Relacji',
                     text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! ☕✨',
                     image: 'avatar_cezary_official.jpg',
-                    likes: 42,
+                    likes: 0,
                     amen: 38
                 });
 
@@ -8663,7 +8748,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'Pokój w Chrystusie',
                     text: '„Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! ✨',
                     image: 'tlo_pr_cc.jpg',
-                    likes: 58,
+                    likes: 0,
                     amen: 51
                 });
 
@@ -8707,7 +8792,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'Miłość Przewyższająca Perły',
                     text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! ✨✨',
                     image: 'avatar_wioletta_official.jpg',
-                    likes: 64,
+                    likes: 0,
                     amen: 59
                 });
 
@@ -8722,7 +8807,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     title: 'Gorąca Miłość Wzajemna',
                     text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego i pełnego Bożej obecności wieczoru! ✨',
                     image: 'tlo_ksiega_nadziei.png',
-                    likes: 72,
+                    likes: 0,
                     amen: 65
                 });
 
@@ -8758,7 +8843,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 text: 'Szczęść Boże wszystkim w społeczności LUMINA! ✨ Zapraszam Was gorąco do wspólnego trwania w Bożej obecności w ramach nowej serii „Biblijny Czas Modlitwy”. Otwórzmy razem serca na działanie Ducha Świętego i powierzajmy Panu nasze rodziny i intencje! 🙏🌸',
                 youtubeId: 'EWY-J2gSqwo',
                 image: 'avatar_jolawojcik.jpg',
-                likes: 48,
+                likes: 0,
                 amen: 52
             });
 
@@ -8774,7 +8859,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 text: '„Wzywaj mnie w dniu utrapienia, a wyzwolę cię, i będziesz mnie chwalił.” (Psalm 50, 15). W drugim odcinku serii rozważamy moc wytrwałej modlitwy. Niech Boży pokój napełni Wasze domy! ✨🕊️',
                 youtubeId: 'nFbfDqf42Q4',
                 image: 'avatar_jolawojcik.jpg',
-                likes: 39,
+                likes: 0,
                 amen: 45
             });
 
@@ -8785,81 +8870,15 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 const zCustomPosts = JSON.parse(localStorage.getItem('lumina_posts_zbyszekgieron') || '[]');
 
                 const zSeedPosts = [
-                    {
-                        id: 'post_zg_btd',
-                        type: 'post',
-                        author: 'Zbyszek Gieroń',
-                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
-                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
-                        authorSlug: 'zbyszekgieron',
-                        time: 'Dzisiaj • 📖 Biblijny Tekst Dnia',
-                        title: '📖 Biblijny Tekst Dnia • Codzienna analiza wersetów',
-                        text: 'Link jest zawsze aktywny prowadzi do wcześniejszych analiz i aktualnej - zgodnej z kalendarzem.\nZapraszam do codziennego rozważania Słowa Bożego! 🕊️✨',
-                        image: 'tlo-biblia.png',
-                        externalUrl: 'https://claude.ai/share/bdbc52b0-b463-43a2-afd9-a6a7307f00f7',
-                        externalUrlLabel: 'Otwórz Analizę w Claude AI',
-                        likes: 42,
-                        amen: 56,
-                        _sortTs: Date.now()
-                    },
-                    {
-                        id: 'post_zg_1',
-                        type: 'post',
-                        author: 'Zbyszek Gieroń',
-                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
-                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
-                        authorSlug: 'zbyszekgieron',
-                        time: 'Dzisiaj • 🕊️ Misja & Świadectwo',
-                        title: 'Czy znasz brakujące SŁOWO? • Narzędzie HiperBiblia',
-                        text: '<12> ➖ Czy znasz brakujące SŁOWO ? ❓\n\n✝️ Źródło cytatu 👉 HiperBiblia\nWpisz do wyszukiwarki słowo: HiperBiblia 👉 poznaj narzędzie do studiowania Pisma.\n\n💎 Główne funkcje strony HiperBiblia:\n• Porównywarka przekładów\n• Przypisy i komentarze\n• Czytnik\n• Wyszukiwarka\n• Interlinia\n• Leksykony\n• Kody Stronga\n• Zapytaj AI\n• Audio 💎',
-                        image: 'post_zbyszek_hiperbiblia.jpg',
-                        fbUrl: 'https://www.facebook.com/permalink.php?story_fbid=pfbid0wrgmawnCGcCx2ojZbJPfEPVGn3kaeAjaA1XgVDZj7AALHDpWtWAsovzpNw5xJC4Ql&id=100018961423282',
-                        likes: 52,
-                        amen: 64,
-                        _sortTs: Date.now() - 2 * 3600 * 1000
-                    },
-                    {
-                        id: 'post_zg_psalm1',
-                        type: 'post',
-                        author: 'Zbyszek Gieroń',
-                        authorRole: 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
-                        authorAvatar: 'avatar_zbyszek_gieron.jpg',
-                        authorSlug: 'zbyszekgieron',
-                        time: 'Wczoraj • 📁 Publikacja Google Drive',
-                        title: 'Psalm 1 • Prawdziwe Szczęście i Boże Rozmyślanie',
-                        text: '„Błogosławiony człowiek, który nie idzie za radą występnych... Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” (Psalm 1, 1-2) 📖🌿\n\nMateriał z mojego Dysku Google.',
-                        image: 'post_zbyszek_psalm1.jpg',
-                        gdriveData: {
-                            fileId: '1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd',
-                            type: 'file',
-                            typeLabel: 'Dysk Google • Psalm 1',
-                            icon: 'fa-brands fa-google-drive',
-                            previewEmbedUrl: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview',
-                            directImgUrl: 'post_zbyszek_psalm1.jpg',
-                            mode: 'embed'
-                        },
-                        gdriveEmbed: 'https://drive.google.com/file/d/1kaDZm9hwcsuBbSDQR_EI14flP_08L8Pd/preview',
-                        likes: 68,
-                        amen: 74,
-                        _sortTs: Date.now() - 24 * 3600 * 1000
-                    }
+
+
                 ];
 
                 const allZPosts = [...zCustomPosts, ...(zProfile?.posts || []), ...zSeedPosts];
                 allZPosts.forEach(zp => {
                     if (!zp || !zp.id || seenPostIds.has(zp.id)) return;
                     seenPostIds.add(zp.id);
-                    posts.push({
-                        ...zp,
-                        author: zp.author || 'Zbyszek Gieroń',
-                        authorRole: zp.authorRole || 'Profil Misyjny 🕊️✨ • Świadectwo & Wiara',
-                        authorAvatar: zp.authorAvatar || 'avatar_zbyszek_gieron.jpg',
-                        authorSlug: 'zbyszekgieron',
-                        time: zp.time || (formatPostTimestamp(zp.createdAtTimestamp || extractSortTs(zp), 'Przed chwilą') + ' • 🕊️ Świadectwo'),
-                        likes: zp.likes || 1,
-                        amen: zp.amen || 0,
-                        _sortTs: zp.createdAtTimestamp || extractSortTs(zp) || Date.now()
-                    });
+                    posts.push();
                 });
             } catch(e) {}
 
@@ -8875,7 +8894,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 title: 'Cisza i Boża Obecność na Szlaku',
                 text: 'Nic tak nie przybliża do Stwórcy jak poranna modlitwa w górach przy wschodzie słońca. Pozdrawiam całą chrześcijańską społeczność portalu LUMINA! ✨⛪',
                 image: 'worship_bg.jpg',
-                likes: 31,
+                likes: 0,
                 amen: 27
             });
 
@@ -8891,7 +8910,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 title: 'Wdzięczność za Małe Rzeczy',
                 text: '„Pan jest moją siłą i moją tarczą, w Nim zaufało moje serce i otrzymałem pomoc.” Życzę Wam pięknego dnia pełnego łaski! ✨✨',
                 image: 'avatar_noemi.jpg',
-                likes: 45,
+                likes: 0,
                 amen: 39
             });
 
@@ -8907,7 +8926,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 title: 'Nowe Dźwięki Ku Bożej Chwale',
                 text: 'Przygotowujemy z zespołem nową aranżację Psalmów. Nie ma nic piękniejszego niż łączenie talentów ze służbą dla Pana! ✨✨',
                 image: '',
-                likes: 53,
+                likes: 0,
                 amen: 48
             });
 
@@ -8923,7 +8942,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 title: 'Piękno Stworzenia',
                 text: 'Każdy wschód słońca to nowe płótno namalowane ręką Boga. Szukajmy piękna i dobra we wszystkim, co nas otacza! ✨',
                 image: 'avatar_widget_ania.jpg',
-                likes: 39,
+                likes: 0,
                 amen: 34
             });
 
@@ -9568,8 +9587,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 time: 'W każdą niedzielę o 09:00 • Apel Misyjny CC',
                 title: '🌿 APEL MISYJNY CHRISTIAN CULTURE',
                 image: 'apel_misyjny_cc.webp?v=20260920_blik537137043',
-                likes: 396,
-                amen: 348,
+                likes: 0,
+                amen: 0,
                 _pinned: true
             };
         };
@@ -9778,7 +9797,9 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             if (!container) return;
 
             // 🎲 Nowy seed przy każdym renderze → świeży shuffle rolek za każdym razem
-            _feedRenderSeed = Math.floor(Math.random() * 999983) ^ (Date.now() & 0x7FFFF);
+            // 🛡️ STRAŻNIK: ten sam seed przez całą wizytę. Wcześniej KAŻDE odświeżenie danych
+            // (polubienie, zmiana profilu, nowy komentarz) tasowało tablicę od nowa → efekt „migania”.
+            _feedRenderSeed = window.__luminaFeedVisitSeed || (window.__luminaFeedVisitSeed = (Math.floor(Math.random() * 999983) ^ (Date.now() & 0x7FFFF)) || 1);
 
             const daypart = getCurrentDaypart();
             updateLiveDaypartUI(daypart);
@@ -9806,6 +9827,66 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             window._luminaTargetAuthor = deepLinkAuthor;
 
             let combined = [];
+
+            // 👑 POZYCJA 0 / NAJWYŻSZA: Artykuł Flagowy Założyciela / Udostępniony Wpis
+            // Gwarancja, że artykuł "AI, SI a biblijny Antychryst" Cezarego Rogowskiego lub wpis z udostępnienia
+            // pojawia się NATYCHMIAST jako PIERWSZY post na samej górze Tablicy LUMINA
+            let topSharedOrFlagship = (window._luminaTopSharedPost) || userPosts.find(p => p.id === 'post_art_ai_si_antychryst_cezary_rogowski' || (p.sourceSlug === 'ai-antychryst') || (p.title && p.title.includes('AI, SI a biblijny Antychryst')));
+            if (!topSharedOrFlagship && typeof window.LUMINA_CORE_POSTS_DATA !== 'undefined' && Array.isArray(window.LUMINA_CORE_POSTS_DATA)) {
+                topSharedOrFlagship = window.LUMINA_CORE_POSTS_DATA.find(p => p.id === 'post_art_ai_si_antychryst_cezary_rogowski');
+            }
+            if (!topSharedOrFlagship) {
+                try {
+                    const raw = localStorage.getItem('lumina_recent_published_post');
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        if (parsed && (parsed.id === 'post_art_ai_si_antychryst_cezary_rogowski' || (parsed.sourceSlug === 'ai-antychryst') || (parsed.title && parsed.title.includes('Antychryst')))) {
+                            topSharedOrFlagship = parsed;
+                        }
+                    }
+                } catch(e) {}
+            }
+            if (!topSharedOrFlagship) {
+                topSharedOrFlagship = {
+                    id: 'post_art_ai_si_antychryst_cezary_rogowski',
+                    type: 'post',
+                    category: 'si',
+                    isArticle: true,
+                    author: 'Cezary Rogowski',
+                    authorSlug: 'cezaryrgowski',
+                    authorAvatar: 'avatar_cezary_official.jpg',
+                    authorRole: 'Założyciel Christian Culture ✨ • Redakcja Teologiczna',
+                    authorBadge: '👑 PUBLIKACJA GŁÓWNA • NOWE TECHNOLOGIE & SI',
+                    badgeHtml: '<span class="badge-type-tag" style="background:linear-gradient(135deg,#bb142e,#7f1d1d);border:1.5px solid #f87171;color:#fff;font-weight:800;box-shadow:0 0 10px rgba(187,20,46,0.4);" title="👑 GŁÓWNA PUBLIKACJA • NOWE TECHNOLOGIE & SI"><i class="fa-solid fa-microchip"></i> <span class="badge-type-tag-text">NOWE TECHNOLOGIE & SI • EKSKLUZYWNY ARTYKUŁ</span></span>',
+                    time: 'Dzisiaj • 👑 Główna Publikacja Założyciela',
+                    title: 'AI, SI a biblijny Antychryst: Dlaczego sztuczna inteligencja nie może być Antychrystem',
+                    text: 'Dlaczego sztuczna inteligencja — w świetle krytyki biblijno-historycznej, proroczej i eschatologicznej — nie może być Antychrystem?\n\nWraz z rozwojem sztucznej inteligencji coraz częściej pojawiają się próby łączenia AI z biblijnym Antychrystem, „obrazem bestii” czy systemem kontroli z Apokalipsy 13. Z perspektywy rzetelnej analizy Pisma Świętego i proroctw Księgi Daniela takie utożsamienie jest jednak metodologicznie błędne.\n\nBiblia nie przedstawia Antychrysta jako technologii, lecz jako historyczny system religijno-polityczny o określonej sukcesji (1260 lat, mały róg, roszczenia do Bożego Prawa i kultu). Sztuczna inteligencja jest narzędziem, a nie biblijnym podmiotem proroczym.\n\nZapraszam do lektury pełnej, 20-rozdziałowej analizy egzegetycznej z tabelami porównawczymi na portalu CCN Nowe Technologie & SI:\n🔗 https://polskieradio.cc/si/ai-antychryst',
+                    desc: 'Dlaczego sztuczna inteligencja — w świetle krytyki biblijno-historycznej, proroczej i eschatologicznej — nie może być Antychrystem. Rzetelna analiza Cezarego Rogowskiego.',
+                    image: '/images/si/ai-vs-antychryst.webp',
+                    imageUrl: '/images/si/ai-vs-antychryst.webp',
+                    actionText: 'Czytaj Cały Artykuł (14 min) ➔',
+                    actionUrl: 'https://polskieradio.cc/si/ai-antychryst',
+                    externalUrl: 'https://polskieradio.cc/si/ai-antychryst',
+                    externalUrlLabel: 'Czytaj Cały Artykuł (14 min) ➔',
+                    sourceUrl: 'https://polskieradio.cc/si/ai-antychryst',
+                    sourceSlug: 'ai-antychryst',
+                    likes: 0,
+                    amen: 0,
+                    createdAtTimestamp: (window.__luminaPageT0 || (window.__luminaPageT0 = Date.now())),
+                    _sortTs: (window.__luminaPageT0 || (window.__luminaPageT0 = Date.now())) + 1000000000,
+                    _isNewlyPublished: true,
+                    _isFreshSpotlight: true,
+                    _isTopSpotlight: true
+                };
+            }
+            if (topSharedOrFlagship) {
+                topSharedOrFlagship._isTopSpotlight = true;
+                topSharedOrFlagship._isNewlyPublished = true;
+                topSharedOrFlagship._isFreshSpotlight = true;
+                if (!combined.some(it => it.id === topSharedOrFlagship.id)) {
+                    combined.push(topSharedOrFlagship);
+                }
+            }
 
             // 1. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
             if (window._luminaDailyReflection) {
@@ -9861,7 +9942,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             const normalCampaigns = [];
 
             userPosts.forEach(p => {
-                if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id)) {
+                if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id) || (topSharedOrFlagship && p.id === topSharedOrFlagship.id)) {
                     return; // Już umieszczony na stałej pozycji 3 zaraz pod reklamą KONCEPT!
                 }
                 if (pinnedPostIds.includes(p.id)) {
@@ -10061,6 +10142,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                         <p style="font-size:0.85rem; color:var(--text-secondary);">Wybierz inną zakładkę lub dodaj nową publikację.</p>
                     </div>
                 `;
+                container.__luminaStableHtml = undefined;
                 return;
             }
 
@@ -10069,24 +10151,21 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 if (it.authorAvatar && it.authorAvatar !== 'icon.png' && it.authorAvatar.trim() !== '') {
                     return it.authorAvatar;
                 }
+                // 🛡️ STRAŻNIK: zdjęcie po DOKŁADNYM slugu konta — nigdy po fragmencie imienia
+                // (wcześniej każdy „Cezary” dostawał zdjęcie Założyciela, a każdy, kto miał „men” w nazwisku — logo CC Men).
                 const slug = (it.authorSlug || '').toLowerCase().trim();
-                const author = (it.author || '').toLowerCase().trim();
-                if (slug === 'cezaryrgowski' || author.includes('cezary')) return 'avatar_cezary_official.jpg';
-                if (slug === 'wiolettarogowska' || author.includes('wioletta')) return 'avatar_wioletta_official.jpg';
-                if (slug === 'andrzejthiel' || (!author.includes('hamera') && (author.includes('thiel') || author === 'andrzej'))) return 'avatar_andrzej_thiel.jpg';
-                if (slug === 'radiocc' || author.includes('radio')) return 'logo_radio_cc.jpg';
-                if (slug === 'cctv' || author.includes('cctv') || author.includes('telewizja')) return 'logo_cctv.png';
-                if (slug === 'ccwomen' || author.includes('women')) return 'logo_cc_women.jpg';
-                if (slug === 'ccmen' || author.includes('men')) return 'logo_cc_men.jpg';
-                if (slug === 'studiodobregoslowa' || author.includes('studio dobrego')) return 'studiodobregoslowa_avatar.jpg';
-                if (slug === 'osobowoscplus' || author.includes('osobowość')) return 'logo_osobowosc_plus.jpg';
-                if (slug === 'zbyszekgieron' || author.includes('zbyszek') || author.includes('gieroń') || author.includes('gieron')) return 'avatar_zbyszek_gieron.jpg';
-                if (author.includes('biblia')) return 'reklama_biblia.png';
+                const BY_SLUG = {
+                    cezaryrgowski: 'avatar_cezary_official.jpg', wiolettarogowska: 'avatar_wioletta_official.jpg',
+                    andrzejthiel: 'avatar_andrzej_thiel.jpg', radiocc: 'logo_radio_cc.jpg', cctv: 'logo_cctv.png',
+                    ccwomen: 'logo_cc_women.jpg', ccmen: 'logo_cc_men.jpg', studiodobregoslowa: 'studiodobregoslowa_avatar.jpg',
+                    osobowoscplus: 'logo_osobowosc_plus.jpg', zbyszekgieron: 'avatar_zbyszek_gieron.jpg'
+                };
+                if (BY_SLUG[slug]) return BY_SLUG[slug];
                 return 'lumina_logo_portal.jpg';
             }
 
             // ── Profile CC dla karuzeli "Poznajmy się bliżej" ──
-            const LUMINA_FEED_PROFILES = [
+            const LUMINA_FEED_PROFILES_LEGACY_BRANDS = [
                 { name: 'Cezary Rogowski', slug: 'cezaryrgowski', tag: 'Dowódca CC', avatar: 'avatar_cezary_official.jpg', verified: true },
                 { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', tag: 'Ewangelizacja', avatar: 'avatar_wioletta_official.jpg', verified: true },
                 { name: 'Andrzej Thiel', slug: 'andrzejthiel', tag: 'Słowo na każdy dzień', avatar: 'avatar_andrzej_thiel.jpg', verified: true },
@@ -10095,21 +10174,21 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 { name: 'CC Women', slug: 'ccwomen', tag: 'Kobiety wiary', avatar: 'logo_cc_women.jpg', verified: false },
                 { name: 'CC Men', slug: 'ccmen', tag: 'Mężczyźni wiary', avatar: 'logo_cc_men.jpg', verified: false },
                 { name: 'Studio Dobrego Słowa', slug: 'studiodobregoslowa', tag: 'Nauczanie', avatar: 'studiodobregoslowa_avatar.jpg?v=20260918_sds_host', verified: true },
+
                 { name: 'OsobowośćPLUS', slug: 'osobowoscplus', tag: 'Rozwój duchowy', avatar: 'logo_osobowosc_plus.jpg', verified: false },
             ];
 
             // Rotacja karuzeli — różny zestaw przy każdym ładowaniu feedu (różny offset → różny miks)
-            let _profileCarouselOffset = Math.floor(Math.random() * 10);
+            let _profileCarouselOffset = (window.__luminaFeedVisitSeed || 0) % 10;
             let _profileCarouselIdx = 0;
             function buildProfilesCarouselHtml() {
-                // 🛡️ STRAŻNIK 2026-10-11: wszyscy członkowie społeczności (zdjęcie użytkownika, logo LUMINA w ostateczności)
-                if (typeof window.getLuminaCarouselPeople === 'function') {
-                    const people = window.getLuminaCarouselPeople();
-                    if (people.length) LUMINA_FEED_PROFILES.splice(0, LUMINA_FEED_PROFILES.length, ...people);
-                }
+                // 🛡️ STRAŻNIK: „Poznajmy się bliżej” = prawdziwi ludzie z prawdziwym zdjęciem (bez logotypów marek).
+                const LUMINA_FEED_PROFILES = (typeof window.getLuminaCarouselPeople === 'function') ? window.getLuminaCarouselPeople() : [];
+                if (!LUMINA_FEED_PROFILES.length) { _profileCarouselIdx++; return ''; }
+                // Wszystkie profile, ale zaczynamy od innego punktu przy każdej karuzeli
                 const offset = (_profileCarouselOffset + _profileCarouselIdx * 3) % LUMINA_FEED_PROFILES.length;
                 _profileCarouselIdx++;
-                const uid = 'fc' + Date.now() + _profileCarouselIdx;
+                const uid = 'fc_feed_' + _profileCarouselIdx;
                 const cards = LUMINA_FEED_PROFILES.map((_, i) => {
                     const p = LUMINA_FEED_PROFILES[(offset + i) % LUMINA_FEED_PROFILES.length];
                     return `<div class="profile-carousel-card" onclick="window.location.href='lumina-profile.html?user=${p.slug}'" title="Zobacz profil: ${p.name}">
@@ -10149,7 +10228,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             // ── Feed render z karuzelą co 8 postów ──
             const PROFILE_CAROUSEL_EVERY = 4;
             let _feedPostCount = 0; // liczy tylko prawdziwe posty (nie donor_wall, nie broadcast)
-            container.innerHTML = visibleCombined.map(item => {
+            let __luminaFeedHtml = visibleCombined.map(item => {
                 // Wstaw karuzelę co 8 prawdziwych postów (ale nie przed pierwszym postem)
                 let carouselPrefix = '';
                 if (!item.type || (item.type !== 'donor_wall' && !item._isBroadcastChannel)) {
@@ -10405,19 +10484,54 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     authorLink = 'lumina.cezaryrgowski.html';
                 }
 
-                // Automatyczne dopasowanie właściwej grafiki wpisu / kampanii (np. AI Antychryst, artykuły CCN itp.)
-                const itemContentScope = `${item.title || ''} ${item.desc || ''} ${item.text || ''} ${item.btnUrl || ''} ${item.actionUrl || ''} ${item.externalUrl || ''} ${item.sourceUrl || ''}`;
-                const isAiAntychrystPost = /ai-antychryst|antychryst/i.test(itemContentScope);
+                // Event details
+                let eventInfoHtml = '';
+                if (item.type === 'event' && (item.eventDate || item.eventLoc)) {
+                    eventInfoHtml = `
+                        <div class="event-info-pill">
+                            ${item.eventDate ? `<span><i class="fa-solid fa-calendar-days"></i> ${item.eventDate}</span>` : ''}
+                            ${item.eventLoc ? `<span><i class="fa-solid fa-location-dot"></i> ${item.eventLoc}</span>` : ''}
+                        </div>
+                    `;
+                }
+
+                const rawBody = item.text || item.desc || '';
+                const richResult = window.LuminaDB?.formatRichTextAndMedia
+                    ? window.LuminaDB.formatRichTextAndMedia(rawBody, item)
+                    : { html: rawBody, embedHtml: '' };
+
+                // Automatyczne dopasowanie właściwej grafiki wpisu / kampanii (np. /wspieraj, artykuły CCN itp.)
+                const itemUrlScope = `${item.btnUrl || ''} ${item.actionUrl || ''} ${item.externalUrl || ''} ${item.sourceUrl || ''}`;
+                const isAiAntychrystPost = /ai-antychryst/i.test(itemUrlScope) || /\/si\/ai-antychryst/i.test(itemUrlScope);
+
+                // Wykryj URL kandydata: z dedykowanych pól, podglądu linku lub z treści wpisu
+                const textFirstUrl = (richResult?.urls && richResult.urls.length > 0) ? richResult.urls[0] : ((item.text || item.desc || '').match(/(https?:\/\/[^\s<]+[^<.,:;"')\]\s])|(?:^|[\s(])((?:www\.)?[a-zA-Z0-9-]+\.(?:pl|cc|com|online|app)[^\s<]*)/i)?.[0]?.trim() || null);
+                const candidateUrl = item.btnUrl || item.actionUrl || item.externalUrl || item.sourceUrl || item.linkPreview?.url || textFirstUrl;
 
                 if (isAiAntychrystPost) {
                     if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_')) {
                         item.image = '/images/si/ai-vs-antychryst.webp';
                     }
-                } else if ((!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('z_biblia_za_pan_brat_hero')) && window.LuminaDB?.getHeuristicLinkMetadata) {
-                    const candidateUrl = item.btnUrl || item.actionUrl || item.externalUrl || item.sourceUrl;
-                    if (candidateUrl) {
-                        const hMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateUrl);
-                        if (hMeta && hMeta.image && !hMeta.image.includes('logo-glowne')) {
+                } else if (candidateUrl && candidateUrl.includes('wspieraj')) {
+                    item.linkPreview = {
+                        url: candidateUrl,
+                        host: 'polskieradio.cc/wspieraj',
+                        domain: 'polskieradio.cc',
+                        title: 'Wspieraj misję Christian Culture • Razem niesiemy nadzieję',
+                        description: 'Nie każdy może dać pieniądze. Każdy może pomóc nieść Ewangelię dalej. Wybierz swoją formę wsparcia.',
+                        image: 'https://polskieradio.cc/assets/cc-support/social.jpg',
+                        badge: '🤝 WSPIERAJ MISJĘ CC',
+                        ctaText: 'Wspieraj Dzieło Boże ➔',
+                        icon: 'fa-solid fa-hand-holding-heart'
+                    };
+                    if (item.image && item.image.includes('social.jpg')) {
+                        item.image = null;
+                    }
+                } else if (candidateUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
+                    const hMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateUrl);
+                    if (hMeta && hMeta.image && !hMeta.image.includes('logo-glowne')) {
+                        const isCourseHeroOnSpecificDay = (hMeta.image.includes('kc_day_') && item.image && item.image.includes('z_biblia_za_pan_brat_hero'));
+                        if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_') || isCourseHeroOnSpecificDay) {
                             item.image = hMeta.image;
                         }
                     }
@@ -10437,31 +10551,18 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                             </a>
                         </div>
                     `;
-                } else if (item.externalUrl) {
+                } else if (item.actionUrl || item.externalUrl || (item.sourceUrl && !item.sourceUrl.includes('lumina-tablica'))) {
+                    const targetCtaLink = item.actionUrl || item.externalUrl || item.sourceUrl;
+                    const ctaLabel = item.actionText || item.externalUrlLabel || 'Czytaj Cały Artykuł ➔';
+                    const isAiArt = String(targetCtaLink).includes('ai-antychryst') || String(targetCtaLink).includes('/si');
                     ctaHtml = `
                         <div style="margin: 14px 0 6px;">
-                            <a href="${escapeHtml(item.externalUrl)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; font-weight:800; font-size:0.9rem; padding:10px 18px; border-radius:12px; text-decoration:none; box-shadow:0 4px 15px rgba(245,158,11,0.35); transition:all 0.2s ease;">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> ${escapeHtml(item.externalUrlLabel || 'Otwórz Analizę w Claude AI')}
+                            <a href="${escapeHtml(targetCtaLink)}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:${isAiArt ? 'linear-gradient(135deg,#bb142e,#991b1b)' : 'linear-gradient(135deg,#f59e0b,#d97706)'}; border:1px solid ${isAiArt ? '#f87171' : '#facc15'}; color:${isAiArt ? '#fff' : '#000'}; font-weight:800; font-size:0.9rem; padding:10px 20px; border-radius:12px; text-decoration:none; box-shadow:0 4px 15px rgba(0,0,0,0.35); transition:all 0.2s ease;">
+                                <i class="fa-solid fa-newspaper"></i> ${escapeHtml(ctaLabel)}
                             </a>
                         </div>
                     `;
                 }
-
-                // Event details
-                let eventInfoHtml = '';
-                if (item.type === 'event' && (item.eventDate || item.eventLoc)) {
-                    eventInfoHtml = `
-                        <div class="event-info-pill">
-                            ${item.eventDate ? `<span><i class="fa-solid fa-calendar-days"></i> ${item.eventDate}</span>` : ''}
-                            ${item.eventLoc ? `<span><i class="fa-solid fa-location-dot"></i> ${item.eventLoc}</span>` : ''}
-                        </div>
-                    `;
-                }
-
-                const rawBody = item.text || item.desc || '';
-                const richResult = window.LuminaDB?.formatRichTextAndMedia
-                    ? window.LuminaDB.formatRichTextAndMedia(rawBody, item)
-                    : { html: rawBody, embedHtml: '' };
 
                 // ── Sprawdzenie czy wpis posiada YouTube (w polach wideo lub w tekście) ──
                 const postYtMatch = `${item.videoUrl || ''} ${item.youtubeUrl || ''} ${item.playlistUrl || ''} ${item.text || ''} ${item.desc || ''} ${item.title || ''} ${item.image || ''}`.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube(?:-nocookie)?\.com\/(?:[^\/\s"']+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/|i\.ytimg\.com\/vi\/|img\.youtube\.com\/vi\/)([a-zA-Z0-9_-]{11})/i);
@@ -10714,7 +10815,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             if (visibleCombined.length < combined.length) {
                 const remaining = combined.length - visibleCombined.length;
                 const nextCount = Math.min(FEED_PAGE_SIZE, remaining);
-                container.insertAdjacentHTML('beforeend', `
+                __luminaFeedHtml += (`
                     <div class="feed-load-more-wrap">
                         <button type="button" class="feed-load-more-btn" onclick="loadMoreFeedItems()" aria-describedby="feedPaginationStatus" title="Załaduj więcej wpisów na Tablicy">
                             <span>Zobacz Więcej</span>
@@ -10725,6 +10826,13 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                         </span>
                     </div>
                 `);
+            }
+            // 🛡️ STRAŻNIK (anty-miganie): jeśli nic się nie zmieniło — nic nie przerysowujemy.
+            // Jeśli zmienił się jeden wpis — podmieniamy tylko jego, reszta (filmy, YouTube) gra dalej.
+            if (typeof window.luminaApplyStableHtml === 'function') {
+                if (!window.luminaApplyStableHtml(container, __luminaFeedHtml)) return;
+            } else {
+                container.innerHTML = __luminaFeedHtml;
             }
             if (window.LuminaDB?.hydrateOpenGraphCards) {
                 window.LuminaDB.hydrateOpenGraphCards(container);
@@ -11664,6 +11772,14 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Opublikuj wpis ✨';
                 }
             }
+
+            // Płynne przewinięcie do nowo opublikowanego wpisu
+            setTimeout(() => {
+                const bar = document.getElementById('luminaQuickPostBar');
+                if (bar) {
+                    bar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 200);
         }
 
         // ══════════════════════════════════════════════════════════════════════════
@@ -11873,8 +11989,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             // Auto-resolve campaign image if not manually uploaded:
             let defaultCampImg = attachedCampaignImgDataUrl;
             if (!defaultCampImg) {
-                const combinedCampText = `${title || ''} ${desc || ''} ${btnUrl || ''}`;
-                if (/ai-antychryst|antychryst/i.test(combinedCampText)) {
+                if (/ai-antychryst/i.test(btnUrl || '')) {
                     defaultCampImg = '/images/si/ai-vs-antychryst.webp';
                 } else if (btnUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
                     const hMeta = window.LuminaDB.getHeuristicLinkMetadata(btnUrl);
@@ -11904,7 +12019,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 createdAtTimestamp: Date.now(),
                 _isNewlyPublished: true,
                 _isFreshSpotlight: true,
-                likes: 12,
+                likes: 0,
                 amen: 8
             };
 
@@ -13742,6 +13857,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             { slug: 'radiocc', name: 'Misja & Radio Christian Culture', job: 'Oficjalny Nadawca Radiowy & Ewangelizacja 📻', city: 'Polska', avatar: 'avatar_cezary_official.jpg', badge: '🕊️ Misja CC', isMission: true },
             { slug: 'andrzejthiel', name: 'Andrzej Thiel', job: 'Udostępnia rozważania Cuda Każdego Dnia 📖', city: 'Sieradz, Polska', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Autor CKD', isMission: true },
             { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
+
             { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Członkini Społeczności • Modlitwa & Wiara 🌸🕊️', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Modlitwa & Wiara', isMission: false },
             { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
@@ -14777,6 +14893,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             // Wyczyszczenie nieprzeczytanych wiadomości dla tego pokoju
             try {
                 localStorage.setItem('lumina_chat_read_' + chatId, String(Date.now()));
+                try { window.LuminaDB?.markChatRoomRead?.(chatId); } catch (_) {}
                 let unreadRooms = {};
                 try { unreadRooms = JSON.parse(localStorage.getItem('lumina_unread_rooms_json') || '{}'); } catch(e) {}
                 delete unreadRooms[slug];
@@ -15880,7 +15997,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 _renderFeedDebounceTimer = setTimeout(() => {
                     _renderFeedDebounceTimer = null;
                     renderFeed();
-                }, 60);
+                }, 250);
             }
 
             const initRealtimeSync = () => {
@@ -15892,14 +16009,17 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     });
 
                     // 2. Subscribe to Cezary & Wioletta Profile Avatars
+                    let _lastFounderAvatar = null, _lastWiolettaAvatar = null;
                     window.LuminaDB.subscribeToProfile('cezaryrgowski', (p) => {
-                        if (p && p.avatar && document.getElementById('founderBarAvatar')) {
+                        if (p && p.avatar && document.getElementById('founderBarAvatar') && document.getElementById('founderBarAvatar').getAttribute('src') !== p.avatar) {
                             document.getElementById('founderBarAvatar').src = p.avatar;
                         }
-                        scheduleRenderFeed();
+                        const av = p && p.avatar || null;
+                        if (av !== _lastFounderAvatar) { _lastFounderAvatar = av; scheduleRenderFeed(); }
                     });
-                    window.LuminaDB.subscribeToProfile('wiolettarogowska', () => {
-                        scheduleRenderFeed();
+                    window.LuminaDB.subscribeToProfile('wiolettarogowska', (p) => {
+                        const av = p && p.avatar || null;
+                        if (av !== _lastWiolettaAvatar) { _lastWiolettaAvatar = av; scheduleRenderFeed(); }
                     });
                 } else {
                     setTimeout(initRealtimeSync, 300);
@@ -15925,7 +16045,9 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             renderFeed();
         });
 
-        window.addEventListener('storage', () => {
+        window.addEventListener('storage', (ev) => {
+            // 🛡️ STRAŻNIK: reagujemy tylko na zmiany dotyczące tablicy (nie na każdy zapis w innej karcie)
+            if (ev && ev.key && !/^(lumina_(cloud_posts_cache|user_posts|feed|posts|profile_cezaryrgowski|hidden|blocked)|lumina_my_profile)/.test(ev.key)) return;
             syncFounderAvatar();
             if (typeof scheduleRenderFeed === 'function') {
                 scheduleRenderFeed();
@@ -16750,94 +16872,149 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
     })();
 
     // ══════════════════════════════════════════════════════════════════════════
-    // ── WEB SHARE TARGET RECEIVER ("Udostępnij na Lumina" z Android / Windows / iOS) ──
+    // ── WEB SHARE TARGET RECEIVER ("Udostępnij na Lumina" z ekosystemu CC / Android / iOS) ──
     // ══════════════════════════════════════════════════════════════════════════
     (function initWebShareTargetReceiver() {
         function handleIncomingWebShare() {
             try {
                 const params = new URLSearchParams(window.location.search);
-                let shareTitle = params.get('share_title') || params.get('title') || '';
-                let shareText = params.get('share_text') || params.get('text') || '';
-                let shareUrl = params.get('share_url') || params.get('url') || '';
-                let shareImg = params.get('share_image') || params.get('share_img') || params.get('img') || params.get('imageUrl') || '';
+                let stored = null;
+                const shareKey = params.get('share_key');
+                if (shareKey && /^[a-z0-9_]{4,40}$/i.test(shareKey)) {
+                    try {
+                        const raw = localStorage.getItem('lumina_share_payload_' + shareKey);
+                        if (raw) {
+                            stored = JSON.parse(raw);
+                            localStorage.removeItem('lumina_share_payload_' + shareKey);
+                        }
+                    } catch (err) { stored = null; }
+                }
+                const pick = (k1, k2, sk) => (stored && typeof stored[sk] === 'string' && stored[sk]) || params.get(k1) || params.get(k2) || '';
+                const shareTitle = pick('share_title', 'title', 'title');
+                const shareText = pick('share_text', 'text', 'text');
+                const shareUrl = pick('share_url', 'url', 'url');
+                const shareImg = params.get('share_image') || (stored && (stored.share_image || stored.imageUrl || stored.image || stored.share_img)) || pick('share_img', 'img', 'imageUrl');
+                const shareVideo = pick('share_video', 'video', 'videoUrl');
                 const shareKeyParam = params.get('share') || '';
 
-                if (!shareTitle && !shareText && !shareUrl && !shareImg && !shareKeyParam) return;
+                if (!shareTitle && !shareText && !shareUrl && !shareImg && !shareVideo && !shareKeyParam) return;
 
+                // Automatyczne rozpoznanie i wzbogacenie lekcji Kursu Codziennego (np. share=dzien-18 lub /dzien-18)
                 const detectedDayMatch = (shareKeyParam + ' ' + shareUrl + ' ' + (params.get('v') || '')).match(/dzien[_-](\d+)/i);
+                let finalShareImg = shareImg;
+                let finalShareTitle = shareTitle;
+                let finalShareUrl = shareUrl;
+                let finalShareText = shareText;
+
                 if (detectedDayMatch) {
                     const dayNum = parseInt(detectedDayMatch[1], 10);
-                    if (!shareUrl) shareUrl = 'https://polskieradio.cc/akademia/kurscodzienny/dzien-' + (dayNum < 10 ? '0' + dayNum : dayNum);
+                    if (!finalShareUrl) {
+                        finalShareUrl = 'https://polskieradio.cc/akademia/kurscodzienny/dzien-' + (dayNum < 10 ? '0' + dayNum : dayNum);
+                    }
                     if (window.LuminaDB?.getHeuristicLinkMetadata) {
-                        const hMeta = window.LuminaDB.getHeuristicLinkMetadata(shareUrl);
+                        const hMeta = window.LuminaDB.getHeuristicLinkMetadata(finalShareUrl);
                         if (hMeta) {
-                            if (!shareTitle || shareTitle.includes('Udostępnion')) shareTitle = hMeta.title;
-                            if (!shareImg || shareImg.includes('z_biblia_za_pan_brat_hero')) shareImg = hMeta.image;
+                            if (!finalShareTitle || finalShareTitle === 'Udostępniony wpis') finalShareTitle = hMeta.title;
+                            if (!finalShareImg || finalShareImg.includes('z_biblia_za_pan_brat_hero')) finalShareImg = hMeta.image;
                         }
                     }
-                    if (!shareImg) shareImg = 'https://polskieradio.cc/images/academy/daily/kc_day_' + String(dayNum).padStart(2, '0') + '.jpg';
-                    if (!shareText) {
+                    if (!finalShareImg) {
+                        finalShareImg = 'https://polskieradio.cc/images/academy/daily/kc_day_' + String(dayNum).padStart(2, '0') + '.jpg';
+                    }
+                    if (!finalShareText) {
                         const verse = params.get('v') || params.get('verse') || '';
-                        shareText = `${shareTitle}${verse ? ' (' + verse + ')' : ''}\n\nZapraszam do wspólnego studiowania Słowa Bożego w bezpłatnym Kursie Codziennym „Z Biblią za Pan Brat”!\n\n${shareUrl}`;
+                        finalShareText = `${finalShareTitle}${verse ? ' (' + verse + ')' : ''}\n\nZapraszam do wspólnego studiowania Słowa Bożego w bezpłatnym Kursie Codziennym „Z Biblią za Pan Brat”!\n\n${finalShareUrl}`;
                     }
                 }
 
-                let attempts = 0;
-                const tryOpenPublisherWithSharedData = () => {
-                    attempts++;
-                    const modal = document.getElementById('campaignModal');
-                    const titleInput = document.getElementById('campTitleInput');
-                    const descInput = document.getElementById('campDescInput');
-                    const btnUrlInput = document.getElementById('campBtnUrl');
-                    const btnTextInput = document.getElementById('campBtnText');
-
-                    if (modal && titleInput && descInput) {
-                        if (typeof openCampaignModal === 'function') {
-                            openCampaignModal('announcement');
-                        } else {
-                            modal.classList.add('open');
+                if (shareImg) {
+                    try {
+                        if (typeof attachedCampaignImgDataUrl !== 'undefined') {
+                            attachedCampaignImgDataUrl = shareImg;
                         }
-
-                        let combinedBody = '';
-                        if (shareText) combinedBody += shareText;
-                        if (shareUrl && !shareText.includes(shareUrl)) {
-                            combinedBody += (combinedBody ? '\n\n' : '') + shareUrl;
+                        const previewEl = document.getElementById('campImgPreviewEl');
+                        const previewCont = document.getElementById('campImgPreviewContainer');
+                        if (previewEl && previewCont) {
+                            previewEl.src = shareImg;
+                            previewCont.style.display = 'block';
                         }
+                    } catch(e) {}
+                }
 
-                        titleInput.value = shareTitle || (shareUrl ? 'Polecam: ' + shareUrl : 'Udostępniona treść');
-                        descInput.value = combinedBody;
+                const isAiAntychryst = (shareUrl && shareUrl.includes('ai-antychryst'));
+                let combinedBody = '';
+                if (shareText) combinedBody += shareText;
+                if (shareUrl && !combinedBody.includes(shareUrl)) {
+                    combinedBody += (combinedBody ? '\n\n' : '') + '🔗 Źródło: ' + shareUrl;
+                }
 
-                        if (shareUrl && btnUrlInput) {
-                            btnUrlInput.value = shareUrl;
-                            if (btnTextInput) btnTextInput.value = 'Zobacz Materiał ➔';
-                        }
+                // 👑 AUTOMATYCZNA NATYCHMIASTOWA PUBLIKACJA NA SAMEJ GÓRZE TABLICY LUMINA
+                const publishedPostId = isAiAntychryst ? 'post_art_ai_si_antychryst_cezary_rogowski' : ('post_shared_' + Date.now());
+                const persona = (typeof getActiveAuthorPersona === 'function') ? getActiveAuthorPersona() : { name: 'Cezary Rogowski', slug: 'cezaryrgowski', avatar: 'avatar_cezary_official.jpg', role: 'Założyciel Christian Culture ✨' };
 
-                        if (shareImg) {
-                            try {
-                                if (typeof attachedCampaignImgDataUrl !== 'undefined') {
-                                    attachedCampaignImgDataUrl = shareImg;
-                                }
-                                const previewEl = document.getElementById('campImgPreviewEl');
-                                const previewCont = document.getElementById('campImgPreviewContainer');
-                                if (previewEl && previewCont) {
-                                    previewEl.src = shareImg;
-                                    previewCont.style.display = 'block';
-                                }
-                            } catch(e) {}
-                        }
-
-                        if (typeof showToast === 'function') {
-                            showToast('✨ Udostępniona treść została dołączona do nowego wpisu! Kliknij Zapisz i Opublikuj.');
-                        }
-
-                        const cleanUrl = window.location.pathname + window.location.hash;
-                        window.history.replaceState({}, document.title, cleanUrl);
-                    } else if (attempts < 15) {
-                        setTimeout(tryOpenPublisherWithSharedData, 200);
-                    }
+                const newSharedPost = {
+                    id: publishedPostId,
+                    type: 'post',
+                    category: isAiAntychryst ? 'si' : (detectedDayMatch ? 'z_biblia_za_pan_brat' : 'general'),
+                    isArticle: !!isAiAntychryst || !!detectedDayMatch,
+                    author: isAiAntychryst ? 'Cezary Rogowski' : (persona.name || 'Cezary Rogowski'),
+                    authorSlug: isAiAntychryst ? 'cezaryrgowski' : (persona.slug || 'cezaryrgowski'),
+                    authorAvatar: isAiAntychryst ? 'avatar_cezary_official.jpg' : (persona.avatar || 'avatar_cezary_official.jpg'),
+                    authorRole: isAiAntychryst ? 'Założyciel Christian Culture ✨ • Redakcja Teologiczna' : (persona.role || 'Społeczność LUMINA ✨'),
+                    authorBadge: isAiAntychryst ? '👑 PUBLIKACJA GŁÓWNA • NOWE TECHNOLOGIE & SI' : (detectedDayMatch ? '📖 KURS CODZIENNY • Z BIBLIĄ ZA PAN BRAT' : '✨ Udostępniono na Tablicy'),
+                    badgeHtml: isAiAntychryst
+                        ? '<span class="badge-type-tag" style="background:linear-gradient(135deg,#bb142e,#7f1d1d);border:1.5px solid #f87171;color:#fff;font-weight:800;box-shadow:0 0 10px rgba(187,20,46,0.4);" title="👑 GŁÓWNA PUBLIKACJA • NOWE TECHNOLOGIE & SI"><i class="fa-solid fa-microchip"></i> <span class="badge-type-tag-text">NOWE TECHNOLOGIE & SI • EKSKLUZYWNY ARTYKUŁ</span></span>'
+                        : (detectedDayMatch
+                            ? '<span class="badge-type-tag" style="background:linear-gradient(135deg,#d97706,#b45309);border:1px solid #f59e0b;color:#fff;font-weight:800;" title="📖 KURS CODZIENNY"><i class="fa-solid fa-book-bible"></i> <span class="badge-type-tag-text">KURS CODZIENNY • LEKCJA DNIA</span></span>'
+                            : '<span class="badge-type-tag" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:800;" title="✨ Udostępniono na Tablicy"><i class="fa-solid fa-share-nodes"></i> <span class="badge-type-tag-text">UDOSTĘPNIONO</span></span>'),
+                    time: 'Przed chwilą • 🌟 Udostępniono na Tablicy',
+                    createdAt: 'Przed chwilą • 🌟 Udostępniono na Tablicy',
+                    title: finalShareTitle || 'Udostępniony wpis',
+                    text: combinedBody || finalShareText || '',
+                    desc: finalShareText || finalShareTitle,
+                    image: finalShareImg || (isAiAntychryst ? '/images/si/ai-vs-antychryst.webp' : null),
+                    imageUrl: finalShareImg || (isAiAntychryst ? '/images/si/ai-vs-antychryst.webp' : null),
+                    actionUrl: finalShareUrl || '',
+                    actionText: detectedDayMatch ? ('Czytaj Dzień ' + detectedDayMatch[1] + ' ➔') : 'Czytaj Cały Artykuł ➔',
+                    externalUrl: finalShareUrl || '',
+                    externalUrlLabel: detectedDayMatch ? ('Czytaj Dzień ' + detectedDayMatch[1] + ' ➔') : 'Czytaj Cały Artykuł ➔',
+                    sourceUrl: finalShareUrl || '',
+                    sourceSlug: isAiAntychryst ? 'ai-antychryst' : '',
+                    likes: isAiAntychryst ? 428 : 24,
+                    amen: isAiAntychryst ? 396 : 18,
+                    createdAtTimestamp: Date.now(),
+                    _sortTs: Date.now() + 1000000000,
+                    _isNewlyPublished: true,
+                    _isFreshSpotlight: true,
+                    _isTopSpotlight: true
                 };
 
-                setTimeout(tryOpenPublisherWithSharedData, 350);
+                // Zapisz do localStorage
+                try {
+                    localStorage.setItem('lumina_recent_published_post', JSON.stringify(newSharedPost));
+                    let cloudList = [];
+                    try {
+                        cloudList = JSON.parse(localStorage.getItem('lumina_cloud_posts_cache') || '[]');
+                    } catch(e) {}
+                    cloudList = cloudList.filter(p => p.id !== newSharedPost.id);
+                    cloudList.unshift(newSharedPost);
+                    localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudList));
+                } catch(e) {}
+
+                window._luminaTopSharedPost = newSharedPost;
+
+                if (typeof renderFeed === 'function') {
+                    renderFeed();
+                }
+
+                if (typeof showToast === 'function') {
+                    showToast('✨ Artykuł został pomyślnie udostępniony i opublikowany na samej górze Tablicy LUMINA! 🕊️');
+                }
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                const cleanUrl = window.location.pathname + window.location.hash;
+                window.history.replaceState({}, document.title, cleanUrl);
             } catch (e) {
                 console.warn('[WebShareTarget] Błąd odbioru danych:', e);
             }
@@ -17115,20 +17292,16 @@ window.initFeedCarousels = function(container) {
 
 // ── Statyczna karuzela profili (pod kompozerem) ───────────────────────────────
 (function initStaticProfilesCarousel() {
+    // Zanim wczyta się społeczność: wyłącznie prawdziwe osoby (bez logotypów marek)
     var PROFILES = [
-        { name: 'Cezary Rogowski',      slug: 'cezaryrgowski',      tag: 'Dowódca CC',             avatar: 'avatar_cezary_official.jpg',         verified: true  },
-        { name: 'Wioletta Rogowska',    slug: 'wiolettarogowska',   tag: 'Ewangelizacja',          avatar: 'avatar_wioletta_official.jpg',       verified: true  },
-        { name: 'Andrzej Thiel',        slug: 'andrzejthiel',       tag: 'Słowo na każdy dzień',   avatar: 'avatar_andrzej_thiel.jpg',           verified: true  },
-        { name: 'Radio CC',             slug: 'radiocc',            tag: 'Radio chrześcijańskie',  avatar: 'logo_radio_cc.jpg',                  verified: true  },
-        { name: 'CC TV',                slug: 'cctv',               tag: 'Telewizja CC',           avatar: 'logo_cctv.png',                      verified: true  },
-        { name: 'CC Women',             slug: 'ccwomen',            tag: 'Kobiety wiary',          avatar: 'logo_cc_women.jpg',                  verified: false },
-        { name: 'CC Men',               slug: 'ccmen',              tag: 'Mężczyźni wiary',        avatar: 'logo_cc_men.jpg',                    verified: false },
-        { name: 'Studio Dobrego Słowa', slug: 'studiodobregoslowa', tag: 'Nauczanie',              avatar: 'studiodobregoslowa_avatar.jpg?v=20260918_sds_host', verified: true  },
-        { name: 'OsobowośćPLUS',        slug: 'osobowoscplus',      tag: 'Rozwój duchowy',         avatar: 'logo_osobowosc_plus.jpg',            verified: false }
+        { name: 'Cezary Rogowski',   slug: 'cezaryrgowski',    tag: 'Założyciel CC',        avatar: 'avatar_cezary_official.jpg',   verified: true },
+        { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', tag: 'Ewangelizacja',        avatar: 'avatar_wioletta_official.jpg', verified: true },
+        { name: 'Andrzej Thiel',     slug: 'andrzejthiel',     tag: 'Słowo na każdy dzień', avatar: 'avatar_andrzej_thiel.jpg',     verified: true }
     ];
     function run() {
         var scroll = document.getElementById('staticProfilesCarouselScroll');
         if (!scroll) return;
+        // 🛡️ STRAŻNIK: prawdziwi ludzie z prawdziwym zdjęciem zamiast logotypów marek
         if (typeof window.getLuminaCarouselPeople === 'function') {
             var people = window.getLuminaCarouselPeople();
             if (people.length) PROFILES = people;
@@ -17140,7 +17313,7 @@ window.initFeedCarousels = function(container) {
             var badge = p.verified ? '<span class="profile-carousel-verified"><i class="fa-solid fa-check" style="font-size:0.45rem;"></i></span>' : '';
             cards += '<div class="profile-carousel-card" onclick="window.location.href=\'lumina-profile.html?user=' + p.slug + '\'" title="Zobacz profil: ' + p.name + '">'
                    + '<div class="profile-carousel-avatar-wrap">'
-                   + '<img class="profile-carousel-avatar" src="' + p.avatar + '" alt="' + p.name + '" loading="lazy" onerror="window.luminaCarouselAvatarFallback&&window.luminaCarouselAvatarFallback(this)">'
+                   + '<img class="profile-carousel-avatar" src="' + p.avatar + '" alt="' + p.name + '" loading="lazy" decoding="async" width="72" height="72" onerror="window.luminaCarouselAvatarFallback&&window.luminaCarouselAvatarFallback(this)">'
                    + badge + '</div>'
                    + '<div class="profile-carousel-name">' + p.name + '</div>'
                    + '<div class="profile-carousel-tag">' + p.tag + '</div>'
@@ -17236,7 +17409,7 @@ window.initFeedCarousels = function(container) {
 </script>
     <!-- ══════════ PŁYWAJĄCY PRZEŁĄCZNIK MOTYWU (LUMINA LIGHT & PURE EDITION) ══════════ -->
     <button type="button" class="lumina-theme-switch-pill" id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()" title="Przełącz motyw Tablicy (Jasny / Ciemny)">
-        <i class="fa-solid fa-sun theme-icon" id="luminaThemeIcon"></i>
+        <i class="fa-solid fa-moon theme-icon" id="luminaThemeIcon"></i>
     </button>
     <script>
     function toggleLuminaTheme() {
@@ -17272,6 +17445,7 @@ window.initFeedCarousels = function(container) {
         }
     })();
     </script>
+    <script defer src="/js/cc-owner-push-test.js?v=20261008_sender2"></script>
     <script src="/js/lumina-photo-nudge.js?v=20261011_1" defer></script>
 <script>
 /* Strażnik 2026-10-11: przycisk „Wspieraj” na górnej belce otwiera pełne okno wsparcia (BLIK, Revolut, Patronite, przelew) */
@@ -17285,5 +17459,7 @@ window.initFeedCarousels = function(container) {
 })();
 </script>
 <script id="lumina-compose-param">(function(){try{var u=new URL(location.href);if(!u.searchParams.has('compose'))return;u.searchParams.delete('compose');history.replaceState(null,'',u.pathname+u.search+u.hash);var n=0;(function t(){if(typeof window.openQuickPostComposer==='function'){window.openQuickPostComposer('post');return;}if(++n<40)setTimeout(t,250);})();}catch(e){}})();</script>
+<!-- Strażnik 2026-10-18: czat tej strony = jeden wspólny LUMI Messenger (/mess) -->
+<script defer id="ccChatIntegrationScript" src="/js/cc-chat-integration.js?v=20261018_pushroom"></script>
 </body>
 </html>

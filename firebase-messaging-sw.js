@@ -388,7 +388,12 @@ function handleLuminaNotificationClickDefault(event) {
     } else if (isPublic) {
         targetUrl = `/lumina?openPublicChat=1`;
     } else if (sender) {
-        targetUrl = `/lumina?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
+        // Prywatna wiadomość: zawsze kanoniczny LUMI Messenger (/mess) i konkretny pokój rozmowy.
+        const senderName = String(data.senderName || '').slice(0, 80);
+        targetUrl = `/mess?openChat=${encodeURIComponent(sender)}`
+            + (msgId ? '&messageId=' + encodeURIComponent(msgId) : '')
+            + (senderName ? '&name=' + encodeURIComponent(senderName) : '')
+            + (action === 'reply' ? '&reply=1' : '');
     } else if (!targetUrl) {
         targetUrl = '/lumina';
     }
@@ -410,41 +415,48 @@ function handleLuminaNotificationClickDefault(event) {
             senderName: data.senderName || '',
             senderAvatar: data.avatar || data.icon || 'lumina_icon.jpg',
             type: isPublic ? 'public' : 'private',
-            messageId: msgId
+            messageId: msgId,
+            reply: action === 'reply'
         }
     };
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(async (windowClients) => {
-            // 1. Priorytet: szukamy okna z portalem LUMINA
-            let luminaClient = null;
-            for (const client of windowClients) {
-                if (client.url && (client.url.includes('lumina.html') || client.url.includes('/lumina'))) {
-                    luminaClient = client;
-                    break;
+            // 1. Rozmowa prywatna: użyj otwartego LUMI Messengera (/mess) — bez przeładowania.
+            //    Inne karty LUMINA (np. tablica) zostają nietknięte; dla nich otwieramy /mess w nowym oknie.
+            const pathOf = (c) => { try { const u = new URL(c.url); return { p: u.pathname.replace(/\/$/, ''), embed: u.searchParams.get('embed') === '1' }; } catch (_) { return { p: '', embed: false }; } };
+            if (sender && !isPublic) {
+                const mess = windowClients.find((c) => { const x = pathOf(c); return (x.p === '/mess' || x.p === '/mess.html') && !x.embed; });
+                if (mess && 'focus' in mess) {
+                    try { await mess.focus(); } catch (e) {}
+                    mess.postMessage(postPayload);
+                    return;
                 }
-            }
-
-            if (luminaClient && 'focus' in luminaClient) {
-                try {
-                    await luminaClient.focus();
-                } catch(e) {}
-                luminaClient.postMessage(postPayload);
-                if ('navigate' in luminaClient) {
-                    try {
-                        await luminaClient.navigate(fullTargetUrl);
-                    } catch (e) {
-                        console.warn('[SW] navigate client failed:', e);
+            } else {
+                let luminaClient = null;
+                for (const client of windowClients) {
+                    const x = pathOf(client);
+                    if (!x.embed && (x.p === '/lumina' || x.p === '/lumina.html' || x.p === '/mess')) { luminaClient = client; break; }
+                }
+                if (luminaClient && 'focus' in luminaClient) {
+                    try { await luminaClient.focus(); } catch(e) {}
+                    luminaClient.postMessage(postPayload);
+                    if ('navigate' in luminaClient) {
+                        try { await luminaClient.navigate(fullTargetUrl); return; } catch (e) {
+                            console.warn('[SW] navigate client failed:', e);
+                        }
+                    } else {
+                        return;
                     }
                 }
-                return;
             }
 
             // 2. Jeśli nie ma okna Lumina, otwórz nowe okno bezpośrednio z linkiem czatu
             if (clients.openWindow) {
                 try {
                     const newWin = await clients.openWindow(fullTargetUrl);
-                    if (newWin && typeof setTimeout !== 'undefined') {
+                    // Prywatna rozmowa otwiera się z parametrów adresu; drugi sygnał dublowałby otwarcie.
+                    if (newWin && !(sender && !isPublic) && typeof setTimeout !== 'undefined') {
                         setTimeout(() => {
                             try { newWin.postMessage(postPayload); } catch(e) {}
                         }, 1200);
