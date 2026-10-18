@@ -17,7 +17,7 @@ test('release replaces combined weekly JS cache with one authoritative messaging
     assert.equal(result.headers.get('Cache-Control'),'no-cache, no-store, must-revalidate');
     assert.equal(await result.text(),'script');
   }
-  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_directfix1/);
+  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_directfix2/);
 });
 function adapter(db) {
   const scope = { LuminaDB: db, setTimeout: () => 0, clearTimeout() {} };
@@ -126,4 +126,78 @@ test('production read backend accepts only rendered incoming dock messages after
     assert.equal(committed, mode === 'visible', mode);
     if (mode === 'visible') assert.equal(writes, 1, 'unseen and outgoing messages remain unread');
   }
+});
+
+function dockFixture({autoOpen, withAdapter = true} = {}) {
+  const w = new Window();
+  w.document.addEventListener = () => {};
+  Object.defineProperty(w.document, 'visibilityState', {value:'visible', configurable:true});
+  if (autoOpen !== undefined) w.localStorage.setItem('lumi-direct-dock-prefs-v1', JSON.stringify({autoOpen}));
+  let incoming;
+  const a = {getCurrentUserId:()=> 'alice', listDirectConversations:async()=>[],
+    subscribeIncomingDM:cb=>{incoming=cb;return ()=>{};},
+    subscribeConversation:()=>()=>{}, listMessages:async()=>[], markRead:async()=>false};
+  w.eval(controllerSource);
+  const c = new w.LumiDirectDockController({adapter:a});
+  c.init();
+  const room = {id:'alice_radiocc',type:'direct',participant:{id:'radiocc',name:'Christian Culture',avatarUrl:'/logo_radio_cc.jpg'},unreadCount:1,lastMessageAt:'2026-10-18T08:00:00Z'};
+  return {w,c,emit:rooms=>incoming({conversations:rooms}),room};
+}
+
+test('dock renders avatar shortcut, opens on click and recovers a broken image', async()=>{
+  const {w,c,emit,room}=dockFixture();
+  emit([room]);
+  assert.equal(c.activeId,null,'history snapshot does not open old conversations');
+  const head=w.document.querySelector('.ldd-head');
+  assert.ok(head);
+  assert.equal(head.querySelector('img').getAttribute('src'),'/logo_radio_cc.jpg');
+  head.querySelector('img').dispatchEvent(new w.Event('error'));
+  assert.equal(head.querySelector('.ldd-initial').textContent,'C');
+  head.click();
+  assert.equal(c.activeId,room.id);
+  assert.equal(w.document.querySelector('.ldd-window').getAttribute('data-chat-id'),room.id);
+  assert.equal(w.document.querySelector('.ldd-name strong').textContent,'Christian Culture');
+  w.document.querySelector('.ldd-btn-min').click();
+  assert.equal(w.document.querySelector('.ldd-window'),null);
+  assert.ok(w.document.querySelector('.ldd-head'));
+  c.destroy();
+});
+
+test('new incoming room opens by default, restores closed shortcut, explicit opt-out remains',async()=>{
+  for(const pref of [undefined,false]) {
+    const {w,c,emit,room}=dockFixture({autoOpen:pref});
+    emit([]); emit([room]);
+    assert.equal(c.activeId,pref===false?null:room.id);
+    if(pref!==false){
+      w.document.querySelector('.ldd-btn-close').click();
+      assert.equal(w.document.querySelector('.ldd-head'),null);
+      emit([{...room,lastMessageAt:'2026-10-18T08:01:00Z'}]);
+      assert.equal(c.activeId,room.id);
+      assert.ok(w.document.querySelector('.ldd-head'));
+    }
+    c.destroy();
+  }
+});
+
+test('late adapter does not poison singleton; loader waits for adapter load before inserting controller',()=>{
+  const w=new Window(); w.document.addEventListener=()=>{};
+  w.eval(controllerSource);
+  assert.equal(w._lumiDirectDockInstance,undefined);
+  const loaderWindow = new Window();
+  const src=fs.readFileSync('components/cc-support-footer.js','utf8');
+  const start=src.indexOf('  // 10b.'); const end=src.indexOf('  // 11.',start);
+  loaderWindow.eval(src.slice(start,end));
+  assert.ok(loaderWindow.document.getElementById('lumiDirectDockAdapterScript'));
+  assert.equal(loaderWindow.document.getElementById('lumiDirectDockScript'),null);
+  loaderWindow.document.getElementById('lumiDirectDockAdapterScript').dispatchEvent(new loaderWindow.Event('load'));
+  assert.ok(loaderWindow.document.getElementById('lumiDirectDockScript'));
+  w.createDirectMessagingAdapter=()=>({getCurrentUserId:()=>null});
+  assert.ok(w.mountLumiDirectDock());
+  assert.ok(w._lumiDirectDockInstance.adapter);
+});
+
+test('dock stays above existing full screen messenger and mobile navigation',()=>{
+  const css=fs.readFileSync('css/lumi-direct-dock.css','utf8');
+  assert.match(css,/z-index:2147483646/);
+  assert.match(css,/bottom:max\(88px,calc\(env\(safe-area-inset-bottom\) \+ 76px\)\)/);
 });

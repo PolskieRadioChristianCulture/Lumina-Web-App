@@ -29,12 +29,12 @@
     const name = chat.otherName || 
                  chat[`name_${otherId}`] || 
                  (otherId === chat.lastSenderId ? chat.lastSenderName : null) || 
-                 (otherId === 'cezaryrgowski' ? 'Cezary Rogowski' : (otherId === 'wiolettarogowska' ? 'Wioletta Rogowska' : otherId));
+                 (otherId === 'radiocc' ? 'Christian Culture' : (otherId === 'cezaryrgowski' ? 'Cezary Rogowski' : (otherId === 'wiolettarogowska' ? 'Wioletta Rogowska' : otherId)));
 
     const avatarUrl = chat.otherAvatar || 
                       chat[`avatar_${otherId}`] || 
                       (otherId === chat.lastSenderId ? chat.lastSenderAvatar : null) || 
-                      (otherId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (otherId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
+                      (otherId === 'radiocc' ? '/logo_radio_cc.jpg' : (otherId === 'cezaryrgowski' ? '/avatar_cezary_official.jpg' : (otherId === 'wiolettarogowska' ? '/avatar_wioletta_official.jpg' : '/lumina_icon.jpg')));
 
     return {
       id: otherId,

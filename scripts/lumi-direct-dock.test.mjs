@@ -196,8 +196,9 @@ test('Lumi Direct Dock Controller: state, auto-open policy, and DOM interaction'
   ctrl.syncUser();
   assert.equal(ctrl.userId, 'adam_testowy');
 
-  // Sprawdź domyślne preferencje: autoOpen musi być FALSE
-  assert.equal(ctrl.prefs.autoOpen, false, 'Auto-open is disabled by default for zero interruption');
+  // Default requested by owner; existing explicit opt-out still works.
+  assert.equal(ctrl.prefs.autoOpen, true, 'New incoming private conversations open by default as requested by owner');
+  ctrl.prefs.autoOpen = false;
 
   // Sprawdź minimalizację i zamykanie
   ctrl.openConversation('adam_testowy_ewa_testowa');

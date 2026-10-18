@@ -8,7 +8,7 @@
   'use strict';
 
   const MAX_TEXT_LENGTH = 4000;
-  const DEFAULT_PREFS = { autoOpen: false };
+  const DEFAULT_PREFS = { autoOpen: true };
 
   function safePrefs() {
     try {
@@ -71,8 +71,9 @@
       document.addEventListener('visibilitychange', this._boundVisibilityChange);
 
       // Obserwator zmian stanu logowania
-      global.addEventListener('lumina-auth-state', () => this.syncUser());
-      global.addEventListener('lumina-user-changed', () => this.syncUser());
+      this._boundAuthChange = () => this.syncUser();
+      global.addEventListener('lumina-auth-state', this._boundAuthChange);
+      global.addEventListener('lumina-user-changed', this._boundAuthChange);
 
       this.syncUser();
     }
@@ -85,6 +86,8 @@
         try { this.unsubConversation(); } catch (_) {}
       }
       document.removeEventListener('visibilitychange', this._boundVisibilityChange);
+      global.removeEventListener('lumina-auth-state', this._boundAuthChange);
+      global.removeEventListener('lumina-user-changed', this._boundAuthChange);
       if (this.containerEl && this.containerEl.parentNode) {
         this.containerEl.parentNode.removeChild(this.containerEl);
       }
@@ -143,7 +146,7 @@
           const changed = this.conversations.filter(c => previous.has(c.id)
             ? previous.get(c.id).lastMessageAt !== c.lastMessageAt : wasInitialized);
           this.hidden = this.hidden.filter(id => !changed.some(c => c.id === id && c.unreadCount > 0));
-          if (this.prefs.autoOpen) {
+          if (this.prefs.autoOpen && document.visibilityState !== 'hidden') {
             const incoming = changed.find(c => c.unreadCount > 0);
             if (incoming) this.openConversation(incoming.id);
           }
@@ -376,13 +379,24 @@
               <input type="checkbox" id="lddPrefAutoOpen" ${this.prefs.autoOpen ? 'checked' : ''} />
               Automatycznie otwieraj nowe wiadomości prywatne
             </label>
-            <p>Domyślnie wyłączone, aby nie przerywać pracy.</p>
+            <p>Możesz wyłączyć automatyczne otwieranie. Skrót z awatarem pozostanie dostępny.</p>
             <button type="button" id="lddBtnRestoreHidden">Przywróć zamknięte skróty</button>
           </div>
         `;
       }
 
       this.containerEl.innerHTML = html;
+      // A missing image must never leave an invisible conversation shortcut.
+      this.containerEl.querySelectorAll('.ldd-head img, .ldd-avatar').forEach(img => {
+        if (img.tagName !== 'IMG') return;
+        img.onerror = () => {
+          const initial = document.createElement('span');
+          initial.className = img.classList.contains('ldd-avatar') ? 'ldd-avatar ldd-initial' : 'ldd-initial';
+          initial.textContent = (img.closest('.ldd-head')?.title?.replace('Rozmowa z ', '')
+            || activeConvo?.participant.name || '?').charAt(0);
+          img.replaceWith(initial);
+        };
+      });
       this.attachEvents();
 
       // Automatyczne przewinięcie do dołu w oknie rozmowy
@@ -487,6 +501,8 @@
   // Funkcja fabryczna montująca dock w powłoce aplikacji
   function mountLumiDirectDock(options = {}) {
     if (global._lumiDirectDockInstance) return global._lumiDirectDockInstance;
+    // Do not cache an inert instance when an external loader runs out of order.
+    if (!options.adapter && typeof global.createDirectMessagingAdapter !== 'function') return null;
     const instance = new LumiDirectDockController(options);
     global._lumiDirectDockInstance = instance;
     instance.init();
