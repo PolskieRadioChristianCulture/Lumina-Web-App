@@ -98,6 +98,24 @@
           "operatingSystem": "Web, iOS, Android, Smart TV",
           "url": "https://polskieradio.cc/vod",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "PLN" }
+        },
+        {
+          "@type": "BroadcastEvent",
+          "@id": "https://polskieradio.cc/vod#broadcastevent",
+          "name": "Dobre Kino Chrześcijańskie 24/7",
+          "description": "Całodobowa emisja filmów chrześcijańskich z polskim lektorem, adaptacji biblijnych i dramatów wiary w jakości HD.",
+          "isLiveBroadcast": true,
+          "videoFormat": "HD",
+          "startDate": "2026-01-01T00:00:00+01:00",
+          "endDate": "2026-12-31T23:59:59+01:00",
+          "broadcastOfEvent": {
+            "@type": "Event",
+            "name": "Festiwal Filmu Chrześcijańskiego i Biblijnego Online",
+            "location": {
+              "@type": "VirtualLocation",
+              "url": "https://polskieradio.cc/vod"
+            }
+          }
         }
       ]
     }
@@ -2420,6 +2438,16 @@
             document.getElementById('playerModalDesc').textContent = movie.description;
             document.getElementById('cinemaModal').classList.add('open');
 
+            // CC Global Media Mutex: wycisz inne media i zgłoś odtwarzanie VOD
+            if (window.ccMediaMutex) {
+                window.ccMediaMutex.requestPlay('vod', {
+                    title: movie.title,
+                    artist: 'Kino VOD Christian Culture',
+                    id: movie.id,
+                    category: movie.category
+                });
+            }
+
             // ZAWSZE odtwarzaj zwiastun / pre-roll CC (5SbmWSjPNJY) przed KAŻDYM filmem (w tym Przełęcz ocalonych i Chata)
             if (window.VodDB && window.VodDB.preroll && window.VodDB.preroll.enabled && window.VodDB.preroll.videoId) {
                 isPrerollPlaying = true;
@@ -2470,6 +2498,9 @@
 
         window.closeCinemaModal = function() {
             document.getElementById('cinemaModal').classList.remove('open');
+            if (window.ccMediaMutex) {
+                window.ccMediaMutex.release('vod');
+            }
             const iframe = document.getElementById('vodPlayerIframe');
             if (iframe) iframe.src = 'about:blank';
             if (prerollSkipTimer) clearTimeout(prerollSkipTimer);
@@ -2573,5 +2604,7 @@
     <script src="js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
     <script src="js/lumina-share.js" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>
+  <!-- CC Media Mutex & Smart TV Controller -->
+  <script src="/components/cc-media-mutex.js" defer></script>
 </body>
 </html>

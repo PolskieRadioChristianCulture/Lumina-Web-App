@@ -17,8 +17,12 @@ const { articles } = loadArticles();
 const feedSnippet = generateStaticFeedSnippet(articles, 15);
 let html = (await readFile(path.join(source, 'dist/index.html'), 'utf8')).replace(/\r\n/g, '\n').replace(/[\t ]+$/gm, '');
 html = html.replace(
+  '<noscript><p class="news-startup-help">Włącz JavaScript w przeglądarce, aby wyświetlić wiadomości.</p></noscript>',
+  `<noscript>\n        <section class="news-noscript-feed" aria-label="Wydanie bieżące wiadomości CCN">\n${feedSnippet}\n        </section>\n      </noscript>`
+);
+html = html.replace(
   '<span class="news-startup-status" role="status">Wczytywanie wiadomości</span>',
-  '<span class="news-startup-status" role="status">Wczytywanie wiadomości</span>\n' + feedSnippet
+  '<span class="news-startup-status" role="status">Najnowsze Wiadomości CCN News</span>\n' + feedSnippet
 );
 await writeFile(path.join(root, 'news.html'), html);
 await writeFile(path.join(root, 'news/index.html'), html);

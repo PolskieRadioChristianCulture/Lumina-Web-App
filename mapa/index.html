@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Y4EFTVBPE3');
+  </script>
+
+  <!-- 1. PODSTAWOWE METADANE I SEO -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Ekosystemu Christian Culture — Interaktywna Nawigacja & Projekty (polskieradio.cc/mapa)</title>
+  <meta name="description" content="Odkrywaj cały cyfrowy świat Christian Culture: stacje radiowe, telewizję, Akademię Biblijną, portal LUMINA, sieć CCN, muzykę, aplikacje i projekty misyjne na jednej interaktywnej mapie relacji.">
+  <meta name="keywords" content="mapa christian culture, ekosystem christian culture, polskieradio.cc mapa, nawigacja christian culture, lumina, ccn news, cctv24, akademia biblijna, cclite, radio online, holos">
+  <meta name="author" content="Christian Culture / PolskieRadio.cc">
+  <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
+  <link rel="canonical" href="https://polskieradio.cc/mapa">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mapa Ekosystemu Christian Culture — Interaktywna Nawigacja & Projekty">
+  <meta property="og:description" content="Interaktywna mapa całego ekosystemu Christian Culture: 8 gałęzi, 77 zweryfikowanych projektów, stacje radiowe, TV, LUMINA, CCN i aplikacje.">
+  <meta property="og:url" content="https://polskieradio.cc/mapa">
+  <meta property="og:image" content="https://polskieradio.cc/icon.png">
+  <meta property="og:site_name" content="Christian Culture">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mapa Ekosystemu Christian Culture — Interaktywna Nawigacja & Projekty">
+  <meta name="twitter:description" content="Odkrywaj cały cyfrowy świat Christian Culture na jednej interaktywnej mapie relacji.">
+  <meta name="twitter:image" content="https://polskieradio.cc/icon.png">
+
+  <!-- Fonty i Ikony -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Styl dedykowany Mapy Ekosystemu (Paleta Premium 2026: #080F20, #121D32, #C4A35A) -->
+  <link rel="stylesheet" href="/css/mapa-ekosystemu.css?v=20261011_v13_domino_tree">
+
+  <!-- KRYTYCZNY STYL INLINE DLA ZAPOBIEGANIA BŁĘDOM CACHE PRZEGLĄDARKI -->
+  <style>
+    :root {
+      --header-height: 68px;
+      --mapa-header-height: 68px;
+      --mapa-ctrl-height: 0px;
+      --map-bg: #080F20;
+      --map-surface: #121D32;
+      --gold-primary: #C4A35A;
+      --gold-light: #E2CC9A;
+      --gold-dark: #A08040;
+      --text-primary: #F8FAFC;
+      --text-muted: #8E9BAE;
+    }
+    .cc-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: #080F20 url('/assets/mapa/planeta-poster.jpg') center/cover no-repeat;
+      overflow: hidden;
+    }
+    .cc-background video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .cc-background video.ready {
+      opacity: 1;
+    }
+    .cc-background::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 15, 32, 0.52);
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cc-background video {
+        display: none;
+      }
+    }
+    .mapa-hud-controls {
+      bottom: 6.25rem !important;
+    }
+    html, body {
+      background-color: #080F20;
+      color: #F8FAFC;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+    .mapa-viewport {
+      position: relative;
+      flex: 1 1 auto;
+      height: calc(100vh - var(--mapa-header-height, 68px) - var(--mapa-ctrl-height, 56px)) !important;
+      height: calc(100dvh - var(--mapa-header-height, 68px) - var(--mapa-ctrl-height, 56px)) !important;
+      min-height: 480px;
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+    .mapa-control-bar {
+      transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, padding 0.3s ease, border-color 0.25s ease;
+      max-height: 240px;
+      overflow: hidden;
+    }
+    .mapa-control-bar.is-hidden {
+      max-height: 0 !important;
+      opacity: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      border-bottom-color: transparent !important;
+      pointer-events: none !important;
+    }
+    .mapa-subbar-search-box {
+      flex: 1 1 340px;
+      max-width: 540px;
+      min-width: 200px;
+      margin: 0 0.5rem;
+    }
+    @media (max-width: 1100px) {
+      .mapa-subbar-search-box {
+        order: 3;
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin: 0.35rem 0 0 0;
+      }
+    }
+    @keyframes mapRingRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .map-root-rotating-ring {
+      transform-origin: 0px 0px;
+      animation: mapRingRotate 60s linear infinite;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .map-root-rotating-ring {
+        animation: none;
+      }
+    }
+    .mapa-collapse-bar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 34px;
+      padding: 0 0.75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(196, 163, 90, 0.25);
+      background: rgba(18, 29, 50, 0.65);
+      color: #CBD5E1;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .mapa-collapse-bar-btn:hover {
+      color: #E2CC9A;
+      border-color: #C4A35A;
+      background: rgba(196, 163, 90, 0.15);
+    }
+    .mapa-bar-restore-pill {
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      z-index: 45;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 38px;
+      padding: 0 1rem;
+      background: rgba(18, 29, 50, 0.94);
+      border: 1px solid #C4A35A;
+      border-radius: 20px;
+      color: #E2CC9A;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mapa-bar-restore-pill:hover {
+      background: #C4A35A;
+      color: #080F20;
+      transform: translateY(-1px);
+    }
+    .mapa-header-toggle-bar.active {
+      background: rgba(196, 163, 90, 0.22);
+      border-color: #C4A35A;
+      color: #E2CC9A;
+    }
+    .mapa-search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .mapa-search-input {
+      width: 100%;
+      height: 42px;
+      padding: 0 4.2rem 0 2.5rem;
+      border-radius: 21px;
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      background: rgba(8, 15, 32, 0.85);
+      color: #F8FAFC;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .mapa-search-icon {
+      position: absolute;
+      left: 12px;
+      color: #C4A35A;
+      pointer-events: none;
+    }
+    .mapa-search-kbd {
+      position: absolute;
+      right: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #E2CC9A;
+      background: rgba(196, 163, 90, 0.15);
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      padding: 2px 7px;
+      border-radius: 6px;
+      pointer-events: none;
+      line-height: 1.4;
+      display: inline-block;
+    }
+    .mapa-side-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.35s !important;
+    }
+    .mapa-side-card.is-closed {
+      transform: translateX(calc(100% + 2.5rem)) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+    .mapa-drawer-reopen-btn {
+      position: absolute;
+      right: 1.5rem;
+      top: 1.5rem;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 44px;
+      padding: 0 1.15rem;
+      background: rgba(18, 29, 50, 0.94);
+      border: 1px solid #C4A35A;
+      border-radius: 22px;
+      color: #E2CC9A;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.2s ease;
+    }
+    .mapa-drawer-reopen-btn:hover {
+      background: #C4A35A;
+      color: #080F20;
+      transform: translateY(-1px);
+    }
+    .mapa-drawer-reopen-btn.visible {
+      display: inline-flex !important;
+    }
+    .mapa-card-head-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .mapa-card-action-btn {
+      background: transparent;
+      border: none;
+      color: #8E9BAE;
+      font-size: 1.15rem;
+      cursor: pointer;
+      padding: 8px;
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      line-height: 1;
+      transition: all 0.2s ease;
+    }
+    .mapa-card-action-btn:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.08);
+    }
+    .mapa-side-card.is-fullscreen {
+      position: fixed !important;
+      top: 1.5rem !important;
+      left: 1.5rem !important;
+      right: 1.5rem !important;
+      bottom: 1.5rem !important;
+      width: auto !important;
+      max-width: 1400px !important;
+      margin: 0 auto !important;
+      height: calc(100vh - 3rem) !important;
+      max-height: calc(100vh - 3rem) !important;
+      z-index: 100 !important;
+      padding: 1.75rem 2rem !important;
+      gap: 1.25rem !important;
+      border-radius: 24px !important;
+      border: 1px solid #C4A35A !important;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 50px rgba(196, 163, 90, 0.25) !important;
+    }
+    .mapa-side-card.is-fullscreen .mapa-card-projects-list {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+      max-height: none !important;
+      gap: 0.65rem !important;
+    }
+    @media (max-width: 1200px) {
+      .mapa-side-card.is-closed {
+        transform: translateY(100%) !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+      }
+      .mapa-side-card.is-fullscreen {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        padding: 1.25rem !important;
+        margin: 0 !important;
+      }
+      .mapa-side-card.is-fullscreen .mapa-card-projects-list {
+        grid-template-columns: 1fr !important;
+      }
+      .mapa-drawer-reopen-btn {
+        top: 3.5rem;
+        bottom: auto;
+        right: 1rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .mapa-bar-restore-pill {
+        top: 0.75rem;
+        left: 0.75rem;
+        font-size: 0.74rem;
+        padding: 0 0.75rem;
+        min-height: 36px;
+      }
+      .mapa-drawer-reopen-btn {
+        top: 3.5rem !important;
+        right: 0.75rem !important;
+        font-size: 0.74rem !important;
+        padding: 0 0.75rem !important;
+        min-height: 36px !important;
+      }
+    }
+
+    /* ── PRZEŁĄCZNIK WARSTW MAPA CC | @A — AGENCI MISJI ── */
+    .mapa-layer-switch {
+      display: none;
+      align-items: center;
+      background: rgba(18, 29, 50, 0.85);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 20px;
+      padding: 2px;
+      gap: 2px;
+      margin-right: 0.5rem;
+    }
+    .mapa-layer-btn {
+      background: transparent;
+      border: none;
+      color: #CBD5E1;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .mapa-layer-btn:hover {
+      color: #E2CC9A;
+    }
+    .mapa-layer-btn.active {
+      background: #C4A35A;
+      color: #080F20;
+      box-shadow: 0 0 12px rgba(196, 163, 90, 0.4);
+    }
+    .mapa-layer-btn .agent-badge {
+      background: rgba(8, 15, 32, 0.85);
+      color: #C4A35A;
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .mapa-layer-btn.active .agent-badge {
+      background: #080F20;
+      color: #E2CC9A;
+    }
+
+    /* Wskaźnik stanu agenta w panelu */
+    .agent-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .agent-status-running {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .agent-status-idle {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38BDF8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .agent-status-waiting {
+      background: rgba(245, 158, 11, 0.15);
+      color: #F59E0B;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .agent-status-error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .agent-status-unknown {
+      background: rgba(142, 155, 174, 0.15);
+      color: #8E9BAE;
+      border: 1px solid rgba(142, 155, 174, 0.3);
+    }
+
+    /* SubAgenci w wysuwanym panelu */
+    .agent-subagent-card {
+      background: rgba(8, 15, 32, 0.65);
+      border: 1px solid rgba(196, 163, 90, 0.15);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+    }
+    .agent-subagent-card:hover {
+      border-color: rgba(196, 163, 90, 0.35);
+      background: rgba(8, 15, 32, 0.85);
+    }
+    .agent-subagent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .agent-subagent-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+    .agent-subagent-role {
+      font-size: 0.75rem;
+      color: #CBD5E1;
+      margin-bottom: 4px;
+    }
+    .agent-subagent-meta {
+      font-size: 0.7rem;
+      color: #8E9BAE;
+      display: flex;
+      gap: 8px;
+    }
+    .agent-ctrl-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .agent-ctrl-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      background: rgba(18, 29, 50, 0.9);
+      color: #F8FAFC;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .agent-ctrl-btn:hover {
+      background: #C4A35A;
+      color: #080F20;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Kosmiczne dynamiczne tło planety Christian Culture (Wideo / Poster) -->
+  <div class="cc-background" aria-hidden="true">
+    <video id="cc-planet" autoplay muted loop playsinline preload="auto" poster="/assets/mapa/planeta-poster.jpg">
+      <source src="/assets/mapa/planeta.webm" type="video/webm">
+      <source src="/assets/mapa/planeta.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="mapa-app">
+    <!-- GÓRNY PASEK NAWIGACJI (PREMIUM 2026 MOCKUP ALIGNMENT) -->
+    <header class="mapa-header" role="banner">
+      <a href="/" class="mapa-header-brand" title="Powrót do strony głównej Christian Culture">
+        <div class="mapa-header-star">✦</div>
+        <div class="mapa-header-title-wrap">
+          <span class="mapa-header-title">MAPA CHRISTIAN CULTURE</span>
+          <span class="mapa-header-sub">LUDZIE • MEDIA • WIEDZA • WSPÓŁPRACA • WIĘKSZY WPŁYW</span>
+        </div>
+      </a>
+
+      <!-- Zakładki nawigacyjne po prawej stronie -->
+      <div class="mapa-header-right">
+        <!-- Przełącznik warstw dla Administratora (widoczny tylko dla nazirczarkes@gmail.com) -->
+        <div id="mapaLayerSwitch" class="mapa-layer-switch" role="group" aria-label="Wybór warstwy mapy">
+          <button id="layerBtnPublic" class="mapa-layer-btn active" type="button" title="Publiczna mapa projektów CC">
+            <i class="fa-solid fa-globe"></i>
+            <span>Mapa CC</span>
+          </button>
+          <button id="layerBtnAgents" class="mapa-layer-btn" type="button" title="Prywatna mapa sztabowa agentów CC">
+            <i class="fa-solid fa-robot"></i>
+            <span>@A — Agenci Misji</span>
+            <span class="agent-badge">Sztab</span>
+          </button>
+        </div>
+
+        <nav class="mapa-nav-tabs" aria-label="Nawigacja sekcji mapy">
+          <button id="navTabGalaxy" class="mapa-nav-tab active" type="button">Mapa</button>
+          <button id="navTabProjects" class="mapa-nav-tab" type="button">Projekty</button>
+          <a href="/news" class="mapa-nav-tab">Aktualności</a>
+          <a href="/o-nas" class="mapa-nav-tab">O Inicjatywie</a>
+        </nav>
+
+        <div class="mapa-header-actions">
+          <button id="mapaHeaderToggleBarBtn" class="mapa-btn mapa-header-toggle-bar" type="button" title="Pokaż / schowaj belkę filtrów i narzędzi" aria-label="Przełącz belkę filtrów">
+            <i class="fa-solid fa-sliders"></i>
+            <span class="mapa-header-toggle-label">Filtry</span>
+          </button>
+          <a href="/" class="mapa-btn" title="Powrót na portal">
+            <i class="fa-solid fa-house"></i>
+            <span>Portal</span>
+          </a>
+          <a href="/player" class="mapa-btn mapa-btn-gold" title="Otwórz odtwarzacz audio 24/7">
+            <i class="fa-solid fa-circle-play"></i>
+            <span>Radio 24/7</span>
+          </a>
+          <!-- Gniazdo logowania CC & LUMINA Google Auth Connector -->
+          <div class="user-nav-profile" id="userNavProfile" style="display: none;"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PASEK FILTRÓW I KONTROLEK ZASOBÓW (SUB-BAR) -->
+    <section class="mapa-control-bar is-hidden" id="mapaControlBar" aria-label="Narzędzia eksploracji ekosystemu">
+      <div class="mapa-filter-chips" id="mapaFilterStrip" role="group" aria-label="Filtry statusu i kategorii">
+        <button class="mapa-chip active" data-filter="all">
+          <span>Wszystkie</span>
+          <span class="mapa-chip-count" id="mapaStatsCount">77</span>
+        </button>
+        <button class="mapa-status-chip" data-status="active">
+          <span class="mapa-status-dot active"></span>
+          <span>Aktywny</span>
+        </button>
+        <button class="mapa-status-chip" data-status="beta">
+          <span class="mapa-status-dot beta"></span>
+          <span>Testowy</span>
+        </button>
+        <button class="mapa-status-chip" data-status="planned">
+          <span class="mapa-status-dot planned"></span>
+          <span>W przygotowaniu</span>
+        </button>
+      </div>
+
+      <!-- Przestronna wyszukiwarka w belce narzędziowej (sub-bar) -->
+      <div class="mapa-subbar-search-box">
+        <div class="mapa-search-wrap">
+          <i class="fa-solid fa-magnifying-glass mapa-search-icon" aria-hidden="true"></i>
+          <input 
+            type="text" 
+            id="mapaSearchInput" 
+            class="mapa-search-input" 
+            placeholder="Szukaj projektów, osób, treści, inicjatyw..." 
+            autocomplete="off" 
+            spellcheck="false" 
+            aria-label="Szukaj projektu w ekosystemie Christian Culture"
+          >
+          <span class="mapa-search-kbd" aria-hidden="true">Ctrl K</span>
+          <button id="mapaSearchClear" class="mapa-search-clear" aria-label="Wyczyść szukanie" style="display: none;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Kontrolki widoku i powiększenia po prawej -->
+      <div class="mapa-sub-controls">
+        <button id="mapaGlobalViewBtn" class="mapa-sub-btn" title="Widok globalny ekosystemu">
+          <i class="fa-solid fa-compass"></i>
+          <span>Widok globalny</span>
+        </button>
+
+        <div class="mapa-zoom-group" role="group" aria-label="Powiększenie mapy">
+          <button id="mapaZoomOutBtn" class="mapa-zoom-btn" title="Pomniejsz (-)" aria-label="Pomniejsz">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+          <button id="mapaZoomInBtn" class="mapa-zoom-btn" title="Powiększ (+)" aria-label="Powiększ">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+
+        <div class="mapa-view-switch" role="group" aria-label="Wybór widoku mapy">
+          <button id="viewGalaxyBtn" class="mapa-view-btn active" title="Interaktywny graf galaktyki">
+            <i class="fa-solid fa-circle-nodes"></i>
+            <span>Galaktyka</span>
+          </button>
+          <button id="viewTreeBtn" class="mapa-view-btn" title="Widok hierarchiczny z kafelkami">
+            <i class="fa-solid fa-sitemap"></i>
+            <span>Drzewo & Siatka</span>
+          </button>
+        </div>
+
+        <!-- Przycisk zwijania drugiej belki -->
+        <button id="mapaHideControlBarBtn" class="mapa-sub-btn mapa-collapse-bar-btn" type="button" title="Schowaj belkę filtrów (zwiększ widok mapy)" aria-label="Schowaj belkę filtrów">
+          <i class="fa-solid fa-chevron-up"></i>
+          <span>Schowaj belkę</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- WIDOK 1: INTERAKTYWNA GALAKTYKA (GRAF SVG + PANEL SZCZEGÓŁÓW + DOLNY PASEK) -->
+    <main id="mapaViewport" class="mapa-viewport" role="main" aria-label="Interaktywny graf relacji ekosystemu">
+      <svg id="mapaSvg" class="mapa-svg-canvas" xmlns="http://www.w3.org/2000/svg">
+        <g id="mapaSvgGroup">
+          <!-- Generowane dynamicznie przez silnik JS -->
+        </g>
+      </svg>
+
+      <!-- Pływające kontrolki nawigacji grafu (HUD) -->
+      <div class="mapa-hud-controls" role="group" aria-label="Kontrolki powiększenia i nawigacji grafu">
+        <button id="mapaFitBtn" class="mapa-hud-btn" title="Dopasuj do ekranu" aria-label="Dopasuj do ekranu">
+          <i class="fa-solid fa-expand"></i>
+        </button>
+        <button id="mapaResetBtn" class="mapa-hud-btn" title="Powrót do centrum" aria-label="Powrót do centrum">
+          <i class="fa-solid fa-crosshairs"></i>
+        </button>
+      </div>
+
+      <!-- Przycisk przywrócenia schowanej belki filtrów i kontrolek -->
+      <button id="mapaRestoreControlBarBtn" class="mapa-bar-restore-pill" title="Pokaż belkę filtrów i narzędzi" aria-label="Pokaż belkę filtrów">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Pokaż filtry & narzędzia</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+
+      <!-- Przycisk przywrócenia zminimalizowanego panelu szczegółów -->
+      <button id="mapaDrawerReopenBtn" class="mapa-drawer-reopen-btn visible" title="Pokaż panel szczegółów" aria-label="Pokaż panel szczegółów">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Pokaż szczegóły</span>
+      </button>
+
+      <!-- KARTA „WYBRANY OBSZAR” (DOKŁADNIE JAK NA ZAAKCEPTOWANEJ WIZUALIZACJI) -->
+      <aside id="mapaDrawer" class="mapa-side-card is-closed" role="dialog" aria-label="Szczegóły wybranego obszaru">
+        <div class="mapa-card-head-bar">
+          <div class="mapa-card-eyebrow">WYBRANY OBSZAR</div>
+          <div class="mapa-card-head-actions">
+            <button id="mapaDrawerMaximize" class="mapa-card-action-btn" aria-label="Przełącz tryb pełnoekranowy" title="Powiększ do pełnego ekranu">
+              <i class="fa-solid fa-expand"></i>
+            </button>
+            <button id="mapaDrawerClose" class="mapa-card-close" aria-label="Zamknij panel" title="Zamknij (ESC)">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="mapa-card-hero">
+          <div class="mapa-card-hero-icon" id="mapaDrawerIcon">📻</div>
+          <div>
+            <h2 id="mapaDrawerTitle" class="mapa-card-hero-title">RADIO & TV</h2>
+            <div id="mapaDrawerCategory" class="mapa-card-hero-sub">EWANGELIA W MEDIACH</div>
+          </div>
+        </div>
+
+        <div class="mapa-card-status-badge">
+          <span class="mapa-status-dot active" id="mapaDrawerStatusDot"></span>
+          <span id="mapaDrawerBadge" class="mapa-status-text">Aktywny</span>
+        </div>
+
+        <p id="mapaDrawerDesc" class="mapa-card-desc">
+          Nowoczesne media, które niosą wartości chrześcijańskie do milionów ludzi w Polsce i na świecie. Radio, telewizja, podcasty i transmisje na żywo.
+        </p>
+
+        <!-- Kafelki metryk obszaru -->
+        <div class="mapa-card-metrics-grid">
+          <div class="mapa-metric-box">
+            <strong id="mapaDrawerMetricProjects">10</strong>
+            <span>projektów</span>
+          </div>
+          <div class="mapa-metric-box">
+            <strong id="mapaDrawerMetricAudience">3.2M</strong>
+            <span>odbiorców</span>
+          </div>
+          <div class="mapa-metric-box">
+            <strong id="mapaDrawerMetricHours">24/7</strong>
+            <span>działamy</span>
+          </div>
+        </div>
+
+        <!-- Główny przycisk działania -->
+        <a id="mapaDrawerOpenBtn" href="https://polskieradio.cc/" class="mapa-btn mapa-btn-gold mapa-btn-block" target="_blank" rel="noopener">
+          <span id="mapaDrawerBtnLabel">Zobacz szczegóły</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        <!-- Lista projektów w danym obszarze -->
+        <div class="mapa-card-projects-section">
+          <div class="mapa-card-sublabel">PRZYKŁADOWE PROJEKTY</div>
+          <div id="mapaDrawerProjectsList" class="mapa-card-projects-list">
+            <!-- Wypełniane dynamicznie przez JS -->
+          </div>
+        </div>
+
+        <!-- Dodatkowe słowa kluczowe i powiązania (opcjonalne) -->
+        <div id="mapaDrawerTagsWrap" style="display: none;">
+          <div class="mapa-card-sublabel">SŁOWA KLUCZOWE</div>
+          <div id="mapaDrawerTags" class="mapa-drawer-tags"></div>
+        </div>
+        <div id="mapaDrawerConnectionsWrap" style="display: none;">
+          <div class="mapa-card-sublabel">POWIĄZANIA W EKOSYSTEMIE</div>
+          <div id="mapaDrawerConnections" class="mapa-drawer-connections"></div>
+        </div>
+        <button id="mapaDrawerShareBtn" class="mapa-btn mapa-btn-block mapa-btn-share">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Udostępnij / Kopiuj link</span>
+        </button>
+      </aside>
+
+      <!-- DOLNY PASEK MISYJNY (PREMIUM 2026 MOCKUP 1:1) -->
+      <footer class="mapa-mission-bar" aria-label="Statystyki i misja Christian Culture">
+        <div class="mapa-mission-lead">
+          <div class="mapa-mission-lead-icon">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div>
+            <div class="mapa-mission-lead-title">JEDNA SIEĆ WIELKIE MOŻLIWOŚCI</div>
+            <div class="mapa-mission-lead-sub">Mapa inicjatyw, ludzi i projektów, które razem tworzą większy wpływ dla Królestwa Bożego.</div>
+          </div>
+        </div>
+
+        <div class="mapa-mission-stats-group">
+          <div class="mapa-mstat">
+            <i class="fa-solid fa-globe"></i>
+            <span><strong>8</strong> głównych obszarów</span>
+          </div>
+          <div class="mapa-mstat">
+            <i class="fa-solid fa-circle-nodes"></i>
+            <span><strong id="mapaMissionStatsProjects">77</strong> projektów i inicjatyw</span>
+          </div>
+          <div class="mapa-mstat">
+            <i class="fa-solid fa-handshake"></i>
+            <span><strong>120+</strong> partnerów</span>
+          </div>
+          <div class="mapa-mstat">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span><strong>3.2M</strong> odbiorców miesięcznie</span>
+          </div>
+        </div>
+
+        <div class="mapa-mission-verse-badge">
+          «Aby wszyscy byli jedno...»<br>
+          <span class="mapa-verse-cit">J 17, 21</span>
+        </div>
+      </footer>
+    </main>
+
+    <!-- WIDOK 2: DRZEWO HIERARCHICZNE / SIATKA KART -->
+    <section id="mapaTreeView" class="mapa-tree-view" style="display: none;" aria-label="Hierarchiczny spis projektów">
+      <div class="mapa-tree-hero">
+        <h1 class="mapa-tree-hero-title">EKOSYSTEM CHRISTIAN CULTURE</h1>
+        <p class="mapa-tree-hero-sub">
+          Jeden zintegrowany punkt orientacyjny. Odkryj 8 głównych gałęzi misji: stacje radiowe, telewizję, formację biblijną, społeczność LUMINA, portale wiedzy CCN, studia dźwiękowe i technologie.
+        </p>
+        <div class="mapa-tree-hero-actions">
+          <button id="mapaExpandAllBtn" class="mapa-btn">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Pokaż wszystko</span>
+          </button>
+          <button id="mapaCollapseAllBtn" class="mapa-btn">
+            <i class="fa-solid fa-folder"></i>
+            <span>Zwiń wszystkie</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="mapaBranchesContainer" class="mapa-branches-container">
+        <!-- Renderowane przez JS -->
+      </div>
+    </section>
+
+    <!-- WSPÓLNA STOPKA WSPARCIA MISYJNEGO -->
+    <cc-support-footer></cc-support-footer>
+  </div>
+
+  <!-- Uniwersalny konektor logowania CC & LUMINA Google Auth Connector -->
+  <script src="/js/cc-global-auth.js?v=20261011_auth" defer></script>
+  <!-- Skrypt silnika mapy (v13 - progresywna siatka 8 kafelków & efekt domina) -->
+  <script src="/js/mapa-ekosystemu.js?v=20261011_v13_domino_tree" defer></script>
+  <!-- Skrzynka Misji w prywatnej warstwie @A (tylko Dowódca; dane z Firestore po zalogowaniu) -->
+  <script src="/js/mapa-skrzynka.js?v=20261012_1" defer></script>
+  <!-- Wspólna stopka i narzędzia -->
+  <script src="/components/cc-support-footer.js" defer></script>
+  <script src="/js/cc-back-to-top.js?v=20261009_top1" defer></script>
+
+  <!-- Dynamiczne sterowanie odtwarzaniem tła wideo planety CC -->
+  <script>
+    (function () {
+      const v = document.getElementById('cc-planet');
+      if (!v) return;
+      const motion = matchMedia('(prefers-reduced-motion: reduce)');
+
+      function showVideo() {
+        v.classList.add('ready');
+      }
+
+      function checkMotionOrData() {
+        if (motion.matches || navigator.connection?.saveData) {
+          v.pause();
+          v.style.display = 'none';
+          return true;
+        }
+        return false;
+      }
+
+      if (checkMotionOrData()) return;
+
+      function tryPlay() {
+        if (document.hidden) {
+          v.pause();
+          return;
+        }
+        const promise = v.play();
+        if (promise !== undefined) {
+          promise.then(showVideo).catch(function () {
+            const onInteraction = function () {
+              v.play().then(showVideo).catch(function () {});
+              window.removeEventListener('pointerdown', onInteraction);
+              window.removeEventListener('scroll', onInteraction);
+              window.removeEventListener('keydown', onInteraction);
+            };
+            window.addEventListener('pointerdown', onInteraction, { passive: true });
+            window.addEventListener('scroll', onInteraction, { passive: true });
+            window.addEventListener('keydown', onInteraction, { passive: true });
+          });
+        }
+      }
+
+      v.addEventListener('playing', showVideo);
+      v.addEventListener('canplay', showVideo);
+      v.addEventListener('loadeddata', showVideo);
+      v.addEventListener('timeupdate', function () {
+        if (v.currentTime > 0) showVideo();
+      });
+
+      if (v.readyState >= 2 || (v.currentTime > 0 && !v.paused)) {
+        showVideo();
+      }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          v.pause();
+        } else {
+          tryPlay();
+        }
+      });
+      motion.addEventListener('change', checkMotionOrData);
+
+      tryPlay();
+    })();
+  </script>
+</body>
+</html>

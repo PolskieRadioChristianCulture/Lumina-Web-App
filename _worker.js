@@ -2176,6 +2176,33 @@ export default {
       return dirResp;
     }
 
+    // CC Clean Routing & Case-Insensitive Aliases (P0 / P1)
+    const lowerPath = url.pathname.toLowerCase().replace(/\/$/, '');
+    if (lowerPath === '/global') {
+      const globalUrl = new URL(request.url);
+      globalUrl.pathname = '/Global/index.html';
+      return env.ASSETS.fetch(new Request(globalUrl, request));
+    }
+
+    if (
+      url.pathname === '/BiblijneUwielbienie' ||
+      url.pathname === '/BiblijneUwielbienie/' ||
+      lowerPath === '/biblijneuwielbienie' ||
+      lowerPath === '/uwielbienie' ||
+      lowerPath === '/karaoke' ||
+      lowerPath === '/spiewnik'
+    ) {
+      const buUrl = new URL(request.url);
+      buUrl.pathname = '/biblijne-uwielbienie';
+      return Response.redirect(buUrl.toString(), 301);
+    }
+
+    if (lowerPath === '/podcast' || lowerPath === '/podcasts') {
+      const podUrl = new URL(request.url);
+      podUrl.pathname = '/podcasty';
+      return Response.redirect(podUrl.toString(), 301);
+    }
+
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && !url.pathname.includes('.')) {
       const dirUrl = new URL(request.url);
@@ -2187,7 +2214,14 @@ export default {
 
       const fallbackUrl = new URL(request.url);
       fallbackUrl.pathname = url.pathname.replace(/\/$/, '') + '.html';
-      const fallbackResp = await env.ASSETS.fetch(new Request(fallbackUrl, request));
+      let fallbackResp = await env.ASSETS.fetch(new Request(fallbackUrl, request));
+      if (fallbackResp.status < 400) {
+        return fallbackResp;
+      }
+
+      const lowerFallbackUrl = new URL(request.url);
+      lowerFallbackUrl.pathname = lowerPath + '.html';
+      fallbackResp = await env.ASSETS.fetch(new Request(lowerFallbackUrl, request));
       if (fallbackResp.status < 400) {
         return fallbackResp;
       }
