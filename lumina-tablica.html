@@ -16638,7 +16638,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 if (!shareTitle && !shareText && !shareUrl && !shareImg && !shareVideo && !shareKeyParam) return;
 
                 // Automatyczne rozpoznanie i wzbogacenie lekcji Kursu Codziennego (np. share=dzien-18 lub /dzien-18)
-                const detectedDayMatch = (shareKeyParam + ' ' + shareUrl + ' ' + (params.get('v') || '')).match(/dzien[_-](d+)/i);
+                const detectedDayMatch = (shareKeyParam + ' ' + shareUrl + ' ' + (params.get('v') || '')).match(/dzien[_-](\d+)/i);
                 let finalShareImg = shareImg;
                 let finalShareTitle = shareTitle;
                 let finalShareUrl = shareUrl;
