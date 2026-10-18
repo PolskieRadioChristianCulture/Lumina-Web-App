@@ -3736,10 +3736,21 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 
 // ── Oznaczanie wiadomości prywatnych jako Przeczytane (Real-time Read Receipts ✓✓) ──
 const activeDirectReadReceipts = new Set();
-export async function markDirectMessagesAsRead(chatId, currentUserId, currentUserName) {
+export async function markDirectMessagesAsRead(chatId, currentUserId, currentUserName, readContext) {
     const user = currentUserState;
     if (!db || !chatId || !currentUserId || !user?.uid || user.isAnonymous) return false;
-    if (typeof document !== 'undefined' && (document.visibilityState !== 'visible' ||
+    const dockContext = readContext?.surface === 'direct-dock';
+    const visibleDockIds = () => {
+        if (typeof document === 'undefined' || document.visibilityState !== 'visible') return [];
+        const panel = Array.from(document.querySelectorAll('.ldd-root .ldd-window'))
+            .find(el => el.getAttribute('data-chat-id') === chatId && el.getClientRects().length);
+        if (!panel) return [];
+        const requested = new Set(Array.isArray(readContext?.visibleMessageIds) ? readContext.visibleMessageIds : []);
+        return Array.from(panel.querySelectorAll('.ldd-line[data-message-id]'))
+            .filter(el => el.getClientRects().length && requested.has(el.getAttribute('data-message-id')))
+            .map(el => el.getAttribute('data-message-id'));
+    };
+    if (dockContext ? !visibleDockIds().length : typeof document !== 'undefined' && (document.visibilityState !== 'visible' ||
         !document.getElementById('directMessagesModal')?.classList.contains('open') ||
         !document.getElementById('dmActiveConversationBox')?.getClientRects().length)) return false;
     const parts = chatId.split('_');
@@ -3750,8 +3761,9 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
     // Never manufacture a read receipt while offline or before the server commit.
     let visibleIds;
     try {
-        const cached = JSON.parse(localStorage.getItem(`lumina_chat_${normalizedChatId}`) || '[]');
-        visibleIds = new Set(cached.filter(m => !m.isRead || m.status !== 'read').map(m => m.id).filter(Boolean));
+        const cached = dockContext ? [] : JSON.parse(localStorage.getItem(`lumina_chat_${normalizedChatId}`) || '[]');
+        visibleIds = dockContext ? new Set(visibleDockIds())
+            : new Set(cached.filter(m => !m.isRead || m.status !== 'read').map(m => m.id).filter(Boolean));
     } catch (_) { return false; }
     if (!visibleIds.size) return true;
     const receiptKey = `${user.uid}:${normalizedChatId}`;
@@ -3763,9 +3775,10 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
             where('chatId', '==', normalizedChatId), limit(400));
         const snap = await getDocs(q);
         if (currentUserState?.uid !== user.uid || currentUserState.isAnonymous) return false;
-        if (typeof document !== 'undefined' && (document.visibilityState !== 'visible' ||
+        if (dockContext ? !visibleDockIds().some(id => visibleIds.has(id)) : typeof document !== 'undefined' && (document.visibilityState !== 'visible' ||
             !document.getElementById('directMessagesModal')?.classList.contains('open') ||
             !document.getElementById('dmActiveConversationBox')?.getClientRects().length)) return false;
+        if (dockContext) visibleIds = new Set(visibleDockIds().filter(id => visibleIds.has(id)));
         const receipts = new Map();
         const batch = writeBatch(db);
         const readAt = Date.now();
@@ -3861,6 +3874,12 @@ export async function sendPublicChatMessage(messageObj) {
         text: messageObj.text || '',
         type: messageObj.type || 'text',
         ...(messageObj.imageUrl ? { imageUrl: messageObj.imageUrl } : {}),
+        ...(messageObj.replyToMessageId ? {
+            replyToMessageId: messageObj.replyToMessageId,
+            replyToSenderName: messageObj.replyToSenderName || '',
+            replyToSenderId: messageObj.replyToSenderId || '',
+            replyToText: (messageObj.replyToText || '').slice(0, 300)
+        } : {}),
         seenBy: [{
             id: fromId,
             name: senderName,
@@ -4007,23 +4026,30 @@ export async function toggleDirectMessageReaction(chatId, messageId, emoji, curr
 
 // ── Reakcje Emotikonami na Wiadomości Czatu Ogólnego 👍❤️😊🙏🔥🕊️✝️😂😮😢👏🌹 ──
 export async function togglePublicChatMessageReaction(messageId, emoji, currentUser) {
-    if (!messageId || !emoji) return;
-    const uid = currentUser?.slug || currentUser?.uid || localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest';
+    if (!messageId || !emoji) return { success: false, reason: 'missing_args' };
+
+    const user = currentUserState;
+    if (!user || user.isAnonymous || !user.uid) {
+        console.warn('Lumina Public Chat: reagowanie wymaga zalogowanego konta członka.');
+        return { success: false, reason: 'unauthenticated' };
+    }
+
+    const uid = currentUser?.slug || currentUser?.uid || user.slug || user.uid || 'guest';
     const normId = normalizeChatUserId(uid);
-    const userName = currentUser?.name || currentUser?.displayName || (normId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+    const userName = currentUser?.name || currentUser?.displayName || user.displayName || (normId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
 
-    // 1. Natychmiast zaktualizuj pamięć i lokalny cache
-    const matchFn = (m) => String(m.id) === String(messageId) || (m.timestamp?.seconds && String(m.timestamp.seconds) === String(messageId));
-    let targetMsg = activePublicChatMessages.find(matchFn);
-    let cached = [];
+    if (!db) return { success: false, reason: 'no_db' };
+    if (String(messageId).startsWith('local_')) return { success: false, reason: 'local_message' };
+
+    // P0 Zero-QA: Aktualizacja w Firestore PRZED modyfikacją pamięci, aby wyeliminować fikcyjne deklaracje/reakcje
     try {
-        cached = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
-        if (!targetMsg) targetMsg = cached.find(matchFn);
-    } catch(e) {}
+        const docRef = doc(db, 'lumina_public_chat_messages', messageId);
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists()) return { success: false, reason: 'not_found' };
 
-    if (targetMsg) {
-        targetMsg.reactions = targetMsg.reactions || {};
-        const list = targetMsg.reactions[emoji] || [];
+        const currentData = docSnap.data();
+        const reactions = { ...(currentData.reactions || {}) };
+        const list = [...(reactions[emoji] || [])];
         const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : (u.id === normId || u.slug === normId)));
         if (existingIdx >= 0) {
             list.splice(existingIdx, 1);
@@ -4031,60 +4057,44 @@ export async function togglePublicChatMessageReaction(messageId, emoji, currentU
             list.push({ id: normId, name: userName });
         }
         if (list.length === 0) {
-            delete targetMsg.reactions[emoji];
+            delete reactions[emoji];
         } else {
-            targetMsg.reactions[emoji] = list;
+            reactions[emoji] = list;
         }
 
+        await updateDoc(docRef, { reactions });
+
+        // Dopiero po udanym zapisie w Firestore synchronizujemy stan pamięci i cache
+        const matchFn = (m) => String(m.id) === String(messageId);
+        let targetMsg = activePublicChatMessages.find(matchFn);
+        let cached = [];
+        try {
+            cached = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
+            if (!targetMsg) targetMsg = cached.find(matchFn);
+        } catch(e) {}
+
+        if (targetMsg) {
+            targetMsg.reactions = reactions;
+        }
         if (cached && cached.length) {
             const cMsg = cached.find(matchFn);
-            if (cMsg && cMsg !== targetMsg) {
-                cMsg.reactions = targetMsg.reactions;
-            }
-            try {
-                localStorage.setItem('lumina_public_chat_cache', JSON.stringify(cached));
-            } catch(e) {}
+            if (cMsg) cMsg.reactions = reactions;
+            try { localStorage.setItem('lumina_public_chat_cache', JSON.stringify(cached)); } catch(e) {}
         }
         if (activePublicChatMessages && activePublicChatMessages.length) {
             const mMsg = activePublicChatMessages.find(matchFn);
-            if (mMsg && mMsg !== targetMsg) {
-                mMsg.reactions = targetMsg.reactions;
-            }
+            if (mMsg) mMsg.reactions = reactions;
         }
 
         const updatedList = activePublicChatMessages.length ? activePublicChatMessages : cached;
         if (typeof activePublicChatListener === 'function') {
             activePublicChatListener([...updatedList]);
         }
-    }
 
-    if (!db) return;
-
-    // 2. Zapisz w Firestore
-    try {
-        if (!String(messageId).startsWith('local_')) {
-            const docRef = doc(db, 'lumina_public_chat_messages', messageId);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                const currentData = docSnap.data();
-                const reactions = currentData.reactions || {};
-                const list = reactions[emoji] || [];
-                const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : (u.id === normId || u.slug === normId)));
-                if (existingIdx >= 0) {
-                    list.splice(existingIdx, 1);
-                } else {
-                    list.push({ id: normId, name: userName });
-                }
-                if (list.length === 0) {
-                    delete reactions[emoji];
-                } else {
-                    reactions[emoji] = list;
-                }
-                await updateDoc(docRef, { reactions });
-            }
-        }
+        return { success: true, reactions };
     } catch(e) {
         console.warn('Lumina public reaction error:', e);
+        return { success: false, error: e.message };
     }
 }
 

@@ -109,6 +109,7 @@
             unsub = db.subscribeToUserChats(myId, (chats) => {
               finish(chats);
             });
+            if (settled && typeof unsub === 'function') unsub();
             // Timeout bezpieczeństwa na wypadek braku natychmiastowego snapshotu
             setTimeout(() => {
               finish([]);
@@ -152,6 +153,7 @@
             unsub = db.subscribeToDirectMessages(conversationId, (messages) => {
               finish(messages);
             });
+            if (settled && typeof unsub === 'function') unsub();
             setTimeout(() => {
               finish([]);
             }, 3000);
@@ -166,43 +168,27 @@
         const db = global.LuminaDB;
         if (!myId || !db) return () => {};
 
-        // Nasłuchiwanie nowych prywatnych powiadomień przez globalny mechanizm LuminaDB
-        const handler = (notif) => {
-          if (!notif) return;
-          // Akceptuj tylko powiadomienia typu chat_direct skierowane do bieżącego użytkownika
-          if (notif.type !== 'chat_direct' && notif.type !== 'direct') return;
-          if (notif.senderId === myId) return;
-
-          const conversationId = notif.chatId || (db.getChatId ? db.getChatId(myId, notif.senderId) : `${myId}_${notif.senderId}`);
-          const message = {
-            id: String(notif.id || Date.now()),
-            conversationId,
-            senderId: notif.senderId,
-            text: String(notif.body || notif.text || ''),
-            createdAt: toIsoDate(notif.createdAt || notif.timestamp),
-            deliveryStatus: 'delivered'
-          };
-
-          onMessage({ conversationId, message });
-        };
-
-        let unsubListener = null;
-        if (typeof db.startRealtimeChatNotificationsListener === 'function') {
-          unsubListener = db.startRealtimeChatNotificationsListener(handler);
-        }
-
-        // Subskrypcja na zdarzenia customowe powiadomień w oknie
-        const domHandler = (e) => {
-          if (e.detail) handler(e.detail);
-        };
-        global.addEventListener('lumina-direct-message-received', domHandler);
-
-        return () => {
-          if (typeof unsubListener === 'function') {
-            try { unsubListener(); } catch (_) {}
-          }
-          global.removeEventListener('lumina-direct-message-received', domHandler);
-        };
+        // The canonical room subscription already authenticates and scopes Firestore.
+        // Room previews invalidate the list; they are not delivered message receipts.
+        if (typeof db.subscribeToUserChats !== 'function') return () => {};
+        const uid = db.getCurrentUser()?.uid;
+        let stopped = false;
+        const stop = db.subscribeToUserChats(myId, (chats) => {
+          if (stopped || this.getCurrentUserId() !== myId || db.getCurrentUser()?.uid !== uid) return;
+          const conversations = (chats || []).map(c => {
+            const participant = resolveParticipant(c, myId, uid);
+            if (typeof db.isUserBlocked === 'function' && db.isUserBlocked(participant.id)) return null;
+            return {
+              id: c.chatId || c.id,
+              type: 'direct', participant,
+              unreadCount: Math.max(0, typeof c.unreadCount?.[myId] === 'number'
+                ? c.unreadCount[myId] : (c.lastSenderId && c.lastSenderId !== myId && !c.isRead ? 1 : 0)),
+              lastMessageAt: toIsoDate(c.lastMessageTimestamp)
+            };
+          }).filter(Boolean);
+          onMessage({ conversations });
+        });
+        return () => { stopped = true; if (typeof stop === 'function') stop(); };
       },
 
       async sendText(conversationId, text, clientRequestId) {
@@ -250,29 +236,30 @@
         };
 
         if (typeof db.sendDirectMessageToCloud === 'function') {
-          const res = await db.sendDirectMessageToCloud(myId, receiverId, messageObj, myName, myAvatar);
+          const res = await db.sendDirectMessageToCloud(conversationId, {
+            ...messageObj, senderId: myId, receiverId, senderName: myName, senderAvatar: myAvatar
+          });
           if (!res) throw new Error('Nie udało się zapisać wiadomości na serwerze.');
         } else {
           throw new Error('Endpoint wysyłania wiadomości prywatnych jest niedostępny.');
         }
       },
 
-      async markRead(conversationId, messageId) {
+      async markRead(conversationId, messageId, visibleMessageIds = [messageId]) {
         const myId = this.getCurrentUserId();
         const db = global.LuminaDB;
-        if (!myId || !db || !conversationId) return;
+        if (!myId || !db || !conversationId || !messageId) return false;
 
         const myProfile = typeof db.getCurrentProfile === 'function' ? db.getCurrentProfile() : null;
         const myUser = typeof db.getCurrentUser === 'function' ? db.getCurrentUser() : null;
         const myName = myProfile?.name || myUser?.displayName || 'Użytkownik LUMINA';
 
         if (typeof db.markDirectMessagesAsRead === 'function') {
-          try {
-            await db.markDirectMessagesAsRead(conversationId, myId, myName);
-          } catch (e) {
-            console.warn('LumiDirectDock: markRead notice:', e.message);
-          }
+          return await db.markDirectMessagesAsRead(conversationId, myId, myName, {
+            surface: 'direct-dock', visibleMessageIds
+          }) === true;
         }
+        return false;
       },
 
       subscribeConversation(conversationId, onMessage) {
@@ -286,8 +273,9 @@
           return db.subscribeToDirectMessages(conversationId, (messages) => {
             if (!Array.isArray(messages) || !messages.length) return;
             const lastMsg = messages[messages.length - 1];
-            if (lastMsg && lastMsg.id !== lastSeenId) {
-              lastSeenId = lastMsg.id;
+            const revision = lastMsg && JSON.stringify([lastMsg.id, lastMsg.isRead, lastMsg.status, lastMsg.delivered]);
+            if (lastMsg && revision !== lastSeenId) {
+              lastSeenId = revision;
               onMessage({
                 id: String(lastMsg.id || Date.now()),
                 conversationId: lastMsg.chatId || conversationId,

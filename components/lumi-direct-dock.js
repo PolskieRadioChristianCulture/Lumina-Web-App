@@ -102,6 +102,7 @@
       this.drafts = {};
       this.hidden = [];
       this.error = '';
+      this.readAttemptSet.clear();
 
       if (typeof this.unsubIncoming === 'function') {
         try { this.unsubIncoming(); } catch (_) {}
@@ -120,7 +121,10 @@
       }
 
       // Załaduj rozmowy
+      const sessionId = this.userId;
+      let receivedRooms = false;
       this.adapter.listDirectConversations().then((items) => {
+        if (this.userId !== sessionId || receivedRooms) return;
         this.conversations = (items || []).filter(c => c.type === 'direct' && c.participant && c.participant.id !== this.userId);
         this.render();
       }).catch(() => {
@@ -130,6 +134,22 @@
 
       // Subskrybuj przychodzące wiadomości prywatne
       this.unsubIncoming = this.adapter.subscribeIncomingDM((event) => {
+        if (this.userId !== sessionId) return;
+        if (Array.isArray(event?.conversations)) {
+          const previous = new Map(this.conversations.map(c => [c.id, c]));
+          const wasInitialized = receivedRooms;
+          receivedRooms = true;
+          this.conversations = event.conversations.filter(c => c.type === 'direct' && c.participant && c.participant.id !== this.userId);
+          const changed = this.conversations.filter(c => previous.has(c.id)
+            ? previous.get(c.id).lastMessageAt !== c.lastMessageAt : wasInitialized);
+          this.hidden = this.hidden.filter(id => !changed.some(c => c.id === id && c.unreadCount > 0));
+          if (this.prefs.autoOpen) {
+            const incoming = changed.find(c => c.unreadCount > 0);
+            if (incoming) this.openConversation(incoming.id);
+          }
+          this.render();
+          return;
+        }
         if (!event || !event.message || event.message.senderId === this.userId) return;
 
         // Nowa wiadomość przywraca ukryty chat head
@@ -191,17 +211,19 @@
         this.unsubConversation = this.adapter.subscribeConversation(id, (msg) => {
           if (msg.conversationId !== id) return;
           const currentList = this.messages[id] || [];
-          if (!currentList.some(m => m.id === msg.id)) {
-            this.messages[id] = currentList.concat([msg]).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+          if (this.activeId === id) {
+            this.messages[id] = currentList.filter(m => m.id !== msg.id).concat([msg]).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
             this.render();
+            this.checkMarkRead();
           }
         });
       }
 
       this.adapter.listMessages(id, 50).then((result) => {
+        if (this.activeId !== id) return;
         this.messages[id] = result || [];
-        this.checkMarkRead();
         this.render();
+        this.checkMarkRead();
       }).catch(() => {
         this.error = 'Nie udało się pobrać wiadomości.';
         this.render();
@@ -226,8 +248,13 @@
       if (this.readAttemptSet.has(readKey)) return;
       this.readAttemptSet.add(readKey);
 
-      this.adapter.markRead(this.activeId, lastMsg.id).then(() => {
-        this.conversations = this.conversations.map(c => c.id === this.activeId ? Object.assign({}, c, { unreadCount: 0 }) : c);
+      const conversationId = this.activeId;
+      const sessionId = this.userId;
+      const visibleMessageIds = msgList.filter(m => m.senderId !== sessionId).map(m => m.id);
+      this.adapter.markRead(conversationId, lastMsg.id, visibleMessageIds).then((confirmed) => {
+        if (confirmed !== true) { this.readAttemptSet.delete(readKey); return; }
+        if (this.userId !== sessionId) return;
+        this.conversations = this.conversations.map(c => c.id === conversationId ? Object.assign({}, c, { unreadCount: 0 }) : c);
         this.render();
       }).catch(() => {
         this.readAttemptSet.delete(readKey);
@@ -287,7 +314,7 @@
       if (activeConvo) {
         const p = activeConvo.participant;
         html += `
-          <div class="ldd-window" role="dialog" aria-label="Prywatna rozmowa z ${escapeHtml(p.name)}">
+          <div class="ldd-window" data-chat-id="${escapeHtml(activeConvo.id)}" role="dialog" aria-label="Prywatna rozmowa z ${escapeHtml(p.name)}">
             <header class="ldd-header">
               ${p.avatarUrl ? `<img class="ldd-avatar" src="${escapeHtml(p.avatarUrl)}" alt="" />` : `<span class="ldd-avatar ldd-initial">${escapeHtml(p.name.charAt(0))}</span>`}
               <div class="ldd-name">
@@ -304,7 +331,7 @@
                   ? ` · ${m.deliveryStatus === 'read' ? 'Wyświetlono' : (m.deliveryStatus === 'delivered' ? 'Dostarczono' : 'Wysłano')}`
                   : '';
                 return `
-                  <div class="ldd-line ${isMine ? 'ldd-mine' : 'ldd-theirs'}">
+                  <div class="ldd-line ${isMine ? 'ldd-mine' : 'ldd-theirs'}" data-message-id="${escapeHtml(m.id)}">
                     <div class="ldd-bubble">${escapeHtml(m.text)}</div>
                     <span class="ldd-time">${dateLabel(m.createdAt)}${deliveryStr}</span>
                   </div>

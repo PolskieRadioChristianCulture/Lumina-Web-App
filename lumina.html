@@ -5969,6 +5969,20 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     <button type="button" class="messenger-emoji-btn" onclick="insertPublicChatEmoji('👏')">👏</button>
                 </div>
 
+                <!-- Quote preview banner -->
+                <div id="publicChatQuoteBanner" class="lumina-quote-banner" style="display:none;" role="region" aria-label="Cytowana wiadomość">
+                    <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:2px;">
+                        <div style="display:flex; align-items:center; gap:6px; font-size:0.75rem; color:#fdf4ff; font-weight:700;">
+                            <i class="fa-solid fa-reply" style="font-size:0.7rem; color:#c084fc;"></i>
+                            <span>Odpowiadasz: <strong id="publicChatQuoteAuthor" style="color:#f472b6;"></strong></span>
+                        </div>
+                        <div id="publicChatQuoteText" style="font-size:0.78rem; color:rgba(255,255,255,0.75); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
+                    </div>
+                    <button type="button" id="publicChatQuoteCancelBtn" onclick="window.cancelPublicChatQuote()" aria-label="Anuluj cytowanie" style="background:transparent; border:none; color:rgba(255,255,255,0.6); font-size:1.1rem; cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center; padding:0; border-radius:50%; transition:all 0.15s ease;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
                 <!-- Public Chat Input Form -->
                 <form id="publicChatForm" class="chat-input-bar" onsubmit="handleSendPublicChatMessage(event)" style="display: flex; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.1); align-items: center;">
                     <button type="button" id="btnPublicChatEmoji" onclick="window.togglePublicChatEmojiDrawer()" aria-controls="publicChatEmojisBar" aria-expanded="false" style="background: none; border: none; font-size: 1.25rem; color: #facc15; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; flex-shrink: 0;" title="Wybierz emotikon / odpowiedź emoji">
@@ -11983,17 +11997,35 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const avatarSrc = window.resolveChatAvatar ? window.resolveChatAvatar(msg.senderId, msg.senderName, msg.senderAvatar, isMe) : (isMe ? 'avatar_cezary_official.jpg' : (msg.senderAvatar || 'lumina_icon.jpg'));
 
                 const reactionsHtml = typeof buildMessageReactionsHtml === 'function' ? buildMessageReactionsHtml(msg, 'public', 'public', myId) : '';
+                const quoteHtml = (msg.replyToMessageId || msg.replyToText) ? `
+                    <div class="lumina-quote-block" onclick="window.scrollToChatMessage('${escapeForInlineJs(msg.replyToMessageId || '')}')" style="background:rgba(0,0,0,0.24); border-left:3px solid ${isMe ? '#fde047' : '#c084fc'}; padding:5px 9px; border-radius:6px; margin-bottom:6px; cursor:pointer; font-size:0.75rem;" title="Przejdź do cytowanej wiadomości">
+                        <div style="font-weight:700; color:${isMe ? '#fef08a' : '#f472b6'}; margin-bottom:2px; display:flex; align-items:center; gap:4px;">
+                            <i class="fa-solid fa-reply" style="font-size:0.65rem; opacity:0.85;"></i>
+                            <span>${escapeHtml(msg.replyToSenderName || 'Użytkownik')}</span>
+                        </div>
+                        <div style="color:rgba(255,255,255,0.78); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:260px;">
+                            ${escapeHtml(msg.replyToText || 'Oryginalna wiadomość')}
+                        </div>
+                    </div>
+                ` : '';
 
                 html += `
-                    <div class="lumina-msg-row" id="msg_${escapeHtml(msg.id || '')}" data-message-id="${escapeHtml(msg.id || '')}" style="display:flex; justify-content:${align}; align-items:flex-end; gap:8px; margin-bottom:8px;">
+                    <div class="lumina-msg-row" id="msg_${escapeHtml(msg.id || '')}" data-message-id="${escapeHtml(msg.id || '')}" data-sender-name="${escapeHtml(msg.senderName || '')}" data-sender-id="${escapeHtml(msg.senderId || '')}" style="display:flex; justify-content:${align}; align-items:flex-end; gap:8px; margin-bottom:8px;">
                         ${!isMe ? `
                             <img loading="lazy" decoding="async" src="${escapeHtml(avatarSrc)}" alt="${escapeHtml(msg.senderName)}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" class="lumina-chat-avatar" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(255,255,255,0.25); flex-shrink:0; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')">
                         ` : ''}
-                        <div class="${isMe ? 'lumina-bubble-mine' : 'lumina-bubble-theirs'}" style="max-width:75%; padding:10px 14px; border-radius:${radius}; color:${color}; font-size:0.86rem; line-height:1.45; position:relative;">
+                        <div class="${isMe ? 'lumina-bubble-mine' : 'lumina-bubble-theirs'}"
+                             oncontextmenu="window.handleChatContextMenu(event, this.closest('.lumina-msg-row'))"
+                             ontouchstart="window.handleChatTouchStart(event, this.closest('.lumina-msg-row'))"
+                             ontouchmove="window.handleChatTouchMove(event)"
+                             ontouchend="window.handleChatTouchEnd(event)"
+                             ontouchcancel="window.handleChatTouchEnd(event)"
+                             style="max-width:75%; padding:10px 14px; border-radius:${radius}; color:${color}; font-size:0.86rem; line-height:1.45; position:relative; -webkit-touch-callout:none;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; gap:8px;">
                                 <span style="font-weight:800; font-size:0.75rem; color:${isMe ? '#fdf4ff' : '#f472b6'}; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')">${escapeHtml(isMe ? ('Ty' + (msg.senderName ? ' (' + msg.senderName + ')' : '')) : (msg.senderName || 'Użytkownik'))}</span>
                                 ${(msg.senderBadge ? "<span style=\"font-size:0.65rem; background:rgba(0,0,0,0.25); padding:1px 6px; border-radius:8px; color:#fde047;\">" + escapeHtml(msg.senderBadge) + "</span>" : "")}
                             </div>
+                            ${quoteHtml}
                             <div style="word-break:break-word;">${renderChatMedia(escapeHtml(msg.text), msg.id)}</div>
                             ${reactionsHtml}
                             <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.65rem; color:rgba(255,255,255,0.6); margin-top:4px; gap:8px;">
@@ -12002,7 +12034,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                     ${!isMe ? `
                                         <button type="button" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')" style="background:none; border:none; color:#38bdf8; font-size:0.65rem; cursor:pointer; font-weight:700; padding:0; min-height:44px; display:inline-flex; align-items:center;">Napisz Priv 💬</button>
                                     ` : ''}
-                                    <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${escapeHtml(msg.senderName || 'Użytkownik')}" data-share-text="${escapeHtml(msg.text || '')}" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#f1f5f9; cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; padding:0; border-radius:8px; display:inline-flex; align-items:center; justify-content:center;" title="Udostępnij tę wiadomość" aria-label="Udostępnij wiadomość">
+                                    <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${escapeHtml(msg.senderName || 'Użytkownik')}" data-share-text="${escapeHtml(msg.text || '')}" style="background:transparent; border:none; box-shadow:none; color:rgba(255,255,255,0.7); cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; padding:0; display:inline-flex; align-items:center; justify-content:center;" title="Udostępnij tę wiadomość" aria-label="Udostępnij wiadomość">
                                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                                     </button>
                                 </div>
@@ -12037,6 +12069,211 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             }
         }
 
+        // ══════════ NAWIGACJA DO CYTOWANEJ WIADOMOŚCI ══════════
+        window.scrollToChatMessage = function(targetMsgId) {
+            if (!targetMsgId) return;
+            const targetEl = document.getElementById('msg_' + targetMsgId);
+            if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetEl.classList.remove('chat-message-highlight');
+                void targetEl.offsetWidth;
+                targetEl.classList.add('chat-message-highlight');
+                setTimeout(() => targetEl.classList.remove('chat-message-highlight'), 3000);
+            } else {
+                if (typeof showToast === 'function') {
+                    showToast('Cytowana wiadomość znajduje się poza bieżącym widokiem.');
+                }
+            }
+        };
+
+        // ══════════ CYTOWANIE WIADOMOŚCI (REPLY TO) ══════════
+        window._currentPublicChatQuote = null;
+
+        window.startPublicChatQuote = function(messageId, senderName, senderId, text) {
+            window._currentPublicChatQuote = {
+                messageId: String(messageId || ''),
+                senderName: String(senderName || 'Użytkownik').trim(),
+                senderId: String(senderId || '').trim(),
+                text: String(text || '').trim()
+            };
+            const banner = document.getElementById('publicChatQuoteBanner');
+            const authorEl = document.getElementById('publicChatQuoteAuthor');
+            const textEl = document.getElementById('publicChatQuoteText');
+            const input = document.getElementById('publicChatInput');
+            if (banner && authorEl && textEl) {
+                authorEl.textContent = window._currentPublicChatQuote.senderName;
+                textEl.textContent = window._currentPublicChatQuote.text;
+                banner.style.display = 'flex';
+            }
+            if (input) {
+                input.focus();
+            }
+        };
+
+        window.cancelPublicChatQuote = function() {
+            window._currentPublicChatQuote = null;
+            const banner = document.getElementById('publicChatQuoteBanner');
+            if (banner) {
+                banner.style.display = 'none';
+            }
+        };
+
+        // ══════════ GESTY LONG-PRESS (~450ms) I MENU AKCJI WIADOMOŚCI ══════════
+        let _chatTouchTimer = null;
+        let _chatTouchStartX = 0;
+        let _chatTouchStartY = 0;
+        let _chatTouchTriggered = false;
+
+        window.handleChatTouchStart = function(ev, rowEl) {
+            if (!ev.touches || ev.touches.length !== 1) return;
+            const touch = ev.touches[0];
+            _chatTouchStartX = touch.clientX;
+            _chatTouchStartY = touch.clientY;
+            _chatTouchTriggered = false;
+            clearTimeout(_chatTouchTimer);
+
+            _chatTouchTimer = setTimeout(() => {
+                _chatTouchTriggered = true;
+                if (navigator.vibrate) try { navigator.vibrate(40); } catch(e) {}
+                window.openChatMessageMenu(rowEl, _chatTouchStartX, _chatTouchStartY);
+            }, 450);
+        };
+
+        window.handleChatTouchMove = function(ev) {
+            if (!ev.touches || ev.touches.length === 0) return;
+            const touch = ev.touches[0];
+            const dist = Math.hypot(touch.clientX - _chatTouchStartX, touch.clientY - _chatTouchStartY);
+            if (dist > 10) {
+                clearTimeout(_chatTouchTimer);
+            }
+        };
+
+        window.handleChatTouchEnd = function(ev) {
+            clearTimeout(_chatTouchTimer);
+            if (_chatTouchTriggered) {
+                if (ev.cancelable) ev.preventDefault();
+                _chatTouchTriggered = false;
+            }
+        };
+
+        window.handleChatContextMenu = function(ev, rowEl) {
+            if (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+            clearTimeout(_chatTouchTimer);
+            window.openChatMessageMenu(rowEl, ev.clientX, ev.clientY);
+        };
+
+        window.openChatMessageMenu = function(rowEl, clientX, clientY) {
+            if (!rowEl) return;
+            document.querySelectorAll('.lumina-msg-action-menu').forEach(m => m.remove());
+
+            const msgId = rowEl.getAttribute('data-message-id') || rowEl.id?.replace(/^msg_/, '') || '';
+            const bubble = rowEl.querySelector('.lumina-bubble-mine, .lumina-bubble-theirs');
+            const senderEl = bubble?.querySelector('span[onclick*="openChatWith"]');
+            const senderName = rowEl.getAttribute('data-sender-name') || (senderEl ? senderEl.textContent.trim() : 'Użytkownik');
+            const senderId = rowEl.getAttribute('data-sender-id') || '';
+            const shareBtn = rowEl.querySelector('.cc-chat-share-btn');
+            const rawText = shareBtn ? shareBtn.getAttribute('data-share-text') : (bubble?.innerText || '');
+
+            const menu = document.createElement('div');
+            menu.className = 'lumina-msg-action-menu';
+            menu.setAttribute('role', 'menu');
+            menu.setAttribute('aria-label', 'Akcje wiadomości');
+
+            let dismiss = null;
+            const closeMenu = () => {
+                if (dismiss) {
+                    document.removeEventListener('pointerdown', dismiss, false);
+                    window.removeEventListener('resize', closeMenu, false);
+                }
+                menu.classList.remove('is-open');
+                setTimeout(() => menu.remove(), 160);
+            };
+
+            // 1. Odpowiedz z cytatem
+            const replyItem = document.createElement('button');
+            replyItem.type = 'button';
+            replyItem.className = 'lumina-msg-action-item';
+            replyItem.innerHTML = '<i class="fa-solid fa-reply"></i> <span>Odpowiedz z cytatem</span>';
+            replyItem.onclick = () => {
+                closeMenu();
+                window.startPublicChatQuote(msgId, senderName, senderId, rawText);
+            };
+            menu.appendChild(replyItem);
+
+            // 2. Dodaj reakcję emoji
+            const reactItem = document.createElement('button');
+            reactItem.type = 'button';
+            reactItem.className = 'lumina-msg-action-item';
+            reactItem.innerHTML = '<i class="fa-regular fa-face-smile"></i> <span>Dodaj reakcję</span>';
+            reactItem.onclick = () => {
+                closeMenu();
+                const addBtn = rowEl.querySelector('.lumina-reaction-add-btn');
+                if (addBtn) window.toggleReactionPicker(addBtn, 'public', 'public', msgId);
+            };
+            menu.appendChild(reactItem);
+
+            // 3. Udostępnij
+            const shareItem = document.createElement('button');
+            shareItem.type = 'button';
+            shareItem.className = 'lumina-msg-action-item';
+            shareItem.innerHTML = '<i class="fa-solid fa-share-nodes"></i> <span>Przekaż dalej</span>';
+            shareItem.onclick = () => {
+                closeMenu();
+                if (typeof window.shareChatMessage === 'function') {
+                    window.shareChatMessage(null, senderName, rawText);
+                }
+            };
+            menu.appendChild(shareItem);
+
+            // 4. Kopiuj tekst
+            const copyItem = document.createElement('button');
+            copyItem.type = 'button';
+            copyItem.className = 'lumina-msg-action-item';
+            copyItem.innerHTML = '<i class="fa-regular fa-copy"></i> <span>Kopiuj treść</span>';
+            copyItem.onclick = () => {
+                closeMenu();
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(rawText).then(() => {
+                        if (typeof showToast === 'function') showToast('Skopiowano treść wiadomości! 📋');
+                    }).catch(() => {
+                        if (typeof showToast === 'function') showToast('Nie udało się skopiować.');
+                    });
+                }
+            };
+            menu.appendChild(copyItem);
+
+            document.body.appendChild(menu);
+
+            const mWidth = menu.offsetWidth || 210;
+            const mHeight = menu.offsetHeight || 190;
+
+            let x = clientX ?? (bubble ? bubble.getBoundingClientRect().left : 50);
+            let y = clientY ?? (bubble ? bubble.getBoundingClientRect().bottom : 100);
+
+            if (x + mWidth > window.innerWidth - 10) x = window.innerWidth - mWidth - 10;
+            if (x < 10) x = 10;
+            if (y + mHeight > window.innerHeight - 10) y = Math.max(10, (clientY ? clientY - mHeight : y - mHeight - 40));
+            if (y < 10) y = 10;
+
+            menu.style.left = Math.round(x) + 'px';
+            menu.style.top = Math.round(y) + 'px';
+
+            requestAnimationFrame(() => menu.classList.add('is-open'));
+
+            dismiss = (ev) => {
+                if (!menu.contains(ev.target)) {
+                    closeMenu();
+                }
+            };
+            setTimeout(() => {
+                document.addEventListener('pointerdown', dismiss, false);
+                window.addEventListener('resize', closeMenu, false);
+            }, 60);
+        };
+
         // ══════════ REAKCJE EMOTIKONAMI NA WIADOMOŚCI CZATU ══════════
         window.handleChatReaction = async function(type, chatId, msgId, emoji) {
             if (!window.LuminaDB) return;
@@ -12045,8 +12282,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
             const normFrom = window.LuminaDB.normalizeChatUserId ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
 
-            const isGuest = (!myUser && (!myProfile || normFrom === 'guest') && localStorage.getItem('lumina_auth_master_admin') !== 'true');
-            if (isGuest) {
+            const isGuest = (!myUser || myUser.isAnonymous || (!myProfile && normFrom === 'guest'));
+            if (isGuest && localStorage.getItem('lumina_auth_master_admin') !== 'true') {
                 if (typeof showToast === 'function') {
                     showToast('Zaloguj się, aby dodawać reakcje na wiadomości! 🕊️');
                 } else if (typeof window.showToast === 'function') {
@@ -12067,10 +12304,15 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const targetChatId = chatId || (type === 'public' ? 'public' : (window.activeChatSession?.chatId || ''));
 
             try {
+                let res = null;
                 if (type === 'direct') {
-                    await window.LuminaDB.toggleDirectMessageReaction(targetChatId, targetMsgId, emoji, userObj);
+                    res = await window.LuminaDB.toggleDirectMessageReaction(targetChatId, targetMsgId, emoji, userObj);
                 } else if (type === 'public') {
-                    await window.LuminaDB.togglePublicChatMessageReaction(targetMsgId, emoji, userObj);
+                    res = await window.LuminaDB.togglePublicChatMessageReaction(targetMsgId, emoji, userObj);
+                }
+                if (res && res.success === false && res.reason === 'unauthenticated') {
+                    if (typeof showToast === 'function') showToast('Zaloguj się, aby dodać reakcję! 🕊️');
+                    if (typeof window.openAuthModal === 'function') window.openAuthModal();
                 }
             } catch (err) {
                 console.warn('Błąd podczas zapisywania reakcji:', err);
@@ -12105,27 +12347,27 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             picker._targetBtn = btnEl;
 
             let dismissHandler = null;
+            let isCleaningUp = false;
             const cleanup = () => {
+                if (isCleaningUp) return;
+                isCleaningUp = true;
                 if (dismissHandler) {
-                    document.removeEventListener('pointerdown', dismissHandler, true);
-                    window.removeEventListener('resize', dismissHandler, true);
-                    window.removeEventListener('scroll', dismissHandler, true);
+                    document.removeEventListener('pointerdown', dismissHandler, false);
+                    window.removeEventListener('resize', dismissHandler, false);
                 }
                 if (picker.parentNode) picker.parentNode.removeChild(picker);
             };
             picker._cleanup = cleanup;
 
-            const emojis = ['❤️', '🙏', '✨', '✝️', '🔥', '🕊️', '📖', '👑', '👍', '👏', '😊', '🛡️'];
+            const emojis = ['❤️', '👍', '🙏', '😂', '😊', '✨', '✝️', '🔥', '🕊️', '📖', '👑', '👏'];
             emojis.forEach(em => {
                 const sp = document.createElement('button');
                 sp.type = 'button';
                 sp.className = 'lumina-reaction-btn';
                 sp.textContent = em;
                 sp.setAttribute('aria-label', 'Dodaj reakcję ' + em);
-                sp.addEventListener('pointerdown', (ev) => {
-                    ev.stopPropagation();
-                });
-                const selectEmoji = (ev) => {
+
+                const handleSelect = (ev) => {
                     if (ev) {
                         ev.preventDefault();
                         ev.stopPropagation();
@@ -12135,13 +12377,18 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         console.warn('Nie udało się zapisać reakcji:', error);
                     });
                 };
-                sp.onclick = selectEmoji;
+
+                sp.addEventListener('pointerdown', (ev) => {
+                    ev.stopPropagation();
+                });
+                sp.addEventListener('click', handleSelect);
+                sp.addEventListener('touchend', handleSelect);
                 picker.appendChild(sp);
             });
 
             document.body.appendChild(picker);
 
-            const pickerWidth = picker.offsetWidth || 250;
+            const pickerWidth = picker.offsetWidth || 260;
             const pickerHeight = picker.offsetHeight || 80;
 
             const minLeft = Math.max(cardRect.left + 8, 8);
@@ -12172,9 +12419,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             };
             setTimeout(() => {
-                document.addEventListener('pointerdown', dismissHandler, true);
-                window.addEventListener('resize', dismissHandler, true);
-                window.addEventListener('scroll', dismissHandler, true);
+                document.addEventListener('pointerdown', dismissHandler, false);
+                window.addEventListener('resize', dismissHandler, false);
             }, 60);
         };
 
@@ -12402,6 +12648,17 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             input.value = '';
 
+            const quotePayload = window._currentPublicChatQuote ? {
+                replyToMessageId: window._currentPublicChatQuote.messageId,
+                replyToSenderName: window._currentPublicChatQuote.senderName,
+                replyToSenderId: window._currentPublicChatQuote.senderId,
+                replyToText: window._currentPublicChatQuote.text
+            } : {};
+
+            if (typeof window.cancelPublicChatQuote === 'function') {
+                window.cancelPublicChatQuote();
+            }
+
             if (window.LuminaDB && typeof window.LuminaDB.sendPublicChatMessage === 'function') {
                 const myUser = window.LuminaDB?.getCurrentUser();
                 const myProfile = window.LuminaDB?.getCurrentProfile();
@@ -12413,7 +12670,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     senderName: myProfile?.name || myUser?.displayName || (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
                     senderAvatar: myProfile?.avatar || myUser?.photoURL || (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')),
                     senderBadge: (fromId === 'cezaryrgowski' ? '✨ Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '✨ Społeczność')),
-                    text: text
+                    text: text,
+                    ...quotePayload
                 });
             }
         }
@@ -12734,7 +12992,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                     </div>
                                     <div style="word-break:break-word;">${renderChatMedia(escapeHtml(msg.text), msg.id)}</div>
                                     <div style="display:flex; justify-content:flex-end; align-items:center; margin-top:4px;">
-                                        <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${escapeHtml(msg.senderName || 'Dowódca')}" data-share-text="${escapeHtml(msg.text || '')}" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#f1f5f9; cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; padding:0; border-radius:8px; display:inline-flex; align-items:center; justify-content:center;" title="Udostępnij tę wiadomość" aria-label="Udostępnij wiadomość">
+                                        <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${escapeHtml(msg.senderName || 'Dowódca')}" data-share-text="${escapeHtml(msg.text || '')}" style="background:transparent; border:none; box-shadow:none; color:rgba(255,255,255,0.7); cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; padding:0; display:inline-flex; align-items:center; justify-content:center;" title="Udostępnij tę wiadomość" aria-label="Udostępnij wiadomość">
                                             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                                         </button>
                                     </div>
@@ -13481,7 +13739,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                     <span>${escapeHtml(time)}</span>
                                     ${checkmarksHtml}
                                 </div>
-                                <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${escapeHtml(msg.senderName || 'Rozmówca')}" data-share-text="${escapeHtml(msg.text || '')}" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#f1f5f9; cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; padding:0; border-radius:8px; display:inline-flex; align-items:center; justify-content:center;" title="Udostępnij tę wiadomość" aria-label="Udostępnij wiadomość">
+                                <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${escapeHtml(msg.senderName || 'Rozmówca')}" data-share-text="${escapeHtml(msg.text || '')}" style="background:transparent; border:none; box-shadow:none; color:rgba(255,255,255,0.7); cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; padding:0; display:inline-flex; align-items:center; justify-content:center;" title="Udostępnij tę wiadomość" aria-label="Udostępnij wiadomość">
                                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                                 </button>
                             </div>

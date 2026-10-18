@@ -54,7 +54,10 @@ test('Lumi Direct Dock Adapter: adheres to DirectMessagingAdapter contract', () 
         ]);
         return () => {};
       },
-      sendDirectMessageToCloud: async (fromId, receiverId, msgObj, name, avatar) => {
+      sendDirectMessageToCloud: async (chatId, msgObj) => {
+        assert.equal(chatId, 'jan_kowalski_anna_nowak');
+        assert.equal(msgObj.receiverId, 'anna_nowak');
+        assert.equal(msgObj.text, 'Nowa wiadomość testowa');
         return 'new_msg_id_777';
       },
       markDirectMessagesAsRead: async (chatId, userId, name) => true
@@ -227,7 +230,7 @@ test('Lumi Direct Dock Controller: state, auto-open policy, and DOM interaction'
   }
 });
 
-test('Lumi Direct Dock P0: Two authenticated accounts exchange DMs with read receipts and isolation', async () => {
+test('Lumi Direct Dock model only: two in-memory mock accounts (not production E2E)', async () => {
   // Symulacja bazy Firestore w pamięci dla dwóch kont
   const firestoreDb = {
     messages: [],
