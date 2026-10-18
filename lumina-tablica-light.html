@@ -10485,6 +10485,18 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     }
                 }
 
+                // 🛡️ OCHRONA PRZED DUBLOWANIEM ARTYKUŁU: Jeśli wpis posiada już własną grafikę (item.image)
+                // lub dedykowany przycisk CTA (ctaHtml), albo reprezentuje już lekcję / artykuł,
+                // KATEGORYCZNIE NIE DOKLEJAJ podwójnej karty OpenGraph (.rich-og-card).
+                if (effectiveEmbedHtml && effectiveEmbedHtml.includes('rich-og-card')) {
+                    const hasDedicatedMedia = !!(item.image && item.image.trim() !== '');
+                    const hasDedicatedCta = !!(ctaHtml && ctaHtml.trim() !== '');
+                    const isLessonOrArticle = !!(item.isArticle || item.category === 'z_biblia_za_pan_brat' || (candidateUrl && (candidateUrl.includes('kurscodzienny') || candidateUrl.includes('dzien-'))));
+                    if (hasDedicatedMedia || hasDedicatedCta || isLessonOrArticle) {
+                        effectiveEmbedHtml = '';
+                    }
+                }
+
                 let topBadgeHtml = '';
                 if (window.LuminaDB?.getUserBadges) {
                     const uBadges = window.LuminaDB.getUserBadges(item.authorSlug || item.author);

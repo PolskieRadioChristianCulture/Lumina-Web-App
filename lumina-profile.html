@@ -7048,6 +7048,15 @@
                 } else if (rich.embedHtml) {
                     effectiveEmbedHtml = rich.embedHtml;
                 }
+
+                // 🛡️ OCHRONA PRZED DUBLOWANIEM ARTYKUŁU
+                if (effectiveEmbedHtml && effectiveEmbedHtml.includes('rich-og-card')) {
+                    const hasDedicatedMedia = !!(p.image && p.image.trim() !== '');
+                    const isLessonOrArticle = !!(p.isArticle || p.category === 'z_biblia_za_pan_brat');
+                    if (hasDedicatedMedia || isLessonOrArticle) {
+                        effectiveEmbedHtml = '';
+                    }
+                }
                 if (!effectiveEmbedHtml && p.youtubeUrl) {
                     const parsedInfo = parseYouTubeEmbedUrl ? parseYouTubeEmbedUrl(p.youtubeUrl) : null;
                     if (parsedInfo) {

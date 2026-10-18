@@ -10507,13 +10507,14 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                         ctaText: 'Wspieraj Dzieło Boże ➔',
                         icon: 'fa-solid fa-hand-holding-heart'
                     };
-                    if (item.image && (item.image.includes('social.jpg') || item.image.includes('kc_day_') || item.image.includes('lesson-'))) {
+                    if (item.image && item.image.includes('social.jpg')) {
                         item.image = null;
                     }
                 } else if (candidateUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
                     const hMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateUrl);
                     if (hMeta && hMeta.image && !hMeta.image.includes('logo-glowne')) {
-                        if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_') || item.image.includes('kc_day_') || item.image.includes('lesson-')) {
+                        const isCourseHeroOnSpecificDay = (hMeta.image.includes('kc_day_') && item.image && item.image.includes('z_biblia_za_pan_brat_hero'));
+                        if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_') || isCourseHeroOnSpecificDay) {
                             item.image = hMeta.image;
                         }
                     }
@@ -10581,6 +10582,18 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                         effectiveEmbedHtml = window.LuminaDB.createGoogleDriveEmbedHtml(item.gdrive, { mode: item.gdrive.mode });
                     } else if (item.gdriveEmbed && window.LuminaDB?.createGoogleDriveEmbedHtml) {
                         effectiveEmbedHtml = window.LuminaDB.createGoogleDriveEmbedHtml({ fileId: 'ext', previewEmbedUrl: item.gdriveEmbed, typeLabel: 'Plik z Dysku Google' });
+                    }
+                }
+
+                // 🛡️ OCHRONA PRZED DUBLOWANIEM ARTYKUŁU: Jeśli wpis posiada już własną grafikę (item.image)
+                // lub dedykowany przycisk CTA (ctaHtml), albo reprezentuje już lekcję / artykuł,
+                // KATEGORYCZNIE NIE DOKLEJAJ podwójnej karty OpenGraph (.rich-og-card).
+                if (effectiveEmbedHtml && effectiveEmbedHtml.includes('rich-og-card')) {
+                    const hasDedicatedMedia = !!(item.image && item.image.trim() !== '');
+                    const hasDedicatedCta = !!(ctaHtml && ctaHtml.trim() !== '');
+                    const isLessonOrArticle = !!(item.isArticle || item.category === 'z_biblia_za_pan_brat' || (candidateUrl && (candidateUrl.includes('kurscodzienny') || candidateUrl.includes('dzien-'))));
+                    if (hasDedicatedMedia || hasDedicatedCta || isLessonOrArticle) {
+                        effectiveEmbedHtml = '';
                     }
                 }
 
@@ -16620,8 +16633,37 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 const shareUrl = pick('share_url', 'url', 'url');
                 const shareImg = params.get('share_image') || (stored && (stored.share_image || stored.imageUrl || stored.image || stored.share_img)) || pick('share_img', 'img', 'imageUrl');
                 const shareVideo = pick('share_video', 'video', 'videoUrl');
+                const shareKeyParam = params.get('share') || '';
 
-                if (!shareTitle && !shareText && !shareUrl && !shareImg && !shareVideo) return;
+                if (!shareTitle && !shareText && !shareUrl && !shareImg && !shareVideo && !shareKeyParam) return;
+
+                // Automatyczne rozpoznanie i wzbogacenie lekcji Kursu Codziennego (np. share=dzien-18 lub /dzien-18)
+                const detectedDayMatch = (shareKeyParam + ' ' + shareUrl + ' ' + (params.get('v') || '')).match(/dzien[_-](d+)/i);
+                let finalShareImg = shareImg;
+                let finalShareTitle = shareTitle;
+                let finalShareUrl = shareUrl;
+                let finalShareText = shareText;
+
+                if (detectedDayMatch) {
+                    const dayNum = parseInt(detectedDayMatch[1], 10);
+                    if (!finalShareUrl) {
+                        finalShareUrl = 'https://polskieradio.cc/akademia/kurscodzienny/dzien-' + (dayNum < 10 ? '0' + dayNum : dayNum);
+                    }
+                    if (window.LuminaDB?.getHeuristicLinkMetadata) {
+                        const hMeta = window.LuminaDB.getHeuristicLinkMetadata(finalShareUrl);
+                        if (hMeta) {
+                            if (!finalShareTitle || finalShareTitle === 'Udostępniony wpis') finalShareTitle = hMeta.title;
+                            if (!finalShareImg || finalShareImg.includes('z_biblia_za_pan_brat_hero')) finalShareImg = hMeta.image;
+                        }
+                    }
+                    if (!finalShareImg) {
+                        finalShareImg = 'https://polskieradio.cc/images/academy/daily/kc_day_' + String(dayNum).padStart(2, '0') + '.jpg';
+                    }
+                    if (!finalShareText) {
+                        const verse = params.get('v') || params.get('verse') || '';
+                        finalShareText = `${finalShareTitle}${verse ? ' (' + verse + ')' : ''}\n\nZapraszam do wspólnego studiowania Słowa Bożego w bezpłatnym Kursie Codziennym „Z Biblią za Pan Brat”!\n\n${finalShareUrl}`;
+                    }
+                }
 
                 if (shareImg) {
                     try {
@@ -16651,28 +16693,30 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 const newSharedPost = {
                     id: publishedPostId,
                     type: 'post',
-                    category: isAiAntychryst ? 'si' : 'general',
-                    isArticle: !!isAiAntychryst,
+                    category: isAiAntychryst ? 'si' : (detectedDayMatch ? 'z_biblia_za_pan_brat' : 'general'),
+                    isArticle: !!isAiAntychryst || !!detectedDayMatch,
                     author: isAiAntychryst ? 'Cezary Rogowski' : (persona.name || 'Cezary Rogowski'),
                     authorSlug: isAiAntychryst ? 'cezaryrgowski' : (persona.slug || 'cezaryrgowski'),
                     authorAvatar: isAiAntychryst ? 'avatar_cezary_official.jpg' : (persona.avatar || 'avatar_cezary_official.jpg'),
                     authorRole: isAiAntychryst ? 'Założyciel Christian Culture ✨ • Redakcja Teologiczna' : (persona.role || 'Społeczność LUMINA ✨'),
-                    authorBadge: isAiAntychryst ? '👑 PUBLIKACJA GŁÓWNA • NOWE TECHNOLOGIE & SI' : '✨ Udostępniono na Tablicy',
+                    authorBadge: isAiAntychryst ? '👑 PUBLIKACJA GŁÓWNA • NOWE TECHNOLOGIE & SI' : (detectedDayMatch ? '📖 KURS CODZIENNY • Z BIBLIĄ ZA PAN BRAT' : '✨ Udostępniono na Tablicy'),
                     badgeHtml: isAiAntychryst
                         ? '<span class="badge-type-tag" style="background:linear-gradient(135deg,#bb142e,#7f1d1d);border:1.5px solid #f87171;color:#fff;font-weight:800;box-shadow:0 0 10px rgba(187,20,46,0.4);" title="👑 GŁÓWNA PUBLIKACJA • NOWE TECHNOLOGIE & SI"><i class="fa-solid fa-microchip"></i> <span class="badge-type-tag-text">NOWE TECHNOLOGIE & SI • EKSKLUZYWNY ARTYKUŁ</span></span>'
-                        : '<span class="badge-type-tag" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:800;" title="✨ Udostępniono na Tablicy"><i class="fa-solid fa-share-nodes"></i> <span class="badge-type-tag-text">UDOSTĘPNIONO</span></span>',
+                        : (detectedDayMatch
+                            ? '<span class="badge-type-tag" style="background:linear-gradient(135deg,#d97706,#b45309);border:1px solid #f59e0b;color:#fff;font-weight:800;" title="📖 KURS CODZIENNY"><i class="fa-solid fa-book-bible"></i> <span class="badge-type-tag-text">KURS CODZIENNY • LEKCJA DNIA</span></span>'
+                            : '<span class="badge-type-tag" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:800;" title="✨ Udostępniono na Tablicy"><i class="fa-solid fa-share-nodes"></i> <span class="badge-type-tag-text">UDOSTĘPNIONO</span></span>'),
                     time: 'Przed chwilą • 🌟 Udostępniono na Tablicy',
                     createdAt: 'Przed chwilą • 🌟 Udostępniono na Tablicy',
-                    title: shareTitle || 'Udostępniony wpis',
-                    text: combinedBody,
-                    desc: shareText || shareTitle,
-                    image: shareImg || (isAiAntychryst ? '/images/si/ai-vs-antychryst.webp' : null),
-                    imageUrl: shareImg || (isAiAntychryst ? '/images/si/ai-vs-antychryst.webp' : null),
-                    actionUrl: shareUrl || '',
-                    actionText: 'Czytaj Cały Artykuł ➔',
-                    externalUrl: shareUrl || '',
-                    externalUrlLabel: 'Czytaj Cały Artykuł ➔',
-                    sourceUrl: shareUrl || '',
+                    title: finalShareTitle || 'Udostępniony wpis',
+                    text: combinedBody || finalShareText || '',
+                    desc: finalShareText || finalShareTitle,
+                    image: finalShareImg || (isAiAntychryst ? '/images/si/ai-vs-antychryst.webp' : null),
+                    imageUrl: finalShareImg || (isAiAntychryst ? '/images/si/ai-vs-antychryst.webp' : null),
+                    actionUrl: finalShareUrl || '',
+                    actionText: detectedDayMatch ? ('Czytaj Dzień ' + detectedDayMatch[1] + ' ➔') : 'Czytaj Cały Artykuł ➔',
+                    externalUrl: finalShareUrl || '',
+                    externalUrlLabel: detectedDayMatch ? ('Czytaj Dzień ' + detectedDayMatch[1] + ' ➔') : 'Czytaj Cały Artykuł ➔',
+                    sourceUrl: finalShareUrl || '',
                     sourceSlug: isAiAntychryst ? 'ai-antychryst' : '',
                     likes: isAiAntychryst ? 428 : 24,
                     amen: isAiAntychryst ? 396 : 18,

@@ -8330,12 +8330,18 @@
                         ctaText: 'Wspieraj Dzieło Boże ➔',
                         icon: 'fa-solid fa-hand-holding-heart'
                     };
-                    if (p.image && (p.image.includes('social.jpg') || p.image.includes('kc_day_') || p.image.includes('lesson-'))) {
+                    if (p.image && p.image.includes('social.jpg')) {
                         p.image = null;
                     }
-                } else if (!p.linkPreview && detectedUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
+                } else if (detectedUrl && window.LuminaDB?.getHeuristicLinkMetadata) {
                     const hMeta = window.LuminaDB.getHeuristicLinkMetadata(detectedUrl);
-                    if (hMeta) p.linkPreview = hMeta;
+                    if (hMeta) {
+                        p.linkPreview = hMeta;
+                        const isCourseHeroOnSpecificDay = (hMeta.image && hMeta.image.includes('kc_day_') && p.image && p.image.includes('z_biblia_za_pan_brat_hero'));
+                        if (!p.image || p.image.includes('tlo_tv_radiocc') || p.image.includes('avatar_') || isCourseHeroOnSpecificDay) {
+                            p.image = hMeta.image;
+                        }
+                    }
                 }
 
                 let effectiveEmbedHtml = '';
@@ -8345,6 +8351,15 @@
                     effectiveEmbedHtml = p.embedHtml;
                 } else if (richResult.embedHtml) {
                     effectiveEmbedHtml = richResult.embedHtml;
+                }
+
+                // 🛡️ OCHRONA PRZED DUBLOWANIEM ARTYKUŁU
+                if (effectiveEmbedHtml && effectiveEmbedHtml.includes('rich-og-card')) {
+                    const hasDedicatedMedia = !!(p.image && p.image.trim() !== '');
+                    const isLessonOrArticle = !!(p.isArticle || p.category === 'z_biblia_za_pan_brat' || (detectedUrl && (detectedUrl.includes('kurscodzienny') || detectedUrl.includes('dzien-'))));
+                    if (hasDedicatedMedia || isLessonOrArticle) {
+                        effectiveEmbedHtml = '';
+                    }
                 }
 
                 return `

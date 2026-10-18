@@ -96,6 +96,13 @@ test('HTML structure and real live players (podcasty.html)', () => {
   // Curated UX (Pillar 5)
   assert.ok(html.includes('class="cc-stats-ribbon"'), 'Stats ribbon exists');
   assert.ok(html.includes('class="cc-episode-highlights"'), 'Episode highlights exist');
+
+  // Universal CC & Lumina Auth Connector (Zero Fake Mock Pill)
+  assert.ok(html.includes('class="cc-auth-widget-container"'), 'cc-auth-widget-container mount point exists');
+  assert.ok(html.includes('data-cc-auth-mount="true"'), 'data-cc-auth-mount is declared');
+  assert.ok(html.includes('/js/cc-global-auth.js?v=20261013_auth_notifsafe1'), 'Universal cc-global-auth.js is loaded');
+  assert.ok(!html.includes('author_cezary.jpg'), 'No broken author_cezary.jpg placeholder');
+  assert.ok(!html.includes('cc-user-pill'), 'No mock cc-user-pill hardcoded in HTML');
 });
 
 test('SEO & AI Search Discovery files (sitemap.xml & llms.txt)', () => {
