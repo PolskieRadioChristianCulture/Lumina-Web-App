@@ -235,7 +235,7 @@ test('composer has a plain placeholder without resize artifacts; mess shares the
   assert.doesNotMatch(html,/<script[^>]+src="[^\"]*lumi-direct-dock/);
   assert.match(html,/cc-support-footer\.js/);
   for(const path of ['lumina.html','lumina-profile.html','lumina-tablica.html','lumina-tablica-light.html','lumina.cezaryrgowski.html','lumina.wiolettarogowska.html']) {
-    assert.match(fs.readFileSync(path,'utf8'),/lumina-chat-premium\.css\?v=20261018_headerfix1/);
+    assert.match(fs.readFileSync(path,'utf8'),/lumina-chat-premium\.css\?v=20261018_headerfix2/);
   }
   c.destroy();
 });

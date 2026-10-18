@@ -1924,7 +1924,11 @@ html body.lumi-standalone .cc-chat-radio.is-playing button {
 #directMessagesModal .chat-settings-btn:focus:not(:focus-visible),
 #directMessagesModal .chat-fullscreen-btn:focus:not(:focus-visible),
 #directMessagesModal .modal-close-btn:focus:not(:focus-visible),
-.cc-chat-icon-btn:focus:not(:focus-visible) {
+#directMessagesModal .chat-close-btn:focus:not(:focus-visible),
+.chat-header-actions .modal-close-btn:focus:not(:focus-visible),
+.chat-header-actions .chat-close-btn:focus:not(:focus-visible),
+.cc-chat-icon-btn:focus:not(:focus-visible),
+.cc-chat-close-btn:focus:not(:focus-visible) {
     outline: none !important;
     box-shadow: none !important;
 }
@@ -1944,11 +1948,20 @@ html body.lumi-standalone .cc-chat-radio.is-playing button {
    3. UJEDNOLICENIE PRZYCISKÓW AKCJI (Ustawienia, Fullscreen, Zamknięcie)
    ══════════════════════════════════════════════════════════════════════════ */
 .chat-header-actions,
-.cc-chat-header-actions {
+.cc-chat-header-actions,
+#directMessagesModal .chat-header-actions {
     display: inline-flex !important;
+    flex-direction: row !important;
     align-items: center !important;
+    justify-content: flex-end !important;
     gap: 6px !important;
     flex-shrink: 0 !important;
+    flex-wrap: nowrap !important;
+    height: 36px !important;
+    max-height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
 }
 
 #directMessagesModal .chat-settings-btn,
@@ -1956,6 +1969,9 @@ html body.lumi-standalone .cc-chat-radio.is-playing button {
 #directMessagesModal .chat-fullscreen-btn,
 #directMessagesModal button#btnChatFullscreen,
 #directMessagesModal .modal-close-btn,
+#directMessagesModal .chat-close-btn,
+.chat-header-actions .modal-close-btn,
+.chat-header-actions .chat-close-btn,
 .cc-chat-icon-btn,
 .cc-chat-close-btn {
     width: 36px !important;
@@ -1980,14 +1996,40 @@ html body.lumi-standalone .cc-chat-radio.is-playing button {
     flex: 0 0 36px !important;
     box-sizing: border-box !important;
     position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
     touch-action: manipulation !important;
+    line-height: 1 !important;
+}
+
+/* Reset wszelkich relatywnych/absolutnych przesunięć z ogólnych reguł .modal-close-btn */
+#directMessagesModal .modal-close-btn,
+#directMessagesModal .chat-close-btn,
+.chat-header-actions .modal-close-btn,
+.chat-header-actions .chat-close-btn,
+.cc-chat-close-btn {
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+    line-height: 1 !important;
 }
 
 /* Ergonomia dotyku min 44x44px (WCAG 2.2 AA) */
 #directMessagesModal .chat-settings-btn::after,
 #directMessagesModal .chat-fullscreen-btn::after,
 #directMessagesModal .modal-close-btn::after,
-.cc-chat-icon-btn::after {
+#directMessagesModal .chat-close-btn::after,
+.chat-header-actions .modal-close-btn::after,
+.chat-header-actions .chat-close-btn::after,
+.cc-chat-icon-btn::after,
+.cc-chat-close-btn::after {
     content: '' !important;
     position: absolute !important;
     top: -4px !important;
@@ -2007,6 +2049,9 @@ html body.lumi-standalone .cc-chat-radio.is-playing button {
 }
 
 #directMessagesModal .modal-close-btn:hover,
+#directMessagesModal .chat-close-btn:hover,
+.chat-header-actions .modal-close-btn:hover,
+.chat-header-actions .chat-close-btn:hover,
 .cc-chat-close-btn:hover {
     background: rgba(239, 68, 68, 0.15) !important;
     border-color: rgba(239, 68, 68, 0.4) !important;
@@ -2016,7 +2061,11 @@ html body.lumi-standalone .cc-chat-radio.is-playing button {
 #directMessagesModal .chat-settings-btn:focus-visible,
 #directMessagesModal .chat-fullscreen-btn:focus-visible,
 #directMessagesModal .modal-close-btn:focus-visible,
-.cc-chat-icon-btn:focus-visible {
+#directMessagesModal .chat-close-btn:focus-visible,
+.chat-header-actions .modal-close-btn:focus-visible,
+.chat-header-actions .chat-close-btn:focus-visible,
+.cc-chat-icon-btn:focus-visible,
+.cc-chat-close-btn:focus-visible {
     outline: 2px solid #C4A35A !important;
     outline-offset: 2px !important;
 }

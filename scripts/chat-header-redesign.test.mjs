@@ -27,6 +27,11 @@ test('Unified action button heights and touch target ergonomics', async () => {
   assert.match(css, /\.chat-fullscreen-btn[\s\S]*?width:\s*36px/i);
   assert.match(css, /\.chat-settings-btn::after[\s\S]*?top:\s*-4px/i);
   assert.match(css, /\.chat-settings-btn::after[\s\S]*?bottom:\s*-4px/i);
+
+  // Close button top/right offset reset (no downwards/leftwards displacement into row 2)
+  assert.match(css, /\.chat-close-btn[\s\S]*?top:\s*0\s*!important/i);
+  assert.match(css, /\.chat-close-btn[\s\S]*?right:\s*0\s*!important/i);
+  assert.match(css, /\.chat-header-actions[\s\S]*?justify-content:\s*flex-end/i);
 });
 
 test('Header responsive layout rules for container >= 600px and < 600px', async () => {
@@ -64,6 +69,8 @@ test('Markup across all Lumina surfaces contains clean semantic header structure
     assert.ok(html.includes('Na żywo w Chrystusie ✨'), `${surface} missing Na żywo w Chrystusie subtitle`);
     assert.ok(html.includes('id="btnChatSettingsModal"'), `${surface} missing btnChatSettingsModal`);
     assert.ok(html.includes('id="btnChatFullscreen"'), `${surface} missing btnChatFullscreen`);
+    assert.ok(html.includes('chat-close-btn'), `${surface} missing chat-close-btn`);
+    assert.ok(html.includes('lumina-chat-premium.css?v=20261018_headerfix2'), `${surface} missing lumina-chat-premium.css?v=20261018_headerfix2`);
   }
 });
 
