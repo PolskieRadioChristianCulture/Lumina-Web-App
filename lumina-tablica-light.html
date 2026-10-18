@@ -10397,7 +10397,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                     if (!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('avatar_')) {
                         item.image = '/images/si/ai-vs-antychryst.webp';
                     }
-                } else if ((!item.image || item.image.includes('tlo_tv_radiocc')) && window.LuminaDB?.getHeuristicLinkMetadata) {
+                } else if ((!item.image || item.image.includes('tlo_tv_radiocc') || item.image.includes('z_biblia_za_pan_brat_hero')) && window.LuminaDB?.getHeuristicLinkMetadata) {
                     const candidateUrl = item.btnUrl || item.actionUrl || item.externalUrl || item.sourceUrl;
                     if (candidateUrl) {
                         const hMeta = window.LuminaDB.getHeuristicLinkMetadata(candidateUrl);
@@ -16496,12 +16496,31 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
         function handleIncomingWebShare() {
             try {
                 const params = new URLSearchParams(window.location.search);
-                const shareTitle = params.get('share_title') || params.get('title') || '';
-                const shareText = params.get('share_text') || params.get('text') || '';
-                const shareUrl = params.get('share_url') || params.get('url') || '';
-                const shareImg = params.get('share_image') || params.get('share_img') || params.get('img') || params.get('imageUrl') || '';
+                let shareTitle = params.get('share_title') || params.get('title') || '';
+                let shareText = params.get('share_text') || params.get('text') || '';
+                let shareUrl = params.get('share_url') || params.get('url') || '';
+                let shareImg = params.get('share_image') || params.get('share_img') || params.get('img') || params.get('imageUrl') || '';
+                const shareKeyParam = params.get('share') || '';
 
-                if (!shareTitle && !shareText && !shareUrl && !shareImg) return;
+                if (!shareTitle && !shareText && !shareUrl && !shareImg && !shareKeyParam) return;
+
+                const detectedDayMatch = (shareKeyParam + ' ' + shareUrl + ' ' + (params.get('v') || '')).match(/dzien[_-](\d+)/i);
+                if (detectedDayMatch) {
+                    const dayNum = parseInt(detectedDayMatch[1], 10);
+                    if (!shareUrl) shareUrl = 'https://polskieradio.cc/akademia/kurscodzienny/dzien-' + (dayNum < 10 ? '0' + dayNum : dayNum);
+                    if (window.LuminaDB?.getHeuristicLinkMetadata) {
+                        const hMeta = window.LuminaDB.getHeuristicLinkMetadata(shareUrl);
+                        if (hMeta) {
+                            if (!shareTitle || shareTitle.includes('Udostępnion')) shareTitle = hMeta.title;
+                            if (!shareImg || shareImg.includes('z_biblia_za_pan_brat_hero')) shareImg = hMeta.image;
+                        }
+                    }
+                    if (!shareImg) shareImg = 'https://polskieradio.cc/images/academy/daily/kc_day_' + String(dayNum).padStart(2, '0') + '.jpg';
+                    if (!shareText) {
+                        const verse = params.get('v') || params.get('verse') || '';
+                        shareText = `${shareTitle}${verse ? ' (' + verse + ')' : ''}\n\nZapraszam do wspólnego studiowania Słowa Bożego w bezpłatnym Kursie Codziennym „Z Biblią za Pan Brat”!\n\n${shareUrl}`;
+                    }
+                }
 
                 let attempts = 0;
                 const tryOpenPublisherWithSharedData = () => {
