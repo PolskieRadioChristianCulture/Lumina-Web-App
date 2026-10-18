@@ -1969,7 +1969,7 @@ export async function setProfileBlockStatus(slugOrUid, isBlocked, reason = 'Zabl
         if (isBlocked) {
             await blockUser(slugOrUid);
         } else {
-            unblockUser(slugOrUid);
+            await unblockUser(slugOrUid);
         }
     } catch(e) {}
 
@@ -3224,7 +3224,7 @@ function getDirectMessageKey(message) {
     ].join('|');
 }
 
-export function subscribeToDirectMessages(chatId, onUpdate) {
+export function subscribeToDirectMessages(chatId, onUpdate, onError) {
     if (!chatId) return () => {};
     let normalizedChatId = chatId;
 
@@ -3247,7 +3247,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
         retryUnsubscribe = onAuthChange((user) => {
             if (user?.uid && !user.isAnonymous) {
                 retryUnsubscribe();
-                activeUnsubscribe = subscribeToDirectMessages(normalizedChatId, onUpdate);
+                activeUnsubscribe = subscribeToDirectMessages(normalizedChatId, onUpdate, onError);
             }
         });
         return () => {
@@ -3304,6 +3304,13 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
     // z otwartej rozmowy mogły w ogóle nie trafić do tych 150 → „wiadomość nie dochodzi”.
     // Teraz: zapytanie zawężone do tej jednej rozmowy (wymaga indeksu participants+chatId — w firestore.indexes.json).
     // Gdy indeksu jeszcze nie ma, automatycznie wracamy do starego zapytania.
+    const reportHistoryError = error => {
+        if (currentUserState?.uid !== authUid) return;
+        if (typeof onError === 'function') onError(error);
+        try { window.dispatchEvent(new CustomEvent('lumina-chat-history-error', {
+            detail: { chatId: normalizedChatId, code: error?.code || 'unavailable' }
+        })); } catch (_) {}
+    };
     let _scopedDmFallbackStarted = false;
     const startLegacyDirectListener = () => {
         if (_scopedDmFallbackStarted) return;
@@ -3327,9 +3334,10 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             emitMergedMessages();
         }, (err) => {
             console.warn('Lumina Direct Messages (rozmowa) — powrót do zapytania ogólnego:', err && err.code);
-            startLegacyDirectListener();
+            if (err?.code === 'failed-precondition') startLegacyDirectListener();
+            else reportHistoryError(err);
         });
-    } catch(e) { startLegacyDirectListener(); }
+    } catch(e) { reportHistoryError(e); }
 
     function startUnscopedDirectListener() {
     try {
@@ -3349,6 +3357,8 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             emitMergedMessages();
         }, (err) => {
             console.warn('Lumina Direct Messages top-level notice:', err);
+            reportHistoryError(err);
+            if (err?.code === 'resource-exhausted' || err?.code === 'permission-denied') return;
             // A mobile network handoff can terminate a snapshot without
             // re-establishing it. Refresh once so the open desktop chat
             // receives the phone message even after a transient disconnect.
@@ -3442,6 +3452,26 @@ export function subscribeToIncomingMessageRequests(onUpdate) {
     }
 }
 
+// A point read of a missing private document is denied by participant rules.
+// The fallback query scopes one conversation AND the current member; an unrelated
+// document stays invisible and its create/update remains protected by the rules.
+async function getMemberConversationSnapshot(collectionName, id, user) {
+    if (!user?.uid || user.isAnonymous || currentUserState?.uid !== user.uid ||
+        !['lumina_chats', 'lumina_message_requests'].includes(collectionName)) throw new Error('Brak aktywnej sesji rozmowy.');
+    try {
+        return await getDoc(doc(db, collectionName, id));
+    } catch (error) {
+        if (error.code !== 'permission-denied') throw error;
+        const membership = collectionName === 'lumina_chats'
+            ? or(where('participants', 'array-contains', user.uid), where('users', 'array-contains', user.uid))
+            : or(where('senderAuthUid', '==', user.uid), where('receiverAuthUid', '==', user.uid));
+        const result = await getDocs(query(collection(db, collectionName),
+            where('chatId', '==', id), membership));
+        if (currentUserState?.uid !== user.uid) throw new Error('Sesja rozmowy została zmieniona.');
+        return result.docs.find(row => row.id === id) || { exists: () => false, data: () => undefined };
+    }
+}
+
 export async function acceptMessageRequest(requestId) {
     const user = currentUserState;
     if (!db || !user?.uid || user.isAnonymous || !requestId) return false;
@@ -3451,7 +3481,8 @@ export async function acceptMessageRequest(requestId) {
         const request = requestSnap.data();
         if (!requestSnap.exists() || request.receiverAuthUid !== user.uid || request.status !== 'pending') return false;
         const chatRef = doc(db, 'lumina_chats', request.chatId);
-        const chatSnap = await getDoc(chatRef);
+        const chatSnap = await getMemberConversationSnapshot('lumina_chats', request.chatId, user);
+        if (currentUserState?.uid !== user.uid) return false;
         const batch = writeBatch(db);
         batch.set(chatRef, {
             chatId: request.chatId,
@@ -3516,7 +3547,9 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     }
     if (!receiverId) receiverId = 'guest';
 
-    const normalizedChatId = getChatId(fromId, receiverId);
+    // The caller has already selected the persisted room. Rebuilding its ID
+    // from display aliases can split a family conversation from its history.
+    const normalizedChatId = String(chatId);
     const receiverProfile = messageObj.receiverUid
         ? null
         : await getProfileFromCloud(receiverId);
@@ -3539,7 +3572,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     }
     if (!receiverAuthUid && db && normalizedChatId) {
         try {
-            const chatSnap = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
+            const chatSnap = await getMemberConversationSnapshot('lumina_chats', normalizedChatId, user);
             const chatData = chatSnap.exists() ? chatSnap.data() : null;
             const chatParticipant = Array.isArray(chatData?.participants)
                 ? chatData.participants.find(uid => uid && uid !== user.uid)
@@ -3551,7 +3584,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     }
     if (!receiverAuthUid && db && normalizedChatId) {
         try {
-            const requestSnap = await getDoc(doc(db, 'lumina_message_requests', normalizedChatId));
+            const requestSnap = await getMemberConversationSnapshot('lumina_message_requests', normalizedChatId, user);
             const requestData = requestSnap.exists() ? requestSnap.data() : null;
             if (requestData?.senderAuthUid === user.uid) {
                 receiverAuthUid = requestData.receiverAuthUid || null;
@@ -3585,22 +3618,35 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     // Pierwsza wiadomość jest prośbą o kontakt. Istniejące, historyczne czaty
     // pozostają otwarte, aby nie przerywać dotychczasowych rozmów.
     let conversationChatExists = false;
+    let adminOpensConversation = false;
     if (db) {
         try {
-            const chatSnapshot = await getDoc(doc(db, 'lumina_chats', normalizedChatId));
+            const chatSnapshot = await getMemberConversationSnapshot('lumina_chats', normalizedChatId, user);
             conversationChatExists = chatSnapshot.exists();
             const requestRef = doc(db, 'lumina_message_requests', normalizedChatId);
-            const requestSnapshot = await getDoc(requestRef);
+            const requestSnapshot = await getMemberConversationSnapshot('lumina_message_requests', normalizedChatId, user);
+            if (currentUserState?.uid !== user.uid) return null;
             // Administrator społeczności (Założyciel / oficjalne profile CC) posiada
             // nieograniczone możliwości pisania i nie wymaga akceptacji drugiej osoby.
-            const isSenderAdmin = typeof isCommunityAdmin === 'function' ? isCommunityAdmin(user, fromId, myProfile) : false;
+            const isSenderAdmin = typeof isLuminaMasterAdmin === 'function' ? isLuminaMasterAdmin(user) : false;
 
             // Tylko jawnie zaakceptowana rozmowa odblokowuje wiadomości dla zwykłych użytkowników.
-            const conversationAccepted = isSenderAdmin || (
+            let conversationAccepted = isSenderAdmin || (
                 chatSnapshot.exists() && chatSnapshot.data()?.conversationState === 'accepted'
             ) || (
                 requestSnapshot.exists() && requestSnapshot.data()?.status === 'accepted'
             );
+            const reqData = requestSnapshot.exists() ? (requestSnapshot.data() || {}) : null;
+            // Druga osoba już prosiła mnie o rozmowę: moja odpowiedź = przyjęcie prośby (bez osobnego kliknięcia).
+            if (!conversationAccepted && reqData && reqData.receiverAuthUid === user.uid &&
+                (reqData.status === 'pending' || reqData.status === 'declined')) {
+                await updateDoc(requestRef, {
+                    status: 'accepted', acceptedBy: user.uid, acceptedAt: serverTimestamp(),
+                    respondedAt: serverTimestamp(), respondedBy: user.uid
+                });
+                conversationAccepted = true;
+            }
+            if (isSenderAdmin && !(reqData && reqData.status === 'accepted')) adminOpensConversation = true;
             if (!conversationAccepted) {
                 const existingRequest = requestSnapshot;
                 if (!existingRequest.exists()) {
@@ -3693,6 +3739,15 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             ...(!conversationChatExists ? { participants: chatParticipants, users: chatUsers } : {}),
             conversationState: 'accepted'
         }, { merge: true });
+        // Administrator otwiera rozmowę: zapisujemy przyjętą prośbę, aby odbiorca mógł od razu odpowiedzieć.
+        if (adminOpensConversation) {
+            batch.set(doc(db, 'lumina_message_requests', normalizedChatId), {
+                chatId: normalizedChatId, senderAuthUid: user.uid, receiverAuthUid,
+                participants: chatParticipants, senderId: fromId, receiverId, senderName, senderAvatar,
+                previewText: String(fullMsg.text || '').slice(0, 1000), status: 'accepted',
+                acceptedBy: user.uid, acceptedAt: serverTimestamp(), createdAt: Date.now()
+            }, { merge: true });
+        }
         await batch.commit();
 
         // Only confirmed persistence permits push.
@@ -5450,13 +5505,31 @@ export async function blockUser(targetIdOrSlug) {
     return true;
 }
 
-export function unblockUser(targetIdOrSlug) {
-    if (!targetIdOrSlug) return false;
-    const normalized = targetIdOrSlug.toLowerCase();
-    let blocked = getBlockedUsers();
-    blocked = blocked.filter(id => id !== normalized);
-    localStorage.setItem('lumina_blocked_users', JSON.stringify(blocked));
-    return true;
+export async function unblockUser(targetIdOrSlug) {
+    const user = currentUserState;
+    if (!targetIdOrSlug || !db || !user?.uid || user.isAnonymous) return false;
+    const normalized = String(targetIdOrSlug).toLowerCase();
+    try {
+        const profile = await getProfileFromCloud(normalized);
+        const targetUid = profile?.uid || String(targetIdOrSlug);
+        const matches = await getDocs(query(collection(db, 'lumina_user_blocks'),
+            where('ownerUid', '==', user.uid), or(
+                where('blockedTargetId', '==', normalized),
+                where('blockedTargetUid', '==', targetUid))));
+        if (currentUserState?.uid !== user.uid) return false;
+        if (!matches.empty) {
+            const batch = writeBatch(db);
+            matches.forEach(row => batch.delete(row.ref));
+            await batch.commit();
+        }
+        if (currentUserState?.uid !== user.uid) return false;
+        const blocked = getBlockedUsers().filter(id => id !== normalized && id !== targetUid.toLowerCase());
+        localStorage.setItem('lumina_blocked_users', JSON.stringify(blocked));
+        return true;
+    } catch (error) {
+        console.warn('Lumina unblock notice:', error.message);
+        return false;
+    }
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -7378,18 +7451,26 @@ export function startPresenceHeartbeat() {
 
 export function subscribeToOnlinePresence(callback) {
     if (!db || typeof callback !== 'function') return () => {};
-    return onSnapshot(collection(db, 'lumina_presence'), (snap) => {
-        const ninetySecAgo = Date.now() - 90000;
-        const activeList = [];
-        snap.forEach(d => {
-            const data = d.data();
-            const millis = data.lastActiveMillis || (data.lastActive?.toDate ? data.lastActive.toDate().getTime() : 0);
-            if (millis >= ninetySecAgo) {
-                activeList.push({ id: d.id, ...data });
-            }
+    let rows = [], available = false, stopped = false;
+    const emit = () => {
+        if (stopped) return;
+        const now = Date.now();
+        const members = rows.map(data => {
+            const millis = data.lastActive?.toMillis?.() ||
+                (data.lastActive?.toDate ? data.lastActive.toDate().getTime() : data.lastActiveMillis || 0);
+            return { ...data, online: Boolean(available && data.isLoggedIn === true && data.uid &&
+                millis > 0 && millis <= now + 5000 && millis >= now - 90000) };
         });
-        callback(activeList);
-    }, (err) => console.warn('[Presence] onSnapshot error:', err));
+        callback(members.filter(p => p.online), { available, members });
+    };
+    const stop = onSnapshot(collection(db, 'lumina_presence'), { includeMetadataChanges: true }, snap => {
+        rows = [];
+        snap.forEach(d => { if (!d.metadata?.hasPendingWrites) rows.push({ id: d.id, ...d.data() }); });
+        available = snap.metadata?.fromCache === false;
+        emit();
+    }, () => { available = false; emit(); });
+    const clock = setInterval(emit, 15000);
+    return () => { stopped = true; clearInterval(clock); stop(); };
 }
 
 // Auto-start heartbeat for every visitor

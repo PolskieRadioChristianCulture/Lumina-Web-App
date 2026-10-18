@@ -11197,7 +11197,7 @@
                             const isMission = (slug === 'cezaryrgowski' || slug === 'wiolettarogowska' || slug === 'radiocc' || slug === 'andrzejthiel' || slug === 'studiodobregoslowa' || slug === 'osobowoscplus');
                             const badge = isMission ? (slug === 'cezaryrgowski' ? '👑 Założyciel' : (slug === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Misja CC')) : '✨ Społeczność';
 
-                            map.set(slug, { slug, name, job, city, avatar, badge, isMission });
+                            map.set(slug, { slug, name, job, city, avatar, badge, isMission, uid: f.uid?.stringValue || '' });
                         });
                     }
                 }
@@ -11258,7 +11258,14 @@
             const listEl = document.getElementById('dmConversationsList');
             if (!listEl) return;
 
-            const users = await fetchCommunityUsersDirectory();
+            const baseUsers = await fetchCommunityUsersDirectory();
+            // Rodzinne rozmowy LUMI KIDS: dziecko nie ma publicznego profilu, więc dopisujemy je z rozmów rodzica.
+            const familyRooms = Array.isArray(window._luminaFamilyChats) ? window._luminaFamilyChats : [];
+            const familyIds = new Set(familyRooms.map(f => String(f.uid || '').toLowerCase()));
+            const users = familyRooms.filter(f => f.uid).map(f => ({
+                slug: f.uid, uid: f.uid, name: f.name, avatar: f.avatar,
+                badge: '⭐ LUMI KIDS · rodzina', job: 'Prywatna rozmowa rodzinna', isMission: false, isFamily: true
+            })).concat((baseUsers || []).filter(u => !familyIds.has(String(u.uid || u.slug || '').toLowerCase())));
             const myUser = window.LuminaDB?.getCurrentUser();
             const myProfile = window.LuminaDB?.getCurrentProfile();
             const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
@@ -11391,13 +11398,13 @@
                     : '';
 
                 html += `
-                    <div onclick="openChatWith('${escapeForInlineJs(u.name)}', '${escapeForInlineJs(u.avatar)}', '${escapeForInlineJs(u.slug)}')"
+                    <div onclick="openChatWith('${escapeForInlineJs(u.name)}', '${escapeForInlineJs(u.avatar)}', '${escapeForInlineJs(u.slug)}', undefined, '${escapeForInlineJs(u.uid || '')}')"
                          style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${cardBg}; ${roomHighlightStyle} border-radius:14px; cursor:pointer; transition:all 0.2s ease; position:relative;"
                          onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='#ec4899';"
                          onmouseout="this.style.transform='none'; this.style.borderColor='${hasUnread ? '#ef4444' : borderColor}';">
                         <div style="position:relative; flex-shrink:0;">
                             <img loading="lazy" decoding="async" src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
-                            <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                            <span data-lumina-presence-id="${escapeHtml(u.uid || '')}" data-lumina-presence-slug="${escapeHtml(u.slug || '')}" aria-label="Status nieznany" style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#94a3b8; border-radius:50%; border:2px solid #090d1a;"></span>
                             ${avatarBadgeHtml}
                         </div>
                         <div style="flex:1; min-width:0;">
@@ -11559,7 +11566,9 @@
                 }
             }
 
-            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
+            const familyRoom = (window._luminaFamilyChats || []).find(room =>
+                window.LuminaDB?.normalizeChatUserId(room.uid) === toId);
+            const chatId = familyRoom?.chatId || (window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_'));
 
             window.LumiChatDrafts?.open(chatId);
             activeChatSession = {

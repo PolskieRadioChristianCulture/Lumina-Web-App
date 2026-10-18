@@ -283,13 +283,15 @@
         });
       }
 
-      this.adapter.listMessages(id, 50).then((result) => {
+      this.adapter.listMessages(id, 600).then((result) => {
         if (this.activeId !== id) return;
-        this.messages[id] = result || [];
+        const merged = new Map((result || []).map(message => [message.id, message]));
+        (this.messages[id] || []).forEach(message => merged.set(message.id, message));
+        this.messages[id] = [...merged.values()].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
         this.render();
         this.checkMarkRead();
-      }).catch(() => {
-        this.error = 'Nie udało się pobrać wiadomości.';
+      }).catch((err) => {
+        this.error = err.message || 'Nie udało się pobrać wiadomości.';
         this.render();
       });
     }
@@ -328,7 +330,9 @@
     async sendMessage() {
       if (!this.activeId || this.busy) return;
       const id = this.activeId;
-      const text = (this.drafts[id] || '').trim();
+      const sender = this.userId;
+      const draft = this.drafts[id];
+      const text = (draft || '').trim();
       if (!text || text.length > MAX_TEXT_LENGTH) return;
 
       this.busy = true;
@@ -337,9 +341,10 @@
 
       try {
         const requestId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
-        await this.adapter.sendText(id, text, requestId);
-        this.drafts[id] = '';
-        await this.loadActiveConversation(id);
+        const savedId = await this.adapter.sendText(id, text, requestId);
+        if (typeof savedId !== 'string' || !savedId.trim()) throw new Error('Brak potwierdzenia zapisu wiadomości.');
+        if (this.userId === sender && this.drafts[id] === draft) this.drafts[id] = '';
+        if (this.userId === sender && this.activeId === id) await this.loadActiveConversation(id);
       } catch (err) {
         this.error = err.message || 'Wysyłanie nie powiodło się. Wiadomość pozostała w polu wpisywania.';
       } finally {
@@ -397,7 +402,7 @@
               ${p.avatarUrl ? `<img class="ldd-avatar" src="${escapeHtml(p.avatarUrl)}" alt="" />` : `<span class="ldd-avatar ldd-initial">${escapeHtml(p.name.charAt(0))}</span>`}
               <div class="ldd-name">
                 <strong>${escapeHtml(p.name)}</strong>
-                <small>${p.isOnline ? '● Aktywny teraz' : 'Wiadomość prywatna'}</small>
+                <small>Wiadomość prywatna</small>
               </div>
               <button type="button" class="ldd-btn-min" aria-label="Minimalizuj rozmowę">−</button>
               <button type="button" class="ldd-prefs" aria-label="Ustawienia prywatnych powiadomień" title="Ustawienia">⚙</button>
@@ -438,6 +443,7 @@
             return `
               <button type="button" class="ldd-head ${isSelected ? 'ldd-selected' : ''}" data-chat-id="${escapeHtml(c.id)}" title="Rozmowa z ${escapeHtml(p.name)}" aria-label="Otwórz rozmowę z ${escapeHtml(p.name)}, nieprzeczytane: ${c.unreadCount}">
                 ${p.avatarUrl ? `<img src="${escapeHtml(p.avatarUrl)}" alt="" />` : `<span>${escapeHtml(p.name.charAt(0))}</span>`}
+                <span data-lumina-presence-id="${escapeHtml(p.id)}" data-lumina-presence-slug="${escapeHtml(p.id)}" aria-label="Status nieznany" style="position:absolute;right:0;bottom:0;width:10px;height:10px;border-radius:50%;background:#94a3b8;border:2px solid #172034"></span>
                 ${countBadge}
               </button>
             `;

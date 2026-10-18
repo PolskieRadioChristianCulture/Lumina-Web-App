@@ -44,7 +44,7 @@ test('receiver acceptance commits consent and conversation together, preserving 
       getDoc:async ref=>({exists:()=>true,data:()=>ref.path==='lumina_message_requests'?request:{participants:['UID_A','UID_B']}}),
       writeBatch:()=>({set:(...args)=>writes.push(['set',...args]),update:(...args)=>writes.push(['update',...args]),
         commit:async()=>{if(rejected)throw Error('synthetic rejection');committed=true;}}),serverTimestamp:()=>0,console:{warn:()=>{}}};
-    const accept=vm.runInNewContext('('+source.slice(a,b).replace('export async function','async function').trim()+')',ctx);
+    const accept=vm.runInNewContext('(()=>{'+source.slice(source.indexOf('async function getMemberConversationSnapshot('),source.indexOf('export async function acceptMessageRequest('))+' return '+source.slice(a,b).replace('export async function','async function').trim()+';})()',ctx);
     assert.equal(!!await accept('room'),!rejected);assert.equal(committed,!rejected);
     assert.equal(writes.length,2);assert.equal('participants' in writes[0][2],false);
   }
@@ -73,7 +73,7 @@ const adminHelperStart=source.indexOf('export const LUMINA_OFFICIAL_ACCOUNTS =')
 const adminHelperEnd=source.indexOf('const OFFICIAL_ID_TO_SLUG',adminHelperStart);
 const adminHelper=source.slice(adminHelperStart,adminHelperEnd).replaceAll('export const','const').replaceAll('export function','function');
 const fnCode=source.slice(start,end).replace('export async function','async function');
-const fn='(()=>{ ' + adminHelper + '\n return ' + fnCode + '; })()';
+const fn='(()=>{ ' + adminHelper + '\n' + source.slice(source.indexOf('async function getMemberConversationSnapshot('),source.indexOf('export async function acceptMessageRequest(')) + '\n return ' + fnCode + '; })()';
 test('notification presentation never increments the authoritative unread-room counter',()=>{
   const a=source.indexOf('export function triggerLuminaPushNotification('),b=source.indexOf('let hasStartedRealtimeNotifs',a);
   const ctx={playNotificationChime:()=>{},navigator:{},window:{},document:{visibilityState:'visible'},
@@ -365,7 +365,7 @@ test('community administrator bypasses conversation acceptance and delivers mess
   for(const adminIdent of [
     {uid:'ADMIN_UID',email:'nazirczarkes@gmail.com',emailVerified:true,slug:'cezaryrgowski'},
     {uid:'ADMIN_UID',email:'polskiercctv@gmail.com',emailVerified:true,slug:'cezaryrgowski'},
-    {uid:'ADMIN_UID',slug:'radiocc',isMissionAccount:true}
+    {uid:'ADMIN_UID',email:'radiochristianculture@gmail.com',emailVerified:true,slug:'radiocc'}
   ]) {
     const f=fixture({chatExists:false});
     f.ctx.currentUserState={uid:adminIdent.uid,email:adminIdent.email,emailVerified:adminIdent.emailVerified,isAnonymous:false};
@@ -373,8 +373,30 @@ test('community administrator bypasses conversation acceptance and delivers mess
     f.ctx.getDoc=async ref=>({exists:()=>ref.path.includes('lumina_message_requests'),data:()=>({status:'pending'})});
     const result=await f.send('synthetic-room',payload);
     assert.equal(result,'synthetic-message-id');
-    assert.equal(f.committed.length,2);
+    assert.equal(f.committed.length,3);
     assert.equal(f.committed[1][1].conversationState,'accepted');
   }
+});
+
+
+test('reply to someone who already asked me accepts the request and delivers (every member can answer)',async()=>{
+  for(const status of ['pending','declined']) {
+    const f=fixture({chatExists:false});const updates=[];
+    f.ctx.updateDoc=async(ref,data)=>{updates.push([ref.path,data]);};
+    f.ctx.getDoc=async ref=>({exists:()=>ref.path.includes('lumina_message_requests'),data:()=>({status,senderAuthUid:'synthetic-recipient-uid',receiverAuthUid:'synthetic-sender-uid'})});
+    const result=await f.send('synthetic-room',payload);
+    assert.equal(result,'synthetic-message-id');
+    assert.equal(updates.length,1);assert.equal(updates[0][1].status,'accepted');assert.equal(updates[0][1].acceptedBy,'synthetic-sender-uid');
+    assert.equal(f.committed.length,2);
+  }
+});
+test('profile flags or stale browser flags never skip the request for a non-admin account',async()=>{
+  const f=fixture({chatExists:false});
+  f.ctx.currentProfileState={slug:'cezaryrgowski',name:'Podszywka',isAdmin:true,isFounder:true,isMissionAccount:true};
+  f.ctx.getDoc=async ref=>({exists:()=>false,data:()=>({})});
+  f.ctx.setDoc=async(ref,data)=>{f.writes.push([ref,data]);};
+  const result=await f.send('synthetic-room',payload);
+  assert.equal(result.status,'request_sent');
+  assert.equal(f.committed.length,0);
 });
 

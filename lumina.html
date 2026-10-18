@@ -9812,122 +9812,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
         // ── Render Online Logged-In Users Avatars with Celadon / Seledynowa Ring in Tablica LUMINA Box ──
         window.renderTablicaOnlineAvatars = function() {
-            const container = document.getElementById('tablicaOnlineAvatarsContainer');
-            if (!container) return;
-
-            let currentUser = null;
-            try {
-                if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
-                    currentUser = window.LuminaDB.getCurrentUser();
-                }
-            } catch(e) {}
-            if (!currentUser) {
-                try {
-                    currentUser = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || localStorage.getItem('lumina_current_user') || 'null');
-                } catch(e) {}
+            if (window.LuminaMemberPresence) window.LuminaMemberPresence.render();
+            else {
+                const container = document.getElementById('tablicaOnlineAvatarsContainer');
+                if (container) { container.replaceChildren(); container.hidden = true; }
             }
-
-            const isSessionActive = localStorage.getItem('lumina_user_session') === 'active' || !!currentUser;
-
-            // Pool of active/online members in LUMINA community
-            const activeCommunityPool = [
-                { name: 'Cezary Rogowski', avatar: 'avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370', slug: 'cezaryrgowski' },
-                { name: 'Wioletta Rogowska', avatar: 'avatar_wioletta_official.jpg', slug: 'wiolettarogowska' },
-                { name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', slug: 'andrzejthiel' },
-                { name: 'Magdalena', avatar: 'avatar_magdalena.png', slug: 'magdalena' },
-                { name: 'Tomasz', avatar: 'avatar_widget_tomek.jpg', slug: 'tomek' },
-                { name: 'Noemi', avatar: 'avatar_noemi.jpg', slug: 'noemi' },
-                { name: 'Anna', avatar: 'lumina_anna2.jpg', slug: 'anna' },
-                { name: 'Krzysztof', avatar: 'avatar_krzysztof.jpg', slug: 'krzysztof' },
-                { name: 'Maria', avatar: 'avatar_maria.jpg', slug: 'maria' },
-                { name: 'Piotr', avatar: 'avatar_piotr.jpg', slug: 'piotr' }
-            ];
-
-            let loggedInList = [];
-            const seenSlugs = new Set();
-
-            // 1. Zalogowany użytkownik na pierwszym miejscu
-            if (currentUser && (currentUser.name || currentUser.displayName)) {
-                const myName = currentUser.name || currentUser.displayName || 'Twój Profil';
-                const myAvatar = currentUser.avatar || currentUser.photoURL || 'avatar_cezary_official.jpg';
-                const mySlug = (currentUser.slug || currentUser.uid || 'me').toLowerCase();
-
-                loggedInList.push({ name: myName, avatar: myAvatar, slug: mySlug, isMe: true });
-                seenSlugs.add(mySlug);
-                seenSlugs.add(myName.toLowerCase());
-            }
-
-            // 2. Aktywni użytkownicy w czasie rzeczywistym z Firestore Presence (lumina_presence)
-            if (Array.isArray(window._liveOnlineUsers) && window._liveOnlineUsers.length > 0) {
-                window._liveOnlineUsers.forEach(u => {
-                    const uSlug = (u.slug || u.uid || u.id || '').toLowerCase();
-                    const uName = u.displayName || u.name || '';
-                    if (uName && !seenSlugs.has(uSlug) && !seenSlugs.has(uName.toLowerCase())) {
-                        loggedInList.push({
-                            name: uName,
-                            avatar: u.avatar || 'lumina_icon.jpg',
-                            slug: uSlug
-                        });
-                        if (uSlug) seenSlugs.add(uSlug);
-                        seenSlugs.add(uName.toLowerCase());
-                    }
-                });
-            }
-
-            // 3. Zarejestrowani użytkownicy z chmury Firestore
-            if (Array.isArray(window.cloudProfilesCache) && window.cloudProfilesCache.length > 0) {
-                window.cloudProfilesCache.forEach(p => {
-                    const pSlug = (p.slug || p.uid || p.id || '').toLowerCase();
-                    const pName = p.name || '';
-                    if (pName && !seenSlugs.has(pSlug) && !seenSlugs.has(pName.toLowerCase())) {
-                        loggedInList.push({
-                            name: pName,
-                            avatar: p.avatar || 'lumina_icon.jpg',
-                            slug: pSlug
-                        });
-                        if (pSlug) seenSlugs.add(pSlug);
-                        seenSlugs.add(pName.toLowerCase());
-                    }
-                });
-            }
-
-            // 4. Dopełnij bazową pulą społeczności
-            activeCommunityPool.forEach(u => {
-                const uSlug = (u.slug || '').toLowerCase();
-                const uName = (u.name || '').toLowerCase();
-                if (!seenSlugs.has(uSlug) && !seenSlugs.has(uName)) {
-                    loggedInList.push(u);
-                    if (uSlug) seenSlugs.add(uSlug);
-                    seenSlugs.add(uName);
-                }
-            });
-
-            // Wyświetlenie dokładnie do 7 awatarów
-            const topSeven = loggedInList.slice(0, 7);
-            const totalCount = Math.max(loggedInList.length, window._livePresenceCount || 27);
-
-            let html = '';
-            topSeven.forEach((user, idx) => {
-                const zIndex = 10 - idx;
-                html += `
-                    <div class="tablica-online-avatar-item" title="Profil: ${user.name} ✨" style="z-index: ${zIndex}; cursor:pointer;" onclick="event.stopPropagation(); if ('${user.slug || ''}') window.openCommunityProfile('${user.slug || ''}');">
-                        <img loading="lazy" decoding="async" src="${user.avatar}" alt="${user.name}" class="tablica-online-avatar-img" onerror="this.src='lumina_icon.jpg'">
-                        <span class="tablica-online-dot"></span>
-                    </div>
-                `;
-            });
-
-            // Znak + zamieniony na liczbę wszystkich zalogowanych użytkowników w czasie rzeczywistym
-            if (totalCount > 0) {
-                const countDisplay = totalCount > 99 ? '+99' : `+${totalCount}`;
-                html += `
-                    <div class="tablica-online-more-btn" title="Zobacz wszystkich zalogowanych użytkowników online (${totalCount} aktywnych w czasie rzeczywistym)" aria-label="Wszyscy zalogowani użytkownicy: ${totalCount}" style="cursor:pointer;" onclick="event.stopPropagation(); if(typeof window.openAllOnlineUsersModal==='function'){ window.openAllOnlineUsersModal(); } else { window.location.href='/tablica'; }">
-                        ${countDisplay}
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
         };
 
         // Realtime Presence Listener dla Tablicy LUMINA
@@ -13205,7 +13094,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                             const isMission = (slug === 'cezaryrgowski' || slug === 'wiolettarogowska' || slug === 'radiocc' || slug === 'andrzejthiel' || slug === 'studiodobregoslowa' || slug === 'osobowoscplus');
                             const badge = isMission ? (slug === 'cezaryrgowski' ? '👑 Założyciel' : (slug === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Misja CC')) : '✨ Społeczność';
 
-                            map.set(slug, { slug, name, job, city, avatar, badge, isMission });
+                            map.set(slug, { slug, name, job, city, avatar, badge, isMission, uid: f.uid?.stringValue || '' });
                         });
                     }
                 }
@@ -13317,11 +13206,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const baseUsers = await fetchCommunityUsersDirectory();
             // Rodzinne rozmowy LUMI KIDS: dziecko nie ma publicznego profilu, więc dopisujemy je z rozmów rodzica.
             const familyRooms = Array.isArray(window._luminaFamilyChats) ? window._luminaFamilyChats : [];
-            const baseIds = new Set((baseUsers || []).map(u => String(u.uid || u.slug || '').toLowerCase()));
-            const users = familyRooms.filter(f => f.uid && !baseIds.has(String(f.uid).toLowerCase())).map(f => ({
+            const familyIds = new Set(familyRooms.map(f => String(f.uid || '').toLowerCase()));
+            const users = familyRooms.filter(f => f.uid).map(f => ({
                 slug: f.uid, uid: f.uid, name: f.name, avatar: f.avatar,
                 badge: '⭐ LUMI KIDS · rodzina', job: 'Prywatna rozmowa rodzinna', isMission: false, isFamily: true
-            })).concat(baseUsers || []);
+            })).concat((baseUsers || []).filter(u => !familyIds.has(String(u.uid || u.slug || '').toLowerCase())));
             const myUser = window.LuminaDB?.getCurrentUser();
             const myProfile = window.LuminaDB?.getCurrentProfile();
             const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
@@ -13481,13 +13370,13 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     : '';
 
                 html += `
-                    <div onclick="openChatWith('${escapeForInlineJs(u.name)}', '${escapeForInlineJs(u.avatar)}', '${escapeForInlineJs(u.slug)}')" 
+                    <div onclick="openChatWith('${escapeForInlineJs(u.name)}', '${escapeForInlineJs(u.avatar)}', '${escapeForInlineJs(u.slug)}', undefined, '${escapeForInlineJs(u.uid || '')}')"
                          style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${cardBg}; ${roomHighlightStyle} border-radius:14px; cursor:pointer; transition:all 0.2s ease; position:relative;"
                          onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='#ec4899';"
                          onmouseout="this.style.transform='none'; this.style.borderColor='${hasUnread ? '#ef4444' : borderColor}';">
                          <div style="position:relative; flex-shrink:0;">
                             <img loading="lazy" decoding="async" src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:44px; height:44px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
-                            <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                            <span data-lumina-presence-id="${escapeHtml(u.uid || '')}" data-lumina-presence-slug="${escapeHtml(u.slug || '')}" aria-label="Status nieznany" style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#94a3b8; border-radius:50%; border:2px solid #090d1a;"></span>
                             ${avatarBadgeHtml}
                         </div>
                         <div style="flex:1; min-width:0;">
@@ -13653,7 +13542,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
             }
 
-            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
+            const familyRoom = (window._luminaFamilyChats || []).find(room =>
+                window.LuminaDB?.normalizeChatUserId(room.uid) === toId);
+            const chatId = familyRoom?.chatId || (window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_'));
 
             window.LumiChatDrafts?.open(chatId);
             activeChatSession = {

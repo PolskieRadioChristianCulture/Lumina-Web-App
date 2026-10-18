@@ -182,7 +182,7 @@
         if (!myId || !db || !conversationId) return [];
 
         // Bezpieczne pobranie z Firestore lub pamięci sesji LuminaDB
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
           let unsub = null;
           let settled = false;
 
@@ -214,6 +214,14 @@
               latest = Array.isArray(messages) ? messages : [];
               if (quiet) clearTimeout(quiet);
               quiet = setTimeout(() => finish(latest), 700);
+            }, error => {
+              if (settled) return;
+              settled = true;
+              if (quiet) clearTimeout(quiet);
+              if (typeof unsub === 'function') unsub();
+              reject(new Error(error?.code === 'resource-exhausted'
+                ? 'Historia jest chwilowo niedostępna: baza osiągnęła limit. To nie oznacza usunięcia rozmowy.'
+                : 'Nie udało się wczytać historii. Spróbuj ponownie po odzyskaniu połączenia.'));
             });
             if (settled && typeof unsub === 'function') unsub();
             setTimeout(() => {
@@ -306,7 +314,13 @@
           const res = await db.sendDirectMessageToCloud(conversationId, {
             ...messageObj, senderId: myId, receiverId, senderName: myName, senderAvatar: myAvatar
           });
-          if (!res) throw new Error('Nie udało się zapisać wiadomości na serwerze.');
+          if (typeof res === 'string' && res.trim()) return res;
+          const notices = {
+            request_sent: 'Prośba o rozmowę została wysłana. Tekst pozostaje tutaj do wysłania po akceptacji.',
+            request_pending: 'Czekamy na akceptację rozmówcy. Wiadomość nie została wysłana.',
+            request_closed: 'Rozmowa nie została zaakceptowana. Wiadomość nie została wysłana.'
+          };
+          throw new Error(notices[res?.status] || 'Nie udało się zapisać wiadomości na serwerze.');
         } else {
           throw new Error('Endpoint wysyłania wiadomości prywatnych jest niedostępny.');
         }

@@ -196,3 +196,48 @@ test('Powiadomienia: dziecko zapisuje własny token urządzenia, nie cudzy; nikt
   await assertFails(setDoc(doc(child(), 'LuminaDeviceTokens/tok2'), { token: 't', uid: PARENT, enabled: true }));
   await assertFails(getDoc(doc(stranger(), 'LuminaDeviceTokens/tok1')));
 });
+
+
+// ── Społeczność LUMINA: każdy z każdym (prośba → przyjęcie → rozmowa) ─────────────────
+const UA = 'userA1', UB = 'userB1', UC = 'userC1';
+const ua = () => db(UA, goog('a.testowa@example.com'));
+const ub = () => db(UB, goog('b.testowy@example.com'));
+const uc = () => db(UC, goog('c.testowy@example.com'));
+const ABCHAT = 'usera1_userb1';
+const req = (from, to, status = 'pending') => ({ chatId: ABCHAT, senderAuthUid: from, receiverAuthUid: to, participants: [from, to], previewText: 'Cześć', status });
+
+test('Społeczność 1: bez przyjętej prośby nie da się wysłać wiadomości ani przyjąć rozmowy samemu', async () => {
+  await assertFails(addDoc(collection(ua(), 'lumina_direct_messages'), dm(UA, UB, ABCHAT, 'hej')));
+  await assertFails(setDoc(doc(ua(), `lumina_message_requests/${ABCHAT}`), req(UA, UB, 'accepted')));
+  await assertFails(setDoc(doc(ua(), `lumina_chats/${ABCHAT}`), { chatId: ABCHAT, participants: [UA, UB], users: [UA, UB], conversationState: 'accepted' }));
+});
+
+test('Społeczność 2: prośba → przyjęcie → obie strony piszą, obcy nie czyta i nie pisze', async () => {
+  await assertSucceeds(setDoc(doc(ua(), `lumina_message_requests/${ABCHAT}`), req(UA, UB)));
+  await assertFails(updateDoc(doc(ua(), `lumina_message_requests/${ABCHAT}`), { status: 'accepted', acceptedBy: UA, acceptedAt: serverTimestamp() }));
+  await assertSucceeds(updateDoc(doc(ub(), `lumina_message_requests/${ABCHAT}`), { status: 'accepted', acceptedBy: UB, acceptedAt: serverTimestamp(), respondedAt: serverTimestamp(), respondedBy: UB }));
+  await assertSucceeds(setDoc(doc(ua(), 'lumina_direct_messages/ab1'), dm(UA, UB, ABCHAT, 'A do B')));
+  await assertSucceeds(setDoc(doc(ua(), `lumina_chats/${ABCHAT}`), { chatId: ABCHAT, participants: [UA, UB], users: [UA, UB], conversationState: 'accepted', lastMessageText: 'A do B' }));
+  await assertSucceeds(setDoc(doc(ub(), 'lumina_direct_messages/ba1'), dm(UB, UA, ABCHAT, 'B do A')));
+  await assertSucceeds(updateDoc(doc(ub(), `lumina_chats/${ABCHAT}`), { lastMessageText: 'B do A' }));
+  await assertSucceeds(getDoc(doc(ub(), 'lumina_direct_messages/ab1')));
+  await assertFails(getDoc(doc(uc(), 'lumina_direct_messages/ab1')));
+  await assertFails(addDoc(collection(uc(), 'lumina_direct_messages'), { ...dm(UC, UB, ABCHAT, 'wtrącam się') }));
+});
+
+test('Społeczność 3: rozmowę otwartą przez administratora odbiorca może od razu kontynuować', async () => {
+  const chatId = 'admin_' + UB.toLowerCase();
+  await env.withSecurityRulesDisabled(async (c) => {
+    await setDoc(doc(c.firestore(), `lumina_chats/${chatId}`), { chatId, participants: [PARENT, UB], users: [PARENT, UB], conversationState: 'accepted' });
+  });
+  await assertSucceeds(setDoc(doc(ub(), 'lumina_direct_messages/r1'), dm(UB, PARENT, chatId, 'Dziękuję!')));
+  await assertSucceeds(updateDoc(doc(ub(), `lumina_chats/${chatId}`), { lastMessageText: 'Dziękuję!' }));
+  await assertFails(setDoc(doc(uc(), 'lumina_direct_messages/r2'), dm(UC, PARENT, chatId, 'obcy')));
+});
+
+test('Społeczność 4: odrzuconą prośbę odbiorca może później przyjąć; nadawca nie może jej sam otworzyć', async () => {
+  await env.withSecurityRulesDisabled(async (c) => { await setDoc(doc(c.firestore(), `lumina_message_requests/${ABCHAT}`), req(UA, UB, 'declined')); });
+  await assertFails(updateDoc(doc(ua(), `lumina_message_requests/${ABCHAT}`), { status: 'accepted', acceptedBy: UA, acceptedAt: serverTimestamp() }));
+  await assertSucceeds(updateDoc(doc(ub(), `lumina_message_requests/${ABCHAT}`), { status: 'accepted', acceptedBy: UB, acceptedAt: serverTimestamp() }));
+  await assertSucceeds(setDoc(doc(ub(), 'lumina_direct_messages/d1'), dm(UB, UA, ABCHAT, 'Jednak porozmawiajmy')));
+});

@@ -557,25 +557,32 @@
       const dockCss = document.createElement('link');
       dockCss.id = 'lumiDirectDockCss';
       dockCss.rel = 'stylesheet';
-      dockCss.href = '/css/lumi-direct-dock.css?v=20261018_drag2';
+      dockCss.href = '/css/lumi-direct-dock.css?v=20261018_member1';
       document.head.appendChild(dockCss);
     }
     if (!window.LumiDirectDockController && !document.getElementById('lumiDirectDockAdapterScript') && !document.querySelector('script[src*="lumi-direct-dock-adapter"]')) {
       const adapterScript = document.createElement('script');
       adapterScript.id = 'lumiDirectDockAdapterScript';
-      adapterScript.src = '/components/lumi-direct-dock-adapter.js?v=20261018_drag2';
+      adapterScript.src = '/components/lumi-direct-dock-adapter.js?v=20261018_member1';
       // Dynamically inserted scripts are async: defer does not order them.
       adapterScript.onload = () => {
         if (document.getElementById('lumiDirectDockScript')) return;
         const dockScript = document.createElement('script');
         dockScript.id = 'lumiDirectDockScript';
-        dockScript.src = '/components/lumi-direct-dock.js?v=20261018_drag2';
+        dockScript.src = '/components/lumi-direct-dock.js?v=20261018_member1';
         document.head.appendChild(dockScript);
       };
       document.head.appendChild(adapterScript);
     }
   } catch (dockErr) {
     console.warn('LumiDirectDock load error:', dockErr);
+  }
+
+  if (!document.getElementById('luminaMemberPresenceScript')) {
+    const script = document.createElement('script');
+    script.id = 'luminaMemberPresenceScript';
+    script.src = '/js/lumina-member-presence.js?v=20261018_member1';
+    document.head.appendChild(script);
   }
 
   // 11. Uruchomienie po załadowaniu drzewa DOM

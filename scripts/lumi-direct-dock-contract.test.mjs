@@ -17,7 +17,7 @@ test('release replaces combined weekly JS cache with one authoritative messaging
     assert.equal(result.headers.get('Cache-Control'),'no-cache, no-store, must-revalidate');
     assert.equal(await result.text(),'script');
   }
-  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_drag2/);
+  assert.match(fs.readFileSync('components/cc-support-footer.js','utf8'),/lumi-direct-dock\.js\?v=20261018_member1/);
 });
 function adapter(db) {
   const scope = { LuminaDB: db, setTimeout: () => 0, clearTimeout() {} };

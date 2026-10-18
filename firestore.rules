@@ -179,10 +179,17 @@ service cloud.firestore {
 
     function acceptedConversation(chatId, participants) {
       let path = /databases/$(database)/documents/lumina_message_requests/$(chatId);
-      return chatId is string && participants is list && participants.size() == 2 &&
-        existsAfter(path) && getAfter(path).data.status == 'accepted' &&
-        getAfter(path).data.participants.size() == 2 &&
-        getAfter(path).data.participants.hasAll(participants);
+      let chat = /databases/$(database)/documents/lumina_chats/$(chatId);
+      return chatId is string && participants is list && participants.size() == 2 && (
+        (existsAfter(path) && getAfter(path).data.status == 'accepted' &&
+          getAfter(path).data.participants.size() == 2 &&
+          getAfter(path).data.participants.hasAll(participants)) ||
+        // Rozmowa już wcześniej przyjęta (np. otwarta przez administratora albo sprzed próśb o kontakt):
+        // liczy się stan PRZED zapisem, więc nikt nie może sam „przyjąć” rozmowy, zmieniając podgląd.
+        (exists(chat) && get(chat).data.get('conversationState', '') == 'accepted' &&
+          get(chat).data.get('participants', []).size() == 2 &&
+          get(chat).data.get('participants', []).hasAll(participants))
+      );
     }
 
     match /lumina_profiles/{profileId} {
@@ -317,7 +324,8 @@ service cloud.firestore {
       );
       allow update: if isMasterAdmin() || (
         isMember() && notKidsChild() && resource.data.receiverAuthUid == request.auth.uid &&
-        resource.data.status == 'pending' &&
+        (resource.data.status == 'pending' ||
+          (resource.data.status == 'declined' && request.resource.data.status == 'accepted')) &&
         request.resource.data.status in ['accepted', 'declined', 'blocked'] &&
         (request.resource.data.status != 'accepted' ||
           (request.resource.data.acceptedBy == request.auth.uid && request.resource.data.acceptedAt is timestamp)) &&
@@ -359,8 +367,7 @@ service cloud.firestore {
           'participants', 'users', 'senderAuthUid', 'receiverAuthUid'
         ]) &&
         (request.resource.data.get('conversationState', '') != 'accepted' ||
-          acceptedConversation(chatId, resource.data.get('participants',
-            getAfter(/databases/$(database)/documents/lumina_message_requests/$(chatId)).data.participants)))
+          acceptedConversation(chatId, resource.data.get('participants', [])))
       );
       allow delete: if isMasterAdmin();
 

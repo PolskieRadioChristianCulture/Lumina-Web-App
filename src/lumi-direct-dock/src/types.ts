@@ -23,7 +23,7 @@ export interface DirectMessagingAdapter {
   /** Only DM notifications for the current authenticated user. */
   subscribeIncomingDM(onMessage: (event: IncomingDM) => void): Unsubscribe;
   /** Must enforce membership, direct type, block rules and rate limits server-side. */
-  sendText(conversationId: string, text: string, clientRequestId: string): Promise<void>;
+  sendText(conversationId: string, text: string, clientRequestId: string): Promise<string>;
   markRead(conversationId: string, messageId: string): Promise<void>;
   /** Optional backend subscription for messages across opened conversations. */
   subscribeConversation?(conversationId: string, onMessage: (message: DockMessage) => void): Unsubscribe;
