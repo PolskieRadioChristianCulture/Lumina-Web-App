@@ -5753,13 +5753,52 @@ export function getHeuristicLinkMetadata(url) {
                 ctaText = 'Otwórz Portal Relacje ➔';
                 img = 'https://polskieradio.cc/nie-bylejaki-kurs-malzenski.webp';
                 icon = 'fa-solid fa-heart';
-            } else if (pathname.includes('/akademia') || pathname.includes('kurscodzienny')) {
-                title = 'Akademia Biblijna • Codzienny Kurs „Z Biblią za Pan Brat”';
-                desc = 'Kompletny 365-dniowy bezpłatny kurs biblijny od Księgi Rodzaju po Apokalipsę.';
-                badge = '📖 AKADEMIA BIBLIJNA';
-                ctaText = 'Rozpocznij Kurs ➔';
-                img = 'https://polskieradio.cc/images/academy/z_biblia_za_pan_brat_hero.jpg';
-                icon = 'fa-solid fa-book-bible';
+            } else if (pathname.includes('/akademia') || pathname.includes('kurscodzienny') || pathname.includes('dzien-') || url.includes('dzien-')) {
+                const dayMatch = (pathname + ' ' + url).match(/dzien[_-](\d+)/i);
+                if (dayMatch) {
+                    const dayNum = parseInt(dayMatch[1], 10);
+                    const dailyLessonsMeta = {
+                        1: { title: 'Dzień 1: NA POCZĄTKU BÓG — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 1. Zanim powstał świat, zanim pojawił się grzech — był Bóg.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_01_creation.jpg' },
+                        2: { title: 'Dzień 2: STWORZENI DO RELACJI Z BOGIEM — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 2. Odpoczynek, praca, bliskość i małżeństwo — Rdz 2:1–25.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_02_eden.jpg' },
+                        3: { title: 'Dzień 3: GDZIE JESTEŚ? — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 3. Upadek człowieka i pierwsza obietnica Ewangelii — Rdz 3:1–24.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_03_fall.jpg' },
+                        4: { title: 'Dzień 4: DWA SERCA, DWIE DROGI — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 4. Kain i Abel — Rdz 4:1–26.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_04_cain_abel.jpg' },
+                        5: { title: 'Dzień 5: CHODZIĆ Z BOGIEM, GDY ŚWIAT OD NIEGO ODCHODZI — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 5. Henoch i Noe — Rdz 5:1–6:8.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_05_henoch_noe.jpg' },
+                        6: { title: 'Dzień 6: ARKA — SĄD I RATUNEK — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 6. Arka, potop i ocalenie Noego — Rdz 6:9–8:22.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_06_ark_flood_noah.jpg' },
+                        7: { title: 'Dzień 7: TĘCZA: BÓG ZAWIERA PRZYMIERZE — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 7. Przymierze, tęcza i upadek Noego — Rdz 9:1–29.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_07_rainbow_covenant.jpg' },
+                        8: { title: 'Dzień 8: BABEL: KIEDY CZŁOWIEK CHCE UCZYNIĆ SOBIE IMIĘ — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 8. Narody, wieża Babel i droga do Abrahama — Rdz 10:1–11:32.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_08_tower_of_babel.jpg' },
+                        9: { title: 'Dzień 9: WYJDŹ! WIARA, KTÓRA RUSZA W DROGĘ — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 9. Powołanie Abrama — Rdz 12:1–20.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_09_abram_calling.jpg' },
+                        10: { title: 'Dzień 10: DWIE DROGI WYBORU — Abram i Lot — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 10. Abram i Lot — Rdz 13:1–14:24.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_10_abram_lot.jpg' },
+                        11: { title: 'Dzień 11: UWIERZYŁ PANU — I ZOSTAŁ UZNANY ZA SPRAWIEDLIWEGO — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 11. Abraham, gwiazdy i przymierze łaski — Rdz 15:1–21.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_11_abram_gwiazdy.jpg' },
+                        12: { title: 'Dzień 12: GDY CZŁOWIEK PRÓBUJE POMÓC BOGU — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 12. Hagar, Ismael i Abraham — obietnica, cierpliwość i Bóg, który widzi — Rdz 16:1–17:27.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_12_hagar_pustynia.jpg' },
+                        13: { title: 'Dzień 13: CZY JEST COŚ ZBYT TRUDNEGO DLA PANA? — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 13. Bóg dotrzymuje obietnic, a Abraham wstawia się za grzesznikami — Rdz 18:1–33.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_13_mamre_goscie.jpg' },
+                        14: { title: 'Dzień 14: SODOMA: ŁASKA, SĄD I RATUNEK — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 14. Gdy Bóg wyprowadza człowieka z miejsca zagłady — Rdz 19:1–38.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_14_sodoma_lot.jpg' },
+                        15: { title: 'Dzień 15: BÓG DOTRZYMUJE OBIETNICY — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 15. Gdy ludzkie możliwości się kończą, Boża wierność pozostaje — Rdz 20:1–21:34.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_15_isaac_obietnica.jpg' },
+                        16: { title: 'Dzień 16: BÓG SAM ZAPEWNI BARANKA — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 16. Abraham i Izaak — wiara poddana największej próbie — Rdz 22:1–24.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_16_baranek_moria.jpg' },
+                        17: { title: 'Dzień 17: WIARA PATRZĄCA W PRZYSZŁOŚĆ — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 17. Gdy przychodzi strata, a Boża obietnica trwa nadal — Rdz 23:1–24:67.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_17_machpela_rebeka.jpg' },
+                        18: { title: 'Dzień 18: JAKUB I EZAW — CZEGO NAPRAWDĘ PRAGNIESZ? — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 18. Chwilowe pragnienia nie powinny przesłaniać duchowego dziedzictwa — Rdz 25:1–26:35.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_18_jakub_ezaw.jpg' },
+                        19: { title: 'Dzień 19: GDY PRÓBUJEMY POMÓC BOGU OSZUSTWEM — Z Biblią za Pan Brat', desc: 'Księga Rodzaju — Miesiąc 1, Dzień 19. Boża obietnica nie potrzebuje kłamstwa ani manipulacji — Rdz 27:1–46.', img: 'https://polskieradio.cc/images/academy/daily/kc_day_19_jakub_izaak_podstep.jpg' }
+                    };
+                    const dMeta = dailyLessonsMeta[dayNum];
+                    if (dMeta) {
+                        title = dMeta.title;
+                        desc = dMeta.desc;
+                        img = dMeta.img;
+                    } else {
+                        title = `Dzień ${dayNum}: Kurs Codzienny Pisma Świętego — Z Biblią za Pan Brat`;
+                        desc = `Studiuj Słowo Boże dzień po dniu w Akademii Biblijnej Christian Culture.`;
+                        img = `https://polskieradio.cc/images/academy/daily/kc_day_${String(dayNum).padStart(2, '0')}.jpg`;
+                    }
+                    badge = `📖 DZIEŃ ${dayNum} • KURS CODZIENNY`;
+                    ctaText = `Czytaj Dzień ${dayNum} ➔`;
+                    icon = 'fa-solid fa-book-bible';
+                } else {
+                    title = 'Akademia Biblijna • Codzienny Kurs „Z Biblią za Pan Brat”';
+                    desc = 'Kompletny 365-dniowy bezpłatny kurs biblijny od Księgi Rodzaju po Apokalipsę.';
+                    badge = '📖 AKADEMIA BIBLIJNA';
+                    ctaText = 'Rozpocznij Kurs ➔';
+                    img = 'https://polskieradio.cc/images/academy/z_biblia_za_pan_brat_hero.jpg';
+                    icon = 'fa-solid fa-book-bible';
+                }
             } else if (pathname.includes('mojabiblia')) {
                 title = 'MojaBiblia • Interlinearna Biblia z Kodami Stronga';
                 desc = 'Badaj teksty hebrajskie i greckie, leksykon i porównuj 4 przekłady biblijne.';
