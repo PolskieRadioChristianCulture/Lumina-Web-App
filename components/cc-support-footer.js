@@ -551,6 +551,32 @@
     console.warn('CCGlobalChatButton load error:', chatErr);
   }
 
+  // 10b. Automatyczne załadowanie Lumi Direct Dock (dok prywatnych wiadomości 1:1)
+  try {
+    if (!document.getElementById('lumiDirectDockCss') && !document.querySelector('link[href*="lumi-direct-dock.css"]')) {
+      const dockCss = document.createElement('link');
+      dockCss.id = 'lumiDirectDockCss';
+      dockCss.rel = 'stylesheet';
+      dockCss.href = '/css/lumi-direct-dock.css?v=20261018_mvp1';
+      document.head.appendChild(dockCss);
+    }
+    if (!window.LumiDirectDockController && !document.getElementById('lumiDirectDockAdapterScript') && !document.querySelector('script[src*="lumi-direct-dock-adapter"]')) {
+      const adapterScript = document.createElement('script');
+      adapterScript.id = 'lumiDirectDockAdapterScript';
+      adapterScript.src = '/components/lumi-direct-dock-adapter.js?v=20261018_mvp1';
+      adapterScript.defer = true;
+      document.head.appendChild(adapterScript);
+
+      const dockScript = document.createElement('script');
+      dockScript.id = 'lumiDirectDockScript';
+      dockScript.src = '/components/lumi-direct-dock.js?v=20261018_mvp1';
+      dockScript.defer = true;
+      document.head.appendChild(dockScript);
+    }
+  } catch (dockErr) {
+    console.warn('LumiDirectDock load error:', dockErr);
+  }
+
   // 11. Uruchomienie po załadowaniu drzewa DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', autoMountSupportFooter);
