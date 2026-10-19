@@ -7536,15 +7536,16 @@ export function listenToFounderTelemetry(callback) {
             return;
         }
 
-        const femaleCount = currentProfilesStats.femaleCount || 0;
-        const maleCount = currentProfilesStats.maleCount || 0;
-        const sumGender = femaleCount + maleCount;
-        const femalePercent = sumGender > 0 ? Math.round((femaleCount / sumGender) * 100) : 0;
-        const malePercent = sumGender > 0 ? (100 - femalePercent) : 0;
+        const femaleCount = currentProfilesStats.femaleCount;
+        const maleCount = currentProfilesStats.maleCount;
+        const hasGenderData = typeof femaleCount === 'number' && typeof maleCount === 'number';
+        const sumGender = hasGenderData ? (femaleCount + maleCount) : 0;
+        const femalePercent = sumGender > 0 ? Math.round((femaleCount / sumGender) * 100) : null;
+        const malePercent = sumGender > 0 ? (100 - femalePercent) : null;
 
         // Dynamiczne wyliczenie todayCount na podstawie bieżącej daty w momencie emisji (prawidłowe po północy)
         const todayDateStr = new Date().toDateString();
-        let liveTodayCount = 0;
+        let liveTodayCount = null;
         if (Array.isArray(currentProfilesStats.createdDates)) {
             liveTodayCount = currentProfilesStats.createdDates.filter(ts => {
                 const d = new Date(ts);
@@ -7560,6 +7561,10 @@ export function listenToFounderTelemetry(callback) {
             isComplete: Boolean(currentProfilesStats.isComplete),
             isPartial: Boolean(currentProfilesStats.isPartial),
             isStale: Boolean(currentProfilesStats.isStale),
+            isFromCache: Boolean(currentProfilesStats.isFromCache),
+            totalMembersVerified: Boolean(currentProfilesStats.totalMembersVerified),
+            totalMembersFresh: Boolean(currentProfilesStats.totalMembersFresh),
+            demographicsFresh: Boolean(currentProfilesStats.demographicsFresh),
             sampleSize: currentProfilesStats.sampleSize || null,
             cachedAt: currentProfilesStats.cachedAt || _founderTelemetryProfilesCacheTime || null,
             totalMembers: currentProfilesStats.totalMembers,
@@ -7570,7 +7575,7 @@ export function listenToFounderTelemetry(callback) {
             maleCount,
             femalePercent,
             malePercent,
-            dayCounts: currentProfilesStats.dayCounts || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 0 },
+            dayCounts: currentProfilesStats.dayCounts || null,
             todayCount: liveTodayCount
         });
     };
@@ -7586,14 +7591,15 @@ export function listenToFounderTelemetry(callback) {
     // 2. Bezpieczny, buforowany odczyt metryk (ZERO COST / Zero-QA Architecture):
     //    Weryfikacja ilościowa: getCountFromServer(lumina_profiles) (1 odczyt indeksu)
     //    Priorytet 1: Zagregowany dokument lumina_stats/community_telemetry (1 odczyt dokumentu)
-    //    Priorytet 2: Bezpieczny fallback do próbki limit(100) (tylko do odczytu demografii, flaga isPartial: true,
+    //    Priorytet 2: Bezpieczny fallback do próbki ZAWSZE z twardym limit(100) (tylko demografia próbki,
     //                 BEZWZGLĘDNY ZAKAZ zapisu próbki do bazy lumina_stats!)
     const loadProfileStats = async () => {
         const now = Date.now();
+        const todayDateStr = new Date().toDateString();
         try {
             // A. Pamięć podręczna w procesie (RAM)
             if (_founderTelemetryProfilesCache && (now - _founderTelemetryProfilesCacheTime < 900000)) {
-                currentProfilesStats = _founderTelemetryProfilesCache;
+                currentProfilesStats = { ..._founderTelemetryProfilesCache, isFromCache: true };
                 emitTelemetry();
                 return;
             }
@@ -7607,7 +7613,7 @@ export function listenToFounderTelemetry(callback) {
                         if (parsed && (now - parsed.timestamp < 900000) && parsed.stats) {
                             _founderTelemetryProfilesCache = parsed.stats;
                             _founderTelemetryProfilesCacheTime = parsed.timestamp;
-                            currentProfilesStats = parsed.stats;
+                            currentProfilesStats = { ...parsed.stats, isFromCache: true };
                             emitTelemetry();
                             return;
                         }
@@ -7625,7 +7631,7 @@ export function listenToFounderTelemetry(callback) {
                     }
                 }
             } catch (cntErr) {
-                // getCountFromServer może być niedostępne w środowiskach emulatora bez mocka — przejdź dalej
+                // getCountFromServer może być niedostępne (błąd sieci/uprawnień) — przejdź dalej
             }
 
             // D. Sprawdzenie dokumentu zagregowanego lumina_stats/community_telemetry (1 odczyt dokumentu)
@@ -7635,43 +7641,68 @@ export function listenToFounderTelemetry(callback) {
                     aggregatedDocSnap = await getDoc(doc(db, 'lumina_stats', 'community_telemetry'));
                 }
             } catch (aggErr) {
-                // Brak kolekcji lub brak uprawnień — przejdź do fallbacku próbki
+                // Brak kolekcji lub uprawnień
             }
 
             if (aggregatedDocSnap && aggregatedDocSnap.exists && aggregatedDocSnap.exists()) {
                 const aggData = aggregatedDocSnap.data() || {};
-                const baseTotal = typeof aggData.totalMembers === 'number' ? aggData.totalMembers : 0;
-                // Jeśli serwerowy getCountFromServer zwrócił świeższą liczbę po rejestracjach, używamy jej!
-                const effectiveTotal = (serverExactCount !== null) ? Math.max(serverExactCount, baseTotal) : baseTotal;
+                const hasAggTotal = typeof aggData.totalMembers === 'number';
+                const aggTotal = hasAggTotal ? aggData.totalMembers : null;
+
+                // Punkt 1: Jeśli odczyt serverExactCount powiódł się, to on jest dokładnym wynikiem (nie Math.max!)
+                const totalMembers = (serverExactCount !== null) ? serverExactCount : aggTotal;
+                const totalMembersFresh = (serverExactCount !== null);
+                const totalMembersVerified = (serverExactCount !== null);
+
+                // Punkt 2: Rygorystyczna weryfikacja kompletności i aktualności (Zgodnie z audytem GPT):
+                // 1) serverExactCount !== null jest wymagany, by potwierdzić zgodność z bazą (serverExactCount === null nie jest potwierdzeniem!)
+                // 2) Data statsDate musi być dokładnie dzisiejsza (sama obecność createdDates nie świadczy o świeżości starego agregatu!)
+                // 3) hasFullDemographics: kompletne pola femaleCount, maleCount i dayCounts
+                const hasFullDemographics = (typeof aggData.femaleCount === 'number') &&
+                                            (typeof aggData.maleCount === 'number') &&
+                                            (aggData.dayCounts && typeof aggData.dayCounts === 'object');
+
+                const countsMatchConfirmed = (serverExactCount !== null) && (serverExactCount === aggTotal);
+                const isDateToday = (aggData.statsDate === todayDateStr);
+                const isComplete = Boolean(hasFullDemographics && countsMatchConfirmed && isDateToday);
+                const isPartial = !isComplete;
+                const demographicsFresh = Boolean(hasFullDemographics && countsMatchConfirmed && isDateToday);
+                const isStale = !isDateToday;
 
                 currentProfilesStats = {
-                    totalMembers: effectiveTotal,
+                    totalMembers,
+                    totalMembersFresh,
+                    totalMembersVerified,
+                    demographicsFresh,
                     sampleSize: null,
-                    femaleCount: typeof aggData.femaleCount === 'number' ? aggData.femaleCount : 0,
-                    maleCount: typeof aggData.maleCount === 'number' ? aggData.maleCount : 0,
-                    dayCounts: aggData.dayCounts || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 0 },
+                    femaleCount: typeof aggData.femaleCount === 'number' ? aggData.femaleCount : null,
+                    maleCount: typeof aggData.maleCount === 'number' ? aggData.maleCount : null,
+                    dayCounts: aggData.dayCounts || null,
                     createdDates: Array.isArray(aggData.createdDates) ? aggData.createdDates : null,
-                    todayCount: typeof aggData.todayCount === 'number' ? aggData.todayCount : 0,
-                    statsDate: aggData.statsDate || new Date().toDateString(),
+                    todayCount: typeof aggData.todayCount === 'number' ? aggData.todayCount : null,
+                    statsDate: aggData.statsDate || null,
                     cachedAt: now,
-                    isComplete: true,
-                    isPartial: false,
-                    isStale: false
+                    isFromCache: false,
+                    isComplete,
+                    isPartial,
+                    isStale
                 };
             } else {
-                // E. Fallback z limitem bezpieczeństwa (Zero-QA Guard): limit(100)
-                // Pobiera wyłącznie próbkę 100 dokumentów w celu estymacji podziału płci i dni.
-                // ŻELAZNA ZASADA P0-1: Całkowity zakaz zapisu danych częściowych do lumina_stats!
-                let snapshot;
-                if (typeof query === 'function' && typeof limit === 'function') {
-                    snapshot = await getDocs(query(collection(db, 'lumina_profiles'), limit(100)));
-                } else {
-                    snapshot = await getDocs(collection(db, 'lumina_profiles'));
+                // E. Fallback z limitem bezpieczeństwa (Zero-QA Guard): ZAWSZE z twardym limit(100)
+                // Punkt 4: Usunięto nieograniczone getDocs(collection). Jeśli query/limit nie istnieją, rzucamy błąd.
+                if (typeof query !== 'function' || typeof limit !== 'function') {
+                    throw new Error('Niedostępny twardy limit bezpieczeństwa zapytań');
                 }
+                const snapshot = await getDocs(query(collection(db, 'lumina_profiles'), limit(100)));
                 if (isStopped) return;
 
                 const sampleSize = snapshot.size;
-                const effectiveTotal = (serverExactCount !== null) ? serverExactCount : sampleSize;
+
+                // Punkt 3: Jeśli getCountFromServer() zawiódł, NIE przedstawiamy sampleSize jako całkowitej liczby członków!
+                // Zwracamy totalMembers: null (brak zweryfikowanej liczby), a próbkę oznaczamy osobno.
+                const totalMembers = (serverExactCount !== null) ? serverExactCount : null;
+                const totalMembersFresh = (serverExactCount !== null);
+                const totalMembersVerified = (serverExactCount !== null);
 
                 let femaleCount = 0;
                 let maleCount = 0;
@@ -7706,7 +7737,10 @@ export function listenToFounderTelemetry(callback) {
                 });
 
                 currentProfilesStats = {
-                    totalMembers: effectiveTotal,
+                    totalMembers,
+                    totalMembersFresh,
+                    totalMembersVerified,
+                    demographicsFresh: false, // próbka 100 profili nie jest pełną demografią bazy
                     sampleSize,
                     femaleCount,
                     maleCount,
@@ -7714,8 +7748,9 @@ export function listenToFounderTelemetry(callback) {
                     createdDates,
                     statsDate: nowDate.toDateString(),
                     cachedAt: now,
+                    isFromCache: false,
                     isComplete: false,
-                    isPartial: true, // JAWNA FLAGA DANYCH CZĘŚCIOWYCH (PRÓBKA)
+                    isPartial: true, // JAWNA FLAGA DANYCH CZĘŚCIOWYCH
                     isStale: false
                 };
                 // P0-1: ŻADNEGO ZAPISU DO lumina_stats/community_telemetry Z DANYCH CZĘŚCIOWYCH!
@@ -7740,6 +7775,7 @@ export function listenToFounderTelemetry(callback) {
             if (currentProfilesStats) {
                 // Zachowaj ostatnie prawdziwe dane, oznaczając je jako nieaktualne (stale)
                 currentProfilesStats.isStale = true;
+                currentProfilesStats.isFromCache = true;
                 emitTelemetry();
             } else {
                 // Nigdy nie emituj fikcyjnych zer ani 50/50 — zgłoś jawnie stan niedostępności
@@ -7749,6 +7785,10 @@ export function listenToFounderTelemetry(callback) {
                     isComplete: false,
                     isPartial: false,
                     isStale: false,
+                    isFromCache: false,
+                    totalMembersVerified: false,
+                    totalMembersFresh: false,
+                    demographicsFresh: false,
                     error: e?.message || 'Błąd odczytu danych',
                     totalMembers: null,
                     sampleSize: null,

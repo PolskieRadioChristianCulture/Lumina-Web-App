@@ -12112,59 +12112,72 @@
                     return;
                 }
 
-                if (elTotal && typeof data.totalMembers === 'number') {
-                    const partialSuffix = (data.isPartial && data.sampleSize && data.totalMembers <= data.sampleSize) ? '+' : '';
-                    elTotal.textContent = data.totalMembers.toLocaleString('pl-PL') + partialSuffix;
-                    if (data.isPartial) {
-                        elTotal.title = 'Liczba na podstawie próbki ' + (data.sampleSize || 100) + ' profili (dane częściowe)';
+                if (elTotal) {
+                    if (typeof data.totalMembers === 'number') {
+                        const cacheTag = data.isFromCache ? ' <small style="opacity:0.6; font-size:0.7rem;">(bufor)</small>' : '';
+                        elTotal.innerHTML = data.totalMembers.toLocaleString('pl-PL') + cacheTag;
+                        elTotal.title = data.totalMembersFresh ? 'Liczba członków zweryfikowana na żywo z bazy' : 'Liczba członków z dokumentu statystyk';
+                    } else if (data.sampleSize) {
+                        elTotal.innerHTML = '— <small style="opacity:0.65; font-size:0.75rem;" title="Brak zweryfikowanej całkowitej liczby">(próbka ' + data.sampleSize + ')</small>';
+                        elTotal.title = 'Całkowita liczba niezweryfikowana — pobrano próbkę ' + data.sampleSize + ' profili';
                     } else {
-                        elTotal.title = 'Łączna zweryfikowana liczba członków społeczności LUMINA';
+                        elTotal.textContent = '—';
                     }
                 }
                 if (elOnline && typeof data.onlineTotal === 'number') {
                     elOnline.textContent = data.onlineTotal.toLocaleString('pl-PL');
                 }
-                const femalePercent = typeof data.femalePercent === 'number' ? data.femalePercent : 0;
-                const malePercent = typeof data.malePercent === 'number' ? data.malePercent : 0;
-                const femaleCount = typeof data.femaleCount === 'number' ? data.femaleCount : 0;
-                const maleCount = typeof data.maleCount === 'number' ? data.maleCount : 0;
-                const partialLabel = data.isPartial ? ' <small style="opacity:0.65; font-size:0.75rem;" title="Proporcja na podstawie próbki 100 profili">(próbka)</small>' : '';
 
-                if (elFemaleCount) elFemaleCount.innerHTML = femaleCount + ' (' + femalePercent + '%)' + partialLabel;
-                if (elMaleCount) elMaleCount.innerHTML = maleCount + ' (' + malePercent + '%)' + partialLabel;
+                const femaleCount = typeof data.femaleCount === 'number' ? data.femaleCount : null;
+                const maleCount = typeof data.maleCount === 'number' ? data.maleCount : null;
+                const femalePercent = typeof data.femalePercent === 'number' ? data.femalePercent : null;
+                const malePercent = typeof data.malePercent === 'number' ? data.malePercent : null;
+                const demoLabel = !data.demographicsFresh ? ' <small style="opacity:0.65; font-size:0.72rem;" title="Proporcja szacunkowa lub z próbki">(próbka)</small>' : '';
+
+                if (elFemaleCount) {
+                    elFemaleCount.innerHTML = (femaleCount !== null && femalePercent !== null) ? (femaleCount + ' (' + femalePercent + '%)' + demoLabel) : '—';
+                }
+                if (elMaleCount) {
+                    elMaleCount.innerHTML = (maleCount !== null && malePercent !== null) ? (maleCount + ' (' + malePercent + '%)' + demoLabel) : '—';
+                }
                 if (elFemaleBar) {
-                    elFemaleBar.style.width = femalePercent + '%';
-                    elFemaleBar.title = 'Kobiety: ' + femalePercent + '% (' + femaleCount + ')' + (data.isPartial ? ' [próbka]' : '');
+                    elFemaleBar.style.width = (femalePercent !== null ? femalePercent : 0) + '%';
+                    elFemaleBar.title = (femalePercent !== null) ? ('Kobiety: ' + femalePercent + '%' + (!data.demographicsFresh ? ' [próbka]' : '')) : 'Dane niedostępne';
                 }
                 if (elMaleBar) {
-                    elMaleBar.style.width = malePercent + '%';
-                    elMaleBar.title = 'Mężczyźni: ' + malePercent + '% (' + maleCount + ')' + (data.isPartial ? ' [próbka]' : '');
+                    elMaleBar.style.width = (malePercent !== null ? malePercent : 0) + '%';
+                    elMaleBar.title = (malePercent !== null) ? ('Mężczyźni: ' + malePercent + '%' + (!data.demographicsFresh ? ' [próbka]' : '')) : 'Dane niedostępne';
                 }
 
-                // Realny wykres 7 dni — z data.dayCounts (klucze 0=Nd..6=So wg JS Date.getDay())
-                const dayCounts = (data.dayCounts && typeof data.dayCounts === 'object') ? data.dayCounts : {};
-                const orderedCounts = [1, 2, 3, 4, 5, 6, 0].map(d => dayCounts[d] || 0); // Pn → Nd
-                const maxCount = Math.max(1, ...orderedCounts);
-                const todayIndex = (new Date().getDay() + 6) % 7; // 0=Pn .. 6=Nd
+                // Realny wykres 7 dni — z data.dayCounts
+                const dayCounts = (data.dayCounts && typeof data.dayCounts === 'object') ? data.dayCounts : null;
+                if (dayCounts) {
+                    const orderedCounts = [1, 2, 3, 4, 5, 6, 0].map(d => dayCounts[d] || 0); // Pn → Nd
+                    const maxCount = Math.max(1, ...orderedCounts);
+                    const todayIndex = (new Date().getDay() + 6) % 7; // 0=Pn .. 6=Nd
 
-                DAY_BAR_IDS.forEach((dayId, idx) => {
-                    const bar = document.getElementById(dayId);
-                    if (!bar) return;
-                    const heightPct = Math.max(6, Math.round((orderedCounts[idx] / maxCount) * 100));
-                    bar.style.height = heightPct + '%';
-                    bar.title = orderedCounts[idx] + ' nowych profili' + (data.isPartial ? ' (próbka)' : '');
-                    bar.classList.toggle('today', idx === todayIndex);
-                });
+                    DAY_BAR_IDS.forEach((dayId, idx) => {
+                        const bar = document.getElementById(dayId);
+                        if (!bar) return;
+                        const heightPct = Math.max(6, Math.round((orderedCounts[idx] / maxCount) * 100));
+                        bar.style.height = heightPct + '%';
+                        bar.title = orderedCounts[idx] + ' profili' + (!data.demographicsFresh ? ' (próbka)' : '');
+                        bar.classList.toggle('today', idx === todayIndex);
+                    });
+                }
 
                 if (elTodayGrowth) {
-                    const count = typeof data.todayCount === 'number' ? data.todayCount : 0;
-                    let notice = '';
-                    if (data.isStale) {
-                        notice = ' <small style="opacity:0.65; font-size:0.75rem;" title="Dane z pamięci podręcznej (offline/bufor)">(bufor offline)</small>';
-                    } else if (data.isPartial) {
-                        notice = ' <small style="opacity:0.65; font-size:0.75rem;" title="Wzrost na podstawie próbki 100 profili">(próbka)</small>';
+                    if (typeof data.todayCount === 'number') {
+                        let notice = '';
+                        if (data.isStale || data.isFromCache) {
+                            notice = ' <small style="opacity:0.65; font-size:0.72rem;" title="Dane z pamięci podręcznej (offline/bufor)">(bufor)</small>';
+                        } else if (!data.demographicsFresh) {
+                            notice = ' <small style="opacity:0.65; font-size:0.72rem;" title="Wzrost na podstawie próbki">(próbka)</small>';
+                        }
+                        elTodayGrowth.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> +' + data.todayCount + ' Dzisiaj' + notice;
+                    } else {
+                        elTodayGrowth.innerHTML = '<span style="opacity:0.6; font-size:0.8rem;">—</span>';
                     }
-                    elTodayGrowth.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> +' + count + ' Dzisiaj' + notice;
                 }
             } catch (err) {
                 console.error('[Telemetry] Render error:', err);
