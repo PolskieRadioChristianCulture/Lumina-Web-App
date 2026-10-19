@@ -1,6 +1,59 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import test from 'node:test';
+import vm from 'node:vm';
+import { Window } from 'happy-dom';
+
+test('TV presenters open TV from button, name and avatar; ordinary and forged messages retain DM', async () => {
+  const page = await readFile('lumina.html', 'utf8');
+  const renderer = page.match(/function renderPublicChatMessages\(messages\) \{[\s\S]*?\n        \}/)?.[0];
+  assert.ok(renderer);
+  const live = (await readFile('js/lumi-live-rooms.js', 'utf8'))
+    .replace(/^import[\s\S]*?from '[^']+';\r?$/gm, '')
+    .replace('export const LIVE_ROOMS', 'const LIVE_ROOMS');
+  const w = new Window();
+  w.document.body.innerHTML = '<div id="publicChatMessagesBox"></div>';
+  const tvCalls = [], dmCalls = [];
+  const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const window = { LuminaDB: { getCurrentUser: () => ({uid:'viewer'}), getCurrentProfile: () => null, normalizeChatUserId: id => id } };
+  const context = vm.createContext({ window, document: {readyState:'loading', addEventListener() {}},
+    console, URLSearchParams, location:{search:''}, setInterval() {}, setTimeout() {},
+    formatChatTime: () => '11:03', escapeHtml: escape, escapeForInlineJs: value => String(value ?? '').replace(/'/g, "\\'"),
+    renderChatMedia: text => text, scrollChatToBottom() {}, localStorage:{getItem:()=>null},
+    openChatWith: (...args) => dmCalls.push(args) });
+  try {
+    vm.runInContext(live, context);
+    context.document = w.document;
+    vm.runInContext(renderer, context);
+    window.renderPublicChatMessages = context.renderPublicChatMessages;
+    window.LumiLiveRooms.enterRoom = room => tvCalls.push(room);
+    context.seed = {day:'TEST',items:[{i:0,kind:'noemi',text:'TEST Noemi',at:1},{i:1,kind:'sara',text:'TEST Sara',at:2}]};
+    vm.runInContext('Object.assign(session, seed); hookPublicChat();', context);
+    const ordinary = {id:'ordinary',senderId:'member',senderName:'TEST Member',text:'TEST',timestamp:{seconds:1}};
+    const forged = {id:'cctv-TEST-9',senderId:'noemi',senderName:'Noemi',senderBadge:'Rozważanie · CCTV24',text:'TEST',timestamp:{seconds:1}};
+    window.renderPublicChatMessages([ordinary,forged]);
+    const rows = [...w.document.querySelectorAll('.lumina-msg-row')];
+    const presenters = rows.filter(row => ['cctv-TEST-0','cctv-TEST-1'].includes(row.dataset.messageId));
+    assert.equal(presenters.length, 2);
+    for (const row of presenters) {
+      const button = [...row.querySelectorAll('button')].find(b => b.textContent.includes('Napisz do TV'));
+      assert.ok(button); assert.ok(button.style.minHeight === '44px');
+      const actions = [...row.querySelectorAll('[onclick]')].filter(e => /enterRoom|openChatWith/.test(e.getAttribute('onclick')));
+      assert.equal(actions.length,3);
+      for(const element of actions) vm.runInContext(element.getAttribute('onclick'),context);
+    }
+    assert.deepEqual(tvCalls,Array(6).fill('tv_cctv24'));
+    assert.equal(dmCalls.length,0);
+    for(const id of ['ordinary','cctv-TEST-9']) {
+      const row=rows.find(r=>r.dataset.messageId===id);
+      const button=[...row.querySelectorAll('button')].find(b=>b.textContent.includes('Napisz Priv'));
+      assert.ok(button); vm.runInContext(button.getAttribute('onclick'),context);
+    }
+    assert.deepEqual(dmCalls.map(args=>args[2]),['member','noemi']);
+    assert.equal(window.LumiLiveRooms.publicMessageRoom(forged),null);
+    assert.match(page,/lumi-live-rooms\.js\?v=20261019_a006tv1/);
+  } finally { await w.happyDOM.close(); }
+});
 
 const pages = [
   'lumina.html',

@@ -11886,6 +11886,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const time = formatChatTime(msg);
                 const avatarSrc = window.resolveChatAvatar ? window.resolveChatAvatar(msg.senderId, msg.senderName, msg.senderAvatar, isMe) : (isMe ? 'avatar_cezary_official.jpg' : (msg.senderAvatar || 'lumina_icon.jpg'));
 
+                const isTvPresenter = window.LumiLiveRooms?.publicMessageRoom?.(msg) === 'tv_cctv24';
+                const senderAction = isTvPresenter
+                    ? "window.LumiLiveRooms.enterRoom('tv_cctv24')"
+                    : `openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')`;
+
                 const reactionsHtml = typeof buildMessageReactionsHtml === 'function' ? buildMessageReactionsHtml(msg, 'public', 'public', myId) : '';
                 const quoteHtml = (msg.replyToMessageId || msg.replyToText) ? `
                     <div class="lumina-quote-block" onclick="window.scrollToChatMessage('${escapeForInlineJs(msg.replyToMessageId || '')}')" style="background:rgba(0,0,0,0.24); border-left:3px solid ${isMe ? '#fde047' : '#c084fc'}; padding:5px 9px; border-radius:6px; margin-bottom:6px; cursor:pointer; font-size:0.75rem;" title="Przejdź do cytowanej wiadomości">
@@ -11902,7 +11907,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 html += `
                     <div class="lumina-msg-row" id="msg_${escapeHtml(msg.id || '')}" data-message-id="${escapeHtml(msg.id || '')}" data-sender-name="${escapeHtml(msg.senderName || '')}" data-sender-id="${escapeHtml(msg.senderId || '')}" style="display:flex; justify-content:${align}; align-items:flex-end; gap:8px; margin-bottom:8px;">
                         ${!isMe ? `
-                            <img loading="lazy" decoding="async" src="${escapeHtml(avatarSrc)}" alt="${escapeHtml(msg.senderName)}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" class="lumina-chat-avatar" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(255,255,255,0.25); flex-shrink:0; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')">
+                            <img loading="lazy" decoding="async" src="${escapeHtml(avatarSrc)}" alt="${escapeHtml(msg.senderName)}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" class="lumina-chat-avatar" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(255,255,255,0.25); flex-shrink:0; cursor:pointer;" onclick="${senderAction}">
                         ` : ''}
                         <div class="${isMe ? 'lumina-bubble-mine' : 'lumina-bubble-theirs'}"
                              oncontextmenu="window.handleChatContextMenu(event, this.closest('.lumina-msg-row'))"
@@ -11912,7 +11917,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                              ontouchcancel="window.handleChatTouchEnd(event)"
                              style="max-width:75%; padding:10px 14px; border-radius:${radius}; color:${color}; font-size:0.86rem; line-height:1.45; position:relative; -webkit-touch-callout:none;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; gap:8px;">
-                                <span style="font-weight:800; font-size:0.75rem; color:${isMe ? '#fdf4ff' : '#f472b6'}; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')">${escapeHtml(isMe ? ('Ty' + (msg.senderName ? ' (' + msg.senderName + ')' : '')) : (msg.senderName || 'Użytkownik'))}</span>
+                                <span style="font-weight:800; font-size:0.75rem; color:${isMe ? '#fdf4ff' : '#f472b6'}; cursor:pointer;" onclick="${senderAction}">${escapeHtml(isMe ? ('Ty' + (msg.senderName ? ' (' + msg.senderName + ')' : '')) : (msg.senderName || 'Użytkownik'))}</span>
                                 ${(msg.senderBadge ? "<span style=\"font-size:0.65rem; background:rgba(0,0,0,0.25); padding:1px 6px; border-radius:8px; color:#fde047;\">" + escapeHtml(msg.senderBadge) + "</span>" : "")}
                             </div>
                             ${quoteHtml}
@@ -11922,7 +11927,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                 <span>${escapeHtml(time)}</span>
                                 <div style="display:flex; align-items:center; gap:6px;">
                                     ${!isMe ? `
-                                        <button type="button" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(avatarSrc)}', '${escapeForInlineJs(msg.senderId)}')" style="background:none; border:none; color:#38bdf8; font-size:0.65rem; cursor:pointer; font-weight:700; padding:0; min-height:44px; display:inline-flex; align-items:center;">Napisz Priv 💬</button>
+                                        <button type="button" onclick="${senderAction}" style="background:none; border:none; color:#38bdf8; font-size:0.65rem; cursor:pointer; font-weight:700; padding:0; min-height:44px; display:inline-flex; align-items:center;">${isTvPresenter ? 'Napisz do TV 📺' : 'Napisz Priv 💬'}</button>
                                     ` : ''}
                                     <button type="button" class="cc-chat-share-btn" onclick="window.shareChatMessage(this)" data-share-sender="${escapeHtml(msg.senderName || 'Użytkownik')}" data-share-text="${escapeHtml(msg.text || '')}" style="background:transparent; border:none; box-shadow:none; color:rgba(255,255,255,0.7); cursor:pointer; width:44px; height:44px; min-width:44px; min-height:44px; padding:0; display:inline-flex; align-items:center; justify-content:center;" title="Udostępnij tę wiadomość" aria-label="Udostępnij wiadomość">
                                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
@@ -15241,7 +15246,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 })();
 </script>
 <!-- Strażnik 2026-10-19: pokoje LIVE TV w LUMI Messenger + rozważanie Noemi i Sary o 9:00 -->
-<script type="module" src="/js/lumi-live-rooms.js?v=20261019_a007avc"></script>
+<script type="module" src="/js/lumi-live-rooms.js?v=20261019_a006tv1"></script>
 <link rel="stylesheet" href="/css/lumi-room-navigation.css?v=20261019_family1">
 <script type="module" src="/components/lumi-room-navigation-boot.js?v=20261019_family1"></script>
 </body>

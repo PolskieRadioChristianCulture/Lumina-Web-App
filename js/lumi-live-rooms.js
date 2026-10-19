@@ -123,6 +123,9 @@ function typingNow(now = Date.now()) {
   return m ? (PRESENTER[m.kind] || PRESENTER.both).name : '';
 }
 const sessionLive = (now = Date.now()) => session.total > 0 && now >= session.liveStart && now < session.liveStart + session.total;
+// Object identity prevents UGC names/badges from impersonating a TV navigation target.
+const publicPresenterMessages = new WeakSet();
+const publicMessageRoom = (message) => publicPresenterMessages.has(message) ? 'tv_cctv24' : null;
 
 // ── Czat ogólny: rozmowa prowadzących pojawia się także tutaj ────────────────
 function hookPublicChat() {
@@ -132,11 +135,15 @@ function hookPublicChat() {
   window.renderPublicChatMessages = function (messages) {
     let merged = messages || [];
     try {
-      const v = presenterMessages().map((m) => ({
+      const v = presenterMessages().map((m) => {
+        const message = {
         id: m.id, senderId: m.senderId, senderName: m.senderName, senderAvatar: m.senderAvatar,
         senderBadge: (sessionLive() ? '🔴 NA ŻYWO · CCTV24' : '📺 Rozważanie · CCTV24'), text: m.text, type: 'text',
         timestamp: { seconds: Math.floor(m.at / 1000) }, createdAt: m.at, reactions: {}
-      }));
+        };
+        publicPresenterMessages.add(message);
+        return message;
+      });
       if (v.length) {
         merged = merged.concat(v).sort((a, b) => (tsMs(a.timestamp) || a.createdAt || 0) - (tsMs(b.timestamp) || b.createdAt || 0));
       }
@@ -418,5 +425,5 @@ async function boot() {
   } catch (_) {}
 }
 
-window.LumiLiveRooms = { LIVE_ROOMS, enterRoom: (id) => { window.switchMessengerMainTab('livetv'); setTimeout(() => enterRoom(id), 200); }, session: () => session };
+window.LumiLiveRooms = { LIVE_ROOMS, publicMessageRoom, enterRoom: (id) => { window.switchMessengerMainTab('livetv'); setTimeout(() => enterRoom(id), 200); }, session: () => session };
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
