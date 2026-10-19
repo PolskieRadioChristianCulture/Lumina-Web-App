@@ -26,8 +26,8 @@ export const LIVE_ROOMS = [
 ];
 const ROOM = Object.fromEntries(LIVE_ROOMS.map((r) => [r.id, r]));
 const PRESENTER = {
-  noemi: { id: 'noemi', name: 'Noemi', avatar: '/avatar_noemi.jpg?v=20261019b' },
-  sara: { id: 'sara', name: 'Sara', avatar: '/avatar_sara.jpg?v=20261019b' },
+  noemi: { id: 'noemi', name: 'Noemi', avatar: '/avatar_noemi.jpg?v=20261019c' },
+  sara: { id: 'sara', name: 'Sara', avatar: '/avatar_sara.jpg?v=20261019c' },
   both: { id: 'cctv24', name: 'Noemi i Sara', avatar: '/logo_cctv.webp' },
   scripture: { id: 'cctv24', name: 'Pismo Święte', avatar: '/logo_cctv.webp' }
 };
@@ -87,7 +87,7 @@ async function loadSession() {
     if (window.CCTvDialogue) shiftSession(window.CCTvDialogue);
     return session;
   }
-  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv4');
+  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv5');
   const D = window.CCTvDialogue;
   if (!D) return session;
   try {

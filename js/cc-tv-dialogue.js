@@ -103,7 +103,7 @@
     return e;
   }
 
-  const AVATAR = { noemi: '/avatar_noemi.jpg?v=20261019b', sara: '/avatar_sara.jpg?v=20261019b' };
+  const AVATAR = { noemi: '/avatar_noemi.jpg?v=20261019c', sara: '/avatar_sara.jpg?v=20261019c' };
   const SECTION_ICON = [
     [/INTRO/i, '🎬'], [/ANALIZA/i, '💬'], [/SŁOWO|SLOWO|PERSPEKTYWA|BIBL/i, '📖'],
     [/ZADANIE/i, '🎯'], [/MANIFEST|MODLITW/i, '🙏'], [/OUTRO|BŁOGOS|BLOGOS/i, '✨']
