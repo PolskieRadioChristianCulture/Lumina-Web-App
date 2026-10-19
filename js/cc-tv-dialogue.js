@@ -192,18 +192,52 @@
       return guess - (asUtc - guess);
     } catch (_) { return guess - 2 * 3600000; }
   }
-  // Godziny sesji (czas polski). Wybierana jest najbliższa sesja, która jeszcze trwa lub dopiero nadejdzie
-  // (okno 35 min po starcie); po ostatniej — pierwsza sesja dnia (odtwarzacz liczy wtedy następną: jutro 09:00).
+  // Godziny sesji (czas polski) + dzisiejszy start ręczny („Start LIVE teraz” administratora w LUMI).
+  // Wybór: najpóźniejszy start, który już nastąpił i jest w oknie 35 min; inaczej najbliższy przyszły;
+  // po ostatnim — pierwsza sesja dnia (odtwarzacz liczy wtedy następną: jutro 09:00).
   const LIVE_SESSIONS = [[9, 0], [10, 0], [11, 0], [18, 0]];
   const LIVE_WINDOW_MS = 35 * 60 * 1000;
+  const warsawDayOf = (ms) => new Intl.DateTimeFormat('en-CA', { timeZone: LIVE_TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
+  let manualStart = 0;
   function liveStartToday(now = Date.now()) {
     try {
-      const f = new Intl.DateTimeFormat('en-CA', { timeZone: LIVE_TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
-      const [y, mo, d] = f.format(new Date(now)).split('-').map(Number);
+      const [y, mo, d] = warsawDayOf(now).split('-').map(Number);
       const starts = LIVE_SESSIONS.map(([h, mi]) => zonedToUtc(y, mo, d, h, mi, LIVE_TZ));
-      const next = starts.find((s) => now < s + LIVE_WINDOW_MS);
+      if (manualStart && warsawDayOf(manualStart) === warsawDayOf(now)) starts.push(manualStart);
+      starts.sort((a, b) => a - b);
+      const running = starts.filter((s) => s <= now && now < s + LIVE_WINDOW_MS).pop();
+      if (running !== undefined) return running;
+      const next = starts.find((s) => s > now);
       return next !== undefined ? next : starts[0];
     } catch (_) { const t = new Date(now); t.setHours(LIVE_HOUR, LIVE_MINUTE, 0, 0); return t.getTime(); }
+  }
+
+  // ── Start ręczny: dokument Firestore lumina_stats/live_session { startAt (ms) } ──
+  // Zapis tylko administrator (reguły: isMasterAdmin); odczyt publiczny. Anteny czytają przez REST co 60 s
+  // (1 odczyt/min na otwartą antenę), pokoje LUMI — przez onSnapshot i setManualStart().
+  const LIVE_DOC_URL = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_stats/live_session?key=AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M';
+  const changeWaiters = [];
+  function onScheduleChange() { return new Promise((r) => changeWaiters.push(r)); }
+  function setManualStart(ms) {
+    const v = Number(ms) > 0 && warsawDayOf(Number(ms)) === warsawDayOf(Date.now()) ? Number(ms) : 0;
+    if (v === manualStart) return;
+    manualStart = v;
+    changeWaiters.splice(0).forEach((r) => { try { r(); } catch (_) {} });
+  }
+  async function pollManualStart() {
+    try {
+      const res = await fetch(LIVE_DOC_URL, { cache: 'no-store' });
+      if (res.status === 404) { setManualStart(0); return; }
+      if (!res.ok) return;
+      const f = ((await res.json()).fields || {}).startAt || {};
+      setManualStart(Number(f.integerValue || f.doubleValue || 0) || (f.timestampValue ? Date.parse(f.timestampValue) : 0));
+    } catch (_) {}
+  }
+  let pollTimer = null;
+  function startManualPolling() {
+    if (pollTimer || typeof fetch !== 'function') return;
+    pollManualStart();
+    pollTimer = setInterval(pollManualStart, 60000);
   }
 
   // Oś czasu rozmowy (ms od startu): kiedy pojawia się rozdział, „pisze…” i sama wiadomość.

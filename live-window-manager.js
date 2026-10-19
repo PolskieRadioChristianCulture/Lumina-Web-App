@@ -123,7 +123,9 @@
                 el.style.height = state.h;
                 el.style.overflow = 'hidden';
             }
-            if (state.min) {
+            // Essential broadcast content must not disappear behind the hidden operator dock.
+            // Keep saved geometry and all other widgets unchanged.
+            if (state.min && el.dataset.windowAlwaysVisible !== 'true') {
                 minimizeWindow(el, false);
             }
         } catch (_) {}
@@ -615,6 +617,7 @@
 
     /* ---- Minimize Helper -------------------------------------------------- */
     function minimizeWindow(el, saveState = true) {
+        if (el.dataset.windowAlwaysVisible === 'true') return;
         if (el.classList.contains('live-win-minimized')) return;
         const title = getWindowTitle(el);
         const icon  = getWindowIcon(el);
@@ -657,7 +660,7 @@
         minBtn.innerHTML = '<i class="fa-solid fa-minus"></i>';
 
         controls.appendChild(dragBtn);
-        controls.appendChild(minBtn);
+        if (el.dataset.windowAlwaysVisible !== 'true') controls.appendChild(minBtn);
         el.appendChild(controls);
 
         /* RESIZE HANDLE */
