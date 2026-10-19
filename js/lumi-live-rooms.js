@@ -17,7 +17,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 export const LIVE_ROOMS = [
-  { id: 'tv_cctv24', name: 'CCTV24 · Telewizja Śniadaniowa', url: '/cctv24', icon: '📺', reflection: true, desc: 'Rozważanie „Z Biblią za Pan Brat” z Noemi i Sarą — na żywo o 9:00.' },
+  { id: 'tv_cctv24', name: 'CCTV24 · Telewizja Śniadaniowa', url: '/cctv24', icon: '📺', reflection: true, desc: 'Rozważanie „Z Biblią za Pan Brat” z Noemi i Sarą — na żywo.' },
   { id: 'tv_zapolske', name: 'Zjednoczeni za Polskę', url: '/zapolske-live', icon: '🇵🇱', reflection: true, prayers: true, desc: 'Módl się z nami — Twoja modlitwa pojawi się na antenie.' },
   { id: 'tv_master_live', name: 'Master Live · Główna antena', url: '/live', icon: '🎬', reflection: true, desc: 'Główna antena Christian Culture TV.' },
   { id: 'tv_cctv24_pl', name: 'CCTV24 PL', url: '/cctv24-pl', icon: '📡', reflection: true, desc: 'Kopia transmisyjna CCTV24.' },
@@ -120,7 +120,7 @@ function hookPublicChat() {
     try {
       const v = presenterMessages().map((m) => ({
         id: m.id, senderId: m.senderId, senderName: m.senderName, senderAvatar: m.senderAvatar,
-        senderBadge: '🔴 Rozważanie 9:00 · CCTV24', text: m.text, type: 'text',
+        senderBadge: (sessionLive() ? '🔴 NA ŻYWO · CCTV24' : '📺 Rozważanie · CCTV24'), text: m.text, type: 'text',
         timestamp: { seconds: Math.floor(m.at / 1000) }, createdAt: m.at, reactions: {}
       }));
       if (v.length) {

@@ -3392,7 +3392,7 @@ function getWeatherPreset(city) {
                         slideEl.innerHTML = `<div class="slide-tag"><i class="fa-solid fa-comments"></i> <span class="cctv-live-badge">NA ŻYWO · ROZWAŻANIE</span></div><div class="slide-title" style="font-size: 1.90rem; margin-bottom: 12px; font-family: 'Cinzel', serif;"></div><div class="chat-container" data-live="1" aria-live="polite"></div>`;
                         slideEl.querySelector(".slide-title").textContent = slideData.title || "";
                         try { if (window._cctvLivePlayer) window._cctvLivePlayer.stop(); } catch (_) {}
-                        window._cctvLivePlayer = window.CCTvDialogue.play(slideEl.querySelector(".chat-container"), slideData.messages, { adapt: (t) => adaptTextToTimeOfDay(t), onMode: (m) => { const bd = slideEl.querySelector(".cctv-live-badge"); if (bd) { bd.textContent = m === "live" ? "NA ŻYWO · ROZWAŻANIE 9:00" : "POWTÓRKA · ROZWAŻANIE Z 9:00"; bd.classList.toggle("is-replay", m !== "live"); } } });
+                        window._cctvLivePlayer = window.CCTvDialogue.play(slideEl.querySelector(".chat-container"), slideData.messages, { adapt: (t) => adaptTextToTimeOfDay(t), onMode: (m) => { const bd = slideEl.querySelector(".cctv-live-badge"); if (bd) { bd.textContent = m === "live" ? "NA ŻYWO · ROZWAŻANIE" : "POWTÓRKA · ROZWAŻANIE"; bd.classList.toggle("is-replay", m !== "live"); } } });
                     } else if (slideData.type === "chat") {
                         let chatHTML = `
                             <div class="slide-tag"><i class="fa-solid fa-comments"></i> <span>${slideData.tag}</span></div>

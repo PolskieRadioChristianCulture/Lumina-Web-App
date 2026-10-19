@@ -180,7 +180,7 @@
     return Math.max(4000, Math.min(16000, Math.round(String(text || '').length / 16 * 1000)));
   }
 
-  // ── Jedna sesja dziennie: 09:00 czasu polskiego ──────────────────────────────
+  // ── Sesje na żywo: standardowo 09:00, z obsługą sesji 10:00 (czas polski) ──
   const LIVE_TZ = 'Europe/Warsaw';
   const LIVE_HOUR = 9, LIVE_MINUTE = 0;
   function zonedToUtc(y, mo, d, h, mi, tz) {
@@ -196,7 +196,12 @@
     try {
       const f = new Intl.DateTimeFormat('en-CA', { timeZone: LIVE_TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
       const [y, mo, d] = f.format(new Date(now)).split('-').map(Number);
-      return zonedToUtc(y, mo, d, LIVE_HOUR, LIVE_MINUTE, LIVE_TZ);
+      const t9 = zonedToUtc(y, mo, d, 9, 0, LIVE_TZ);
+      const t10 = zonedToUtc(y, mo, d, 10, 0, LIVE_TZ);
+      if (now >= t9 + 25 * 60 * 1000 && now < t10 + 35 * 60 * 1000) {
+        return t10;
+      }
+      return t9;
     } catch (_) { const t = new Date(now); t.setHours(LIVE_HOUR, LIVE_MINUTE, 0, 0); return t.getTime(); }
   }
 
