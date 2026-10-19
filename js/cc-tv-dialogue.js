@@ -402,41 +402,13 @@
     container.textContent = '';
     const hostBox = el('div', 'cctv-host-stream');
     container.appendChild(hostBox);
-    // Karta rozważania = tylko Noemi i Sara (Dowódca 19.10). Czat widzów LUMI MESS ma osobne okno między kodem QR
-    // a kartą — tylko na antenie z oknem modlitw (/zapolske-live); na innych antenach czat widzów nie jest pokazywany.
-    let viewerBox = document.getElementById('cctvViewerDock');
-    if (!viewerBox) {
-      viewerBox = el('div', 'cctv-viewer-stream cctv-viewer-dock');
-      viewerBox.id = 'cctvViewerDock';
-      // Obok belki modlitw — wewnątrz skalowanego kontenera anteny 1920×1080 (inaczej przy mniejszym oknie dok jest za duży).
-      const prayerBar = document.getElementById('livePrayerOverlay');
-      if (prayerBar && prayerBar.parentNode) prayerBar.parentNode.insertBefore(viewerBox, prayerBar);
-    }
+    // Karta rozważania = tylko Noemi i Sara (Dowódca 19.10). Czat widzów LUMI MESS ze wszystkich pokoi LIVE TV
+    // pokazuje osobny moduł js/cc-live-viewer-chat.js — na każdym kanale nadawczym, we własnym oknie.
 
     const scrollEnd = (smooth) => {
       try { hostBox.scrollTo({ top: hostBox.scrollHeight, behavior: smooth && !reduce ? 'smooth' : 'auto' }); }
       catch (_) { hostBox.scrollTop = hostBox.scrollHeight; }
     };
-
-    let lastViewerSig = '';
-    const renderViewers = () => {
-      if (stopped) return;
-      const items = getViewerMessages();
-      const sig = items.map((x) => x.id + ':' + x.text).join('|');
-      if (sig === lastViewerSig) return;
-      lastViewerSig = sig;
-      viewerBox.textContent = '';
-      try { document.body.classList.toggle('cctv-viewers-on', items.length > 0 && !!viewerBox.parentNode); } catch (_) {}
-      if (!items.length) return;
-      viewerBox.appendChild(el('div', 'cctv-viewer-header', '🔴 CZAT NA ŻYWO · WIDZOWIE CCTV24'));
-      items.slice(-2).forEach((m) => viewerBox.appendChild(viewerBubble(m)));
-      try { viewerBox.scrollTop = viewerBox.scrollHeight; } catch (_) {}
-      scrollEnd(false);
-    };
-    viewerListeners.add(renderViewers);
-    renderViewers();
-    pollViewerRooms();
-    const viewerPollTimer = typeof setInterval === 'function' ? setInterval(pollViewerRooms, 12000) : null;
 
     const wait = (ms) => new Promise((r) => { timer = setTimeout(r, Math.max(0, ms)); });
     const mode = (m) => { try { if (typeof opts.onMode === 'function') opts.onMode(m); } catch (_) {} };
@@ -503,8 +475,6 @@
       stop() {
         stopped = true;
         if (timer) clearTimeout(timer);
-        if (viewerPollTimer) clearInterval(viewerPollTimer);
-        viewerListeners.delete(renderViewers);
       },
       durationMs: total
     };
