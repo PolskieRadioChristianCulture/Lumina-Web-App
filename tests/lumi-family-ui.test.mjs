@@ -1,9 +1,18 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { Window } from 'happy-dom';
+import { readFile } from 'node:fs/promises';
 import { mountRoomNavigation } from '../components/lumi-room-navigation.js';
 import { mountFamilyView } from '../components/lumi-family-view.js';
 const tick = () => new Promise(r => setTimeout(r, 0));
+test('Kids family entry loads the released module under a fresh cache key', async () => {
+    const html = await readFile(new URL('../lumi-kids/app/index.html', import.meta.url), 'utf8');
+    const app = await readFile(new URL('../lumi-kids/app/app.js', import.meta.url), 'utf8');
+    assert.match(html, /src="\/lumi-kids\/app\/app\.js\?v=20261019_family3"/);
+    assert.doesNotMatch(html, /app\.js\?v=20261019_family[12]"/);
+    assert.match(app, /import \{ openFamilyPanel \} from '\/components\/lumi-family-host\.js\?v=20261019_family1'/);
+    assert.match(app, /Moja rodzina/);
+});
 function navigation() {
     const w = new Window(); w.document.body.innerHTML = `<section id="modal"><header><div><button id="tabBtnPublicChat">Świat</button><button id="tabBtnCommanderChat" hidden class="is-commander-hidden">Korona</button><button id="tabBtnGroupsChat">Grupy</button><button id="tabBtnPrivateChat"><span class="tab-badge">2</span>Rozmowy</button><button id="tabBtnLiveTv" aria-label="Telewizja">📺</button><button id="tabBtnCreatePost">Napisz</button></div></header></section>`;
     return { w, d: w.document };
