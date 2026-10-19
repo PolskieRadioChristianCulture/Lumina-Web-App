@@ -13,17 +13,30 @@ const data = JSON.parse(rawData);
 // 1. Lekcje Kursu Codziennego "Z Biblią za Pan Brat"
 const dailyLessons = [
   {
-    title: "Z Biblią za Pan Brat — Dzień 18 (Lekcja 18 na dziś): Jakub i Ezaw — Czego naprawdę pragniesz? (Rdz 25:1–26:35)",
+    title: "Z Biblią za Pan Brat — Dzień 19 (Lekcja 19 na dziś): Gdy próbujemy pomóc Bogu oszustwem (Rdz 27:1–46)",
     category: "Biblia i formacja",
-    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-18",
-    description: "Kurs Codzienny Pisma Świętego — Dzień 18 (Lekcja 18 na dziś, 18 października 2026). Abraham odchodzi, Ezaw sprzedaje pierworództwo za miskę soczewicy, Izaak kopie studnie w Gerarze — Rdz 25:1–26:35. Chwilowe pragnienia nie powinny przesłaniać duchowego dziedzictwa.",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-19",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 19 (Lekcja 19 na dziś, 19 października 2026). Jakub, Rebeka i wyłudzone błogosławieństwo niewidomego Izaaka — Rdz 27:1–46. Boża obietnica nie potrzebuje ludzkiego kłamstwa ani manipulacji.",
     tags: [
-      "lekcja 18", "lekcja 18 na dziś", "lekcja na dziś", "dzień 18", "dzien 18",
-      "rozważanie 18", "rozważanie na dziś", "słowo na dziś", "jakub i ezaw", "pierworództwo",
-      "rdz 25", "rdz 26", "z biblią za pan brat", "kurs codzienny",
-      "akademia biblijna", "18 października 2026", "dzisiaj", "dziś"
+      "lekcja 19", "lekcja 19 na dziś", "lekcja na dziś", "dzień 19", "dzien 19",
+      "rozważanie 19", "rozważanie na dziś", "słowo na dziś", "jakub i izaak", "wyłudzone błogosławieństwo",
+      "rdz 27", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "19 października 2026", "dzisiaj", "dziś"
     ],
     featured: true
+  },
+  {
+    title: "Z Biblią za Pan Brat — Dzień 18 (Lekcja 18): Jakub i Ezaw — Czego naprawdę pragniesz? (Rdz 25:1–26:35)",
+    category: "Biblia i formacja",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-18",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 18 (Lekcja 18, 18 października 2026). Abraham odchodzi, Ezaw sprzedaje pierworództwo za miskę soczewicy, Izaak kopie studnie w Gerarze — Rdz 25:1–26:35. Chwilowe pragnienia nie powinny przesłaniać duchowego dziedzictwa.",
+    tags: [
+      "lekcja 18", "dzień 18", "dzien 18",
+      "rozważanie 18", "słowo na dziś", "jakub i ezaw", "pierworództwo",
+      "rdz 25", "rdz 26", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "18 października 2026"
+    ],
+    featured: false
   },
   {
     title: "Z Biblią za Pan Brat — Dzień 17 (Lekcja 17): Wiara patrząca w przyszłość (Rdz 23:1–24:67)",

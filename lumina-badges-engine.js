@@ -13,7 +13,7 @@
 // ══════════════════════════════════════════════════════════════════════════
 
 import {
-    collection, doc, setDoc, onSnapshot, query, orderBy, serverTimestamp, increment
+    collection, doc, setDoc, onSnapshot, query, where, orderBy, serverTimestamp, increment
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 function db() { return window.luminaDb || (window.LuminaDB && window.LuminaDB.db); }
@@ -159,9 +159,13 @@ export function renderBadgeGallery(targetUid, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return () => {};
 
-    return onSnapshot(collection(db(), 'lumina_user_badges'), (snap) => {
+    const badgeQuery = query(collection(db(), 'lumina_user_badges'), where('uid', '==', targetUid));
+    return onSnapshot(badgeQuery, (snap) => {
         const earned = new Set();
-        snap.forEach(d => { if (d.data().uid === targetUid) earned.add(d.data().badgeId); });
+        snap.forEach(d => {
+            const data = d.data();
+            if (data?.badgeId) earned.add(data.badgeId);
+        });
 
         container.innerHTML = `<div class="lumina-badge-gallery">` +
             Object.keys(BADGE_CATALOG).map(id => renderBadge3D(id, { locked: !earned.has(id) })).join('') +
@@ -177,9 +181,14 @@ let knownBadgeIds = null;
 export function listenForNewBadges() {
     if (!db()) return () => {};
     const uid = myId();
-    return onSnapshot(collection(db(), 'lumina_user_badges'), (snap) => {
+    if (!uid) return () => {};
+    const userBadgeQuery = query(collection(db(), 'lumina_user_badges'), where('uid', '==', uid));
+    return onSnapshot(userBadgeQuery, (snap) => {
         const mine = new Set();
-        snap.forEach(d => { if (d.data().uid === uid) mine.add(d.data().badgeId); });
+        snap.forEach(d => {
+            const data = d.data();
+            if (data?.badgeId) mine.add(data.badgeId);
+        });
 
         if (knownBadgeIds === null) { knownBadgeIds = mine; return; } // pierwsze wczytanie — nie pokazuj wszystkiego na raz
 

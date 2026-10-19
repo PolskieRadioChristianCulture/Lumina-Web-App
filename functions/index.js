@@ -31,3 +31,10 @@ exports.onPostCreatedCheckFirstStepBadge = badges.onPostCreatedCheckFirstStepBad
 exports.onFollowCreatedCheckBridgeBuilderBadge = badges.onFollowCreatedCheckBridgeBuilderBadge;
 exports.onShareCreatedCheckAmbassadorBadge = badges.onShareCreatedCheckAmbassadorBadge;
 exports.scheduledDailyBadgeCheck = badges.scheduledDailyBadgeCheck;
+
+// Telemetria: celowo NIE eksportowana (decyzja ZERO COST 2026-10-18 — brak 4. zadania Cloud Scheduler).
+// Agregacja działa po stronie klienta Master Admina (lumina-db.js). Moduł zachowany jako opcja na przyszłość.
+// const telemetry = require('./lumina-telemetry-functions.js');
+// exports.onProfileCreatedUpdateTelemetry = telemetry.onProfileCreatedUpdateTelemetry;
+// exports.scheduledDailyTelemetryRollover = telemetry.scheduledDailyTelemetryRollover;
+

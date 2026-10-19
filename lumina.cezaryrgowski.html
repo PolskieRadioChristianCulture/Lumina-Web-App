@@ -5727,7 +5727,7 @@
                                 <i class="fa-solid fa-users"></i>
                             </div>
                             <div class="hud-stat-info">
-                                <span class="hud-stat-num" id="hudTotalMembers">1 482</span>
+                                <span class="hud-stat-num" id="hudTotalMembers">—</span>
                                 <span class="hud-stat-label">Wszyscy Członkowie</span>
                             </div>
                         </div>
@@ -5737,7 +5737,7 @@
                                 <i class="fa-solid fa-wifi"></i>
                             </div>
                             <div class="hud-stat-info">
-                                <span class="hud-stat-num" id="hudOnlineRealtime" style="color:#4ade80;">142</span>
+                                <span class="hud-stat-num" id="hudOnlineRealtime" style="color:#4ade80;">—</span>
                                 <span class="hud-stat-label">Dostępni na Żywo ✨ ˘</span>
                             </div>
                         </div>
@@ -5746,12 +5746,12 @@
                     <!-- Gender Ratio Diagram -->
                     <div class="gender-ratio-card">
                         <div class="gender-labels">
-                            <span class="gender-female"><i class="fa-solid fa-venus"></i> Kobiety: <b id="hudFemaleCount">800 (54%)</b></span>
-                            <span class="gender-male"><i class="fa-solid fa-mars"></i> Mężczyźni: <b id="hudMaleCount">682 (46%)</b></span>
+                            <span class="gender-female"><i class="fa-solid fa-venus"></i> Kobiety: <b id="hudFemaleCount">—</b></span>
+                            <span class="gender-male"><i class="fa-solid fa-mars"></i> Mężczyźni: <b id="hudMaleCount">—</b></span>
                         </div>
                         <div class="gender-bar-wrap">
-                            <div class="gender-bar-female" id="hudFemaleBar" style="width: 54%;" title="Kobiety: 54%"></div>
-                            <div class="gender-bar-male" id="hudMaleBar" style="width: 46%;" title="Mężczyźni: 46%"></div>
+                            <div class="gender-bar-female" id="hudFemaleBar" style="width: 0%;" title="Ładowanie proporcji..."></div>
+                            <div class="gender-bar-male" id="hudMaleBar" style="width: 0%;" title="Ładowanie proporcji..."></div>
                         </div>
                     </div>
 
@@ -5759,7 +5759,7 @@
                     <div class="activity-chart-wrap">
                         <div class="chart-title-row">
                             <span><i class="fa-solid fa-chart-simple" style="color:#38bdf8;"></i> Wzrost Profili (7 Dni)</span>
-                            <span id="hudTodayCount" style="color:#22c55e; font-size:0.75rem;"><i class="fa-solid fa-arrow-trend-up"></i> +12 Dzisiaj</span>
+                            <span id="hudTodayCount" style="color:#22c55e; font-size:0.75rem;"><i class="fa-solid fa-clock"></i> Ładowanie...</span>
                         </div>
                         <div class="bar-chart-flex">
                             <div class="chart-col">
@@ -12087,10 +12087,8 @@
     </div>
 
 
-    <!-- ══════════ REALTIME COMMUNITY TELEMETRY ENGINE (naprawione: prawdziwe dane + poprawnie domknięty tag script) ══════════ -->
+    <!-- ══════════ REALTIME COMMUNITY TELEMETRY ENGINE (naprawione: prawdziwe dane + współdzielony kanał obecności) ══════════ -->
     <script type="module">
-        import { collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-
         const DAY_BAR_IDS = ['barMon', 'barTue', 'barWed', 'barThu', 'barFri', 'barSat', 'barSun']; // Pn → Nd
 
         function renderTelemetry(data) {
@@ -12103,21 +12101,49 @@
                 const elMaleBar = document.getElementById('hudMaleBar');
                 const elTodayGrowth = document.getElementById('hudTodayCount');
 
-                if (elTotal) elTotal.textContent = data.totalMembers.toLocaleString('pl-PL');
-                if (elOnline) elOnline.textContent = data.onlineTotal.toLocaleString('pl-PL');
-                if (elFemaleCount) elFemaleCount.textContent = data.femaleCount + ' (' + data.femalePercent + '%)';
-                if (elMaleCount) elMaleCount.textContent = data.maleCount + ' (' + data.malePercent + '%)';
+                if (!data || data.available === false) {
+                    if (elTotal) elTotal.textContent = '—';
+                    if (elOnline) elOnline.textContent = (data && typeof data.onlineTotal === 'number') ? data.onlineTotal.toLocaleString('pl-PL') : '—';
+                    if (elFemaleCount) elFemaleCount.textContent = '—';
+                    if (elMaleCount) elMaleCount.textContent = '—';
+                    if (elFemaleBar) { elFemaleBar.style.width = '0%'; elFemaleBar.title = 'Dane niedostępne'; }
+                    if (elMaleBar) { elMaleBar.style.width = '0%'; elMaleBar.title = 'Dane niedostępne'; }
+                    if (elTodayGrowth) elTodayGrowth.innerHTML = '<span style="opacity:0.6; font-size:0.8rem;">Oczekiwanie na dane...</span>';
+                    return;
+                }
+
+                if (elTotal && typeof data.totalMembers === 'number') {
+                    const partialSuffix = (data.isPartial && data.sampleSize && data.totalMembers <= data.sampleSize) ? '+' : '';
+                    elTotal.textContent = data.totalMembers.toLocaleString('pl-PL') + partialSuffix;
+                    if (data.isPartial) {
+                        elTotal.title = 'Liczba na podstawie próbki ' + (data.sampleSize || 100) + ' profili (dane częściowe)';
+                    } else {
+                        elTotal.title = 'Łączna zweryfikowana liczba członków społeczności LUMINA';
+                    }
+                }
+                if (elOnline && typeof data.onlineTotal === 'number') {
+                    elOnline.textContent = data.onlineTotal.toLocaleString('pl-PL');
+                }
+                const femalePercent = typeof data.femalePercent === 'number' ? data.femalePercent : 0;
+                const malePercent = typeof data.malePercent === 'number' ? data.malePercent : 0;
+                const femaleCount = typeof data.femaleCount === 'number' ? data.femaleCount : 0;
+                const maleCount = typeof data.maleCount === 'number' ? data.maleCount : 0;
+                const partialLabel = data.isPartial ? ' <small style="opacity:0.65; font-size:0.75rem;" title="Proporcja na podstawie próbki 100 profili">(próbka)</small>' : '';
+
+                if (elFemaleCount) elFemaleCount.innerHTML = femaleCount + ' (' + femalePercent + '%)' + partialLabel;
+                if (elMaleCount) elMaleCount.innerHTML = maleCount + ' (' + malePercent + '%)' + partialLabel;
                 if (elFemaleBar) {
-                    elFemaleBar.style.width = data.femalePercent + '%';
-                    elFemaleBar.title = 'Kobiety: ' + data.femalePercent + '% (' + data.femaleCount + ')';
+                    elFemaleBar.style.width = femalePercent + '%';
+                    elFemaleBar.title = 'Kobiety: ' + femalePercent + '% (' + femaleCount + ')' + (data.isPartial ? ' [próbka]' : '');
                 }
                 if (elMaleBar) {
-                    elMaleBar.style.width = data.malePercent + '%';
-                    elMaleBar.title = 'Mężczyźni: ' + data.malePercent + '% (' + data.maleCount + ')';
+                    elMaleBar.style.width = malePercent + '%';
+                    elMaleBar.title = 'Mężczyźni: ' + malePercent + '% (' + maleCount + ')' + (data.isPartial ? ' [próbka]' : '');
                 }
 
                 // Realny wykres 7 dni — z data.dayCounts (klucze 0=Nd..6=So wg JS Date.getDay())
-                const orderedCounts = [1, 2, 3, 4, 5, 6, 0].map(d => data.dayCounts[d] || 0); // Pn → Nd
+                const dayCounts = (data.dayCounts && typeof data.dayCounts === 'object') ? data.dayCounts : {};
+                const orderedCounts = [1, 2, 3, 4, 5, 6, 0].map(d => dayCounts[d] || 0); // Pn → Nd
                 const maxCount = Math.max(1, ...orderedCounts);
                 const todayIndex = (new Date().getDay() + 6) % 7; // 0=Pn .. 6=Nd
 
@@ -12126,12 +12152,19 @@
                     if (!bar) return;
                     const heightPct = Math.max(6, Math.round((orderedCounts[idx] / maxCount) * 100));
                     bar.style.height = heightPct + '%';
-                    bar.title = orderedCounts[idx] + ' nowych profili';
+                    bar.title = orderedCounts[idx] + ' nowych profili' + (data.isPartial ? ' (próbka)' : '');
                     bar.classList.toggle('today', idx === todayIndex);
                 });
 
                 if (elTodayGrowth) {
-                    elTodayGrowth.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> +' + data.todayCount + ' Dzisiaj';
+                    const count = typeof data.todayCount === 'number' ? data.todayCount : 0;
+                    let notice = '';
+                    if (data.isStale) {
+                        notice = ' <small style="opacity:0.65; font-size:0.75rem;" title="Dane z pamięci podręcznej (offline/bufor)">(bufor offline)</small>';
+                    } else if (data.isPartial) {
+                        notice = ' <small style="opacity:0.65; font-size:0.75rem;" title="Wzrost na podstawie próbki 100 profili">(próbka)</small>';
+                    }
+                    elTodayGrowth.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> +' + count + ' Dzisiaj' + notice;
                 }
             } catch (err) {
                 console.error('[Telemetry] Render error:', err);
@@ -12155,27 +12188,33 @@
         }
 
         // ── Realna lista "kto jest online" dla modala (zasila window._cachedLiveProfiles) ──
-        function startOnlineUsersListFeed() {
-            if (!window.luminaDb) { setTimeout(startOnlineUsersListFeed, 250); return; }
-            onSnapshot(collection(window.luminaDb, 'lumina_presence'), (snap) => {
-                const ninetySecAgo = Date.now() - 90000;
-                const list = [];
-                snap.forEach(d => {
-                    const p = d.data();
-                    const millis = p.lastActiveMillis || (p.lastActive?.toDate ? p.lastActive.toDate().getTime() : 0);
-                    if (millis < ninetySecAgo) return;
-                    list.push({
-                        name: p.displayName || 'Gość LUMINA',
-                        slug: p.uid || d.id,
-                        avatar: 'lumina_icon.jpg',
-                        job: p.isLoggedIn ? ('Na stronie: ' + (p.page || 'lumina.html')) : 'Gość (niezalogowany)',
-                        city: ''
+        // Strażnik Zero-QA: wykorzystanie współdzielonego kanału subscribeToOnlinePresence (limit 200, filtr 90s, auto-pause w tle)
+        let stopOnlineUsersListFeed = null;
+        function startOnlineUsersListFeed(retriesLeft = 40) {
+            if (window.LuminaDB && typeof window.LuminaDB.subscribeToOnlinePresence === 'function') {
+                if (typeof stopOnlineUsersListFeed === 'function') stopOnlineUsersListFeed();
+                stopOnlineUsersListFeed = window.LuminaDB.subscribeToOnlinePresence((onlineMembers, presenceInfo) => {
+                    const list = [];
+                    const source = (presenceInfo && Array.isArray(presenceInfo.members)) ? presenceInfo.members : (onlineMembers || []);
+                    source.forEach(p => {
+                        list.push({
+                            name: p.displayName || 'Gość LUMINA',
+                            slug: p.uid || p.id,
+                            avatar: p.avatar || 'lumina_icon.jpg',
+                            job: p.isLoggedIn ? ('Na stronie: ' + (p.page || 'lumina.html')) : 'Gość (niezalogowany)',
+                            city: ''
+                        });
                     });
+                    window._cachedLiveProfiles = list;
                 });
-                window._cachedLiveProfiles = list;
-            }, (err) => console.error('[Telemetry] lumina_presence:', err));
+            } else if (retriesLeft > 0) {
+                setTimeout(() => startOnlineUsersListFeed(retriesLeft - 1), 250);
+            }
         }
         startOnlineUsersListFeed();
+        window.addEventListener('beforeunload', () => {
+            if (typeof stopOnlineUsersListFeed === 'function') stopOnlineUsersListFeed();
+        });
     </script>
     <!-- ══════════ MODAL: WSZYSCY UŻYTKOWNICY ONLINE ══════════ -->
     <div class="modal-overlay" id="modalAllOnlineUsers" onclick="if(event.target===this) closeModal('modalAllOnlineUsers')" style="z-index: 100003;">

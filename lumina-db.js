@@ -39,7 +39,8 @@ import {
     limit, 
     serverTimestamp,
     increment,
-    writeBatch
+    writeBatch,
+    getCountFromServer
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getAnalytics, isSupported as isAnalyticsSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
 import { getMessaging, getToken, onMessage, isSupported as isMessagingSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
@@ -3264,14 +3265,17 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
     // Register active listener callback for optimistic instant rendering
     activeDirectChatListeners.set(normalizedChatId, onUpdate);
 
-    let unsub1 = () => {};
-    let unsub2 = () => {};
-    let unsub3 = () => {};
+    let unsubScoped = () => {};
+    let unsubDirect = () => {};
+    let unsubLegacy = () => {};
+    let unsubNested = () => {};
+    let _stopped = false;
     let topLevelMessages = [];
     let nestedMessages = [];
     let legacyMessages = [];
 
     const emitMergedMessages = () => {
+        if (_stopped) return;
         if (currentUserState?.uid !== authUid || currentUserState.isAnonymous ||
             (typeof auth !== 'undefined' && auth?.currentUser?.uid !== authUid)) return;
         const uniqueMessages = new Map();
@@ -3292,6 +3296,7 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
     };
 
     const resumeVisibleConversation = () => {
+        if (_stopped) return;
         if (currentUserState?.uid !== authUid || currentUserState.isAnonymous) return;
         if (document.visibilityState !== 'visible' || !document.getElementById('directMessagesModal')?.classList.contains('open')) return;
         emitMergedMessages();
@@ -3306,6 +3311,7 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
     // Teraz: zapytanie zawężone do tej jednej rozmowy (wymaga indeksu participants+chatId — w firestore.indexes.json).
     // Gdy indeksu jeszcze nie ma, automatycznie wracamy do starego zapytania.
     const reportHistoryError = error => {
+        if (_stopped) return;
         if (currentUserState?.uid !== authUid) return;
         if (typeof onError === 'function') onError(error);
         try { window.dispatchEvent(new CustomEvent('lumina-chat-history-error', {
@@ -3314,9 +3320,10 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
     };
     let _scopedDmFallbackStarted = false;
     const startLegacyDirectListener = () => {
-        if (_scopedDmFallbackStarted) return;
+        if (_scopedDmFallbackStarted || _stopped) return;
         _scopedDmFallbackStarted = true;
-        try { unsub1(); } catch(e) {}
+        try { unsubScoped(); } catch(e) {}
+        unsubScoped = () => {};
         startUnscopedDirectListener();
     };
     try {
@@ -3327,43 +3334,33 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
             orderBy('timestamp', 'desc'),
             limit(400)
         );
-        unsub1 = onSnapshot(scopedQ, { includeMetadataChanges: true }, (snap) => {
+        unsubScoped = onSnapshot(scopedQ, { includeMetadataChanges: true }, (snap) => {
+            if (_stopped) { try { unsubScoped(); } catch(e) {} return; }
             topLevelMessages = [];
             snap.forEach(d => {
                 if (!d.metadata?.hasPendingWrites) topLevelMessages.push({ id: d.id, ...d.data() });
             });
             emitMergedMessages();
         }, (err) => {
+            if (_stopped) return;
             console.warn('Lumina Direct Messages (rozmowa) — powrót do zapytania ogólnego:', err && err.code);
             if (err?.code === 'failed-precondition') startLegacyDirectListener();
             else reportHistoryError(err);
         });
+        if (_stopped) { try { unsubScoped(); } catch(e) {} }
     } catch(e) { reportHistoryError(e); }
 
     function startUnscopedDirectListener() {
-    try {
-        const directQ = query(
-            collection(db, 'lumina_direct_messages'),
-            where('participants', 'array-contains', authUid),
-            orderBy('timestamp', 'desc'),
-            limit(150)
-        );
-        unsub1 = onSnapshot(directQ, { includeMetadataChanges: true }, (snap) => {
-            topLevelMessages = [];
-            snap.forEach(d => {
-                if (d.metadata?.hasPendingWrites) return;
-                const message = { id: d.id, ...d.data() };
-                if (message.chatId === normalizedChatId) topLevelMessages.push(message);
-            });
-            emitMergedMessages();
-        }, (err) => {
-            console.warn('Lumina Direct Messages top-level notice:', err);
-            reportHistoryError(err);
-            if (err?.code === 'resource-exhausted' || err?.code === 'permission-denied') return;
-            // A mobile network handoff can terminate a snapshot without
-            // re-establishing it. Refresh once so the open desktop chat
-            // receives the phone message even after a transient disconnect.
-            getDocs(directQ).then((snap) => {
+        if (_stopped) return;
+        try {
+            const directQ = query(
+                collection(db, 'lumina_direct_messages'),
+                where('participants', 'array-contains', authUid),
+                orderBy('timestamp', 'desc'),
+                limit(150)
+            );
+            unsubDirect = onSnapshot(directQ, { includeMetadataChanges: true }, (snap) => {
+                if (_stopped) { try { unsubDirect(); } catch(e) {} return; }
                 topLevelMessages = [];
                 snap.forEach(d => {
                     if (d.metadata?.hasPendingWrites) return;
@@ -3371,9 +3368,27 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
                     if (message.chatId === normalizedChatId) topLevelMessages.push(message);
                 });
                 emitMergedMessages();
-            }).catch((refreshError) => console.warn('Lumina Direct Messages refresh notice:', refreshError));
-        });
-    } catch(e) {}
+            }, (err) => {
+                if (_stopped) return;
+                console.warn('Lumina Direct Messages top-level notice:', err);
+                reportHistoryError(err);
+                if (err?.code === 'resource-exhausted' || err?.code === 'permission-denied') return;
+                // A mobile network handoff can terminate a snapshot without
+                // re-establishing it. Refresh once so the open desktop chat
+                // receives the phone message even after a transient disconnect.
+                getDocs(directQ).then((snap) => {
+                    if (_stopped) return;
+                    topLevelMessages = [];
+                    snap.forEach(d => {
+                        if (d.metadata?.hasPendingWrites) return;
+                        const message = { id: d.id, ...d.data() };
+                        if (message.chatId === normalizedChatId) topLevelMessages.push(message);
+                    });
+                    emitMergedMessages();
+                }).catch((refreshError) => console.warn('Lumina Direct Messages refresh notice:', refreshError));
+            });
+            if (_stopped) { try { unsubDirect(); } catch(e) {} }
+        } catch(e) {}
     }
 
     // Historical documents may have only `users`, not `participants`.
@@ -3383,7 +3398,8 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
             where('users', 'array-contains', authUid),
             limit(150)
         );
-        unsub3 = onSnapshot(legacyQ, { includeMetadataChanges: true }, (snap) => {
+        unsubLegacy = onSnapshot(legacyQ, { includeMetadataChanges: true }, (snap) => {
+            if (_stopped) { try { unsubLegacy(); } catch(e) {} return; }
             legacyMessages = [];
             snap.forEach(d => {
                 if (d.metadata?.hasPendingWrites) return;
@@ -3392,6 +3408,7 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
             });
             emitMergedMessages();
         }, (err) => console.warn('Lumina Direct Messages legacy notice:', err));
+        if (_stopped) { try { unsubLegacy(); } catch(e) {} }
     } catch(e) {}
 
     // Listener B: Nested subcollection (backup)
@@ -3401,20 +3418,29 @@ export function subscribeToDirectMessages(chatId, onUpdate, onError) {
             where('participants', 'array-contains', authUid),
             limit(150)
         );
-        unsub2 = onSnapshot(nestedQ, { includeMetadataChanges: true }, (snap) => {
+        unsubNested = onSnapshot(nestedQ, { includeMetadataChanges: true }, (snap) => {
+            if (_stopped) { try { unsubNested(); } catch(e) {} return; }
             nestedMessages = [];
             snap.forEach(d => {
                 if (!d.metadata?.hasPendingWrites) nestedMessages.push({ id: d.id, ...d.data() });
             });
             emitMergedMessages();
         }, () => {});
+        if (_stopped) { try { unsubNested(); } catch(e) {} }
     } catch(e) {}
 
     let stopAuthObserver = () => {};
     const stopConversation = () => {
-        try { unsub1(); } catch(e) {}
-        try { unsub2(); } catch(e) {}
-        try { unsub3(); } catch(e) {}
+        if (_stopped) return;
+        _stopped = true;
+        try { unsubScoped(); } catch(e) {}
+        try { unsubDirect(); } catch(e) {}
+        try { unsubLegacy(); } catch(e) {}
+        try { unsubNested(); } catch(e) {}
+        unsubScoped = () => {};
+        unsubDirect = () => {};
+        unsubLegacy = () => {};
+        unsubNested = () => {};
         stopAuthObserver();
         if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', resumeVisibleConversation);
         if (activeDirectChatListeners.get(normalizedChatId) === onUpdate) activeDirectChatListeners.delete(normalizedChatId);
@@ -7470,77 +7496,281 @@ try {
 } catch(e) {}
 
 
+let _founderTelemetryProfilesCache = null;
+let _founderTelemetryProfilesCacheTime = 0;
+
 export function listenToFounderTelemetry(callback) {
     if (!db || typeof callback !== 'function') return () => {};
 
     let unsubPresence = null;
+    let isStopped = false;
+    let currentProfilesStats = null;
+    let lastOnlineMembers = [];
+    let lastPresenceInfo = { available: false };
 
-    const unsubProfiles = onSnapshot(collection(db, 'lumina_profiles'), (snapshot) => {
-        let totalMembers = snapshot.size;
-        let femaleCount = 0;
-        let maleCount = 0;
-        
-        // Days: 1: Pn, 2: Wt, 3: Śr, 4: Czw, 5: Pt, 6: So, 0: Nd
-        const dayCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 0 };
-        const now = new Date();
-        let todayCount = 0;
+    const emitTelemetry = () => {
+        if (isStopped) return;
+        const onlineTotal = lastOnlineMembers.length;
+        const onlineLoggedIn = onlineTotal;
 
-        snapshot.forEach(docSnap => {
-            const data = docSnap.data();
-            const g = (data.gender || '').toLowerCase();
-            const denom = (data.denom || '').toLowerCase();
-            const name = (data.name || '').toLowerCase();
-
-            if (g === 'female' || g === 'kobieta' || denom.includes('chrześcijanka') || denom.includes('kobieta')) {
-                femaleCount++;
-            } else if (g === 'male' || g === 'mężczyzna' || denom.includes('mężczyzna')) {
-                maleCount++;
-            } else if (name.endsWith('a') && !name.includes('kuba') && !name.includes('barnaba')) {
-                femaleCount++;
-            } else {
-                maleCount++;
-            }
-
-            let cDate = data.createdAt ? (data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt)) : null;
-            if (cDate && !isNaN(cDate.getTime())) {
-                const day = cDate.getDay();
-                dayCounts[day] = (dayCounts[day] || 0) + 1;
-                if (cDate.toDateString() === now.toDateString()) {
-                    todayCount++;
-                }
-            } else {
-                // Spread evenly if no timestamp
-                dayCounts[now.getDay()] = (dayCounts[now.getDay()] || 0) + 1;
-            }
-        });
-
-        if (unsubPresence) unsubPresence();
-
-        unsubPresence = subscribeToOnlinePresence((onlineMembers, presenceInfo) => {
-            const onlineTotal = onlineMembers.length;
-            const onlineLoggedIn = onlineTotal;
-            const sumGender = femaleCount + maleCount;
-            const femalePercent = sumGender > 0 ? Math.round((femaleCount / sumGender) * 100) : 50;
-            const malePercent = sumGender > 0 ? (100 - femalePercent) : 50;
-
+        if (!currentProfilesStats) {
             callback({
-                totalMembers,
+                available: false,
+                status: 'unavailable',
+                isComplete: false,
+                isPartial: false,
+                isStale: false,
+                error: 'Oczekiwanie na dane telemetrii...',
+                totalMembers: null,
+                sampleSize: null,
                 onlineTotal,
                 onlineLoggedIn,
-                presenceAvailable: presenceInfo.available,
-                femaleCount,
-                maleCount,
-                femalePercent,
-                malePercent,
-                dayCounts,
-                todayCount
+                presenceAvailable: Boolean(lastPresenceInfo?.available),
+                femaleCount: null,
+                maleCount: null,
+                femalePercent: null,
+                malePercent: null,
+                dayCounts: null,
+                todayCount: null
             });
+            return;
+        }
+
+        const femaleCount = currentProfilesStats.femaleCount || 0;
+        const maleCount = currentProfilesStats.maleCount || 0;
+        const sumGender = femaleCount + maleCount;
+        const femalePercent = sumGender > 0 ? Math.round((femaleCount / sumGender) * 100) : 0;
+        const malePercent = sumGender > 0 ? (100 - femalePercent) : 0;
+
+        // Dynamiczne wyliczenie todayCount na podstawie bieżącej daty w momencie emisji (prawidłowe po północy)
+        const todayDateStr = new Date().toDateString();
+        let liveTodayCount = 0;
+        if (Array.isArray(currentProfilesStats.createdDates)) {
+            liveTodayCount = currentProfilesStats.createdDates.filter(ts => {
+                const d = new Date(ts);
+                return !isNaN(d.getTime()) && d.toDateString() === todayDateStr;
+            }).length;
+        } else if (typeof currentProfilesStats.todayCount === 'number') {
+            liveTodayCount = (currentProfilesStats.statsDate === todayDateStr) ? currentProfilesStats.todayCount : 0;
+        }
+
+        callback({
+            available: true,
+            status: currentProfilesStats.isStale ? 'stale' : (currentProfilesStats.isPartial ? 'partial' : 'complete'),
+            isComplete: Boolean(currentProfilesStats.isComplete),
+            isPartial: Boolean(currentProfilesStats.isPartial),
+            isStale: Boolean(currentProfilesStats.isStale),
+            sampleSize: currentProfilesStats.sampleSize || null,
+            cachedAt: currentProfilesStats.cachedAt || _founderTelemetryProfilesCacheTime || null,
+            totalMembers: currentProfilesStats.totalMembers,
+            onlineTotal,
+            onlineLoggedIn,
+            presenceAvailable: Boolean(lastPresenceInfo?.available),
+            femaleCount,
+            maleCount,
+            femalePercent,
+            malePercent,
+            dayCounts: currentProfilesStats.dayCounts || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 0 },
+            todayCount: liveTodayCount
         });
+    };
+
+    // 1. Współdzielony, lekki nasłuch obecności w czasie rzeczywistym
+    unsubPresence = subscribeToOnlinePresence((onlineMembers, presenceInfo) => {
+        if (isStopped) return;
+        lastOnlineMembers = onlineMembers || [];
+        lastPresenceInfo = presenceInfo || { available: false };
+        emitTelemetry();
     });
 
+    // 2. Bezpieczny, buforowany odczyt metryk (ZERO COST / Zero-QA Architecture):
+    //    Weryfikacja ilościowa: getCountFromServer(lumina_profiles) (1 odczyt indeksu)
+    //    Priorytet 1: Zagregowany dokument lumina_stats/community_telemetry (1 odczyt dokumentu)
+    //    Priorytet 2: Bezpieczny fallback do próbki limit(100) (tylko do odczytu demografii, flaga isPartial: true,
+    //                 BEZWZGLĘDNY ZAKAZ zapisu próbki do bazy lumina_stats!)
+    const loadProfileStats = async () => {
+        const now = Date.now();
+        try {
+            // A. Pamięć podręczna w procesie (RAM)
+            if (_founderTelemetryProfilesCache && (now - _founderTelemetryProfilesCacheTime < 900000)) {
+                currentProfilesStats = _founderTelemetryProfilesCache;
+                emitTelemetry();
+                return;
+            }
+
+            // B. Pamięć podręczna w sessionStorage
+            try {
+                if (typeof sessionStorage !== 'undefined') {
+                    const stored = sessionStorage.getItem('lumina_founder_telemetry_cache');
+                    if (stored) {
+                        const parsed = JSON.parse(stored);
+                        if (parsed && (now - parsed.timestamp < 900000) && parsed.stats) {
+                            _founderTelemetryProfilesCache = parsed.stats;
+                            _founderTelemetryProfilesCacheTime = parsed.timestamp;
+                            currentProfilesStats = parsed.stats;
+                            emitTelemetry();
+                            return;
+                        }
+                    }
+                }
+            } catch (_) {}
+
+            // C. Sprawdzenie dokładnej liczby profili przez getCountFromServer (dokładnie 1 odczyt dokumentu w indeksie!)
+            let serverExactCount = null;
+            try {
+                if (typeof getCountFromServer === 'function' && typeof collection === 'function') {
+                    const countSnap = await getCountFromServer(collection(db, 'lumina_profiles'));
+                    if (countSnap && countSnap.data && typeof countSnap.data().count === 'number') {
+                        serverExactCount = countSnap.data().count;
+                    }
+                }
+            } catch (cntErr) {
+                // getCountFromServer może być niedostępne w środowiskach emulatora bez mocka — przejdź dalej
+            }
+
+            // D. Sprawdzenie dokumentu zagregowanego lumina_stats/community_telemetry (1 odczyt dokumentu)
+            let aggregatedDocSnap = null;
+            try {
+                if (typeof doc === 'function' && typeof getDoc === 'function') {
+                    aggregatedDocSnap = await getDoc(doc(db, 'lumina_stats', 'community_telemetry'));
+                }
+            } catch (aggErr) {
+                // Brak kolekcji lub brak uprawnień — przejdź do fallbacku próbki
+            }
+
+            if (aggregatedDocSnap && aggregatedDocSnap.exists && aggregatedDocSnap.exists()) {
+                const aggData = aggregatedDocSnap.data() || {};
+                const baseTotal = typeof aggData.totalMembers === 'number' ? aggData.totalMembers : 0;
+                // Jeśli serwerowy getCountFromServer zwrócił świeższą liczbę po rejestracjach, używamy jej!
+                const effectiveTotal = (serverExactCount !== null) ? Math.max(serverExactCount, baseTotal) : baseTotal;
+
+                currentProfilesStats = {
+                    totalMembers: effectiveTotal,
+                    sampleSize: null,
+                    femaleCount: typeof aggData.femaleCount === 'number' ? aggData.femaleCount : 0,
+                    maleCount: typeof aggData.maleCount === 'number' ? aggData.maleCount : 0,
+                    dayCounts: aggData.dayCounts || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 0 },
+                    createdDates: Array.isArray(aggData.createdDates) ? aggData.createdDates : null,
+                    todayCount: typeof aggData.todayCount === 'number' ? aggData.todayCount : 0,
+                    statsDate: aggData.statsDate || new Date().toDateString(),
+                    cachedAt: now,
+                    isComplete: true,
+                    isPartial: false,
+                    isStale: false
+                };
+            } else {
+                // E. Fallback z limitem bezpieczeństwa (Zero-QA Guard): limit(100)
+                // Pobiera wyłącznie próbkę 100 dokumentów w celu estymacji podziału płci i dni.
+                // ŻELAZNA ZASADA P0-1: Całkowity zakaz zapisu danych częściowych do lumina_stats!
+                let snapshot;
+                if (typeof query === 'function' && typeof limit === 'function') {
+                    snapshot = await getDocs(query(collection(db, 'lumina_profiles'), limit(100)));
+                } else {
+                    snapshot = await getDocs(collection(db, 'lumina_profiles'));
+                }
+                if (isStopped) return;
+
+                const sampleSize = snapshot.size;
+                const effectiveTotal = (serverExactCount !== null) ? serverExactCount : sampleSize;
+
+                let femaleCount = 0;
+                let maleCount = 0;
+                const dayCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 0: 0 };
+                const createdDates = [];
+                const nowDate = new Date();
+
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const g = (data.gender || '').toLowerCase();
+                    const denom = (data.denom || '').toLowerCase();
+                    const name = (data.name || '').toLowerCase();
+
+                    if (g === 'female' || g === 'kobieta' || denom.includes('chrześcijanka') || denom.includes('kobieta')) {
+                        femaleCount++;
+                    } else if (g === 'male' || g === 'mężczyzna' || denom.includes('mężczyzna')) {
+                        maleCount++;
+                    } else if (name.endsWith('a') && !name.includes('kuba') && !name.includes('barnaba')) {
+                        femaleCount++;
+                    } else {
+                        maleCount++;
+                    }
+
+                    let cDate = data.createdAt ? (data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt)) : null;
+                    if (cDate && !isNaN(cDate.getTime())) {
+                        const day = cDate.getDay();
+                        dayCounts[day] = (dayCounts[day] || 0) + 1;
+                        createdDates.push(cDate.getTime());
+                    } else {
+                        dayCounts[nowDate.getDay()] = (dayCounts[nowDate.getDay()] || 0) + 1;
+                    }
+                });
+
+                currentProfilesStats = {
+                    totalMembers: effectiveTotal,
+                    sampleSize,
+                    femaleCount,
+                    maleCount,
+                    dayCounts,
+                    createdDates,
+                    statsDate: nowDate.toDateString(),
+                    cachedAt: now,
+                    isComplete: false,
+                    isPartial: true, // JAWNA FLAGA DANYCH CZĘŚCIOWYCH (PRÓBKA)
+                    isStale: false
+                };
+                // P0-1: ŻADNEGO ZAPISU DO lumina_stats/community_telemetry Z DANYCH CZĘŚCIOWYCH!
+            }
+
+            _founderTelemetryProfilesCache = currentProfilesStats;
+            _founderTelemetryProfilesCacheTime = now;
+            try {
+                if (typeof sessionStorage !== 'undefined') {
+                    sessionStorage.setItem('lumina_founder_telemetry_cache', JSON.stringify({
+                        stats: currentProfilesStats,
+                        timestamp: now
+                    }));
+                }
+            } catch (_) {}
+
+            emitTelemetry();
+        } catch (e) {
+            console.warn('[Telemetry] Błąd ładowania statystyk profili:', e);
+            // Strażnik Backoff: ustawiamy czas cache na 'now', aby awaria NIE powodowała pętli ponowień!
+            _founderTelemetryProfilesCacheTime = now;
+            if (currentProfilesStats) {
+                // Zachowaj ostatnie prawdziwe dane, oznaczając je jako nieaktualne (stale)
+                currentProfilesStats.isStale = true;
+                emitTelemetry();
+            } else {
+                // Nigdy nie emituj fikcyjnych zer ani 50/50 — zgłoś jawnie stan niedostępności
+                callback({
+                    available: false,
+                    status: 'unavailable',
+                    isComplete: false,
+                    isPartial: false,
+                    isStale: false,
+                    error: e?.message || 'Błąd odczytu danych',
+                    totalMembers: null,
+                    sampleSize: null,
+                    onlineTotal: lastOnlineMembers.length,
+                    onlineLoggedIn: lastOnlineMembers.length,
+                    presenceAvailable: Boolean(lastPresenceInfo?.available),
+                    femaleCount: null,
+                    maleCount: null,
+                    femalePercent: null,
+                    malePercent: null,
+                    dayCounts: null,
+                    todayCount: null
+                });
+            }
+        }
+    };
+
+    loadProfileStats();
+
     return () => {
-        if (unsubProfiles) unsubProfiles();
-        if (unsubPresence) unsubPresence();
+        isStopped = true;
+        if (typeof unsubPresence === 'function') unsubPresence();
     };
 }
 
@@ -7605,6 +7835,8 @@ export async function updateAgentNoteStatusInCloud(noteId, status = 'done') {
 
 // Expose on window.LuminaDB
 window.LuminaDB = window.LuminaDB || {};
+window.LuminaDB.isMasterAdmin = isLuminaMasterAdmin;
+window.LuminaDB.isCommunityAdmin = isCommunityAdmin;
 window.LuminaDB.startPresenceHeartbeat = startPresenceHeartbeat;
 window.LuminaDB.listenToFounderTelemetry = listenToFounderTelemetry;
 window.LuminaDB.subscribeToOnlinePresence = subscribeToOnlinePresence;

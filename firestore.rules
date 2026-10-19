@@ -437,6 +437,19 @@ service cloud.firestore {
       );
     }
 
+    // Odznaki są publicznymi wyróżnieniami profilu członka LUMINA (dostępne do odczytu dla wszystkich).
+    // Zapis z poziomu klienta jest zablokowany — Cloud Functions nadaje odznaki przez Admin SDK.
+    match /lumina_user_badges/{badgeId} {
+      allow read: if true;
+      allow write: if isMasterAdmin();
+    }
+
+    // Zagregowane statystyki telemetrii społeczności LUMINA (eliminacja odczytów całej kolekcji profili).
+    match /lumina_stats/{statId} {
+      allow read: if true;
+      allow write: if isMasterAdmin();
+    }
+
     // Notifications are generated only by trusted server functions.
     match /lumina_notifications/{notifId} {
       allow read, write: if isMasterAdmin();
