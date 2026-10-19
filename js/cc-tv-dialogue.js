@@ -174,6 +174,13 @@
       .cctv-host-stream{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px}
       .cctv-viewer-stream{flex:0 0 auto;max-height:55%;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-top:6px;padding-right:6px;border-top:1.5px solid rgba(212,175,55,.45)}
       .cctv-viewer-stream:empty{display:none;border-top:none;padding-top:0}
+      .cctv-viewer-dock{position:fixed;left:215px;bottom:200px;width:760px;max-height:300px;z-index:60;gap:8px;padding:12px 14px;border:1.5px solid rgba(212,175,55,.55);border-radius:18px;background:rgba(10,12,20,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(0,0,0,.45);overflow:hidden}
+      .cctv-viewer-dock .cctv-viewer-bubble{font-size:1.2rem!important;line-height:1.3!important;padding:8px 14px!important}
+      .cctv-viewer-dock .cctv-viewer-text{font-size:1.2rem}
+      .cctv-viewer-dock .cctv-viewer-head{font-size:.95rem!important}
+      .cctv-viewer-dock .cctv-viewer-avatar{width:40px!important;height:40px!important}
+      body.cctv-viewers-on #livePrayerOverlay{display:none!important}
+      body.evening-layout .cctv-viewer-dock{left:auto;right:70px}
       .cctv-viewer-header{align-self:center;display:inline-flex;align-items:center;gap:6px;padding:2px 11px;border-radius:999px;background:linear-gradient(90deg,rgba(220,38,38,.3),rgba(212,175,55,.22));border:1px solid rgba(252,211,77,.55);color:#fde68a;font-weight:800;font-size:.70rem;letter-spacing:1px;text-transform:uppercase;flex-shrink:0}
       .cctv-viewer-row{align-items:flex-start;gap:8px}
       .cctv-viewer-avatar{width:30px!important;height:30px!important;border:1.5px solid #f59e0b!important;flex-shrink:0}
@@ -394,9 +401,15 @@
     if (container && container.classList) container.classList.add('cctv-split-chat');
     container.textContent = '';
     const hostBox = el('div', 'cctv-host-stream');
-    const viewerBox = el('div', 'cctv-viewer-stream');
     container.appendChild(hostBox);
-    container.appendChild(viewerBox);
+    // Karta rozważania = tylko Noemi i Sara (Dowódca 19.10). Czat widzów LUMI MESS ma osobne okno między kodem QR
+    // a kartą — tylko na antenie z oknem modlitw (/zapolske-live); na innych antenach czat widzów nie jest pokazywany.
+    let viewerBox = document.getElementById('cctvViewerDock');
+    if (!viewerBox) {
+      viewerBox = el('div', 'cctv-viewer-stream cctv-viewer-dock');
+      viewerBox.id = 'cctvViewerDock';
+      if (document.getElementById('livePrayerOverlay')) document.body.appendChild(viewerBox);
+    }
 
     const scrollEnd = (smooth) => {
       try { hostBox.scrollTo({ top: hostBox.scrollHeight, behavior: smooth && !reduce ? 'smooth' : 'auto' }); }
@@ -411,6 +424,7 @@
       if (sig === lastViewerSig) return;
       lastViewerSig = sig;
       viewerBox.textContent = '';
+      try { document.body.classList.toggle('cctv-viewers-on', items.length > 0 && !!viewerBox.parentNode); } catch (_) {}
       if (!items.length) return;
       viewerBox.appendChild(el('div', 'cctv-viewer-header', '🔴 CZAT NA ŻYWO · WIDZOWIE CCTV24'));
       items.forEach((m) => viewerBox.appendChild(viewerBubble(m)));
