@@ -595,4 +595,8 @@ test('LUMI Messenger: pokoje LIVE TV, rozmowa Noemi i Sary na czacie ogólnym, m
   assert.match(zp, /t \+ 5000 - Date\.now\(\)/);
   assert.match(rules, /match \/lumina_live_rooms\/\{roomId\}\/messages\/\{messageId\}/);
   assert.match(rules, /kind in \['text', 'prayer'\]/);
+  // Dyrektywa Dowódcy 2026-10-19: czerwony pasek potwierdzający nadanie w programie na żywo
+  assert.match(m, /Twoja wiadomość została opublikowana w programie na żywo CCTV LIVE 24\./);
+  assert.match(m, /\.llr-live-bar/);
+  assert.match(m, /\.llr-live-dot/);
 });

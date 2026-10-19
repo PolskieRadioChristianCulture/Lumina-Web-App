@@ -179,7 +179,7 @@ function injectUi() {
     #messengerLiveView .llr-msg{display:flex;gap:8px;align-items:flex-end}
     #messengerLiveView .llr-msg.me{flex-direction:row-reverse}
     #messengerLiveView .llr-msg img{width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid rgba(255,255,255,.25)}
-    #messengerLiveView .llr-b{max-width:78%;padding:9px 13px;border-radius:16px 16px 16px 4px;background:rgba(255,255,255,.07);color:#fff;font-size:.86rem;line-height:1.45;white-space:pre-wrap;word-break:break-word}
+    #messengerLiveView .llr-b{max-width:86%;padding:9px 13px;border-radius:16px 16px 16px 4px;background:rgba(255,255,255,.07);color:#fff;font-size:.86rem;line-height:1.45;white-space:pre-wrap;word-break:break-word;overflow:hidden}
     #messengerLiveView .llr-msg.me .llr-b{border-radius:16px 16px 4px 16px;background:linear-gradient(135deg,#a855f7,#06b6d4)}
     #messengerLiveView .llr-msg.host .llr-b{background:rgba(212,175,55,.16);border:1px solid rgba(212,175,55,.4)}
     #messengerLiveView .llr-msg.prayer .llr-b{border:1px solid rgba(252,211,77,.55)}
@@ -187,6 +187,9 @@ function injectUi() {
     #messengerLiveView .llr-who{font-weight:800;font-size:.74rem;color:#f9a8d4;margin-bottom:2px}
     #messengerLiveView .llr-msg.host .llr-who{color:#fcd34d}
     #messengerLiveView .llr-del{background:none;border:none;color:#fca5a5;font:inherit;font-size:.66rem;cursor:pointer;min-height:32px}
+    #messengerLiveView .llr-live-bar{margin:8px -13px -9px -13px;padding:6px 10px;background:linear-gradient(90deg,#dc2626,#991b1b);color:#ffffff;font-size:.72rem;font-weight:700;line-height:1.35;white-space:normal;word-break:normal;display:flex;align-items:center;gap:6px;border-top:1px solid rgba(255,255,255,.2);box-shadow:0 -1px 4px rgba(0,0,0,.15);letter-spacing:.1px;border-bottom-left-radius:inherit;border-bottom-right-radius:inherit}
+    #messengerLiveView .llr-live-dot{width:7px;height:7px;border-radius:50%;background:#ffffff;box-shadow:0 0 6px rgba(255,255,255,.9);flex-shrink:0;display:inline-block;animation:llrPulse 1.8s infinite ease-in-out}
+    @keyframes llrPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.85)}}
     #messengerLiveView .llr-note{align-self:center;text-align:center;font-size:.75rem;color:#cbd5e1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:8px 14px;border-radius:12px;max-width:92%}
     #messengerLiveView .llr-sec{align-self:center;font-size:.7rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fcd34d;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.35);padding:3px 12px;border-radius:999px}
     #messengerLiveView .llr-typing{font-size:.75rem;color:#fcd34d;padding:2px 16px 6px;min-height:18px}
@@ -355,12 +358,17 @@ function renderRoom(force) {
     const del = (!m.virtual && (mine || admin)) ? el('button', { type: 'button', class: 'llr-del', text: 'Usuń', 'aria-label': 'Usuń wiadomość', onclick: async () => {
       try { await deleteDoc(doc(state.fb.db, 'lumina_live_rooms', r.id, 'messages', m.id)); } catch (_) {}
     } }) : null;
+    const liveBar = !m.virtual ? el('div', { class: 'llr-live-bar', role: 'status', 'aria-label': 'Potwierdzenie nadania w programie na żywo' },
+      el('span', { class: 'llr-live-dot', 'aria-hidden': 'true' }),
+      el('span', { class: 'llr-live-text', text: 'Twoja wiadomość została opublikowana w programie na żywo CCTV LIVE 24.' })
+    ) : null;
     nodes.push(el('div', { class: 'llr-msg' + (mine ? ' me' : '') + (m.virtual ? ' host' : '') + (m.kind === 'prayer' ? ' prayer' : '') },
       img,
       el('div', { class: 'llr-b' },
         el('div', { class: 'llr-who', text: (m.virtual ? '🎙️ ' : (m.kind === 'prayer' ? '🙏 ' : '')) + (mine ? 'Ty' : (m.senderName || 'Uczestnik')) }),
         el('div', { text: m.text || '' }),
-        el('div', { class: 'llr-meta' }, el('span', { text: hhmm(m.at) }), del))));
+        el('div', { class: 'llr-meta' }, el('span', { text: hhmm(m.at) }), del),
+        liveBar)));
   });
   if (!all.length && !(r.reflection && session.items.length && now < session.liveStart)) nodes.push(el('div', { class: 'llr-note', text: 'Bądź pierwszy — przywitaj się z widzami! 👋' }));
   box.replaceChildren(...nodes);
