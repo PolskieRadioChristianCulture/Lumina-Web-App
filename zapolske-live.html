@@ -1857,7 +1857,7 @@
             localStorage.setItem('dzj_stream_image_forced_v2', 'true');
         }
     </script>
-    <script src="/js/cc-tv-dialogue.js?v=20261019_tv3"></script>
+    <script src="/js/cc-tv-dialogue.js?v=20261019_tv4"></script>
 </head>
 <body>
 
@@ -2075,7 +2075,7 @@
                             <div class="slide-pagination" id="slidePagination">
                                 <!-- Dots loaded dynamically -->
                             </div>
-                            <div class="card-cycle-badge" id="cycleBadge">Dzień 22 | MISJA BOŻE WAKACJE</div>
+                            <div class="card-cycle-badge" id="cycleBadge">Dzień 19 | Z BIBLIĄ ZA PAN BRAT</div>
                         </div>
 
                     </div>
@@ -3109,7 +3109,7 @@ function getWeatherPreset(city) {
             function buildSlides(reflection) {
                 if (!reflection) return null;
 
-                let cycleTitle = "MISJA BOŻE WAKACJE";
+                let cycleTitle = "Z BIBLIĄ ZA PAN BRAT";
                 
                 const dayNumMatch = String(reflection.id || "").match(/ref_day(\d+)/);
                 const dayNum = dayNumMatch ? dayNumMatch[1] : (reflectionsData.indexOf(reflection) + 1);
@@ -3422,7 +3422,7 @@ function getWeatherPreset(city) {
                             let isProduction = msg.sender.toLowerCase().includes("produkcja") || msg.sender.toLowerCase().includes("oprawa");
                             let isScripture = msg.sender.toLowerCase().includes("pismo") || msg.sender.toLowerCase().includes("święte");
                             
-                            let avatar = isNoemi ? 'avatar_noemi.jpg' : (isSara ? 'avatar_sara.jpg' : '');
+                            let avatar = isNoemi ? 'avatar_noemi.jpg?v=20261019b' : (isSara ? 'avatar_sara.jpg?v=20261019b' : '');
                             let senderClass = isNoemi ? 'noemi' : (isSara ? 'sara' : (isBoth ? 'both' : (isProduction ? 'production' : (isScripture ? 'both' : ''))));
                             
                             // Adapt greeting and slot to time of day
