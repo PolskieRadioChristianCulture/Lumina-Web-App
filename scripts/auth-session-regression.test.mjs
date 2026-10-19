@@ -109,6 +109,7 @@ test('commander chat room is strictly exclusive to nazirczarkes@gmail.com and in
     window: {
      LuminaDB: {
       getCurrentUser: () => userObj,
+     getFirebaseAuthUser: () => userObj,
       getCurrentProfile: () => profileObj
      }
     },
@@ -143,8 +144,9 @@ test('commander chat room is strictly exclusive to nazirczarkes@gmail.com and in
   assert.equal(runAuth(null, null, spoofedStorage), false, `${page}: slug/master admin spoofing must be false`);
 
   // Strictly nazirczarkes@gmail.com
-  assert.equal(runAuth({ isAnonymous: false, email: 'nazirczarkes@gmail.com' }, null), true, `${page}: nazirczarkes@gmail.com must be true`);
-  assert.equal(runAuth({ isAnonymous: false, email: 'NAZIRCZARKES@GMAIL.COM' }, null), true, `${page}: case insensitivity must be true`);
-  assert.equal(runAuth({ isAnonymous: false, email: ' nazirczarkes@gmail.com ' }, null), true, `${page}: trimmed email must be true`);
+  assert.equal(runAuth({ isAnonymous: false, emailVerified: false, email: 'nazirczarkes@gmail.com' }, null), false, `${page}: unverified owner must be false`);
+  assert.equal(runAuth({ isAnonymous: false, emailVerified: true, email: 'nazirczarkes@gmail.com' }, null), true, `${page}: nazirczarkes@gmail.com must be true`);
+  assert.equal(runAuth({ isAnonymous: false, emailVerified: true, email: 'NAZIRCZARKES@GMAIL.COM' }, null), true, `${page}: case insensitivity must be true`);
+  assert.equal(runAuth({ isAnonymous: false, emailVerified: true, email: ' nazirczarkes@gmail.com ' }, null), true, `${page}: trimmed email must be true`);
  }
 });

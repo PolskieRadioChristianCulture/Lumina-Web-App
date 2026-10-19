@@ -15,7 +15,7 @@ const BLOCKED_DIRECTORIES = new Set([
 ]);
 const BLOCKED_FILES = new Set([
   '.env', '.env.example', '.firebaserc', '.gitignore', '.cc-frozen-approvals.json', 'wydanie-kanaly.log', 'agents.md', 'claude.md',
-  'codex.md', 'database.rules.json', 'firebase.json', 'firestore.indexes.json',
+  'codex.md', 'database.rules.json', 'firebase.json', 'firebase.lumi-agent-test.json', 'firestore.indexes.json',
   'firestore.rules', 'gemini.md', 'package-lock.json', 'package.json',
   'playwright.config.ts', 'server.js', 'storage.rules', 'straznik-kodu-check.js',
   'tsconfig.json', 'validate_lumina.js', 'vite.config.ts', 'vitest.config.ts',

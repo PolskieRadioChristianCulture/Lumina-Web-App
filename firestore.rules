@@ -145,6 +145,33 @@ service cloud.firestore {
         request.auth.token.firebase.sign_in_provider != 'anonymous';
     }
 
+    // Private owner-to-agent queue. Immutable commands; receipts are server-only.
+    function lumiAgentOwner(uid) {
+      return signed() && request.auth.uid == uid &&
+        request.auth.token.email_verified == true &&
+        request.auth.token.email == 'nazirczarkes@gmail.com' &&
+        request.auth.token.ccMissionControl == true;
+    }
+    function validAgentCommand(d, uid) {
+      return d.ownerUid == uid && d.command is string && d.command.size() > 0 &&
+        d.command.size() <= 4000 && d.createdAt is timestamp && d.checkAt is timestamp &&
+        d.needsSync is bool && d.status in ['queued', 'accepted', 'answered', 'rejected'];
+    }
+    match /lumi_agent_commands/{uid}/items/{commandId} {
+      allow get: if lumiAgentOwner(uid);
+      allow list: if lumiAgentOwner(uid) && request.query.limit != null && request.query.limit <= 20;
+      allow create: if lumiAgentOwner(uid) &&
+        commandId.matches('^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$') &&
+        validAgentCommand(request.resource.data, uid) &&
+        request.resource.data.keys().hasOnly(['ownerUid','command','createdAt','checkAt','status','needsSync']) &&
+        request.resource.data.createdAt == request.time && request.resource.data.checkAt == request.time &&
+        request.resource.data.status == 'queued' && request.resource.data.needsSync == true;
+      allow update: if lumiAgentOwner(uid) && validAgentCommand(request.resource.data, uid) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['needsSync','checkAt']) &&
+        request.resource.data.needsSync == true && request.resource.data.checkAt == request.time;
+      allow delete: if false;
+    }
+
     function isMasterAdmin() {
       return isAuthenticated() && (
         request.auth.token.admin == true ||
@@ -907,7 +934,8 @@ service cloud.firestore {
     }
 
     match /{topCollection}/{rest=**} {
-      allow read, write: if isMasterAdmin() && topCollection != 'lumina_family_rooms';
+      allow read, write: if isMasterAdmin() && topCollection != 'lumina_family_rooms' &&
+        topCollection != 'lumi_agent_commands';
     }
   }
 }
