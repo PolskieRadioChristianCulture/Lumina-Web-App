@@ -125,11 +125,13 @@
         import('https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js'),
         import('https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js')
       ]);
-      const name = 'cc-live-viewer-chat';
-      const app = getApps().find((a) => a.name === name) || initializeApp({
+      // Domyślna aplikacja z tą samą konfiguracją co firebase-config.js. Nie rejestrujemy osobnej nazwanej aplikacji:
+      // firebase-config.js robi „!getApps().length ? initializeApp : getApp()”, więc obca nazwana aplikacja
+      // zarejestrowana wcześniej powodowałaby błąd getApp() i zatrzymanie skryptów kanału.
+      const app = getApps().find((a) => a.name === '[DEFAULT]') || initializeApp({
         projectId: 'lumina-cc', appId: '1:413985877183:web:b0c99a686a4fb1b875aa0a', apiKey: 'AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M',
-        authDomain: 'lumina-cc.firebaseapp.com', storageBucket: 'lumina-cc.firebasestorage.app', messagingSenderId: '413985877183'
-      }, name);
+        authDomain: 'lumina-cc.firebaseapp.com', storageBucket: 'lumina-cc.firebasestorage.app', messagingSenderId: '413985877183', measurementId: ''
+      });
       const db = fs.getFirestore(app);
       ROOMS.forEach((room) => {
         const q = fs.query(fs.collection(db, 'lumina_live_rooms', room, 'messages'), fs.orderBy('createdAt', 'desc'), fs.limit(5));
