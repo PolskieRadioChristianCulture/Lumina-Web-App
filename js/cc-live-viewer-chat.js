@@ -38,7 +38,7 @@
     const s = document.createElement('style');
     s.id = 'ccvc-styles';
     s.textContent = `
-      .ccvc-dock{position:absolute;z-index:60;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding:10px 12px;overflow:hidden;
+      .ccvc-dock{position:absolute;z-index:60;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:10px 12px;overflow:hidden;
         border:1.5px solid rgba(212,175,55,.55);border-radius:18px;background:rgba(10,12,20,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
         box-shadow:0 12px 30px rgba(0,0,0,.45);font-family:'Outfit','Inter',system-ui,sans-serif;color:#fff;pointer-events:none}
       .ccvc-dock[hidden]{display:none!important}
@@ -51,7 +51,7 @@
       .ccvc-b{max-width:90%;padding:6px 12px;border-radius:14px 14px 14px 4px;background:linear-gradient(135deg,rgba(168,85,247,.24),rgba(6,182,212,.18));border:1px solid rgba(252,211,77,.48)}
       .ccvc-who{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.85rem;font-weight:800;color:#fde68a;margin-bottom:1px}
       .ccvc-badge{font-size:.62rem;font-weight:800;color:#fecaca;background:rgba(220,38,38,.38);border:1px solid rgba(248,113,113,.55);padding:1px 6px;border-radius:999px;white-space:nowrap}
-      .ccvc-text{font-size:1.05rem;line-height:1.28;color:#fff;word-wrap:break-word}
+      .ccvc-text{font-size:1.05rem;line-height:1.28;color:#fff;word-wrap:break-word;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
       body.ccvc-on .ccvc-hide-target{display:none!important}
     `;
     document.head.appendChild(s);
@@ -117,6 +117,9 @@
     if (!list.length) return;
     d.appendChild(el('div', 'ccvc-head', '🔴 Czat na żywo · widzowie LUMI MESS'));
     list.forEach((m) => d.appendChild(row(m)));
+    // Bez ucinania: zostaje tyle najnowszych wiadomości, ile mieści się w oknie w całości (długie — do 2 linii).
+    let rows = d.querySelectorAll('.ccvc-row');
+    while (rows.length > 1 && d.scrollHeight > d.clientHeight + 1) { rows[0].remove(); rows = d.querySelectorAll('.ccvc-row'); }
   }
 
   async function start() {
