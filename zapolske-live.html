@@ -1734,6 +1734,19 @@
             height: 530px !important;
             margin-top: 0 !important;
         }
+        /* Okno czatu Noemi i Sary (Dowódca 19.10, Claude @A007): wyższe — od pod napisem NA ŻYWO (dół ~69px)
+           do nad zegarem paska (#tickerClock, góra ~903px) przy 1920×1080: karta 90–870px.
+           Tylko układ dzienny (karta po prawej); wieczorem karta jest po lewej i nie może zasłonić kodu QR. */
+        body.mode-presenters:not(.evening-layout) .right-panel,
+        body.za-polske-wallpaper:not(.evening-layout) .right-panel {
+            align-self: start !important;
+            height: auto !important;
+            margin-top: -10px !important;
+        }
+        body.mode-presenters:not(.evening-layout) .reflection-canvas-card,
+        body.za-polske-wallpaper:not(.evening-layout) .reflection-canvas-card {
+            height: 780px !important;
+        }
         body.za-polske-wallpaper #livePrayerOverlay {
             position: fixed !important;
             bottom: 180px !important;
