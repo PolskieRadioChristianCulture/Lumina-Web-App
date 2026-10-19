@@ -81,7 +81,8 @@ async function loadSession() {
     const res = await fetch('/rozwazania_baza.json?d=' + day, { cache: 'no-cache' });
     const list = await res.json();
     const r = (Array.isArray(list) ? list : []).find((x) => x && x.date === day);
-    const text = r ? (r.fullText || r.contentWeb || r.content || '') : '';
+    // Wersja 4 (scenariusz TV z Noemi i Sarą) ma pierwszeństwo; zwykły tekst bez dialogu nie uruchamia sesji.
+    const text = r ? (r.tvScript || r.scenariuszTV || r.wersjaTV || r.wersja4 || r.fullText || r.contentWeb || r.content || '') : '';
     const parsed = D.parse(text);
     const reduce = false;
     const tl = parsed.isDialogue ? D.timeline(parsed.messages, reduce) : [];

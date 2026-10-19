@@ -2768,7 +2768,7 @@ function getWeatherPreset(city) {
 
                 // Check if text is a dialogue script
                 // Strażnik 2026-10-19: wspólny parser scenariusza TV (Noemi i Sara) — rozważanie jako żywy czat prowadzących.
-                const tvParsed = window.CCTvDialogue ? window.CCTvDialogue.parse(text) : null;
+                const tvParsed = window.CCTvDialogue ? window.CCTvDialogue.parse((reflection.tvScript || reflection.scenariuszTV || reflection.wersjaTV || reflection.wersja4 || "") || text) : null; // Wersja 4 (scenariusz TV) ma pierwszeństwo
                 if (tvParsed && tvParsed.isDialogue && tvParsed.messages.length) {
                     return [{ type: "chat", live: true, tag: "ROZWAŻANIE NA ŻYWO", title: reflection.title, messages: tvParsed.messages, l3Title: reflection.title, l3Desc: "TELEWIZJA CHRISTIAN CULTURE 24" }];
                 }

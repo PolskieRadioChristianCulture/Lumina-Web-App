@@ -571,6 +571,7 @@ test('CCTV: rozważanie TV jako żywy czat Noemi i Sary — wspólny parser na c
     assert.match(h, /src="\/js\/cc-tv-dialogue\.js\?v=/, f);
     assert.match(h, /window\.CCTvDialogue\.play\(/, f);
     assert.match(h, /chat-container\[data-live\]/, f);
+    assert.match(h, /reflection\.tvScript \|\| reflection\.scenariuszTV/, f);
   }
   assert.doesNotMatch(src, /innerHTML/);
   // Jedna sesja na żywo dziennie: 09:00 czasu polskiego (zimą 08:00 UTC, latem 07:00 UTC).
