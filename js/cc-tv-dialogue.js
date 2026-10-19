@@ -199,17 +199,36 @@
   const LIVE_WINDOW_MS = 35 * 60 * 1000;
   const warsawDayOf = (ms) => new Intl.DateTimeFormat('en-CA', { timeZone: LIVE_TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
   let manualStart = 0;
-  function liveStartToday(now = Date.now()) {
+  function todaySessionStarts(now = Date.now()) {
     try {
       const [y, mo, d] = warsawDayOf(now).split('-').map(Number);
       const starts = LIVE_SESSIONS.map(([h, mi]) => zonedToUtc(y, mo, d, h, mi, LIVE_TZ));
       if (manualStart && warsawDayOf(manualStart) === warsawDayOf(now)) starts.push(manualStart);
       starts.sort((a, b) => a - b);
+      return starts;
+    } catch (_) { const t = new Date(now); t.setHours(LIVE_HOUR, LIVE_MINUTE, 0, 0); return [t.getTime()]; }
+  }
+  function liveStartToday(now = Date.now()) {
+    try {
+      const starts = todaySessionStarts(now);
       const running = starts.filter((s) => s <= now && now < s + LIVE_WINDOW_MS).pop();
       if (running !== undefined) return running;
       const next = starts.find((s) => s > now);
       return next !== undefined ? next : starts[0];
     } catch (_) { const t = new Date(now); t.setHours(LIVE_HOUR, LIVE_MINUTE, 0, 0); return t.getTime(); }
+  }
+  // W czacie i pokojach rozważanie nie znika między sesjami — po premierze (9:00) pokazuje treść ostatniej
+  // ukończonej sesji, a w trakcie trwania sesji nadaje na żywo z progresywnym pojawianiem się wiadomości.
+  function chatSessionStart(now = Date.now()) {
+    try {
+      const starts = todaySessionStarts(now);
+      const running = starts.filter((s) => s <= now && now < s + LIVE_WINDOW_MS).pop();
+      if (running !== undefined) return running;
+      const past = starts.filter((s) => s <= now);
+      if (past.length) return past[past.length - 1];
+      const next = starts.find((s) => s > now);
+      return next !== undefined ? next : starts[0];
+    } catch (_) { return liveStartToday(now); }
   }
 
   // ── Start ręczny: dokument Firestore lumina_stats/live_session { startAt (ms) } ──
@@ -331,5 +350,9 @@
     return { stop() { stopped = true; if (timer) clearTimeout(timer); }, durationMs: total };
   }
 
-  global.CCTvDialogue = { isDialogue, parse, play, timeline, liveStartToday, version: '20261019_tv2' };
+  global.CCTvDialogue = {
+    isDialogue, parse, play, timeline, liveStartToday, todaySessionStarts, chatSessionStart,
+    setManualStart, startManualPolling, onScheduleChange,
+    version: '20261019_tv3'
+  };
 })(typeof window !== 'undefined' ? window : globalThis);

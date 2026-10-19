@@ -71,9 +71,14 @@ const session = { day: '', title: '', items: [], liveStart: 0, total: 0, ready: 
 function warsawDay(ms = Date.now()) {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Warsaw', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
 }
-// Przesuwa oś czasu prowadzących na bieżącą sesję (09:00 → 10:00 → 11:00), bez ponownego pobierania scenariusza.
-function shiftSession(D) {
-  const start = D.liveStartToday();
+// Czas sesji dla czatu i pokoju: w trakcie emisji — sesja na żywo; między sesjami — ostatnia zakończona sesja dzisiaj (dzięki czemu treść nie znika).
+function getChatLiveStart(D, now = Date.now()) {
+  if (D && typeof D.chatSessionStart === 'function') return D.chatSessionStart(now);
+  return D ? D.liveStartToday() : 0;
+}
+// Przesuwa oś czasu prowadzących na właściwą sesję (09:00 → 10:00 → 11:00 → między sesjami), bez ponownego pobierania scenariusza.
+function shiftSession(D, now = Date.now()) {
+  const start = getChatLiveStart(D, now);
   if (start === session.liveStart || !session.tl) return;
   session.liveStart = start;
   session.items = session.tl.map((e, i) => ({
@@ -102,7 +107,7 @@ async function loadSession() {
     session.day = day;
     session.title = r ? String(r.title || '') : '';
     session.tl = tl;
-    session.liveStart = D.liveStartToday();
+    session.liveStart = getChatLiveStart(D);
     session.items = tl.map((e, i) => ({
       i, kind: e.m.kind, text: e.m.text, section: e.m.section,
       typingAt: session.liveStart + e.typingAt, at: session.liveStart + e.showAt
@@ -152,6 +157,7 @@ function hookPublicChat() {
   };
   let shown = -1;
   setInterval(() => {
+    if (window.CCTvDialogue) shiftSession(window.CCTvDialogue);
     const n = presenterMessages().length;
     if (n !== shown) {
       shown = n;
@@ -341,12 +347,14 @@ function renderRoom(force) {
   const r = state.room;
   const box = $('llrBox');
   if (!r || !box) return;
+  if (window.CCTvDialogue) shiftSession(window.CCTvDialogue);
   const now = Date.now();
   const hosts = r.reflection ? presenterMessages(now) : [];
   const typingName = r.reflection ? typingNow(now) : '';
   const t = $('llrTyping');
   if (t) t.textContent = typingName ? `${typingName} pisze…` : '';
-  const sig = hosts.length + ':' + state.docs.map((d) => d.id + (d.createdAt ? 1 : 0)).join(',') + ':' + (now < session.liveStart ? Math.floor((session.liveStart - now) / 60000) : 'x');
+  const isLive = sessionLive(now);
+  const sig = hosts.length + ':' + (isLive ? 'L' : 'R') + ':' + state.docs.map((d) => d.id + (d.createdAt ? 1 : 0)).join(',') + ':' + (now < session.liveStart ? Math.floor((session.liveStart - now) / 60000) : 'x');
   if (!force && sig === state.renderedSig) return;
   state.renderedSig = sig;
   const nearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 160;
@@ -360,8 +368,12 @@ function renderRoom(force) {
     if (now < session.liveStart) {
       const mins = Math.ceil((session.liveStart - now) / 60000);
       nodes.push(el('div', { class: 'llr-note', text: `🔴 Dziś o 9:00 Noemi i Sara rozpoczną tu rozważanie na żywo${session.title ? ': „' + session.title + '”' : ''}. Start za ${mins >= 60 ? Math.floor(mins / 60) + ' h ' + (mins % 60) + ' min' : mins + ' min'}.` }));
-    } else if (sessionLive(now)) {
+    } else if (isLive) {
       nodes.push(el('div', { class: 'llr-note', text: `🔴 NA ŻYWO: rozważanie${session.title ? ' „' + session.title + '”' : ''}. Pisz śmiało — prowadzące i widzowie są z Tobą.` }));
+    } else {
+      const nextStart = window.CCTvDialogue && window.CCTvDialogue.todaySessionStarts ? window.CCTvDialogue.todaySessionStarts(now).find((s) => s > now) : null;
+      const nextInfo = nextStart ? `Kolejna transmisja na żywo o ${hhmm(nextStart)}.` : 'Kolejne rozważanie na żywo jutro o 9:00.';
+      nodes.push(el('div', { class: 'llr-note', text: `📺 Rozważanie Noemi i Sary${session.title ? ': „' + session.title + '”' : ''}. ${nextInfo} Pisz śmiało i dołącz z modlitwą!` }));
     }
   } else if (r.reflection) {
     nodes.push(el('div', { class: 'llr-note', text: 'Codziennie o 9:00 Noemi i Sara prowadzą tu rozważanie na żywo.' }));
