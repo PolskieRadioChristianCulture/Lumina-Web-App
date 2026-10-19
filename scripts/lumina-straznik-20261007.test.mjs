@@ -586,7 +586,7 @@ test('CCTV: rozważanie TV jako żywy czat Noemi i Sary — wspólny parser na c
     ['2026-10-19T07:10:00Z','2026-10-19T07:00:00.000Z']
   ]) assert.equal(new Date(D.liveStartToday(Date.parse(now))).toISOString(), start);
   for (const file of ['cctv24.html','cctv24-pl.html','zapolske-live.html','js/lumi-live-rooms.js'])
-    assert.match(await readFile(file,'utf8'),/cc-tv-dialogue\.js\?v=20261019_tv6/, file);
+    assert.match(await readFile(file,'utf8'),/cc-tv-dialogue\.js\?v=20261019_tv7/, file);
 });
 
 test('LUMI Messenger: pokoje LIVE TV, rozmowa Noemi i Sary na czacie ogólnym, modlitwy z pokoju na antenie /zapolske-live', async () => {

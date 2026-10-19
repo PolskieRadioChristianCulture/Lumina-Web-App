@@ -1863,7 +1863,7 @@
             localStorage.setItem('dzj_stream_image_forced_v2', 'true');
         }
     </script>
-    <script src="/js/cc-tv-dialogue.js?v=20261019_tv6"></script>
+    <script src="/js/cc-tv-dialogue.js?v=20261019_tv7"></script>
 </head>
 <body>
 
@@ -3821,9 +3821,37 @@ function getWeatherPreset(city) {
         const livePrayerText = document.getElementById("livePrayerText");
         const livePrayerAuthor = document.getElementById("livePrayerAuthor");
 
+        let approvedIntentionsList = [];
+        let liveRoomPrayersList = [];
         let activePrayersList = [];
         let currentPrayerIndex = 0;
         let isShowingPrayer = false;
+        let currentPrayerIsLive = false;
+        let prayerHideTimeout = null;
+        let prayerNextTimeout = null;
+
+        function rebuildActivePrayers() {
+            activePrayersList = [...liveRoomPrayersList, ...approvedIntentionsList];
+            if (activePrayersList.length > 0) {
+                window.lastPrayerIntention = activePrayersList[0];
+                if (typeof window.loadNewsMarquee === "function") {
+                    window.loadNewsMarquee();
+                }
+            }
+        }
+
+        function interruptStaticForLive() {
+            if (isShowingPrayer && !currentPrayerIsLive) {
+                if (prayerHideTimeout) clearTimeout(prayerHideTimeout);
+                if (prayerNextTimeout) clearTimeout(prayerNextTimeout);
+                isShowingPrayer = false;
+                currentPrayerIndex = 0;
+                processQueue();
+            } else if (!isShowingPrayer) {
+                currentPrayerIndex = 0;
+                processQueue();
+            }
+        }
 
         // Listen for raw intentions list
         const q = query(collection(db, "prayer_intentions"), where("approved", "==", true), limit(50));
@@ -3844,23 +3872,17 @@ function getWeatherPreset(city) {
             });
 
             if (approvedIntentions.length > 0) {
-                activePrayersList = approvedIntentions;
-                
-                // Update global state and immediately reload marquee with the newest
-                window.lastPrayerIntention = approvedIntentions[0];
-                if (typeof window.loadNewsMarquee === "function") {
-                    window.loadNewsMarquee();
-                }
-                
+                approvedIntentionsList = approvedIntentions;
+                rebuildActivePrayers();
                 if (!isShowingPrayer) {
                     processQueue();
                 }
             }
         });
 
-        // ── Modlitwy na żywo z pokoju LUMI Messenger „Zjednoczeni za Polskę” (Strażnik 2026-10-19) ──
-        // Trafiają na antenę po ~5 s, mają pierwszeństwo przed zatwierdzonymi intencjami.
-        // Linki, adresy, numery telefonów i wulgaryzmy są odrzucane; usunięta w pokoju modlitwa znika z kolejki.
+        // ── Modlitwy i wiadomości na żywo z pokoju LUMI Messenger „Zjednoczeni za Polskę” (Strażnik 2026-10-19) ──
+        // Trafiają na antenę po ~5 s, mają pierwszeństwo przed zatwierdzonymi intencjami oraz wyświetlają się w oknie czatu.
+        // Linki, adresy, numery telefonów i wulgaryzmy są odrzucane; usunięta w pokoju wiadomość znika z kolejki.
         const livePrayerQueue = [];
         const liveSeen = new Set();
         const liveRemoved = new Set();
@@ -3869,6 +3891,34 @@ function getWeatherPreset(city) {
         try {
             const liveQ = query(collection(db, "lumina_live_rooms", "tv_zapolske", "messages"), orderBy("createdAt", "desc"), limit(20));
             onSnapshot(liveQ, (snap) => {
+                const currentRoomList = [];
+                snap.docs.forEach((d) => {
+                    const m = d.data();
+                    const t = m.createdAt && m.createdAt.seconds ? m.createdAt.seconds * 1000 : Date.now();
+                    if (!livePrayerOk(m.text) || Date.now() - t > 24 * 3600000) return;
+                    currentRoomList.push({
+                        id: d.id,
+                        roomId: "tv_zapolske",
+                        live: true,
+                        kind: m.kind || "prayer",
+                        text: String(m.text).trim(),
+                        name: String(m.senderName || "Uczestnik").slice(0, 60),
+                        senderName: String(m.senderName || "Uczestnik").slice(0, 60),
+                        senderAvatar: String(m.senderAvatar || "/lumina_icon.jpg").trim(),
+                        city: "na żywo z LUMI Messenger",
+                        createdAtMs: t
+                    });
+                });
+                const hadLiveBefore = liveRoomPrayersList.length > 0;
+                liveRoomPrayersList = currentRoomList;
+                if (window.CCTvDialogue && typeof window.CCTvDialogue.setViewerMessages === "function") {
+                    window.CCTvDialogue.setViewerMessages(currentRoomList, "tv_zapolske");
+                }
+                rebuildActivePrayers();
+                if (!hadLiveBefore && currentRoomList.length > 0) {
+                    interruptStaticForLive();
+                }
+
                 snap.docChanges().forEach((ch) => {
                     const id = ch.doc.id;
                     if (ch.type === "removed") {
@@ -3881,11 +3931,11 @@ function getWeatherPreset(city) {
                     const t = m.createdAt && m.createdAt.seconds ? m.createdAt.seconds * 1000 : 0;
                     if (!t) return; // poczekaj na czas serwera (kolejny snapshot)
                     liveSeen.add(id);
-                    if (m.kind !== "prayer" || !livePrayerOk(m.text) || Date.now() - t > 2 * 3600000) return;
+                    if ((m.kind !== "prayer" && m.kind !== "text") || !livePrayerOk(m.text) || Date.now() - t > 24 * 3600000) return;
                     setTimeout(() => {
                         if (liveRemoved.has(id)) return;
                         livePrayerQueue.push({ id, live: true, text: String(m.text).trim(), name: String(m.senderName || "Uczestnik").slice(0, 60), city: "na żywo z LUMI Messenger" });
-                        if (!isShowingPrayer) processQueue();
+                        interruptStaticForLive();
                     }, Math.max(0, t + 5000 - Date.now()));
                 });
             }, () => {});
@@ -3905,6 +3955,7 @@ function getWeatherPreset(city) {
             
             const fromLive = livePrayerQueue.length > 0;
             const prayer = fromLive ? livePrayerQueue.shift() : activePrayersList[currentPrayerIndex];
+            currentPrayerIsLive = !!(fromLive || (prayer && prayer.live));
             
             // Populate and display
             livePrayerText.textContent = `„${prayer.text}”`;
@@ -3915,12 +3966,12 @@ function getWeatherPreset(city) {
             livePrayerOverlay.style.pointerEvents = "auto";
             
             // Show for 20 seconds, then hide and process next after some gap
-            setTimeout(() => {
+            prayerHideTimeout = setTimeout(() => {
                 livePrayerOverlay.style.opacity = "0";
                 livePrayerOverlay.style.transform = "translateY(20px)";
                 livePrayerOverlay.style.pointerEvents = "none";
                 
-                setTimeout(() => {
+                prayerNextTimeout = setTimeout(() => {
                     if (!fromLive) currentPrayerIndex++;
                     processQueue();
                 }, 5000); // 5s gap between popups
