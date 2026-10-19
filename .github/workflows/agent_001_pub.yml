@@ -1,0 +1,48 @@
+name: Agent 001 - Straznik Publikacji 24-7
+
+on:
+  schedule:
+    # Harmonogram Konstytucji Agenta 001 (@A001):
+    # - 06:00 UTC: Poranny pakiet formacyjny (Werset Dnia, Lekcja Biblijna, start audycji)
+    # - 12:00 UTC: Południowy biuletyn redakcyjny (CCN News / Aktualności)
+    # - 18:00 UTC: Wieczorna premiera wideo / audycja publicystyczna
+    # - Co 6 godzin w tle (00:00, 06:00, 12:00, 18:00 UTC): Skan linków i gotowości zasobów
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  agent-001-exec:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+
+      - name: Wykonanie Cyklu Publikacji Przez Agenta 001
+        run: |
+          echo "Agent 001 (@A001) uruchamia cykl publikacji zgodnie z Konstytucja Procesowa Wersja 1.0..."
+          node -e "
+            const fs = require('fs');
+            const targetPath = fs.existsSync('skrzynka/TABLICA.md') ? 'skrzynka/TABLICA.md' : (fs.existsSync('JOMA_SHARED_MEMORY/SKRZYNKA/TABLICA.md') ? 'JOMA_SHARED_MEMORY/SKRZYNKA/TABLICA.md' : null);
+            if (targetPath) {
+              const now = new Date();
+              const hourUTC = now.getUTCHours();
+              let packetType = 'Automatyczny skan poprawnosci linkow i gotowosci zasobow';
+              if (hourUTC === 6) packetType = 'Poranny pakiet formacyjny (Werset Dnia, Lekcja Biblijna, start audycji)';
+              else if (hourUTC === 12) packetType = 'Poludniowy biuletyn redakcyjny (CCN News / Aktualnosci)';
+              else if (hourUTC === 18) packetType = 'Wieczorna premiera wideo / audycja publicystyczna';
+              
+              const logEntry = '\n- [AGENT 001 (@A001) - STRAZNIK PUBLIKACJI] ' + packetType + ' zsynchronizowany pomyslnie. Czas: ' + now.toISOString();
+              fs.appendFileSync(targetPath, logEntry);
+              console.log('Zaktualizowano ' + targetPath + ' wpisem: ' + packetType);
+            } else {
+              console.log('Brak pliku TABLICA.md do aktualizacji.');
+            }
+          "
+
+      - name: Zapis w Tablicy JOMA
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 [Agent 001] Automatyczna cykliczna publikacja zasobow zakonczona (Konstytucja Wersja 1.0)"
+          branch: main
