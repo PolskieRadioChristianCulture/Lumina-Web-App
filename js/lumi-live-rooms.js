@@ -157,7 +157,7 @@ function injectUi() {
     type: 'button', id: 'tabBtnLiveTv', 'aria-label': 'Pokoje LIVE TV',
     style: 'position:relative; flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:transparent; color:#94a3b8; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0; transition:all 0.2s; touch-action:manipulation;',
     onclick: () => window.switchMessengerMainTab('livetv')
-  }, el('span', { 'aria-hidden': 'true', text: '📺' }), el('span', { class: 'tab-label', style: 'margin-left:6px;', text: 'LIVE TV' }));
+  }, el('span', { 'aria-hidden': 'true', text: '📺' }));
   privBtn.insertAdjacentElement('afterend', btn);
 
   const view = el('div', { id: 'messengerLiveView', style: 'display:none; flex-direction:column; flex:1; min-height:0;' });
