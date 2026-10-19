@@ -550,3 +550,30 @@ test('Mama: kontakt rodzinny LUMI KIDS bez roli Master Admin (reguły i aplikacj
   assert.match(app, /c\.contacts\.includes\(MAMA_UID\)/);
   assert.match(app, /ensureChats\(c\.childUid, \[MAMA_UID\]\)/);
 });
+
+test('CCTV: rozważanie TV jako żywy czat Noemi i Sary — wspólny parser na cctv24, cctv24-pl i zapolske-live', async () => {
+  const vm = await import('node:vm');
+  const src = await readFile('js/cc-tv-dialogue.js', 'utf8');
+  const ctx = { window: {} }; ctx.globalThis = ctx.window; vm.runInNewContext(src, ctx);
+  const D = ctx.window.CCTvDialogue;
+  const script = ['🔴 WERSJA CZWARTA: ROZWAŻANIE TELEWIZYJNE', 'Styl: test', '[OPRAWA GRAFICZNA & MUZYCZNA]', 'Studio w czerni i złocie.',
+    '[INTRO: TEST]', 'Noemi:', 'Dzień dobry!', '', 'Sara (z uśmiechem): Witamy!', '[MANIFEST: MODLITWA BOJOWA]',
+    'Głos Prowadzących (Noemi i Sara razem, z pełnym autorytetem):', '„Panie, prowadź nas. Amen.”', '**Noemi i Sara:** Dla Jezusa!'].join('\n');
+  const p = D.parse(script);
+  assert.equal(p.isDialogue, true);
+  assert.equal(p.messages.map(m => m.kind).join(','), 'noemi,sara,both,both');
+  assert.equal(p.messages[1].text, 'Witamy!');
+  assert.equal(p.messages[0].section, 'INTRO: TEST');
+  assert.ok(!p.messages.some(m => /Studio w czerni|WERSJA CZWARTA|Styl:/.test(m.text)), 'wskazówki reżyserskie nie trafiają na antenę');
+  assert.equal(D.isDialogue('Abraham i Sara wyruszyli. Sara się roześmiała.'), false);
+  for (const f of ['cctv24.html', 'cctv24-pl.html', 'zapolske-live.html']) {
+    const h = await readFile(f, 'utf8');
+    assert.match(h, /src="\/js\/cc-tv-dialogue\.js\?v=/, f);
+    assert.match(h, /window\.CCTvDialogue\.play\(/, f);
+    assert.match(h, /chat-container\[data-live\]/, f);
+  }
+  assert.doesNotMatch(src, /innerHTML/);
+  // Jedna sesja na żywo dziennie: 09:00 czasu polskiego (zimą 08:00 UTC, latem 07:00 UTC).
+  assert.equal(new Date(D.liveStartToday(Date.parse('2026-10-19T12:00:00Z'))).toISOString(), '2026-10-19T07:00:00.000Z');
+  assert.equal(new Date(D.liveStartToday(Date.parse('2026-12-01T12:00:00Z'))).toISOString(), '2026-12-01T08:00:00.000Z');
+});

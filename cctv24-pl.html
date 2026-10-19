@@ -1803,6 +1803,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         });
     </script>
     <link rel="stylesheet" href="live-window-manager.css">
+    <script src="/js/cc-tv-dialogue.js?v=20261019_tv2"></script>
 </head>
 <body>
 
@@ -2840,7 +2841,7 @@ function getWeatherPreset(city) {
 
                 let cycleTitle = "MISJA BOŻE WAKACJE";
                 
-                const dayNumMatch = reflection.id.match(/ref_day(\d+)/);
+                const dayNumMatch = String(reflection.id || "").match(/ref_day(\d+)/);
                 const dayNum = dayNumMatch ? dayNumMatch[1] : (reflectionsData.indexOf(reflection) + 1);
                 
                 // Format the Sunday agenda widget dynamically
@@ -2851,7 +2852,7 @@ function getWeatherPreset(city) {
                 }
                 cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
 
-                const text = reflection.fullText;
+                const text = reflection.fullText || reflection.contentWeb || reflection.content || "";
 
                 
                 function cleanMarkdown(str) {
@@ -2862,7 +2863,12 @@ function getWeatherPreset(city) {
                 }
 
                 // Check if text is a dialogue script
-                const isDialogue = text.includes("Noemi") || text.includes("Sara");
+                // Strażnik 2026-10-19: wspólny parser scenariusza TV (Noemi i Sara) — rozważanie jako żywy czat prowadzących.
+                const tvParsed = window.CCTvDialogue ? window.CCTvDialogue.parse(text) : null;
+                if (tvParsed && tvParsed.isDialogue && tvParsed.messages.length) {
+                    return [{ type: "chat", live: true, tag: "ROZWAŻANIE NA ŻYWO", title: reflection.title, messages: tvParsed.messages, l3Title: reflection.title, l3Desc: "TELEWIZJA CHRISTIAN CULTURE 24" }];
+                }
+                const isDialogue = !window.CCTvDialogue && (text.includes("Noemi") || text.includes("Sara"));
 
                 if (isDialogue) {
                     const slides = [];
@@ -3134,7 +3140,12 @@ function getWeatherPreset(city) {
                         '>': '&gt;',
                         '"': '&quot;',
                         "'": '&#39;'
-                    }[char]));                    if (slideData.type === "chat") {
+                    }[char]));                    if (slideData.type === "chat" && slideData.live && window.CCTvDialogue) {
+                        slideEl.innerHTML = `<div class="slide-tag"><i class="fa-solid fa-comments"></i> <span class="cctv-live-badge">NA ŻYWO · ROZWAŻANIE</span></div><div class="slide-title" style="font-size: 1.90rem; margin-bottom: 12px; font-family: 'Cinzel', serif;"></div><div class="chat-container" data-live="1" aria-live="polite"></div>`;
+                        slideEl.querySelector(".slide-title").textContent = slideData.title || "";
+                        try { if (window._cctvLivePlayer) window._cctvLivePlayer.stop(); } catch (_) {}
+                        window._cctvLivePlayer = window.CCTvDialogue.play(slideEl.querySelector(".chat-container"), slideData.messages, { adapt: (t) => adaptTextToTimeOfDay(t), onMode: (m) => { const bd = slideEl.querySelector(".cctv-live-badge"); if (bd) { bd.textContent = m === "live" ? "NA ŻYWO · ROZWAŻANIE 9:00" : "POWTÓRKA · ROZWAŻANIE Z 9:00"; bd.classList.toggle("is-replay", m !== "live"); } } });
+                    } else if (slideData.type === "chat") {
                         let chatHTML = `
                             <div class="slide-tag"><i class="fa-solid fa-comments"></i> <span>${escapeHtml(slideData.tag)}</span></div>
                             <div class="slide-title" style="font-size: 1.90rem; margin-bottom: 12px; font-family: 'Cinzel', serif;">${escapeHtml(slideData.title)}</div>
@@ -3191,6 +3202,7 @@ function getWeatherPreset(city) {
                 function triggerSlideScroll(index) {
                     const activeSlide = domSlides[index];
                     if (!activeSlide) return;
+                    if (activeSlide.querySelector(".chat-container[data-live]")) return; // żywy czat przewija się sam
                     const scrollContainer = activeSlide.querySelector(".chat-container") || activeSlide.querySelector(".slide-text-scroll-wrap");
                     if (scrollContainer) {
                         scrollPrompter(scrollContainer);
