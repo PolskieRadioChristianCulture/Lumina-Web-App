@@ -17,6 +17,7 @@ import {
   onSnapshot, addDoc, serverTimestamp, deleteField
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getMessaging, getToken, isSupported as messagingSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
+import { openFamilyPanel } from '/components/lumi-family-host.js?v=20261019_family1';
 
 // Flaga funkcjonalna po stronie klienta. Właściwa flaga to kids_pilot/config.enabled (serwer).
 const LUMI_KIDS_PILOT_ENABLED = true;
@@ -522,6 +523,9 @@ async function screenChild() {
         h('div', {}, h('h1', { text: 'Cześć, ' + nameOf(me.uid, 'Dawidek') + '! 👋' }), h('span', { class: 'badge', text: '🛡️ Za zgodą rodzica' })))),
     h('section', { class: 'card' }, h('h2', { text: 'Moje kontakty' }),
       contacts.length ? list : note('Rodzic jeszcze nie dodał rozmowy. Poproś rodzica o otwarcie rozmowy w panelu.', 'info')),
+    h('button', { class: 'btn primary block', type: 'button', text: '⌂ Moja rodzina', onclick: () => {
+      document.body.classList.add('lumi-kids-family'); openFamilyPanel({ nameForUid: uid => names[uid] || null });
+    } }),
     contacts.length ? h('button', { class: 'btn help block', type: 'button', text: '🛟 Potrzebuję pomocy', onclick: () => helpScreen(contacts[0]) }) : null,
     contacts.length ? pushCard() : null
   );

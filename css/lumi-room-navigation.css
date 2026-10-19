@@ -1,0 +1,18 @@
+.lumi-room-navigation {display:grid!important;grid-template-columns:repeat(4,minmax(44px,1fr));gap:6px!important;min-width:0}
+.lumi-room-navigation>.lumi-main-room,.lumi-room-navigation>#tabBtnMoreRooms {width:100%!important;min-height:48px!important;min-width:44px!important;margin:0!important;padding:0!important;position:relative;border:0;border-radius:12px;cursor:pointer;touch-action:manipulation}
+.lumi-room-navigation .tab-label {display:none!important}
+#tabBtnMoreRooms {background:transparent;color:inherit;font:700 30px/1 system-ui}
+.lumi-room-navigation button:focus-visible,.lumi-more-rooms button:focus-visible {outline:3px solid #a78bfa;outline-offset:2px}
+.lumi-more-rooms {box-sizing:border-box;position:fixed;inset:auto 0 0;margin:0 auto;width:min(100%,480px);max-height:75dvh;overflow:auto;padding:20px 16px calc(20px + env(safe-area-inset-bottom));border:1px solid #64748b;border-radius:24px 24px 0 0;background:#111827;color:#f8fafc;font-family:inherit;box-shadow:0 -12px 50px #0006}
+.lumi-more-rooms::backdrop {background:#0008}
+.lumi-more-rooms h3 {margin:0 48px 18px 0;font-size:18px}
+.lumi-more-close {position:absolute;right:12px;top:10px;width:44px;height:44px;background:transparent;border:0;color:inherit;font-size:30px;cursor:pointer}
+.lumi-more-items {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.lumi-more-items>button {box-sizing:border-box;min-height:56px!important;min-width:44px!important;max-width:100%;padding:10px!important;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:14px;gap:8px;white-space:normal;font:inherit;cursor:pointer}
+.lumi-more-items>button[hidden],.lumi-more-items>.is-commander-hidden {display:none!important}
+#lumiMoreRooms #tabBtnLiveTv {font-size:26px!important}
+#lumiMoreRooms #tabBtnLiveTv .tab-label {display:none!important}
+.lumi-more-badge {position:absolute;right:4px;top:3px;min-width:18px;padding:2px 4px;border-radius:12px;background:#dc2626;color:white;font:700 11px/1.2 system-ui}
+.lumi-more-badge[hidden] {display:none}
+[data-theme="light"] .lumi-more-rooms,body.light-mode .lumi-more-rooms {background:#fff;color:#111827}
+[data-theme="light"] .lumi-more-items>button,body.light-mode .lumi-more-items>button {background:#f1f5f9;color:#111827;border-color:#94a3b8}

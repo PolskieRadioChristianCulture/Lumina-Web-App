@@ -1,0 +1,144 @@
+// PROTOTYPE, emulator only. Not referenced by the production firebase.json.
+// rooms: schemaVersion=1, name<=80, ownerUid<=128, slotUids[1..4 unique UIDs],
+// status active/closed, createdAt/updatedAt timestamps. Server-provisioned root.
+// lumina_family_members/{uid}: roomId, uid, invitedBy, state, revision 1..3,
+// createdAt/updatedAt/expiresAt timestamps. Invitation read reveals no other members.
+// messages/{uid}_{clientMessageId}: senderUid, clientMessageId 20..80 safe chars,
+// text 1..1000, createdAt timestamp. Immutable. No admin bypass.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signed() {
+      return request.auth != null &&
+        request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+    function validUid(uid) {
+      return uid is string && uid.size() > 0 && uid.size() <= 128 &&
+        uid != '.' && uid != '..' && !uid.matches('.*[/\\x00-\\x1f].*');
+    }
+    function kidGate() {
+      let path = /databases/$(database)/documents/kids_pilot/config;
+      return !exists(path) || get(path).data.get('childUid', '') != request.auth.uid ||
+        (get(path).data.get('enabled', false) == true && get(path).data.get('revoked', false) != true);
+    }
+    function roomPath(roomId) {
+      return /databases/$(database)/documents/lumina_family_rooms/$(roomId);
+    }
+    function kidsSlotsSafe(slots) {
+      let path = /databases/$(database)/documents/kids_pilot/config;
+      return !exists(path) || !(get(path).data.get('childUid', '') in slots) ||
+        (get(path).data.get('contacts', []) is list &&
+         slots.hasOnly(get(path).data.get('contacts', []).concat([get(path).data.childUid])));
+    }
+    function membershipPath(roomId, uid) {
+      return /databases/$(database)/documents/lumina_family_rooms/$(roomId)/lumina_family_members/$(uid);
+    }
+    function guardian(roomId) {
+      let root = roomPath(roomId);
+      return signed() && kidGate() && exists(root) && get(root).data.ownerUid == request.auth.uid;
+    }
+    function activeSlot(roomId, uid) {
+      let root = roomPath(roomId);
+      return exists(root) && get(root).data.status == 'active' && uid in get(root).data.slotUids &&
+        kidsSlotsSafe(get(root).data.slotUids);
+    }
+    function accepted(roomId) {
+      let m = membershipPath(roomId, request.auth.uid);
+      return signed() && kidGate() && activeSlot(roomId, request.auth.uid) &&
+        exists(m) && get(m).data.state == 'accepted' && get(m).data.uid == request.auth.uid &&
+        get(m).data.roomId == roomId;
+    }
+    function validSlots(s, ownerUid) {
+      return s is list && s.size() >= 1 && s.size() <= 4 && s.toSet().size() == s.size() &&
+        ownerUid in s && validUid(s[0]) &&
+        (s.size() < 2 || validUid(s[1])) && (s.size() < 3 || validUid(s[2])) &&
+        (s.size() < 4 || validUid(s[3]));
+    }
+    function validRoom(d) {
+      return d.keys().hasAll(['schemaVersion', 'name', 'ownerUid', 'slotUids', 'status', 'createdAt', 'updatedAt']) &&
+        d.keys().hasOnly(['schemaVersion', 'name', 'ownerUid', 'slotUids', 'status', 'createdAt', 'updatedAt']) &&
+        d.schemaVersion == 1 && d.name is string && d.name.size() > 0 && d.name.size() <= 80 &&
+        validUid(d.ownerUid) && validSlots(d.slotUids, d.ownerUid) && kidsSlotsSafe(d.slotUids) &&
+        d.status in ['active', 'closed'] && d.createdAt is timestamp && d.updatedAt is timestamp;
+    }
+    function validMembership(d, roomId, uid) {
+      return d.keys().hasAll(['roomId', 'uid', 'invitedBy', 'state', 'revision', 'createdAt', 'updatedAt', 'expiresAt']) &&
+        d.keys().hasOnly(['roomId', 'uid', 'invitedBy', 'state', 'revision', 'createdAt', 'updatedAt', 'expiresAt']) &&
+        d.roomId == roomId && d.roomId is string && d.roomId.size() <= 128 &&
+        d.uid == uid && validUid(d.uid) && validUid(d.invitedBy) &&
+        d.state in ['pending', 'accepted', 'declined', 'revoked'] &&
+        d.revision is int && d.revision >= 1 && d.revision <= 3 &&
+        d.createdAt is timestamp && d.updatedAt is timestamp && d.expiresAt is timestamp;
+    }
+    function guardianInvite(d, roomId, uid) {
+      let r = getAfter(roomPath(roomId)).data;
+      return guardian(roomId) && uid != request.auth.uid && r.status == 'active' && uid in r.slotUids &&
+        kidsSlotsSafe(r.slotUids) &&
+        d.invitedBy == request.auth.uid && d.state == 'pending' &&
+        d.createdAt == request.time && d.updatedAt == request.time &&
+        d.expiresAt > request.time && d.expiresAt <= request.time + duration.value(7, 'd');
+    }
+    function answer(d, roomId, uid) {
+      return signed() && kidGate() && request.auth.uid == uid &&
+        resource.data.state == 'pending' && resource.data.expiresAt > request.time &&
+        activeSlot(roomId, uid) && d.state in ['accepted', 'declined'] &&
+        d.diff(resource.data).affectedKeys().hasOnly(['state', 'updatedAt']) && d.updatedAt == request.time;
+    }
+    function revoke(d, roomId, uid) {
+      return guardian(roomId) && uid != request.auth.uid && d.state == 'revoked' &&
+        d.diff(resource.data).affectedKeys().hasOnly(['state', 'updatedAt']) && d.updatedAt == request.time;
+    }
+    function leaveFamily(d, roomId, uid) {
+      return signed() && request.auth.uid == uid &&
+        get(roomPath(roomId)).data.ownerUid != uid && resource.data.state == 'accepted' &&
+        d.state == 'declined' &&
+        d.diff(resource.data).affectedKeys().hasOnly(['state', 'updatedAt']) && d.updatedAt == request.time;
+    }
+    match /lumina_family_rooms/{roomId} {
+      allow get: if guardian(roomId) || accepted(roomId);
+      allow list, create, delete: if false;
+      allow update: if guardian(roomId) && validRoom(request.resource.data) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'slotUids', 'status', 'updatedAt']) &&
+        request.resource.data.updatedAt == request.time;
+
+      match /lumina_family_members/{uid} {
+        allow get: if (signed() && kidGate() && uid == request.auth.uid) || guardian(roomId) ||
+          (accepted(roomId) && resource.data.state == 'accepted');
+        allow list: if request.query.limit != null && request.query.limit <= 4 &&
+          (guardian(roomId) || (accepted(roomId) && resource.data.state == 'accepted'));
+        allow create: if validMembership(request.resource.data, roomId, uid) &&
+          guardianInvite(request.resource.data, roomId, uid) && request.resource.data.revision == 1;
+        allow update: if validMembership(request.resource.data, roomId, uid) && (
+          answer(request.resource.data, roomId, uid) || revoke(request.resource.data, roomId, uid) ||
+          leaveFamily(request.resource.data, roomId, uid) ||
+          (resource.data.state in ['declined', 'revoked'] &&
+           guardianInvite(request.resource.data, roomId, uid) &&
+           (resource.data.state != 'declined' || request.time >= resource.data.updatedAt + duration.value(1, 'd')) &&
+           request.resource.data.revision == resource.data.revision + 1));
+        allow delete: if false;
+      }
+      match /messages/{messageId} {
+        allow get: if accepted(roomId);
+        allow list: if accepted(roomId) && request.query.limit != null && request.query.limit <= 50;
+        allow create: if accepted(roomId) && validMessage(request.resource.data, messageId);
+        allow update, delete: if false;
+      }
+    }
+    function validMessage(d, messageId) {
+      return d.keys().hasAll(['senderUid', 'clientMessageId', 'text', 'createdAt']) &&
+        d.keys().hasOnly(['senderUid', 'clientMessageId', 'text', 'createdAt']) &&
+        d.senderUid == request.auth.uid && validUid(d.senderUid) &&
+        d.clientMessageId is string && d.clientMessageId.matches('^[A-Za-z0-9_-]{20,80}$') &&
+        messageId == request.auth.uid + '_' + d.clientMessageId &&
+        d.text is string && d.text.size() > 0 && d.text.size() <= 1000 &&
+        d.createdAt is timestamp && d.createdAt == request.time;
+    }
+    // Required for the bounded collectionGroup(uid==current UID) invitation inbox.
+    // Only the user's own minimal invitation metadata. No room/message permission here.
+    match /{parent=**}/lumina_family_members/{uid} {
+      allow get: if signed() && kidGate() && uid == request.auth.uid && resource.data.uid == request.auth.uid;
+      allow list: if signed() && kidGate() && resource.data.uid == request.auth.uid &&
+        request.query.limit != null && request.query.limit <= 20;
+    }
+  }
+}

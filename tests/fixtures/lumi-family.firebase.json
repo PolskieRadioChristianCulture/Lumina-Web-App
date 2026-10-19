@@ -1,0 +1,4 @@
+{
+  "firestore": { "rules": "lumi-family.rules" },
+  "emulators": { "firestore": { "host": "127.0.0.1", "port": 8311 }, "ui": { "enabled": false }, "singleProjectMode": true }
+}

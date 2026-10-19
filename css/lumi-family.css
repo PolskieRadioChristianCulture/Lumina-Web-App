@@ -1,0 +1,28 @@
+.lumi-family-dialog {box-sizing:border-box;position:fixed;inset:0;width:min(660px,100%);height:90dvh;max-width:100%;max-height:100dvh;padding:0;margin:auto;border:1px solid #64748b;border-radius:20px;background:#0f172a;color:#f8fafc;font:16px/1.5 system-ui}
+.lumi-family-dialog::backdrop {background:#0009}
+.lumi-family {box-sizing:border-box;display:flex;flex-direction:column;height:100%;min-height:0;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom)}
+.lumi-family header {display:flex;gap:8px;align-items:center;flex:none;padding:8px 0;border-bottom:1px solid #475569}
+.lumi-family h2 {flex:1;min-width:0;margin:0;font-size:20px;overflow-wrap:anywhere}
+.lumi-family button {min-height:44px;min-width:44px;padding:10px 14px;border:1px solid #64748b;border-radius:12px;background:#1e293b;color:inherit;font:inherit;cursor:pointer;touch-action:manipulation}
+.lumi-family button:disabled {opacity:.55;cursor:default}
+.lumi-family button:focus-visible,.lumi-family textarea:focus-visible {outline:3px solid #a78bfa;outline-offset:2px}
+.lf-status {margin:0;min-height:24px;font-size:13px;flex:none;color:#cbd5e1}
+.lf-content {min-height:0;flex:1;display:flex;flex-direction:column;gap:8px;overflow:auto;padding:8px 0}
+.lf-card {padding:14px;border:1px solid #475569;border-radius:16px;overflow-wrap:anywhere}
+.lf-card button {margin:4px}
+.lf-members {margin:0;color:#cbd5e1;font-size:13px;flex:none}
+.lf-messages {flex:1;min-height:120px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:12px 2px;overscroll-behavior:contain}
+.lf-message {align-self:flex-start;max-width:86%;border-radius:18px 18px 18px 4px;background:#334155;padding:8px 12px;overflow-wrap:anywhere;white-space:pre-wrap}
+.lf-message.own {align-self:flex-end;background:#6d28d9;border-radius:18px 18px 4px 18px}
+.lf-message p {margin:2px 0}
+.lf-message small {font-size:12px;color:#e2e8f0}
+.lumi-family form {display:flex;align-items:flex-end;gap:8px;flex:none;padding:8px 0}
+.lumi-family textarea {box-sizing:border-box;flex:1;min-width:0;min-height:46px;max-height:120px;padding:10px;border:1px solid #64748b;border-radius:14px;background:#1e293b;color:inherit;font:16px/1.5 system-ui;resize:vertical}
+.lumi-family [hidden] {display:none!important}
+[data-theme="light"] .lumi-family-dialog,body.light-mode .lumi-family-dialog,body.lumi-kids-family .lumi-family-dialog {background:#f8fafc;color:#0f172a}
+[data-theme="light"] .lumi-family button,body.light-mode .lumi-family button,body.lumi-kids-family .lumi-family button,
+[data-theme="light"] .lumi-family textarea,body.light-mode .lumi-family textarea,body.lumi-kids-family .lumi-family textarea {background:#e2e8f0;color:#0f172a}
+[data-theme="light"] .lf-status,[data-theme="light"] .lf-members,body.lumi-kids-family .lf-status,body.lumi-kids-family .lf-members {color:#475569}
+[data-theme="light"] .lf-message:not(.own),body.lumi-kids-family .lf-message:not(.own) {background:#e2e8f0;color:#0f172a}
+[data-theme="light"] .lf-message small,body.lumi-kids-family .lf-message small {color:inherit}
+@media(max-width:640px) {.lumi-family-dialog{height:100dvh;width:100%;max-height:100dvh;border:0;border-radius:0;margin:0}.lumi-family header h2{font-size:18px}}

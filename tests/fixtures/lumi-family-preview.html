@@ -1,0 +1,23 @@
+<!doctype html><html lang="pl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TEST — rodzinny LUMI, fikcyjne dane</title>
+<link rel="stylesheet" href="/css/lumi-room-navigation.css"><link rel="stylesheet" href="/css/lumi-family.css">
+<style>body{margin:0;background:#0f172a;color:#f8fafc;font:16px system-ui}iframe{width:360px;height:760px;border:1px solid #64748b}#frames{display:flex;gap:20px;padding:10px;flex-wrap:wrap}button{font:inherit}#bar{display:flex;background:rgba(255,255,255,.05);padding:4px;border-radius:14px}#bar>button{background:transparent;color:white}#bar i{font-style:normal;font-size:22px}.test-label{padding:12px;background:#eab308;color:#111827}</style>
+<body><script type="module">
+import { mountRoomNavigation } from '/components/lumi-room-navigation.js';
+import { mountFamilyView } from '/components/lumi-family-view.js';
+const frame = new URLSearchParams(location.search).get('frame');
+if (!frame) {
+  const note=document.createElement('p');note.className='test-label';note.textContent='TEST LOKALNY · 360 px · dane fikcyjne, bez połączenia z bazą';document.body.append(note);
+  const frames=document.createElement('div');frames.id='frames';document.body.append(frames);
+  for(const type of ['nav','family']){const f=document.createElement('iframe');f.src='?frame='+type;f.title=type==='nav'?'Test paska pokoi':'Test ekranu rodzinnego';frames.append(f);}
+} else if(frame==='nav') {
+  document.body.innerHTML='<section><header><h2 style="padding:14px">LUMI Messenger · TEST</h2><div id="bar"><button id="tabBtnPublicChat"><i>🌐</i><span class="tab-label">Świat</span></button><button id="tabBtnGroupsChat"><i>👥</i><span class="tab-label">Grupy</span></button><button id="tabBtnPrivateChat"><i>💬</i><span class="tab-badge">1</span></button><button id="tabBtnLiveTv" aria-label="Telewizja" title="Telewizja">📺</button><button id="tabBtnCreatePost" aria-label="Napisz wpis">✎ Nowy wpis</button></div></header><p style="padding:16px">TEST: trzy główne pokoje. Pozostałe opcje pod ⋯.</p></section>';
+  mountRoomNavigation(document,{onFamily:()=>{}});
+} else {
+  const dialog=document.createElement('dialog');dialog.className='lumi-family-dialog';document.body.append(dialog);dialog.showModal();
+  const messages=[{senderUid:'test-parent',text:'Przykładowa rozmowa TEST. Ten ekran nie zawiera prawdziwych wiadomości.'},{senderUid:'test-child',text:'Widzę pokój rodzinny! 😊'}];
+  const client={listMemberships:async()=>[],getRoom:async()=>({name:'Rodzina TEST',isGuardian:true}),listMembers:async()=>[{uid:'test-parent'},{uid:'test-child'}],watchMessages:(_,cb)=>{setTimeout(()=>cb({state:'synced',messages}),0);return()=>{};},send:async()=>({state:'stored'})};
+  const view=mountFamilyView({element:dialog,client,userUid:'test-parent',nameForUid:async uid=>uid==='test-parent'?'Opiekun TEST':'Dziecko TEST'});
+  setTimeout(()=>view.room('test-room'),0);
+}
+</script></body></html>
