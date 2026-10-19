@@ -71,10 +71,23 @@ const session = { day: '', title: '', items: [], liveStart: 0, total: 0, ready: 
 function warsawDay(ms = Date.now()) {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Warsaw', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
 }
+// Przesuwa oś czasu prowadzących na bieżącą sesję (09:00 → 10:00 → 11:00), bez ponownego pobierania scenariusza.
+function shiftSession(D) {
+  const start = D.liveStartToday();
+  if (start === session.liveStart || !session.tl) return;
+  session.liveStart = start;
+  session.items = session.tl.map((e, i) => ({
+    i, kind: e.m.kind, text: e.m.text, section: e.m.section,
+    typingAt: start + e.typingAt, at: start + e.showAt
+  }));
+}
 async function loadSession() {
   const day = warsawDay();
-  if (session.ready && session.day === day) return session;
-  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv2');
+  if (session.ready && session.day === day) {
+    if (window.CCTvDialogue) shiftSession(window.CCTvDialogue);
+    return session;
+  }
+  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv3');
   const D = window.CCTvDialogue;
   if (!D) return session;
   try {
@@ -88,6 +101,7 @@ async function loadSession() {
     const tl = parsed.isDialogue ? D.timeline(parsed.messages, reduce) : [];
     session.day = day;
     session.title = r ? String(r.title || '') : '';
+    session.tl = tl;
     session.liveStart = D.liveStartToday();
     session.items = tl.map((e, i) => ({
       i, kind: e.m.kind, text: e.m.text, section: e.m.section,
@@ -385,8 +399,8 @@ async function boot() {
   hookPublicChat();
   await loadSession();
   try { window.renderPublicChatMessages && window._cachedPublicChatMessages && window.renderPublicChatMessages(window._cachedPublicChatMessages); } catch (_) {}
-  // Nowa doba → nowy scenariusz (sprawdzamy co 10 minut).
-  setInterval(() => { if (warsawDay() !== session.day) { session.ready = false; loadSession(); } }, 600000);
+  // Co 30 s: nowa doba → nowy scenariusz; kolejna sesja tego dnia (np. 11:00) → przesunięcie osi czasu.
+  setInterval(() => { if (warsawDay() !== session.day) session.ready = false; loadSession(); }, 30000);
   // /mess?room=tv_zapolske otwiera od razu wskazany pokój.
   try {
     const want = new URLSearchParams(location.search).get('room');

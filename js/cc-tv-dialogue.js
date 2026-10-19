@@ -180,7 +180,7 @@
     return Math.max(4000, Math.min(16000, Math.round(String(text || '').length / 16 * 1000)));
   }
 
-  // ── Sesje na żywo: standardowo 09:00, z obsługą sesji 10:00 (czas polski) ──
+  // ── Sesje na żywo: 09:00, 10:00 i 11:00 (czas polski) ──
   const LIVE_TZ = 'Europe/Warsaw';
   const LIVE_HOUR = 9, LIVE_MINUTE = 0;
   function zonedToUtc(y, mo, d, h, mi, tz) {
@@ -192,16 +192,17 @@
       return guess - (asUtc - guess);
     } catch (_) { return guess - 2 * 3600000; }
   }
+  // Godziny sesji (czas polski). Wybierana jest najbliższa sesja, która jeszcze trwa lub dopiero nadejdzie
+  // (okno 35 min po starcie); po ostatniej — pierwsza sesja dnia (odtwarzacz liczy wtedy następną: jutro 09:00).
+  const LIVE_SESSIONS = [[9, 0], [10, 0], [11, 0]];
+  const LIVE_WINDOW_MS = 35 * 60 * 1000;
   function liveStartToday(now = Date.now()) {
     try {
       const f = new Intl.DateTimeFormat('en-CA', { timeZone: LIVE_TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
       const [y, mo, d] = f.format(new Date(now)).split('-').map(Number);
-      const t9 = zonedToUtc(y, mo, d, 9, 0, LIVE_TZ);
-      const t10 = zonedToUtc(y, mo, d, 10, 0, LIVE_TZ);
-      if (now >= t9 + 25 * 60 * 1000 && now < t10 + 35 * 60 * 1000) {
-        return t10;
-      }
-      return t9;
+      const starts = LIVE_SESSIONS.map(([h, mi]) => zonedToUtc(y, mo, d, h, mi, LIVE_TZ));
+      const next = starts.find((s) => now < s + LIVE_WINDOW_MS);
+      return next !== undefined ? next : starts[0];
     } catch (_) { const t = new Date(now); t.setHours(LIVE_HOUR, LIVE_MINUTE, 0, 0); return t.getTime(); }
   }
 
