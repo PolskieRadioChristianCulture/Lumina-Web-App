@@ -665,8 +665,8 @@
             border-radius: 28px;
             padding: 30px 35px;
             box-shadow: 0 20px 50px var(--glass-shadow);
-            position: absolute;
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            transition: opacity 0.4s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -678,13 +678,14 @@
         }
 
         /* Flat overlays in all modes to ensure absolute readability and pixel-perfect alignment */
-        body.mode-presenters .reflection-canvas-card {
+        body.mode-presenters .reflection-canvas-card,
+        body.mode-studio .reflection-canvas-card {
             position: relative;
             top: 0;
             left: auto;
             right: auto;
             width: 520px;
-            height: 530px;
+            height: 801px;
             margin-top: 0;
             transform: translateZ(0);
         }
@@ -696,47 +697,33 @@
             margin-top: 25px; /* Pushed down slightly for perfect vertical centering */
         }
 
-        body.mode-studio .reflection-canvas-card {
-            left: 320px; /* Centered layout */
-            top: 180px; /* Lowered to align with sidebars */
-            width: 1280px;
-            height: 700px;
-            transform: translateZ(0);
-        }
-
-        /* --- EVENING / NIGHT LAYOUT OVERRIDES (Swapped columns to prevent presenter overlap) --- */
+        /* ---STAŁA POZYCJA PO PRAWEJ STRONIE (bez przeskakiwania wieczorem/nocą) --- */
         body.evening-layout .main-viewport {
-            grid-template-columns: 1fr 460px; /* Swaps panels (Agenda goes to the right) */
+            grid-template-columns: 1fr 520px;
         }
 
         body.evening-layout .left-panel {
-            grid-column: 2; /* Move agenda/weather to the right column (covers the TV screen background) */
-            grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
-            margin-top: 60px; /* Reduced from 180px to prevent pushing the layout and cutting off the footer */
+            grid-column: 1;
+            grid-row: 1;
         }
 
         body.evening-layout .right-panel {
-            grid-column: 1; /* Move card/clock to the left column (covers the window background) */
-            grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
-            align-items: flex-start;
+            grid-column: 2;
+            grid-row: 1;
+            align-items: flex-end;
         }
 
         body.evening-layout.mode-presenters .reflection-canvas-card {
-            left: 0; /* Align to the left edge of right-panel (which is 70px from screen border) */
-            width: 510px; /* Fits exactly within the window width in the background picture */
-            height: 610px;
+            left: auto;
+            right: auto;
+            width: 520px;
+            height: 801px;
             transform: translateZ(0);
         }
 
         body.evening-layout.mode-presenters .card-clock-widget {
-            margin-right: auto;
-            margin-left: 0; /* Align clock to the left edge of the text card */
-        }
-
-        /* Shift special ad overlay to the right side in evening layout to avoid overlapping presenters */
-        body.evening-layout .zoom-ad-overlay {
-            left: auto;
-            right: 60px;
+            margin-right: 0;
+            margin-left: auto;
         }
 
         /* Slide layout area */
@@ -1734,28 +1721,27 @@
             height: 530px !important;
             margin-top: 0 !important;
         }
-        /* Okno czatu Noemi i Sary (Dowódca 19.10, Claude @A007): wyższe — od pod napisem NA ŻYWO (dół ~69px)
-           do nad zegarem paska (#tickerClock, góra ~903px) przy 1920×1080: karta 90–870px.
-           Tylko układ dzienny (karta po prawej); wieczorem karta jest po lewej i nie może zasłonić kodu QR. */
-        body.mode-presenters:not(.evening-layout) .right-panel,
-        body.za-polske-wallpaper:not(.evening-layout) .right-panel {
+        /* Okno czatu Noemi i Sary (Dowódca 19.10): stała pozycja po prawej stronie ekranu przez całą dobę,
+           od pod napisem NA ŻYWO (dół ~69px) do nad zegarem paska (#tickerClock, góra ~903px) przy 1920×1080. */
+        body .right-panel {
+            grid-column: 2 !important;
+            grid-row: 1 !important;
+            align-items: flex-end !important;
             align-self: start !important;
             height: auto !important;
             margin-top: -10px !important;
         }
-        body.mode-presenters:not(.evening-layout) .reflection-canvas-card,
-        body.za-polske-wallpaper:not(.evening-layout) .reflection-canvas-card {
+        body .reflection-canvas-card {
+            position: relative !important;
+            top: 0 !important;
+            left: auto !important;
+            right: auto !important;
+            width: 520px !important;
             height: 801px !important; /* dół 891 px — równo z panelem QR i oknem czatu */
+            margin-top: 0 !important;
         }
-        body.za-polske-wallpaper #livePrayerOverlay {
+        body #livePrayerOverlay {
             position: fixed !important;
-            bottom: 180px !important;
-            left: 70px !important;
-            width: 750px !important;
-        }
-        /* Okno czatu LUMI MESS (Wspólna modlitwa) nie może zasłaniać kodu QR w lewym dolnym rogu
-           (Dowódca 19.10, Claude @A007): przy 1920×1080 QR zajmuje x 48–192, okno zaczyna się od x 215. */
-        body:not(.evening-layout) #livePrayerOverlay {
             left: 215px !important;
             bottom: 189px !important; /* dół 891 px — równo z panelem QR */
             width: 760px !important;
@@ -1872,6 +1858,10 @@
             localStorage.setItem('dzj_stream_image', 'tlo_live_1.png');
             localStorage.setItem('dzj_stream_image_forced_v2', 'true');
         }
+        if (localStorage.getItem('dzj_reflection_pos_right_v2') !== 'true') {
+            localStorage.removeItem('live_win_cfg_reflection-canvas-card');
+            localStorage.setItem('dzj_reflection_pos_right_v2', 'true');
+        }
     </script>
     <script src="/js/cc-tv-dialogue.js?v=20261019_tv7_a007e"></script>
 </head>
@@ -1881,7 +1871,7 @@
     <div id="app-container">
 
         <!-- Background Image -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 3s ease-in-out;" src="" alt="Breakfast Studio">
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 3s ease-in-out;" src="tlo_live_1.png" alt="Breakfast Studio">
           <img id="bg-img-next" class="bg-layer bg-image" style="opacity: 0; transition: opacity 3s ease-in-out;" src="" alt="">
         
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -2765,7 +2755,7 @@
                 if (hour >= 5 && hour < 9) return "breakfast_presenters_morning_2.jpg";
                 if (hour >= 9 && hour < 12) return "breakfast_presenters_forenoon.jpg";
                 if (hour >= 12 && hour < 18) return "breakfast_presenters.jpg";
-                return "breakfast_presenters_evening.jpg";
+                return "breakfast_presenters.jpg";
             }
 
                                     // Real-time weather data cache and city coordinates
@@ -3025,50 +3015,26 @@ function getWeatherPreset(city) {
                 slideDurationInput.value = slideDurationMs / 1000;
             }
 
-            // Apply body styling mode class based on selected background
+            // Apply body styling mode class based on selected background (stała pozycja karty po prawej stronie)
             function applyBodyModeClass() {
                 document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today");
                 
                 const activeEl = document.getElementById("bg-img-active");
-                  const currentBg = activeEl ? activeEl.src.substring(activeEl.src.lastIndexOf('/') + 1) : "";
+                const currentBg = activeEl ? activeEl.src.substring(activeEl.src.lastIndexOf('/') + 1) : "";
                 
-                // 1. Special Event Layouts
                 if (currentBg.includes("zjednoczeni_za_polske_banner") || customImgSrc.includes("zjednoczeni_za_polske_banner")) {
-                    document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
+                    document.body.classList.add("special-event-today", "mode-presenters");
                     return;
                 }
-                
-
-                // Night background (CCTV_NOCA 21:00-06:00) - use evening-layout, not za-polske-wallpaper
                 if (currentBg.includes("CCTV_NOCA") || customImgSrc.includes("CCTV_NOCA")) {
-                    document.body.classList.add("mode-presenters", "evening-layout");
+                    document.body.classList.add("mode-presenters");
                     return;
                 }
-                
-                                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("SOBOTA") || customImgSrc.includes("SOBOTA") ) {
+                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("SOBOTA") || customImgSrc.includes("SOBOTA")) {
                     document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
-                
-                // 2. Standard Presenters auto-rotation layout
-                if (currentBg.includes("presenters") || customImgSrc.includes("presenters") || currentBg.includes("a0kKB") || currentBg.includes("tlo_poranne_live") || customImgSrc.includes("tlo_poranne_live") || currentBg.includes("tlo_live_1") || customImgSrc.includes("tlo_live_1") || currentBg.includes("tlo_live_2") || customImgSrc.includes("tlo_live_2")) {
-                    document.body.classList.add("mode-presenters");
-                    
-                    // evening presenters mockup places presenter Sara/Noemi on the right, so cards must go left.
-                    // daytime presenters are on the left, so cards must go right.
-                    if (currentBg.includes("evening") || customImgSrc.includes("evening")) {
-                        document.body.classList.add("evening-layout");
-                    }
-                } else {
-                    // Studio backgrounds
-                    document.body.classList.add("mode-studio");
-                    
-                    const hour = new Date().getHours();
-                    const isEveningOrNight = (hour >= 18 || hour < 5);
-                    if (isEveningOrNight) {
-                        document.body.classList.add("evening-layout");
-                    }
-                }
+                document.body.classList.add("mode-presenters");
             }
             applyBodyModeClass();
 
