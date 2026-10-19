@@ -3836,8 +3836,41 @@ function getWeatherPreset(city) {
             }
         });
 
+        // ── Modlitwy na żywo z pokoju LUMI Messenger „Zjednoczeni za Polskę” (Strażnik 2026-10-19) ──
+        // Trafiają na antenę po ~5 s, mają pierwszeństwo przed zatwierdzonymi intencjami.
+        // Linki, adresy, numery telefonów i wulgaryzmy są odrzucane; usunięta w pokoju modlitwa znika z kolejki.
+        const livePrayerQueue = [];
+        const liveSeen = new Set();
+        const liveRemoved = new Set();
+        const LIVE_BLOCK = /(https?:|www\.|\.(pl|com|net|org|eu|io|info)\b|@|\d[\d\s-]{6,}\d|kurw|chuj|pierd|jeba|jebi|jebn|pizd|spierd|dziwk|cwel|fuck|shit)/i;
+        const livePrayerOk = (t) => typeof t === "string" && t.trim().length >= 3 && t.length <= 400 && !LIVE_BLOCK.test(t);
+        try {
+            const liveQ = query(collection(db, "lumina_live_rooms", "tv_zapolske", "messages"), orderBy("createdAt", "desc"), limit(20));
+            onSnapshot(liveQ, (snap) => {
+                snap.docChanges().forEach((ch) => {
+                    const id = ch.doc.id;
+                    if (ch.type === "removed") {
+                        liveRemoved.add(id);
+                        for (let i = livePrayerQueue.length - 1; i >= 0; i--) if (livePrayerQueue[i].id === id) livePrayerQueue.splice(i, 1);
+                        return;
+                    }
+                    if (liveSeen.has(id)) return;
+                    const m = ch.doc.data();
+                    const t = m.createdAt && m.createdAt.seconds ? m.createdAt.seconds * 1000 : 0;
+                    if (!t) return; // poczekaj na czas serwera (kolejny snapshot)
+                    liveSeen.add(id);
+                    if (m.kind !== "prayer" || !livePrayerOk(m.text) || Date.now() - t > 2 * 3600000) return;
+                    setTimeout(() => {
+                        if (liveRemoved.has(id)) return;
+                        livePrayerQueue.push({ id, live: true, text: String(m.text).trim(), name: String(m.senderName || "Uczestnik").slice(0, 60), city: "na żywo z LUMI Messenger" });
+                        if (!isShowingPrayer) processQueue();
+                    }, Math.max(0, t + 5000 - Date.now()));
+                });
+            }, () => {});
+        } catch (e) {}
+
         function processQueue() {
-            if (activePrayersList.length === 0) {
+            if (activePrayersList.length === 0 && livePrayerQueue.length === 0) {
                 isShowingPrayer = false;
                 return;
             }
@@ -3848,7 +3881,8 @@ function getWeatherPreset(city) {
                 currentPrayerIndex = 0;
             }
             
-            const prayer = activePrayersList[currentPrayerIndex];
+            const fromLive = livePrayerQueue.length > 0;
+            const prayer = fromLive ? livePrayerQueue.shift() : activePrayersList[currentPrayerIndex];
             
             // Populate and display
             livePrayerText.textContent = `„${prayer.text}”`;
@@ -3865,7 +3899,7 @@ function getWeatherPreset(city) {
                 livePrayerOverlay.style.pointerEvents = "none";
                 
                 setTimeout(() => {
-                    currentPrayerIndex++;
+                    if (!fromLive) currentPrayerIndex++;
                     processQueue();
                 }, 5000); // 5s gap between popups
             }, 20000);

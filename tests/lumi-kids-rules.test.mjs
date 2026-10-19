@@ -4,7 +4,7 @@ import { test, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { initializeTestEnvironment, assertSucceeds, assertFails } from '@firebase/rules-unit-testing';
-import { doc, getDoc, setDoc, updateDoc, addDoc, collection, getDocs, query, where, serverTimestamp, deleteField } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, collection, getDocs, query, where, serverTimestamp, deleteField } from 'firebase/firestore';
 
 const RULES = process.env.RULES_FILE || 'firestore.rules';
 let env;
@@ -257,4 +257,24 @@ test('Regresja syn → mama: zwykle konto mamy czyta pelna tresc i odpowiada w t
   const outsider = await assertSucceeds(myDms(stranger(), STRANGER, MOMCHAT));
   assert.equal(outsider.empty, true);
   await assertFails(getDoc(doc(stranger(), 'lumina_direct_messages/child-to-mom')));
+});
+
+
+// ── Pokoje LIVE TV ────────────────────────────────────────────────────────────
+const liveMsg = (uid, extra = {}) => ({ roomId: 'tv_zapolske', text: 'Panie, błogosław Polsce', senderAuthUid: uid, senderName: 'Test', senderAvatar: '/lumina_icon.jpg', kind: 'prayer', createdAt: serverTimestamp(), ...extra });
+test('LIVE TV: członek pisze w pokoju, wszyscy czytają, dziecko i gość nie piszą, nie da się podszyć ani dopisać pól', async () => {
+  await seed();
+  const col = (f) => collection(f, 'lumina_live_rooms/tv_zapolske/messages');
+  await assertSucceeds(setDoc(doc(ua(), 'lumina_live_rooms/tv_zapolske/messages/p1'), liveMsg(UA)));
+  await assertSucceeds(getDoc(doc(env.unauthenticatedContext().firestore(), 'lumina_live_rooms/tv_zapolske/messages/p1')));
+  await assertFails(addDoc(col(child()), liveMsg(CHILD)));
+  await assertFails(addDoc(col(env.unauthenticatedContext().firestore()), liveMsg('anon')));
+  await assertFails(addDoc(col(ua()), liveMsg(UB)));
+  await assertFails(addDoc(col(ua()), liveMsg(UA, { imageUrl: 'https://example.com/x.jpg' })));
+  await assertFails(addDoc(col(ua()), liveMsg(UA, { text: 'x'.repeat(1001) })));
+  await assertFails(addDoc(col(ua()), liveMsg(UA, { roomId: 'tv_cctv24' })));
+  await assertFails(addDoc(col(ua()), liveMsg(UA, { kind: 'pinned' })));
+  await assertFails(updateDoc(doc(ua(), 'lumina_live_rooms/tv_zapolske/messages/p1'), { text: 'zmiana' }));
+  await assertFails(deleteDoc(doc(ub(), 'lumina_live_rooms/tv_zapolske/messages/p1')));
+  await assertSucceeds(deleteDoc(doc(admin(), 'lumina_live_rooms/tv_zapolske/messages/p1')));
 });

@@ -86,7 +86,8 @@ $Files = @(
     'scripts\build-tablica-light.mjs', 'lumina-tablica-light.html', 'lumina-tablica.html', 'lumina-profile.html',
     'js\lumina-theme-manager.js', 'js\cc-chat-integration.js', 'components\cc-global-chat-button.js',
     'lumina-db.js', 'components\lumi-direct-dock-adapter.js', 'scripts\push-regression.test.cjs',
-    'js\cc-tv-dialogue.js', 'cctv24.html', 'cctv24-pl.html', 'zapolske-live.html', 'scripts\lumina-straznik-20261007.test.mjs'
+    'js\cc-tv-dialogue.js', 'cctv24.html', 'cctv24-pl.html', 'zapolske-live.html', 'scripts\lumina-straznik-20261007.test.mjs',
+    'js\lumi-live-rooms.js', 'lumina.html', 'zapolske-live.html', 'firestore.rules', 'tests\lumi-kids-rules.test.mjs'
 ) | Where-Object { Test-Path (Join-Path $Repo $_) }
 
 Krok "1/5 Synchronizacja z GitHubem (origin/main)"
@@ -113,7 +114,7 @@ if ($rc -ne 0) { Stop "git add (obrazy) nie powiódł się" }
 $null = G status --short -- $Files
 git diff --cached --quiet
 if ($LASTEXITCODE -ne 0) {
-    $rc = G commit -m "Strażnik (Claude): CCTV24 — rozważanie jako żywy czat Noemi i Sary (wspólny parser: cctv24, cctv24-pl, zapolske-live)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
+    $rc = G commit -m "Strażnik (Claude): pokoje LIVE TV w LUMI Messenger, rozważanie Noemi i Sary o 9:00 na czacie, modlitwy z pokoju na antenie Zjednoczeni za Polskę" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01Ajo7kf41XL22xXQg9iJW9o"
     if ($rc -ne 0) { Stop "git commit nie powiódł się" }
 } else { Write-Host "  (brak nowych zmian do zapisania — publikuję stan bieżący)" -ForegroundColor Yellow }
 $sha = (git rev-parse --short HEAD).Trim()
@@ -133,7 +134,7 @@ Push-Location $Tmp
 $o = (node scripts/build-pages-release.mjs 2>&1 | Out-String); $rcb = $LASTEXITCODE; Write-Host $o
 Pop-Location
 if ($rcb -ne 0) { Stop "budowa paczki .pages-release nie powiodła się" }
-$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-19 CCTV24 rozwazanie jako zywy czat" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
+$o = (npx.cmd wrangler pages deploy (Join-Path $Tmp '.pages-release') --project-name polskieradio --branch main --commit-hash $sha --commit-message "Straznik 2026-10-19 pokoje LIVE TV, sesja 9:00, modlitwy na antenie" 2>&1 | Out-String); $rcd = $LASTEXITCODE; Write-Host $o
 git worktree remove --force $Tmp 2>$null | Out-Null
 if ($rcd -ne 0) { Stop "wrangler pages deploy nie powiódł się" }
 Ok "opublikowane"

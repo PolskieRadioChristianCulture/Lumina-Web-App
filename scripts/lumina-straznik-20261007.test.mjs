@@ -577,3 +577,21 @@ test('CCTV: rozważanie TV jako żywy czat Noemi i Sary — wspólny parser na c
   assert.equal(new Date(D.liveStartToday(Date.parse('2026-10-19T12:00:00Z'))).toISOString(), '2026-10-19T07:00:00.000Z');
   assert.equal(new Date(D.liveStartToday(Date.parse('2026-12-01T12:00:00Z'))).toISOString(), '2026-12-01T08:00:00.000Z');
 });
+
+test('LUMI Messenger: pokoje LIVE TV, rozmowa Noemi i Sary na czacie ogólnym, modlitwy z pokoju na antenie /zapolske-live', async () => {
+  const m = await readFile('js/lumi-live-rooms.js', 'utf8');
+  const html = await readFile('lumina.html', 'utf8');
+  const zp = await readFile('zapolske-live.html', 'utf8');
+  const rules = await readFile('firestore.rules', 'utf8');
+  assert.match(html, /src="\/js\/lumi-live-rooms\.js\?v=/);
+  for (const id of ['tv_cctv24', 'tv_zapolske', 'tv_master_live', 'tv_cctv24_pl']) assert.match(m, new RegExp(`id: '${id}'`));
+  assert.match(m, /lumina_live_rooms/);
+  assert.match(m, /window\.renderPublicChatMessages = function/);
+  assert.match(m, /CCTvDialogue\.liveStartToday\(\)|D\.liveStartToday\(\)/);
+  assert.doesNotMatch(m, /innerHTML/);
+  assert.match(zp, /collection\(db, "lumina_live_rooms", "tv_zapolske", "messages"\)/);
+  assert.match(zp, /livePrayerOk/);
+  assert.match(zp, /t \+ 5000 - Date\.now\(\)/);
+  assert.match(rules, /match \/lumina_live_rooms\/\{roomId\}\/messages\/\{messageId\}/);
+  assert.match(rules, /kind in \['text', 'prayer'\]/);
+});
