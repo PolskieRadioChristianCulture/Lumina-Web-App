@@ -43,7 +43,9 @@ export async function open() {
     notice(rows.length ? 'Dyspozycje do agenta dyżurnego. Potwierdzenie Skrzynki jest oddzielne od zapisu w kolejce.' : 'Napisz dyspozycję do agenta dyżurnego.');
     const view=document.getElementById('messengerCommanderView');
     for (const span of view?.querySelectorAll('span') || []) if (span.textContent.includes('Agent AI: Aktywny')) span.textContent='Odpowiedź po podjęciu przez dyżurnego';
-  } catch { if(active===c) notice('Brak dostępu lub połączenia. Zaloguj się ponownie na zatwierdzone konto.'); }
+  } catch(error) { if(active===c) notice(error.code==='resource-exhausted' ?
+    'Limit bazy jest wyczerpany. Nie ponawiam automatycznie. Spróbuj później.' :
+    'Brak dostępu lub połączenia. Zaloguj się ponownie na zatwierdzone konto.'); }
 }
 export async function send(event) {
   event?.preventDefault(); const {input}=nodes();const text=input?.value.trim();if(!text||pending?.busy)return;
@@ -52,6 +54,8 @@ export async function send(event) {
   try {
     await c.client.send(attempt.id,text);if(active!==c)return;
     if(input.value.trim()===text)input.value='';pending=null;await open();
-  } catch { if(active===c)notice('Nie potwierdzono zapisu. Tekst pozostaje w polu; ponowienie użyje tego samego numeru dyspozycji.'); }
+  } catch(error) { if(active===c)notice(error.code==='resource-exhausted' ?
+    'Limit bazy jest wyczerpany. Tekst pozostaje w polu. Nie ponawiam automatycznie.' :
+    'Nie potwierdzono zapisu. Tekst pozostaje w polu; ponowienie użyje tego samego numeru dyspozycji.'); }
   finally{attempt.busy=false;}
 }
