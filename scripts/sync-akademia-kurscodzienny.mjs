@@ -25,12 +25,12 @@ akademiaHtml = akademiaHtml.replace(
 const heroActionsRegex = /<!-- Hero Actions -->\s*<div class="flex flex-wrap items-center justify-center gap-4">[\s\S]*?<\/div>/;
 const updatedHeroActions = `<!-- Hero Actions -->
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="/akademia/kurscodzienny/dzien-19" class="cin-btn-primary min-h-[48px]">
-            <span>CZYTAJ DZIEŃ 19 (19 PAŹDZIERNIKA)</span>
+          <a href="/akademia/kurscodzienny/dzien-20" class="cin-btn-primary min-h-[48px]">
+            <span>CZYTAJ DZIEŃ 20 (20 PAŹDZIERNIKA)</span>
             <span>→</span>
           </a>
-          <a href="/akademia/kurscodzienny/dzien-18" class="cin-btn-secondary min-h-[48px]">
-            <span>← DZIEŃ 18</span>
+          <a href="/akademia/kurscodzienny/dzien-19" class="cin-btn-secondary min-h-[48px]">
+            <span>← DZIEŃ 19</span>
           </a>
           <a href="#katalog-kurscodzienny" class="cin-btn-secondary min-h-[48px]">
             <span>PRZEGLĄDAJ DNI MIESIĄCA ↓</span>
@@ -41,36 +41,11 @@ akademiaHtml = akademiaHtml.replace(heroActionsRegex, updatedHeroActions);
 // C. Zaktualizuj licznik dostępnych dni w akademia.html
 akademiaHtml = akademiaHtml.replace(
   /Dni 1–\d+ Dostępne \(Październik 2026\)/g,
-  'Dni 1–19 z 31 Dostępne (19 Października 2026)'
+  'Dni 1–20 z 31 Dostępne (20 Października 2026)'
 );
 akademiaHtml = akademiaHtml.replace(
   /Dni 1–\d+ z 31 Dostępne[^\n<]*/g,
-  'Dni 1–19 z 31 Dostępne (19 Października 2026)'
-);
-
-// D. Zaktualizuj statusy w kartach Dnia 18 i Dnia 19
-// Dzień 18 staje się dostępną lekcją
-akademiaHtml = akademiaHtml.replace(
-  /<a href="\/akademia\/kurscodzienny\/dzien-18" class="group block p-5 rounded-2xl bg-\[#0E121A\] border-2 border-brand-gold hover:border-amber-400 hover:bg-\[#161B26\] transition-all transform hover:-translate-y-1 shadow-xl shadow-black\/50 flex flex-col relative ring-1 ring-amber-500\/30">[\s\S]*?<span class="px-2 py-0\.5 rounded-full bg-amber-500\/25 text-amber-300 text-\[10px\] font-extrabold border border-amber-500\/50 animate-pulse">DZISIEJSZA LEKCJA<\/span>/,
-  `<a href="/akademia/kurscodzienny/dzien-18" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">
-            <div class="flex items-center justify-between gap-2 mb-3">
-              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 18 • 18 PAŹDZIERNIKA 2026</span>
-              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">DOSTĘPNA TERAZ</span>`
-);
-
-// Dzień 19 staje się dzisiejszą lekcją
-akademiaHtml = akademiaHtml.replace(
-  /<a href="\/akademia\/kurscodzienny\/dzien-19" class="group block p-5 rounded-2xl bg-\[#0E121A\] border border-brand-gold\/30 hover:border-amber-500\/70 hover:bg-\[#161B26\] transition-all transform hover:-translate-y-1 shadow-lg shadow-black\/40 flex flex-col">[\s\S]*?<span class="px-2 py-0\.5 rounded-full bg-blue-500\/15 text-blue-300 text-\[10px\] font-bold border border-blue-500\/30">ZAPOWIEDŹ NA JUTRO<\/span>/,
-  `<a href="/akademia/kurscodzienny/dzien-19" class="group block p-5 rounded-2xl bg-[#0E121A] border-2 border-brand-gold hover:border-amber-400 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-xl shadow-black/50 flex flex-col relative ring-1 ring-amber-500/30">
-            <div class="flex items-center justify-between gap-2 mb-3">
-              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 19 • 19 PAŹDZIERNIKA 2026</span>
-              <span class="px-2 py-0.5 rounded-full bg-amber-500/25 text-amber-300 text-[10px] font-extrabold border border-amber-500/50 animate-pulse">DZISIEJSZA LEKCJA</span>`
-);
-
-// Zamień "Podgląd" na "Studiuj" w Karcie Dnia 19
-akademiaHtml = akademiaHtml.replace(
-  /(<a href="\/akademia\/kurscodzienny\/dzien-19"[\s\S]*?)<span>Podgląd<\/span>/,
-  '$1<span>Studiuj</span>'
+  'Dni 1–20 z 31 Dostępne (20 Października 2026)'
 );
 
 fs.writeFileSync(akademiaPath, akademiaHtml, 'utf8');
@@ -95,12 +70,12 @@ if (cardsMatch && cardsMatch[1]) {
   const heroCtaRegex = /<!-- CTA Buttons -->\s*<div class="flex flex-wrap items-center justify-center gap-4">[\s\S]*?<\/div>/;
   const updatedHeroCta = `<!-- CTA Buttons -->
       <div class="flex flex-wrap items-center justify-center gap-4">
-        <a href="/akademia/kurscodzienny/dzien-19" class="cin-btn-primary min-h-[48px]">
-          <span>CZYTAJ DZIEŃ 19 (19 PAŹDZIERNIKA)</span>
+        <a href="/akademia/kurscodzienny/dzien-20" class="cin-btn-primary min-h-[48px]">
+          <span>CZYTAJ DZIEŃ 20 (20 PAŹDZIERNIKA)</span>
           <span>→</span>
         </a>
-        <a href="/akademia/kurscodzienny/dzien-18" class="cin-btn-secondary min-h-[48px]">
-          <span>← DZIEŃ 18</span>
+        <a href="/akademia/kurscodzienny/dzien-19" class="cin-btn-secondary min-h-[48px]">
+          <span>← DZIEŃ 19</span>
         </a>
         <a href="/akademia/kurscodzienny/dzien-01" class="cin-btn-secondary min-h-[48px]">
           <span>OD POCZĄTKU (DZIEŃ 1)</span>
@@ -114,7 +89,7 @@ if (cardsMatch && cardsMatch[1]) {
   // Zaktualizuj licznik w kurscodzienny.html
   kurscodziennyHtml = kurscodziennyHtml.replace(
     /Dni 1–\d+ z 31 Dostępne[^\n<]*/g,
-    'Dni 1–19 z 31 Dostępne (19 Października 2026)'
+    'Dni 1–20 z 31 Dostępne (20 Października 2026)'
   );
 
   // Zaktualizuj siatkę kart w kurscodzienny.html
