@@ -87,7 +87,7 @@ async function loadSession() {
     if (window.CCTvDialogue) shiftSession(window.CCTvDialogue);
     return session;
   }
-  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv5');
+  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv6');
   const D = window.CCTvDialogue;
   if (!D) return session;
   try {
@@ -268,7 +268,7 @@ function renderList() {
   if (!view) return;
   const live = sessionLive();
   const list = el('div', { class: 'llr-list', role: 'list' },
-    el('div', { class: 'llr-note', text: '📺 Pokoje LIVE TV — rozmawiaj z innymi podczas transmisji. Codziennie o 9:00 Noemi i Sara prowadzą tu rozważanie na żywo.' }),
+    el('div', { class: 'llr-note', text: '📺 Pokoje LIVE TV — rozmawiaj z innymi podczas transmisji. Rozważanie Noemi i Sary codziennie o 9:00; powtórka o 18:00 czasu polskiego.' }),
     LIVE_ROOMS.map((r) => el('button', { type: 'button', class: 'llr-card', role: 'listitem', onclick: () => enterRoom(r.id) },
       el('span', { class: 'llr-ico', 'aria-hidden': 'true', text: r.icon }),
       el('span', {},

@@ -194,7 +194,7 @@
   }
   // Godziny sesji (czas polski). Wybierana jest najbliższa sesja, która jeszcze trwa lub dopiero nadejdzie
   // (okno 35 min po starcie); po ostatniej — pierwsza sesja dnia (odtwarzacz liczy wtedy następną: jutro 09:00).
-  const LIVE_SESSIONS = [[9, 0], [10, 0], [11, 0]];
+  const LIVE_SESSIONS = [[9, 0], [10, 0], [11, 0], [18, 0]];
   const LIVE_WINDOW_MS = 35 * 60 * 1000;
   function liveStartToday(now = Date.now()) {
     try {

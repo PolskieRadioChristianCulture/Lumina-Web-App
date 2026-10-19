@@ -574,9 +574,19 @@ test('CCTV: rozważanie TV jako żywy czat Noemi i Sary — wspólny parser na c
     assert.match(h, /reflection\.tvScript \|\| reflection\.scenariuszTV/, f);
   }
   assert.doesNotMatch(src, /innerHTML/);
-  // Jedna sesja na żywo dziennie: 09:00 czasu polskiego (zimą 08:00 UTC, latem 07:00 UTC).
-  assert.equal(new Date(D.liveStartToday(Date.parse('2026-10-19T12:00:00Z'))).toISOString(), '2026-10-19T07:00:00.000Z');
-  assert.equal(new Date(D.liveStartToday(Date.parse('2026-12-01T12:00:00Z'))).toISOString(), '2026-12-01T08:00:00.000Z');
+  // Daily 18:00 Europe/Warsaw repeat; morning sessions remain available.
+  for (const [now, start] of [
+    ['2026-10-19T12:00:00Z','2026-10-19T16:00:00.000Z'],
+    ['2026-10-19T15:59:59Z','2026-10-19T16:00:00.000Z'],
+    ['2026-10-19T16:00:00Z','2026-10-19T16:00:00.000Z'],
+    ['2026-10-19T16:34:00Z','2026-10-19T16:00:00.000Z'],
+    ['2026-12-01T12:00:00Z','2026-12-01T17:00:00.000Z'],
+    ['2026-10-25T16:59:59Z','2026-10-25T17:00:00.000Z'],
+    ['2026-03-29T15:59:59Z','2026-03-29T16:00:00.000Z'],
+    ['2026-10-19T07:10:00Z','2026-10-19T07:00:00.000Z']
+  ]) assert.equal(new Date(D.liveStartToday(Date.parse(now))).toISOString(), start);
+  for (const file of ['cctv24.html','cctv24-pl.html','zapolske-live.html','js/lumi-live-rooms.js'])
+    assert.match(await readFile(file,'utf8'),/cc-tv-dialogue\.js\?v=20261019_tv6/, file);
 });
 
 test('LUMI Messenger: pokoje LIVE TV, rozmowa Noemi i Sary na czacie ogólnym, modlitwy z pokoju na antenie /zapolske-live', async () => {
