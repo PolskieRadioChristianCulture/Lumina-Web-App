@@ -92,7 +92,7 @@ async function loadSession() {
     if (window.CCTvDialogue) shiftSession(window.CCTvDialogue);
     return session;
   }
-  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv7_live1');
+  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv7_a007d');
   const D = window.CCTvDialogue;
   if (!D) return session;
   try {
@@ -133,37 +133,60 @@ const publicPresenterMessages = new WeakSet();
 const publicMessageRoom = (message) => publicPresenterMessages.has(message) ? 'tv_cctv24' : null;
 
 // ── Czat ogólny: rozmowa prowadzących pojawia się także tutaj ────────────────
+function getPresenterMessages(now = Date.now()) {
+  return presenterMessages(now).map((m) => {
+    const message = {
+      id: m.id,
+      virtual: true,
+      senderId: m.senderId,
+      senderName: m.senderName,
+      senderAvatar: m.senderAvatar,
+      senderBadge: (sessionLive(now) ? '🔴 NA ŻYWO · CCTV24' : '📺 Rozważanie · CCTV24'),
+      text: m.text,
+      type: 'text',
+      timestamp: { seconds: Math.floor(m.at / 1000) },
+      createdAt: m.at,
+      reactions: {}
+    };
+    publicPresenterMessages.add(message);
+    return message;
+  });
+}
+
 function hookPublicChat() {
-  if (window._lumiLiveRoomsPublicHooked || typeof window.renderPublicChatMessages !== 'function') return;
+  if (window._lumiLiveRoomsPublicHooked) return;
   window._lumiLiveRoomsPublicHooked = true;
-  const original = window.renderPublicChatMessages;
-  window.renderPublicChatMessages = function (messages) {
-    let merged = messages || [];
-    try {
-      const v = presenterMessages().map((m) => {
-        const message = {
-        id: m.id, senderId: m.senderId, senderName: m.senderName, senderAvatar: m.senderAvatar,
-        senderBadge: (sessionLive() ? '🔴 NA ŻYWO · CCTV24' : '📺 Rozważanie · CCTV24'), text: m.text, type: 'text',
-        timestamp: { seconds: Math.floor(m.at / 1000) }, createdAt: m.at, reactions: {}
-        };
-        publicPresenterMessages.add(message);
-        return message;
-      });
-      if (v.length) {
-        merged = merged.concat(v).sort((a, b) => (tsMs(a.timestamp) || a.createdAt || 0) - (tsMs(b.timestamp) || b.createdAt || 0));
-      }
-    } catch (_) {}
-    return original.call(this, merged);
-  };
+  if (typeof window.renderPublicChatMessages === 'function') {
+    const original = window.renderPublicChatMessages;
+    window.renderPublicChatMessages = function (messages) {
+      let merged = messages || [];
+      try {
+        if (!merged.some((m) => m && (m.virtual || publicPresenterMessages.has(m)))) {
+          const v = getPresenterMessages();
+          if (v.length) {
+            merged = merged.concat(v).sort((a, b) => (tsMs(a.timestamp) || a.createdAt || 0) - (tsMs(b.timestamp) || b.createdAt || 0));
+          }
+        }
+      } catch (_) {}
+      return original.call(this, merged);
+    };
+  }
   let shown = -1;
-  setInterval(() => {
+  const refreshPublic = () => {
     if (window.CCTvDialogue) shiftSession(window.CCTvDialogue);
     const n = presenterMessages().length;
-    if (n !== shown) {
+    const box = document.getElementById('publicChatMessagesBox');
+    const missingInDom = n > 0 && box && !box.querySelector('.lumina-msg-row[data-message-id^="cctv-"]');
+    if (n !== shown || missingInDom) {
       shown = n;
-      try { window.renderPublicChatMessages(window._cachedPublicChatMessages || []); } catch (_) {}
+      try {
+        if (typeof window.renderPublicChatMessages === 'function') {
+          window.renderPublicChatMessages(window._cachedPublicChatMessages || []);
+        }
+      } catch (_) {}
     }
-  }, 2000);
+  };
+  setInterval(refreshPublic, 1500);
 }
 
 // ── Zakładka LIVE TV ─────────────────────────────────────────────────────────
@@ -437,5 +460,5 @@ async function boot() {
   } catch (_) {}
 }
 
-window.LumiLiveRooms = { LIVE_ROOMS, publicMessageRoom, enterRoom: (id) => { window.switchMessengerMainTab('livetv'); setTimeout(() => enterRoom(id), 200); }, session: () => session };
+window.LumiLiveRooms = { LIVE_ROOMS, publicMessageRoom, enterRoom: (id) => { window.switchMessengerMainTab('livetv'); setTimeout(() => enterRoom(id), 200); }, session: () => session, getPresenterMessages };
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

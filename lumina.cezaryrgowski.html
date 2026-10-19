@@ -9719,7 +9719,7 @@
                         window._publicTypingAttached = true;
                         window.LuminaDB.attachTypingIndicator('publicChatInput', 'public', 'publicChatTypingIndicator', (ids) => ids.length === 1 ? `${ids[0]} pisze…` : `${ids.length} osoby piszą…`);
                     }
-                    renderPublicChatMessages(messages);
+                    (window.renderPublicChatMessages || renderPublicChatMessages)(messages);
                 });
             }
         }
@@ -10028,7 +10028,21 @@ function renderPublicChatMessages(messages) {
                 </div>
             `;
 
-            (messages || []).forEach(msg => {
+            let list = Array.isArray(messages) ? messages.slice() : [];
+            if (window.LumiLiveRooms && typeof window.LumiLiveRooms.getPresenterMessages === 'function' && !list.some(m => m && m.virtual)) {
+                try {
+                    const v = window.LumiLiveRooms.getPresenterMessages();
+                    if (v && v.length) {
+                        list = list.concat(v).sort((a, b) => {
+                            const atA = (a.timestamp && (a.timestamp.seconds * 1000 || a.timestamp)) || a.createdAt || 0;
+                            const atB = (b.timestamp && (b.timestamp.seconds * 1000 || b.timestamp)) || b.createdAt || 0;
+                            return atA - atB;
+                        });
+                    }
+                } catch (_) {}
+            }
+
+            list.forEach(msg => {
                 const normSender = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(msg.senderId) : msg.senderId;
                 const isMe = (myId !== 'guest' && normSender === myId);
                 const align = isMe ? 'flex-end' : 'flex-start';
@@ -10622,7 +10636,7 @@ function renderPublicChatMessages(messages) {
             window.closeChatSettingsModal();
             if (window.LuminaDB && typeof window.LuminaDB.subscribeToPublicChat === 'function') {
                 window.LuminaDB.subscribeToPublicChat((messages) => {
-                    if (typeof renderPublicChatMessages === 'function') renderPublicChatMessages(messages);
+                    if (typeof renderPublicChatMessages === 'function') (window.renderPublicChatMessages || renderPublicChatMessages)(messages);
                 });
             }
         };
