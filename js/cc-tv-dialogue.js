@@ -170,17 +170,17 @@
       .cctv-live-badge::before{content:'';width:10px;height:10px;border-radius:50%;background:#ff3b3b;box-shadow:0 0 0 0 rgba(255,59,59,.7);animation:cctvPulse 1.6s infinite}
       .cctv-live-badge.is-replay::before{background:#d4af37;animation:none}
       @keyframes cctvPulse{0%{box-shadow:0 0 0 0 rgba(255,59,59,.6)}70%{box-shadow:0 0 0 10px rgba(255,59,59,0)}100%{box-shadow:0 0 0 0 rgba(255,59,59,0)}}
-      .chat-container.cctv-split-chat{display:flex;flex-direction:column;gap:10px;overflow:hidden!important}
-      .cctv-host-stream{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-right:6px}
-      .cctv-viewer-stream{flex:0 0 auto;max-height:48%;overflow-y:auto;display:flex;flex-direction:column;gap:7px;padding-top:8px;padding-right:6px;border-top:1.5px solid rgba(212,175,55,.45)}
+      .chat-container.cctv-split-chat{display:flex;flex-direction:column;gap:8px;overflow:hidden!important}
+      .cctv-host-stream{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px}
+      .cctv-viewer-stream{flex:0 0 auto;max-height:55%;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-top:6px;padding-right:6px;border-top:1.5px solid rgba(212,175,55,.45)}
       .cctv-viewer-stream:empty{display:none;border-top:none;padding-top:0}
-      .cctv-viewer-header{align-self:center;display:inline-flex;align-items:center;gap:8px;padding:3px 13px;border-radius:999px;background:linear-gradient(90deg,rgba(220,38,38,.3),rgba(212,175,55,.22));border:1px solid rgba(252,211,77,.55);color:#fde68a;font-weight:800;font-size:.78rem;letter-spacing:1.1px;text-transform:uppercase;flex-shrink:0}
-      .cctv-viewer-row{align-items:flex-start;gap:10px}
-      .cctv-viewer-avatar{width:34px!important;height:34px!important;border:1.5px solid #f59e0b!important;flex-shrink:0}
-      .cctv-viewer-bubble{max-width:89%!important;padding:7px 12px!important;font-size:.96rem!important;line-height:1.32!important;background:linear-gradient(135deg,rgba(168,85,247,.24),rgba(6,182,212,.18))!important;border:1px solid rgba(252,211,77,.48)!important;border-radius:14px 14px 14px 4px!important}
-      .cctv-viewer-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.78rem!important;margin-bottom:2px!important;color:#fde68a!important;text-transform:none!important;letter-spacing:.2px!important}
-      .cctv-viewer-badge{font-size:.66rem;font-weight:800;color:#fecaca;background:rgba(220,38,38,.38);border:1px solid rgba(248,113,113,.55);padding:1px 7px;border-radius:999px;white-space:nowrap}
-      .cctv-viewer-text{font-size:.95rem;line-height:1.32;color:#fff}
+      .cctv-viewer-header{align-self:center;display:inline-flex;align-items:center;gap:6px;padding:2px 11px;border-radius:999px;background:linear-gradient(90deg,rgba(220,38,38,.3),rgba(212,175,55,.22));border:1px solid rgba(252,211,77,.55);color:#fde68a;font-weight:800;font-size:.70rem;letter-spacing:1px;text-transform:uppercase;flex-shrink:0}
+      .cctv-viewer-row{align-items:flex-start;gap:8px}
+      .cctv-viewer-avatar{width:30px!important;height:30px!important;border:1.5px solid #f59e0b!important;flex-shrink:0}
+      .cctv-viewer-bubble{max-width:90%!important;padding:5px 10px!important;font-size:.88rem!important;line-height:1.25!important;background:linear-gradient(135deg,rgba(168,85,247,.24),rgba(6,182,212,.18))!important;border:1px solid rgba(252,211,77,.48)!important;border-radius:12px 12px 12px 4px!important}
+      .cctv-viewer-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.74rem!important;margin-bottom:1px!important;color:#fde68a!important;text-transform:none!important;letter-spacing:.2px!important}
+      .cctv-viewer-badge{font-size:.62rem;font-weight:800;color:#fecaca;background:rgba(220,38,38,.38);border:1px solid rgba(248,113,113,.55);padding:1px 6px;border-radius:999px;white-space:nowrap}
+      .cctv-viewer-text{font-size:.88rem;line-height:1.25;color:#fff}
       @media (prefers-reduced-motion: reduce){.cctv-live-row,.cctv-section{animation:none}.cctv-dots i{animation:none;opacity:.6}}
     `;
     document.head.appendChild(s);
