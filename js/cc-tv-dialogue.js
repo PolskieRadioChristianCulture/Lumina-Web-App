@@ -174,11 +174,11 @@
       .cctv-host-stream{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px}
       .cctv-viewer-stream{flex:0 0 auto;max-height:55%;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-top:6px;padding-right:6px;border-top:1.5px solid rgba(212,175,55,.45)}
       .cctv-viewer-stream:empty{display:none;border-top:none;padding-top:0}
-      .cctv-viewer-dock{position:fixed;left:215px;bottom:200px;width:760px;max-height:300px;z-index:60;gap:8px;padding:12px 14px;border:1.5px solid rgba(212,175,55,.55);border-radius:18px;background:rgba(10,12,20,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(0,0,0,.45);overflow:hidden}
-      .cctv-viewer-dock .cctv-viewer-bubble{font-size:1.2rem!important;line-height:1.3!important;padding:8px 14px!important}
-      .cctv-viewer-dock .cctv-viewer-text{font-size:1.2rem}
-      .cctv-viewer-dock .cctv-viewer-head{font-size:.95rem!important}
-      .cctv-viewer-dock .cctv-viewer-avatar{width:40px!important;height:40px!important}
+      .cctv-viewer-dock{position:fixed;left:215px;bottom:200px;width:640px;max-height:235px;z-index:60;gap:6px;padding:10px 12px;border:1.5px solid rgba(212,175,55,.55);border-radius:18px;background:rgba(10,12,20,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(0,0,0,.45);overflow:hidden}
+      .cctv-viewer-dock .cctv-viewer-bubble{font-size:1.05rem!important;line-height:1.28!important;padding:6px 12px!important}
+      .cctv-viewer-dock .cctv-viewer-text{font-size:1.05rem}
+      .cctv-viewer-dock .cctv-viewer-head{font-size:.85rem!important}
+      .cctv-viewer-dock .cctv-viewer-avatar{width:32px!important;height:32px!important}
       body.cctv-viewers-on #livePrayerOverlay{display:none!important}
       body.evening-layout .cctv-viewer-dock{left:auto;right:70px}
       .cctv-viewer-header{align-self:center;display:inline-flex;align-items:center;gap:6px;padding:2px 11px;border-radius:999px;background:linear-gradient(90deg,rgba(220,38,38,.3),rgba(212,175,55,.22));border:1px solid rgba(252,211,77,.55);color:#fde68a;font-weight:800;font-size:.70rem;letter-spacing:1px;text-transform:uppercase;flex-shrink:0}
@@ -408,7 +408,9 @@
     if (!viewerBox) {
       viewerBox = el('div', 'cctv-viewer-stream cctv-viewer-dock');
       viewerBox.id = 'cctvViewerDock';
-      if (document.getElementById('livePrayerOverlay')) document.body.appendChild(viewerBox);
+      // Obok belki modlitw — wewnątrz skalowanego kontenera anteny 1920×1080 (inaczej przy mniejszym oknie dok jest za duży).
+      const prayerBar = document.getElementById('livePrayerOverlay');
+      if (prayerBar && prayerBar.parentNode) prayerBar.parentNode.insertBefore(viewerBox, prayerBar);
     }
 
     const scrollEnd = (smooth) => {
@@ -427,7 +429,7 @@
       try { document.body.classList.toggle('cctv-viewers-on', items.length > 0 && !!viewerBox.parentNode); } catch (_) {}
       if (!items.length) return;
       viewerBox.appendChild(el('div', 'cctv-viewer-header', '🔴 CZAT NA ŻYWO · WIDZOWIE CCTV24'));
-      items.forEach((m) => viewerBox.appendChild(viewerBubble(m)));
+      items.slice(-3).forEach((m) => viewerBox.appendChild(viewerBubble(m)));
       try { viewerBox.scrollTop = viewerBox.scrollHeight; } catch (_) {}
       scrollEnd(false);
     };
