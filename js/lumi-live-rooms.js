@@ -92,7 +92,7 @@ async function loadSession() {
     if (window.CCTvDialogue) shiftSession(window.CCTvDialogue);
     return session;
   }
-  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv7');
+  await loadScript('/js/cc-tv-dialogue.js?v=20261019_tv7_live1');
   const D = window.CCTvDialogue;
   if (!D) return session;
   try {
