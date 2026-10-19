@@ -23,57 +23,60 @@ jobs:
         run: |
           node -e "
             const now = new Date();
-            const warsawHour = parseInt(new Intl.DateTimeFormat('en-GB', {
-              timeZone: 'Europe/Warsaw',
-              hour: 'numeric',
-              hour12: false
-            }).format(now), 10);
+            const warsawHour = parseInt(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Warsaw', hour: 'numeric', hour12: false }).format(now), 10);
             console.log('Aktualna godzina w strefie Europe/Warsaw:', warsawHour);
-            const validHours = [0, 6, 12, 18];
             const isManual = '${{ github.event_name }}' === 'workflow_dispatch';
-            if (!validHours.includes(warsawHour) && !isManual) {
-              console.log('Poza oknem emisyjnym (00, 06, 12, 18 czasu polskiego). Pomijanie.');
-              process.exit(0);
-            }
+            const inWindow = isManual || [0, 6, 12, 18].includes(warsawHour);
+            if (!inWindow) console.log('Poza oknem emisyjnym (00, 06, 12, 18 czasu polskiego). Pomijanie kolejnych kroków.');
+            require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'in_window=' + inWindow + '\n');
           "
 
-      - name: Wykonanie Cyklu Publikacji Rozważań (5 Wersji)
+      # @A007 (JOMA-D038 Z7): workflow niczego nie publikuje — tylko SPRAWDZA produkcję i raportuje to, co faktycznie sprawdził.
+      - name: Sprawdzenie produkcji (Akademia i lekcja dnia)
+        id: verify
+        if: steps.time_check.outputs.in_window == 'true'
         run: |
-          echo "Agent 001 (@A001) weryfikuje poprawność 5 wersji rozważań..."
-          node -e "
-            console.log('Sprawdzanie dostępności publikacji:');
-            console.log('- Wersja 1: Poranna TTS / Audio');
-            console.log('- Wersja 2: Na cały dzień WWW (z linkami i cyframi)');
-            console.log('- Wersja 3: Kurs Codzienny (https://polskieradio.cc/akademia#kurscodzienny)');
-            console.log('- Wersja 4: Scenariusz TV (oprawa wideo)');
-            console.log('- Wersja 5: Biuletyn CCN News');
-            console.log('Weryfikacja zakończona sukcesem.');
-          "
+          DAY=$(TZ=Europe/Warsaw date +%-d)
+          MONTH=$(TZ=Europe/Warsaw date +%-m)
+          AKADEMIA=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 https://polskieradio.cc/akademia || echo 000)
+          echo "Akademia: HTTP $AKADEMIA"
+          LESSON_URL=""
+          LESSON=n/a
+          # Kurs „Z Biblią za pan brat” (październik): Dzień N = N października
+          if [ "$MONTH" = "10" ]; then
+            LESSON_URL="https://polskieradio.cc/akademia/kurscodzienny/dzien-$DAY"
+            LESSON=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$LESSON_URL" || echo 000)
+            echo "Lekcja dnia $DAY: HTTP $LESSON ($LESSON_URL)"
+          fi
+          if [ "$AKADEMIA" = "200" ] && { [ "$LESSON" = "200" ] || [ "$LESSON" = "n/a" ]; }; then OK=true; else OK=false; fi
+          echo "page_ok=$OK" >> "$GITHUB_OUTPUT"
+          echo "lesson_url=$LESSON_URL" >> "$GITHUB_OUTPUT"
+          echo "detail=akademia=$AKADEMIA lekcja_dnia_$DAY=$LESSON" >> "$GITHUB_OUTPUT"
+          echo "Wynik sprawdzenia: page_ok=$OK (sprawdza dostępność stron, nie treść 5 wersji)"
 
-      - name: Wysłanie Raportu z Bezpośrednimi Linkami do Mission Control (L0)
+      - name: Wysłanie Raportu do Mission Control (L0)
+        if: steps.time_check.outputs.in_window == 'true'
         env:
           MISSION_CONTROL_WEBHOOK: ${{ secrets.MISSION_CONTROL_WEBHOOK_URL }}
+          PAGE_OK: ${{ steps.verify.outputs.page_ok }}
+          LESSON_URL: ${{ steps.verify.outputs.lesson_url }}
+          DETAIL: ${{ steps.verify.outputs.detail }}
         run: |
+          if [ "$PAGE_OK" = "true" ]; then EVENT=PAGE_REACHABLE; STATUS=REACHABLE_CONTENT_NOT_VERIFIED; else EVENT=HEARTBEAT; STATUS=NOT_VERIFIED; fi
+          echo "Raport: $EVENT / $STATUS ($DETAIL)"
           if [ -n "$MISSION_CONTROL_WEBHOOK" ]; then
-            payload='{
-              "agent_id": "CC-A05-01",
-              "agent_name": "Agent 001 - Strażnik Publikacji",
-              "timestamp": "'$(date -u +'%Y-%m-%dT%H:%M:%SZ')'",
-              "event_type": "PUBLICATION_SUCCESS",
-              "title": "Automatyczny Cykl Publikacji Rozważań (5 Wersji)",
-              "target_channel": "Portal, Lumina, 40+ Grup WA/FB",
-              "publication_url": "https://polskieradio.cc/akademia#kurscodzienny",
-              "materials": [
-                {"name": "Wersja 1 (TTS / Audio)", "url": "https://polskieradio.cc"},
-                {"name": "Wersja 2 (WWW / Dystrybucja)", "url": "https://polskieradio.cc"},
-                {"name": "Wersja 3 (Kurs Codzienny)", "url": "https://polskieradio.cc/akademia#kurscodzienny"},
-                {"name": "Wersja 4 (Scenariusz TV)", "url": "https://polskieradio.cc/live"},
-                {"name": "Wersja 5 (CCN News)", "url": "https://polskieradio.cc/news"}
-              ],
-              "status": "VERIFIED_OK"
-            }'
-            curl -X POST -H "Content-Type: application/json" -d "$payload" "$MISSION_CONTROL_WEBHOOK"
-            echo "Raport z bezpośrednimi linkami dostarczony do Mission Control w czasie <15 min od emisji."
+            payload=$(jq -n --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ev "$EVENT" --arg st "$STATUS" --arg det "$DETAIL" --arg lesson "$LESSON_URL" '{
+              agent_id: "CC-A05-01",
+              agent_name: "Agent 001 - Strażnik Publikacji",
+              timestamp: $ts,
+              event_type: $ev,
+              title: "Sprawdzenie dostępności Akademii i lekcji dnia (workflow nie publikuje)",
+              publication_url: "https://polskieradio.cc/akademia",
+              lesson_url: $lesson,
+              detail: $det,
+              status: $st
+            }')
+            curl -sS -X POST -H "Content-Type: application/json" -d "$payload" "$MISSION_CONTROL_WEBHOOK"
           else
             echo "Brak zdefiniowanego sekretu MISSION_CONTROL_WEBHOOK_URL (raport lokalny)."
           fi
