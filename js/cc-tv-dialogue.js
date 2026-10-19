@@ -174,7 +174,7 @@
       .cctv-host-stream{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px}
       .cctv-viewer-stream{flex:0 0 auto;max-height:55%;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-top:6px;padding-right:6px;border-top:1.5px solid rgba(212,175,55,.45)}
       .cctv-viewer-stream:empty{display:none;border-top:none;padding-top:0}
-      .cctv-viewer-dock{position:fixed;left:215px;bottom:200px;width:640px;max-height:235px;z-index:60;gap:6px;padding:10px 12px;border:1.5px solid rgba(212,175,55,.55);border-radius:18px;background:rgba(10,12,20,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(0,0,0,.45);overflow:hidden}
+      .cctv-viewer-dock{position:fixed;left:215px;bottom:189px;width:640px;max-height:235px;z-index:60;gap:6px;padding:10px 12px;border:1.5px solid rgba(212,175,55,.55);border-radius:18px;background:rgba(10,12,20,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(0,0,0,.45);overflow:hidden}
       .cctv-viewer-dock .cctv-viewer-bubble{font-size:1.05rem!important;line-height:1.28!important;padding:6px 12px!important}
       .cctv-viewer-dock .cctv-viewer-text{font-size:1.05rem}
       .cctv-viewer-dock .cctv-viewer-head{font-size:.85rem!important}

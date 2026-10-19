@@ -1745,7 +1745,7 @@
         }
         body.mode-presenters:not(.evening-layout) .reflection-canvas-card,
         body.za-polske-wallpaper:not(.evening-layout) .reflection-canvas-card {
-            height: 780px !important;
+            height: 801px !important; /* dół 891 px — równo z panelem QR i oknem czatu */
         }
         body.za-polske-wallpaper #livePrayerOverlay {
             position: fixed !important;
@@ -1757,6 +1757,7 @@
            (Dowódca 19.10, Claude @A007): przy 1920×1080 QR zajmuje x 48–192, okno zaczyna się od x 215. */
         body:not(.evening-layout) #livePrayerOverlay {
             left: 215px !important;
+            bottom: 189px !important; /* dół 891 px — równo z panelem QR */
             width: 760px !important;
         }
         /* Rozważanie czytelne z telewizora (Dowódca 19.10, Claude @A007): tekst Noemi i Sary 18 → 26 px przy 1920×1080. */
@@ -1872,7 +1873,7 @@
             localStorage.setItem('dzj_stream_image_forced_v2', 'true');
         }
     </script>
-    <script src="/js/cc-tv-dialogue.js?v=20261019_tv7_a007b"></script>
+    <script src="/js/cc-tv-dialogue.js?v=20261019_tv7_a007c"></script>
 </head>
 <body>
 
