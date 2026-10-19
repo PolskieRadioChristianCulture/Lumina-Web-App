@@ -1753,6 +1753,12 @@
             left: 70px !important;
             width: 750px !important;
         }
+        /* Okno czatu LUMI MESS (Wspólna modlitwa) nie może zasłaniać kodu QR w lewym dolnym rogu
+           (Dowódca 19.10, Claude @A007): przy 1920×1080 QR zajmuje x 48–192, okno zaczyna się od x 215. */
+        body:not(.evening-layout) #livePrayerOverlay {
+            left: 215px !important;
+            width: 760px !important;
+        }
     
         
         /* --- LIVE HELPLINE PANEL ANIMATIONS --- */
