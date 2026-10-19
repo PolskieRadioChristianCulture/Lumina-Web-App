@@ -170,6 +170,17 @@
       .cctv-live-badge::before{content:'';width:10px;height:10px;border-radius:50%;background:#ff3b3b;box-shadow:0 0 0 0 rgba(255,59,59,.7);animation:cctvPulse 1.6s infinite}
       .cctv-live-badge.is-replay::before{background:#d4af37;animation:none}
       @keyframes cctvPulse{0%{box-shadow:0 0 0 0 rgba(255,59,59,.6)}70%{box-shadow:0 0 0 10px rgba(255,59,59,0)}100%{box-shadow:0 0 0 0 rgba(255,59,59,0)}}
+      .chat-container.cctv-split-chat{display:flex;flex-direction:column;gap:10px;overflow:hidden!important}
+      .cctv-host-stream{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-right:6px}
+      .cctv-viewer-stream{flex:0 0 auto;max-height:48%;overflow-y:auto;display:flex;flex-direction:column;gap:7px;padding-top:8px;padding-right:6px;border-top:1.5px solid rgba(212,175,55,.45)}
+      .cctv-viewer-stream:empty{display:none;border-top:none;padding-top:0}
+      .cctv-viewer-header{align-self:center;display:inline-flex;align-items:center;gap:8px;padding:3px 13px;border-radius:999px;background:linear-gradient(90deg,rgba(220,38,38,.3),rgba(212,175,55,.22));border:1px solid rgba(252,211,77,.55);color:#fde68a;font-weight:800;font-size:.78rem;letter-spacing:1.1px;text-transform:uppercase;flex-shrink:0}
+      .cctv-viewer-row{align-items:flex-start;gap:10px}
+      .cctv-viewer-avatar{width:34px!important;height:34px!important;border:1.5px solid #f59e0b!important;flex-shrink:0}
+      .cctv-viewer-bubble{max-width:89%!important;padding:7px 12px!important;font-size:.96rem!important;line-height:1.32!important;background:linear-gradient(135deg,rgba(168,85,247,.24),rgba(6,182,212,.18))!important;border:1px solid rgba(252,211,77,.48)!important;border-radius:14px 14px 14px 4px!important}
+      .cctv-viewer-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.78rem!important;margin-bottom:2px!important;color:#fde68a!important;text-transform:none!important;letter-spacing:.2px!important}
+      .cctv-viewer-badge{font-size:.66rem;font-weight:800;color:#fecaca;background:rgba(220,38,38,.38);border:1px solid rgba(248,113,113,.55);padding:1px 7px;border-radius:999px;white-space:nowrap}
+      .cctv-viewer-text{font-size:.95rem;line-height:1.32;color:#fff}
       @media (prefers-reduced-motion: reduce){.cctv-live-row,.cctv-section{animation:none}.cctv-dots i{animation:none;opacity:.6}}
     `;
     document.head.appendChild(s);
@@ -198,6 +209,10 @@
   const LIVE_SESSIONS = [[9, 0], [10, 0], [11, 0], [18, 0]];
   const LIVE_WINDOW_MS = 35 * 60 * 1000;
   const warsawDayOf = (ms) => new Intl.DateTimeFormat('en-CA', { timeZone: LIVE_TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
+  const warsawHhMm = (ms) => {
+    try { return new Date(ms).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', timeZone: LIVE_TZ }); }
+    catch (_) { return ''; }
+  };
   let manualStart = 0;
   function todaySessionStarts(now = Date.now()) {
     try {
@@ -259,6 +274,99 @@
     pollTimer = setInterval(pollManualStart, 60000);
   }
 
+  // ── Czat widzów z pokoi LUMI Messenger (lumina_live_rooms/{roomId}/messages) ──
+  const LIVE_CHAT_BLOCK = /(https?:|www\.|\.(pl|com|net|org|eu|io|info)\b|@|\d[\d\s-]{6,}\d|kurw|chuj|pierd|jeba|jebi|jebn|pizd|spierd|dziwk|cwel|fuck|shit)/i;
+  const isSafeViewerText = (t) => typeof t === 'string' && t.trim().length >= 2 && t.length <= 500 && !LIVE_CHAT_BLOCK.test(t);
+  const VIEWER_ROOMS = ['tv_zapolske', 'tv_cctv24', 'tv_cctv24_pl', 'tv_master_live'];
+  const viewerMap = new Map();
+  const viewerListeners = new Set();
+
+  function notifyViewerListeners() {
+    viewerListeners.forEach((fn) => { try { fn(); } catch (_) {} });
+  }
+
+  function getViewerMessages() {
+    const cutoff = Date.now() - 24 * 3600000;
+    return Array.from(viewerMap.values())
+      .filter((m) => m && isSafeViewerText(m.text) && m.at >= cutoff)
+      .sort((a, b) => a.at - b.at)
+      .slice(-6);
+  }
+
+  function setViewerMessages(list, replaceRoom) {
+    if (!Array.isArray(list)) return;
+    if (replaceRoom) {
+      for (const [k, v] of viewerMap.entries()) {
+        if (v.roomId === replaceRoom) viewerMap.delete(k);
+      }
+    }
+    list.forEach((raw) => {
+      if (!raw || !raw.id) return;
+      const text = String(raw.text || '').trim();
+      if (!isSafeViewerText(text)) return;
+      const at = Number(raw.createdAtMs || raw.at || (raw.createdAt && raw.createdAt.seconds ? raw.createdAt.seconds * 1000 : 0)) || Date.now();
+      viewerMap.set(String(raw.id), {
+        id: String(raw.id),
+        roomId: String(raw.roomId || replaceRoom || 'tv_zapolske'),
+        text,
+        senderName: String(raw.senderName || raw.name || 'Uczestnik LUMINA').slice(0, 60),
+        senderAvatar: String(raw.senderAvatar || '/lumina_icon.jpg').trim(),
+        kind: raw.kind === 'text' ? 'text' : 'prayer',
+        at
+      });
+    });
+    notifyViewerListeners();
+  }
+
+  async function pollViewerRooms() {
+    if (typeof fetch !== 'function') return;
+    for (const room of VIEWER_ROOMS) {
+      try {
+        const url = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_live_rooms/' + room + '/messages?pageSize=20';
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) continue;
+        const data = await res.json();
+        const docs = Array.isArray(data.documents) ? data.documents : [];
+        const parsed = docs.map((d) => {
+          const f = d.fields || {};
+          const id = String(d.name || '').split('/').pop();
+          const ts = f.createdAt && f.createdAt.timestampValue ? Date.parse(f.createdAt.timestampValue) : 0;
+          return {
+            id,
+            roomId: (f.roomId && f.roomId.stringValue) || room,
+            text: (f.text && f.text.stringValue) || '',
+            senderName: (f.senderName && f.senderName.stringValue) || 'Uczestnik LUMINA',
+            senderAvatar: (f.senderAvatar && f.senderAvatar.stringValue) || '/lumina_icon.jpg',
+            kind: (f.kind && f.kind.stringValue) || 'prayer',
+            at: ts || Date.now()
+          };
+        });
+        setViewerMessages(parsed, room);
+      } catch (_) {}
+    }
+  }
+
+  function viewerBubble(m) {
+    const row = el('div', 'chat-bubble-row cctv-live-row cctv-viewer-row');
+    const rawAv = String(m.senderAvatar || '').trim();
+    const avSrc = rawAv ? (rawAv.startsWith('http') || rawAv.startsWith('/') || rawAv.startsWith('data:') ? rawAv : '/' + rawAv) : '/lumina_icon.jpg';
+    const img = el('img', 'chat-avatar cctv-viewer-avatar');
+    img.src = avSrc;
+    img.alt = m.senderName;
+    img.onerror = () => { img.replaceWith(el('span', 'chat-avatar cctv-viewer-avatar cctv-initial', (m.senderName || 'U').charAt(0))); };
+    row.appendChild(img);
+
+    const b = el('div', 'chat-bubble cctv-viewer-bubble');
+    const head = el('div', 'chat-sender-name cctv-viewer-head');
+    head.appendChild(el('span', 'cctv-viewer-name', (m.kind === 'prayer' ? '🙏 ' : '💬 ') + m.senderName));
+    const tStr = warsawHhMm(m.at);
+    head.appendChild(el('span', 'cctv-viewer-badge', '🔴 NA ŻYWO' + (tStr ? ' · ' + tStr : '')));
+    b.appendChild(head);
+    b.appendChild(el('div', 'chat-message-text cctv-viewer-text', m.text));
+    row.appendChild(b);
+    return row;
+  }
+
   // Oś czasu rozmowy (ms od startu): kiedy pojawia się rozdział, „pisze…” i sama wiadomość.
   function timeline(list, reduce) {
     let t = 0, lastSection = null;
@@ -282,10 +390,38 @@
     const list = Array.isArray(messages) ? messages.filter((m) => m && m.text) : [];
     const tl = timeline(list, reduce);
     const total = tl.length ? tl[tl.length - 1].endAt : 0;
+
+    if (container && container.classList) container.classList.add('cctv-split-chat');
+    container.textContent = '';
+    const hostBox = el('div', 'cctv-host-stream');
+    const viewerBox = el('div', 'cctv-viewer-stream');
+    container.appendChild(hostBox);
+    container.appendChild(viewerBox);
+
     const scrollEnd = (smooth) => {
-      try { container.scrollTo({ top: container.scrollHeight, behavior: smooth && !reduce ? 'smooth' : 'auto' }); }
-      catch (_) { container.scrollTop = container.scrollHeight; }
+      try { hostBox.scrollTo({ top: hostBox.scrollHeight, behavior: smooth && !reduce ? 'smooth' : 'auto' }); }
+      catch (_) { hostBox.scrollTop = hostBox.scrollHeight; }
     };
+
+    let lastViewerSig = '';
+    const renderViewers = () => {
+      if (stopped) return;
+      const items = getViewerMessages();
+      const sig = items.map((x) => x.id + ':' + x.text).join('|');
+      if (sig === lastViewerSig) return;
+      lastViewerSig = sig;
+      viewerBox.textContent = '';
+      if (!items.length) return;
+      viewerBox.appendChild(el('div', 'cctv-viewer-header', '🔴 CZAT NA ŻYWO · WIDZOWIE CCTV24'));
+      items.forEach((m) => viewerBox.appendChild(viewerBubble(m)));
+      try { viewerBox.scrollTop = viewerBox.scrollHeight; } catch (_) {}
+      scrollEnd(false);
+    };
+    viewerListeners.add(renderViewers);
+    renderViewers();
+    pollViewerRooms();
+    const viewerPollTimer = typeof setInterval === 'function' ? setInterval(pollViewerRooms, 12000) : null;
+
     const wait = (ms) => new Promise((r) => { timer = setTimeout(r, Math.max(0, ms)); });
     const mode = (m) => { try { if (typeof opts.onMode === 'function') opts.onMode(m); } catch (_) {} };
     const sectionEl = (s) => el('div', 'cctv-section', iconFor(s) + '  ' + s.replace(/\s*:\s*/, ' · '));
@@ -293,27 +429,27 @@
     let gen = 0;
     async function runFrom(start, g) {
       const dead = () => stopped || g !== gen;
-      container.textContent = '';
+      hostBox.textContent = '';
       for (let i = 0; i < tl.length && !dead(); i++) {
         const e = tl[i];
         const elapsed = () => Date.now() - start;
         if (e.showAt <= elapsed()) {
           // Już padło (widz dołączył później) — pokaż od razu, bez animacji.
-          if (e.sectionAt !== null) container.appendChild(sectionEl(e.m.section));
-          container.appendChild(bubble(e.m, opts.adapt));
+          if (e.sectionAt !== null) hostBox.appendChild(sectionEl(e.m.section));
+          hostBox.appendChild(bubble(e.m, opts.adapt));
           continue;
         }
         if (e.sectionAt !== null) {
           await wait(e.sectionAt - elapsed()); if (dead()) return;
-          container.appendChild(sectionEl(e.m.section)); scrollEnd(true);
+          hostBox.appendChild(sectionEl(e.m.section)); scrollEnd(true);
         }
         await wait(e.typingAt - elapsed()); if (dead()) return;
         let t = null;
-        if (!reduce) { t = typing(e.m.kind, e.m.sender); container.appendChild(t); scrollEnd(true); }
+        if (!reduce) { t = typing(e.m.kind, e.m.sender); hostBox.appendChild(t); scrollEnd(true); }
         await wait(e.showAt - elapsed());
         if (t) t.remove();
         if (dead()) return;
-        container.appendChild(bubble(e.m, opts.adapt)); scrollEnd(true);
+        hostBox.appendChild(bubble(e.m, opts.adapt)); scrollEnd(true);
         try { if (typeof opts.onMessage === 'function') opts.onMessage(e.m, i); } catch (_) {}
       }
       scrollEnd(false);
@@ -347,12 +483,21 @@
       }
     }
     loop();
-    return { stop() { stopped = true; if (timer) clearTimeout(timer); }, durationMs: total };
+    return {
+      stop() {
+        stopped = true;
+        if (timer) clearTimeout(timer);
+        if (viewerPollTimer) clearInterval(viewerPollTimer);
+        viewerListeners.delete(renderViewers);
+      },
+      durationMs: total
+    };
   }
 
   global.CCTvDialogue = {
     isDialogue, parse, play, timeline, liveStartToday, todaySessionStarts, chatSessionStart,
-    setManualStart, startManualPolling, onScheduleChange,
-    version: '20261019_tv3'
+    setManualStart, startManualPolling, onScheduleChange, setViewerMessages, getViewerMessages,
+    version: '20261019_tv6_livechat1'
   };
 })(typeof window !== 'undefined' ? window : globalThis);
+
