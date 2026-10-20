@@ -5,7 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "test:agent-chat": "node --test tests/lumi-agent-client.test.mjs tests/lumi-agent-ui.test.mjs",
+    "test:agent-chat": "node --test tests/lumi-agent-client.test.mjs tests/lumi-agent-ui.test.mjs tests/lumi-planner-omega.test.mjs",
     "test:karaoke-p0": "node --test tests/bu-karaoke-playback.test.mjs tests/bu-live-clock.test.mjs tests/bu-karaoke-vocal.test.mjs tests/bu-karaoke-top100.test.mjs tests/bu-karaoke-sync2.test.mjs tests/bu-karaoke-precision.test.mjs",
     "test:source-integrity": "node --test scripts/cc-source-check.test.mjs",
     "dev": "node server.js",
@@ -29,7 +29,7 @@
     "test:ai-gateway:runtime": "node --test tests/cc-ai-gateway/runtime.test.mjs",
     "test:ai-gateway:acceptance": "node --test tests/cc-ai-gateway/gateway.test.mjs tests/cc-ai-gateway/runtime.test.mjs",
     "test:all": "npm run test:cc-regression && npm run test:family && npm run test:ai-gateway:acceptance && npm run test:unit && npm run test:push && npm run test:security-edge && npm run test:mobile-premium && npm run test:firestore-rules && npm run test:smoke && npm run test:guardian:extended && npm run build:lumina",
-    "test:family": "node --test tests/lumi-family-client.test.mjs tests/lumi-family-ui.test.mjs tests/lumi-family-candidate.test.mjs",
+    "test:family": "node --test tests/lumi-family-client.test.mjs tests/lumi-family-ui.test.mjs tests/lumi-family-candidate.test.mjs tests/lumi-planner-omega.test.mjs",
     "test": "npm run test:all",
     "matrix": "node scripts/agent-matrix/launch_grid.js",
     "matrix:local": "node scripts/agent-matrix/launch_grid.js --local",

@@ -87,3 +87,30 @@ html body.lumi-standalone .cc-chat-radio select{flex:1;border:none!important;bac
   .lumi-community-hero{height:140px}.lumi-community-hero p{font-size:21px}.lumi-community-hero>div{margin-top:48px}
   .lumi-category{min-height:100px;gap:6px;padding:8px 3px}.lumi-category>span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:24px}
 }
+
+/* 🏛️ Biometric Fingerprint Authorization & Omega Planner */
+@keyframes ccBiometricScanLine {
+  0% { top: 12%; opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { top: 88%; opacity: 0.2; }
+}
+.biometric-scanline {
+  animation: ccBiometricScanLine 2s ease-in-out infinite;
+}
+#commanderFingerprintPad.is-scanning {
+  transform: scale(1.06);
+  box-shadow: 0 0 35px rgba(245,158,11,0.7), inset 0 0 25px rgba(245,158,11,0.5) !important;
+}
+#commanderFingerprintPad.is-scanning .biometric-scanline {
+  animation: ccBiometricScanLine 0.6s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, #22c55e, #fff, #22c55e, transparent) !important;
+  box-shadow: 0 0 14px #22c55e !important;
+}
+#commanderFingerprintPad.is-verified {
+  border-color: #22c55e !important;
+  box-shadow: 0 0 35px rgba(34,197,94,0.6), inset 0 0 25px rgba(34,197,94,0.3) !important;
+}
+#commanderFingerprintPad.is-verified i {
+  color: #22c55e !important;
+}
+
