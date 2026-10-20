@@ -1,7 +1,8 @@
 // One text-only family screen shared by LUMI Messenger and LUMI Kids.
 // Never render message/profile strings as HTML. No private drafts in localStorage.
+import {readWithDeadline,chatReadError} from './lumi-chat-readiness.js?v=20261019_read1';
 export function mountFamilyView({ element, client, userUid, nameForUid = async () => 'Członek rodziny',
-    inviteContacts = async () => [], onClose = () => {} }) {
+    inviteContacts = async () => [], onClose = () => {}, read=readWithDeadline }) {
     const doc = element.ownerDocument;
     let stopped = false, epoch = 0, stopMessages = () => {}, outbox = null;
     function el(tag, text, props = {}) {
@@ -18,9 +19,7 @@ export function mountFamilyView({ element, client, userUid, nameForUid = async (
     function reset(name) { epoch++; stopMessages(); stopMessages = () => {}; outbox = null;
         title.textContent = name; content.replaceChildren(); status.textContent = ''; return epoch; }
     const current = n => !stopped && epoch === n;
-    const errorText = e => e?.code === 'permission-denied' || e?.code === 'family/not-a-member' ?
-        'Nie masz teraz dostępu do tej rodziny. Sprawdź zaproszenie lub poproś opiekuna.' :
-        'Nie udało się połączyć. Sprawdź internet i spróbuj ponownie.';
+    const errorText = chatReadError;
     async function action(button, work) {
         if (button.disabled) return; button.disabled = true; const n = epoch;
         try { await work(); } catch (e) { if (current(n)) status.textContent = errorText(e); }
@@ -29,7 +28,7 @@ export function mountFamilyView({ element, client, userUid, nameForUid = async (
     async function list() {
         const n = reset('Moje rodziny'); back.hidden = true; status.textContent = 'Wczytuję zaproszenia…';
         try {
-            const memberships = await client.listMemberships(); if (!current(n)) return;
+            const memberships = await read(()=>client.listMemberships()); if (!current(n)) return;
             status.textContent = '';
             const relevant = memberships.filter(m => ['pending', 'accepted'].includes(m.state));
             if (!relevant.length) content.append(el('p', 'Nie masz jeszcze zaproszenia do rodziny. Poproś opiekuna.'));
@@ -45,8 +44,8 @@ export function mountFamilyView({ element, client, userUid, nameForUid = async (
                 } else {
                     const b = el('button', 'Otwórz rodzinę', { type: 'button' }); b.onclick = () => room(m.roomId);
                     card.append(b);
-                    try { const r = await client.getRoom(m.roomId); if (!current(n)) return; b.textContent = r.name; }
-                    catch { b.disabled = true; b.textContent = 'Pokój niedostępny'; }
+                    try { const r = await read(()=>client.getRoom(m.roomId)); if (!current(n)) return; b.textContent = r.name; }
+                    catch(e) { if(!current(n))return; b.disabled = true; b.textContent = 'Pokój niedostępny';status.textContent=errorText(e); }
                 }
                 if (!current(n)) return; content.append(card);
             }
@@ -58,11 +57,15 @@ export function mountFamilyView({ element, client, userUid, nameForUid = async (
     async function room(roomId) {
         const n = reset('Rodzina'); back.hidden = false; status.textContent = 'Otwieram pokój…';
         try {
-            const r = await client.getRoom(roomId); if (!current(n)) return;
+            const r = await read(()=>client.getRoom(roomId)); if (!current(n)) return;
             title.textContent = r.name;
-            const members = await client.listMembers(roomId); if (!current(n)) return;
+            const members = await read(()=>client.listMembers(roomId)); if (!current(n)) return;
             const names = new Map();
-            await Promise.all(members.map(async m => names.set(m.uid, await nameForUid(m.uid))));
+            await read(()=>Promise.all(members.map(async m => {
+                let name='Członek rodziny';
+                try{name=await readWithDeadline(()=>nameForUid(m.uid),2000);}catch{/* Optional names must not block the composer. */}
+                names.set(m.uid,name);
+            })));
             if (!current(n)) return;
             const people = el('p', [...names.values()].join(' · '), { className: 'lf-members' });
             content.append(people);

@@ -17,7 +17,7 @@ import {
   onSnapshot, addDoc, serverTimestamp, deleteField
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getMessaging, getToken, isSupported as messagingSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
-import { openFamilyPanel } from '/components/lumi-family-host.js?v=20261019_family1';
+import { openFamilyPanel } from '/components/lumi-family-host.js?v=20261019_family2';
 
 // Flaga funkcjonalna po stronie klienta. Właściwa flaga to kids_pilot/config.enabled (serwer).
 const LUMI_KIDS_PILOT_ENABLED = true;

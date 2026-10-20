@@ -7499,8 +7499,12 @@ try {
 let _founderTelemetryProfilesCache = null;
 let _founderTelemetryProfilesCacheTime = 0;
 
+// Jedna reguła daty dla telemetrii (klient i Cloud Functions): RRRR-MM-DD w strefie Europe/Warsaw, niezależnie od strefy urządzenia/serwera.
+const warsawDateStr = (d = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Warsaw", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+
 export function listenToFounderTelemetry(callback) {
     if (!db || typeof callback !== 'function') return () => {};
+    const warsawDateStr = (d = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Warsaw", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
 
     let unsubPresence = null;
     let isStopped = false;
@@ -7544,12 +7548,12 @@ export function listenToFounderTelemetry(callback) {
         const malePercent = sumGender > 0 ? (100 - femalePercent) : null;
 
         // Dynamiczne wyliczenie todayCount na podstawie bieżącej daty w momencie emisji (prawidłowe po północy)
-        const todayDateStr = new Date().toDateString();
+        const todayDateStr = warsawDateStr();
         let liveTodayCount = null;
         if (Array.isArray(currentProfilesStats.createdDates)) {
             liveTodayCount = currentProfilesStats.createdDates.filter(ts => {
                 const d = new Date(ts);
-                return !isNaN(d.getTime()) && d.toDateString() === todayDateStr;
+                return !isNaN(d.getTime()) && warsawDateStr(d) === todayDateStr;
             }).length;
         } else if (typeof currentProfilesStats.todayCount === 'number') {
             liveTodayCount = (currentProfilesStats.statsDate === todayDateStr) ? currentProfilesStats.todayCount : 0;
@@ -7595,7 +7599,7 @@ export function listenToFounderTelemetry(callback) {
     //                 BEZWZGLĘDNY ZAKAZ zapisu próbki do bazy lumina_stats!)
     const loadProfileStats = async () => {
         const now = Date.now();
-        const todayDateStr = new Date().toDateString();
+        const todayDateStr = warsawDateStr();
         try {
             // A. Pamięć podręczna w procesie (RAM)
             if (_founderTelemetryProfilesCache && (now - _founderTelemetryProfilesCacheTime < 900000)) {
@@ -7746,7 +7750,7 @@ export function listenToFounderTelemetry(callback) {
                     maleCount,
                     dayCounts,
                     createdDates,
-                    statsDate: nowDate.toDateString(),
+                    statsDate: warsawDateStr(nowDate),
                     cachedAt: now,
                     isFromCache: false,
                     isComplete: false,

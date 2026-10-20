@@ -8,9 +8,9 @@ const tick = () => new Promise(r => setTimeout(r, 0));
 test('Kids family entry loads the released module under a fresh cache key', async () => {
     const html = await readFile(new URL('../lumi-kids/app/index.html', import.meta.url), 'utf8');
     const app = await readFile(new URL('../lumi-kids/app/app.js', import.meta.url), 'utf8');
-    assert.match(html, /src="\/lumi-kids\/app\/app\.js\?v=20261019_family3"/);
+    assert.match(html, /src="\/lumi-kids\/app\/app\.js\?v=20261019_family4"/);
     assert.doesNotMatch(html, /app\.js\?v=20261019_family[12]"/);
-    assert.match(app, /import \{ openFamilyPanel \} from '\/components\/lumi-family-host\.js\?v=20261019_family1'/);
+    assert.match(app, /import \{ openFamilyPanel \} from '\/components\/lumi-family-host\.js\?v=20261019_family2'/);
     assert.match(app, /Moja rodzina/);
 });
 function navigation() {

@@ -2,7 +2,7 @@ import { getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.12.2/fire
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import * as sdk from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { createFamilyClient } from './lumi-family-client.js?v=20261019_family1';
-import { mountFamilyView } from './lumi-family-view.js?v=20261019_family1';
+import { mountFamilyView } from './lumi-family-view.js?v=20261019_family2';
 
 let active = null;
 export function openFamilyPanel({ nameForUid } = {}) {

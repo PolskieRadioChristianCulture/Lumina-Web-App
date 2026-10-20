@@ -13639,7 +13639,7 @@ function renderPublicChatMessages(messages) {
 
         function initCommanderChatListener() {
             if (!isUserCommanderAuthorized()) return;
-            import("/components/lumi-agent-chat.js?v=20261019_agent2").then(m => m.open()).catch(() => {
+            import("/components/lumi-agent-chat.js?v=20261019_agent3").then(m => m.open()).catch(() => {
                 if (typeof showToast === "function") showToast("Nie można połączyć ze Skrzynką Agentów. Spróbuj ponownie.");
             });
         }
@@ -13648,7 +13648,7 @@ function renderPublicChatMessages(messages) {
             e?.preventDefault();
             if (!isUserCommanderAuthorized()) return;
             try {
-                const module = await import("/components/lumi-agent-chat.js?v=20261019_agent2");
+                const module = await import("/components/lumi-agent-chat.js?v=20261019_agent3");
                 await module.send(e);
             } catch {
                 if (typeof showToast === "function") showToast("Nie potwierdzono wysłania. Tekst pozostaje w polu.");
@@ -17308,6 +17308,6 @@ window.initFeedCarousels = function(container) {
 <!-- Strażnik 2026-10-19: pokoje LIVE TV w LUMI Messenger + rozważanie Noemi i Sary o 9:00 -->
 <script type="module" src="/js/lumi-live-rooms.js?v=20261019_rooms_v6"></script>
 <link rel="stylesheet" href="/css/lumi-room-navigation.css?v=20261019_family1">
-<script type="module" src="/components/lumi-room-navigation-boot.js?v=20261019_family1"></script>
+<script type="module" src="/components/lumi-room-navigation-boot.js?v=20261019_family2"></script>
 </body>
 </html>

@@ -10934,7 +10934,7 @@ function renderPublicChatMessages(messages) {
 
         function initCommanderChatListener() {
             if (!isUserCommanderAuthorized()) return;
-            import("/components/lumi-agent-chat.js?v=20261019_agent2").then(m => m.open()).catch(() => {
+            import("/components/lumi-agent-chat.js?v=20261019_agent3").then(m => m.open()).catch(() => {
                 if (typeof showToast === "function") showToast("Nie można połączyć ze Skrzynką Agentów. Spróbuj ponownie.");
             });
         }
@@ -10943,7 +10943,7 @@ function renderPublicChatMessages(messages) {
             e?.preventDefault();
             if (!isUserCommanderAuthorized()) return;
             try {
-                const module = await import("/components/lumi-agent-chat.js?v=20261019_agent2");
+                const module = await import("/components/lumi-agent-chat.js?v=20261019_agent3");
                 await module.send(e);
             } catch {
                 if (typeof showToast === "function") showToast("Nie potwierdzono wysłania. Tekst pozostaje w polu.");
