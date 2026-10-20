@@ -1352,6 +1352,7 @@
         }
         updateCcnClock();
         setInterval(updateCcnClock, 1000);
+        setInterval(() => { suppressSubframeTicker(getActiveFrame()); }, 2000);
 
         // ── SUPPRESS SUB-CHANNEL TICKERS (ENSURE ONLY 1 CCN NEWS LOWER THIRD) ──
         function suppressSubframeTicker(frame) {
@@ -1382,6 +1383,16 @@
                                 margin-bottom: 0 !important;
                                 padding-top: 0 !important;
                                 margin-top: 0 !important;
+                            }
+                            #ccLiveViewerChat {
+                                left: 50px !important;
+                                right: auto !important;
+                                bottom: 100px !important;
+                                top: auto !important;
+                            }
+                            #livePrayerOverlay {
+                                left: 50px !important;
+                                bottom: 100px !important;
                             }
                         `;
                         (doc.head || doc.documentElement).appendChild(style);

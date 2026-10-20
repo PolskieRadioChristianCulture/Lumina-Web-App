@@ -1742,9 +1742,13 @@
         }
         body #livePrayerOverlay {
             position: fixed !important;
-            left: 215px !important;
-            bottom: 189px !important; /* dół 891 px — równo z panelem QR */
+            left: 50px !important;
+            bottom: 100px !important; /* lewy dolny róg nad paskiem CCN */
             width: 760px !important;
+        }
+        body #ccLiveViewerChat {
+            left: 50px !important;
+            bottom: 100px !important;
         }
         /* Rozważanie czytelne z telewizora (Dowódca 19.10, Claude @A007): tekst Noemi i Sary 18 → 26 px przy 1920×1080. */
         .chat-container .chat-bubble {
@@ -4243,7 +4247,7 @@ if(typeof initStream === 'function') initStream();
     <!-- Strażnik 2026-10-07: komunikaty i stan LIVE z Mission Control (projekt cc-mission-control) -->
     <script type="module" src="js/cc-live-mission-feed.js?v=20261008_kanaly3&autostart=1"></script>
     <!-- Czat widzów LUMI MESS ze wszystkich pokoi LIVE TV (Claude @A007, 19.10) — położenie w kadrze 1920×1080 -->
-    <script src="/js/cc-live-viewer-chat.js?v=20261019_a007c" data-left="215" data-bottom="189" data-width="640" data-height="179" data-hide="#livePrayerOverlay"></script>
+    <script src="/js/cc-live-viewer-chat.js?v=20261020_a002b" data-left="50" data-bottom="100" data-width="640" data-height="179" data-hide="#livePrayerOverlay"></script>
 </body>
 </html>
 

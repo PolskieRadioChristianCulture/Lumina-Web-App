@@ -68,8 +68,16 @@
     dock.setAttribute('aria-label', 'Czat widzów na żywo z LUMI Messenger');
     dock.hidden = true;
     const px = (v) => (v === undefined || v === '' ? '' : (Number(v) || 0) + 'px');
-    if (cfg('right') !== undefined) dock.style.right = px(cfg('right')); else dock.style.left = px(cfg('left', 215));
-    if (cfg('top') !== undefined) dock.style.top = px(cfg('top')); else dock.style.bottom = px(cfg('bottom', 189));
+    const inMcr = window.self !== window.top || window.location.search.includes('in_mcr=1');
+    if (inMcr) {
+      dock.style.left = px(cfg('mcr-left', 50));
+      dock.style.right = '';
+      dock.style.bottom = px(cfg('mcr-bottom', 100));
+      dock.style.top = '';
+    } else {
+      if (cfg('right') !== undefined) dock.style.right = px(cfg('right')); else dock.style.left = px(cfg('left', 50));
+      if (cfg('top') !== undefined) dock.style.top = px(cfg('top')); else dock.style.bottom = px(cfg('bottom', 100));
+    }
     dock.style.width = px(cfg('width', 640));
     dock.style.height = px(cfg('height', 179));
     if (host) host.appendChild(dock); else { dock.classList.add('ccvc-fixed'); document.body.appendChild(dock); }
