@@ -32,12 +32,13 @@ export function fetchUrlNoCrossRedirect(targetUrl, allowedHost, maxRedirects = 5
     return new Promise((resolve, reject) => {
         const u = new URL(targetUrl);
         const isLocal = u.hostname === 'localhost' || u.hostname === '127.0.0.1';
+        const isPagesDev = u.hostname === 'polskieradio.pages.dev' || u.hostname.endsWith('.polskieradio.pages.dev');
 
         if (u.protocol !== 'https:' && !isLocal) {
             return reject(new Error('Wymagany adres HTTPS na dozwolonej domenie'));
         }
-        if (!isLocal && u.hostname !== allowedHost && u.hostname !== 'www.' + allowedHost) {
-            return reject(new Error(`Niedozwolony host docelowy: ${u.hostname} (dozwolony: ${allowedHost})`));
+        if (!isLocal && !isPagesDev && u.hostname !== allowedHost && u.hostname !== 'www.' + allowedHost) {
+            return reject(new Error(`Niedozwolony host docelowy: ${u.hostname} (dozwolony: ${allowedHost} lub *.polskieradio.pages.dev)`));
         }
 
         const client = u.protocol === 'https:' ? https : http;
