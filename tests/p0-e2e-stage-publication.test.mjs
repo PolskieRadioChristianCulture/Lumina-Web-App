@@ -25,7 +25,8 @@ import {
     DistributionQueue,
     DistributionOrchestrator,
     WwwDistributionAdapter,
-    createPublicationManifest
+    createPublicationManifest,
+    setKillSwitchState
 } from '../lib/cc-content-core/index.js';
 
 import { fetchUrlNoCrossRedirect } from '../scripts/verify_publication.mjs';
@@ -235,7 +236,106 @@ async function runSuite() {
         });
 
         // ─────────────────────────────────────────────────────────────
-        // 6. POPRAWNA OBSŁUGA BŁĘDÓW I DEAD LETTER QUEUE
+        // 6. BLOKADA WSPÓŁBIEŻNOŚCI (CONCURRENCY LEASE LOCK)
+        // ─────────────────────────────────────────────────────────────
+        await test('Concurrency Lease Lock: Ochrona przed równoległym wykonaniem zadania', async () => {
+            const queue = new DistributionQueue({ persistencePath: persistenceFile });
+
+            const lockJob = queue.enqueueJob({
+                contentId: 'CC-LOCK-01',
+                variantId: 'v1',
+                platform: 'WWW',
+                channelId: 'default',
+                manifestId: 'man_lock'
+            });
+
+            // Wykonawca 1 (worker_A) pobiera i blokuje zadanie na 10 sekund
+            const claimed = queue.claimJob(lockJob.jobId, 'worker_A', 10000);
+            assert.strictEqual(claimed.status, 'PROCESSING');
+            assert.strictEqual(claimed.lockedBy, 'worker_A');
+
+            // Wykonawca 2 (worker_B) próbuje zablokować to samo zadanie — oczekiwana odmowa
+            assert.throws(() => {
+                queue.claimJob(lockJob.jobId, 'worker_B', 10000);
+            }, /CONCURRENCY_LOCK_ACTIVE/, 'Inny wykonawca nie może przejąć aktywnego zadania!');
+
+            // Wykonawca 2 próbuje uruchomić processJob z poziomu drugiego procesu — oczekiwana blokada
+            await assert.rejects(async () => {
+                await queue.processJob(lockJob.jobId, { workerId: 'worker_B' });
+            }, /CONCURRENCY_LOCK_ACTIVE/, 'Przetwarzanie zablokowane dla obcego wykonawcy!');
+
+            // Zwolnienie blokady przez worker_A
+            queue.releaseJob(lockJob.jobId, 'worker_A');
+            const releasedJob = queue.getJob(lockJob.jobId);
+            assert.strictEqual(releasedJob.lockedBy, null, 'Zadanie po zwolnieniu nie ma przypisanego wykonawcy');
+        });
+
+        // ─────────────────────────────────────────────────────────────
+        // 7. SAMOCZYNNE URUCHOMIENIE ZADANIA O ZAPLANOWANEJ GODZINIE
+        // ─────────────────────────────────────────────────────────────
+        await test('Samoczynny Scheduler: Samodzielne podjęcie i wykonanie zadania bez ręcznego wywołania', async () => {
+            const queue = new DistributionQueue({ persistencePath: persistenceFile });
+            setKillSwitchState({ automationOff: false });
+
+            // Tworzymy adapter testowy raportujący wykonanie
+            let autoExecuted = false;
+            queue.registerAdapter('AUTO_WWW', {
+                platform: 'AUTO_WWW',
+                version: '1.0',
+                validate: async () => ({ valid: true }),
+                prepare: async () => ({ ready: true, preparedPayload: { ok: true } }),
+                publish: async () => {
+                    autoExecuted = true;
+                    return { success: true, remoteId: 'auto_remote_1', state: 'PUBLISHED' };
+                },
+                verify: async () => ({ verified: true, status: 'HTTP_200' })
+            });
+
+            const testContent = {
+                contentId: 'CC-AUTO-01',
+                type: 'ARTICLE',
+                rights: { ownership: 'CC_OWNED', redistributionAllowed: true }
+            };
+            const testVariant = {
+                variantId: 'v_auto',
+                title: 'Automatyczne zadanie harmonogramu',
+                status: 'APPROVED',
+                variantHash: 'hash_auto_777'
+            };
+            const autoManifest = createPublicationManifest(testContent, testVariant, 'AUTO_WWW', 'default', '1.0', 'dowodca');
+
+            // Zadanie zaplanowane do wykonania w tej chwili
+            const scheduledJob = queue.enqueueJob({
+                contentId: 'CC-AUTO-01',
+                variantId: 'v_auto',
+                platform: 'AUTO_WWW',
+                channelId: 'default',
+                manifestId: autoManifest.manifestId,
+                scheduledAt: new Date(Date.now() - 1000).toISOString() // Gotowe do wykonania
+            });
+
+            // Uruchomienie samoczynnej pętli schedulera z interwałem 30ms (bez ręcznego wywoływania processJob!)
+            let jobProcessedEvent = null;
+            queue.startScheduler({
+                intervalMs: 30,
+                workerId: 'auto_timer_worker',
+                isAutomation: false,
+                onJobProcessed: (res) => {
+                    if (res.jobId === scheduledJob.jobId) jobProcessedEvent = res;
+                }
+            });
+
+            // Odczekanie na samoczynny cykl timera
+            await new Promise(resolve => setTimeout(resolve, 200));
+            queue.stopScheduler();
+
+            assert.strictEqual(autoExecuted, true, 'Adapter publish() musiał zostać samoczynnie wywołany przez pętlę!');
+            assert.ok(jobProcessedEvent, 'Event onJobProcessed musiał zostać wyemitowany!');
+            assert.strictEqual(jobProcessedEvent.status, 'VERIFIED', 'Status zadania po samoczynnym wykonaniu musi być VERIFIED!');
+        });
+
+        // ─────────────────────────────────────────────────────────────
+        // 8. POPRAWNA OBSŁUGA BŁĘDÓW I DEAD LETTER QUEUE
         // ─────────────────────────────────────────────────────────────
         await test('Obsługa Błędów: Błąd krytyczny trafia do Dead Letter Queue po wyczerpaniu prób', async () => {
             const queue = new DistributionQueue({ persistencePath: persistenceFile });
