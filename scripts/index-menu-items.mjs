@@ -364,12 +364,12 @@ const menuItems = [
     featured: true
   },
   {
-    title: "Biblia CC Online — Roczny Plan Czytania Pisma Świętego & Czytnik Rozdziałów",
+    title: "MojaBiblia — Biblia Interlinearna & Czytnik Pisma Świętego",
     category: "Biblia i formacja",
-    url: "https://biblia.cclite.pl",
-    description: "Cyfrowa czytelnia Pisma Świętego w subdomenie biblia.cclite.pl ze zintegrowanym rocznym planem czytania Biblii, podziałem na księgi i rozdziały oraz radiem w tle.",
-    tags: ["biblia cclite", "plan czytania biblii", "biblia online", "czytnik pisma", "rozdziały biblii", "roczny plan czytania", "czytanie biblii"],
-    featured: false
+    url: "https://polskieradio.cc/mojabiblia",
+    description: "Interlinearna czytelnia Pisma Świętego z numeracją Stronga, morfologią hebrajską i grecką oraz zestawieniem przekładów: UBG, BW, BT, BG. Pełnotekstowa wyszukiwarka wersetów.",
+    tags: ["mojabiblia", "biblia interlinearna", "pismo święte online", "strong", "hebrajski", "greka", "ubg", "bw", "bt", "bg", "wyszukiwarka biblijna", "słownik biblijny", "czytanie biblii"],
+    featured: true
   },
   {
     title: "Duchowny Mariusz — Wsparcie Duszpasterskie, Rozmowa Telefoniczna i SMS",

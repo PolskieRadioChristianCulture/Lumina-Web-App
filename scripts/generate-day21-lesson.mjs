@@ -1,0 +1,1159 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ROOT = process.cwd();
+
+export function getDay21Html() {
+  return `<!DOCTYPE html>
+<html lang="pl" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Dzień 21: BÓG DZIAŁA POŚRÓD NIEDOSKONAŁYCH RODZIN (Rdz 29:1–30:43) | Z Biblią za Pan Brat | LUMINA Bible Academy</title>
+  <meta name="description" content="Księga Rodzaju — Miesiąc 1, Dzień 21 (21 Października 2026). Miłość, oszustwo, rywalizacja i Boża wierność — Rdz 29:1–30:43. Kurs codzienny Pisma Świętego." />
+  <link rel="canonical" href="https://polskieradio.cc/akademia/kurscodzienny/dzien-21" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://polskieradio.cc/akademia/kurscodzienny/dzien-21" />
+  <meta property="og:title" content="Dzień 21: BÓG DZIAŁA POŚRÓD NIEDOSKONAŁYCH RODZIN — Z Biblią za Pan Brat" />
+  <meta property="og:description" content="Księga Rodzaju — Miesiąc 1, Dzień 21. Bóg dostrzega ludzi pomijanych, zranionych i uwikłanych w rodzinne konflikty — Rdz 29:1–30:43." />
+  <meta property="og:image" content="https://polskieradio.cc/images/academy/daily/kc_day_21_bog_dziala_niedoskonale_rodziny.jpg" />
+
+  <!-- Fonts: Cinzel, Playfair Display, Plus Jakarta Sans, Lora, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            amber: {
+              100: '#F1E7D0',
+              200: '#E2CC9A',
+              300: '#D4B578',
+              400: '#C4A35A',
+              500: '#B39250',
+              600: '#A08040',
+              900: '#403526',
+              950: '#29231C'
+            },
+            brand: {
+              gold: '#C4A35A',
+              'gold-light': '#E2CC9A',
+              'gold-dark': '#A08040',
+              dark: '#07090E',
+              surface: '#0E121A',
+              elevated: '#161B26',
+              line: 'rgba(255, 255, 255, 0.08)'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            display: ['Cinzel', 'serif'],
+            sans: ['Inter', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            bible: ['Lora', 'Georgia', 'serif'],
+            reader: ['var(--kc-font-body)', 'Lora', 'Georgia', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --kc-font-body: 'Lora', Georgia, serif;
+      --kc-font-size: 1.05rem;
+      --kc-line-height: 1.85;
+      --kc-letter-spacing: 0.01em;
+    }
+    [data-kc-font="sans"] {
+      --kc-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --kc-font-size: 1.0rem;
+      --kc-line-height: 1.75;
+      --kc-letter-spacing: 0em;
+    }
+
+    body {
+      background-color: #07090E;
+      color: #E2E8F0;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    #lesson-text-body p,
+    #lesson-text-body li,
+    .kc-reader-content {
+      font-family: var(--kc-font-body) !important;
+      font-size: var(--kc-font-size) !important;
+      line-height: var(--kc-line-height) !important;
+      letter-spacing: var(--kc-letter-spacing) !important;
+      color: #cbd5e1 !important;
+      margin-bottom: 1.15rem;
+    }
+
+    .kc-card {
+      background: #0E121A;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 24px;
+      transition: border-color .3s, transform .2s;
+    }
+    .kc-card:hover {
+      border-color: rgba(196, 163, 90, 0.3);
+    }
+
+    .kc-verse-box {
+      background: linear-gradient(135deg, rgba(196, 163, 90, 0.12) 0%, rgba(14, 18, 26, 0.8) 100%);
+      border-left: 4px solid #C4A35A;
+      border-radius: 0 16px 16px 0;
+      padding: 24px;
+    }
+
+    .quiz-option {
+      background: #161B26;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: all .2s;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .quiz-option:hover {
+      border-color: #C4A35A;
+      background: #1f2637;
+    }
+    .quiz-option.correct {
+      border-color: #10B981 !important;
+      background: rgba(16, 185, 129, 0.15) !important;
+      color: #34D399 !important;
+    }
+    .quiz-option.wrong {
+      border-color: #EF4444 !important;
+      background: rgba(239, 68, 68, 0.15) !important;
+      color: #F87171 !important;
+    }
+
+    .kc-reader-pill {
+      min-width: 38px;
+      min-height: 38px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e2e8f0;
+      transition: all 0.2s ease;
+      font-size: 0.8rem;
+    }
+    .kc-reader-pill:hover {
+      background: rgba(196,163,90,0.18);
+      border-color: rgba(196,163,90,0.45);
+      color: #ffffff;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #C4A35A;
+      color: #07090E;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      z-index: 50;
+      border: none;
+      cursor: pointer;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 24px rgba(196,163,90,0.4);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
+
+  <!-- ── TOP GLOBAL STRIP ── -->
+  <header class="sticky top-0 z-40 bg-[#07090E]/95 backdrop-blur-md border-b border-brand-line">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a href="/akademia/kurscodzienny" class="flex items-center gap-2 text-zinc-400 hover:text-white transition group min-h-[44px]">
+          <i class="fa-solid fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
+          <span class="text-xs font-semibold uppercase tracking-wider hidden sm:inline">Katalog Dni</span>
+        </a>
+        <span class="text-zinc-600">/</span>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span class="font-display text-xs font-bold tracking-widest text-brand-gold uppercase">Lekcja 21 • Rdz 29–30</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Font Family Toggle (Lora Serif / Inter Sans) -->
+        <button type="button" id="btn-reader-font" onclick="toggleReaderFont()" class="kc-reader-pill" title="Zmień krój pisma: Lora (Książkowa szeryfowa) / Inter (Ekranowa bezszeryfowa)" aria-label="Zmień krój pisma">
+          <i class="fa-solid fa-font text-amber-400 text-xs"></i>
+          <span id="reader-font-label" class="sr-only font-semibold">Krój: Lora</span>
+        </button>
+
+        <!-- Przełącznik motywu (Jasny / Ciemny) -->
+        <button type="button" id="btn-theme-toggle" onclick="toggleCourseTheme()" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
+          <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
+        </button>
+
+        <!-- Font Zoom Controls (A- / A+) -->
+        <div class="hidden md:flex items-center rounded-full border border-zinc-800 bg-zinc-900/80 p-0.5 text-xs text-zinc-400">
+          <button type="button" onclick="adjustFontSize(-1)" class="w-8 h-8 flex items-center justify-center rounded-full hover:text-white hover:bg-zinc-800 transition" title="Mniejszy tekst">A-</button>
+          <button type="button" onclick="adjustFontSize(1)" class="w-8 h-8 flex items-center justify-center rounded-full hover:text-white hover:bg-zinc-800 font-bold transition" title="Większy tekst">A+</button>
+        </div>
+
+        <!-- Audio TTS Hook -->
+        <button type="button" id="btn-audio-tts" onclick="toggleAudioLesson()" class="w-[38px] h-[38px] min-w-[38px] min-h-[38px] p-0 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-bold hover:bg-amber-500/20 transition flex items-center justify-center" title="Słuchaj lekcji z lektorem" aria-label="Słuchaj lekcji z lektorem">
+          <i class="fa-solid fa-volume-high text-xs" id="tts-icon"></i>
+          <span id="tts-btn-text" class="sr-only">Słuchaj Audio</span>
+        </button>
+
+        <!-- Wsparcie Patronite -->
+        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="w-[38px] h-[38px] min-w-[38px] min-h-[38px] p-0 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 inline-flex items-center justify-center" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
+          <span>❤️</span>
+          <span class="sr-only">Wspieraj</span>
+        </a>
+
+        <!-- CC Global Auth Connector Injection Point -->
+        <div id="cc-auth-nav-container" class="cc-auth-widget-container"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── BREADCRUMB STRIP ── -->
+  <nav class="bg-[#0A0D14] border-b border-brand-line py-2.5 px-4" aria-label="Nawigacja lekcji">
+    <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-500 flex-wrap gap-2">
+      <div class="flex items-center gap-2">
+        <a href="/akademia" class="hover:text-amber-300">Akademia</a>
+        <span>›</span>
+        <a href="/akademia/kurscodzienny" class="hover:text-amber-300">Z Biblią za Pan Brat</a>
+        <span>›</span>
+        <span class="text-zinc-400">Miesiąc 1: Księga Rodzaju</span>
+        <span>›</span>
+        <span class="text-amber-400 font-bold">DZIEŃ 21</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="toggleReaderFont()" class="text-zinc-300 hover:text-amber-300 px-2 py-1 min-h-[32px] flex items-center gap-1 sm:hidden text-[11px] rounded bg-zinc-900 border border-zinc-800" title="Przełącz krój pisma">
+          <i class="fa-solid fa-font text-amber-400 text-[10px]"></i>
+          <span class="kc-font-mobile-label">Lora</span>
+        </button>
+        <a href="/akademia/kurscodzienny/dzien-20" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">← Dzień 20</a>
+        <span class="text-zinc-700">|</span>
+        <a href="/akademia/kurscodzienny" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">Spis Dni</a>
+        <span class="text-zinc-700">|</span>
+        <a href="#jutro" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Dzień 22 →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO LEKCJI ── -->
+  <section class="relative overflow-hidden py-10 px-4 border-b border-brand-line" style="background: radial-gradient(ellipse at top, rgba(196,163,90,0.12) 0%, rgba(7,9,14,0) 70%);">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">
+        <span>KSIĘGA RODZAJU — MIESIĄC 1</span>
+        <span>•</span>
+        <span>DZIEŃ 21 — 21 PAŹDZIERNIKA 2026</span>
+      </div>
+
+      <!-- PRZYCISK SKOKU DO SEKCJI PODZIEL SIĘ TĄ LEKCJĄ -->
+      <div class="kc-jump-to-share-wrap mb-3">
+        <a href="#ccDailyShare" id="kcJumpShareBtn" class="kc-jump-to-share inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/90 border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-300 hover:text-white transition-all text-xs font-semibold shadow-md min-h-[44px]" title="Przejdź do sekcji: Podziel się tą lekcją" aria-label="Przejdź do sekcji Podziel się tą lekcją">
+          <i class="fa-solid fa-share-nodes text-amber-400 text-xs" aria-hidden="true"></i>
+          <span>Podziel się tą lekcją</span>
+          <i class="fa-solid fa-arrow-down text-amber-400 text-xs" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-2 leading-tight">
+        BÓG DZIAŁA POŚRÓD NIEDOSKONAŁYCH RODZIN
+      </h1>
+      <p class="font-display text-base sm:text-xl text-amber-200/90 font-semibold mb-6">
+        Miłość, oszustwo, rywalizacja i Boża wierność — Rdz 29:1–30:43
+      </p>
+
+      <!-- METRYKA LEKCJI -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mb-6">
+        <div class="p-3 rounded-xl bg-zinc-900/80 border border-zinc-800">
+          <div class="text-zinc-500 uppercase tracking-wider text-[10px]">Czytanie</div>
+          <div class="font-bold text-amber-300 text-sm">Rdz 29:1–30:43</div>
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/80 border border-zinc-800">
+          <div class="text-zinc-500 uppercase tracking-wider text-[10px]">Tekst pamięciowy</div>
+          <div class="font-bold text-amber-300 text-sm">Rdz 29:31</div>
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/80 border border-zinc-800">
+          <div class="text-zinc-500 uppercase tracking-wider text-[10px]">Czas studium</div>
+          <div class="font-bold text-amber-300 text-sm">~35 minut</div>
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/80 border border-zinc-800">
+          <div class="text-zinc-500 uppercase tracking-wider text-[10px]">Status</div>
+          <div class="font-bold text-emerald-400 text-sm flex items-center gap-1.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Dzisiejsza lekcja
+          </div>
+        </div>
+      </div>
+
+      <!-- GRAFIKA LEKCJI -->
+      <div class="rounded-2xl overflow-hidden border border-brand-line shadow-2xl relative aspect-[21/9] bg-zinc-900 mb-8">
+        <img src="/images/academy/daily/kc_day_21_bog_dziala_niedoskonale_rodziny.jpg" alt="Dzień 21: Bóg działa pośród niedoskonałych rodzin — Rdz 29:1–30:43" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-zinc-300">
+          <span class="font-serif italic text-amber-200">„Gdy PAN widział, że Lea była mniej kochana, otworzył jej łono” — Rdz 29:31</span>
+          <span class="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur border border-zinc-700/60 font-mono text-[11px] text-amber-400">Rdz 29–30</span>
+        </div>
+      </div>
+
+      <!-- MYŚL PRZEWODNIA -->
+      <div class="kc-card border-brand-gold/30 bg-gradient-to-b from-[#161B26] to-[#0E121A]">
+        <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1.5 flex items-center gap-2">
+          <i class="fa-solid fa-compass"></i>
+          <span>Myśl przewodnia dnia</span>
+        </div>
+        <p class="font-serif text-base sm:text-lg text-white leading-relaxed font-semibold">
+          Bóg dostrzega ludzi pomijanych, zranionych i uwikłanych w rodzinne konflikty. Jego wierność nie oznacza aprobaty dla oszustwa, rywalizacji czy traktowania człowieka jak narzędzia. W Chrystusie odnajdujemy łaskę, godność i wezwanie do prawdziwej miłości.
+        </p>
+      </div>
+
+      <!-- WERSET PAMIĘCIOWY -->
+      <div class="kc-verse-box mb-8">
+        <div class="text-xs font-bold text-amber-400 font-sans uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark"></i>
+          <span>Werset do zapamiętania na dziś:</span>
+        </div>
+        <blockquote class="text-lg sm:text-xl text-amber-100 italic leading-relaxed mb-2 font-serif">
+          „Gdy PAN widział, że Lea była mniej kochana, otworzył jej łono.”
+        </blockquote>
+        <div class="text-right text-xs font-bold font-sans text-amber-300 tracking-wider">
+          — KSIĘGA RODZAJU 29:31 (UBG)
+        </div>
+        <button onclick="copyVerse()" class="mt-3 flex items-center gap-2 text-xs text-zinc-400 hover:text-amber-300 transition min-h-[44px]">
+          <i class="fa-regular fa-copy"></i> Kopiuj werset
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GŁÓWNA TREŚĆ STUDIUM ── -->
+  <main class="max-w-4xl mx-auto px-4 py-8 flex-1" id="lesson-text-body">
+
+    <!-- ── ZANIM OTWORZYSZ BIBLIĘ ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <span>Wprowadzenie</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">
+        Zanim otworzysz Biblię
+      </h2>
+      <div class="space-y-4 text-sm sm:text-base text-zinc-300 leading-relaxed">
+        <p>Jakub uciekał z domu po oszukaniu ojca i konflikcie z Ezawem. W Betel usłyszał od Boga: „Oto Ja jestem z tobą” (Rdz 28:15). Teraz dociera do rodziny Labana. Spotka kobietę, którą pokocha, lecz sam doświadczy oszustwa. W jego nowym domu pojawią się zazdrość, rywalizacja i bolesne porównywanie osób.</p>
+        <p>Ta historia nie jest instrukcją budowania rodziny. Jest uczciwym opisem rodziny, w której wiele rzeczy idzie źle — a jednak Bóg nie zapomina o ludziach, zwłaszcza o tych, których inni nie dostrzegają.</p>
+      </div>
+    </section>
+
+    <!-- ── CZĘŚĆ I — JAKUB PRZY STUDNI ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-faucet-drip"></i>
+        <span>Część I</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Część I — Jakub przy studni (Rdz 29:1–14)</h2>
+      <div class="space-y-4 text-sm sm:text-base text-zinc-300 leading-relaxed">
+        <h3 class="text-lg font-bold text-amber-300 mt-2">1. Podróż ku rodzinie matki (29:1–4)</h3>
+        <p>Jakub przybywa do kraju ludzi Wschodu i spotyka pasterzy przy studni. Rozmowa ujawnia, że zna on imię Labana, a miejscowi znają jego rodzinę. Bóg prowadzi historię, lecz narrator nie opisuje każdego szczegółu drogi jako cudu.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">2. Kamień na otworze studni (29:2–8)</h3>
+        <p>Pasterze czekają na zebranie stad, zanim odsuną kamień i napoją zwierzęta. Studnia to miejsce codziennej pracy, spotkań i współpracy. Zwyczajne okoliczności stają się tłem ważnego wydarzenia.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">3. Rachela przychodzi z owcami (29:9–10)</h3>
+        <p>Rachela jest pasterką. Jakub odsuwa kamień i poi stado należące do Labana. Narrator pokazuje działanie Jakuba, ale nie każe nam przypisywać każdemu szczegółowi ukrytego symbolu duchowego.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">4. Łzy Jakuba (29:11–12)</h3>
+        <p>Jakub całuje Rachelę i płacze, a następnie przedstawia rodzinne powiązania. Łzy mogą towarzyszyć uldze i silnym emocjom. Tekst nie pozwala z całą pewnością opisać wszystkich jego uczuć.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">5. Powitanie w domu Labana (29:13–14)</h3>
+        <p>Laban przyjmuje Jakuba i wysłuchuje jego historii. Przez miesiąc Jakub przebywa w jego domu. Początkowe rodzinne powitanie nie zapowiada jeszcze wszystkich trudności, które nastąpią.</p>
+      </div>
+    </section>
+
+    <!-- ── CZĘŚĆ II — MIŁOŚĆ, PRACA I OSZUSTWO ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-heart-crack"></i>
+        <span>Część II</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Część II — Miłość, praca i oszustwo (Rdz 29:15–30)</h2>
+      <div class="space-y-4 text-sm sm:text-base text-zinc-300 leading-relaxed">
+        <h3 class="text-lg font-bold text-amber-300 mt-2">6. Umowa o siedem lat pracy (29:15–18)</h3>
+        <p>Laban pyta Jakuba o wynagrodzenie. Jakub proponuje siedem lat pracy za możliwość poślubienia Racheli, którą kocha. W realiach starożytnych małżeństwo wiązało się z uzgodnieniami rodzinnymi, lecz opis ten nie jest współczesnym wzorem traktowania osoby jako zapłaty.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">7. „Jak kilka dni” (29:19–20)</h3>
+        <p>Siedem lat mija Jakubowi jak kilka dni z powodu miłości do Racheli. Narrator podkreśla jego przywiązanie. Miłość może motywować do cierpliwości, ale sama intensywność uczuć nie gwarantuje sprawiedliwego postępowania.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">8. Noc weselna i zamiana sióstr (29:21–25)</h3>
+        <p>Laban urządza ucztę, lecz wieczorem przyprowadza Leę zamiast Racheli. Rano Jakub odkrywa podstęp. Tekst nie wyjaśnia dokładnie, w jaki sposób nie rozpoznał kobiety w nocy. Nie należy dopowiadać niepotwierdzonych szczegółów.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">9. Jakub doświadcza oszustwa (29:25)</h3>
+        <p>Jakub pyta: „Dlaczego mnie oszukałeś?”. Wcześniej sam podszył się pod brata wobec niewidzącego ojca (Rdz 27). Czytelnik dostrzega ironię narracyjną: człowiek, który oszukał, zostaje oszukany. Nie oznacza to jednak, że krzywda wyrządzona Jakubowi była moralnie dobra.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">10. Wyjaśnienie Labana (29:26)</h3>
+        <p>Laban powołuje się na miejscowy zwyczaj, według którego młodsza córka nie powinna wychodzić za mąż przed starszą. Nie usprawiedliwia to jego nieuczciwości: Jakub wcześniej uzgodnił inne warunki.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">11. Kolejne siedem lat (29:27–30)</h3>
+        <p>Jakub otrzymuje również Rachelę i zobowiązuje się do dalszych siedmiu lat służby. Tekst wskazuje, że po tygodniu weselnym Lei poślubia Rachelę, a następnie odpracowuje kolejne lata. Nie należy przedstawiać poligamii jako Bożego ideału: pierwotny obraz małżeństwa w Rdz 2:24 wskazuje na więź dwojga.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">12. Lea nie jest winna temu, że jest mniej kochana (29:30)</h3>
+        <p>Jakub kocha Rachelę bardziej niż Leę. Opowieść nie obciąża Lei odpowiedzialnością za brak miłości ze strony męża. Jej sytuacja wymaga współczucia, a nie oceniania wyglądu czy wartości człowieka przez pryzmat uczuć innych.</p>
+      </div>
+    </section>
+
+    <!-- ── CZĘŚĆ III — BÓG WIDZI LEĘ ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-eye"></i>
+        <span>Część III</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Część III — Bóg widzi Leę (Rdz 29:31–35)</h2>
+      <div class="space-y-4 text-sm sm:text-base text-zinc-300 leading-relaxed">
+        <h3 class="text-lg font-bold text-amber-300 mt-2">13. Bóg dostrzega kobietę pomijaną (29:31)</h3>
+        <p>PAN widzi, że Lea jest mniej kochana, i otwiera jej łono, podczas gdy Rachela pozostaje bezdzietna. W tym konkretnym opowiadaniu narodziny dzieci stają się znakiem Bożej troski. Nie wynika stąd, że płodność zawsze oznacza większą przychylność Boga ani że bezdzietność jest karą.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">14. Ruben — pragnienie bycia zauważoną (29:32)</h3>
+        <p>Lea nadaje synowi imię Ruben i łączy narodziny z przekonaniem, że PAN wejrzał na jej niedolę. Ma nadzieję, że mąż ją pokocha. Jej słowa ujawniają głęboką potrzebę miłości i akceptacji.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">15. Symeon — Bóg słyszy (29:33)</h3>
+        <p>Lea rodzi kolejnego syna i mówi, że PAN usłyszał, iż jest mniej kochana. Bóg nie pozostaje obojętny wobec jej cierpienia.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">16. Lewi — tęsknota za więzią (29:34)</h3>
+        <p>Przy narodzinach Lewiego Lea wyraża nadzieję, że mąż się z nią zwiąże. Jej pragnienie jest zrozumiałe, lecz człowiek nie może uzależniać własnej godności wyłącznie od uznania współmałżonka.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">17. Juda — uwielbienie Boga (29:35)</h3>
+        <p>Przy narodzinach Judy Lea mówi o chwale dla PANA. Narracja przechodzi od tęsknoty za uznaniem męża ku wyrażeniu wdzięczności Bogu. Z pokolenia Judy wywodzi się później królewska linia Dawida i Jezus Chrystus (Rdz 49:10; Mt 1:2–3,16).</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">18. Wartość człowieka nie zależy od porównania</h3>
+        <p>Historia Lei i Racheli pokazuje, jak niszczące bywa mierzenie wartości osoby miłością, płodnością czy społecznym uznaniem. Każda z sióstr cierpi inaczej. Pismo zaprasza nas do współczucia, nie do tworzenia rankingu ich zasług.</p>
+      </div>
+    </section>
+
+    <!-- ── CZĘŚĆ IV — RYWALIZACJA O DZIECI ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-users-between-lines"></i>
+        <span>Część IV</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Część IV — Rywalizacja o dzieci (Rdz 30:1–24)</h2>
+      <div class="space-y-4 text-sm sm:text-base text-zinc-300 leading-relaxed">
+        <h3 class="text-lg font-bold text-amber-300 mt-2">19. Rozpacz Racheli (30:1)</h3>
+        <p>Rachela zazdrości Lei i woła do Jakuba o dzieci. Jej cierpienie jest realne. Nie należy wykorzystywać tej historii do zawstydzania osób zmagających się z niepłodnością.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">20. Gniew Jakuba (30:2)</h3>
+        <p>Jakub odpowiada gniewem i pyta, czy zajmuje miejsce Boga. Słusznie rozpoznaje, że nie ma władzy nad płodnością, ale jego ostra odpowiedź nie jest wzorem empatycznej rozmowy. Prawdziwe stwierdzenie można wypowiedzieć w raniący sposób.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">21. Bilha włączona do rodzinnej rywalizacji (30:3–8)</h3>
+        <p>Rachela oddaje Jakubowi swoją służącą Bilhę, która rodzi Dana i Neftalego. Narrator przedstawia praktykę starożytnego domu, nie udziela jednak ogólnego przyzwolenia na traktowanie kobiet jako narzędzi do realizacji cudzych planów. Tekst nie przedstawia perspektywy Bilhy ani jej zgody; nie wolno jej zakładać.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">22. Zilpa i dalsza rywalizacja (30:9–13)</h3>
+        <p>Lea daje Jakubowi swoją służącą Zilpę, która rodzi Gada i Aszera. Rywalizacja przenosi się na kolejne osoby. To przestroga przed sytuacją, w której dorośli wykorzystują zależnych od siebie ludzi w rodzinnych konfliktach.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">23. Mandragory i targowanie się o bliskość (30:14–16)</h3>
+        <p>Ruben przynosi mandragory, które Rachela pragnie otrzymać. Siostry zawierają układ dotyczący nocy Jakuba z Leą. W starożytności mandragorom przypisywano związek z płodnością, lecz tekst nie mówi, że roślina skutecznie spowodowała poczęcie.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">24. Issachar i Zabulon (30:17–20)</h3>
+        <p>Lea rodzi Issachara i Zabulona. Opowiadanie wiąże narodziny z Bożym działaniem, a nie z magiczną mocą roślin czy skutecznością rodzinnych targów.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">25. Dina — córka Lei (30:21)</h3>
+        <p>Narrator wspomina narodziny Diny. Jej obecność przypomina, że historia rodziny obejmuje również córki, choć genealogiczna opowieść częściej koncentruje się na synach. W dalszych rozdziałach los Diny stanie się ważnym, trudnym tematem.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">26. Bóg pamięta o Racheli (30:22)</h3>
+        <p>Narrator stwierdza, że Bóg pamiętał o Racheli, wysłuchał jej i otworzył jej łono. „Pamiętał” nie oznacza wcześniejszego zapomnienia, lecz podjęcie działania zgodnego z Jego troską.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">27. Narodziny Józefa (30:23–24)</h3>
+        <p>Rachela rodzi Józefa. Jego imię wiąże z nadzieją na dalsze potomstwo. Józef stanie się kluczową postacią następnych rozdziałów Księgi Rodzaju. Nie wolno jednak czynić z tej historii gwarancji, że każda prośba o dziecko otrzyma identyczną odpowiedź.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">28. Dzieci nie są trofeami</h3>
+        <p>W całej opowieści dzieci stają się przedmiotem rodzinnej rywalizacji. Biblia opisuje ten stan, lecz nie nakazuje go naśladować. Dziecko jest osobą obdarzoną godnością, a nie narzędziem dowodzenia wartości rodzica.</p>
+      </div>
+    </section>
+
+    <!-- ── CZĘŚĆ V — PRACA, ZAPŁATA I NIEUFNOŚĆ ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-wheat-awn"></i>
+        <span>Część V</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Część V — Praca, zapłata i nieufność (Rdz 30:25–43)</h2>
+      <div class="space-y-4 text-sm sm:text-base text-zinc-300 leading-relaxed">
+        <h3 class="text-lg font-bold text-amber-300 mt-2">29. Jakub pragnie wrócić do swojej ziemi (30:25–26)</h3>
+        <p>Po narodzinach Józefa Jakub prosi Labana o możliwość odejścia z rodziną. Pamięta o swojej drodze i wcześniejszej Bożej obietnicy powrotu (Rdz 28:15).</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">30. Laban dostrzega korzyść (30:27–28)</h3>
+        <p>Laban mówi, że doświadczył błogosławieństwa dzięki Jakubowi, i prosi go o pozostanie. Wypowiedź wskazuje także na interes ekonomiczny Labana. Relacje rodzinne nie powinny usprawiedliwiać wyzysku pracownika.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">31. Jakub przypomina swoją pracę (30:29–30)</h3>
+        <p>Jakub wskazuje, że stada Labana bardzo się rozmnożyły podczas jego służby. Praca i wynagrodzenie stają się źródłem napięcia. Uczciwe zasady chronią zarówno pracownika, jak i pracodawcę.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">32. Umowa dotycząca zwierząt (30:31–36)</h3>
+        <p>Jakub proponuje, że jego zapłatą będą zwierzęta o określonym umaszczeniu. Laban oddziela część stad i powierza je synom. Historia pokazuje wzajemną nieufność, która rozwinie się jeszcze wyraźniej w Rdz 31.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">33. Pręty przy wodopoju (30:37–39)</h3>
+        <p>Jakub umieszcza obrane pręty przed zwierzętami podczas parzenia. Narrator opisuje jego metodę, lecz nie stanowi to naukowego potwierdzenia, że oglądane wzory na gałęziach zmieniają dziedziczne umaszczenie potomstwa. Nie należy przedstawiać tego jako sprawdzonej metody hodowlanej.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">34. Rozdzielanie stad (30:40–42)</h3>
+        <p>Jakub wybiera określone zwierzęta i zarządza stadami, dążąc do powiększenia własnego dobytku. Tekst relacjonuje jego praktyki, ale nie nazywa każdej z nich wzorem etycznego działania.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">35. Znaczny wzrost majątku (30:43)</h3>
+        <p>Jakub staje się bardzo zamożny. Nie oznacza to, że każdemu wierzącemu Bóg obiecuje podobny sukces finansowy. W Rdz 31:9–12 Jakub będzie przypisywał swoje ostateczne powodzenie Bożej opiece w warunkach niesprawiedliwego traktowania.</p>
+
+        <h3 class="text-lg font-bold text-amber-300 mt-4">36. Boże prowadzenie nie jest pochwałą wszystkich metod</h3>
+        <p>Bóg może prowadzić swój plan pomimo ludzkich wad. Nie znaczy to, że pochwala oszustwo, wyzysk, zazdrość czy manipulację. Oceniając opisane zachowania, trzeba odróżnić to, co tekst relacjonuje, od tego, co Pismo nakazuje (Prz 11:1; Ef 4:25).</p>
+      </div>
+    </section>
+
+    <!-- ── JEZUS W CENTRUM ── -->
+    <section class="kc-card border-amber-500/40 bg-gradient-to-b from-[#1A1812] to-[#0E121A]">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-cross"></i>
+        <span>Chrystocentryczny punkt kulminacyjny</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">
+        Jezus w centrum — Godność, łaska i wierna miłość
+      </h2>
+      <div class="space-y-4 text-sm sm:text-base text-zinc-200 leading-relaxed">
+        <p><strong class="text-amber-300">37. Jezus widzi ludzi pomijanych (Łk 7:36–50):</strong> Bóg dostrzegł cierpienie Lei. W Ewangeliach Jezus zwraca uwagę na osoby lekceważone przez otoczenie. Nie mierzy wartości człowieka statusem, popularnością ani zdolnością spełniania oczekiwań innych.</p>
+        <p><strong class="text-amber-300">38. Mesjasz z pokolenia Judy (Rdz 29:35; Mt 1:2–3,16):</strong> Juda, syn Lei, znajdzie się w genealogii Jezusa. Bóg włączył w historię zbawienia rodzinę pełną słabości. Nie oznacza to pochwały tych słabości, lecz świadczy o wierności Bożego planu.</p>
+        <p><strong class="text-amber-300">39. Chrystus kocha ofiarnie (Ef 5:25–33):</strong> Rywalizacja i instrumentalne traktowanie bliskich kontrastują z miłością Chrystusa, który oddaje siebie za Kościół. Małżeńska miłość powinna odzwierciedlać troskę, prawdę i godność, a nie manipulację czy przymus.</p>
+        <p><strong class="text-amber-300">40. Jezus daje nową tożsamość (Ga 3:26–29):</strong> Lea i Rachela zmagały się z porównywaniem własnej wartości. W Chrystusie wierzący zostają nazwani dziećmi Boga przez wiarę. Ich godność nie zależy od płodności, wyglądu, małżeńskiego statusu ani społecznego uznania.</p>
+        <p><strong class="text-amber-300">41. Łaska uczy innego życia (Tt 2:11–12):</strong> Boża łaska nie jest usprawiedliwieniem rodzinnych krzywd. Uczy wyrzekania się bezbożności i życia w sprawiedliwości. Otrzymane przebaczenie powinno prowadzić do prawdomówności, odpowiedzialności i troski o słabszych.</p>
+        <p><strong class="text-amber-300">42. Jezus przyjmuje utrudzonych (Mt 11:28–30):</strong> W rodzinnych konfliktach człowiek może czuć się wyczerpany. Jezus zaprasza utrudzonych do siebie. Nie obiecuje, że wszystkie relacje natychmiast się naprawią, ale daje nadzieję, mądrość i odpocznienie w swojej łasce.</p>
+      </div>
+    </section>
+
+    <!-- ── SPRAWDŹ W BIBLII ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Teksty paralelne</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Sprawdź w Biblii</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 27:18–29 i 29:21–25:</strong> Jakie podobieństwo widzisz między oszustwem Jakuba a działaniem Labana?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 2:24 i 29:21–30:</strong> Jak odróżnić Boży ideał małżeństwa od opisu starożytnej praktyki?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 29:31–35 i Ps 34:19:</strong> Jak Bóg odnosi się do ludzi zranionych?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 29:35; 49:10 i Mt 1:2–3,16:</strong> Dlaczego Juda jest ważny dla historii zbawienia?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 30:1–2 i Jk 1:19–20:</strong> Co pomaga rozmawiać o cierpieniu bez gniewu?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 30:3–13 i Rdz 1:27:</strong> Dlaczego każda osoba ma godność?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 30:14–24 i 1 Sm 1:9–20:</strong> Jak Pismo opisuje ból niepłodności?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 30:25–43 i Prz 11:1:</strong> Jak rozróżnić zaradność od nieuczciwości?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 29–30 i Ef 5:25–33:</strong> Jak wygląda miłość na wzór Chrystusa?
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong class="text-amber-300">Rdz 29:31–35 i Ga 3:26–29:</strong> Skąd wierzący czerpią swoją tożsamość?
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRAWDA NA DZIŚ ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-bullseye"></i>
+        <span>Prawda na dziś</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Co mówi Pismo Święte na Twoim środowym posterunku:</h2>
+      <ul class="space-y-2.5 text-sm sm:text-base text-zinc-300 list-disc list-inside">
+        <li><strong class="text-white">Bóg dostrzega cierpienie</strong> osób pomijanych.</li>
+        <li><strong class="text-white">Ludzkiej godności nie określa płodność</strong> ani czyjaś sympatia.</li>
+        <li><strong class="text-white">Oszustwo nie staje się dobre</strong> dlatego, że spotyka człowieka, który wcześniej oszukiwał.</li>
+        <li><strong class="text-white">Opis poligamii i rywalizacji</strong> nie jest nakazem ich naśladowania.</li>
+        <li><strong class="text-white">Dzieci i osoby zależne</strong> nie mogą być narzędziami w konflikcie dorosłych.</li>
+        <li><strong class="text-white">Boże błogosławieństwo</strong> nie jest gwarancją bogactwa.</li>
+        <li><strong class="text-white">Jezus uczy miłości</strong>, która chroni godność drugiego człowieka.</li>
+      </ul>
+    </section>
+
+    <!-- ── POMYŚL — PYTANIA DO REFLEKSJI ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-lightbulb"></i>
+        <span>Pomyśl</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Pytania do osobistej refleksji</h2>
+      <ul class="space-y-3 text-sm sm:text-base text-zinc-300 list-disc list-inside">
+        <li>Czy ktoś w mojej rodzinie czuje się mniej ważny lub niezauważony?</li>
+        <li>Czy porównuję ludzi, zamiast szanować ich niepowtarzalną godność?</li>
+        <li>Czy w konflikcie potrafię nazwać krzywdę bez usprawiedliwiania przemocy?</li>
+        <li>Czy potrafię wysłuchać cierpienia bez pochopnych rad?</li>
+        <li>Czy moje decyzje wobec bliskich wynikają z miłości czy z potrzeby kontroli?</li>
+        <li>Czy w pracy i sprawach finansowych postępuję uczciwie?</li>
+        <li>Jak dzisiaj mogę okazać komuś troskę na wzór Jezusa?</li>
+      </ul>
+    </section>
+
+    <!-- ── MAŁY QUIZ (5 pytań interaktywnych) ── -->
+    <section class="kc-card" id="quiz-section">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-clipboard-question"></i>
+        <span>Sprawdź swoją wiedzę</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-2">Quiz biblijny — Dzień 21</h2>
+      <p class="text-xs text-zinc-400 mb-6">Wybierz właściwe odpowiedzi na 5 kluczowych pytań z czytania Rdz 29–30:</p>
+
+      <!-- Pytanie 1 -->
+      <div class="mb-6 p-4 rounded-xl bg-zinc-900/70 border border-zinc-800">
+        <p class="text-sm sm:text-base font-semibold text-white mb-3">1. Kogo Jakub spotyka jako pierwszą przy studni w Charanie (Rdz 29:9–10)?</p>
+        <div class="space-y-2">
+          <div class="quiz-option" onclick="checkAnswer(this, true, 1)">A) Rachelę, córkę Labana, pasącą stado owiec</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false, 1)">B) Leę wracającą z jarmarku</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false, 1)">C) Rebekę przychodzącą po wodę</div>
+        </div>
+        <div id="qf-1" class="hidden"></div>
+      </div>
+
+      <!-- Pytanie 2 -->
+      <div class="mb-6 p-4 rounded-xl bg-zinc-900/70 border border-zinc-800">
+        <p class="text-sm sm:text-base font-semibold text-white mb-3">2. Jakie oszustwo spotkało Jakuba w noc po weselu (Rdz 29:23–25)?</p>
+        <div class="space-y-2">
+          <div class="quiz-option" onclick="checkAnswer(this, false, 2)">A) Laban zabrał całe stado i uciekł</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true, 2)">B) Laban przyprowadził starszą Leę zamiast obiecanej Racheli</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false, 2)">C) Rachela odmówiła poślubienia Jakuba</div>
+        </div>
+        <div id="qf-2" class="hidden"></div>
+      </div>
+
+      <!-- Pytanie 3 -->
+      <div class="mb-6 p-4 rounded-xl bg-zinc-900/70 border border-zinc-800">
+        <p class="text-sm sm:text-base font-semibold text-white mb-3">3. Co uczynił Bóg, widząc, że Lea jest mniej kochana (Rdz 29:31)?</p>
+        <div class="space-y-2">
+          <div class="quiz-option" onclick="checkAnswer(this, false, 3)">A) Nakazał Jakubowi odprawić Leę do jej ojca</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true, 3)">B) Zlitował się nad nią i otworzył jej łono, podczas gdy Rachela była niepłodna</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false, 3)">C) Zabrał Jakubowi stada owiec</div>
+        </div>
+        <div id="qf-3" class="hidden"></div>
+      </div>
+
+      <!-- Pytanie 4 -->
+      <div class="mb-6 p-4 rounded-xl bg-zinc-900/70 border border-zinc-800">
+        <p class="text-sm sm:text-base font-semibold text-white mb-3">4. Który z synów Lei stał się przodkiem królewskiego rodu Dawida i Jezusa Chrystusa (Rdz 29:35; Mt 1:2–3)?</p>
+        <div class="space-y-2">
+          <div class="quiz-option" onclick="checkAnswer(this, false, 4)">A) Ruben</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false, 4)">B) Lewi</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true, 4)">C) Juda („Tym razem będę sławić PANA!”)</div>
+        </div>
+        <div id="qf-4" class="hidden"></div>
+      </div>
+
+      <!-- Pytanie 5 -->
+      <div class="mb-6 p-4 rounded-xl bg-zinc-900/70 border border-zinc-800">
+        <p class="text-sm sm:text-base font-semibold text-white mb-3">5. Jaką prawdę objawia fakt wyprowadzenia linii Mesjasza z pokolenia Judy, syna mniej kochanej Lei?</p>
+        <div class="space-y-2">
+          <div class="quiz-option" onclick="checkAnswer(this, false, 5)">A) Że poligamia i rywalizacja są pochwalane przez Boga</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true, 5)">B) Że Bóg działa pośród ludzkiej słabości i daje godność ludziom pomijanym przez świat</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false, 5)">C) Że sukces rodzinny zależy od ludzkiej przebiegłości</div>
+        </div>
+        <div id="qf-5" class="hidden"></div>
+      </div>
+
+      <!-- Wynik Quizu -->
+      <div id="quiz-result" class="hidden p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-center">
+        <div class="text-xs uppercase font-bold tracking-widest text-amber-400 mb-1">Twój wynik</div>
+        <div id="quiz-score" class="text-3xl font-bold font-serif text-white mb-2">0/5</div>
+        <p id="quiz-msg" class="text-sm text-zinc-300"></p>
+      </div>
+    </section>
+
+    <!-- ── PEŁNY REJESTR QUIZU (20 PYTAŃ I ODPOWIEDZI DO NAUKI) ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-list-check"></i>
+        <span>Repetytorium wiedzy</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Mały Quiz — Pełne 20 pytań i odpowiedzi</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>1. Kogo Jakub spotyka przy studni?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Rachelę (29:9–10).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>2. Kim jest Laban dla Rebeki?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Jej bratem (29:10; 28:5).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>3. Ile lat Jakub miał pracować za Rachelę?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Siedem lat (29:18).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>4. Kogo Laban przyprowadził Jakubowi zamiast Racheli?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Leę (29:23–25).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>5. Kiedy Jakub odkrył oszustwo?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Rano (29:25).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>6. Ile dodatkowych lat pracy uzgodniono?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Siedem (29:27–30).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>7. Którą z sióstr Jakub kochał bardziej?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Rachelę (29:30).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>8. Kogo Bóg dostrzegł w jej niedoli?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Leę (29:31–32).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>9. Jak nazywał się pierwszy syn Lei?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Ruben (29:32).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>10. Który syn Lei jest przodkiem linii Dawida i Jezusa?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Juda (29:35; Mt 1:2–3).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>11. Jak Jakub zareagował na rozpacz Racheli?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Gniewem (30:2).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>12. Jak miała na imię służąca Racheli?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Bilha (30:3).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>13. Jak miała na imię służąca Lei?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Zilpa (30:9).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>14. Co przyniósł Ruben z pola?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Mandragory (30:14).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>15. Jak miała na imię córka Lei?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Dina (30:21).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>16. Kto urodził Józefa?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Rachela (30:22–24).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>17. O co Jakub poprosił Labana po narodzinach Józefa?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> O pozwolenie na odejście z rodziną (30:25–26).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>18. Jakiego rodzaju zwierzęta miały być zapłatą Jakuba?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Zwierzęta o określonym umaszczeniu (30:31–36).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>19. Czy pręty Jakuba są naukowo potwierdzoną metodą dziedziczenia umaszczenia?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Nie; tekst opisuje praktykę Jakuba, a nie naukową regułę (30:37–39).
+        </div>
+        <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+          <strong>20. Czy Rdz 29–30 pochwala każde zachowanie opisanych osób?</strong><br>
+          <span class="text-amber-300">Odpowiedź:</span> Nie. Opis wydarzeń nie jest automatycznie moralnym nakazem.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TWOJA DECYZJA ── -->
+    <section class="kc-card border-amber-500/30">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-flag"></i>
+        <span>Wezwanie wiary</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Twoja decyzja — Miłość zamiast rywalizacji</h2>
+      <p class="text-sm sm:text-base text-zinc-300 leading-relaxed mb-6">
+        Lea chciała być kochana. Rachela pragnęła dziecka. Jakub chciał zbudować własny dom. Laban pragnął korzyści. Wszyscy żyli w napięciu między pragnieniami a sposobami ich realizacji. Bóg dostrzegał cierpienie, lecz nie nazywał manipulacji dobrem.<br><br>
+        Może w twoim domu ktoś czuje się pominięty. Może sam nosisz ból odrzucenia. Jezus nie mierzy twojej wartości porównaniem z innymi. Zaprasza cię do siebie, do prawdy, przebaczenia i nowego sposobu kochania. Jeśli doświadczasz przemocy lub przymusu, szukanie bezpieczeństwa i odpowiedniej pomocy nie jest brakiem wiary.
+      </p>
+      <button onclick="declareFaith()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-sm hover:from-amber-400 hover:to-amber-500 transition shadow-lg shadow-amber-500/20 min-h-[44px]">
+        Deklaruję: Panie Jezu, chcę przestać budować własną wartość na porównywaniu się z innymi. Naucz mnie widzieć i szanować osoby, które łatwo przeoczyć! 🙏
+      </button>
+    </section>
+
+    <!-- ── MODLITWA DNIA ── -->
+    <section class="kc-card bg-gradient-to-b from-[#161B26] to-[#0E121A]">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-hands-praying"></i>
+        <span>Modlitwa na 21 października</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">Modlitwa dnia</h2>
+      <blockquote class="text-base sm:text-lg text-amber-100 italic leading-relaxed font-serif">
+        „Ojcze w niebie, dziękuję Ci, że widzisz ludzi, których inni pomijają. Znasz łzy Lei, ból Racheli i napięcia rodziny Jakuba. Znasz także mój dom, moje relacje i moje ukryte zranienia.<br><br>
+        Przebacz mi, jeśli porównywałem bliskich, faworyzowałem jednych, a pomijałem innych. Przebacz nieuczciwość, zazdrość, gniew i pragnienie kontroli. Naucz mnie słuchać, mówić prawdę i szanować godność każdego człowieka.<br><br>
+        Proszę Cię szczególnie za osoby samotne, bezdzietne, zranione i wykorzystywane. Daj im wsparcie, bezpieczeństwo i ludzi, którzy okażą mądrą troskę. Ucz mnie nie oceniać ich życia przez pryzmat oczekiwań innych.<br><br>
+        Panie Jezu, dziękuję, że w Tobie znajduję miłość, której nie muszę zdobywać rywalizacją. Prowadź mnie drogą cierpliwości i odpowiedzialności. Niech mój dom i moje codzienne relacje stają się miejscem prawdy, szacunku i pokoju. Amen.”
+      </blockquote>
+    </section>
+
+    <!-- ── ZADANIE DNIA & DZIENNIK ── -->
+    <section class="kc-card">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span>Zadanie taktyczne & Dziennik</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-2">Zadanie na 21 października</h2>
+      <p class="text-xs text-zinc-400 mb-6">Wpisz swoje osobiste refleksje — zapisują się bezpiecznie na Twoim urządzeniu.</p>
+
+      <!-- Checklist -->
+      <div class="space-y-3 mb-6 p-4 rounded-xl bg-zinc-900/60 border border-zinc-800">
+        <label class="flex items-center gap-3 text-sm text-zinc-300 cursor-pointer min-h-[44px]">
+          <input type="checkbox" id="check-1" onchange="updateChecklist()" class="w-5 h-5 rounded border-zinc-700 text-amber-500 focus:ring-amber-400 bg-zinc-800" />
+          <span>📖 Przeczytałem Rdz 29:1–30:43, zaznaczając przejawy troski, rywalizacji i oszustwa</span>
+        </label>
+        <label class="flex items-center gap-3 text-sm text-zinc-300 cursor-pointer min-h-[44px]">
+          <input type="checkbox" id="check-2" onchange="updateChecklist()" class="w-5 h-5 rounded border-zinc-700 text-amber-500 focus:ring-amber-400 bg-zinc-800" />
+          <span>✏️ Przeczytałem Ef 5:1–2 i zastanowiłem się, jak wygląda ofiarna miłość w praktyce</span>
+        </label>
+        <label class="flex items-center gap-3 text-sm text-zinc-300 cursor-pointer min-h-[44px]">
+          <input type="checkbox" id="check-3" onchange="updateChecklist()" class="w-5 h-5 rounded border-zinc-700 text-amber-500 focus:ring-amber-400 bg-zinc-800" />
+          <span>🛡️ Zrobiłem jeden konkretny gest bezinteresownej troski wobec osoby pomijanej</span>
+        </label>
+      </div>
+
+      <!-- Journal Inputs -->
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-amber-300 mb-1.5">
+            1. Osobą w moim otoczeniu, którą powinienem lepiej zauważyć i okazać jej szacunek, jest:
+          </label>
+          <textarea id="journal-1" oninput="saveJournal()" rows="2" class="w-full p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm focus:border-amber-500 focus:outline-none" placeholder="Twoja odpowiedź..."></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-amber-300 mb-1.5">
+            2. W jakich obszarach mojego życia ulegam pokusie porównywania się z innymi i jak Chrystus uwalnia mnie od tej presji:
+          </label>
+          <textarea id="journal-2" oninput="saveJournal()" rows="2" class="w-full p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm focus:border-amber-500 focus:outline-none" placeholder="Twoja odpowiedź..."></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-amber-300 mb-1.5">
+            3. Jeden konkretny krok, który podejmę dziś w stronę uczciwości w relacjach, pracy lub finansach:
+          </label>
+          <textarea id="journal-3" oninput="saveJournal()" rows="2" class="w-full p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm focus:border-amber-500 focus:outline-none" placeholder="Twoja odpowiedź..."></textarea>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-zinc-800 flex items-center justify-between flex-wrap gap-3">
+        <button id="btn-complete" onclick="markComplete()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-bold text-sm hover:from-emerald-400 hover:to-teal-500 transition shadow-lg shadow-emerald-500/20 min-h-[44px]">
+          Oznacz lekcję jako ukończoną ✓
+        </button>
+        <span id="complete-msg" class="hidden text-xs text-emerald-400 font-bold">Lekcja zapisana jako ukończona!</span>
+      </div>
+    </section>
+
+    <!-- ── KONTAKT Z DUCHOWNYM ── -->
+    <section class="kc-card bg-zinc-950/60 border-zinc-800">
+      <div class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-headset"></i>
+        <span>Opieka duszpasterska</span>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-2">Doświadczasz odrzucenia, bezdzietności lub trudnych napięć w rodzinie?</h3>
+      <p class="text-xs text-zinc-400 mb-4 leading-relaxed">
+        Nasi duszpasterze są gotowi, by wysłuchać Cię, pomodlić się z Tobą i wskazać na Chrystusa, który obdarza niezmienną godnością i pokojem.
+      </p>
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="tel:+48608337477" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 hover:text-white hover:border-amber-500 text-xs font-semibold transition min-h-[44px]">
+          <i class="fa-solid fa-phone text-amber-400"></i> Zadzwoń: +48 608 337 477 (Mariusz)
+        </a>
+        <a href="sms:+48608337477" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 hover:text-white hover:border-amber-500 text-xs font-semibold transition min-h-[44px]">
+          <i class="fa-solid fa-comment-sms text-amber-400"></i> Napisz SMS
+        </a>
+      </div>
+    </section>
+
+    <!-- ── WEZWANIE DO DZIAŁANIA: PODZIEL SIĘ TĄ LEKCJĄ (#ccDailyShare) ── -->
+    <section class="mt-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#12100a] via-[#0E121A] to-[#07090E] border border-amber-500/30 text-center shadow-xl" id="ccDailyShare">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-widest mb-3">
+        <i class="fa-solid fa-crown text-amber-400" aria-hidden="true"></i>
+        <span>PATRONAT NAD SŁOWEM • WEZWANIE DO DZIAŁANIA</span>
+      </div>
+      <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-2">
+        Podziel się tą lekcją i zostań patronem
+      </h2>
+      <p class="text-sm text-zinc-300 max-w-2xl mx-auto mb-8">
+        Cały kurs i wszystkie lekcje w Christian Culture są w 100% bezpłatne. Trzy proste filary działania:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+        <!-- Filar 1: Udostępnij na Tablicy LUMINA -->
+        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">1</span>
+              <h3 class="font-bold text-white text-sm">Udostępnij na Tablicy</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Podziel się tą lekcją z całą społecznością portalu LUMINA.</p>
+          </div>
+          <a href="/tablica?share=dzien-21&v=Rdz29:31" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs hover:bg-amber-500/30 transition min-h-[44px]">
+            <span class="text-base font-display font-bold">L</span> Udostępnij na Tablicy
+          </a>
+        </div>
+
+        <!-- Filar 2: Wyślij na WhatsApp -->
+        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">2</span>
+              <h3 class="font-bold text-white text-sm">Wyślij na WhatsApp</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Przekaż link bliskim, którzy potrzebują przypomnienia o Bożej miłości.</p>
+          </div>
+          <a href="https://wa.me/?text=Z%20Bibli%C4%85%20za%20Pan%20Brat%20%E2%80%94%20Dzie%C5%84%2021%3A%20https%3A%2F%2Fpolskieradio.cc%2Fakademia%2Fkurscodzienny%2Fdzien-21" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs hover:bg-emerald-500/30 transition min-h-[44px]">
+            <i class="fa-brands fa-whatsapp text-sm" aria-hidden="true"></i> Wyślij na WhatsApp
+          </a>
+        </div>
+
+        <!-- Filar 3: Zostań Patronem -->
+        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-amber-500/20 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center shrink-0">3</span>
+              <h3 class="font-bold text-white text-sm">Zostań Patronem</h3>
+            </div>
+            <p class="text-xs text-zinc-400 mb-4">Wesprzyj nagrania lektora TTS, studio radiowe i technologię misji.</p>
+          </div>
+          <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold text-xs hover:bg-rose-500/30 transition min-h-[44px]">
+            <span>❤️</span> Zostań Patronem
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ZAPOWIEDŹ JUTRA ── -->
+    <section class="kc-card border-zinc-700/40" id="jutro">
+      <div class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-moon"></i>
+        <span>Zapowiedź — Dzień 22</span>
+      </div>
+      <h3 class="font-serif text-lg font-bold text-white mb-2">Jutro: JAKUB WALCZY Z BOGIEM — PRZEMIANA CZŁOWIEKA (Rdz 31–32)</h3>
+      <p class="text-zinc-400 text-sm leading-relaxed">
+        Jakub opuszcza dom Labana i wraca w stronę ziemi obiecanej. Przed nim spotkanie z Ezawem, którego kiedyś skrzywdził. W nocnej walce nad potokiem Jabbok odkryje, że największa przemiana nie polega na przechytrzeniu innych, lecz na uchwyceniu się Boga.
+      </p>
+      <div class="mt-4 flex gap-3 flex-wrap items-center">
+        <span class="text-xs font-mono text-zinc-600 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800">Rdz 31–32</span>
+        <span class="text-xs font-mono text-zinc-600 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800">22 Października 2026</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="border-t border-brand-line py-8 px-4 text-center text-xs text-zinc-600 mt-auto">
+    <div class="max-w-4xl mx-auto space-y-2">
+      <div class="flex justify-center gap-4 text-xs">
+        <a href="/akademia/kurscodzienny" class="hover:text-amber-300 transition min-h-[44px] flex items-center">Kurs Codzienny</a>
+        <a href="/lumina" class="hover:text-amber-300 transition min-h-[44px] flex items-center">LUMINA</a>
+        <a href="/news" class="hover:text-amber-300 transition min-h-[44px] flex items-center">CCN News</a>
+        <a href="https://cclite.pl" class="hover:text-amber-300 transition min-h-[44px] flex items-center">cclite.pl</a>
+      </div>
+      <p>© 2026 Christian Culture • polskieradio.cc • Wszelkie materiały bezpłatne dla użytkowników.</p>
+      <p>Wsparcie misji: <a href="https://patronite.pl/osobowoscplus" class="text-amber-500 hover:text-amber-300 transition">patronite.pl/osobowoscplus</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // ── READER FONT TOGGLE ──
+    function toggleReaderFont() {
+      const html = document.documentElement;
+      const isSans = html.getAttribute('data-kc-font') === 'sans';
+      html.setAttribute('data-kc-font', isSans ? 'serif' : 'sans');
+      const label = isSans ? 'Krój: Lora' : 'Krój: Inter';
+      document.getElementById('reader-font-label').textContent = label;
+      document.querySelectorAll('.kc-font-mobile-label').forEach(el => el.textContent = isSans ? 'Lora' : 'Inter');
+      localStorage.setItem('kc_font_pref', isSans ? 'serif' : 'sans');
+    }
+
+    // ── FONT SIZE ──
+    let kcFontStepPx = 0;
+    function adjustFontSize(dir) {
+      kcFontStepPx = Math.max(-3, Math.min(6, kcFontStepPx + dir));
+      const base = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--kc-font-size')) || 1.05;
+      document.documentElement.style.setProperty('--kc-font-size', (base + dir * 0.05) + 'rem');
+    }
+
+    // ── COPY VERSE ──
+    function copyVerse() {
+      navigator.clipboard.writeText('„Gdy PAN widział, że Lea była mniej kochana, otworzył jej łono” — Rdz 29:31 (UBG)');
+      const btn = event.currentTarget;
+      btn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Skopiowano!';
+      setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i> Kopiuj werset', 2000);
+    }
+
+    // ── AUDIO TTS ──
+    let ttsPlaying = false, ttsUtterance = null;
+    function toggleAudioLesson() {
+      if (ttsPlaying) {
+        window.speechSynthesis.cancel();
+        ttsPlaying = false;
+        document.getElementById('tts-icon').className = 'fa-solid fa-volume-high text-xs';
+        document.getElementById('tts-btn-text').textContent = 'Słuchaj Audio';
+        return;
+      }
+      const paragraphs = Array.from(document.querySelectorAll('#lesson-text-body p, #lesson-text-body blockquote, #lesson-text-body li')).map(el => el.textContent.trim()).filter(Boolean).join('. ');
+      ttsUtterance = new SpeechSynthesisUtterance(paragraphs);
+      ttsUtterance.lang = 'pl-PL';
+      ttsUtterance.rate = 0.95;
+      ttsUtterance.onend = () => { ttsPlaying = false; document.getElementById('tts-icon').className = 'fa-solid fa-volume-high text-xs'; document.getElementById('tts-btn-text').textContent = 'Słuchaj Audio'; };
+      window.speechSynthesis.speak(ttsUtterance);
+      ttsPlaying = true;
+      document.getElementById('tts-icon').className = 'fa-solid fa-stop text-xs';
+      document.getElementById('tts-btn-text').textContent = 'Zatrzymaj';
+    }
+
+    // ── QUIZ (5 pytań) ──
+    let quizAnswers = {};
+    function checkAnswer(el, isCorrect, qNum) {
+      if (quizAnswers[qNum] !== undefined) return;
+      quizAnswers[qNum] = isCorrect;
+      const parent = el.parentElement;
+      parent.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+      el.classList.add(isCorrect ? 'correct' : 'wrong');
+      if (!isCorrect) {
+        parent.querySelectorAll('.quiz-option').forEach(opt => {
+          if (opt.onclick.toString().includes('true')) opt.classList.add('correct');
+        });
+      }
+      const fb = document.getElementById('qf-' + qNum);
+      fb.textContent = isCorrect ? '✅ Poprawnie!' : '❌ Spróbuj zapamiętać poprawną odpowiedź.';
+      fb.className = 'quiz-feedback text-xs mt-2 font-bold ' + (isCorrect ? 'text-emerald-400' : 'text-rose-400');
+      if (Object.keys(quizAnswers).length === 5) showQuizResult();
+    }
+
+    function showQuizResult() {
+      const correct = Object.values(quizAnswers).filter(Boolean).length;
+      const res = document.getElementById('quiz-result');
+      res.classList.remove('hidden');
+      document.getElementById('quiz-score').textContent = correct + '/5';
+      const msgs = ['Wróć do lektury — znajdziesz odpowiedzi!', 'Dobry początek! Przeczytaj jeszcze raz kluczowe wersety.', 'Nieźle! Jeszcze jeden krok do pełnego zrozumienia.', 'Świetnie! Masz solidne podstawy.', 'Doskonale! Jesteś gotowy na Dzień 22!'];
+      document.getElementById('quiz-msg').textContent = msgs[correct] || msgs[4];
+    }
+
+    // ── JOURNAL ──
+    function saveJournal() {
+      ['journal-1','journal-2','journal-3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) localStorage.setItem('kc_dzien_21_' + id, el.value);
+      });
+    }
+
+    // ── CHECKLIST ──
+    function updateChecklist() {
+      localStorage.setItem('kc_dzien_21_checklist', JSON.stringify({
+        c1: document.getElementById('check-1').checked,
+        c2: document.getElementById('check-2').checked,
+        c3: document.getElementById('check-3').checked
+      }));
+    }
+
+    // ── MARK COMPLETE ──
+    function markComplete() {
+      localStorage.setItem('kc_dzien_21_complete', 'true');
+      document.getElementById('complete-msg').classList.remove('hidden');
+      document.getElementById('btn-complete').textContent = '✅ Ukończono!';
+      document.getElementById('btn-complete').disabled = true;
+      document.getElementById('btn-complete').classList.replace('bg-gradient-to-r', 'bg-zinc-800');
+    }
+
+    // ── FAITH DECLARATION ──
+    function declareFaith() {
+      localStorage.setItem('kc_dzien_21_faith', 'true');
+      alert('Chwała Bogu! Twoja decyzja została zapisana. Jezus Chrystus nadaje Ci niezniszczalną godność, a Bóg widzi i kocha Cię bezwarunkowo! 🙏');
+    }
+
+    // ── INIT — restore state ──
+    window.addEventListener('DOMContentLoaded', () => {
+      const fontPref = localStorage.getItem('kc_font_pref');
+      if (fontPref === 'sans') {
+        document.documentElement.setAttribute('data-kc-font', 'sans');
+        document.getElementById('reader-font-label').textContent = 'Krój: Inter';
+        document.querySelectorAll('.kc-font-mobile-label').forEach(el => el.textContent = 'Inter');
+      }
+      ['journal-1','journal-2','journal-3'].forEach(id => {
+        const saved = localStorage.getItem('kc_dzien_21_' + id);
+        if (saved) { const el = document.getElementById(id); if (el) el.value = saved; }
+      });
+      const cl = localStorage.getItem('kc_dzien_21_checklist');
+      if (cl) {
+        try {
+          const d = JSON.parse(cl);
+          if (d.c1) document.getElementById('check-1').checked = true;
+          if (d.c2) document.getElementById('check-2').checked = true;
+          if (d.c3) document.getElementById('check-3').checked = true;
+        } catch(e) {}
+      }
+      if (localStorage.getItem('kc_dzien_21_complete') === 'true') {
+        document.getElementById('complete-msg').classList.remove('hidden');
+        document.getElementById('btn-complete').textContent = '✅ Ukończono!';
+        document.getElementById('btn-complete').disabled = true;
+      }
+    });
+  </script>
+  <!-- Floating Back to Top Button -->
+  <button class="back-to-top" id="backToTopBtn" type="button" aria-label="Przewiń do góry" title="Przewiń do góry">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+  <script src="/js/cc-daily-course-share.js?v=20261009_coursekv2" defer></script>
+</body>
+</html>`;
+}
+
+// Generowanie plików lekcji w 4 wariantach Clean URLs
+export function writeDay21Files() {
+  const html = getDay21Html();
+
+  const paths = [
+    path.join(ROOT, 'akademia/kurscodzienny/dzien-21.html'),
+    path.join(ROOT, 'akademia/kurscodzienny/dzien-21/index.html'),
+    path.join(ROOT, 'kursy/kurscodzienny/dzien-21.html'),
+    path.join(ROOT, 'kursy/kurscodzienny/dzien-21/index.html')
+  ];
+
+  for (const p of paths) {
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, html, 'utf8');
+    console.log(`✅ Zapisano: ${path.relative(ROOT, p)}`);
+  }
+}
+
+if (process.argv[1] && process.argv[1].includes('generate-day21-lesson')) {
+  writeDay21Files();
+}

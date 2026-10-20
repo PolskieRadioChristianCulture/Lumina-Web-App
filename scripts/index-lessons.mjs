@@ -13,17 +13,54 @@ const data = JSON.parse(rawData);
 // 1. Lekcje Kursu Codziennego "Z Biblią za Pan Brat"
 const dailyLessons = [
   {
-    title: "Z Biblią za Pan Brat — Dzień 19 (Lekcja 19 na dziś): Gdy próbujemy pomóc Bogu oszustwem (Rdz 27:1–46)",
+    title: "Z Biblią za Pan Brat — Dzień 21 (Lekcja 21 na dziś): Bóg działa pośród niedoskonałych rodzin (Rdz 29:1–30:43)",
     category: "Biblia i formacja",
-    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-19",
-    description: "Kurs Codzienny Pisma Świętego — Dzień 19 (Lekcja 19 na dziś, 19 października 2026). Jakub, Rebeka i wyłudzone błogosławieństwo niewidomego Izaaka — Rdz 27:1–46. Boża obietnica nie potrzebuje ludzkiego kłamstwa ani manipulacji.",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-21",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 21 (Lekcja 21 na dziś, 21 października 2026). Jakub, Rachela, Lea i Laban w Charanie — Rdz 29:1–30:43. Boża suwerenna łaska działa pośród skomplikowanych relacji i zranień.",
     tags: [
-      "lekcja 19", "lekcja 19 na dziś", "lekcja na dziś", "dzień 19", "dzien 19",
-      "rozważanie 19", "rozważanie na dziś", "słowo na dziś", "jakub i izaak", "wyłudzone błogosławieństwo",
-      "rdz 27", "z biblią za pan brat", "kurs codzienny",
-      "akademia biblijna", "19 października 2026", "dzisiaj", "dziś"
+      "lekcja 21", "lekcja 21 na dziś", "lekcja na dziś", "dzień 21", "dzien 21",
+      "rozważanie 21", "rozważanie na dziś", "słowo na dziś", "jakub rachela lea", "laban",
+      "rdz 29", "rdz 30", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "21 października 2026", "dzisiaj", "dziś"
     ],
     featured: true
+  },
+  {
+    title: "Z Biblią za Pan Brat — Dzień 21: Bóg działa pośród niedoskonałych rodzin (Rdz 29:1–30:43)",
+    category: "Wiadomości i artykuły",
+    url: "https://polskieradio.cc/news/art-z-biblia-za-pan-brat-dzien-21",
+    description: "Formacja i studium biblijne na 21 października 2026. Rozważanie z 29. i 30. rozdziału Księgi Rodzaju — Jakub, Rachela, Lea i Laban w Charanie oraz suwerenny Boży plan zbawienia.",
+    tags: [
+      "z biblią za pan brat", "jakub rachela lea", "rdz 29", "rdz 30", "charan", "laban",
+      "formacja", "artykuł", "ccn news", "21 października 2026"
+    ],
+    featured: false
+  },
+  {
+    title: "Z Biblią za Pan Brat — Dzień 20 (Lekcja 20): Drabina Jakuba — Bóg jest bliżej, niż myślisz (Rdz 28:1–22)",
+    category: "Biblia i formacja",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-20",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 20 (Lekcja 20, 20 października 2026). Ucieczka Jakuba z Beer-Szeby do Charanu, sen na pustkowiu pod gołym niebem, schody łączące ziemię z niebem i Boża wierność — Rdz 28:1–22. Żywy pomost i otwarte niebo w Chrystusie.",
+    tags: [
+      "lekcja 20", "dzień 20", "dzien 20",
+      "rozważanie 20", "słowo na dziś", "drabina jakuba", "betel",
+      "rdz 28", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "20 października 2026"
+    ],
+    featured: false
+  },
+  {
+    title: "Z Biblią za Pan Brat — Dzień 19 (Lekcja 19): Gdy próbujemy pomóc Bogu oszustwem (Rdz 27:1–46)",
+    category: "Biblia i formacja",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-19",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 19 (Lekcja 19, 19 października 2026). Jakub, Rebeka i wyłudzone błogosławieństwo niewidomego Izaaka — Rdz 27:1–46. Boża obietnica nie potrzebuje ludzkiego kłamstwa ani manipulacji.",
+    tags: [
+      "lekcja 19", "dzień 19", "dzien 19",
+      "rozważanie 19", "słowo na dziś", "jakub i izaak", "wyłudzone błogosławieństwo",
+      "rdz 27", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "19 października 2026"
+    ],
+    featured: false
   },
   {
     title: "Z Biblią za Pan Brat — Dzień 18 (Lekcja 18): Jakub i Ezaw — Czego naprawdę pragniesz? (Rdz 25:1–26:35)",
