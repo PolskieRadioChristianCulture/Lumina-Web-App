@@ -48,10 +48,21 @@ async function runSuite() {
     assert.ok(data.routes, 'Rejestr musi zawierać węzeł routes');
   });
 
-  // 2. Weryfikacja 3 tras pilotażowych oraz trasy głównej
-  test('Karty pilotażowe (/lumina, /news, /BiblijneUwielbienie, /) są zdefiniowane z wersjami PL i EN', () => {
+  // 2. Weryfikacja tras ekosystemu
+  test('Karty ekosystemu (/, /lumina, /news, /BiblijneUwielbienie, /wspieraj, /akademia, /mojabiblia, /vod, /biblia-spiewana-live, /mapa) są zdefiniowane z wersjami PL i EN', () => {
     const data = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-    const requiredRoutes = ['/lumina', '/news', '/BiblijneUwielbienie', '/'];
+    const requiredRoutes = [
+      '/',
+      '/lumina',
+      '/news',
+      '/BiblijneUwielbienie',
+      '/wspieraj',
+      '/akademia',
+      '/mojabiblia',
+      '/vod',
+      '/biblia-spiewana-live',
+      '/mapa'
+    ];
 
     for (const r of requiredRoutes) {
       assert.ok(data.routes[r], `Trasa ${r} musi istnieć w rejestrze`);
@@ -119,6 +130,29 @@ async function runSuite() {
 
     // Reduced motion
     assert.ok(code.includes('prefers-reduced-motion'), 'Musi wspierać media query prefers-reduced-motion');
+  });
+
+  // 6. Dołączenie skryptu w plikach HTML rolloutu
+  test('Pliki HTML rolloutu zawierają dołączenie skryptu components/ekocc-info.js', () => {
+    const htmlFiles = [
+      'index.html',
+      'lumina.html',
+      'news/index.html',
+      'biblijne-uwielbienie.html',
+      'wspieraj.html',
+      'akademia.html',
+      'mojabiblia.html',
+      'vod.html',
+      'mapa.html',
+      'biblia-spiewana-live.html'
+    ];
+
+    for (const rel of htmlFiles) {
+      const full = path.join(ROOT, rel);
+      assert.ok(fs.existsSync(full), `Plik ${rel} musi istnieć`);
+      const html = fs.readFileSync(full, 'utf8');
+      assert.ok(html.includes('ekocc-info.js'), `Plik ${rel} musi zawierać odwołanie do ekocc-info.js`);
+    }
   });
 
   console.log('\n═══════════════════════════════════════════════════════════════');

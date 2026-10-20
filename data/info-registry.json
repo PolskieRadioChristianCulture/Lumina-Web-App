@@ -9,7 +9,25 @@
       "values": "Stawiamy Jezusa Chrystusa w centrum, szanujemy Pismo Święte, godność człowieka, wolność sumienia i prawdę. Wyraźnie oddzielamy fakty od komentarza, a obietnice od funkcji już dostępnych.",
       "access": "Podstawowe materiały misyjne udostępniamy bezpłatnie. Dobrowolne wsparcie pomaga rozwijać projekty, ale nie jest warunkiem korzystania z treści.",
       "note": "Niektóre funkcje mogą być w fazie testów. Sprawdź aktualny status poniżej. Jeśli zauważysz błąd lub nieścisłość, zgłoś ją przez wskazany, zweryfikowany kanał.",
-      "footer": "Christian Culture | polskieradio.cc • Informacje aktualizowane: 2026-10-20 • Wersja: 1.0.0"
+      "footer": "Christian Culture | polskieradio.cc • Informacje aktualizowane: 2026-10-20 • Wersja: 1.0.0",
+      "labels": {
+        "about": "O projekcie",
+        "spiritualValue": "Cel i wartość duchowa",
+        "howTo": "Jak korzystać",
+        "features": "Co jest dostępne (status funkcji)",
+        "scripture": "Biblia i źródła",
+        "rights": "Prawa i udostępnianie",
+        "privacy": "Prywatność i bezpieczeństwo",
+        "accessibility": "Dostępność i pomoc",
+        "support": "Wspieraj misję",
+        "related": "Poznaj EkoCC",
+        "close": "Zamknij panel informacyjny",
+        "badgeAvailable": "Dostępne",
+        "badgeTesting": "W fazie testów",
+        "badgePlanned": "Planowane",
+        "reportIssue": "Zgłoś uwagę redakcyjną",
+        "openInfo": "Informacje o tej stronie"
+      }
     },
     "en": {
       "title": "About this project | Christian Culture",
@@ -17,10 +35,89 @@
       "values": "Our work is Christ-centered, grounded in Scripture, and committed to human dignity, freedom of conscience, accuracy, and transparency. We distinguish verified facts from commentary and live features from planned ones.",
       "access": "Core mission content is free to access. Voluntary support helps sustain the mission but is not a requirement. Some features may be in testing; please check their current status.",
       "note": "Some features may be in testing; please check their current status. If you spot an error, please report it via our verified contact channels.",
-      "footer": "Christian Culture | polskieradio.cc • Last reviewed: 2026-10-20 • Version: 1.0.0"
+      "footer": "Christian Culture | polskieradio.cc • Last reviewed: 2026-10-20 • Version: 1.0.0",
+      "labels": {
+        "about": "About Project",
+        "spiritualValue": "Purpose & Spiritual Value",
+        "howTo": "How to Use",
+        "features": "Features & Current Status",
+        "scripture": "Scripture & Sources",
+        "rights": "Rights & Sharing",
+        "privacy": "Privacy & Security",
+        "accessibility": "Accessibility & Help",
+        "support": "Support the Mission",
+        "related": "Explore EkoCC",
+        "close": "Close information panel",
+        "badgeAvailable": "Available",
+        "badgeTesting": "Testing",
+        "badgePlanned": "Planned",
+        "reportIssue": "Report editorial issue",
+        "openInfo": "Information about this page"
+      }
     }
   },
   "routes": {
+    "/": {
+      "id": "home",
+      "route": "/",
+      "ownerRole": "kolegium-redakcyjne-cc",
+      "reviewedAt": "2026-10-20",
+      "version": "1.0.0",
+      "pl": {
+        "title": "Christian Culture — Portal Główny Ekosystemu",
+        "summary": "Centralna brama do chrześcijańskiego radia, telewizji internetowej, studiów biblijnych, muzyki i społeczności LUMINA.",
+        "about": "Christian Culture łączy radio, treści biblijne, muzykę, edukację, społeczność i inicjatywy medialne w jeden zintegrowany świat misyjny.",
+        "spiritualValue": "Głoszenie Ewangelii Jezusa Chrystusa i budowanie wiary w oparciu o nienaruszalne Słowo Boże.",
+        "howTo": [
+          "Słuchaj radia na żywo przez odtwarzacz u dołu ekranu.",
+          "Odkrywaj codzienne rozważania w sekcji «Dobrze, że jesteś».",
+          "Korzystaj z interaktywnej Mapy Ekosystemu (/mapa), by poznać wszystkie platformy."
+        ],
+        "features": [
+          { "name": "Strumień radiowy 24/7", "status": "dostępne" },
+          { "name": "Codzienne rozważania z lektorem", "status": "dostępne" },
+          { "name": "Katalog projektów i platform", "status": "dostępne" },
+          { "name": "Wyszukiwarka ekosystemowa @w", "status": "dostępne" }
+        ],
+        "scripture": "Naczelne źródło: Uwspółcześniona Biblia Gdańska (UBG).",
+        "rights": "Materiały Christian Culture udostępniane są bezpłatnie z podaniem źródła: «Za zgodą Christian Culture | polskieradio.cc».",
+        "privacy": "Ścisła minimalizacja danych, brak reklam komercyjnych.",
+        "accessibility": "Pełna dostępność klawiatury, kontrast WCAG 2.2 AA.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "LUMINA", "url": "/lumina" },
+          { "label": "Wiadomości CCN", "url": "/news" },
+          { "label": "Akademia Biblijna", "url": "/akademia" }
+        ]
+      },
+      "en": {
+        "title": "Christian Culture — Main Ecosystem Portal",
+        "summary": "Gateway to Christian online radio, video, Scripture study, music, and community.",
+        "about": "Christian Culture integrates radio, scripture studies, music, education, community, and digital media into one mission ecosystem.",
+        "spiritualValue": "Proclaiming the Gospel of Jesus Christ and building faith grounded in God's Word.",
+        "howTo": [
+          "Listen to 24/7 radio streams using the persistent player.",
+          "Explore daily inspirations and biblical reflections.",
+          "Use the Ecosystem Map (/mapa) to navigate all modules."
+        ],
+        "features": [
+          { "name": "24/7 Radio Streams", "status": "available" },
+          { "name": "Daily Scripture Reflections", "status": "available" },
+          { "name": "Module & Station Directory", "status": "available" },
+          { "name": "Universal Search Engine @w", "status": "available" }
+        ],
+        "scripture": "Canonical Polish text: UBG.",
+        "rights": "CC original materials free to share with canonical attribution.",
+        "privacy": "Zero ad-trackers, privacy by design.",
+        "accessibility": "WCAG 2.2 AA compliant.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "LUMINA", "url": "/lumina" },
+          { "label": "CCN News", "url": "/news" },
+          { "label": "Bible Academy", "url": "/akademia" }
+        ]
+      }
+    },
     "/lumina": {
       "id": "lumina",
       "route": "/lumina",
@@ -216,64 +313,361 @@
         ]
       }
     },
-    "/": {
-      "id": "home",
-      "route": "/",
-      "ownerRole": "kolegium-redakcyjne-cc",
+    "/wspieraj": {
+      "id": "wspieraj",
+      "route": "/wspieraj",
+      "ownerRole": "sekretariat-cc",
       "reviewedAt": "2026-10-20",
       "version": "1.0.0",
       "pl": {
-        "title": "Christian Culture — Portal Główny Ekosystemu",
-        "summary": "Centralna brama do chrześcijańskiego radia, telewizji internetowej, studiów biblijnych, muzyki i społeczności LUMINA.",
-        "about": "Christian Culture łączy radio, treści biblijne, muzykę, edukację, społeczność i inicjatywy medialne w jeden zintegrowany świat misyjny.",
-        "spiritualValue": "Głoszenie Ewangelii Jezusa Chrystusa i budowanie wiary w oparciu o nienaruszalne Słowo Boże.",
+        "title": "Wspieraj Misję Christian Culture",
+        "summary": "Informacje o dobrowolnym wsparciu dzieła ewangelizacji, produkcji Biblia Audio, transmisji i bezpłatnych narzędzi biblijnych.",
+        "about": "Christian Culture rozwija się dzięki dobrowolnym darowiznom ludzi dobrej woli. Wszystkie podstawowe materiały duchowe i edukacyjne udostępniamy bezpłatnie.",
+        "spiritualValue": "Zasada służby Ewangelii: «Darmo wzięliście — darmo dawajcie» (Mt 10,8). Darowizna jest aktem serca i wdzięczności Bogu, a nie warunkiem dostępu do treści.",
         "howTo": [
-          "Słuchaj radia na żywo przez odtwarzacz u dołu ekranu.",
-          "Odkrywaj codzienne rozważania w sekcji «Dobrze, że jesteś».",
-          "Korzystaj z interaktywnej Mapy Ekosystemu (/mapa), by poznać wszystkie platformy."
+          "Wybierz preferowaną formę wsparcia (BLIK, przelew tradycyjny, Patronite).",
+          "Wpisz tytuł przelewu: «Rozwój Christian Culture» lub «Darowizna na cele kultu religijnego».",
+          "Skopiuj bezpiecznie numer konta dedykowanym przyciskiem."
         ],
         "features": [
-          { "name": "Strumień radiowy 24/7", "status": "dostępne" },
-          { "name": "Codzienne rozważania z lektorem", "status": "dostępne" },
-          { "name": "Katalog projektów i platform", "status": "dostępne" },
-          { "name": "Wyszukiwarka ekosystemowa @w", "status": "dostępne" }
+          { "name": "Szybki przelew BLIK", "status": "dostępne" },
+          { "name": "Konto bankowe w PLN", "status": "dostępne" },
+          { "name": "Subskrypcja Patronite", "status": "dostępne" },
+          { "name": "Transparentne sprawozdania misyjne", "status": "dostępne" }
         ],
-        "scripture": "Naczelne źródło: Uwspółcześniona Biblia Gdańska (UBG).",
-        "rights": "Materiały Christian Culture udostępniane są bezpłatnie z podaniem źródła: «Za zgodą Christian Culture | polskieradio.cc».",
-        "privacy": "Ścisła minimalizacja danych, brak reklam komercyjnych.",
-        "accessibility": "Pełna dostępność klawiatury, kontrast WCAG 2.2 AA.",
+        "scripture": "«Każdy tak, jak postanowił w sercu, nie z żalem ani z przymusu; gdyż radosnego dawcę Bóg miłuje» (2 Kor 9,7).",
+        "rights": "Dane rachunku bankowego są oficjalnymi danymi Christian Culture. Nie obiecujemy ulg podatkowych bez indywidualnej konsultacji prawnej darczyńcy.",
+        "privacy": "Dane darczyńców są ściśle chronione i nigdy nie są udostępniane publicznie ani sprzedawane.",
+        "accessibility": "Wygodne kopiowanie numeru IBAN jednym kliknięciem, wysoki kontrast, obsługa mobilna.",
         "supportUrl": "https://polskieradio.cc/wspieraj",
         "relatedLinks": [
-          { "label": "LUMINA", "url": "/lumina" },
-          { "label": "Wiadomości CCN", "url": "/news" },
-          { "label": "Akademia Biblijna", "url": "/akademia" }
+          { "label": "O Ekosystemie", "url": "/" },
+          { "label": "Mapa Projektów", "url": "/mapa" }
         ]
       },
       "en": {
-        "title": "Christian Culture — Main Ecosystem Portal",
-        "summary": "Gateway to Christian online radio, video, Scripture study, music, and community.",
-        "about": "Christian Culture integrates radio, scripture studies, music, education, community, and digital media into one mission ecosystem.",
-        "spiritualValue": "Proclaiming the Gospel of Jesus Christ and building faith grounded in God's Word.",
+        "title": "Support Christian Culture Mission",
+        "summary": "Voluntary support details for Bible Audio production, radio streaming, and free biblical tools.",
+        "about": "Christian Culture is sustained through voluntary donations. All foundational spiritual resources remain completely free.",
+        "spiritualValue": "«Freely you have received; freely give» (Matt 10:8). Support is an act of thanksgiving to God, never a paywall.",
         "howTo": [
-          "Listen to 24/7 radio streams using the persistent player.",
-          "Explore daily inspirations and biblical reflections.",
-          "Use the Ecosystem Map (/mapa) to navigate all modules."
+          "Select your payment method (Bank transfer, BLIK, Patronite).",
+          "Include reference: «Christian Culture Mission».",
+          "Use one-click account number copying."
         ],
         "features": [
-          { "name": "24/7 Radio Streams", "status": "available" },
-          { "name": "Daily Scripture Reflections", "status": "available" },
-          { "name": "Module & Station Directory", "status": "available" },
-          { "name": "Universal Search Engine @w", "status": "available" }
+          { "name": "Bank Transfer (PLN)", "status": "available" },
+          { "name": "Patronite Monthly Giving", "status": "available" },
+          { "name": "Financial Transparency Reports", "status": "available" }
         ],
-        "scripture": "Canonical Polish text: UBG.",
-        "rights": "CC original materials free to share with canonical attribution.",
-        "privacy": "Zero ad-trackers, privacy by design.",
+        "scripture": "«Each of you should give what you have decided in your heart to give... for God loves a cheerful giver» (2 Cor 9:7).",
+        "rights": "Official bank details of Christian Culture. No tax exemption guarantees without local legal advice.",
+        "privacy": "Donor information is strictly confidential.",
+        "accessibility": "One-click IBAN copy button, full mobile support.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "Main Portal", "url": "/" },
+          { "label": "Ecosystem Map", "url": "/mapa" }
+        ]
+      }
+    },
+    "/akademia": {
+      "id": "akademia",
+      "route": "/akademia",
+      "ownerRole": "kolegium-akademickie",
+      "reviewedAt": "2026-10-20",
+      "version": "1.0.0",
+      "pl": {
+        "title": "Akademia Biblijna & Kurs Codzienny",
+        "summary": "Systematyczne studium Pisma Świętego, codzienne lekcje biblijne, quizy wiedzy i materiały egzegetyczne.",
+        "about": "Akademia Biblijna pomaga w codziennym, metodycznym poznawaniu ksiąg Starego i Nowego Testamentu. Kurs «Z Biblią za pan brat» prowadzi przez kolejne rozdziały każdego dnia.",
+        "spiritualValue": "Poznanie prawdy Słowa Bożego: «Wszystko Pismo jest natchnione przez Boga i pożyteczne do nauki, do strofowania, do poprawy, do wychowania w sprawiedliwości» (2 Tm 3,16).",
+        "howTo": [
+          "Otwórz dzisiejszą lekcję dnia jednym kliknięciem w przycisk Hero.",
+          "Przeczytaj werset przewodni w przekładzie UBG wraz z komentarzem.",
+          "Sprawdź zrozumienie tekstu w interaktywnym quizie.",
+          "Podziel się lekcją z bliskimi za pomocą przycisku skoku ze strzałką."
+        ],
+        "features": [
+          { "name": "Codzienne lekcje Kursu Codziennego", "status": "dostępne" },
+          { "name": "Interaktywne quizy wiedzy biblijnej", "status": "dostępne" },
+          { "name": "Podwójny przycisk nawigacji Hero (Dziś / Wczoraj)", "status": "dostępne" },
+          { "name": "Przycisk udostępniania lekcji ze strzałką w dół", "status": "dostępne" },
+          { "name": "Certyfikaty ukończenia kursu", "status": "planowane" }
+        ],
+        "scripture": "Podstawowy kanoniczny przekład: UBG. Każda lekcja wyraźnie odróżnia tekst biblijny od komentarza egzegetycznego.",
+        "rights": "Materiały Akademii służą do bezpłatnego osobistego i grupowego studium biblijnego.",
+        "privacy": "Brak wymogu rejestracji do studiowania lekcji i rozwiązywania quizów.",
+        "accessibility": "Pełne Clean URLs (/akademia/kurscodzienny/dzien-XX), dostępność klawiaturą, czytelna czcionka.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "MojaBiblia Interlinearna", "url": "/mojabiblia" },
+          { "label": "Rozważania DZJ", "url": "/" },
+          { "label": "LUMINA", "url": "/lumina" }
+        ]
+      },
+      "en": {
+        "title": "Bible Academy & Daily Course",
+        "summary": "Systematic Scripture study, daily chapter lessons, biblical quizzes, and exegetical commentary.",
+        "about": "The Bible Academy guides believers through daily in-depth studies of God's Word, chapter by chapter.",
+        "spiritualValue": "«All Scripture is God-breathed and is useful for teaching, rebuking, correcting and training in righteousness» (2 Tim 3:16).",
+        "howTo": [
+          "Open today's lesson via the main Hero action button.",
+          "Read the passage in context with verse references.",
+          "Test comprehension with interactive quizzes.",
+          "Share lessons via the dedicated jump share button."
+        ],
+        "features": [
+          { "name": "Daily Bible Course Lessons", "status": "available" },
+          { "name": "Interactive Scripture Quizzes", "status": "available" },
+          { "name": "Hero Today/Yesterday Navigation", "status": "available" },
+          { "name": "Clean URL Routing Structure", "status": "available" },
+          { "name": "Certificates of Completion", "status": "planned" }
+        ],
+        "scripture": "Canonical Polish text: UBG. Clear distinction between scripture text and commentary.",
+        "rights": "Materials free for personal and church group study.",
+        "privacy": "No account required to study daily lessons.",
+        "accessibility": "Accessible keyboard navigation, WCAG 2.2 AA compliant.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "Interlinear Bible", "url": "/mojabiblia" },
+          { "label": "LUMINA", "url": "/lumina" }
+        ]
+      }
+    },
+    "/mojabiblia": {
+      "id": "mojabiblia",
+      "route": "/mojabiblia",
+      "ownerRole": "redakcja-tekstowa",
+      "reviewedAt": "2026-10-20",
+      "version": "1.0.0",
+      "pl": {
+        "title": "MojaBiblia — Pismo Święte i Narzędzia Interlinearne",
+        "summary": "Interlinearne studium Biblii z kodami Stronga, gramatyką hebrajską i grecką oraz porównywaniem przekładów.",
+        "about": "Zaawansowane narzędzie do wnikliwego badania oryginalnego tekstu biblijnego. Umożliwia sprawdzanie źródłosłowu greckiego i hebrajskiego pod każdym słowem.",
+        "spiritualValue": "Wierność natchnionemu Słowu Bożemu: «Twoje słowo jest pochodnią dla moich nóg i światłem na mojej ścieżce» (Ps 119,105).",
+        "howTo": [
+          "Wybierz księgę, rozdział i werset z rozwijanej listy.",
+          "Kliknij dowolne słowo, aby zobaczyć numer Stronga, formę podstawową i definicję.",
+          "Przełączaj widok między przekładami (UBG, BW, BT, BG).",
+          "Kopiuj wersety z zachowaniem dokładnej referencji."
+        ],
+        "features": [
+          { "name": "Kody Stronga (hebrajski i grecki)", "status": "dostępne" },
+          { "name": "Analiza morfologiczna wyrazów", "status": "dostępne" },
+          { "name": "Równoległe porównanie przekładów", "status": "dostępne" },
+          { "name": "Wyszukiwarka frazowa i leksykalna", "status": "dostępne" },
+          { "name": "Osobiste notatki i zakreślenia", "status": "planowane" }
+        ],
+        "scripture": "Główny przekład: UBG (Uwspółcześniona Biblia Gdańska). Aparat krytyczny oparty na Textus Receptus i Masoreckim Tekście Hebrajskim.",
+        "rights": "Narzędzie MojaBiblia jest całkowicie bezpłatne do użytku niekomercyjnego.",
+        "privacy": "Wszystkie wyszukiwania i preferencje są zapisywane lokalnie w pamięci Twojej przeglądarki.",
+        "accessibility": "Skróty klawiszowe, powiększanie czcionki, wysoki kontrast.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "Akademia Biblijna", "url": "/akademia" },
+          { "label": "Biblijne Uwielbienie", "url": "/BiblijneUwielbienie" }
+        ]
+      },
+      "en": {
+        "title": "MyBible — Interlinear Scripture Study",
+        "summary": "Interlinear Scripture research tool with Strong's Concordance, Greek/Hebrew morphology, and multi-version comparison.",
+        "about": "Advanced digital Bible study tool providing instant access to original Greek and Hebrew lexical roots for every word in Scripture.",
+        "spiritualValue": "«Your word is a lamp for my feet, a light on my path» (Psalm 119:105).",
+        "howTo": [
+          "Select book, chapter, and verse.",
+          "Click any word to reveal Strong's number and grammar breakdown.",
+          "Compare translations side by side.",
+          "Copy scripture with verified attribution."
+        ],
+        "features": [
+          { "name": "Hebrew & Greek Strong's Concordance", "status": "available" },
+          { "name": "Morphological Analysis", "status": "available" },
+          { "name": "Multi-Translation Comparison", "status": "available" },
+          { "name": "Lexical Search Engine", "status": "available" },
+          { "name": "Personal Verse Notes", "status": "planned" }
+        ],
+        "scripture": "Textus Receptus (NT) and Masoretic Text (OT) cross-referenced with UBG.",
+        "rights": "Free for non-commercial study and ministry use.",
+        "privacy": "Search history and preferences stored locally in your browser.",
+        "accessibility": "Keyboard shortcuts, font resizing, high-contrast mode.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "Bible Academy", "url": "/akademia" },
+          { "label": "Biblical Worship", "url": "/BiblijneUwielbienie" }
+        ]
+      }
+    },
+    "/vod": {
+      "id": "vod",
+      "route": "/vod",
+      "ownerRole": "redakcja-wideo-sds",
+      "reviewedAt": "2026-10-20",
+      "version": "1.0.0",
+      "pl": {
+        "title": "Kino Chrześcijańskie VOD & Studio Dobrego Słowa",
+        "summary": "Filmy fabularne, dokumenty, wykłady biblijne z serii Apokalipsa oraz produkcje wideo Christian Culture.",
+        "about": "Kino Chrześcijańskie VOD gromadzi wartościowe filmy promujące wartości ewangeliczne, wiarę, wierność i nadzieję, wolne od wulgaryzmów i przemocy.",
+        "spiritualValue": "Ewangelizacja i budowanie wiary za pośrednictwem sztuki filmowej i wykładów wideo Studio Dobrego Słowa (SDS).",
+        "howTo": [
+          "Wybierz film lub wykład z katalogu tematycznego.",
+          "Oglądaj w jakości HD/4K w przeglądarce lub na telewizorze Smart TV.",
+          "Skorzystaj z napisów i audiodeskrypcji (tam, gdzie dostępne)."
+        ],
+        "features": [
+          { "name": "Repertuar filmów fabularnych i dokumentów", "status": "dostępne" },
+          { "name": "Cykl wykładów Apokalipsa (SDS)", "status": "dostępne" },
+          { "name": "Odtwarzacz wideo bez reklam komercyjnych", "status": "dostępne" },
+          { "name": "Krótki misyjny pre-roll informacyjny", "status": "dostępne" },
+          { "name": "Aplikacja na Smart TV (Android TV)", "status": "planowane" }
+        ],
+        "scripture": "Wykłady oparte są na proroctwach biblijnych Księgi Daniela i Objawienia św. Jana (przekład UBG).",
+        "rights": "Filmy licencjonowane od dystrybutorów chrześcijańskich oraz produkcje autorskie SDS. Zakaz nieautoryzowanego kopiowania.",
+        "privacy": "Brak śledzenia widza przez podmioty trzecie.",
+        "accessibility": "Obsługa pełnoekranowa, napisy w języku polskim dla osób niesłyszących.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "CCTV24 LIVE", "url": "/cctv24" },
+          { "label": "Radio CC", "url": "/Global" }
+        ]
+      },
+      "en": {
+        "title": "Christian Cinema VOD & Video Ministry",
+        "summary": "Feature films, documentaries, Revelation Bible lectures, and Christian Culture video productions.",
+        "about": "Clean, family-friendly cinema sharing Christian values, faith, and hope, free from violence and profanity.",
+        "spiritualValue": "Reaching hearts through cinematic storytelling and biblical prophecy lectures (Studio Dobrego Słowa).",
+        "howTo": [
+          "Choose a movie or lecture from the catalogue.",
+          "Stream in HD/4K on mobile, desktop, or Smart TV.",
+          "Turn on subtitles where available."
+        ],
+        "features": [
+          { "name": "Christian Feature Film Catalogue", "status": "available" },
+          { "name": "Revelation Lecture Series", "status": "available" },
+          { "name": "Ad-Free Streaming Player", "status": "available" },
+          { "name": "Smart TV Native App", "status": "planned" }
+        ],
+        "scripture": "Lectures examine the books of Daniel and Revelation in Scripture.",
+        "rights": "Licensed film distribution. Unauthorized downloading prohibited.",
+        "privacy": "Zero commercial surveillance or ad-tracking.",
+        "accessibility": "Full-screen mode, closed captions support.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "CCTV24 LIVE", "url": "/cctv24" },
+          { "label": "Radio CC", "url": "/Global" }
+        ]
+      }
+    },
+    "/biblia-spiewana-live": {
+      "id": "biblia-spiewana",
+      "route": "/biblia-spiewana-live",
+      "ownerRole": "redakcja-muzyczna",
+      "reviewedAt": "2026-10-20",
+      "version": "1.0.0",
+      "pl": {
+        "title": "Biblia Śpiewana LIVE — Transmisja Słowa Bożego",
+        "summary": "Całodobowa transmisja pieśni opartych bezpośrednio na natchnionych wersetach Pisma Świętego.",
+        "about": "Unikatowy kanał telewizyjny i radiowy prezentujący wersety biblijne wyśpiewane słowo w słowo w oprawie muzycznej.",
+        "spiritualValue": "Napełnianie przestrzeni domowej i osobistej żywym Słowem Bożym: «Słowo twoje jest czyste, dlatego twój sługa je miłuje» (Ps 119,140).",
+        "howTo": [
+          "Oglądaj ciągłą transmisję wideo na żywo.",
+          "Śledź tekst wersetu wyświetlany na ekranie z referencją.",
+          "Przełącz na odtwarzanie w tle na smartfonie."
+        ],
+        "features": [
+          { "name": "Ciągła transmisja wideo 24/7", "status": "dostępne" },
+          { "name": "Wyświetlanie wersetów UBG na ekranie", "status": "dostępne" },
+          { "name": "Tryb pionowy dla smartfonów", "status": "dostępne" }
+        ],
+        "scripture": "Teksty pieśni stanowią dosłowne lub wierne opracowanie wersetów biblijnych UBG.",
+        "rights": "Prawa autorskie wykonań należą do twórców. Emisja publiczna w ramach misji CC.",
+        "privacy": "Brak rejestracji i logowania.",
+        "accessibility": "Duża, czytelna czcionka napisów na ekranie.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "Biblijne Uwielbienie", "url": "/BiblijneUwielbienie" },
+          { "label": "Radio CC", "url": "/Global" }
+        ]
+      },
+      "en": {
+        "title": "Sung Bible LIVE — Scripture Worship Channel",
+        "summary": "24/7 continuous broadcast of songs based word-for-word on inspired Scripture passages.",
+        "about": "A unique TV and radio station presenting biblical chapters and verses set to music.",
+        "spiritualValue": "Filling your home and daily walk with God's living Word (Psalm 119:140).",
+        "howTo": [
+          "Watch the live stream with on-screen scripture references.",
+          "Listen in background mode on mobile devices."
+        ],
+        "features": [
+          { "name": "24/7 Continuous Live Stream", "status": "available" },
+          { "name": "On-Screen Scripture Display", "status": "available" },
+          { "name": "Vertical Mobile Video Layout", "status": "available" }
+        ],
+        "scripture": "Lyrics are faithful renditions of canonical Scripture verses.",
+        "rights": "All artist and producer rights reserved.",
+        "privacy": "No tracking, completely free.",
+        "accessibility": "High-contrast legible on-screen typography.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "Biblical Worship", "url": "/BiblijneUwielbienie" },
+          { "label": "Radio CC", "url": "/Global" }
+        ]
+      }
+    },
+    "/mapa": {
+      "id": "mapa",
+      "route": "/mapa",
+      "ownerRole": "architekt-ekosystemu",
+      "reviewedAt": "2026-10-20",
+      "version": "1.0.0",
+      "pl": {
+        "title": "Mapa Ekosystemu Christian Culture (@m)",
+        "summary": "Interaktywna mapa prezentująca wszystkie platformy, aplikacje, kanały i bieżący rejestr aktualizacji EkoCC.",
+        "about": "Żywa Mapa Ekosystemu (@m = @mapaCC) pozwala każdemu użytkownikowi zrozumieć architekturę misji i błyskawicznie przejść do dowolnego projektu.",
+        "spiritualValue": "Przejrzystość, porządek i współpraca w Ciele Chrystusa: «Wszystko niech się dzieje godnie i w porządku» (1 Kor 14,40).",
+        "howTo": [
+          "Eksploruj kafelki modułów tematycznych.",
+          "Sprawdzaj najnowsze aktualizacje w symbolicznym rejestrze zmian.",
+          "Filtruj projekty według kategorii: Radio, Słowo, Społeczność, Technologia."
+        ],
+        "features": [
+          { "name": "Interaktywny katalog modułów i aplikacji", "status": "dostępne" },
+          { "name": "Symboliczny rejestr aktualizacji @m", "status": "dostępne" },
+          { "name": "Bezpośrednie odnośniki do platform", "status": "dostępne" }
+        ],
+        "scripture": "Inspirowana biblijną wizją budowania Królestwa Bożego w jedności i prawdzie.",
+        "rights": "Mapa jest publicznym rejestrem informacyjnym Christian Culture.",
+        "privacy": "Zero zbierania danych osobowych.",
+        "accessibility": "Pełna responsywność, nawigacja klawiaturą, obsługa dotykowa.",
+        "supportUrl": "https://polskieradio.cc/wspieraj",
+        "relatedLinks": [
+          { "label": "Portal Główny", "url": "/" },
+          { "label": "LUMINA", "url": "/lumina" }
+        ]
+      },
+      "en": {
+        "title": "Christian Culture Ecosystem Map (@m)",
+        "summary": "Interactive directory mapping all platforms, stations, apps, and recent development logs.",
+        "about": "The Live Ecosystem Map (@m = @mapaCC) provides an overview of all Christian Culture initiatives.",
+        "spiritualValue": "Order and transparency in Christian ministry (1 Cor 14:40).",
+        "howTo": [
+          "Browse project tiles across categories.",
+          "View chronological update logs.",
+          "Navigate directly to any module."
+        ],
+        "features": [
+          { "name": "Interactive Module Directory", "status": "available" },
+          { "name": "Public Update Log (@m)", "status": "available" },
+          { "name": "Direct Navigation Links", "status": "available" }
+        ],
+        "scripture": "Rooted in biblical stewardship.",
+        "rights": "Public informational directory of CC.",
+        "privacy": "No personal data collected.",
         "accessibility": "WCAG 2.2 AA compliant.",
         "supportUrl": "https://polskieradio.cc/wspieraj",
         "relatedLinks": [
-          { "label": "LUMINA", "url": "/lumina" },
-          { "label": "CCN News", "url": "/news" },
-          { "label": "Bible Academy", "url": "/akademia" }
+          { "label": "Home Portal", "url": "/" },
+          { "label": "LUMINA", "url": "/lumina" }
         ]
       }
     }
