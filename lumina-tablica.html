@@ -12418,7 +12418,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 }
                 if (viewPublic) viewPublic.style.display = 'flex';
                 if (viewPrivate) viewPrivate.style.display = 'none';
-                if (viewCommander) viewCommander.style.display = 'none';
+                if (viewCommander) { viewCommander.style.display = 'none'; viewCommander.setAttribute('inert', ''); viewCommander.setAttribute('hidden', ''); viewCommander.setAttribute('aria-hidden', 'true'); }
                 initPublicChatListener();
                 scrollChatToBottom('publicChatMessagesBox', false);
             } else if (tab === 'commander') {
@@ -12444,6 +12444,11 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 if (viewPublic) viewPublic.style.display = 'none';
                 if (viewPrivate) viewPrivate.style.display = 'none';
                 if (viewCommander) {
+                    viewCommander.removeAttribute('inert');
+                    viewCommander.removeAttribute('hidden');
+                    viewCommander.removeAttribute('aria-hidden');
+                    viewCommander.classList.remove('is-commander-hidden');
+                    viewCommander.classList.add('is-commander-authorized');
                     viewCommander.style.setProperty('display', 'flex', 'important');
                     updateCommanderBiometricView();
                 }
@@ -12465,7 +12470,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 }
                 if (viewPublic) viewPublic.style.display = 'none';
                 if (viewPrivate) viewPrivate.style.display = 'flex';
-                if (viewCommander) viewCommander.style.display = 'none';
+                if (viewCommander) { viewCommander.style.display = 'none'; viewCommander.setAttribute('inert', ''); viewCommander.setAttribute('hidden', ''); viewCommander.setAttribute('aria-hidden', 'true'); }
                 if (!preserveActiveChat && !window._keepActiveChat) {
                     returnToConversationsList();
                 }

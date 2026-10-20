@@ -8,10 +8,10 @@ import { renderLumiPage } from './lumi-page.mjs';
 const source = await readFile('js/lumi-dashboard.js', 'utf8');
 const windows = [];
 after(async () => { for (const win of windows) await win.happyDOM.close(); });
-function fixture(loggedIn = false) {
+function fixture(loggedIn = false, commander = false) {
   const win = new Window({ url: 'https://polskieradio.cc/mess', settings: { disableJavaScriptFileLoading: true, disableCSSFileLoading: true, disableIframePageLoading: true } });
   windows.push(win); win.document.body.innerHTML = renderLumiDashboard();
-  let user = loggedIn ? { uid: 'fixture-owner' } : null;
+  let user = loggedIn ? { uid: commander ? 'cezaryrgowski' : 'fixture-owner', email: commander ? 'nazirczarkes@gmail.com' : 'user@example.com', emailVerified: true } : null;
   const snapshots = [], opens = [], radioStates = [], plays = [];
   const people = [
     { id: 'formation-peer', slug: 'formation-peer', name: 'Próba Formacja', desc: 'Studium biblijne', badge: 'Formacja' },
@@ -19,8 +19,11 @@ function fixture(loggedIn = false) {
     { id: 'community-peer', slug: 'community-peer', name: 'Próba Społeczność', desc: 'Wspólnota', badge: 'Społeczność' }
   ];
   win.CCGlobalChat = { getMembers: () => people };
+  win.isUserCommanderAuthorized = () => Boolean(user && user.email === 'nazirczarkes@gmail.com');
+  win.openDirectMessagesModal = preferredTab => { opens.push({ tab: preferredTab, isCommanderModal: true }); };
   win.LuminaDB = {
     getCurrentUser: () => user,
+    getFirebaseAuthUser: () => user,
     getCurrentProfile: () => user ? { uid: user.uid, slug: user.uid } : null,
     subscribeToUserChats: (uid, fn) => { const item = { uid, fn, stopped: false }; snapshots.push(item); return () => { item.stopped = true; }; }
   };
@@ -156,5 +159,43 @@ test('new conversation button uses feather quill icon and radio dropdown uses el
   assert.match(css, /\.lumi-radio-panel select\{appearance:none;-webkit-appearance:none;-moz-appearance:none/);
   assert.match(css, /\.cc-chat-radio select\{[^}]*appearance:none!important/);
 });
+
+test('Commander Nazir sees VIP Agent Room card, #1 channel entry, and quick-launch button leading to biometric room', () => {
+  // 1. Regular user fixture
+  const regular = fixture(true, false);
+  assert.equal(regular.win.document.querySelector('[data-commander-card]'), null);
+  assert.ok(regular.win.document.getElementById('lumiOpenCommander').hidden);
+  regular.win.document.querySelector('[data-lumi-category="channels"]').click();
+  assert.doesNotMatch(regular.win.document.getElementById('lumiConversationCards').textContent, /Pokój Agentów/);
+
+  // 2. Commander fixture
+  const cmd = fixture(true, true);
+  const card = cmd.win.document.querySelector('[data-commander-card]');
+  assert.ok(card, 'VIP Commander card must be present');
+  assert.match(card.textContent, /Pokój Agentów CC/);
+  assert.match(card.textContent, /VIP L0/);
+  assert.match(card.textContent, /Autoryzacja Biometryczna/);
+
+  // Quick-launch heading button
+  const quickBtn = cmd.win.document.getElementById('lumiOpenCommander');
+  assert.equal(quickBtn.hidden, false);
+  quickBtn.click();
+  assert.equal(cmd.opens[0].tab, 'commander');
+
+  // Card click opens commander modal
+  cmd.opens.length = 0;
+  card.click();
+  assert.equal(cmd.opens[0].tab, 'commander');
+
+  // Channels view has commander room as #1 channel
+  cmd.win.document.querySelector('[data-lumi-category="channels"]').click();
+  const firstChannel = cmd.win.document.querySelector('.lumi-channel-card');
+  assert.ok(firstChannel);
+  assert.match(firstChannel.textContent, /Pokój Agentów & Planer Omega/);
+  cmd.opens.length = 0;
+  firstChannel.click();
+  assert.equal(cmd.opens[0].tab, 'commander');
+});
+
 
 

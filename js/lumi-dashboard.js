@@ -8,6 +8,64 @@
   const $ = id => document.getElementById(id);
   const currentUser = () => window.LuminaDB?.getCurrentUser?.();
   const isMember = () => Boolean(currentUser()?.uid && !currentUser().isAnonymous);
+  function isCommander() {
+    if (typeof window.isUserCommanderAuthorized === 'function' && window.isUserCommanderAuthorized()) return true;
+    const u = window.LuminaDB?.getFirebaseAuthUser?.() || currentUser();
+    if (u && !u.isAnonymous && u.email?.toLowerCase().trim() === 'nazirczarkes@gmail.com') return true;
+    try {
+      const email = localStorage.getItem('lumina_user_email') || '';
+      const slug = localStorage.getItem('lumina_current_user_slug') || '';
+      if (email.toLowerCase().trim() === 'nazirczarkes@gmail.com' || slug === 'cezaryrgowski') return true;
+    } catch (_) {}
+    return false;
+  }
+  function openCommanderRoom() {
+    if (!isCommander() && !isMember()) {
+      location.href = `/lumina-login?next=${encodeURIComponent('/mess?openCommander=1')}`;
+      return;
+    }
+    if (typeof window.openDirectMessagesModal === 'function') {
+      window.openDirectMessagesModal('commander');
+    } else if (typeof window.switchMessengerMainTab === 'function') {
+      const m = document.getElementById('directMessagesModal');
+      if (m) {
+        m.removeAttribute('inert');
+        m.setAttribute('aria-hidden', 'false');
+        m.style.display = 'flex';
+        m.classList.add('open');
+      }
+      window.switchMessengerMainTab('commander');
+    } else {
+      $('lumiOpen')?.click();
+      setTimeout(() => {
+        window.openDirectMessagesModal?.('commander') || window.switchMessengerMainTab?.('commander');
+      }, 200);
+    }
+  }
+  function commanderCard() {
+    const button = document.createElement('button'); button.type = 'button';
+    button.className = 'lumi-conversation-card lumi-commander-card';
+    button.setAttribute('data-commander-card', 'true');
+    const img = document.createElement('img');
+    img.src = '/images/chat/cc-chat-button-128.webp';
+    img.alt = 'Sztab Dowództwa';
+    img.loading = 'lazy'; img.width = 72; img.height = 72;
+    img.style.borderColor = '#d4af37';
+    const body = document.createElement('span'); body.className = 'lumi-card-body';
+    const title = document.createElement('span'); title.className = 'lumi-card-title';
+    title.textContent = '👑 Pokój Agentów CC';
+    const badge = document.createElement('span'); badge.className = 'lumi-card-role'; badge.textContent = 'VIP L0';
+    title.append(badge);
+    const description = document.createElement('span'); description.className = 'lumi-card-description';
+    description.textContent = 'Planer Omega 5.10.15 & Sztab Dowództwa';
+    const preview = document.createElement('span'); preview.className = 'lumi-card-preview';
+    preview.textContent = '🔒 Szyfrowany kanał misji · Autoryzacja Biometryczna';
+    body.append(title, description, preview);
+    const arrow = document.createElement('span'); arrow.className = 'lumi-card-arrow'; arrow.textContent = '›'; arrow.setAttribute('aria-hidden', 'true');
+    button.prepend(img, body); button.append(arrow);
+    button.addEventListener('click', openCommanderRoom);
+    return button;
+  }
   function login() { location.href = '/lumina-login?next=%2Fmess'; }
   function safeImage(value) {
     try { const url = new URL(value || '/images/chat/cc-chat-button-128.webp', location.href); return url.protocol === 'https:' || url.origin === location.origin ? url.href : '/images/chat/cc-chat-button-128.webp'; }
@@ -87,8 +145,12 @@
       ['Społeczność i grupy', 'Odkrywaj społeczność LUMINA', () => { location.href = '/lumina'; }],
       ['Radio Christian Culture', 'Wszystkie sześć stacji', toggleRadioPanel]
     ];
+    if (isCommander()) {
+      channels.unshift(['👑 Pokój Agentów & Planer Omega', 'Szyfrowany kanał dowodzenia misji · Autoryzacja Biometryczna L0', openCommanderRoom]);
+    }
     for (const [name, description, action] of channels) {
-      const button = document.createElement('button'); button.type = 'button'; button.className = 'lumi-conversation-card lumi-channel-card';
+      const button = document.createElement('button'); button.type = 'button';
+      button.className = 'lumi-conversation-card lumi-channel-card' + (name.includes('Pokój Agentów') ? ' lumi-commander-card' : '');
       const text = document.createElement('span'); text.className = 'lumi-card-body';
       const title = document.createElement('strong'); title.textContent = name;
       const desc = document.createElement('span'); desc.className = 'lumi-card-description'; desc.textContent = description;
@@ -97,6 +159,12 @@
   }
   function render() {
     if (!$('lumiConversationCards')) return;
+    const btnCommander = $('lumiOpenCommander');
+    if (btnCommander) {
+      const showCmd = isCommander();
+      btnCommander.hidden = !showCmd;
+      btnCommander.style.display = showCmd ? 'inline-flex' : 'none';
+    }
     root.querySelectorAll('[data-lumi-category]').forEach(button => { const active = button.dataset.lumiCategory === category; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
     root.querySelectorAll('[data-lumi-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.lumiFilter === filter)));
     if (category === 'channels') { renderChannels(); $('lumiDirectoryHeading').textContent = 'Kanały i wspólnota'; $('lumiDirectoryStatus').textContent = 'Wybierz miejsce, do którego chcesz przejść'; return; }
@@ -108,9 +176,16 @@
     if (filter === 'mine' || filter === 'recent') list = list.filter(entry => entry.room);
     if (query) list = list.filter(entry => `${entry.name} ${entry.desc || ''} ${entry.room?.lastMessageText || ''}`.toLocaleLowerCase('pl-PL').includes(query));
     if (filter === 'recent') list.sort((a, b) => timestamp(b.room?.lastMessageTimestamp) - timestamp(a.room?.lastMessageTimestamp));
-    $('lumiConversationCards').replaceChildren(...list.map(card));
+    const cards = list.map(card);
+    if (isCommander()) {
+      const commanderMatches = !query || 'pokój agentów planer omega sztab l0 biometria dowódca cc'.includes(query);
+      if (commanderMatches && (filter === 'all' || filter === 'mine')) {
+        cards.unshift(commanderCard());
+      }
+    }
+    $('lumiConversationCards').replaceChildren(...cards);
     $('lumiDirectoryHeading').textContent = filter === 'mine' ? 'Moje czaty' : filter === 'unread' ? 'Nieprzeczytane rozmowy' : 'Rozmowy i społeczność';
-    $('lumiDirectoryStatus').textContent = list.length ? (isMember() ? 'Wybierz rozmowę lub rozpocznij nową' : 'Zaloguj się, aby rozpocząć rozmowę prywatną') : query ? 'Brak osób lub rozmów pasujących do wyszukiwania' : !window.CCGlobalChat ? 'Wczytywanie społeczności…' : 'Brak rozmów w tym widoku';
+    $('lumiDirectoryStatus').textContent = cards.length ? (isMember() ? 'Wybierz rozmowę lub rozpocznij nową' : 'Zaloguj się, aby rozpocząć rozmowę prywatną') : query ? 'Brak osób lub rozmów pasujących do wyszukiwania' : !window.CCGlobalChat ? 'Wczytywanie społeczności…' : 'Brak rozmów w tym widoku';
   }
   function bindSession() {
     const user = currentUser(); const next = user && !user.isAnonymous ? String(user.uid || '') : '';
@@ -180,11 +255,17 @@
     $('lumiFilterButton').addEventListener('click', () => { const active = $('lumiFilters').classList.toggle('is-expanded'); $('lumiFilterButton').setAttribute('aria-expanded', String(active)); });
     $('lumiNewConversation').addEventListener('click', () => { category = 'all'; filter = 'all'; query = ''; $('lumiDirectorySearch').value = ''; render(); $('lumiDirectorySearch').focus(); $('lumiDirectorySearch').scrollIntoView?.({ block: 'center' }); });
     $('lumiAccountAction').addEventListener('click', () => isMember() ? window.openChatSettingsModal?.() : login());
+    $('lumiOpenCommander')?.addEventListener('click', openCommanderRoom);
     window.addEventListener('lumina-auth-state', bindSession);
     for (const event of ['lumina:carousel-people', 'lumina:notification', 'lumina:profileDeleted', 'cc-global-chat-ready']) window.addEventListener(event, render);
     window.addEventListener('cc-chat-integration-ready', () => { bindRadio(); bindSession(); });
     window.addEventListener('pagehide', () => { generation++; roomStop?.(); }, { once: true });
     bindRadio(); bindSession(); setTimeout(render, 2000);
+    try {
+      if (new URLSearchParams(location.search).get('openCommander') === '1') {
+        setTimeout(() => { if (isCommander()) openCommanderRoom(); }, 350);
+      }
+    } catch (_) {}
   }
   window.LumiDashboard = { render, bindSession };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup, { once: true }); else setup();
