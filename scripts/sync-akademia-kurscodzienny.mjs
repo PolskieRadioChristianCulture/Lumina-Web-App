@@ -25,12 +25,12 @@ akademiaHtml = akademiaHtml.replace(
 const heroActionsRegex = /<!-- Hero Actions -->\s*<div class="flex flex-wrap items-center justify-center gap-4">[\s\S]*?<\/div>/;
 const updatedHeroActions = `<!-- Hero Actions -->
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="/akademia/kurscodzienny/dzien-19" class="cin-btn-primary min-h-[48px]">
-            <span>CZYTAJ DZIEŃ 19 (19 PAŹDZIERNIKA)</span>
+          <a href="/akademia/kurscodzienny/dzien-20" class="cin-btn-primary min-h-[48px]">
+            <span>CZYTAJ DZIEŃ 20 (20 PAŹDZIERNIKA)</span>
             <span>→</span>
           </a>
-          <a href="/akademia/kurscodzienny/dzien-18" class="cin-btn-secondary min-h-[48px]">
-            <span>← DZIEŃ 18</span>
+          <a href="/akademia/kurscodzienny/dzien-19" class="cin-btn-secondary min-h-[48px]">
+            <span>← DZIEŃ 19</span>
           </a>
           <a href="#katalog-kurscodzienny" class="cin-btn-secondary min-h-[48px]">
             <span>PRZEGLĄDAJ DNI MIESIĄCA ↓</span>
@@ -41,11 +41,11 @@ akademiaHtml = akademiaHtml.replace(heroActionsRegex, updatedHeroActions);
 // C. Zaktualizuj licznik dostępnych dni w akademia.html
 akademiaHtml = akademiaHtml.replace(
   /Dni 1–\d+ Dostępne \(Październik 2026\)/g,
-  'Dni 1–19 z 31 Dostępne (19 Października 2026)'
+  'Dni 1–20 z 31 Dostępne (20 Października 2026)'
 );
 akademiaHtml = akademiaHtml.replace(
   /Dni 1–\d+ z 31 Dostępne[^\n<]*/g,
-  'Dni 1–19 z 31 Dostępne (19 Października 2026)'
+  'Dni 1–20 z 31 Dostępne (20 Października 2026)'
 );
 
 fs.writeFileSync(akademiaPath, akademiaHtml, 'utf8');
@@ -70,12 +70,12 @@ if (cardsMatch && cardsMatch[1]) {
   const heroCtaRegex = /<!-- CTA Buttons -->\s*<div class="flex flex-wrap items-center justify-center gap-4">[\s\S]*?<\/div>/;
   const updatedHeroCta = `<!-- CTA Buttons -->
       <div class="flex flex-wrap items-center justify-center gap-4">
-        <a href="/akademia/kurscodzienny/dzien-19" class="cin-btn-primary min-h-[48px]">
-          <span>CZYTAJ DZIEŃ 19 (19 PAŹDZIERNIKA)</span>
+        <a href="/akademia/kurscodzienny/dzien-20" class="cin-btn-primary min-h-[48px]">
+          <span>CZYTAJ DZIEŃ 20 (20 PAŹDZIERNIKA)</span>
           <span>→</span>
         </a>
-        <a href="/akademia/kurscodzienny/dzien-18" class="cin-btn-secondary min-h-[48px]">
-          <span>← DZIEŃ 18</span>
+        <a href="/akademia/kurscodzienny/dzien-19" class="cin-btn-secondary min-h-[48px]">
+          <span>← DZIEŃ 19</span>
         </a>
         <a href="/akademia/kurscodzienny/dzien-01" class="cin-btn-secondary min-h-[48px]">
           <span>OD POCZĄTKU (DZIEŃ 1)</span>
@@ -89,7 +89,7 @@ if (cardsMatch && cardsMatch[1]) {
   // Zaktualizuj licznik w kurscodzienny.html
   kurscodziennyHtml = kurscodziennyHtml.replace(
     /Dni 1–\d+ z 31 Dostępne[^\n<]*/g,
-    'Dni 1–19 z 31 Dostępne (19 Października 2026)'
+    'Dni 1–20 z 31 Dostępne (20 Października 2026)'
   );
 
   // Zaktualizuj siatkę kart w kurscodzienny.html
