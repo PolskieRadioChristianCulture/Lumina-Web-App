@@ -49,3 +49,6 @@ export function openFamilyPanel({ nameForUid } = {}) {
     dialog.addEventListener('close', () => { view.dispose(); client.dispose(); stopAuth(); names.clear(); dialog.remove(); active = null; }, { once: true });
     stopAuth = onAuthStateChanged(auth, u => { if (u?.uid !== uid) dialog.close(); });
 }
+if (typeof window !== 'undefined') {
+    window.openFamilyPanel = openFamilyPanel;
+}

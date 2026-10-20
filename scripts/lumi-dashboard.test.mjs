@@ -21,6 +21,7 @@ function fixture(loggedIn = false, commander = false) {
   win.CCGlobalChat = { getMembers: () => people };
   win.isUserCommanderAuthorized = () => Boolean(user && user.email === 'nazirczarkes@gmail.com');
   win.openDirectMessagesModal = preferredTab => { opens.push({ tab: preferredTab, isCommanderModal: true }); };
+  win.openFamilyPanel = () => { opens.push({ tab: 'family', isFamilyPanel: true }); };
   win.LuminaDB = {
     getCurrentUser: () => user,
     getFirebaseAuthUser: () => user,
@@ -199,3 +200,41 @@ test('Commander Nazir sees VIP Agent Room card, #1 channel entry, and quick-laun
 
 
 
+
+
+test('Rogowscy family room card, channel entry, and heading button appear for authorized family member', () => {
+  // 1. Regular non-Rogowscy user
+  const regular = fixture(true, false);
+  assert.equal(regular.win.document.querySelector('[data-family-card]'), null);
+  assert.ok(regular.win.document.getElementById('lumiOpenFamily').hidden);
+  regular.win.document.querySelector('[data-lumi-category="channels"]').click();
+  assert.doesNotMatch(regular.win.document.getElementById('lumiConversationCards').textContent, /Rogowscy/);
+
+  // 2. Rogowscy / Commander user
+  const cmd = fixture(true, true);
+  const card = cmd.win.document.querySelector('[data-family-card]');
+  assert.ok(card, 'Family Rogowscy card must be present');
+  assert.match(card.textContent, /Pokój Rodzinny — Rogowscy/);
+  assert.match(card.textContent, /Rogowscy/);
+
+  // Quick-launch heading button
+  const quickBtn = cmd.win.document.getElementById('lumiOpenFamily');
+  assert.equal(quickBtn.hidden, false);
+  assert.match(quickBtn.textContent, /Rogowscy/);
+  quickBtn.click();
+  assert.equal(cmd.opens[0].tab, 'family');
+
+  // Card click opens family panel
+  cmd.opens.length = 0;
+  card.click();
+  assert.equal(cmd.opens[0].tab, 'family');
+
+  // Channels view includes Rogowscy family room
+  cmd.win.document.querySelector('[data-lumi-category="channels"]').click();
+  const familyChannel = [...cmd.win.document.querySelectorAll('.lumi-channel-card')].find(c => c.textContent.includes('Rogowscy'));
+  assert.ok(familyChannel, 'Family channel must exist');
+  assert.match(familyChannel.textContent, /Pokój Rodzinny — Rogowscy/);
+  cmd.opens.length = 0;
+  familyChannel.click();
+  assert.equal(cmd.opens[0].tab, 'family');
+});

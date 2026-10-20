@@ -66,6 +66,60 @@
     button.addEventListener('click', openCommanderRoom);
     return button;
   }
+  function isRogowscy() {
+    if (isCommander()) return true;
+    const u = window.LuminaDB?.getFirebaseAuthUser?.() || currentUser();
+    const email = u?.email?.toLowerCase().trim() || '';
+    if (email === 'nazirczarkes@gmail.com' || email.includes('rogowsk')) return true;
+    try {
+      const savedEmail = (localStorage.getItem('lumina_user_email') || '').toLowerCase().trim();
+      const slug = localStorage.getItem('lumina_current_user_slug') || '';
+      if (savedEmail === 'nazirczarkes@gmail.com' || savedEmail.includes('rogowsk') || slug === 'cezaryrgowski' || slug === 'wiolettarogowska') return true;
+    } catch (_) {}
+    return false;
+  }
+  async function openFamilyRoom() {
+    if (!isMember()) {
+      location.href = `/lumina-login?next=${encodeURIComponent('/mess?openFamily=1')}`;
+      return;
+    }
+    if (typeof window.openFamilyPanel === 'function') {
+      window.openFamilyPanel();
+    } else {
+      try {
+        const mod = await import('/components/lumi-family-host.js?v=20261019_family2');
+        if (typeof mod.openFamilyPanel === 'function') {
+          mod.openFamilyPanel();
+        }
+      } catch (err) {
+        console.error('Błąd otwierania pokoju rodzinnego:', err);
+      }
+    }
+  }
+  function familyCard() {
+    const button = document.createElement('button'); button.type = 'button';
+    button.className = 'lumi-conversation-card lumi-family-card';
+    button.setAttribute('data-family-card', 'true');
+    const img = document.createElement('img');
+    img.src = '/images/chat/cc-chat-button-128.webp';
+    img.alt = 'Pokój Rodzinny Rogowscy';
+    img.loading = 'lazy'; img.width = 72; img.height = 72;
+    img.style.borderColor = '#10b981';
+    const body = document.createElement('span'); body.className = 'lumi-card-body';
+    const title = document.createElement('span'); title.className = 'lumi-card-title';
+    title.textContent = '👨‍👩‍👧‍👦 Pokój Rodzinny — Rogowscy';
+    const badge = document.createElement('span'); badge.className = 'lumi-card-role'; badge.textContent = 'Rogowscy';
+    title.append(badge);
+    const description = document.createElement('span'); description.className = 'lumi-card-description';
+    description.textContent = 'Prywatna przestrzeń rodziny Rogowskich · LUMI Family';
+    const preview = document.createElement('span'); preview.className = 'lumi-card-preview';
+    preview.textContent = '🔒 Bezpieczna komunikacja domowa';
+    body.append(title, description, preview);
+    const arrow = document.createElement('span'); arrow.className = 'lumi-card-arrow'; arrow.textContent = '›'; arrow.setAttribute('aria-hidden', 'true');
+    button.prepend(img, body); button.append(arrow);
+    button.addEventListener('click', openFamilyRoom);
+    return button;
+  }
   function login() { location.href = '/lumina-login?next=%2Fmess'; }
   function safeImage(value) {
     try { const url = new URL(value || '/images/chat/cc-chat-button-128.webp', location.href); return url.protocol === 'https:' || url.origin === location.origin ? url.href : '/images/chat/cc-chat-button-128.webp'; }
@@ -145,12 +199,15 @@
       ['Społeczność i grupy', 'Odkrywaj społeczność LUMINA', () => { location.href = '/lumina'; }],
       ['Radio Christian Culture', 'Wszystkie sześć stacji', toggleRadioPanel]
     ];
+    if (isRogowscy()) {
+      channels.unshift(['👨‍👩‍👧‍👦 Pokój Rodzinny — Rogowscy', 'Prywatny bezpieczny pokój rodziny Rogowskich · LUMI Family', openFamilyRoom]);
+    }
     if (isCommander()) {
       channels.unshift(['👑 Pokój Agentów & Planer Omega', 'Szyfrowany kanał dowodzenia misji · Autoryzacja Biometryczna L0', openCommanderRoom]);
     }
     for (const [name, description, action] of channels) {
       const button = document.createElement('button'); button.type = 'button';
-      button.className = 'lumi-conversation-card lumi-channel-card' + (name.includes('Pokój Agentów') ? ' lumi-commander-card' : '');
+      button.className = 'lumi-conversation-card lumi-channel-card' + (name.includes('Pokój Agentów') ? ' lumi-commander-card' : name.includes('Rogowscy') ? ' lumi-family-card' : '');
       const text = document.createElement('span'); text.className = 'lumi-card-body';
       const title = document.createElement('strong'); title.textContent = name;
       const desc = document.createElement('span'); desc.className = 'lumi-card-description'; desc.textContent = description;
@@ -165,6 +222,12 @@
       btnCommander.hidden = !showCmd;
       btnCommander.style.display = showCmd ? 'inline-flex' : 'none';
     }
+    const btnFamily = $('lumiOpenFamily');
+    if (btnFamily) {
+      const showFam = isRogowscy();
+      btnFamily.hidden = !showFam;
+      btnFamily.style.display = showFam ? 'inline-flex' : 'none';
+    }
     root.querySelectorAll('[data-lumi-category]').forEach(button => { const active = button.dataset.lumiCategory === category; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
     root.querySelectorAll('[data-lumi-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.lumiFilter === filter)));
     if (category === 'channels') { renderChannels(); $('lumiDirectoryHeading').textContent = 'Kanały i wspólnota'; $('lumiDirectoryStatus').textContent = 'Wybierz miejsce, do którego chcesz przejść'; return; }
@@ -177,6 +240,12 @@
     if (query) list = list.filter(entry => `${entry.name} ${entry.desc || ''} ${entry.room?.lastMessageText || ''}`.toLocaleLowerCase('pl-PL').includes(query));
     if (filter === 'recent') list.sort((a, b) => timestamp(b.room?.lastMessageTimestamp) - timestamp(a.room?.lastMessageTimestamp));
     const cards = list.map(card);
+    if (isRogowscy()) {
+      const familyMatches = !query || 'rogowscy rodzina pokój rodzinny lumi family dom'.includes(query);
+      if (familyMatches && (filter === 'all' || filter === 'mine')) {
+        cards.unshift(familyCard());
+      }
+    }
     if (isCommander()) {
       const commanderMatches = !query || 'pokój agentów planer omega sztab l0 biometria dowódca cc'.includes(query);
       if (commanderMatches && (filter === 'all' || filter === 'mine')) {
@@ -256,6 +325,7 @@
     $('lumiNewConversation').addEventListener('click', () => { category = 'all'; filter = 'all'; query = ''; $('lumiDirectorySearch').value = ''; render(); $('lumiDirectorySearch').focus(); $('lumiDirectorySearch').scrollIntoView?.({ block: 'center' }); });
     $('lumiAccountAction').addEventListener('click', () => isMember() ? window.openChatSettingsModal?.() : login());
     $('lumiOpenCommander')?.addEventListener('click', openCommanderRoom);
+    $('lumiOpenFamily')?.addEventListener('click', openFamilyRoom);
     window.addEventListener('lumina-auth-state', bindSession);
     for (const event of ['lumina:carousel-people', 'lumina:notification', 'lumina:profileDeleted', 'cc-global-chat-ready']) window.addEventListener(event, render);
     window.addEventListener('cc-chat-integration-ready', () => { bindRadio(); bindSession(); });
@@ -264,6 +334,9 @@
     try {
       if (new URLSearchParams(location.search).get('openCommander') === '1') {
         setTimeout(() => { if (isCommander()) openCommanderRoom(); }, 350);
+      }
+      if (new URLSearchParams(location.search).get('openFamily') === '1') {
+        setTimeout(() => { if (isRogowscy()) openFamilyRoom(); }, 350);
       }
     } catch (_) {}
   }
