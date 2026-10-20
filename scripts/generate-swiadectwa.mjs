@@ -1294,19 +1294,25 @@ ${sitemapEntries.map(e => `  <url>
 
   // 5. Aktualizacja _redirects:
   // /swiadectwa -> /swiadectwa/index.html 200
-  // /swiadectwa-live -> /swiadectwa-live.html 200
+  // /swiadectwa-live/ -> /swiadectwa-live 301
   const redirectsPath = path.join(ROOT, '_redirects');
   if (fs.existsSync(redirectsPath)) {
     let redirects = fs.readFileSync(redirectsPath, 'utf8');
     redirects = redirects.replace(/^\/swiadectwa\s+\/swiadectwa-live\.html\s+200\r?\n/m, '');
     redirects = redirects.replace(/^\/swiadectwa\s+\/swiadectwa-live\s+200\r?\n/m, '');
     redirects = redirects.replace(/^\/swiadectwa\s+\/misje\s+301\r?\n/m, '');
+    redirects = redirects.replace(/^\/swiadectwa-live\s+\/swiadectwa-live\.html\s+200\r?\n/m, '');
+    redirects = redirects.replace(/^\/swiadectwa-live\/\s+\/swiadectwa-live\.html\s+200\r?\n/m, '');
 
-    const swiadectwaRules = `\n# === ŚWIADECTWA WIARY CC ===\n/swiadectwa /swiadectwa/index.html 200\n/swiadectwa/ /swiadectwa/index.html 200\n/swiadectwa-live /swiadectwa-live.html 200\n/swiadectwa-live/ /swiadectwa-live.html 200\n`;
+    const swiadectwaRules = `\n# === ŚWIADECTWA WIARY CC ===\n/swiadectwa /swiadectwa/index.html 200\n/swiadectwa/ /swiadectwa/index.html 200\n/swiadectwa-live/ /swiadectwa-live 301\n/cctv-swiadectwa /swiadectwa-live 301\n`;
     if (!redirects.includes('/swiadectwa /swiadectwa/index.html 200')) {
       redirects = swiadectwaRules + redirects;
       fs.writeFileSync(redirectsPath, redirects, 'utf8');
       console.log(`✅ Zaktualizowano _redirects o reguły dla /swiadectwa i /swiadectwa-live`);
+    } else {
+      // Ensure swiadectwaRules without loop are in place
+      redirects = redirects.replace(/# === ŚWIADECTWA WIARY CC ===[\s\S]*?\/swiadectwa-live[^\r\n]*/m, swiadectwaRules.trim());
+      fs.writeFileSync(redirectsPath, redirects, 'utf8');
     }
   }
 
