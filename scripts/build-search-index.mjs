@@ -56,6 +56,20 @@ const CONTEXT_GUIDES = {
       { title: "Dobrze, że jesteś — Modlitwa na każdy dzień", url: "https://polskieradio.cc/dzj", icon: "🕊️" }
     ]
   },
+  "swiadectwo": {
+    keywords: ["swiadectwo", "swiadectwa", "nawrocenie", "uwolnienie", "pokonac goliata", "cud", "cuda", "uzdrowienie", "narkomania", "nalog", "swiadectwo wiary"],
+    topic: "Świadectwa Wiary, Nawrócenia & Uwolnienia",
+    summary: "Autentyczne historie przemiany życia, nawrócenia i uwolnienia z książki „Pokonać Goliata” Cezarego Rogowskiego oraz nagrania CCTV Świadectwa. Poznaj moc Bożej łaski w ludzkiej słabości.",
+    keyVerses: [
+      { ref: "Ap 12:11", text: "A oni zwyciężyli go przez krew Baranka i przez słowo świadectwa swojego.", url: "https://polskieradio.cc/mojabiblia" },
+      { ref: "Ps 107:2", text: "Niech to wyznają odkupieni przez Pana, których odkupił z ręki wroga.", url: "https://polskieradio.cc/mojabiblia" }
+    ],
+    shortcuts: [
+      { title: "Katalog 19 Świadectw Wiary", url: "https://polskieradio.cc/swiadectwa", icon: "📖" },
+      { title: "Książka: Pokonać Goliata", url: "https://polskieradio.cc/swiadectwa", icon: "🛡️" },
+      { title: "CCTV Świadectwa Live 24/7", url: "https://polskieradio.cc/swiadectwa-live.html", icon: "📺" }
+    ]
+  },
   "lek": {
     keywords: ["lek", "strach", "niepokoj", "depresja", "panika", "leki", "zalamanie", "stres", "bezsennosc"],
     topic: "Uwolnienie od lęku, depresji i Boży pokój",
