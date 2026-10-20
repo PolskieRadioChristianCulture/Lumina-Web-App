@@ -510,6 +510,7 @@ function renderTestimonyPage(item, prevItem, nextItem) {
         },
         "headline": item.title,
         "description": item.lead,
+        "image": `https://polskieradio.cc/images/swiadectwa/${item.slug}.jpg`,
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": canonicalUrl
@@ -602,7 +603,10 @@ function renderTestimonyPage(item, prevItem, nextItem) {
   <meta property="og:url" content="${canonicalUrl}" />
   <meta property="og:title" content="${item.title} – Świadectwa Wiary" />
   <meta property="og:description" content="${item.lead.replace(/"/g, '&quot;')}" />
-  <meta property="og:image" content="https://polskieradio.cc/images/og-swiadectwa.jpg" />
+  <meta property="og:image" content="https://polskieradio.cc/images/swiadectwa/${item.slug}.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="675" />
+  <meta property="og:image:alt" content="${item.title.replace(/"/g, '&quot;')}" />
   <meta property="article:published_time" content="2026-10-20T08:00:00+02:00" />
   <meta property="article:author" content="${item.author}" />
   <meta property="og:locale" content="pl_PL" />
@@ -612,7 +616,7 @@ function renderTestimonyPage(item, prevItem, nextItem) {
   <meta name="twitter:url" content="${canonicalUrl}" />
   <meta name="twitter:title" content="${item.title} – Świadectwa Wiary" />
   <meta name="twitter:description" content="${item.lead.replace(/"/g, '&quot;')}" />
-  <meta name="twitter:image" content="https://polskieradio.cc/images/og-swiadectwa.jpg" />
+  <meta name="twitter:image" content="https://polskieradio.cc/images/swiadectwa/${item.slug}.jpg" />
 
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -731,6 +735,14 @@ ${JSON.stringify(jsonLd, null, 2)}
         </div>
       </header>
 
+      <!-- Hero Graphic Banner -->
+      <div class="mb-8 rounded-2xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl bg-[#07090E]">
+        <picture>
+          <source srcset="/images/swiadectwa/${item.slug}.webp" type="image/webp" />
+          <img src="/images/swiadectwa/${item.slug}.jpg" alt="${item.title.replace(/"/g, '&quot;')}" class="w-full h-auto aspect-[16/9] object-cover" width="1200" height="675" fetchpriority="high" />
+        </picture>
+      </div>
+
       <!-- Lead -->
       <div class="bg-gradient-to-r from-[#D4AF37]/10 to-transparent p-5 rounded-xl border-l-4 border-[#D4AF37] mb-8">
         <p class="text-base sm:text-lg text-slate-200 font-medium italic leading-relaxed">
@@ -841,6 +853,14 @@ function renderHubPage(testimonies) {
     return `
       <div class="testimony-card group p-6 rounded-2xl bg-[#0E121A]/80 border border-slate-800/80 hover:border-[#D4AF37]/50 transition-all duration-300 flex flex-col justify-between shadow-xl hover:shadow-[#D4AF37]/10" data-category="${t.category.toLowerCase()}" data-author="${t.author.toLowerCase()}">
         <div>
+          <!-- Thumbnail Image -->
+          <a href="/swiadectwa/${t.slug}" class="block rounded-xl overflow-hidden mb-4 border border-slate-800 group-hover:border-[#D4AF37]/40 transition-colors focus:outline-none">
+            <picture>
+              <source srcset="/images/swiadectwa/${t.slug}.webp" type="image/webp" />
+              <img src="/images/swiadectwa/${t.slug}.jpg" alt="${t.title.replace(/"/g, '&quot;')}" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" width="600" height="338" loading="lazy" />
+            </picture>
+          </a>
+
           <div class="flex items-center justify-between gap-2 mb-3">
             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/25 font-cinzel">
               ${t.id} · ${t.type.toUpperCase()}
@@ -888,6 +908,7 @@ function renderHubPage(testimonies) {
         "name": "Świadectwa Wiary — Historie Przemiany Życia | Christian Culture",
         "description": "Zbiór 19 autentycznych świadectw wiary, nawrócenia i uwolnienia z książki „Pokonać Goliata” Cezarego Rogowskiego oraz nagrań wideo CCTV.",
         "url": canonicalUrl,
+        "image": "https://polskieradio.cc/images/swiadectwa/hero-swiadectwa.jpg",
         "inLanguage": "pl-PL",
         "about": {
           "@type": "Book",
@@ -902,6 +923,7 @@ function renderHubPage(testimonies) {
           "@type": "Article",
           "name": t.title,
           "url": `https://polskieradio.cc/swiadectwa/${t.slug}`,
+          "image": `https://polskieradio.cc/images/swiadectwa/${t.slug}.jpg`,
           "author": { "@type": "Person", "name": t.author }
         }))
       }
@@ -935,7 +957,10 @@ function renderHubPage(testimonies) {
   <meta property="og:url" content="${canonicalUrl}" />
   <meta property="og:title" content="Świadectwa Wiary — Historie Przemiany Życia | Christian Culture" />
   <meta property="og:description" content="19 autentycznych świadectw wiary, nawrócenia i uwolnienia z uzależnień z książki „Pokonać Goliata” Cezarego Rogowskiego. Doświadczenie Bożej łaski w codziennym życiu." />
-  <meta property="og:image" content="https://polskieradio.cc/images/og-swiadectwa.jpg" />
+  <meta property="og:image" content="https://polskieradio.cc/images/swiadectwa/hero-swiadectwa.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="675" />
+  <meta property="og:image:alt" content="Świadectwa Wiary — Pokonać Goliata" />
   <meta property="og:locale" content="pl_PL" />
 
   <!-- Twitter -->
@@ -943,7 +968,7 @@ function renderHubPage(testimonies) {
   <meta name="twitter:url" content="${canonicalUrl}" />
   <meta name="twitter:title" content="Świadectwa Wiary — Historie Przemiany Życia | Christian Culture" />
   <meta name="twitter:description" content="19 autentycznych świadectw wiary, nawrócenia i uwolnienia z uzależnień z książki „Pokonać Goliata” Cezarego Rogowskiego." />
-  <meta name="twitter:image" content="https://polskieradio.cc/images/og-swiadectwa.jpg" />
+  <meta name="twitter:image" content="https://polskieradio.cc/images/swiadectwa/hero-swiadectwa.jpg" />
 
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1027,6 +1052,14 @@ ${JSON.stringify(jsonLd, null, 2)}
           <i class="fa-solid fa-tv text-red-400"></i>
           <span>Oglądaj CCTV Świadectwa Live</span>
         </a>
+      </div>
+
+      <!-- Hero Graphic Banner -->
+      <div class="mt-10 max-w-4xl mx-auto rounded-2xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl shadow-black/80 bg-[#07090E]">
+        <picture>
+          <source srcset="/images/swiadectwa/hero-swiadectwa.webp" type="image/webp" />
+          <img src="/images/swiadectwa/hero-swiadectwa.jpg" alt="Świadectwa Wiary — Pokonać Goliata — Christian Culture" class="w-full h-auto aspect-[16/9] object-cover" width="1200" height="675" fetchpriority="high" />
+        </picture>
       </div>
     </div>
   </section>
@@ -1201,29 +1234,41 @@ export async function generateAll() {
   fs.writeFileSync(path.join(swiadectwaDir, 'index.html'), hubHtml, 'utf8');
   console.log(`✅ Wygenerowano stronę główną: /swiadectwa oraz /swiadectwa.html`);
 
-  // 3. Generuj sitemap dedykowany sitemaps/swiadectwa.xml
+  // 3. Generuj sitemap dedykowany sitemaps/swiadectwa.xml z tagami obrazów dla Google Images
   const sitemapEntries = [
-    { loc: 'https://polskieradio.cc/swiadectwa', priority: '0.9', changefreq: 'daily' },
+    {
+      loc: 'https://polskieradio.cc/swiadectwa',
+      priority: '0.9',
+      changefreq: 'daily',
+      image: 'https://polskieradio.cc/images/swiadectwa/hero-swiadectwa.jpg',
+      imageTitle: 'Świadectwa Wiary & Bożej Mocy — Pokonać Goliata'
+    },
     ...TESTIMONIES.map(t => ({
       loc: `https://polskieradio.cc/swiadectwa/${t.slug}`,
       priority: '0.8',
-      changefreq: 'weekly'
+      changefreq: 'weekly',
+      image: `https://polskieradio.cc/images/swiadectwa/${t.slug}.jpg`,
+      imageTitle: t.title
     }))
   ];
 
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${sitemapEntries.map(e => `  <url>
     <loc>${e.loc}</loc>
     <lastmod>2026-10-20</lastmod>
     <changefreq>${e.changefreq}</changefreq>
     <priority>${e.priority}</priority>
+    <image:image>
+      <image:loc>${e.image}</image:loc>
+      <image:title>${e.imageTitle.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')}</image:title>
+    </image:image>
   </url>`).join('\n')}
 </urlset>`;
 
   const sitemapPath = path.join(ROOT, 'sitemaps', 'swiadectwa.xml');
   fs.writeFileSync(sitemapPath, sitemapXml, 'utf8');
-  console.log(`✅ Zapisano sitemap: sitemaps/swiadectwa.xml (${sitemapEntries.length} URL-i)`);
+  console.log(`✅ Zapisano sitemap ze znacznikami grafik: sitemaps/swiadectwa.xml (${sitemapEntries.length} URL-i)`);
 
   // 4. Dopisz sitemaps/swiadectwa.xml do sitemap.xml jeśli brak
   const rootSitemapPath = path.join(ROOT, 'sitemap.xml');
@@ -1236,6 +1281,10 @@ ${sitemapEntries.map(e => `  <url>
     <lastmod>2026-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://polskieradio.cc/images/swiadectwa/hero-swiadectwa.jpg</image:loc>
+      <image:title>Świadectwa Wiary &amp; Bożej Mocy — Pokonać Goliata</image:title>
+    </image:image>
   </url>\n`;
       rootSitemap = rootSitemap.replace('</urlset>', `${entryXml}</urlset>`);
       fs.writeFileSync(rootSitemapPath, rootSitemap, 'utf8');
@@ -1274,6 +1323,7 @@ ${sitemapEntries.map(e => `  <url>
       category: "Biblia i formacja",
       description: "Zbiór 19 autentycznych świadectw wiary, nawrócenia i uwolnienia z uzależnień z książki „Pokonać Goliata” Cezarego Rogowskiego oraz nagrań wideo CCTV.",
       tags: ["świadectwa", "świadectwa wiary", "pokonać goliata", "nawrócenie", "uwolnienie", "cuda", "świadectwo", "cezary rogowski"],
+      image: "/images/swiadectwa/hero-swiadectwa.webp",
       featured: true
     },
     ...TESTIMONIES.map(t => ({
@@ -1282,6 +1332,7 @@ ${sitemapEntries.map(e => `  <url>
       category: "Biblia i formacja",
       description: `${t.lead} — Świadectwo z książki „Pokonać Goliata” Cezarego Rogowskiego (s. ${t.pages}).`,
       tags: [...t.tags, "świadectwo", "świadectwa", "pokonać goliata", t.author.toLowerCase(), t.id.toLowerCase()],
+      image: `/images/swiadectwa/${t.slug}.webp`,
       featured: false
     }))
   ];
@@ -1294,7 +1345,12 @@ ${sitemapEntries.map(e => `  <url>
     const existingUrls = new Set(baseData.items.map(i => i.url));
     let added = 0;
     for (const item of searchEntries) {
-      if (!existingUrls.has(item.url)) {
+      const existing = baseData.items.find(i => i.url === item.url);
+      if (existing) {
+        existing.image = item.image;
+        existing.description = item.description;
+        existing.tags = item.tags;
+      } else {
         baseData.items.push(item);
         existingUrls.add(item.url);
         added++;
@@ -1306,14 +1362,27 @@ ${sitemapEntries.map(e => `  <url>
     const serialized = JSON.stringify(baseData, null, 2);
     for (const p of searchIndexPaths) {
       fs.writeFileSync(p, serialized, 'utf8');
-      console.log(`✅ Zaktualizowano indeks wyszukiwarki: ${path.basename(p)} (+${added} wpisów, łącznie: ${baseData.totalItems})`);
+      console.log(`✅ Zaktualizowano indeks wyszukiwarki: ${path.basename(p)} (+${added} nowych, zaktualizowano grafiki, łącznie: ${baseData.totalItems})`);
     }
   }
 
   // 7. Synchronizacja do lustra LUMINA
   const mirrorSwiadectwaDir = 'C:\\Users\\czark\\Desktop\\@ICC\\LUMINA\\swiadectwa';
+  const mirrorImagesDir = 'C:\\Users\\czark\\Desktop\\@ICC\\LUMINA\\images\\swiadectwa';
   try {
     fs.mkdirSync(mirrorSwiadectwaDir, { recursive: true });
+    fs.mkdirSync(mirrorImagesDir, { recursive: true });
+    
+    // Kopiuj grafiki świadectw do lustra
+    const localImagesDir = path.join(ROOT, 'images', 'swiadectwa');
+    if (fs.existsSync(localImagesDir)) {
+      const imgFiles = fs.readdirSync(localImagesDir);
+      for (const imgFile of imgFiles) {
+        fs.copyFileSync(path.join(localImagesDir, imgFile), path.join(mirrorImagesDir, imgFile));
+      }
+      console.log(`✨ Skopiowano ${imgFiles.length} grafik do lustra LUMINA/images/swiadectwa/`);
+    }
+
     fs.copyFileSync(path.join(ROOT, 'swiadectwa.html'), 'C:\\Users\\czark\\Desktop\\@ICC\\LUMINA\\swiadectwa.html');
     fs.copyFileSync(path.join(swiadectwaDir, 'index.html'), path.join(mirrorSwiadectwaDir, 'index.html'));
     for (const item of TESTIMONIES) {
@@ -1326,7 +1395,7 @@ ${sitemapEntries.map(e => `  <url>
     fs.copyFileSync(path.join(ROOT, 'data/cc-search-index.json'), 'C:\\Users\\czark\\Desktop\\@ICC\\LUMINA\\data/cc-search-index.json');
     fs.copyFileSync(path.join(ROOT, 'szukaj/catalog.json'), 'C:\\Users\\czark\\Desktop\\@ICC\\LUMINA\\szukaj/catalog.json');
     fs.copyFileSync(path.join(ROOT, '_redirects'), 'C:\\Users\\czark\\Desktop\\@ICC\\LUMINA\\_redirects');
-    console.log(`✨ Zsynchronizowano wszystkie pliki świadectw do lustra LUMINA.`);
+    console.log(`✨ Zsynchronizowano wszystkie pliki świadectw i grafiki do lustra LUMINA.`);
   } catch (errMirror) {
     console.warn(`⚠️ Ostrzeżenie przy synchronizacji do lustra LUMINA:`, errMirror.message);
   }
