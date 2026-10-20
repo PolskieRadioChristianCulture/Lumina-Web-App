@@ -75,8 +75,22 @@ const tracked = execFileSync('git', ['ls-files', '-z'], {
   maxBuffer: 32 * 1024 * 1024,
 }).split('\0').filter(Boolean);
 
+let untrackedNews = [];
+try {
+  untrackedNews = execFileSync('git', ['ls-files', '-o', '--exclude-standard', '-z', 'news'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+    windowsHide: true,
+    maxBuffer: 32 * 1024 * 1024,
+  }).split('\0').filter(Boolean);
+} catch {
+  // Ignoruj błąd jeśli katalog news nie istnieje
+}
+
+const candidateFiles = Array.from(new Set([...tracked, ...untrackedNews]));
+
 let copied = 0;
-for (const relativePath of tracked) {
+for (const relativePath of candidateFiles) {
   if (!isPublicFile(relativePath)) continue;
   const source = path.resolve(ROOT, relativePath);
   const destination = path.resolve(resolvedOutput, relativePath);
@@ -150,4 +164,4 @@ fs.mkdirSync(path.join(resolvedOutput,'data'),{recursive:true});
 fs.writeFileSync(path.join(resolvedOutput,'data','daily-course-push.json'),JSON.stringify(courseManifest));
 scan(resolvedOutput);
 
-console.log(JSON.stringify({ output: resolvedOutput, copied, source: 'tracked-clean-worktree' }, null, 2));
+console.log(JSON.stringify({ output: resolvedOutput, copied, source: 'tracked-and-untracked-news-worktree' }, null, 2));
