@@ -35,14 +35,64 @@ export function openFamilyPanel({ nameForUid } = {}) {
         name = typeof name === 'string' && name.trim() ? name.slice(0, 80) : 'Członek rodziny';
         names.set(memberUid, name); return name;
     };
-    const view = mountFamilyView({ element: dialog, client, userUid: uid, nameForUid: resolveName,
+    const resolveUid = async input => {
+        if (!input) return input;
+        const clean = String(input).trim().replace(/^@/, '');
+        try {
+            const s = await sdk.getDocFromServer(sdk.doc(db, 'lumina_profiles', clean));
+            if (s.exists() && s.data()?.uid) return s.data().uid;
+        } catch {}
+        return clean;
+    };
+    const view = mountFamilyView({ element: dialog, client, userUid: uid, nameForUid: resolveName, resolveUid,
         inviteContacts: async () => {
-            const config = await sdk.getDocFromServer(sdk.doc(db, 'kids_pilot', 'config'));
-            if (auth.currentUser?.uid !== uid || !config.exists()) return [];
-            const c = config.data();
-            const uids = [...new Set([c.childUid, ...(Array.isArray(c.contacts) ? c.contacts : [])])]
-                .filter(x => typeof x === 'string' && x && x !== uid).slice(0, 10);
-            return Promise.all(uids.map(async memberUid => ({ uid: memberUid, name: await resolveName(memberUid) })));
+            const contactMap = new Map();
+            // 1. Sprawdź konfigurację kids_pilot jeśli istnieje
+            try {
+                const config = await sdk.getDocFromServer(sdk.doc(db, 'kids_pilot', 'config'));
+                if (config.exists()) {
+                    const c = config.data();
+                    const uids = [...new Set([c.childUid, ...(Array.isArray(c.contacts) ? c.contacts : [])])]
+                        .filter(x => typeof x === 'string' && x && x !== uid);
+                    for (const memberUid of uids) {
+                        contactMap.set(memberUid, { uid: memberUid, name: await resolveName(memberUid) });
+                    }
+                }
+            } catch {}
+
+            // 2. Dodaj profile rodzinne (Wioletta Rogowska)
+            try {
+                const wSnap = await sdk.getDocFromServer(sdk.doc(db, 'lumina_profiles', 'wiolettarogowska'));
+                if (wSnap.exists()) {
+                    const wData = wSnap.data();
+                    const wUid = wData.uid || 'wiolettarogowska';
+                    if (wUid !== uid && !contactMap.has(wUid)) {
+                        contactMap.set(wUid, { uid: wUid, name: wData.displayName || wData.name || 'Wioletta Rogowska' });
+                    }
+                } else if (uid !== 'wiolettarogowska') {
+                    contactMap.set('wiolettarogowska', { uid: 'wiolettarogowska', name: 'Wioletta Rogowska' });
+                }
+            } catch {
+                if (uid !== 'wiolettarogowska') {
+                    contactMap.set('wiolettarogowska', { uid: 'wiolettarogowska', name: 'Wioletta Rogowska' });
+                }
+            }
+
+            // 3. Dodaj kontakty z CCGlobalChat
+            try {
+                const globalMembers = window.CCGlobalChat?.members || window.CCGlobalChat?.getMembers?.() || [];
+                if (Array.isArray(globalMembers)) {
+                    for (const m of globalMembers) {
+                        const mUid = typeof m === 'string' ? m : (m.uid || m.id);
+                        if (mUid && mUid !== uid && !contactMap.has(mUid)) {
+                            const name = (typeof m === 'object' && (m.name || m.displayName)) ? (m.name || m.displayName) : await resolveName(mUid);
+                            contactMap.set(mUid, { uid: mUid, name });
+                        }
+                    }
+                }
+            } catch {}
+
+            return Array.from(contactMap.values()).slice(0, 15);
         }, onClose: () => dialog.close() });
     let stopAuth = () => {};
     active = { dialog, view, client };

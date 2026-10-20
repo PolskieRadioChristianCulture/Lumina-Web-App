@@ -80,3 +80,42 @@ test('pending invitation screen does not fetch room details; accepts before open
     [...host.querySelectorAll('button')].find(b => b.textContent === 'Przyjmij').click(); await tick();
     assert.equal(accepted, true); assert.equal(reads, 0); view.dispose(); await w.happyDOM.close();
 });
+test('guardian sees suggested contacts and can manually invite by username or UID', async () => {
+    const w = new Window(), host = w.document.createElement('div'); w.document.body.append(host);
+    const invited = [];
+    const client = {
+        listMemberships: async () => [{ state: 'accepted', roomId: 'rogowscy-room' }],
+        getRoom: async () => ({ name: 'Rodzina Rogowskich', isGuardian: true, slotUids: ['guardian'] }),
+        listMembers: async () => [{ uid: 'guardian' }],
+        watchMessages: () => () => {},
+        invite: async (roomId, targetUid) => { invited.push({ roomId, targetUid }); return { state: 'pending' }; }
+    };
+    const view = mountFamilyView({
+        element: host,
+        client,
+        userUid: 'guardian',
+        nameForUid: async uid => uid === 'wiolettarogowska' ? 'Wioletta Rogowska' : uid,
+        resolveUid: async u => u === 'wioletta' ? 'wiolettarogowska' : u,
+        inviteContacts: async () => [{ uid: 'wiolettarogowska', name: 'Wioletta Rogowska' }]
+    });
+    await tick(); await view.room('rogowscy-room');
+    const inviteBtn = [...host.querySelectorAll('button')].find(b => b.textContent.includes('Zaproś do rodziny'));
+    assert.ok(inviteBtn, 'Guardian must see the invite button');
+    inviteBtn.click(); await tick();
+    
+    // Suggested contact button
+    const wiolettaBtn = [...host.querySelectorAll('button')].find(b => b.textContent === 'Wioletta Rogowska');
+    assert.ok(wiolettaBtn, 'Suggested contact button Wioletta Rogowska must be present');
+    wiolettaBtn.click(); await tick();
+    assert.deepEqual(invited[0], { roomId: 'rogowscy-room', targetUid: 'wiolettarogowska' });
+
+    // Manual invite input
+    const manualInput = host.querySelector('.lf-invite-form input');
+    assert.ok(manualInput, 'Manual invite input must exist');
+    manualInput.value = 'wioletta';
+    const manualForm = host.querySelector('.lf-invite-form');
+    manualForm.dispatchEvent(new w.Event('submit', { cancelable: true })); await tick();
+    assert.deepEqual(invited[1], { roomId: 'rogowscy-room', targetUid: 'wiolettarogowska' });
+
+    view.dispose(); await w.happyDOM.close();
+});

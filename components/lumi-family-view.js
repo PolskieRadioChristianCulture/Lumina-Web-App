@@ -2,7 +2,7 @@
 // Never render message/profile strings as HTML. No private drafts in localStorage.
 import {readWithDeadline,chatReadError} from './lumi-chat-readiness.js?v=20261019_read1';
 export function mountFamilyView({ element, client, userUid, nameForUid = async () => 'Członek rodziny',
-    inviteContacts = async () => [], onClose = () => {}, read=readWithDeadline }) {
+    resolveUid = async u => u, inviteContacts = async () => [], onClose = () => {}, read=readWithDeadline }) {
     const doc = element.ownerDocument;
     let stopped = false, epoch = 0, stopMessages = () => {}, outbox = null;
     function el(tag, text, props = {}) {
@@ -79,15 +79,42 @@ export function mountFamilyView({ element, client, userUid, nameForUid = async (
                 invite.onclick = () => action(invite, async () => {
                     const contacts = await inviteContacts(); if (!current(n)) return;
                     const picker = el('div', null, { className: 'lf-card' });
-                    picker.append(el('p', 'Wybierz zatwierdzony kontakt. Zaproszenie nie daje dostępu przed przyjęciem.'));
+                    picker.append(el('p', 'Wybierz kontakt lub wpisz nazwę użytkownika. Zaproszenie nie daje dostępu przed przyjęciem.'));
                     const available = contacts.filter(c => !members.some(m => m.uid === c.uid));
-                    if (!available.length) picker.append(el('p', 'Brak nowych zatwierdzonych kontaktów.'));
+                    if (!available.length && contacts.length > 0) picker.append(el('p', 'Wszystkie sugerowane kontakty są już w rodzinie.'));
                     for (const contact of available) {
                         const b = el('button', contact.name, { type: 'button' });
                         b.onclick = () => action(b, async () => { await client.invite(roomId, contact.uid);
                             if (current(n)) { b.textContent = 'Zaproszenie oczekuje'; b.dataset.done = 'true'; b.disabled = true; } });
                         picker.append(b);
                     }
+                    const manualWrap = el('div', null, { className: 'lf-manual-invite' });
+                    manualWrap.append(el('p', 'Lub dodaj członka rodziny (wpisz UID lub nazwę użytkownika):', { className: 'lf-members' }));
+                    const manualForm = el('form', null, { className: 'lf-invite-form' });
+                    const manualInput = el('input', null, { type: 'text', placeholder: 'np. wiolettarogowska lub UID...', required: true });
+                    manualInput.setAttribute('aria-label', 'Nazwa użytkownika lub UID do zaproszenia');
+                    const manualBtn = el('button', 'Wyślij zaproszenie ＋', { type: 'submit' });
+                    manualForm.append(manualInput, manualBtn);
+                    manualForm.onsubmit = e => {
+                        e.preventDefault();
+                        const val = manualInput.value.trim();
+                        if (!val || manualBtn.disabled) return;
+                        action(manualBtn, async () => {
+                            status.textContent = 'Wysyłam zaproszenie…';
+                            let targetUid = val;
+                            if (typeof resolveUid === 'function') {
+                                try { targetUid = await resolveUid(val); } catch {}
+                            }
+                            await client.invite(roomId, targetUid);
+                            if (!current(n)) return;
+                            manualInput.value = '';
+                            manualBtn.dataset.done = 'true';
+                            status.textContent = 'Zaproszenie wysłane pomyślnie!';
+                            setTimeout(async () => { if (current(n)) await room(roomId); }, 1000);
+                        });
+                    };
+                    manualWrap.append(manualForm);
+                    picker.append(manualWrap);
                     content.prepend(picker); invite.disabled = true;
                 });
                 content.append(invite);

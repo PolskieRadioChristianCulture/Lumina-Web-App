@@ -13705,9 +13705,31 @@ function renderPublicChatMessages(messages) {
             }
         }
 
+        let agentChatModule = null;
+        async function handleSendCommanderChatMessage(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            try {
+                if (!agentChatModule) {
+                    agentChatModule = await import("/components/lumi-agent-chat.js?v=20261019_agent3");
+                }
+                if (agentChatModule && typeof agentChatModule.send === 'function') {
+                    await agentChatModule.send(e);
+                }
+            } catch (err) {
+                console.error("Błąd wysyłania dyspozycji:", err);
+            }
+        }
+        window.handleSendCommanderChatMessage = handleSendCommanderChatMessage;
+
         function initCommanderChatListener() {
             if (!isUserCommanderAuthorized()) return;
-            import("/components/lumi-agent-chat.js?v=20261019_agent3").then(m => m.open()).catch(() => {
+            import("/components/lumi-agent-chat.js?v=20261019_agent3").then(m => {
+                agentChatModule = m;
+                m.open();
+            }).catch(() => {
                 if (typeof showToast === "function") showToast("Nie można połączyć ze Skrzynką Agentów. Spróbuj ponownie.");
             });
         }
@@ -13972,7 +13994,8 @@ function renderPublicChatMessages(messages) {
 window.addEventListener('lumina-auth-state', () => {
             checkAndShowCommanderTab();
             const view = document.getElementById('messengerCommanderView');
-            if (view && view.style.display !== 'none' && !isUserCommanderAuthorized()) {
+            const u = window.LuminaDB?.getFirebaseAuthUser?.();
+            if (view && view.style.display !== 'none' && u && !isUserCommanderAuthorized()) {
                 try { sessionStorage.removeItem('cc_commander_biometric_unlocked'); } catch(e) {}
                 switchMessengerMainTab('public');
             }

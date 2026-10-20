@@ -18,10 +18,15 @@
 .lf-message small {font-size:12px;color:#e2e8f0}
 .lumi-family form {display:flex;align-items:flex-end;gap:8px;flex:none;padding:8px 0}
 .lumi-family textarea {box-sizing:border-box;flex:1;min-width:0;min-height:46px;max-height:120px;padding:10px;border:1px solid #64748b;border-radius:14px;background:#1e293b;color:inherit;font:16px/1.5 system-ui;resize:vertical}
+.lf-manual-invite {margin-top:12px;padding-top:10px;border-top:1px solid #475569}
+.lf-invite-form {display:flex;gap:8px;align-items:center;margin-top:8px}
+.lf-invite-form input {box-sizing:border-box;flex:1;min-height:44px;padding:8px 12px;border:1px solid #64748b;border-radius:12px;background:#1e293b;color:inherit;font:16px/1.5 system-ui}
+.lf-invite-form input:focus-visible {outline:3px solid #a78bfa;outline-offset:2px}
 .lumi-family [hidden] {display:none!important}
 [data-theme="light"] .lumi-family-dialog,body.light-mode .lumi-family-dialog,body.lumi-kids-family .lumi-family-dialog {background:#f8fafc;color:#0f172a}
 [data-theme="light"] .lumi-family button,body.light-mode .lumi-family button,body.lumi-kids-family .lumi-family button,
 [data-theme="light"] .lumi-family textarea,body.light-mode .lumi-family textarea,body.lumi-kids-family .lumi-family textarea {background:#e2e8f0;color:#0f172a}
+[data-theme="light"] .lf-invite-form input,body.light-mode .lf-invite-form input,body.lumi-kids-family .lf-invite-form input {background:#e2e8f0;color:#0f172a}
 [data-theme="light"] .lf-status,[data-theme="light"] .lf-members,body.lumi-kids-family .lf-status,body.lumi-kids-family .lf-members {color:#475569}
 [data-theme="light"] .lf-message:not(.own),body.lumi-kids-family .lf-message:not(.own) {background:#e2e8f0;color:#0f172a}
 [data-theme="light"] .lf-message small,body.lumi-kids-family .lf-message small {color:inherit}
