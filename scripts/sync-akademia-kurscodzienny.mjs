@@ -70,7 +70,7 @@ if (!akademiaHtml.includes('/akademia/kurscodzienny/dzien-21')) {
 
             <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
             <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/20">
-              <img src="/images/academy/daily/kc_day_21_bog_dziala_niedoskonale_rodziny.jpg" alt="Dzień 21: BÓG DZIAŁA POŚRÓD NIEDOSKONAŁYCH RODZIN — Rdz 29:1–30:43" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block opacity-90 group-hover:opacity-100" loading="lazy" />
+              <img src="/images/academy/daily/kc_day_21_bog_dziala_niedoskonale_rodziny.jpg?v=20261021" alt="Dzień 21: BÓG DZIAŁA POŚRÓD NIEDOSKONAŁYCH RODZIN — Rdz 29:1–30:43" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block opacity-90 group-hover:opacity-100" loading="lazy" />
               <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
             </div>
 

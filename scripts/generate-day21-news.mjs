@@ -37,7 +37,7 @@ export function getDay21NewsHtml() {
     <meta property="og:url" content="${canonicalUrl}" />
     <meta property="og:title" content="BÓG POŚRÓD NIEDOSKONAŁYCH RODZIN — LEA, RACHELA I HISTORYCZNE KORZENIE POKOLENIA JUDY W KSIĘDZE RODZAJU 29–30 – CCN News" />
     <meta property="og:description" content="Księga Rodzaju 29–30 w leksykonie teologicznym CCN News: realizm ludzkich słabości, Boża łaska wobec pomijanej Lei i chrystocentryczne wypełnienie obietnicy w linii Judy." />
-    <meta property="og:image" content="https://polskieradio.cc/images/news/art-z-biblia-za-pan-brat-dzien-21-bog-dziala-niedoskonale-rodziny.jpg" />
+    <meta property="og:image" content="https://polskieradio.cc/images/news/art-z-biblia-za-pan-brat-dzien-21-bog-dziala-niedoskonale-rodziny.jpg?v=20261021" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
     <meta property="article:published_time" content="2026-10-21" />
@@ -49,7 +49,7 @@ export function getDay21NewsHtml() {
     <meta name="twitter:url" content="${canonicalUrl}" />
     <meta name="twitter:title" content="BÓG POŚRÓD NIEDOSKONAŁYCH RODZIN — LEA, RACHELA I KORZENIE JUDY – CCN News" />
     <meta name="twitter:description" content="Leksykon teologiczny CCN: Rdz 29–30, oszustwo Labana, łaska dla Lei i Boża wierność pośród niedoskonałych rodzin." />
-    <meta name="twitter:image" content="https://polskieradio.cc/images/news/art-z-biblia-za-pan-brat-dzien-21-bog-dziala-niedoskonale-rodziny.jpg" />
+    <meta name="twitter:image" content="https://polskieradio.cc/images/news/art-z-biblia-za-pan-brat-dzien-21-bog-dziala-niedoskonale-rodziny.jpg?v=20261021" />
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -76,7 +76,7 @@ export function getDay21NewsHtml() {
       "inLanguage": "pl-PL",
       "isAccessibleForFree": true,
       "image": [
-        "https://polskieradio.cc/images/news/art-z-biblia-za-pan-brat-dzien-21-bog-dziala-niedoskonale-rodziny.jpg"
+        "https://polskieradio.cc/images/news/art-z-biblia-za-pan-brat-dzien-21-bog-dziala-niedoskonale-rodziny.jpg?v=20261021"
       ],
       "author": {
         "@type": "Person",
@@ -505,7 +505,7 @@ export function getDay21NewsHtml() {
 
         <!-- Featured Image -->
         <figure class="ccn-media-box">
-          <img src="/images/news/art-z-biblia-za-pan-brat-dzien-21-bog-dziala-niedoskonale-rodziny.jpg" alt="Bóg pośród niedoskonałych rodzin — Lea, Rachela i narodziny Judy — Rdz 29–30" />
+          <img src="/images/news/art-z-biblia-za-pan-brat-dzien-21-bog-dziala-niedoskonale-rodziny.jpg?v=20261021" alt="Bóg pośród niedoskonałych rodzin — Lea, Rachela i narodziny Judy — Rdz 29–30" />
           <figcaption>Księga Rodzaju 29:1–30:43 — Boża wierność pośród zranień, oszustwa i rywalizacji w rodzinie Jakuba.</figcaption>
         </figure>
 
