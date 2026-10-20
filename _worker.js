@@ -1745,7 +1745,7 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
-    if (decodedP === '/misja' || decodedP === '/swiadectwa') {
+    if (decodedP === '/misja') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/misje';
       return Response.redirect(redirectUrl.toString(), 301);
