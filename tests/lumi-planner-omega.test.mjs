@@ -17,7 +17,17 @@ test('MissionPlannerOmega51015 renders eternity vision, time ladder, and manages
         removeItem: k => storage.delete(k)
     };
     global.localStorage = mockStorage;
+    global.sessionStorage = mockStorage;
 
+    // 1. Initial locked state: biometric gate is rendered
+    const lockedPlanner = new MissionPlannerOmega51015(container);
+    assert.ok(container.innerHTML.includes('STREFA CHRONIONA L0'));
+    assert.ok(container.innerHTML.includes('WEJDŹ PRZEZ BIOMETRIĘ 🧬'));
+    assert.ok(container.innerHTML.includes('id="bio-auth-btn"'));
+    assert.ok(container.innerHTML.includes('id="bio-status"'));
+
+    // 2. Authenticated state: full planner is rendered
+    mockStorage.setItem('cc_biometric_auth', 'true');
     const planner = new MissionPlannerOmega51015(container);
     assert.ok(container.innerHTML.includes('PLANER MISYJNY OMEGA 5.10.15'));
     assert.ok(container.innerHTML.includes('Wieczne Królestwo Boże'));
@@ -51,6 +61,11 @@ test('MissionPlannerOmega51015 renders eternity vision, time ladder, and manages
     planner.removeTask(0);
     assert.equal(planner.state.tasks.length, 0);
 
+    // Lock room
+    planner.lockRoom();
+    assert.equal(planner.isAuthenticated, false);
+    assert.ok(container.innerHTML.includes('STREFA CHRONIONA L0'));
+
     w.happyDOM.abort();
 });
 
@@ -71,6 +86,9 @@ test('all six canonical Lumina surfaces include biometric fingerprint lock overl
         assert.ok(html.includes('id="commanderBiometricOverlay"'), `${page}: missing commanderBiometricOverlay`);
         assert.ok(html.includes('id="commanderFingerprintPad"'), `${page}: missing commanderFingerprintPad`);
         assert.ok(html.includes('id="commanderBiometricStatus"'), `${page}: missing commanderBiometricStatus`);
+        assert.ok(html.includes('id="bio-auth-btn"'), `${page}: missing bio-auth-btn`);
+        assert.ok(html.includes('id="bio-status"'), `${page}: missing bio-status`);
+        assert.ok(html.includes('STREFA CHRONIONA L0'), `${page}: missing STREFA CHRONIONA L0`);
         assert.ok(html.includes('fa-fingerprint'), `${page}: missing fingerprint icon`);
         assert.ok(html.includes('verifyCommanderBiometric()'), `${page}: missing verifyCommanderBiometric call`);
 
@@ -79,10 +97,12 @@ test('all six canonical Lumina surfaces include biometric fingerprint lock overl
         assert.ok(html.includes('id="btnCommanderSubTabChat"'), `${page}: missing btnCommanderSubTabChat`);
         assert.ok(html.includes('id="btnCommanderSubTabPlanner"'), `${page}: missing btnCommanderSubTabPlanner`);
         assert.ok(html.includes('id="omega-planner-mount-51015"'), `${page}: missing omega-planner-mount-51015`);
+        assert.ok(html.includes('id="omega-planner-mount-bio"'), `${page}: missing omega-planner-mount-bio`);
         assert.ok(html.includes('lockCommanderBiometric()'), `${page}: missing lockCommanderBiometric`);
 
-        // Functions defined
+        // Functions defined & WebAuthn create call
         assert.ok(html.includes('function verifyCommanderBiometric()'), `${page}: missing verifyCommanderBiometric function`);
+        assert.ok(html.includes('navigator.credentials?.create'), `${page}: missing navigator.credentials create`);
         assert.ok(html.includes('function lockCommanderBiometric()'), `${page}: missing lockCommanderBiometric function`);
         assert.ok(html.includes('function switchCommanderSubTab('), `${page}: missing switchCommanderSubTab function`);
         assert.ok(html.includes('function initCommanderPlanner()'), `${page}: missing initCommanderPlanner function`);

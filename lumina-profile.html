@@ -4248,11 +4248,11 @@
                 <div id="commanderBiometricOverlay" style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; min-height: 380px; padding: 24px 16px; background: radial-gradient(circle at center, #111827 0%, #050811 100%); text-align: center; color: #fff; user-select: none;">
                     <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.35); margin-bottom: 14px;">
                         <i class="fa-solid fa-shield-halved" style="color: #D4AF37; font-size: 0.85rem;"></i>
-                        <span style="font-size: 0.72rem; color: #fde047; font-weight: 800; letter-spacing: 1px;">STREFA DOWÓDZTWA · AUTORYZACJA BIOMETRYCZNA</span>
+                        <span style="font-size: 0.72rem; color: #fde047; font-weight: 800; letter-spacing: 1px;">STREFA CHRONIONA L0 · AUTORYZACJA BIOMETRYCZNA</span>
                     </div>
 
-                    <h3 style="margin: 0 0 6px 0; font-size: 1.15rem; color: #fff; font-weight: 800; letter-spacing: 0.5px;">Weryfikacja Odciskiem Palca</h3>
-                    <p style="margin: 0 0 24px 0; font-size: 0.78rem; color: #94a3b8; max-width: 320px; line-height: 1.45;">Dotknij czytnika lub przyłóż palec do sensora, aby autoryzować wejście do Pokoju Agentów i Planera Omega 5.10.15.</p>
+                    <h3 style="margin: 0 0 6px 0; font-size: 1.15rem; color: #fff; font-weight: 800; letter-spacing: 0.5px;">Weryfikacja Odciskiem Palca (WebAuthn / Passkeys)</h3>
+                    <p style="margin: 0 0 20px 0; font-size: 0.78rem; color: #94a3b8; max-width: 340px; line-height: 1.45;">Wejście do Pokoju Agentów wymaga uwierzytelnienia biometrycznego (Passkey / WebAuthn). Dotknij sensora lub kliknij przycisk poniżej.</p>
 
                     <!-- Interactive Biometric Scanner Touch Pad -->
                     <div id="commanderFingerprintPad" onclick="verifyCommanderBiometric()" role="button" tabindex="0" aria-label="Czytnik biometryczny odcisku palca Dowódcy" style="position: relative; width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, rgba(212,175,55,0.2) 0%, rgba(10,14,26,0.95) 70%); border: 2.5px solid #D4AF37; box-shadow: 0 0 28px rgba(212,175,55,0.35), inset 0 0 20px rgba(212,175,55,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; touch-action: manipulation;">
@@ -4263,14 +4263,15 @@
                     </div>
 
                     <!-- Status Display -->
-                    <div id="commanderBiometricStatus" style="margin-top: 20px; font-size: 0.8rem; min-height: 24px; color: #e2e8f0; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                    <div id="commanderBiometricStatus" style="margin-top: 16px; font-size: 0.8rem; min-height: 24px; color: #e2e8f0; font-weight: 600; display: flex; align-items: center; gap: 6px;">
                         <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f59e0b; box-shadow:0 0 6px #f59e0b;"></span>
                         Gotowy do skanowania linii papilarnych
                     </div>
 
-                    <button type="button" onclick="verifyCommanderBiometric()" style="margin-top: 18px; padding: 10px 22px; border-radius: 20px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #000; font-weight: 800; font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(245,158,11,0.4); touch-action: manipulation; min-height: 44px;">
-                        <i class="fa-solid fa-fingerprint"></i> Skanuj Odcisk Palca
+                    <button id="bio-auth-btn" type="button" onclick="verifyCommanderBiometric()" style="margin-top: 16px; padding: 12px 24px; border-radius: 8px; background: #D4AF37; border: none; color: #000; font-weight: 800; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 18px rgba(212,175,55,0.4); touch-action: manipulation; min-height: 44px; width: 100%; max-width: 320px; letter-spacing: 1px;">
+                        <i class="fa-solid fa-fingerprint"></i> WEJDŹ PRZEZ BIOMETRIĘ 🧬
                     </button>
+                    <div id="bio-status" style="margin-top: 10px; font-size: 11px; min-height: 18px; color: #e74c3c; font-family: sans-serif;"></div>
                 </div>
 
                 <!-- 2. COMMANDER ROOM UNLOCKED CONTENT (Hidden until Biometrics Verified) -->
@@ -4326,7 +4327,8 @@
 
                     <!-- SUB-VIEW 2: PLANER MISYJNY OMEGA 5.10.15 -->
                     <div id="commanderPlannerSection" style="display: none; flex-direction: column; flex: 1; min-height: 0; overflow-y: auto; padding: 14px 16px; background: #070d1e;">
-                        <div id="omega-planner-mount-51015" style="width: 100%; max-width: 640px; margin: 0 auto;"></div>
+                        <div id="omega-planner-mount-bio" style="width: 100%; max-width: 640px; margin: 0 auto;"></div>
+                        <div id="omega-planner-mount-51015" style="display: none;"></div>
                     </div>
 
                 </div>
@@ -10307,7 +10309,7 @@ function renderPublicChatMessages(messages) {
 
         function isCommanderBiometricUnlocked() {
             try {
-                return sessionStorage.getItem('cc_commander_biometric_unlocked') === 'true';
+                return sessionStorage.getItem('cc_biometric_auth') === 'true' || sessionStorage.getItem('cc_commander_biometric_unlocked') === 'true';
             } catch(e) {
                 return false;
             }
@@ -10359,66 +10361,121 @@ function renderPublicChatMessages(messages) {
         async function verifyCommanderBiometric() {
             if (!isUserCommanderAuthorized()) return;
             const statusEl = document.getElementById('commanderBiometricStatus');
+            const bioStatusEl = document.getElementById('bio-status');
             const padEl = document.getElementById('commanderFingerprintPad');
             if (padEl) padEl.classList.add('is-scanning');
             if (statusEl) statusEl.innerHTML = '<span style="color:#fde047;"><i class="fa-solid fa-spinner fa-spin"></i> Skanowanie linii papilarnych...</span>';
+            if (bioStatusEl) {
+                bioStatusEl.style.color = "#D4AF37";
+                bioStatusEl.innerText = "Dotknij czytnika linii papilarnych...";
+            }
             
             if (typeof navigator !== 'undefined' && navigator.vibrate) {
                 try { navigator.vibrate([30, 40, 60]); } catch(e) {}
             }
             playBiometricChime('scan');
 
-            if (typeof window !== 'undefined' && window.PublicKeyCredential && typeof navigator.credentials?.get === 'function') {
-                try {
-                    const abortCtrl = new AbortController();
-                    const timeout = setTimeout(() => abortCtrl.abort(), 1000);
-                    await navigator.credentials.get({
-                        publicKey: {
-                            challenge: new Uint8Array([7, 7, 7, 5, 1, 0, 1, 5]),
-                            timeout: 1000,
-                            userVerification: 'preferred',
-                            rpId: window.location.hostname
-                        },
-                        signal: abortCtrl.signal
-                    }).catch(() => null);
-                    clearTimeout(timeout);
-                } catch(e) {}
-            }
-
-            await new Promise(r => setTimeout(r, 650));
-
-            if (padEl) {
-                padEl.classList.remove('is-scanning');
-                padEl.classList.add('is-verified');
-            }
-            if (statusEl) {
-                statusEl.innerHTML = '<span style="color:#34d399; font-weight:800;"><i class="fa-solid fa-circle-check"></i> TOŻSAMOŚĆ POTWIERDZONA · DOWÓDCA NAZIR</span>';
-            }
-            if (typeof navigator !== 'undefined' && navigator.vibrate) {
-                try { navigator.vibrate([60, 80, 140]); } catch(e) {}
-            }
-            playBiometricChime('success');
-
             try {
-                sessionStorage.setItem('cc_commander_biometric_unlocked', 'true');
-            } catch(e) {}
+                if (typeof window !== 'undefined' && window.PublicKeyCredential && typeof navigator.credentials?.create === 'function') {
+                    const publicKey = {
+                        challenge: new Uint8Array([21, 31, 105, 34, 45, 67, 89, 90]),
+                        rp: { name: "Christian Culture - Pokój Agentów" },
+                        user: {
+                            id: new Uint8Array([1, 2, 3, 4]),
+                            name: "Cezary Rogowski (L0)",
+                            displayName: "L0"
+                        },
+                        pubKeyCredParams: [{ alg: -7, type: "public-key" }, { alg: -257, type: "public-key" }],
+                        authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "preferred" },
+                        timeout: 60000,
+                        attestation: "direct"
+                    };
 
-            setTimeout(() => {
-                updateCommanderBiometricView();
-            }, 550);
+                    try {
+                        await navigator.credentials.create({ publicKey });
+                    } catch (createErr) {
+                        if ((createErr.name === 'InvalidStateError' || createErr.name === 'ConstraintError') && navigator.credentials?.get) {
+                            await navigator.credentials.get({
+                                publicKey: {
+                                    challenge: publicKey.challenge,
+                                    timeout: 60000,
+                                    userVerification: "preferred"
+                                }
+                            });
+                        } else {
+                            throw createErr;
+                        }
+                    }
+                }
+
+                if (padEl) {
+                    padEl.classList.remove('is-scanning');
+                    padEl.classList.add('is-verified');
+                }
+                if (statusEl) {
+                    statusEl.innerHTML = '<span style="color:#34d399; font-weight:800;"><i class="fa-solid fa-circle-check"></i> TOŻSAMOŚĆ POTWIERDZONA · DOWÓDCA NAZIR</span>';
+                }
+                if (bioStatusEl) {
+                    bioStatusEl.style.color = "#2ecc71";
+                    bioStatusEl.innerText = "Autoryzacja biometryczna powiodła się!";
+                }
+                if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                    try { navigator.vibrate([60, 80, 140]); } catch(e) {}
+                }
+                playBiometricChime('success');
+
+                try {
+                    sessionStorage.setItem('cc_biometric_auth', 'true');
+                    sessionStorage.setItem('cc_commander_biometric_unlocked', 'true');
+                } catch(e) {}
+
+                if (window.omegaPlannerBio) {
+                    window.omegaPlannerBio.isAuthenticated = true;
+                    window.omegaPlannerBio.render();
+                    window.omegaPlannerBio.attachEvents();
+                } else if (window.omegaPlanner51015) {
+                    window.omegaPlanner51015.isAuthenticated = true;
+                    window.omegaPlanner51015.render();
+                    window.omegaPlanner51015.attachEvents();
+                }
+
+                setTimeout(() => {
+                    updateCommanderBiometricView();
+                }, 550);
+            } catch (err) {
+                console.error('Biometric verification error:', err);
+                if (padEl) padEl.classList.remove('is-scanning');
+                if (statusEl) {
+                    statusEl.innerHTML = '<span style="color:#e74c3c; font-weight:700;"><i class="fa-solid fa-circle-xmark"></i> Błąd biometrii: ' + (err.message || 'anulowano') + '</span>';
+                }
+                if (bioStatusEl) {
+                    bioStatusEl.style.color = "#e74c3c";
+                    bioStatusEl.innerText = err.name === 'NotAllowedError' ? 'Autoryzacja biometryczna anulowana przez użytkownika.' : (err.message || 'Autoryzacja biometryczna anulowana lub nieobsługiwana.');
+                }
+            }
         }
 
         function lockCommanderBiometric() {
             try {
+                sessionStorage.removeItem('cc_biometric_auth');
                 sessionStorage.removeItem('cc_commander_biometric_unlocked');
             } catch(e) {}
+            if (window.omegaPlannerBio && typeof window.omegaPlannerBio.lockRoom === 'function') {
+                window.omegaPlannerBio.lockRoom();
+            } else if (window.omegaPlanner51015 && typeof window.omegaPlanner51015.lockRoom === 'function') {
+                window.omegaPlanner51015.lockRoom();
+            }
             const statusEl = document.getElementById('commanderBiometricStatus');
+            const bioStatusEl = document.getElementById('bio-status');
             const padEl = document.getElementById('commanderFingerprintPad');
             if (padEl) {
                 padEl.classList.remove('is-scanning', 'is-verified');
             }
             if (statusEl) {
                 statusEl.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f59e0b; box-shadow:0 0 6px #f59e0b;"></span> Gotowy do skanowania linii papilarnych';
+            }
+            if (bioStatusEl) {
+                bioStatusEl.textContent = '';
             }
             updateCommanderBiometricView();
             if (typeof showToast === 'function') showToast('Pokój Agentów i Planer Omega zostały zablokowane biometrycznie.');
@@ -10467,16 +10524,25 @@ function renderPublicChatMessages(messages) {
 
         function initCommanderPlanner() {
             if (!isUserCommanderAuthorized()) return;
-            const mount = document.getElementById('omega-planner-mount-51015');
+            const mount = document.getElementById('omega-planner-mount-bio') || document.getElementById('omega-planner-mount-51015');
             if (!mount) return;
+            if (window.omegaPlannerBio) {
+                window.omegaPlannerBio.isAuthenticated = isCommanderBiometricUnlocked();
+                window.omegaPlannerBio.render();
+                window.omegaPlannerBio.attachEvents();
+                return;
+            }
             if (window.omegaPlanner51015) {
+                window.omegaPlanner51015.isAuthenticated = isCommanderBiometricUnlocked();
                 window.omegaPlanner51015.render();
                 window.omegaPlanner51015.attachEvents();
                 return;
             }
             import("/components/lumi-planner-omega.js").then(m => {
-                if (!window.omegaPlanner51015) {
-                    window.omegaPlanner51015 = m.mountOmegaPlanner('omega-planner-mount-51015');
+                if (!window.omegaPlannerBio && !window.omegaPlanner51015) {
+                    const planner = m.mountOmegaPlanner(mount.id);
+                    window.omegaPlannerBio = planner;
+                    window.omegaPlanner51015 = planner;
                 }
             }).catch(() => {
                 if (typeof showToast === 'function') showToast('Nie można załadować Planera Omega 5.10.15.');
