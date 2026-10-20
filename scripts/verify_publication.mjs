@@ -31,14 +31,17 @@ function parseArgs(args) {
 export function fetchUrlNoCrossRedirect(targetUrl, allowedHost, maxRedirects = 5) {
     return new Promise((resolve, reject) => {
         const u = new URL(targetUrl);
-        if (u.protocol !== 'https:') {
+        const isLocal = u.hostname === 'localhost' || u.hostname === '127.0.0.1';
+
+        if (u.protocol !== 'https:' && !isLocal) {
             return reject(new Error('Wymagany adres HTTPS na dozwolonej domenie'));
         }
-        if (u.hostname !== allowedHost && u.hostname !== 'www.' + allowedHost) {
+        if (!isLocal && u.hostname !== allowedHost && u.hostname !== 'www.' + allowedHost) {
             return reject(new Error(`Niedozwolony host docelowy: ${u.hostname} (dozwolony: ${allowedHost})`));
         }
 
-        const req = https.get(targetUrl, {
+        const client = u.protocol === 'https:' ? https : http;
+        const req = client.get(targetUrl, {
             headers: {
                 'User-Agent': 'CC-Publication-Verify/1.0',
                 'Cache-Control': 'no-cache'
