@@ -14,6 +14,8 @@
     play: 'm8 5 11 7-11 7Z', search: 'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',
     menu: 'M4 6h16M4 12h16M4 18h16', board: 'M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z',
     user: 'M20 21v-2a6 6 0 0 0-6-6h-4a6 6 0 0 0-6 6v2M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0',
+    star: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z',
+    info: 'M12 16v-4M12 8h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0',
   };
   const icon = name => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -78,6 +80,23 @@
       if (current === url.pathname && !url.hash) a.setAttribute('aria-current','page');
       a.addEventListener('click',close); nav.append(a);
     }
+    const favBtn = button('star','Dodaj tę stronę do Ulubionych',event => {
+      event.stopPropagation();
+      if (window.CCFavorites && typeof window.CCFavorites.toggleFavorite === 'function') {
+        window.CCFavorites.toggleFavorite();
+      }
+    });
+    favBtn.setAttribute('data-cc-favorite-toggle','true');
+    const infoBtn = button('info','Informacje o projekcie',event => {
+      event.stopPropagation(); close();
+      if (window.ekoccInfo && typeof window.ekoccInfo.open === 'function') {
+        window.ekoccInfo.open();
+      } else {
+        const trigger = document.getElementById('ekoccInfoTriggerBtn') || document.querySelector('.ekocc-info-trigger');
+        if (trigger) trigger.click();
+      }
+    });
+    infoBtn.setAttribute('data-ekocc-info-trigger','true');
     const fullMenu = button('menu','Pełne menu — wszystkie funkcje',event => {
       event.stopPropagation(); close(); if (canUseFullMenu()) legacy.click();
     });
@@ -85,6 +104,14 @@
       if (!mobile.matches || dialog.open || document.querySelector('dialog[open]')) return;
       previousFocus = document.activeElement;
       fullMenu.hidden = !canUseFullMenu();
+      if (favBtn && window.CCFavorites) {
+        const meta = window.CCFavorites.getPageMeta ? window.CCFavorites.getPageMeta() : null;
+        const isFav = meta ? window.CCFavorites.isFavorite(meta.id) : false;
+        favBtn.classList.toggle('is-active', !!isFav);
+        favBtn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
+        favBtn.setAttribute('title', isFav ? 'Usuń tę stronę z Ulubionych' : 'Dodaj tę stronę do Ulubionych');
+        favBtn.setAttribute('aria-label', isFav ? 'Usuń tę stronę z Ulubionych' : 'Dodaj tę stronę do Ulubionych');
+      }
       restoreOverflow = document.body.style.overflow;
       dialog.showModal();
       active = true;

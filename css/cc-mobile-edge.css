@@ -30,6 +30,8 @@ html[data-theme="light"] .cc-mobile-edge[data-profile="lumina"],body[data-theme=
 .cc-mobile-edge nav [aria-current="page"] { color:var(--edge-accent); background:#ffffff12; border-left:3px solid var(--edge-accent); }
 .cc-mobile-edge nav :is(a,button):hover { background:#ffffff18; }
 .cc-mobile-edge nav [hidden] { display:none!important; }
+.cc-mobile-edge nav [data-cc-favorite-toggle].is-active { color:var(--edge-accent); }
+.cc-mobile-edge nav [data-cc-favorite-toggle].is-active svg { fill:var(--edge-accent); stroke:var(--edge-accent); }
 html[data-lumina-theme="light"] .cc-mobile-edge[data-profile="lumina"] {
   --edge-bg:#fffaff; --edge-text:#291a39; --edge-accent:#7e22ce;
 }
@@ -39,6 +41,16 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
 }
 @media (max-width:767px) {
   .cc-edge-legacy { display:none!important; }
+  #ccTopBarFavBtn,
+  .cc-topbar-fav-btn,
+  .cc-floating-topbar-wrap {
+    display:none!important;
+  }
+  .ekocc-info-trigger,
+  #ekoccInfoTriggerBtn,
+  button.ekocc-info-trigger {
+    display:none!important;
+  }
   .cc-mobile-edge-trigger {
     display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
     width:44px; height:44px; min-width:44px; min-height:44px; padding:10px;

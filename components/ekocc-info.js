@@ -481,7 +481,7 @@
 
     createTriggerButton() {
       // Jeśli na stronie istnieje już przycisk z atrybutem data-ekocc-info-trigger, nie twórz pływającego
-      if (document.querySelector('[data-ekocc-info-trigger]')) return;
+      if (document.querySelector('[data-ekocc-info-trigger]:not(.cc-mobile-edge *)')) return;
 
       const btn = document.createElement('button');
       btn.type = 'button';
