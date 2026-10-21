@@ -1,0 +1,135 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const repoDir = 'C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc';
+const targetHtml = path.join(repoDir, 'kursy/pokonac-goliata.html');
+const mirrorHtml = path.join(repoDir, 'kursy/pokonac-goliata/index.html');
+
+const htmlContent = `<!doctype html>
+<html lang="pl" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Pokonać Goliata — Interaktywny Kurs 8 Kroków | Cezary Rogowski</title>
+  <meta name="description" content="Chrześcijańsko-psychologiczny, interaktywny i nowoczesny kurs inspiracji i motywacji w 8 krokach na podstawie książki Cezarego Rogowskiego. Pokonaj nałogi, lęk i własne słabości." />
+  <link rel="canonical" href="https://polskieradio.cc/kursy/pokonac-goliata" />
+  <link rel="icon" type="image/png" href="/ccn-logo-square.png" />
+  <meta name="theme-color" content="#061019" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Pokonać Goliata — Interaktywny Kurs 8 Kroków | Cezary Rogowski" />
+  <meta property="og:description" content="Nowoczesny kurs biblijno-psychologiczny w 8 krokach. Interaktywna karta pracy, zero oceny wiary, pełna prywatność lokalna." />
+  <meta property="og:url" content="https://polskieradio.cc/kursy/pokonac-goliata" />
+  <meta property="og:image" content="https://polskieradio.cc/assets/pokonac-goliata-og.jpg" />
+  <meta property="og:locale" content="pl_PL" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pokonać Goliata — Interaktywny Kurs 8 Kroków | Cezary Rogowski" />
+  <meta name="twitter:description" content="Nowoczesny kurs biblijno-psychologiczny w 8 krokach na podstawie książki Cezarego Rogowskiego." />
+  <meta name="twitter:image" content="https://polskieradio.cc/assets/pokonac-goliata-og.jpg" />
+
+  <!-- Schema.org Course Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Pokonać Goliata — Interaktywny Kurs 8 Kroków",
+    "description": "Chrześcijańsko-psychologiczny, interaktywny kurs inspiracji i motywacji w 8 krokach na podstawie książki Cezarego Rogowskiego. 10 etapów formacji ducha i charakteru.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Christian Culture",
+      "sameAs": "https://polskieradio.cc"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Cezary Rogowski",
+      "url": "https://polskieradio.cc/lumina.cezaryrgowski"
+    },
+    "inLanguage": "pl",
+    "isAccessibleForFree": true,
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "Online",
+      "courseWorkload": "PT3H"
+    }
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
+
+  <!-- Production Vite Bundle -->
+  <link rel="stylesheet" crossorigin href="/assets/index-DjWtM-Ld.css" />
+  <script type="module" crossorigin src="/assets/index-DovM_hQD.js"></script>
+</head>
+<body>
+  <div id="root">
+    <!-- Pre-rendered Semantic Fallback for SEO Crawlers & Immediate FCP -->
+    <header class="topbar">
+      <a class="brand" href="#top">
+        <span class="brand-emblem">♛</span>
+        <span>POKONAĆ<br />GOLIATA</span>
+      </a>
+      <nav class="topnav">
+        <a href="#top" class="nav-active">Strona główna</a>
+        <a href="#modules">Kurs (10 Etapów)</a>
+        <a href="/pokonac-goliata">O książce</a>
+        <a href="/lumina.cezaryrgowski">O autorze</a>
+        <a href="https://polskieradio.cc/lumina" target="_blank" rel="noopener noreferrer">Społeczność LUMINA</a>
+      </nav>
+      <div class="header-right">
+        <span class="privacy">100% Prywatne notatki (Zero Cloud)</span>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-image" role="img" aria-label="Dawid stoi naprzeciw potężnego Goliata o zachodzie słońca w dolinie Terebintu"></div>
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="line"></span> KURS INTERAKTYWNY • 8 KROKÓW DO WOLNOŚCI</div>
+          <h1 id="hero-title">POKONAĆ<br /><em>GOLIATA</em></h1>
+          <p class="hero-lead">Chrześcijańsko-psychologiczny, interaktywny kurs inspiracji i motywacji</p>
+          <p class="byline">na podstawie książki Cezarego Rogowskiego</p>
+          <div class="features">
+            <span>Biblijna prawda</span>
+            <span>Praktyczna refleksja</span>
+            <span>Konkretne narzędzia</span>
+            <span>Realna zmiana życia</span>
+          </div>
+          <a href="#modules" class="gold-button">Rozpocznij kurs →</a>
+        </div>
+        <aside class="verse">
+          <span>„Z Tobą mogę pokonać każdego Goliata.”</span>
+          <small>Motyw kursu inspirowany 1 Sm 17,37*</small>
+        </aside>
+      </section>
+
+      <section class="modules" id="modules" aria-labelledby="mod-title">
+        <div class="section-heading">
+          <div>
+            <span class="section-pre">ODKRYJ SWOJĄ DROGĘ</span>
+            <h2 id="mod-title">MODUŁY KURSU</h2>
+          </div>
+          <div class="heading-side">
+            <span>10 ETAPÓW • 8 KROKÓW • TWOJA DROGA ZMIANY</span>
+          </div>
+        </div>
+        <div class="progress-track" role="progressbar" aria-label="Postęp kursu">
+          <div style="width: 0%;"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+`;
+
+fs.writeFileSync(targetHtml, htmlContent, 'utf8');
+fs.writeFileSync(mirrorHtml, htmlContent, 'utf8');
+console.log('Successfully written production files:');
+console.log(' -', targetHtml);
+console.log(' -', mirrorHtml);
