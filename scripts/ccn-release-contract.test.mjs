@@ -3,6 +3,21 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { loadArticles } from './build-ccn-static-pages.mjs';
 
+test('all News records retain the renderer contract across subsequent imports', () => {
+  const {articles}=loadArticles();
+  for(const article of articles) {
+    assert.equal(typeof article.readTimeMinutes,'number',article.id);
+    assert.equal('readTime' in article,false,article.id);
+    if(article.scriptureReference) {
+      assert.equal(typeof article.scriptureReference.verse,'string',article.id);
+      assert.equal(typeof article.scriptureReference.text,'string',article.id);
+    }
+    if(article.sourceCitation) assert.equal(typeof article.sourceCitation.sourceName,'string',article.id);
+    if(article.relatedCourse) assert.equal(typeof article.relatedCourse.lesson,'string',article.id);
+    for(const link of article.resourceLinks||[]) assert.equal(typeof link.label,'string',article.id);
+  }
+});
+
 test('News release: eM links and references match the renderer without fabricated quotations', () => {
   const { articles } = loadArticles();
   const article = articles.find(item => item.id === 'art-prosicie-a-bedzie-wam-dane-ale-co-gdy-nie-otrzymujesz');

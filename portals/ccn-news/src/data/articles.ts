@@ -102,7 +102,6 @@ export const INITIAL_ARTICLES: Article[] = [
     "dateFormatted": "22 października 2026",
     "imageUrl": "/images/news/art-z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok.jpg",
     "imageCaption": "Jakub walczy z Bogiem nad potokiem Jabbok — Z Biblią za Pan Brat Dzień 22. Fot. EkoCC / Christian Culture",
-    "readTime": "7 min",
     "readTimeMinutes": 7,
     "isHero": false,
     "isPopular": true,
@@ -120,23 +119,30 @@ export const INITIAL_ARTICLES: Article[] = [
       "Rdz 32",
       "2 Kor 12:9"
     ],
-    "scriptureReference": "Rdz 31:1–32:32; Oz 12:3–5; 2 Kor 12:9–10; 2 Kor 5:17 (UBG)",
-    "sourceCitation": "Z Biblią za Pan Brat | polskieradio.cc/akademia#kurscodzienny",
+    "scriptureReference": {
+      "verse": "Rdz 31:1–32:32; Oz 12:3–5; 2 Kor 12:9–10; 2 Kor 5:17 (UBG)",
+      "text": ""
+    },
+    "sourceCitation": {
+      "sourceName": "Z Biblią za Pan Brat",
+      "sourceUrl": "https://polskieradio.cc/akademia#kurscodzienny"
+    },
     "relatedCourse": {
       "title": "Kurs Codzienny Pisma Świętego — Dzień 22",
+      "lesson": "Dzień 22",
       "url": "/akademia/kurscodzienny/dzien-22"
     },
     "resourceLinks": [
       {
-        "title": "Otwórz Lekcję Dnia 22 w Akademii Biblijnej",
+        "label": "Otwórz Lekcję Dnia 22 w Akademii Biblijnej",
         "url": "/akademia/kurscodzienny/dzien-22"
       },
       {
-        "title": "Interlinearna MojaBiblia CC (Rdz 31–32)",
+        "label": "Interlinearna MojaBiblia CC (Rdz 31–32)",
         "url": "/mojabiblia"
       },
       {
-        "title": "Akademia Biblijna LUMINA",
+        "label": "Akademia Biblijna LUMINA",
         "url": "/akademia"
       }
     ]
