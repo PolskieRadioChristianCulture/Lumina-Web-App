@@ -180,9 +180,9 @@ button {
 
 /* HERO */
 .hero {
-  min-height: 660px;
-  background: linear-gradient(90deg, rgba(7, 9, 14, 0.95) 0%, rgba(7, 9, 14, 0.82) 48%, rgba(7, 9, 14, 0.35) 100%),
-              url('/images/survival/survival-hero-panoramic.jpg') right 50% / cover no-repeat;
+  min-height: 640px;
+  background: linear-gradient(90deg, rgba(7, 9, 14, 0.85) 0%, rgba(7, 9, 14, 0.45) 55%, rgba(7, 9, 14, 0.15) 100%),
+              url('/images/survival/hero-survival.svg') center 50% / cover no-repeat;
   display: flex;
   align-items: center;
   position: relative;
