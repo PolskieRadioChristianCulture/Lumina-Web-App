@@ -1315,6 +1315,48 @@ async function handleSupportApi(request, env, adapter = luminaSupportAdapter) {
   }
 }
 
+async function handleMotywacjaEmRoute(request, env) {
+  const url = new URL(request.url);
+  const p = url.pathname.replace(/\/$/, '').toLowerCase();
+  if (p === '/em' || p === '/motywacja' || p === '/m') {
+    const assetUrl = new URL(request.url);
+    assetUrl.pathname = '/em.html';
+    assetUrl.search = '';
+    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
+    const body = await assetResp.arrayBuffer();
+    return new Response(body, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
+  }
+  return null;
+}
+
+async function handleSurvivalRoute(request, env) {
+  const url = new URL(request.url);
+  const p = url.pathname.replace(/\/$/, '').toLowerCase();
+  if (p === '/survival' || p === '/surwiwal') {
+    const assetUrl = new URL(request.url);
+    assetUrl.pathname = '/survival.html';
+    assetUrl.search = '';
+    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
+    const body = await assetResp.arrayBuffer();
+    return new Response(body, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
+  }
+  return null;
+}
+
 async function handleSupportRoute(request, env) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/$/, '');
@@ -1576,6 +1618,8 @@ export default {
     if (supportApiResponse) return supportApiResponse;
     const supportPageRoute = await handleSupportRoute(request, env);
     if (supportPageRoute) return supportPageRoute;
+    const motywacjaRoute = await handleMotywacjaEmRoute(request, env);
+    if (motywacjaRoute) return motywacjaRoute;
     const worshipRoute = await handleBiblijneUwielbienieRoute(request, env);
     if (worshipRoute) return worshipRoute;
     const personalHubRoute = await handlePersonalHubRoute(request, env);
