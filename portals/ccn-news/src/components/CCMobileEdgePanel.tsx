@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Home,
   Radio,
@@ -15,7 +16,8 @@ import {
   Bookmark,
   Info,
   User,
-  LogIn
+  LogIn,
+  X
 } from 'lucide-react';
 
 export interface CCMobileEdgePanelProps {
@@ -33,6 +35,10 @@ export interface CCMobileEdgePanelProps {
     slug?: string;
   } | null;
   onLoginClick?: () => void;
+  /** Shared geometry; each section supplies its own colours and actions. */
+  appearance?: { background: string; foreground: string; accent: string };
+  activePath?: string;
+  aboutLabel?: string;
 }
 
 interface EdgeAction {
@@ -41,7 +47,6 @@ interface EdgeAction {
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   href?: string;
   onClick?: () => void;
-  isActive?: boolean;
   badge?: number | string;
   pulse?: boolean;
   dataAttr?: string;
@@ -58,18 +63,45 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
   bookmarksCount = 0,
   currentUser = null,
   onLoginClick,
+  appearance,
+  activePath = typeof window === 'undefined' ? '/news' : window.location.pathname,
+  aboutLabel = 'O portalu informacyjnym CCN News',
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
-  const touchStartXRef = useRef<number | null>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
 
   // Close on Escape & trap keyboard focus
   useEffect(() => {
     if (!isOpen) return;
+    const mobile = window.matchMedia('(max-width: 767px)');
+    if (!mobile.matches) {
+      closeRef.current();
+      return;
+    }
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const panel = panelRef.current;
+    const portalRoot = panel?.parentElement;
+    const isolated = new Map<HTMLElement, boolean>();
+    const isolateBackground = () => {
+      for (const child of Array.from(document.body.children)) {
+        if (child instanceof HTMLElement && child !== portalRoot && !isolated.has(child)) {
+          isolated.set(child, child.inert);
+          child.inert = true;
+        }
+      }
+    };
+    isolateBackground();
+    const observer = new MutationObserver(isolateBackground);
+    observer.observe(document.body, { childList: true });
+    const handleBreakpoint = () => { if (!mobile.matches) closeRef.current(); };
+    mobile.addEventListener('change', handleBreakpoint);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
-        onClose();
+        closeRef.current();
       } else if (e.key === 'Tab' && panelRef.current) {
         const focusable = panelRef.current.querySelectorAll<HTMLElement>(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -79,10 +111,10 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
         const firstElement = focusable[0];
         const lastElement = focusable[focusable.length - 1];
 
-        if (e.shiftKey && document.activeElement === firstElement) {
+        if (e.shiftKey && (document.activeElement === firstElement || !panelRef.current.contains(document.activeElement))) {
           e.preventDefault();
           lastElement.focus();
-        } else if (!e.shiftKey && document.activeElement === lastElement) {
+        } else if (!e.shiftKey && (document.activeElement === lastElement || !panelRef.current.contains(document.activeElement))) {
           e.preventDefault();
           firstElement.focus();
         }
@@ -112,31 +144,33 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
       document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', handleKeyDown);
       clearTimeout(timer);
+      observer.disconnect();
+      mobile.removeEventListener('change', handleBreakpoint);
+      isolated.forEach((wasInert, element) => { element.inert = wasInert; });
+      if (previousFocus?.isConnected && previousFocus.getClientRects().length) previousFocus.focus();
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   // Touch handlers for swipe-left to close
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartXRef.current = e.touches[0].clientX;
+    if (e.touches.length !== 1) { touchStartRef.current = null; return; }
+    touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartXRef.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const deltaX = touchEndX - touchStartXRef.current;
-    if (deltaX < -40) {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start || !e.changedTouches.length) return;
+    const deltaX = e.changedTouches[0].clientX - start.x;
+    const deltaY = e.changedTouches[0].clientY - start.y;
+    if (deltaX < -50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
       // Swiped left > 40px -> close
       onClose();
     }
-    touchStartXRef.current = null;
   };
 
-  const profileHref = currentUser?.slug === 'cezaryrgowski'
-    ? '/lumina.cezaryrgowski.html'
-    : currentUser?.slug === 'wiolettarogowska'
-    ? '/lumina.wiolettarogowska.html'
-    : currentUser?.slug
-    ? `/lumina-profile.html?u=${currentUser.slug}`
+  const profileHref = currentUser?.slug
+    ? `/lumina-profile.html?u=${encodeURIComponent(currentUser.slug)}`
     : '/lumina-profile.html';
 
   // 14 Core Ecosystem Navigation Items (per Section 5 of Spec)
@@ -145,7 +179,7 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
       id: 'home',
       label: 'Strona główna Christian Culture',
       icon: Home,
-      href: 'https://polskieradio.cc/',
+      href: '/',
     },
     {
       id: 'radio',
@@ -159,7 +193,6 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
       label: 'CCN News — Wiadomości',
       icon: Newspaper,
       href: '/news',
-      isActive: true, // Active route on /news
     },
     {
       id: 'biblia',
@@ -230,7 +263,7 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
     },
     {
       id: 'info',
-      label: 'O portalu informacyjnym CCN News',
+      label: aboutLabel,
       icon: Info,
       dataAttr: 'data-ekocc-info-trigger',
       onClick: () => {
@@ -250,11 +283,13 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
     },
   ];
 
-  return (
-    <>
+  if (!isOpen || typeof document === 'undefined') return null;
+
+  return createPortal(
+    <div data-cc-edge-root>
       {/* Background Scrim Backdrop */}
       <div
-        className={`fixed inset-0 z-[9998] transition-opacity duration-200 md:hidden ${
+        className={`fixed inset-0 z-[9998] transition-opacity motion-reduce:transition-none duration-200 md:hidden ${
           isOpen ? 'opacity-100 pointer-events-auto bg-black/60 backdrop-blur-[2px]' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
@@ -270,25 +305,35 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
         role="dialog"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className={`fixed top-0 left-0 bottom-0 z-[9999] w-[70px] md:hidden flex flex-col items-center bg-[#000000]/98 backdrop-blur-xl border-r border-[#C4A35A]/35 rounded-r-[22px] shadow-[6px_0_30px_rgba(0,0,0,0.85)] overflow-y-auto overflow-x-hidden scrollbar-none transition-transform duration-220 ease-out overscroll-contain ${
+        onTouchCancel={() => { touchStartRef.current = null; }}
+        className={`fixed top-0 left-0 bottom-0 z-[9999] w-[70px] md:hidden flex flex-col items-center bg-[#000000]/98 backdrop-blur-xl border-r border-[#C4A35A]/35 rounded-r-[22px] shadow-[6px_0_30px_rgba(0,0,0,0.85)] overflow-y-auto overflow-x-hidden scrollbar-none transition-transform motion-reduce:transition-none duration-220 ease-out overscroll-contain ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{
+          backgroundColor: appearance?.background ?? 'var(--cc-edge-background, #000000)',
+          color: appearance?.foreground ?? 'var(--cc-edge-foreground, #F3E5C8)',
+          '--cc-edge-accent': appearance?.accent ?? '#C4A35A',
+          borderColor: 'var(--cc-edge-accent)',
           paddingTop: 'max(env(safe-area-inset-top), 8px)',
           paddingBottom: 'max(env(safe-area-inset-bottom), 8px)',
-        }}
+        } as React.CSSProperties}
       >
+        <button type="button" onClick={onClose} aria-label="Zamknij panel nawigacji"
+          className="shrink-0 min-w-[44px] min-h-[44px] rounded-xl focus-visible:outline-2 focus-visible:outline-current">
+          <X className="w-5 h-5 mx-auto" aria-hidden="true" />
+        </button>
         {/* Compact Vertical Icon List — perfectly sized to fit on all mobile screens */}
         <div className="flex flex-col items-center gap-[3px] w-full px-2 py-1 my-auto">
           {items.map((item) => {
             const Icon = item.icon;
-            const isCurrent = Boolean(item.isActive);
+            const normalizedPath = activePath.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+            const isCurrent = Boolean(item.href?.startsWith('/') && (normalizedPath === item.href || (item.href !== '/' && normalizedPath.startsWith(`${item.href}/`))));
 
             const content = (
               <>
                 <Icon
                   className={`w-[20px] h-[20px] shrink-0 transition-transform group-hover:scale-110 ${
-                    item.pulse ? 'text-rose-400 animate-pulse' : ''
+                    item.pulse ? 'text-rose-400 animate-pulse motion-reduce:animate-none' : ''
                   }`}
                   strokeWidth={isCurrent ? 2.3 : 1.85}
                 />
@@ -307,10 +352,10 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
               </>
             );
 
-            const commonClasses = `group relative w-[44px] h-[38px] rounded-xl flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C4A35A] focus:ring-offset-1 focus:ring-offset-black ${
+            const commonClasses = `group relative shrink-0 w-[44px] h-[44px] min-h-[44px] rounded-xl flex items-center justify-center transition-all motion-reduce:transition-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-current focus:ring-offset-1 focus:ring-offset-black ${
               isCurrent
-                ? 'bg-gradient-to-br from-[#C4A35A]/40 to-[#C4A35A]/12 text-[#F3E5C8] border-l-[3px] border-[#C4A35A] shadow-[inset_0_0_12px_rgba(196,163,90,0.35),0_0_14px_rgba(196,163,90,0.2)]'
-                : 'text-[#E2CC9A]/80 hover:text-white hover:bg-white/10'
+                ? 'bg-white/10 border-l-[3px] border-[var(--cc-edge-accent)] text-[var(--cc-edge-accent)]'
+                : 'text-inherit hover:bg-white/10'
             }`;
 
             if (item.href) {
@@ -334,6 +379,7 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
               <button
                 key={item.id}
                 type="button"
+                disabled={!item.onClick}
                 onClick={item.onClick}
                 className={commonClasses}
                 aria-label={item.label}
@@ -347,6 +393,6 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
           })}
         </div>
       </nav>
-    </>
+    </div>, document.body
   );
 };

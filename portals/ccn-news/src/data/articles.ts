@@ -72,6 +72,94 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    "id": "art-prosicie-a-bedzie-wam-dane-ale-co-gdy-nie-otrzymujesz",
+    "title": "Proście, a będzie wam dane! A jeśli nie otrzymujesz? Być może Bóg przygotowuje dla Ciebie coś znacznie wspanialszego",
+    "slug": "prosicie-a-bedzie-wam-dane-ale-co-gdy-nie-otrzymujesz",
+    "excerpt": "Modlisz się szczerze, wierzysz, czekasz, a odpowiedź nie nadchodzi? Dlaczego prosimy, a nie otrzymujemy? Inspirujące przesłanie Cezarego Rogowskiego w ramach eM — Motywacja Christian Culture o zaufaniu, Bożej mądrości i planach przekraczających naszą wyobraźnię.",
+    "content": [
+      "Niech to lub coś lepszego stanie się udziałem moim i wszystkich z tym związanych. Amen!",
+      "Czy zdarzyło Ci się prosić Boga o coś z całego serca? O uzdrowienie. O pracę. O miłość. O uratowanie relacji. O rozwiązanie problemu. O spełnienie marzenia, które nosisz w sobie od lat.",
+      "Modlisz się szczerze. Wierzysz. Czekasz. Mija dzień, tydzień, miesiąc, a czasem nawet lata — i wydaje Ci się, że odpowiedź nie nadchodzi. Wtedy pojawia się pytanie: Panie Boże, przecież powiedziałeś: „Proście, a będzie wam dane”. Dlaczego więc proszę, a nie otrzymuję?",
+      "W Ewangelii Mateusza 7,7–11 Jezus rzeczywiście zachęca do proszenia, szukania i kołatania. Pokazuje Boga jako dobrego Ojca, który wie, jak dawać dobre dary swoim dzieciom. Ale czy to znaczy, że otrzymamy dokładnie wszystko, o co poprosimy — dokładnie wtedy, kiedy chcemy, i dokładnie w takiej formie, jak sobie to wyobrażamy?",
+      "Właśnie tutaj odkryłem coś, czym chcę się dzisiaj podzielić.",
+      "A JEŚLI BRAK TEGO, O CO PROSISZ, WCALE NIE OZNACZA BRAKU BOŻEJ ODPOWIEDZI?",
+      "Wyobraź sobie dziecko, które bardzo czegoś pragnie. Prosi ojca, nalega, nie rozumie, dlaczego jego życzenie nie zostaje natychmiast spełnione. Dziecko widzi tylko swoje pragnienie. Ojciec widzi również skutki, konsekwencje, właściwy czas i szerszą perspektywę.",
+      "Czy dobry ojciec zawsze daje dziecku dokładnie to, czego ono chce? Nie. Miłość czasami wyraża się poprzez dar. Czasami przez oczekiwanie. A czasami przez odmowę. I właśnie do obrazu dobrego Ojca odwołuje się Jezus.",
+      "Bóg nie jest automatem do spełniania życzeń. Jest Ojcem, któremu możemy zaufać także wtedy, gdy nie rozumiemy Jego odpowiedzi.",
+      "I wtedy przyszła do mnie ta myśl: wow! A jeśli Bóg przygotowuje coś o wiele wspanialszego?",
+      "A jeśli to, czego tak bardzo pragnę, nie jest jeszcze najlepszą możliwością? A jeśli drzwi, które próbuję otworzyć, prowadzą nie tam, gdzie powinienem wejść? A jeśli Bóg widzi coś, czego ja jeszcze nie potrafię dostrzec?",
+      "Nie twierdzę, że znam wszystkie Boże zamiary. Nie wiem również, dlaczego każda modlitwa nie zostaje wysłuchana tak, jak byśmy tego chcieli. Ale wiem, że nie muszę ograniczać Bożej dobroci do jednego scenariusza, który sam sobie napisałem.",
+      "Apostoł Paweł napisał w Liście do Efezjan 3,20, że Bóg może uczynić daleko więcej ponad wszystko, o co prosimy albo o czym myślimy. To niesamowita perspektywa. Bóg nie jest ograniczony moją wyobraźnią. Nie jest ograniczony wielkością mojego planu. Nie jest zamknięty w moim „tak ma być”.",
+      "On może więcej. Halleluja!",
+      "To nie oznacza, że każda odmowa jest automatyczną obietnicą późniejszego sukcesu, bogactwa czy życia bez trudności. Oznacza natomiast, że Boża mądrość sięga dalej niż mój wzrok, a Jego dobroć wykracza poza moje chwilowe rozumienie.",
+      "NAWET WIELCY LUDZIE WIARY NIE ZAWSZE OTRZYMYWALI TO, O CO PROSILI",
+      "W Biblii widzimy, że nawet wielcy ludzie wiary nie zawsze otrzymywali dokładnie to, o co prosili.",
+      "Apostoł Paweł trzykrotnie prosił Pana, by usunął jego „cierń w ciele” (2 Kor 12,7–10). Bóg odpowiedział, ale nie tak, jak Paweł się spodziewał. Nie usunął trudności. Dał mu jednak coś innego: łaskę wystarczającą i moc objawiającą się w słabości.",
+      "To bardzo głęboka lekcja. Czasami modlimy się o zmianę okoliczności, a Bóg odpowiada, dając nam siłę, by przez nie przejść. Czasami prosimy o otwarcie jednych drzwi, a Bóg zamyka je, bo prowadzi nas do innych.",
+      "Jeszcze mocniejszy przykład znajdujemy w Getsemani. Jezus modlił się, aby — jeśli to możliwe — ominął Go kielich cierpienia. A jednak modlił się także: „Wszakże nie jak Ja chcę, ale jak Ty” (Mt 26,39). Odpowiedź Ojca nie polegała na ominięciu krzyża, lecz na przeprowadzeniu Syna przez drogę, która stała się źródłem zbawienia dla świata.",
+      "Ta prawda uczy mnie pokory. Nie każdą trudność rozumiem. Nie każdą stratę potrafię wyjaśnić. Nie każdą modlitwę umiem opisać prostym schematem: poprosiłem — otrzymałem. Ale wiem jedno: nawet wtedy, gdy nie dostaję tego, czego się spodziewałem, mogę ufać, że Bóg nadal pozostaje dobry.",
+      "MODLITWA ZAUFANIA I OTWARTEGO SERCA",
+      "Dlatego chcę dzisiaj wypowiedzieć modlitwę, która płynie z tego odkrycia:",
+      "Panie Boże, przedstawiam Ci moje pragnienia, plany i marzenia. Ty znasz moje serce. Wiesz, czego potrzebuję. Wiesz także, czego jeszcze nie rozumiem. Jeżeli to, o co proszę, jest dobre i zgodne z Twoją wolą — proszę, otwórz właściwe drzwi. Jeżeli jednak przygotowałeś inną drogę, daj mi mądrość, abym potrafił ją rozpoznać. Jeżeli muszę poczekać, naucz mnie cierpliwości. Jeżeli powinienem działać, dodaj mi odwagi. Jeżeli powinienem z czegoś zrezygnować, pomóż mi uczynić to z pokojem. A jeśli odpowiedź nie będzie taka, jakiej oczekuję, pomóż mi nie utracić zaufania do Ciebie.",
+      "Niech to lub coś lepszego — w świetle Twojej mądrości, miłości i woli — stanie się udziałem moim i wszystkich z tym związanych. W imieniu Jezusa Chrystusa. Amen! Halleluja!",
+      "ZAUFANIE TO NIE BIERNOŚĆ — TO ODPOWIEDZIALNE DZIAŁANIE",
+      "Chcę jednak wyraźnie podkreślić: zaufanie Bogu nie jest biernością. Jeśli prosisz o pracę, rozwijaj umiejętności i szukaj możliwości. Jeśli prosisz o uzdrowienie, korzystaj z właściwej pomocy. Jeśli modlisz się o pojednanie, podejmij uczciwy krok, pamiętając o zdrowych granicach. Jeśli marzysz o nowym dziele, ucz się, planuj i pracuj.",
+      "Bóg bardzo często prowadzi nas także poprzez odpowiedzialne decyzje, cierpliwość, dyscyplinę i codzienną wierność.",
+      "A jeśli największym darem Boga nie będzie to, o co prosisz? A jeśli będzie nim pokój, którego wcześniej nie miałeś? Mądrość? Siła? Nowy kierunek? Głębsza więź z Nim?",
+      "Być może właśnie dlatego List Jakuba zachęca nas, aby prosić Boga o mądrość (Jk 1,5). Czasami potrzebujemy nie tyle natychmiastowej zmiany okoliczności, ile światła, by właściwie zrozumieć to, przez co przechodzimy.",
+      "KROK DLA CIEBIE NA DZIŚ",
+      "Dlatego chcę dziś zaprosić Cię do prostego kroku. Pomyśl o jednej sprawie, o którą od dawna prosisz Boga. Może nosisz ją w sercu tak długo, że zaczynasz tracić nadzieję. Nie musisz udawać, że to nie boli. Możesz szczerze powiedzieć Bogu o swoim smutku, frustracji i niezrozumieniu.",
+      "Ale spróbuj też powiedzieć: „Panie, nadal Cię proszę. Nadal wierzę, że możesz. Ale nie chcę zamykać Twojego działania w granicach mojego planu. Niech spełni się to, co dobre, albo to, co w Twojej mądrości jest lepsze”.",
+      "Może właśnie tam zaczyna się dojrzała wiara. Nie tylko w przekonaniu, że Bóg może dać mi to, czego pragnę, ale również w gotowości, by zaufać Mu wtedy, gdy prowadzi mnie inaczej.",
+      "Niech więc to, o co prosimy — lub coś naprawdę lepszego w Bożym rozumieniu — stanie się udziałem naszym i wszystkich, których dotyczą nasze modlitwy. Halleluja! Amen!"
+    ],
+    "category": "wiara",
+    "categoryLabel": "Wiara & Rozwój",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-21T12:00:00.000Z",
+    "dateFormatted": "21 października 2026",
+    "imageUrl": "/images/news/art-prosicie-a-bedzie-wam-dane.jpg",
+    "imageCaption": "Cezary Rogowski — eM Motywacja Christian Culture: Proście, a będzie wam dane! Fot. EkoCC SDS / Christian Culture",
+    "readTime": "6 min",
+    "readTimeMinutes": 6,
+    "isHero": true,
+    "isPopular": true,
+    "popularRank": 1,
+    "tags": [
+      "eM",
+      "motywacja",
+      "cezary rogowski",
+      "proście a będzie wam dane",
+      "modlitwa",
+      "zaufanie",
+      "wiara",
+      "mateusza 7:7",
+      "efezjan 3:20",
+      "rozwój osobisty",
+      "pokój serca"
+    ],
+    "scriptureReference": "Mt 7,7–11; Mt 26,36–46; Jk 1,5; 1 J 5,14–15; 2 Kor 12,7–10; Ef 3,20; Prz 3,5–6; Rz 8,38–39 (UBG)",
+    "sourceCitation": "eM — Motywacja Christian Culture | polskieradio.cc/eM",
+    "relatedCourse": {
+      "title": "eM • Motywacja Christian Culture — Odkryj programy przemiany",
+      "url": "/em"
+    },
+    "resourceLinks": [
+      {
+        "title": "Pobierz bezpłatny kompletny pakiet (DOCX + TXT + Grafika 4K)",
+        "url": "/pakiety/eM_Prosicie_a_bedzie_wam_dane_Kompletny_Pakiet.zip"
+      },
+      {
+        "title": "eM • Motywacja Christian Culture",
+        "url": "/em"
+      },
+      {
+        "title": "Akademia Biblijna CC",
+        "url": "/akademia"
+      }
+    ]
+  },
+  {
     "id": "art-survival-christian-culture-przygotowanie-na-trudne-czasy",
     "title": "SURVIVAL — przetrwać to za mało. Jak przygotować się na trudne czasy, nie tracąc wiary, człowieczeństwa i nadziei?",
     "slug": "survival-christian-culture-przygotowanie-na-trudne-czasy",
