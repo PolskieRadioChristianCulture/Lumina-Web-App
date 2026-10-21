@@ -64,7 +64,16 @@
       // Both originals call the same generic share route. Keep one, not two icons.
       if(hasGeneric && button.matches('.action-share')) {button.hidden=true;continue;}
       const label=button.getAttribute('aria-label')||button.title||button.textContent.trim();
-      if(label){button.setAttribute('aria-label',label);const text=document.createElement('span');text.className='cc-post-action-label';text.textContent=label;button.append(text);}
+      if(label){
+        button.setAttribute('aria-label',label);
+        let text=button.querySelector('.cc-post-action-label');
+        if(!text){
+          text=document.createElement('span');
+          text.className='cc-post-action-label';
+          text.textContent=label;
+          button.append(text);
+        }
+      }
       overflow.append(button);
     }
     overflow.addEventListener('click',event=>{if(event.target.closest('button,a'))close();});

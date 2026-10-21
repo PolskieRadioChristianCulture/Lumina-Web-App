@@ -10,15 +10,33 @@ html[data-lumina-theme=light] .post-actions-bar.cc-post-compact,body.theme-lumin
 .cc-post-compact .cc-post-primary>.action-comments .btn-text{display:none!important}
 .cc-post-compact>.cc-post-more{width:44px!important;font:700 24px/1 system-ui,sans-serif;letter-spacing:2px;background:rgba(196,163,90,.10);border:1px solid rgba(196,163,90,.35);color:#e2cc9a;cursor:pointer;padding:0!important}
 .cc-post-compact>.cc-post-more[aria-expanded=true]{background:rgba(196,163,90,.22)}
-.post-actions-bar.cc-post-compact>.cc-post-overflow{grid-column:1/-1;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;align-items:stretch!important;max-width:100%;padding-top:8px;border-top:1px solid rgba(196,163,90,.22)}
+
+/* ══════════ OVERFLOW GRID (DENSE 2-COLUMN UNIFIED ACTIONS) ══════════ */
+.post-actions-bar.cc-post-compact>.cc-post-overflow{grid-column:1/-1;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense!important;gap:8px!important;align-items:stretch!important;max-width:100%;padding-top:8px;border-top:1px solid rgba(196,163,90,.22)}
 .cc-post-compact>.cc-post-overflow[hidden]{display:none!important}
-.post-actions-bar.cc-post-compact .cc-post-overflow>:is(button,a){display:flex!important;align-items:center;justify-content:flex-start!important;gap:8px;min-width:0!important;max-width:none!important;width:100%!important;min-height:44px!important;height:auto!important;max-height:none!important;white-space:normal!important;padding:10px!important;border-radius:10px!important;box-sizing:border-box}
+
+/* Standardize ALL overflow buttons to identical 44px sleek horizontal cards */
+.post-actions-bar.cc-post-compact .cc-post-overflow>:is(button,a),
+.post-actions-bar.cc-post-compact .cc-post-overflow .post-action-btn,
+.post-actions-bar.cc-post-compact .cc-post-overflow .post-share-btn,
+.post-actions-bar.cc-post-compact .cc-post-overflow .action-story,
+.post-actions-bar.cc-post-compact .cc-post-overflow .action-report,
+.post-actions-bar.cc-post-compact .cc-post-overflow .action-icon-only{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;min-width:0!important;max-width:none!important;width:100%!important;min-height:44px!important;height:44px!important;max-height:44px!important;white-space:nowrap!important;padding:8px 12px!important;border-radius:12px!important;box-sizing:border-box!important;flex:1 1 auto!important;overflow:hidden!important}
+
 .post-actions-bar.cc-post-compact .cc-post-overflow>:is(button,a)[hidden],.post-actions-bar.cc-post-compact .cc-post-primary>[hidden]{display:none!important}
 .cc-post-overflow .btn-text{display:none!important}
-/* The legacy mobile span rule has eight :not() classes; scope this exception to the canonical feed. */
-#feedStream1x1 .post-actions-bar.cc-post-compact .cc-post-overflow .cc-post-action-label{display:inline!important;font:600 12px/1.4 system-ui,sans-serif;text-align:left;overflow-wrap:anywhere}
-.cc-post-overflow i,.cc-post-overflow .glyph-l{flex-shrink:0}.cc-post-overflow .pray-live-badge,.cc-post-overflow .pray-sos-badge{flex-shrink:0}
-.cc-post-overflow .action-pray-now{grid-column:1/-1;flex-wrap:wrap!important}
+
+/* Hard reset for FontAwesome icons in overflow: prevent 100% width/height distortion on action-story & action-report */
+.post-actions-bar.cc-post-compact .cc-post-overflow :is(button,a) i,
+.post-actions-bar.cc-post-compact .cc-post-overflow i,
+.post-actions-bar.cc-post-compact .cc-post-overflow .glyph-l{width:20px!important;min-width:20px!important;max-width:20px!important;height:20px!important;min-height:20px!important;max-height:20px!important;line-height:20px!important;font-size:0.95rem!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0!important;flex:0 0 20px!important;flex-shrink:0!important;text-align:center!important;vertical-align:middle!important}
+
+/* Text label: clean single line with ellipsis on narrow viewports */
+#feedStream1x1 .post-actions-bar.cc-post-compact .cc-post-overflow .cc-post-action-label,
+.post-actions-bar.cc-post-compact .cc-post-overflow .cc-post-action-label{display:inline-block!important;flex:1 1 auto!important;min-width:0!important;max-width:100%!important;font:600 12px/1.3 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif!important;text-align:left!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;letter-spacing:0.1px!important}
+
+.cc-post-overflow .pray-live-badge,.cc-post-overflow .pray-sos-badge{flex-shrink:0}
+.cc-post-overflow .action-pray-now{grid-column:1/-1;height:auto!important;min-height:44px!important;max-height:none!important;white-space:normal!important;flex-wrap:wrap!important}
 .cc-post-compact :is(button,a):focus-visible{outline:2px solid #e2cc9a!important;outline-offset:2px}
 html[data-lumina-theme=light] .cc-post-compact>.cc-post-more,body.theme-lumina-light .cc-post-compact>.cc-post-more{background:#f8f5ec;border-color:#d5c8aa;color:#765414}
 html[data-lumina-theme=light] .cc-post-compact :is(button,a):focus-visible{outline-color:#765414!important}
