@@ -10,27 +10,21 @@ const kursyDir = path.join(ROOT, 'kursy/kurscodzienny');
 const kursyHtml = path.join(ROOT, 'kursy/kurscodzienny.html');
 const kursyIndex = path.join(ROOT, 'kursy/kurscodzienny/index.html');
 
-console.log('🔄 Rozpoczynam synchronizację Akademii i Kursu Codziennego (Dzień 21)...');
+console.log('🔄 Rozpoczynam synchronizację Akademii i Kursu Codziennego (Dzień 22)...');
 
 // 1. Zaktualizuj akademia.html
 let akademiaHtml = fs.readFileSync(akademiaPath, 'utf8');
 
-// A. Popraw ewentualne literówki w linkach dni
-akademiaHtml = akademiaHtml.replace(
-  'href="/akademia/kurscodzienny/dzien-14" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">\n            <div class="flex items-center justify-between gap-2 mb-3">\n              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 06',
-  'href="/akademia/kurscodzienny/dzien-06" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">\n            <div class="flex items-center justify-between gap-2 mb-3">\n              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 06'
-);
-
-// B. Zaktualizuj DWA PRZYCISKI HERO w akademia.html
+// A. Zaktualizuj DWA PRZYCISKI HERO w akademia.html
 const heroActionsRegex = /<!-- Hero Actions -->\s*<div class="flex flex-wrap items-center justify-center gap-4">[\s\S]*?<\/div>/;
 const updatedHeroActions = `<!-- Hero Actions -->
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="/akademia/kurscodzienny/dzien-21" class="cin-btn-primary min-h-[48px]">
-            <span>CZYTAJ DZIEŃ 21 (21 PAŹDZIERNIKA)</span>
+          <a href="/akademia/kurscodzienny/dzien-22" class="cin-btn-primary min-h-[48px]">
+            <span>CZYTAJ DZIEŃ 22 (22 PAŹDZIERNIKA)</span>
             <span>→</span>
           </a>
-          <a href="/akademia/kurscodzienny/dzien-20" class="cin-btn-secondary min-h-[48px]">
-            <span>← DZIEŃ 20</span>
+          <a href="/akademia/kurscodzienny/dzien-21" class="cin-btn-secondary min-h-[48px]">
+            <span>← DZIEŃ 21</span>
           </a>
           <a href="#katalog-kurscodzienny" class="cin-btn-secondary min-h-[48px]">
             <span>PRZEGLĄDAJ DNI MIESIĄCA ↓</span>
@@ -38,52 +32,52 @@ const updatedHeroActions = `<!-- Hero Actions -->
         </div>`;
 akademiaHtml = akademiaHtml.replace(heroActionsRegex, updatedHeroActions);
 
-// C. Zaktualizuj licznik dostępnych dni w akademia.html
+// B. Zaktualizuj licznik dostępnych dni w akademia.html
 akademiaHtml = akademiaHtml.replace(
   /Dni 1–\d+ Dostępne \(Październik 2026\)/g,
-  'Dni 1–21 z 31 Dostępne (21 Października 2026)'
+  'Dni 1–22 z 31 Dostępne (22 Października 2026)'
 );
 akademiaHtml = akademiaHtml.replace(
   /Dni 1–\d+ z 31 Dostępne[^\n<]*/g,
-  'Dni 1–21 z 31 Dostępne (21 Października 2026)'
+  'Dni 1–22 z 31 Dostępne (22 Października 2026)'
 );
 
-// D. Zaktualizuj kartę Dnia 20 na DOSTĘPNA TERAZ
+// C. Zaktualizuj kartę Dnia 21 na DOSTĘPNA TERAZ
 akademiaHtml = akademiaHtml.replace(
-  /<span class="px-2 py-0\.5 rounded-full bg-amber-500\/25 text-amber-300 text-\[10px\] font-extrabold border border-amber-500\/50 animate-pulse">DZISIEJSZA LEKCJA<\/span>\s*<\/div>\s*<!-- MINIATURA GRAFIKI TEMATYCZNEJ -->\s*<div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold\/20">\s*<img src="\/images\/academy\/daily\/kc_day_20_drabina_jakuba\.jpg"/,
-  '<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/40">DOSTĘPNA TERAZ</span>\n            </div>\n\n            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->\n            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/20">\n              <img src="/images/academy/daily/kc_day_20_drabina_jakuba.jpg"'
+  /<span class="px-2 py-0\.5 rounded-full bg-amber-500\/25 text-amber-300 text-\[10px\] font-extrabold border border-amber-500\/50 animate-pulse">DZISIEJSZA LEKCJA<\/span>\s*<\/div>\s*<!-- MINIATURA GRAFIKI TEMATYCZNEJ -->\s*<div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold\/20">\s*<img src="\/images\/academy\/daily\/kc_day_21_bog_dziala_niedoskonale_rodziny\.jpg/,
+  '<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/40">DOSTĘPNA TERAZ</span>\n            </div>\n\n            <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->\n            <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/20">\n              <img src="/images/academy/daily/kc_day_21_bog_dziala_niedoskonale_rodziny.jpg'
 );
 akademiaHtml = akademiaHtml.replace(
-  /<a href="\/akademia\/kurscodzienny\/dzien-20" class="group block p-5 rounded-2xl bg-\[#0E121A\] border-2 border-brand-gold hover:border-amber-400 hover:bg-\[#161B26\] transition-all transform hover:-translate-y-1 shadow-xl shadow-black\/50 flex flex-col relative ring-1 ring-amber-500\/30">/,
-  '<a href="/akademia/kurscodzienny/dzien-20" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">'
+  /<a href="\/akademia\/kurscodzienny\/dzien-21" class="group block p-5 rounded-2xl bg-\[#0E121A\] border-2 border-brand-gold hover:border-amber-400 hover:bg-\[#161B26\] transition-all transform hover:-translate-y-1 shadow-xl shadow-black\/50 flex flex-col relative ring-1 ring-amber-500\/30">/,
+  '<a href="/akademia/kurscodzienny/dzien-21" class="group block p-5 rounded-2xl bg-[#0E121A] border border-brand-gold/40 hover:border-amber-500 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-lg shadow-black/40 flex flex-col">'
 );
 
-// E. Dodaj kartę Dnia 21 jeśli jej nie ma
-if (!akademiaHtml.includes('/akademia/kurscodzienny/dzien-21')) {
-  const day21Card = `
-          <!-- KARTA DZIEŃ 21 -->
-          <a href="/akademia/kurscodzienny/dzien-21" class="group block p-5 rounded-2xl bg-[#0E121A] border-2 border-brand-gold hover:border-amber-400 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-xl shadow-black/50 flex flex-col relative ring-1 ring-amber-500/30">
+// D. Dodaj kartę Dnia 22 jeśli jej nie ma
+if (!akademiaHtml.includes('/akademia/kurscodzienny/dzien-22')) {
+  const day22Card = `
+          <!-- KARTA DZIEŃ 22 -->
+          <a href="/akademia/kurscodzienny/dzien-22" class="group block p-5 rounded-2xl bg-[#0E121A] border-2 border-brand-gold hover:border-amber-400 hover:bg-[#161B26] transition-all transform hover:-translate-y-1 shadow-xl shadow-black/50 flex flex-col relative ring-1 ring-amber-500/30">
             <div class="flex items-center justify-between gap-2 mb-3">
-              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 21 • 21 PAŹDZIERNIKA 2026</span>
+              <span class="font-display text-xs font-bold text-brand-gold tracking-widest">DZIEŃ 22 • 22 PAŹDZIERNIKA 2026</span>
               <span class="px-2 py-0.5 rounded-full bg-amber-500/25 text-amber-300 text-[10px] font-extrabold border border-amber-500/50 animate-pulse">DZISIEJSZA LEKCJA</span>
             </div>
 
             <!-- MINIATURA GRAFIKI TEMATYCZNEJ -->
             <div class="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-brand-gold/20">
-              <img src="/images/academy/daily/kc_day_21_bog_dziala_niedoskonale_rodziny.jpg?v=20261021" alt="Dzień 21: BÓG DZIAŁA POŚRÓD NIEDOSKONAŁYCH RODZIN — Rdz 29:1–30:43" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block opacity-90 group-hover:opacity-100" loading="lazy" />
+              <img src="/images/academy/daily/kc_day_22_jakub_walczy_z_bogiem_jabbok.jpg?v=20261022" alt="Dzień 22: JAKUB WALCZY Z BOGIEM — PRZEMIANA CZŁOWIEKA — Rdz 31:1–32:32" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block opacity-90 group-hover:opacity-100" loading="lazy" />
               <div class="absolute inset-0 bg-gradient-to-t from-[#0E121A] via-transparent to-transparent"></div>
             </div>
 
             <h3 class="font-serif font-bold text-white text-base sm:text-lg mb-1 leading-snug group-hover:text-amber-300 transition-colors">
-              BÓG DZIAŁA POŚRÓD NIEDOSKONAŁYCH RODZIN
+              JAKUB WALCZY Z BOGIEM — PRZEMIANA CZŁOWIEKA
             </h3>
             <p class="text-xs text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
-              Miłość, oszustwo, rywalizacja i Boża wierność — Jakub, Rachela, Lea i narodziny Judy — Rdz 29:1–30:43.
+              Noc nad Jabbokiem, złamanie samowystarczalności i nowe imię Izrael — Rdz 31:1–32:32.
             </p>
             <div class="mt-auto pt-3 border-t border-white/5 flex items-center justify-between text-xs">
               <span class="text-zinc-500 flex items-center gap-1.5">
                 <i class="fa-solid fa-book-open text-brand-gold text-[10px]"></i>
-                <span>Księga Rodzaju 29:1–30:43</span>
+                <span>Księga Rodzaju 31:1–32:32</span>
               </span>
               <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">
                 <span>Studiuj</span>
@@ -92,15 +86,15 @@ if (!akademiaHtml.includes('/akademia/kurscodzienny/dzien-21')) {
             </div>
           </a>
 `;
-  // Wstaw za kartą Dnia 20
-  const day20EndTag = 'Księga Rodzaju 28:1–22</span>\n              </span>\n              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">\n                <span>Studiuj</span>\n                <span>→</span>\n              </span>\n            </div>\n          </a>';
-  if (akademiaHtml.includes(day20EndTag)) {
-    akademiaHtml = akademiaHtml.replace(day20EndTag, day20EndTag + '\n' + day21Card);
+  // Wstaw za kartą Dnia 21
+  const day21EndTag = 'Księga Rodzaju 29:1–30:43</span>\n              </span>\n              <span class="font-bold text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1">\n                <span>Studiuj</span>\n                <span>→</span>\n              </span>\n            </div>\n          </a>';
+  if (akademiaHtml.includes(day21EndTag)) {
+    akademiaHtml = akademiaHtml.replace(day21EndTag, day21EndTag + '\n' + day22Card);
   } else {
     // Wstaw przed zamknięciem siatki kart
     const gridEnd = '</div>\n      </section>\n\n          <!-- ── WEZWANIE DO DZIAŁANIA: ZOSTAŃ PATRONEM KURSU CODZIENNEGO ── -->';
     if (akademiaHtml.includes(gridEnd)) {
-      akademiaHtml = akademiaHtml.replace(gridEnd, day21Card + '\n' + gridEnd);
+      akademiaHtml = akademiaHtml.replace(gridEnd, day22Card + '\n' + gridEnd);
     }
   }
 }
@@ -127,12 +121,12 @@ if (cardsMatch && cardsMatch[1]) {
   const heroCtaRegex = /<!-- CTA Buttons -->\s*<div class="flex flex-wrap items-center justify-center gap-4">[\s\S]*?<\/div>/;
   const updatedHeroCta = `<!-- CTA Buttons -->
       <div class="flex flex-wrap items-center justify-center gap-4">
-        <a href="/akademia/kurscodzienny/dzien-21" class="cin-btn-primary min-h-[48px]">
-          <span>CZYTAJ DZIEŃ 21 (21 PAŹDZIERNIKA)</span>
+        <a href="/akademia/kurscodzienny/dzien-22" class="cin-btn-primary min-h-[48px]">
+          <span>CZYTAJ DZIEŃ 22 (22 PAŹDZIERNIKA)</span>
           <span>→</span>
         </a>
-        <a href="/akademia/kurscodzienny/dzien-20" class="cin-btn-secondary min-h-[48px]">
-          <span>← DZIEŃ 20</span>
+        <a href="/akademia/kurscodzienny/dzien-21" class="cin-btn-secondary min-h-[48px]">
+          <span>← DZIEŃ 21</span>
         </a>
         <a href="/akademia/kurscodzienny/dzien-01" class="cin-btn-secondary min-h-[48px]">
           <span>OD POCZĄTKU (DZIEŃ 1)</span>
@@ -146,7 +140,7 @@ if (cardsMatch && cardsMatch[1]) {
   // Zaktualizuj licznik w kurscodzienny.html
   kurscodziennyHtml = kurscodziennyHtml.replace(
     /Dni 1–\d+ z 31 Dostępne[^\n<]*/g,
-    'Dni 1–21 z 31 Dostępne (21 Października 2026)'
+    'Dni 1–22 z 31 Dostępne (22 Października 2026)'
   );
 
   // Zaktualizuj siatkę kart w kurscodzienny.html

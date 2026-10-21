@@ -72,6 +72,76 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    "id": "art-z-biblia-za-pan-brat-dzien-22",
+    "title": "Z Biblią za Pan Brat: Dzień 22 — Jakub walczy z Bogiem: Przemiana człowieka i noc nad Jabbokiem (Rdz 31–32)",
+    "slug": "z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok",
+    "excerpt": "Księga Rodzaju 31–32: Opuszczenie Charanu, granice przymierza z Labanem oraz punkt kulminacyjny duchowej biografii patriarchy — nocne zmaganie nad potokiem Jabbok i narodziny Izraela.",
+    "content": [
+      "W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, dzisiejsze opracowanie leksykonu teologicznego na portalu CCN analizuje rozdziały trzydziesty pierwszy i trzydziesty drugi Księgi Rodzaju. Tekst ten dokumentuje zamknięcie dwudziestoletniego etapu pobytu Jakuba w Mezopotamii, etykę wyznaczania granic w nierozwiązywalnych konfliktach oraz punkt kulminacyjny duchowej biografii patriarchy — nocne zmaganie nad potokiem Jabbok.",
+      "1. OPUSZCZENIE CHARANU I PRZYMIERZE GRANICZNE Z LABANEM (RDZ 31:1–55)",
+      "W obliczu narastającej wrogości synów Labana oraz zmiany postawy teścia, Bóg kieruje do Jakuba nakaz powrotu do ziemi ojców (Rdz 31:1–3, 13; por. 28:15). Decyzja zostaje podjęta wspólnie z Leą i Rachelą (Rdz 31:4–16).",
+      "Egzegeza biblijna zachowuje realizm w ocenie potajemnej ucieczki Jakuba oraz kradzieży posążków (terafim) przez Rachelę (Rdz 31:19–21, 34–35): Boża ochrona nad Jakubem (Rdz 31:24) wynika z wierności przymierzu, lecz nie stanowi aprobaty dla kradzieży czy półprawd.",
+      "Spór po dwudziestu latach pracy kończy się zawarciem przymierza w Gileadzie i usypaniem kopca granicznego (Rdz 31:41–55): gdy pełna zażyłość nie jest możliwa, pokój utrzymuje się poprzez jasne i bezpieczne granice (por. Rz 12:18).",
+      "2. KRYZYS STRACHU I PRZEŁOM MODLITEWNY PRZED SPOTKANIEM Z EZAWEM (RDZ 32:1–23)",
+      "Mimo spotkania z aniołami Bożymi w Machanaim (Rdz 32:1–2), wieść o nadchodzącym Ezawie na czele czterystu ludzi budzi w Jakubie głęboki lęk (Rdz 32:6–7).",
+      "Obok działań roztropnościowych w Rdz 32:9–12 pojawia się pokorna modlitwa Jakuba: „Nie jestem godzien wszelkiego miłosierdzia i całej wierności, jaką okazałeś swemu słudze” (Rdz 32:10). Człowiek, który dawniej wyłudzał błogosławieństwo podstępem, zaczyna rozumieć naturę niezasłużonej łaski.",
+      "3. TEOLOGIA JABBOKU: ZWYCIĘSTWO PRZEZ ZŁAMANIE WŁASNEJ SIŁY (RDZ 32:24–32)",
+      "Po przeprawieniu rodziny przez potok Jabbok Jakub pozostaje sam i aż do świtu zmaga się z tajemniczym Mężem (Rdz 32:24; por. Oz 12:3–5).",
+      "Dotknięcie i zwichnięcie stawu biodrowego (Rdz 32:25) odbiera Jakubowi naturalną siłę i zdolność ucieczki. W tym punkcie bezradności pada deklaracja: „Nie puszczę cię, dopóki mi nie pobłogosławisz” (Rdz 32:26).",
+      "Patriarcha wypowiada prawdę o swoim dotychczasowym imieniu (Jakub) i otrzymuje nowe imię — Izrael (Rdz 32:28). Miejsce zostaje nazwane Peniel („Oblicze Boga”), a Jakub wkracza w wschód słońca pobłogosławiony, lecz utykający (Rdz 32:30–32).",
+      "4. CHRYSTUS W CENTRUM: MOC W SŁABOŚCI I NOWE STWORZENIE",
+      "Podczas gdy Jakub zmagał się w nocy o własną przyszłość, Jezus Chrystus w nocnej walce modlitewnej w Getsemani w pełni poddał się woli Ojca dla naszego zbawienia (Łk 22:39–46).",
+      "Utykający, lecz pobłogosławiony Izrael zapowiada paradoks Pawłowy: „Wystarczy ci moja łaska. Moja moc bowiem doskonali się w słabości” (2 Kor 12:9–10). Przez krzyż Chrystusa otrzymujemy pojednanie z Bogiem (2 Kor 5:18–20) i stajemy się nowym stworzeniem z czystej łaski (2 Kor 5:17; Ef 2:8–10; Tt 2:11–12).",
+      "PODSUMOWANIE REDAKCYJNE CCN",
+      "Rozdziały 31–32 Księgi Rodzaju uczą, że Boża wierność prowadzi człowieka od polegania na własnych manipulacjach do pokornego uchwycenia się łaski. Prawdziwa przemiana serca dokonuje się wtedy, gdy przestajemy uciekać przed prawdą i w naszej słabości oddajemy się w ręce Chrystusa."
+    ],
+    "category": "wiara",
+    "categoryLabel": "Wiara & Rozwój",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-22T06:00:00.000Z",
+    "dateFormatted": "22 października 2026",
+    "imageUrl": "/images/news/art-z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok.jpg",
+    "imageCaption": "Jakub walczy z Bogiem nad potokiem Jabbok — Z Biblią za Pan Brat Dzień 22. Fot. EkoCC / Christian Culture",
+    "readTime": "7 min",
+    "readTimeMinutes": 7,
+    "isHero": false,
+    "isPopular": true,
+    "popularRank": 2,
+    "tags": [
+      "Z Biblią za Pan Brat",
+      "Księga Rodzaju",
+      "Jakub",
+      "Jabbok",
+      "Izrael",
+      "przemiana",
+      "modlitwa",
+      "pokora",
+      "Rdz 31",
+      "Rdz 32",
+      "2 Kor 12:9"
+    ],
+    "scriptureReference": "Rdz 31:1–32:32; Oz 12:3–5; 2 Kor 12:9–10; 2 Kor 5:17 (UBG)",
+    "sourceCitation": "Z Biblią za Pan Brat | polskieradio.cc/akademia#kurscodzienny",
+    "relatedCourse": {
+      "title": "Kurs Codzienny Pisma Świętego — Dzień 22",
+      "url": "/akademia/kurscodzienny/dzien-22"
+    },
+    "resourceLinks": [
+      {
+        "title": "Otwórz Lekcję Dnia 22 w Akademii Biblijnej",
+        "url": "/akademia/kurscodzienny/dzien-22"
+      },
+      {
+        "title": "Interlinearna MojaBiblia CC (Rdz 31–32)",
+        "url": "/mojabiblia"
+      },
+      {
+        "title": "Akademia Biblijna LUMINA",
+        "url": "/akademia"
+      }
+    ]
+  },
+  {
     "id": "art-prosicie-a-bedzie-wam-dane-ale-co-gdy-nie-otrzymujesz",
     "title": "Proście, a będzie wam dane! A jeśli nie otrzymujesz? Być może Bóg przygotowuje dla Ciebie coś znacznie wspanialszego",
     "slug": "prosicie-a-bedzie-wam-dane-ale-co-gdy-nie-otrzymujesz",

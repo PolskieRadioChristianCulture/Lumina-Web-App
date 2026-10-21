@@ -13,17 +13,41 @@ const data = JSON.parse(rawData);
 // 1. Lekcje Kursu Codziennego "Z Biblią za Pan Brat"
 const dailyLessons = [
   {
-    title: "Z Biblią za Pan Brat — Dzień 21 (Lekcja 21 na dziś): Bóg działa pośród niedoskonałych rodzin (Rdz 29:1–30:43)",
+    title: "Z Biblią za Pan Brat — Dzień 22 (Lekcja 22 na dziś): Jakub walczy z Bogiem — Przemiana człowieka (Rdz 31:1–32:32)",
     category: "Biblia i formacja",
-    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-21",
-    description: "Kurs Codzienny Pisma Świętego — Dzień 21 (Lekcja 21 na dziś, 21 października 2026). Jakub, Rachela, Lea i Laban w Charanie — Rdz 29:1–30:43. Boża suwerenna łaska działa pośród skomplikowanych relacji i zranień.",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-22",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 22 (Lekcja 22 na dziś, 22 października 2026). Przymierze z Labanem w Gileadzie, lęk przed Ezawem, nocne zmaganie nad potokiem Jabbok i nowe imię Izrael — Rdz 31:1–32:32. Prawdziwe zwycięstwo w Chrystusie przez pokorę i moc w słabości.",
     tags: [
-      "lekcja 21", "lekcja 21 na dziś", "lekcja na dziś", "dzień 21", "dzien 21",
-      "rozważanie 21", "rozważanie na dziś", "słowo na dziś", "jakub rachela lea", "laban",
-      "rdz 29", "rdz 30", "z biblią za pan brat", "kurs codzienny",
-      "akademia biblijna", "21 października 2026", "dzisiaj", "dziś"
+      "lekcja 22", "lekcja 22 na dziś", "lekcja na dziś", "dzień 22", "dzien 22",
+      "rozważanie 22", "rozważanie na dziś", "słowo na dziś", "jakub walczy z bogiem", "jabbok",
+      "peniel", "izrael", "rdz 31", "rdz 32", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "22 października 2026", "dzisiaj", "dziś"
     ],
     featured: true
+  },
+  {
+    title: "Z Biblią za Pan Brat: Dzień 22 — Jakub walczy z Bogiem: Przemiana człowieka i noc nad Jabbokiem (Rdz 31–32)",
+    category: "Wiadomości i artykuły",
+    url: "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok",
+    description: "Leksykon biblijny i publicystyka CCN News na 22 października 2026. Analiza teologiczna rozdziałów 31–32 Księgi Rodzaju — od samowystarczalności Jakuba do narodzin Izraela.",
+    tags: [
+      "z biblią za pan brat", "jakub", "jabbok", "rdz 31", "rdz 32", "izrael", "gilead",
+      "formacja", "artykuł", "ccn news", "22 października 2026"
+    ],
+    featured: false
+  },
+  {
+    title: "Z Biblią za Pan Brat — Dzień 21: Bóg działa pośród niedoskonałych rodzin (Rdz 29:1–30:43)",
+    category: "Biblia i formacja",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-21",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 21 (Lekcja 21, 21 października 2026). Jakub, Rachela, Lea i Laban w Charanie — Rdz 29:1–30:43. Boża suwerenna łaska działa pośród skomplikowanych relacji i zranień.",
+    tags: [
+      "lekcja 21", "dzień 21", "dzien 21",
+      "rozważanie 21", "słowo na dziś", "jakub rachela lea", "laban",
+      "rdz 29", "rdz 30", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "21 października 2026"
+    ],
+    featured: false
   },
   {
     title: "Z Biblią za Pan Brat — Dzień 21: Bóg działa pośród niedoskonałych rodzin (Rdz 29:1–30:43)",
