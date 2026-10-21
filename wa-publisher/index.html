@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>CC WhatsApp Publisher • EkoCC v2 Premium</title>
+  <meta name="description" content="Mobilny panel asystenta publikacji WhatsApp w modelu Human-in-the-Loop dla Christian Culture Network.">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --cc-gold: #C4A35A;
+      --cc-gold-hover: #D4B578;
+      --cc-gold-light: #E2CC9A;
+      --cc-gold-dark: #A08040;
+      --cc-bg: #0a0a0c;
+      --cc-card-bg: #141418;
+      --cc-card-border: rgba(196, 163, 90, 0.25);
+      --cc-text: #f3f4f6;
+      --cc-muted: #9ca3af;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    body {
+      background-color: var(--cc-bg);
+      color: var(--cc-text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: env(safe-area-inset-bottom, 24px);
+    }
+    
+    header {
+      background: rgba(16, 16, 20, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--cc-card-border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1.5px solid var(--cc-gold);
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cc-gold);
+      font-family: 'Cinzel', serif;
+      font-weight: 800;
+      font-size: 16px;
+    }
+    
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--cc-gold-light);
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+    
+    .brand-sub {
+      font-size: 11px;
+      color: var(--cc-muted);
+      letter-spacing: 0.5px;
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-header {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 12px;
+      border-radius: 8px;
+      background: rgba(196, 163, 90, 0.1);
+      border: 1px solid var(--cc-card-border);
+      color: var(--cc-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .btn-header:hover, .btn-header:active {
+      background: rgba(196, 163, 90, 0.2);
+      border-color: var(--cc-gold);
+      color: #fff;
+    }
+    
+    main {
+      flex: 1;
+      max-width: 820px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 16px;
+    }
+    
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(196, 163, 90, 0.15) 0%, rgba(20, 20, 24, 0.8) 100%);
+      border: 1px solid var(--cc-card-border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(196, 163, 90, 0.2);
+      border: 1px solid var(--cc-gold);
+      color: var(--cc-gold-light);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      width: fit-content;
+    }
+    
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      color: #fff;
+      font-weight: 700;
+    }
+    
+    .hero-desc {
+      font-size: 13px;
+      color: #d1d5db;
+      line-height: 1.5;
+    }
+
+    .notice-box {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #34d399;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      color: var(--cc-gold);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .card {
+      background: var(--cc-card-bg);
+      border: 1px solid var(--cc-card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    
+    .card-header {
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .card-category {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cc-gold);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-top: 2px;
+    }
+    
+    .card-status {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .status-prepared {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+    
+    .status-opened {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    
+    .status-sent {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    
+    .card-body {
+      padding: 14px 16px;
+    }
+    
+    .message-textarea {
+      width: 100%;
+      min-height: 180px;
+      background: #0d0d10;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      color: #e5e7eb;
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      resize: vertical;
+    }
+    
+    .message-textarea:focus {
+      outline: none;
+      border-color: var(--cc-gold);
+      box-shadow: 0 0 0 2px rgba(196, 163, 90, 0.2);
+    }
+    
+    .meta-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--cc-muted);
+    }
+    
+    .card-actions {
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 8px;
+    }
+    
+    @media (max-width: 600px) {
+      .card-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .btn-action {
+      min-height: 44px;
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+    
+    .btn-wa-primary {
+      background: #25D366;
+      color: #000;
+      font-weight: 700;
+    }
+    
+    .btn-wa-primary:hover, .btn-wa-primary:active {
+      background: #20bd5a;
+      transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f3f4f6;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .btn-secondary:hover, .btn-secondary:active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+    
+    .btn-confirm {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    
+    .btn-confirm:hover, .btn-confirm:active {
+      background: rgba(16, 185, 129, 0.3);
+      color: #fff;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e1e24;
+      color: #fff;
+      border: 1px solid var(--cc-gold);
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="brand">
+      <div class="brand-logo">CC</div>
+      <div>
+        <div class="brand-title">WHATSAPP PUBLISHER</div>
+        <div class="brand-sub">EkoCC v2 Premium • HITL</div>
+      </div>
+    </a>
+    
+    <div class="header-actions">
+      <a href="https://web.whatsapp.com" target="_blank" rel="noopener" class="btn-header" title="Otwórz WhatsApp Web">
+        <i class="fab fa-whatsapp"></i> WA Web
+      </a>
+      <a href="https://chat.whatsapp.com/FMnvysABYXq6kh3mqBNWtS" target="_blank" rel="noopener" class="btn-header" title="Grupa Nazira">
+        <i class="fas fa-crown"></i> Grupa Nazira
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-banner">
+      <div class="hero-badge">
+        <i class="fas fa-shield-alt"></i> STANDARD ZERO COST • HUMAN-IN-THE-LOOP
+      </div>
+      <h1 class="hero-title">Centrum Publikacji WhatsApp</h1>
+      <p class="hero-desc">
+        Bezpieczny model Human-in-the-Loop: wybierz zatwierdzony materiał, przejrzyj treść i kliknij <strong>Udostępnij na WhatsApp</strong>. Wiadomość otworzy się natywnie w aplikacji, gdzie wskażesz docelową grupę.
+      </p>
+    </section>
+
+    <div class="notice-box">
+      <i class="fas fa-check-circle"></i>
+      <span>Pełna ochrona konta przed banami Meta. Brak botów i scrape'owania. Wszystkie linki w 100% sprawdzone.</span>
+    </div>
+
+    <div class="section-title">
+      <span>ZATWIERDZONE MATERIAŁY NA DZIŚ (DZIEŃ 22)</span>
+      <span style="font-size: 12px; color: var(--cc-muted); font-family: 'Inter', sans-serif;">22 Października 2026</span>
+    </div>
+
+    <div class="cards-list">
+
+      <!-- KARTA 1: ROZWAŻANIE DZIEŃ 22 (WERSJA WWW) -->
+      <article class="card" id="card-day22-web" data-id="day22-web">
+        <div class="card-header">
+          <div>
+            <div class="card-category">Rozważanie na cały dzień (Wersja WWW)</div>
+            <div class="card-title">☀️ Z Biblią za Pan Brat — Dzień 22: Jakub walczy z Bogiem</div>
+          </div>
+          <span class="card-status status-prepared" id="status-day22-web">
+            <i class="fas fa-clock"></i> Przygotowane
+          </span>
+        </div>
+        <div class="card-body">
+          <textarea class="message-textarea" id="text-day22-web">☀️ Z Biblią za Pan Brat — Dzień 22: Jakub walczy z Bogiem — Przemiana człowieka
+
+Dwudziesty drugi dzień naszej 66-miesięcznej podróży przez Pismo Święte prowadzi nas nad potok Jabbok, do jednego z najbardziej przełomowych spotkań w historii Biblii (Rdz 31:1–32:32).
+
+Po dwudziestu latach służby u Labana Bóg wzywa Jakuba do powrotu do ziemi ojców. Po trudnym rozstaniu z teściem i zawarciu przymierza wyznaczającego bezpieczne granice pokój zostaje zachowany, lecz przed Jakubem staje znacznie trudniejsze wyzwanie: spotkanie z Ezawem, który nadchodzi z czterystoma ludźmi. W obliczu strachu Jakub dzieli obóz, wysyła dary i zanosi niezwykłą, pokorną modlitwę: „Nie jestem godzien wszelkiego miłosierdzia i całej wierności...” (Rdz 32:10). W nocy nad potokiem Jabbok zostaje sam i zmaga się aż do świtu z tajemniczym Mężem. Ze zwichniętym biodrem, pozbawiony własnej siły, woła: „Nie puszczę cię, dopóki mi nie pobłogosławisz” (Rdz 32:26). Tam otrzymuje nowe imię – Izrael – i wyrusza w nowy dzień, utykając, ale będąc pobłogosławionym. Ta historia prowadzi nas do Jezusa Chrystusa, którego moc doskonali się w naszej słabości (2 Kor 12:9) i który czyni nas nowym stworzeniem (2 Kor 5:17)! Wybieraj dzisiaj świadomie: przestań uciekać i polegać na własnym sprycie – uchwyć się Boga w prawdzie i pokorze!
+
+Jezus mówi dziś do Ciebie:
+„Nie puszczę cię, dopóki mi nie pobłogosławisz.” (Rdz 32:26) oraz „Wystarczy ci moja łaska. Moja moc bowiem doskonali się w słabości.” (2 Kor 12:9)
+
+Zadanie Taktyczne (Czytaj | Wierz | Działaj):
+* CZYTAJ: Przeczytaj uważnie Rdz 31:1–32:32 oraz fragmenty z Oz 12:3–5 i 2 Kor 12:9–10.
+* WIERZ: Przyjmij wiarą, że przyznanie się do własnej słabości i lęku przed Bogiem nie jest klęską, lecz początkiem prawdziwego duchowego zwycięstwa w Chrystusie.
+* DZIAŁAJ: Zapisz dzisiaj jeden lęk, który dotąd próbowałeś kontrolować własnymi siłami, powierz go Bogu w szczerej modlitwie i zaplanuj jeden bezpieczny krok ku naprawie trudnej relacji.
+
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
+
+Dołącz do bazy i całej społeczności formacyjnej: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
+
+PODAJ DALEJ 🔴 DWUDZIESTY DRUGI DZIEŃ SERII!
+www.polskieradio.cc | www.polskieradio.cc/lumina | www.cclite.pl
+Wspomóż misję: patronite.pl/osobowoscplus
+
+🙏 Możesz wspierać misję Christian Culture modlitwą, udostępniając i polecając nasze treści oraz poprzez cykliczny dar finansowy 🤍
+Każde wsparcie pomaga nam docierać z Ewangelią dalej i tworzyć przestrzeń wzrostu duchowego dla tysięcy osób 🌱✨
+Wspieraj Bożą misję: 👉 https://patronite.pl/osobowoscplus
+💳 Nr konta (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 z dopiskiem: „Dar misyjny”
+📱 BLIK: 537 137 043</textarea>
+          <div class="meta-bar">
+            <span id="chars-day22-web">0 znaków</span>
+            <span>URL: polskieradio.cc/akademia/kurscodzienny/dzien-22</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-action btn-wa-primary" onclick="shareWhatsApp('day22-web')">
+            <i class="fab fa-whatsapp"></i> Udostępnij na WhatsApp
+          </button>
+          <button class="btn-action btn-secondary" onclick="copyMessage('day22-web')">
+            <i class="fas fa-copy"></i> Kopiuj treść
+          </button>
+          <button class="btn-action btn-confirm" onclick="markSent('day22-web')">
+            <i class="fas fa-check"></i> Oznacz: Wysłano
+          </button>
+        </div>
+      </article>
+
+      <!-- KARTA 2: LEKCJA AKADEMII BIBLIJNEJ -->
+      <article class="card" id="card-day22-academy" data-id="day22-academy">
+        <div class="card-header">
+          <div>
+            <div class="card-category">Akademia Biblijna • Kurs Codzienny</div>
+            <div class="card-title">📖 Lekcja 22: Jakub walczy z Bogiem — Przemiana człowieka</div>
+          </div>
+          <span class="card-status status-prepared" id="status-day22-academy">
+            <i class="fas fa-clock"></i> Przygotowane
+          </span>
+        </div>
+        <div class="card-body">
+          <textarea class="message-textarea" id="text-day22-academy">📖 Z BIBLIĄ ZA PAN BRAT — DZIEŃ 22 (22 PAŹDZIERNIKA 2026)
+Jakub walczy z Bogiem — Przemiana człowieka (Rdz 31:1–32:32)
+
+Koniec ucieczki i koniec samowystarczalności. Nad potokiem Jabbok Jakub zostaje dotknięty w biodro, traci siłę do walki i ucieczki — i dopiero wtedy woła: „Nie puszczę Cię, dopóki mi nie pobłogosławisz!”. 
+
+Tam rodzi się Izrael. Boża łaska doskonali się w słabości, przynosząc pojednanie z Bogiem i braćmi.
+
+👉 Przeczytaj pełne studium biblijne z interaktywnym quizem i notatnikiem:
+https://polskieradio.cc/akademia/kurscodzienny/dzien-22
+
+#ChristianCulture #AkademiaBiblijna #ZBibliaZaPanBrat</textarea>
+          <div class="meta-bar">
+            <span id="chars-day22-academy">0 znaków</span>
+            <span>URL: polskieradio.cc/akademia/kurscodzienny/dzien-22</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-action btn-wa-primary" onclick="shareWhatsApp('day22-academy')">
+            <i class="fab fa-whatsapp"></i> Udostępnij na WhatsApp
+          </button>
+          <button class="btn-action btn-secondary" onclick="copyMessage('day22-academy')">
+            <i class="fas fa-copy"></i> Kopiuj treść
+          </button>
+          <button class="btn-action btn-confirm" onclick="markSent('day22-academy')">
+            <i class="fas fa-check"></i> Oznacz: Wysłano
+          </button>
+        </div>
+      </article>
+
+      <!-- KARTA 3: CCN NEWS / LEKSYKON -->
+      <article class="card" id="card-day22-news" data-id="day22-news">
+        <div class="card-header">
+          <div>
+            <div class="card-category">CCN News • Leksykon Biblijny</div>
+            <div class="card-title">📰 Artykuł redakcyjny: Od Labana do potoku Jabbok</div>
+          </div>
+          <span class="card-status status-prepared" id="status-day22-news">
+            <i class="fas fa-clock"></i> Przygotowane
+          </span>
+        </div>
+        <div class="card-body">
+          <textarea class="message-textarea" id="text-day22-news">📰 CCN News | Leksykon Biblijny Christian Culture
+„Jakub walczy z Bogiem: Przemiana człowieka i noc nad Jabbokiem (Rdz 31–32)”
+
+Dwudziesty drugi dzień analizy teologicznej i formacyjnej. Jak psychologia przemiany i prawda Ewangelii łączą się w starotestamentowej historii Jakuba? Dlaczego uznanie własnej bezradności otwiera drogę do Bożego błogosławieństwa?
+
+Odkryj artykuł na portalu CCN News:
+👉 https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok
+
+#CCNNews #ChristianCulture #LeksykonBiblijny</textarea>
+          <div class="meta-bar">
+            <span id="chars-day22-news">0 znaków</span>
+            <span>URL: polskieradio.cc/news/z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-action btn-wa-primary" onclick="shareWhatsApp('day22-news')">
+            <i class="fab fa-whatsapp"></i> Udostępnij na WhatsApp
+          </button>
+          <button class="btn-action btn-secondary" onclick="copyMessage('day22-news')">
+            <i class="fas fa-copy"></i> Kopiuj treść
+          </button>
+          <button class="btn-action btn-confirm" onclick="markSent('day22-news')">
+            <i class="fas fa-check"></i> Oznacz: Wysłano
+          </button>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle" style="color: var(--cc-gold);"></i>
+    <span id="toast-text">Powiadomienie</span>
+  </div>
+
+  <script>
+    function updateCharCounters() {
+      ['day22-web', 'day22-academy', 'day22-news'].forEach(id => {
+        const textarea = document.getElementById('text-' + id);
+        const counter = document.getElementById('chars-' + id);
+        if (textarea && counter) {
+          counter.textContent = textarea.value.length + ' znaków';
+        }
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      text.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function setStatus(id, state, text) {
+      const statusEl = document.getElementById('status-' + id);
+      if (!statusEl) return;
+      statusEl.className = 'card-status status-' + state;
+      let icon = 'clock';
+      if (state === 'opened') icon = 'external-link-alt';
+      if (state === 'sent') icon = 'check-double';
+      statusEl.innerHTML = `<i class="fas fa-${icon}"></i> ${text}`;
+      
+      // Save to localStorage
+      try {
+        localStorage.setItem('cc_wa_' + id, JSON.stringify({
+          state,
+          text,
+          updatedAt: new Date().toISOString()
+        }));
+      } catch(e) {}
+    }
+
+    function loadSavedStatuses() {
+      ['day22-web', 'day22-academy', 'day22-news'].forEach(id => {
+        try {
+          const raw = localStorage.getItem('cc_wa_' + id);
+          if (raw) {
+            const data = JSON.parse(raw);
+            if (data.state && data.text) {
+              const statusEl = document.getElementById('status-' + id);
+              if (statusEl) {
+                statusEl.className = 'card-status status-' + data.state;
+                let icon = data.state === 'sent' ? 'check-double' : (data.state === 'opened' ? 'external-link-alt' : 'clock');
+                statusEl.innerHTML = `<i class="fas fa-${icon}"></i> ${data.text}`;
+              }
+            }
+          }
+        } catch(e) {}
+      });
+    }
+
+    async function shareWhatsApp(id) {
+      const textarea = document.getElementById('text-' + id);
+      if (!textarea) return;
+      const text = textarea.value.trim();
+      const encoded = encodeURIComponent(text);
+      const waUrl = 'https://api.whatsapp.com/send?text=' + encoded;
+
+      setStatus(id, 'opened', 'Otwarto WhatsApp');
+
+      // Try Web Share API if supported on mobile
+      if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+        try {
+          await navigator.share({
+            title: 'Christian Culture',
+            text: text
+          });
+          setStatus(id, 'sent', 'Wysłano pomyślnie');
+          showToast('Udostępniono przez systemowy dialog!');
+          return;
+        } catch (err) {
+          // If aborted by user or failed, fall back to direct WhatsApp link
+          if (err.name !== 'AbortError') {
+            window.open(waUrl, '_blank');
+          }
+        }
+      } else {
+        // Desktop / standard link
+        window.open(waUrl, '_blank');
+        showToast('Otwarto WhatsApp!');
+      }
+    }
+
+    async function copyMessage(id) {
+      const textarea = document.getElementById('text-' + id);
+      if (!textarea) return;
+      try {
+        await navigator.clipboard.writeText(textarea.value);
+        showToast('Skopiowano treść do schowka!');
+      } catch(e) {
+        textarea.select();
+        document.execCommand('copy');
+        showToast('Skopiowano treść do schowka!');
+      }
+    }
+
+    function markSent(id) {
+      setStatus(id, 'sent', 'Wysłano ręcznie (' + new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }) + ')');
+      showToast('Zarejestrowano wysłanie wiadomości!');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCharCounters();
+      loadSavedStatuses();
+      ['day22-web', 'day22-academy', 'day22-news'].forEach(id => {
+        const textarea = document.getElementById('text-' + id);
+        if (textarea) textarea.addEventListener('input', updateCharCounters);
+      });
+    });
+  </script>
+</body>
+</html>
