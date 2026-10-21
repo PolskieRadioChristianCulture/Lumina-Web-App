@@ -1,0 +1,24 @@
+/* A short discovery hint, not a permanent pulse. No layout or touch-target changes. */
+@media (max-width:767px) and (prefers-reduced-motion:no-preference) {
+  :is(.cc-mobile-edge-trigger,button[aria-controls="cc-mobile-edge-panel"])[aria-expanded="false"] {
+    animation:cc-edge-invite 1.8s ease-out .6s 2;
+  }
+  :is(.cc-mobile-edge-trigger,button[aria-controls="cc-mobile-edge-panel"])[aria-expanded="false"] > svg {
+    animation:cc-edge-plus-nod 1.8s ease-in-out .6s 2;
+    transform-origin:center;
+  }
+  :is(.cc-mobile-edge-trigger,button[aria-controls="cc-mobile-edge-panel"]):is(:hover,:focus-visible,:active),
+  :is(.cc-mobile-edge-trigger,button[aria-controls="cc-mobile-edge-panel"]):is(:hover,:focus-visible,:active) > svg {
+    animation:none;
+  }
+}
+@keyframes cc-edge-invite {
+  0%,100% { box-shadow:0 0 0 0 transparent; }
+  35% { box-shadow:0 0 0 5px color-mix(in srgb,currentColor 18%,transparent); }
+  70% { box-shadow:0 0 0 9px transparent; }
+}
+@keyframes cc-edge-plus-nod {
+  0%,35%,100% { transform:rotate(0deg); }
+  12% { transform:rotate(-10deg); }
+  24% { transform:rotate(8deg); }
+}
