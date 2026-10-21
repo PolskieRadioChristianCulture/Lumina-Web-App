@@ -38,7 +38,11 @@
     } else {
       $('lumiOpen')?.click();
       setTimeout(() => {
-        window.openDirectMessagesModal?.('commander') || window.switchMessengerMainTab?.('commander');
+        if (typeof window.openDirectMessagesModal === 'function') {
+          window.openDirectMessagesModal('commander');
+        } else {
+          window.switchMessengerMainTab?.('commander');
+        }
       }, 200);
     }
   }

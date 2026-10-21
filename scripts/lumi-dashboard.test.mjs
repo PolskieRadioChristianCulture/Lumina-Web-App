@@ -12,7 +12,7 @@ function fixture(loggedIn = false, commander = false) {
   const win = new Window({ url: 'https://polskieradio.cc/mess', settings: { disableJavaScriptFileLoading: true, disableCSSFileLoading: true, disableIframePageLoading: true } });
   windows.push(win); win.document.body.innerHTML = renderLumiDashboard();
   let user = loggedIn ? { uid: commander ? 'cezaryrgowski' : 'fixture-owner', email: commander ? 'nazirczarkes@gmail.com' : 'user@example.com', emailVerified: true } : null;
-  const snapshots = [], opens = [], radioStates = [], plays = [];
+  const snapshots = [], opens = [], radioStates = [], plays = [], timers = [];
   const people = [
     { id: 'formation-peer', slug: 'formation-peer', name: 'Próba Formacja', desc: 'Studium biblijne', badge: 'Formacja' },
     { id: 'mission-peer', slug: 'mission-peer', name: 'Próba Misja', desc: 'Misja i służba', badge: 'Misja' },
@@ -40,11 +40,39 @@ function fixture(loggedIn = false, commander = false) {
     play: () => { plays.push(radio.stationId); radio = { ...radio, playing: true, status: 'Odtwarza' }; radioStates.forEach(fn => fn(radio)); }
   };
   win.CCChatRadioReady = Promise.resolve();
-  vm.runInNewContext(source, { window: win, document: win.document, location: win.location, URL, console, setTimeout: () => 0 });
+  vm.runInNewContext(source, { window: win, document: win.document, location: win.location, URL, console, setTimeout: (callback, delay) => { timers.push({ callback, delay }); return timers.length; } });
   win.document.dispatchEvent(new win.Event('DOMContentLoaded'));
-  return { win, people, snapshots, opens, plays, setUser: next => { user = next; win.dispatchEvent(new win.CustomEvent('lumina-auth-state')); } };
+  return { win, people, snapshots, opens, plays, timers, setUser: next => { user = next; win.dispatchEvent(new win.CustomEvent('lumina-auth-state')); } };
 }
 const settle = async () => { for (let i = 0; i < 6; i++) await Promise.resolve(); };
+
+test('delayed commander opening uses the canonical opener once even when it returns undefined', () => {
+  const f = fixture(true, true);
+  delete f.win.openDirectMessagesModal;
+  let opens = 0, switches = 0;
+  f.win.document.getElementById('lumiOpen').addEventListener('click', () => {
+    f.win.openDirectMessagesModal = tab => { assert.equal(tab, 'commander'); opens++; };
+    f.win.switchMessengerMainTab = () => { switches++; };
+  });
+  f.win.document.getElementById('lumiOpenCommander').click();
+  const timer = f.timers.find(t => t.delay === 200);
+  assert.ok(timer, 'fallback waits for the canonical chat to load');
+  timer.callback();
+  assert.equal(opens, 1);
+  assert.equal(switches, 0, 'opening must not also switch/reinitialise the same room');
+});
+
+test('delayed commander opening retains the tab switch when the canonical opener is unavailable', () => {
+  const f = fixture(true, true);
+  delete f.win.openDirectMessagesModal;
+  let switches = 0;
+  f.win.document.getElementById('lumiOpen').addEventListener('click', () => {
+    f.win.switchMessengerMainTab = tab => { assert.equal(tab, 'commander'); switches++; };
+  });
+  f.win.document.getElementById('lumiOpenCommander').click();
+  f.timers.find(t => t.delay === 200).callback();
+  assert.equal(switches, 1);
+});
 
 test('reference dashboard is rendered by the canonical /mess generator, preserving native chat and installation', async () => {
   const output = renderLumiPage(await readFile('lumina.html', 'utf8'));
