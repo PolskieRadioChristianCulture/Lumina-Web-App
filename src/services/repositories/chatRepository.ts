@@ -25,13 +25,23 @@ import type { ChatMessage, DirectChatRoom } from "@/types/chat";
 const MESSAGES_COLLECTION = "lumina_direct_messages";
 const CHATS_COLLECTION = "lumina_chats";
 
+export type SendMessageResult =
+  | { status: "sent"; id: string }
+  | { status: "delivery_unconfirmed" }
+  | { status: "sent_preview_update_failed"; id: string };
+
 export class ChatRepository {
   /**
    * Subskrypcja na żywo do wiadomości w określonym pokoju czatu.
    * Pobiera najnowsze N wiadomości (orderBy timestamp desc, limit),
    * a następnie odwraca listę chronologicznie do renderowania w UI.
    */
-  subscribeToMessages(chatId: string, callback: (messages: ChatMessage[]) => void, messageLimit: number = 100): Unsubscribe {
+  subscribeToMessages(
+    chatId: string,
+    callback: (messages: ChatMessage[]) => void,
+    messageLimit: number = 100,
+    onError?: (error: Error) => void
+  ): Unsubscribe {
     if (!chatId) return () => {};
 
     const collRef = collection(db, MESSAGES_COLLECTION);
@@ -55,6 +65,7 @@ export class ChatRepository {
       },
       (err) => {
         console.warn(`[ChatRepository] Błąd subskrypcji wiadomości dla pokoju [${chatId}]:`, err);
+        onError?.(err);
       }
     );
   }
@@ -112,40 +123,48 @@ export class ChatRepository {
     senderAvatar: string, 
     text: string,
     receiverId?: string
-  ): Promise<string | null> {
+  ): Promise<SendMessageResult | null> {
     if (!chatId || !senderId || !text.trim()) return null;
 
+    const collRef = collection(db, MESSAGES_COLLECTION);
+    const trimmedText = text.trim();
+    const participants = [senderId, receiverId].filter(Boolean);
+    const msgData = {
+      chatId,
+      senderId,
+      senderName,
+      senderAvatar: senderAvatar || "lumina_icon.jpg",
+      receiverId: receiverId || "",
+      text: trimmedText,
+      timestamp: serverTimestamp(),
+      isRead: false,
+      status: "sent",
+      participants
+    };
+
+    let messageId: string;
     try {
-      const collRef = collection(db, MESSAGES_COLLECTION);
-      const msgData = {
-        chatId,
-        senderId,
-        senderName,
-        senderAvatar: senderAvatar || "lumina_icon.jpg",
-        receiverId: receiverId || "",
-        text: text.trim(),
-        timestamp: serverTimestamp(),
-        isRead: false,
-        status: "sent",
-        participants: [senderId, receiverId].filter(Boolean)
-      };
-
       const docRef = await addDoc(collRef, msgData);
+      messageId = docRef.id;
+    } catch (err) {
+      console.error(`[ChatRepository] Nie udało się potwierdzić wysłania wiadomości w pokoju [${chatId}]:`, err);
+      return { status: "delivery_unconfirmed" };
+    }
 
-      // Aktualizacja pokoju czatu (ostatnia wiadomość)
+    try {
       const chatDocRef = doc(db, CHATS_COLLECTION, chatId);
       await setDoc(chatDocRef, {
-        lastMessage: text.trim(),
+        lastMessage: trimmedText,
         lastMessageTime: serverTimestamp(),
-        participants: [senderId, receiverId].filter(Boolean),
+        participants,
         updatedAt: serverTimestamp()
       }, { merge: true });
-
-      return docRef.id;
     } catch (err) {
-      console.error(`[ChatRepository] Błąd wysyłania wiadomości w pokoju [${chatId}]:`, err);
-      return null;
+      console.error(`[ChatRepository] Wiadomość [${messageId}] wysłana, ale nie udało się zaktualizować podglądu pokoju [${chatId}]:`, err);
+      return { status: "sent_preview_update_failed", id: messageId };
     }
+
+    return { status: "sent", id: messageId };
   }
 
   /**

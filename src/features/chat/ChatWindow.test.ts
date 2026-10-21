@@ -2,12 +2,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import ChatWindow from "./ChatWindow.vue";
 import { chatRepository } from "@/services/repositories/chatRepository";
-import type { DirectChatRoom } from "@/types/chat";
+import type { ChatMessage, DirectChatRoom } from "@/types/chat";
 
 vi.mock("@/services/repositories/chatRepository", () => {
   return {
     chatRepository: {
-      subscribeToMessages: vi.fn((chatId, callback) => {
+      subscribeToMessages: vi.fn((chatId: string, callback: (messages: ChatMessage[]) => void) => {
         // Natychmiastowe wywołanie z przykładowymi wiadomościami
         callback([
           {
@@ -145,8 +145,147 @@ describe("ChatWindow.vue", () => {
     expect(wrapper.find(".chat-send-error-banner").exists()).toBe(true);
   });
 
+  it("ostrzega o niepotwierdzonym wysłaniu i zaleca sprawdzenie historii przed ponowieniem", async () => {
+    vi.mocked(chatRepository.sendMessage)
+      .mockResolvedValueOnce({ status: "delivery_unconfirmed" })
+      .mockResolvedValueOnce({ status: "sent", id: "retry-message-1" });
+
+    const wrapper = mount(ChatWindow, {
+      props: {
+        chat: baseChat,
+        currentUserId: "user_me",
+        currentUserName: "Ja"
+      }
+    });
+
+    const input = wrapper.find(".chat-input-field");
+    await input.setValue("Wiadomość o niepewnym statusie");
+    await wrapper.find(".chat-input-form").trigger("submit");
+
+    expect((input.element as HTMLInputElement).value).toBe("Wiadomość o niepewnym statusie");
+    expect(wrapper.find(".chat-send-error-banner").text()).toContain("sprawdź historię rozmowy przed ponowną próbą");
+    expect((wrapper.find(".btn-send-message").element as HTMLButtonElement).disabled).toBe(true);
+
+    await wrapper.find(".chat-input-form").trigger("submit");
+    expect(chatRepository.sendMessage).toHaveBeenCalledTimes(1);
+
+    await wrapper.find(".btn-confirm-delivery-check").trigger("click");
+    expect((wrapper.find(".btn-send-message").element as HTMLButtonElement).disabled).toBe(false);
+
+    await wrapper.find(".chat-input-form").trigger("submit");
+    expect(chatRepository.sendMessage).toHaveBeenCalledTimes(2);
+    expect((input.element as HTMLInputElement).value).toBe("");
+  });
+
+  it("wiąże niepewny szkic z pierwotnym czatem i odbiorcą po przełączeniu rozmowy", async () => {
+    const otherChat: DirectChatRoom = {
+      ...baseChat,
+      id: "room_2",
+      chatId: "room_2",
+      participants: ["user_me", "user_two"],
+      otherUserName: "Siostra Maria"
+    };
+    vi.mocked(chatRepository.sendMessage)
+      .mockResolvedValueOnce({ status: "delivery_unconfirmed" })
+      .mockResolvedValueOnce({ status: "sent", id: "other-message" })
+      .mockResolvedValueOnce({ status: "sent", id: "original-message" });
+
+    const wrapper = mount(ChatWindow, {
+      props: {
+        chat: baseChat,
+        currentUserId: "user_me",
+        currentUserName: "Ja"
+      }
+    });
+
+    const input = wrapper.find(".chat-input-field");
+    await input.setValue("Szkic dla pierwotnego rozmówcy");
+    await wrapper.find(".chat-input-form").trigger("submit");
+
+    expect(wrapper.find(".btn-confirm-delivery-check").exists()).toBe(true);
+    await wrapper.setProps({ chat: otherChat });
+    expect((input.element as HTMLInputElement).value).toBe("");
+    expect(wrapper.find(".btn-confirm-delivery-check").exists()).toBe(false);
+
+    await input.setValue("Nowa wiadomość dla innego rozmówcy");
+    await wrapper.find(".chat-input-form").trigger("submit");
+    expect(chatRepository.sendMessage).toHaveBeenNthCalledWith(
+      2,
+      "room_2",
+      "user_me",
+      "Ja",
+      "lumina_icon.jpg",
+      "Nowa wiadomość dla innego rozmówcy",
+      "user_two"
+    );
+
+    await wrapper.setProps({ chat: baseChat });
+    expect((input.element as HTMLInputElement).value).toBe("Szkic dla pierwotnego rozmówcy");
+    expect(wrapper.find(".btn-confirm-delivery-check").exists()).toBe(true);
+    await wrapper.find(".btn-confirm-delivery-check").trigger("click");
+    await wrapper.find(".chat-input-form").trigger("submit");
+
+    expect(chatRepository.sendMessage).toHaveBeenNthCalledWith(
+      3,
+      "room_1",
+      "user_me",
+      "Ja",
+      "lumina_icon.jpg",
+      "Szkic dla pierwotnego rozmówcy",
+      "user_other"
+    );
+  });
+
+  it("czyści pole po wysłaniu, którego nie udało się odzwierciedlić w podglądzie, i zabrania ponowienia", async () => {
+    vi.mocked(chatRepository.sendMessage).mockResolvedValue({
+      status: "sent_preview_update_failed",
+      id: "saved-message-1"
+    });
+
+    const wrapper = mount(ChatWindow, {
+      props: {
+        chat: baseChat,
+        currentUserId: "user_me",
+        currentUserName: "Ja"
+      }
+    });
+
+    const input = wrapper.find(".chat-input-field");
+    await input.setValue("Wiadomość zapisana");
+    await wrapper.find(".chat-input-form").trigger("submit");
+
+    expect((input.element as HTMLInputElement).value).toBe("");
+    expect(wrapper.find(".chat-send-error-banner").text()).toContain("Wiadomość została wysłana");
+    expect(wrapper.find(".chat-send-error-banner").text()).toContain("Nie wysyłaj jej ponownie");
+  });
+
+  it("pokazuje błąd ładowania zamiast stanu pustej rozmowy i pozwala ponowić subskrypcję", async () => {
+    vi.mocked(chatRepository.subscribeToMessages).mockImplementationOnce(
+      (_chatId, _callback, _messageLimit, onError) => {
+        onError?.(new Error("permission-denied"));
+        return vi.fn();
+      }
+    );
+
+    const wrapper = mount(ChatWindow, {
+      props: {
+        chat: baseChat,
+        currentUserId: "user_me",
+        currentUserName: "Ja"
+      }
+    });
+
+    expect(wrapper.find('[role="alert"]').text()).toContain("Nie udało się załadować wiadomości");
+    expect(wrapper.find(".empty-messages-state").exists()).toBe(false);
+
+    await wrapper.find(".btn-retry-messages").trigger("click");
+
+    expect(chatRepository.subscribeToMessages).toHaveBeenCalledTimes(2);
+    expect(wrapper.find(".chat-load-error-banner").exists()).toBe(false);
+  });
+
   it("P2: czyści pole tekstowe po udanym wysłaniu wiadomości", async () => {
-    vi.mocked(chatRepository.sendMessage).mockResolvedValue("new_msg_id_777");
+    vi.mocked(chatRepository.sendMessage).mockResolvedValue({ status: "sent", id: "new_msg_id_777" });
 
     const wrapper = mount(ChatWindow, {
       props: {

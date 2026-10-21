@@ -18,9 +18,29 @@ const messages = ref<ChatMessage[]>([]);
 const messageText = ref("");
 const isSending = ref(false);
 const sendError = ref<string | null>(null);
+const pendingDeliveries = ref<Record<string, { chatId: string; receiverId: string; text: string }>>({});
+const messageLoadError = ref(false);
 const messagesContainer = ref<HTMLElement | null>(null);
 
 let unsubscribe: (() => void) | null = null;
+const draftsByTarget = new Map<string, string>();
+const sendErrorsByTarget = new Map<string, string>();
+
+function chatIdFor(chat: DirectChatRoom): string {
+  return chat.chatId || chat.id;
+}
+
+function receiverIdFor(chat: DirectChatRoom): string {
+  return chat.participants?.find((participant) => participant !== props.currentUserId) || "";
+}
+
+function targetKeyFor(chat: DirectChatRoom): string {
+  return JSON.stringify([chatIdFor(chat), receiverIdFor(chat)]);
+}
+
+const activeTargetKey = computed(() => targetKeyFor(props.chat));
+const currentPendingDelivery = computed(() => pendingDeliveries.value[activeTargetKey.value]);
+const deliveryUnconfirmed = computed(() => Boolean(currentPendingDelivery.value));
 
 const quickEmojis = ["🙏", "❤️", "✨", "🕊️", "🔥", "🙌"];
 
@@ -64,12 +84,21 @@ function scrollToBottom() {
 function startSubscription(chatId: string) {
   if (unsubscribe) unsubscribe();
   messages.value = [];
-  unsubscribe = chatRepository.subscribeToMessages(chatId, (loaded) => {
-    messages.value = loaded;
-    scrollToBottom();
-    // Oznaczamy odebrane wiadomości jako przeczytane przez odbiorcę
-    chatRepository.markMessagesAsRead(chatId, props.currentUserId);
-  });
+  messageLoadError.value = false;
+  unsubscribe = chatRepository.subscribeToMessages(
+    chatId,
+    (loaded) => {
+      messages.value = loaded;
+      messageLoadError.value = false;
+      scrollToBottom();
+      // Oznaczamy odebrane wiadomości jako przeczytane przez odbiorcę
+      chatRepository.markMessagesAsRead(chatId, props.currentUserId);
+    },
+    undefined,
+    () => {
+      messageLoadError.value = true;
+    }
+  );
 }
 
 watch(
@@ -80,18 +109,34 @@ watch(
   { immediate: true }
 );
 
+watch(activeTargetKey, (newTarget, oldTarget) => {
+  if (oldTarget) {
+    if (!pendingDeliveries.value[oldTarget]) {
+      draftsByTarget.set(oldTarget, messageText.value);
+    }
+  }
+
+  const pendingDelivery = pendingDeliveries.value[newTarget];
+  messageText.value = pendingDelivery?.text ?? draftsByTarget.get(newTarget) ?? "";
+  sendError.value = pendingDelivery?.text
+    ? "Nie udało się potwierdzić wysłania. Wiadomość mogła zostać zapisana — sprawdź historię rozmowy przed ponowną próbą. Tekst zachowano."
+    : sendErrorsByTarget.get(newTarget) || null;
+});
+
 onUnmounted(() => {
   if (unsubscribe) unsubscribe();
 });
 
 async function handleSendMessage() {
-  if (!messageText.value.trim() || isSending.value) return;
+  if (!messageText.value.trim() || isSending.value || deliveryUnconfirmed.value) return;
 
   const text = messageText.value.trim();
   const chatId = props.chat.chatId || props.chat.id;
   const otherUserId = props.chat.participants?.find((p) => p !== props.currentUserId) || "";
+  const targetKey = activeTargetKey.value;
 
-  sendError.value = null;
+  sendErrorsByTarget.delete(targetKey);
+  if (activeTargetKey.value === targetKey) sendError.value = null;
   isSending.value = true;
 
   try {
@@ -104,21 +149,56 @@ async function handleSendMessage() {
       otherUserId
     );
 
-    if (res) {
-      // Sukces - czyścimy pole tekstowe i resetujemy ewentualne błędy
-      messageText.value = "";
-      sendError.value = null;
-      scrollToBottom();
+    if (res?.status === "sent") {
+      draftsByTarget.delete(targetKey);
+      sendErrorsByTarget.delete(targetKey);
+      if (activeTargetKey.value === targetKey) {
+        messageText.value = "";
+        sendError.value = null;
+        scrollToBottom();
+      }
+    } else if (res?.status === "sent_preview_update_failed") {
+      draftsByTarget.delete(targetKey);
+      const error = "Wiadomość została wysłana, ale nie udało się zaktualizować podglądu rozmowy. Nie wysyłaj jej ponownie.";
+      sendErrorsByTarget.set(targetKey, error);
+      if (activeTargetKey.value === targetKey) {
+        messageText.value = "";
+        sendError.value = error;
+        scrollToBottom();
+      }
+    } else if (res?.status === "delivery_unconfirmed") {
+      const error = "Nie udało się potwierdzić wysłania. Wiadomość mogła zostać zapisana — sprawdź historię rozmowy przed ponowną próbą. Tekst zachowano.";
+      pendingDeliveries.value = {
+        ...pendingDeliveries.value,
+        [targetKey]: { chatId, receiverId: otherUserId, text }
+      };
+      sendErrorsByTarget.set(targetKey, error);
+      if (activeTargetKey.value === targetKey) sendError.value = error;
     } else {
-      // Błąd - ZACHOWUJEMY wpisaną treść w polu, aby użytkownik jej nie stracił!
-      sendError.value = "Nie udało się zapisać wiadomości na serwerze. Twój tekst został zachowany — spróbuj wysłać ponownie.";
+      const error = "Nie udało się rozpocząć zapisu wiadomości. Twój tekst został zachowany.";
+      sendErrorsByTarget.set(targetKey, error);
+      if (activeTargetKey.value === targetKey) sendError.value = error;
     }
   } catch (err) {
     console.error("[ChatWindow] Błąd podczas wysyłania wiadomości:", err);
-    sendError.value = "Błąd połączenia z siecią. Twój tekst został zachowany — spróbuj ponownie.";
+    const error = "Nie udało się potwierdzić wysłania. Wiadomość mogła zostać zapisana — sprawdź historię rozmowy przed ponowną próbą. Tekst zachowano.";
+    pendingDeliveries.value = {
+      ...pendingDeliveries.value,
+      [targetKey]: { chatId, receiverId: otherUserId, text }
+    };
+    sendErrorsByTarget.set(targetKey, error);
+    if (activeTargetKey.value === targetKey) sendError.value = error;
   } finally {
     isSending.value = false;
   }
+}
+
+function acknowledgeDeliveryCheck() {
+  draftsByTarget.set(activeTargetKey.value, messageText.value);
+  sendErrorsByTarget.delete(activeTargetKey.value);
+  const { [activeTargetKey.value]: _acknowledged, ...remainingDeliveries } = pendingDeliveries.value;
+  pendingDeliveries.value = remainingDeliveries;
+  sendError.value = null;
 }
 
 function addEmoji(emoji: string) {
@@ -167,7 +247,18 @@ function addEmoji(emoji: string) {
 
     <!-- Messages Container -->
     <div ref="messagesContainer" class="messages-container">
-      <div v-if="messages.length === 0" class="empty-messages-state">
+      <div v-if="messageLoadError" class="chat-load-error-banner" role="alert">
+        <span>Nie udało się załadować wiadomości. Sprawdź połączenie i spróbuj ponownie.</span>
+        <button
+          type="button"
+          class="btn-retry-messages"
+          @click="startSubscription(chat.chatId || chat.id)"
+        >
+          Spróbuj ponownie
+        </button>
+      </div>
+
+      <div v-if="messages.length === 0 && !messageLoadError" class="empty-messages-state">
         <i class="fa-solid fa-hand-holding-heart empty-chat-icon"></i>
         <p>Rozpocznij budującą rozmowę z {{ chat.otherUserName || 'bratem/siostrą' }} ✨</p>
       </div>
@@ -217,7 +308,16 @@ function addEmoji(emoji: string) {
     <div v-if="sendError" class="chat-send-error-banner" role="alert">
       <i class="fa-solid fa-triangle-exclamation error-icon"></i>
       <span class="error-text">{{ sendError }}</span>
+      <button
+        v-if="deliveryUnconfirmed"
+        type="button"
+        class="btn-confirm-delivery-check"
+        @click="acknowledgeDeliveryCheck"
+      >
+        Sprawdziłem historię — pozwól ponowić
+      </button>
       <button 
+        v-if="!deliveryUnconfirmed"
         type="button" 
         class="btn-dismiss-error" 
         @click="sendError = null" 
@@ -235,12 +335,12 @@ function addEmoji(emoji: string) {
           type="text" 
           placeholder="Napisz budującą wiadomość..." 
           class="chat-input-field"
-          :disabled="isSending"
+          :disabled="isSending || deliveryUnconfirmed"
         />
         <button 
           type="submit" 
           class="btn-send-message" 
-          :disabled="!messageText.trim() || isSending"
+          :disabled="!messageText.trim() || isSending || deliveryUnconfirmed"
           title="Wyślij wiadomość"
         >
           <i class="fa-solid fa-paper-plane"></i>
@@ -363,6 +463,29 @@ function addEmoji(emoji: string) {
   margin-bottom: 10px;
 }
 
+.chat-load-error-banner {
+  margin: auto;
+  max-width: 32rem;
+  padding: 16px;
+  text-align: center;
+  color: #fca5a5;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+}
+
+.btn-retry-messages {
+  display: block;
+  min-height: 44px;
+  margin: 12px auto 0;
+  padding: 8px 16px;
+  color: #ffffff;
+  background: rgba(220, 38, 38, 0.55);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 .message-bubble-wrapper {
   display: flex;
   width: 100%;
@@ -482,6 +605,16 @@ function addEmoji(emoji: string) {
   cursor: pointer;
   font-size: 0.9rem;
   padding: 0 4px;
+}
+
+.btn-confirm-delivery-check {
+  min-height: 44px;
+  padding: 8px 12px;
+  color: #ffffff;
+  background: rgba(220, 38, 38, 0.55);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .chat-input-bar {

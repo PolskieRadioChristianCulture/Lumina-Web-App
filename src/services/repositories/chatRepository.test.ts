@@ -1,8 +1,46 @@
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
 import { ChatRepository } from "./chatRepository";
+
+const firestoreMocks = vi.hoisted(() => ({
+  collection: vi.fn(),
+  addDoc: vi.fn(),
+  doc: vi.fn(),
+  setDoc: vi.fn(),
+  serverTimestamp: vi.fn()
+}));
+
+vi.mock("firebase/firestore", () => ({
+  collection: firestoreMocks.collection,
+  addDoc: firestoreMocks.addDoc,
+  doc: firestoreMocks.doc,
+  setDoc: firestoreMocks.setDoc,
+  serverTimestamp: firestoreMocks.serverTimestamp,
+  getDocs: vi.fn(),
+  updateDoc: vi.fn(),
+  query: vi.fn(),
+  where: vi.fn(),
+  orderBy: vi.fn(),
+  limit: vi.fn(),
+  onSnapshot: vi.fn()
+}));
+
+vi.mock("../firebase", () => ({ db: {} }));
 
 describe("ChatRepository", () => {
   const repo = new ChatRepository();
+
+  beforeEach(() => {
+    vi.resetAllMocks();
+    firestoreMocks.collection.mockReturnValue({ name: "messages" });
+    firestoreMocks.addDoc.mockResolvedValue({ id: "message-123" });
+    firestoreMocks.doc.mockReturnValue({ name: "chat" });
+    firestoreMocks.setDoc.mockResolvedValue(undefined);
+    firestoreMocks.serverTimestamp.mockReturnValue("server-time");
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   it("powinien generować spójny identyfikator pokoju dla obu uczestników niezależnie od kolejności", () => {
     const id1 = repo.getChatRoomId("user_alice", "user_bob");
@@ -27,6 +65,32 @@ describe("ChatRepository", () => {
 
     const res3 = await repo.sendMessage("room1", "user1", "User", "avatar.jpg", "   ");
     expect(res3).toBeNull();
+  });
+
+  it("zgłasza niepotwierdzony status gdy addDoc odrzuci zapis", async () => {
+    firestoreMocks.addDoc.mockRejectedValueOnce(new Error("network"));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const result = await repo.sendMessage("room1", "user1", "User", "", "Hej");
+
+    expect(result).toEqual({ status: "delivery_unconfirmed" });
+    expect(firestoreMocks.setDoc).not.toHaveBeenCalled();
+  });
+
+  it("zwraca wysłane ID i osobny status, gdy aktualizacja ostatniej wiadomości się nie powiedzie", async () => {
+    firestoreMocks.setDoc.mockRejectedValueOnce(new Error("permission-denied"));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const result = await repo.sendMessage("room1", "user1", "User", "", "Hej");
+
+    expect(firestoreMocks.addDoc).toHaveBeenCalledOnce();
+    expect(result).toEqual({ status: "sent_preview_update_failed", id: "message-123" });
+  });
+
+  it("zwraca sukces po zapisaniu wiadomości i podglądu pokoju", async () => {
+    const result = await repo.sendMessage("room1", "user1", "User", "", "Hej");
+
+    expect(result).toEqual({ status: "sent", id: "message-123" });
   });
 
   it("powinien bezpiecznie zwracać no-op unsubscribe gdy chatId jest pusty", () => {
