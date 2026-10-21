@@ -45,3 +45,36 @@ test('static edge: one instance, native modal focus, full menu handoff, theme an
     assert.equal(await page.evaluate(()=>document.body.style.overflow),'');
   } finally {await browser.close();}
 });
+
+test('LUMINA edge: guest visibility, canonical light theme, member UI handoff and no /mess injection', async () => {
+  const browser=await chromium.launch({headless:true,channel:'chrome'});
+  try {
+    const page=await browser.newPage({viewport:{width:390,height:640}});
+    await page.route('https://edge.invalid/**',route=>route.fulfill({contentType:'text/html',body:'<body class="user-is-guest"><script data-cc-edge-profile="lumina"></script><div class="nav-menu-wrapper"><button id="topNavMenuBtn">Menu</button></div></body>'}));
+    const code=fs.readFileSync('js/cc-mobile-edge.js','utf8');
+    await page.goto('https://edge.invalid/lumina');
+    await page.addStyleTag({content:fs.readFileSync('css/cc-mobile-edge.css','utf8')+' .user-is-guest .nav-menu-wrapper{display:none}'});
+    await page.addScriptTag({content:code});
+    const trigger=page.locator('.cc-mobile-edge-trigger'),panel=page.locator('.cc-mobile-edge');
+    await trigger.click();
+    assert.equal(await panel.getByRole('button',{name:'Pełne menu — wszystkie funkcje',exact:true}).isVisible(),false);
+    assert.equal(await panel.getByRole('link',{name:'Konto i logowanie LUMINA',exact:true}).getAttribute('href'),'/lumina-login');
+    await page.evaluate(()=>document.documentElement.dataset.luminaTheme='light');
+    assert.equal(await panel.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(255, 250, 255)');
+    await page.keyboard.press('Escape');
+    // Synthetic UI state only: no authentication, account lookup or private messages.
+    await page.evaluate(()=>{
+      document.body.classList.remove('user-is-guest');
+      document.querySelector('#topNavMenuBtn').onclick=e=>{e.stopPropagation();document.body.dataset.originalMenu='open';};
+      document.addEventListener('click',e=>{if(!e.target.closest('.nav-menu-wrapper'))delete document.body.dataset.originalMenu;});
+    });
+    await trigger.click();
+    await panel.getByRole('button',{name:'Pełne menu — wszystkie funkcje',exact:true}).click();
+    assert.equal(await page.evaluate(()=>document.body.dataset.originalMenu),'open');
+    await page.goto('https://edge.invalid/mess');
+    await page.addScriptTag({content:code});
+    assert.equal(await page.locator('.cc-mobile-edge-trigger').count(),0);
+    assert.equal(await page.locator('dialog').count(),0);
+    assert.equal(await page.locator('#topNavMenuBtn').getAttribute('data-cc-edge-mounted'),null);
+  } finally {await browser.close();}
+});

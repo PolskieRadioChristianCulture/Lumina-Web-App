@@ -13,6 +13,7 @@
     calendar: 'M4 5h16v16H4ZM8 2v6M16 2v6M4 11h16M8 15h2M14 15h2',
     play: 'm8 5 11 7-11 7Z', search: 'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',
     menu: 'M4 6h16M4 12h16M4 18h16', board: 'M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z',
+    user: 'M20 21v-2a6 6 0 0 0-6-6h-4a6 6 0 0 0-6 6v2M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0',
   };
   const icon = name => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -30,7 +31,7 @@
     ['search','Szukaj w ekosystemie','/szukaj'],
   ];
 
-  function mount({legacy, placement = legacy, secondary = [], profile = 'home', items = commonItems}) {
+  function mount({legacy, placement = legacy, secondary = [], profile = 'home', items = commonItems, canUseFullMenu = () => true}) {
     if (!(legacy instanceof HTMLElement) || !(placement instanceof HTMLElement) || legacy.dataset.ccEdgeMounted || document.getElementById('cc-mobile-edge-dialog') || typeof HTMLDialogElement === 'undefined' || !HTMLDialogElement.prototype.showModal) return null;
     const mobile = matchMedia('(max-width: 767px)');
     const dialog = document.createElement('dialog');
@@ -41,6 +42,7 @@
     const trigger = document.createElement('button');
     trigger.type = 'button';
     trigger.className = 'cc-mobile-edge-trigger';
+    trigger.dataset.profile = profile;
     trigger.setAttribute('aria-label','Otwórz panel nawigacji');
     trigger.setAttribute('aria-haspopup','dialog');
     trigger.setAttribute('aria-controls',dialog.id);
@@ -76,10 +78,13 @@
       if (current === url.pathname && !url.hash) a.setAttribute('aria-current','page');
       a.addEventListener('click',close); nav.append(a);
     }
-    button('menu','Pełne menu — wszystkie funkcje',() => { close(); legacy.click(); });
+    const fullMenu = button('menu','Pełne menu — wszystkie funkcje',event => {
+      event.stopPropagation(); close(); if (canUseFullMenu()) legacy.click();
+    });
     trigger.addEventListener('click',() => {
       if (!mobile.matches || dialog.open || document.querySelector('dialog[open]')) return;
       previousFocus = document.activeElement;
+      fullMenu.hidden = !canUseFullMenu();
       restoreOverflow = document.body.style.overflow;
       dialog.showModal();
       active = true;
@@ -87,7 +92,7 @@
       trigger.setAttribute('aria-expanded','true');
     });
     dialog.addEventListener('cancel',e => { e.preventDefault(); close(); });
-    dialog.addEventListener('close',cleanup);
+    dialog.addEventListener('close',() => { if (!dialog.open) cleanup(); });
     dialog.addEventListener('click',e => {
       const r = dialog.getBoundingClientRect();
       if (e.target === dialog && (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)) close();
@@ -111,4 +116,12 @@
   window.CCMobileEdge = Object.freeze({mount});
   const script = document.querySelector('script[data-cc-edge-profile]');
   if (script?.dataset.ccEdgeProfile === 'home') mount({legacy:document.getElementById('actionsToggleBtn'),placement:document.getElementById('hamburgerBtn'),secondary:[document.getElementById('hamburgerBtn')]});
+  // /mess is generated from lumina.html but retains its dedicated app navigation.
+  if (script?.dataset.ccEdgeProfile === 'lumina' && /^\/lumina(?:\.html)?\/?$/i.test(location.pathname)) {
+    const legacy = document.getElementById('topNavMenuBtn');
+    mount({legacy,placement:legacy?.closest('.nav-menu-wrapper'),profile:'lumina',canUseFullMenu:()=>!document.body.classList.contains('user-is-guest'),items:[
+      ['users','LUMINA — społeczność','/lumina'], ['board','Tablica LUMINA','/tablica'],
+      ['chat','LUMI Messenger','/mess'], ['user','Konto i logowanie LUMINA','/lumina-login'], ...commonItems.filter(item=>!['users','chat'].includes(item[0])),
+    ]});
+  }
 })();

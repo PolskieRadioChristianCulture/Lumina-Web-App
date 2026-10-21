@@ -10,6 +10,10 @@
   box-shadow:8px 0 32px #0008; scrollbar-width:thin;
 }
 .cc-mobile-edge::backdrop { background:#0009; backdrop-filter:blur(2px); }
+.cc-mobile-edge[data-profile="lumina"] { --edge-bg:#0b1120; --edge-text:#f3e8ff; --edge-accent:#c084fc; }
+html[data-theme="light"] .cc-mobile-edge[data-profile="lumina"],body[data-theme="light"] .cc-mobile-edge[data-profile="lumina"] {
+  --edge-bg:#fffaff; --edge-text:#291a39; --edge-accent:#7e22ce;
+}
 .cc-mobile-edge nav {
   display:flex; flex-direction:column; align-items:center; gap:4px;
   min-height:100%; box-sizing:border-box;
@@ -25,6 +29,10 @@
 .cc-mobile-edge svg,.cc-mobile-edge-trigger svg { width:22px; height:22px; flex-shrink:0; }
 .cc-mobile-edge nav [aria-current="page"] { color:var(--edge-accent); background:#ffffff12; border-left:3px solid var(--edge-accent); }
 .cc-mobile-edge nav :is(a,button):hover { background:#ffffff18; }
+.cc-mobile-edge nav [hidden] { display:none!important; }
+html[data-lumina-theme="light"] .cc-mobile-edge[data-profile="lumina"] {
+  --edge-bg:#fffaff; --edge-text:#291a39; --edge-accent:#7e22ce;
+}
 .cc-mobile-edge nav :is(a,button):focus-visible,.cc-mobile-edge-trigger:focus-visible { outline:2px solid var(--edge-accent,#d4af37); outline-offset:-2px; }
 body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edge,body.light-mode .cc-mobile-edge {
   --edge-bg:#fffdf7; --edge-text:#272016; --edge-accent:#76570b;
@@ -37,4 +45,7 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
     box-sizing:border-box; border:1px solid #d4af3766; border-radius:50%;
     background:#101010; color:#e2cc9a; cursor:pointer; touch-action:manipulation;
   }
+  .cc-mobile-edge-trigger[data-profile="lumina"] { background:#171126; color:#e9d5ff; border-color:#a855f780; }
+  html[data-lumina-theme="light"] .cc-mobile-edge-trigger[data-profile="lumina"] { background:#fffaff; color:#7e22ce; border-color:#7e22ce66; }
+  html[data-theme="light"] .cc-mobile-edge-trigger[data-profile="lumina"] { background:#fffaff; color:#7e22ce; border-color:#7e22ce66; }
 }

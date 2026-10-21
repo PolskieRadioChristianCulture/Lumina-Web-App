@@ -25,11 +25,18 @@ try {
     const trigger=page.locator('.cc-mobile-edge-trigger');
     await trigger.waitFor({state:'visible'});
     assert.equal(await trigger.count(),1);
+    const triggerSize=await trigger.boundingBox();
+    assert.ok(triggerSize.width>=44&&triggerSize.height>=44);
+    if(process.env.CC_EDGE_THEME) await page.evaluate(theme=>{
+      document.documentElement.dataset.theme=theme;
+      document.documentElement.dataset.luminaTheme=theme;
+    },process.env.CC_EDGE_THEME);
     await trigger.click();
     const panel=page.locator('#cc-mobile-edge-dialog');
     assert.equal(await panel.isVisible(),true);
     assert.ok(await panel.evaluate(el=>el.matches(':modal')));
-    const sizes=await panel.locator('a,button').evaluateAll(els=>els.map(el=>({w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height})));
+    if(routePath==='/lumina'&&process.env.CC_EDGE_THEME) assert.equal(await panel.evaluate(el=>getComputedStyle(el).backgroundColor),process.env.CC_EDGE_THEME==='dark'?'rgb(11, 17, 32)':'rgb(255, 250, 255)');
+    const sizes=await panel.locator('a:visible,button:visible').evaluateAll(els=>els.map(el=>({w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height})));
     assert.ok(sizes.every(s=>s.w>=44&&s.h>=44));
     assert.equal(await panel.locator('[aria-current="page"]').getAttribute('href'),routePath);
     if(width===390&&process.env.CC_EDGE_SCREENSHOT) await page.screenshot({path:process.env.CC_EDGE_SCREENSHOT});
@@ -37,19 +44,20 @@ try {
     assert.equal(await panel.isVisible(),false);
     assert.equal(await page.evaluate(()=>document.body.style.overflow),'');
     await trigger.click();
-    await panel.getByRole('button',{name:'Pełne menu — wszystkie funkcje',exact:true}).click();
     if(routePath==='/') {
+      await panel.getByRole('button',{name:'Pełne menu — wszystkie funkcje',exact:true}).click();
       await page.locator('#actionsList.open').waitFor({state:'visible'});
       await page.locator('#actionsCloseBtn').click();
     } else {
-      assert.equal(await page.locator('#topNavDrawer').isVisible(),true);
-      await page.locator('#topNavMenuBtn').evaluate(el=>el.click());
+      assert.equal(await panel.getByRole('link',{name:'Konto i logowanie LUMINA',exact:true}).getAttribute('href'),'/lumina-login');
+      assert.equal(await panel.getByRole('button',{name:'Pełne menu — wszystkie funkcje',exact:true}).isVisible(),false,'guest-only presentation must not reveal the hidden member menu');
+      await page.keyboard.press('Escape');
     }
-    console.log(`PASS ${base}${routePath} ${width}px: modal, touch, route, Escape, full menu`);
+    console.log(`PASS ${base}${routePath} ${width}px: modal, touch, route, Escape, ${routePath==='/'?'full menu':'guest login entry'}`);
   }
   await page.setViewportSize({width:1280,height:900});
   await page.waitForTimeout(40);
   assert.equal(await page.locator('.cc-mobile-edge-trigger').isVisible(),false);
-  assert.equal(await page.locator(routePath==='/'?'#actionsToggleBtn':'#topNavMenuBtn').isVisible(),true);
+  if(routePath==='/') assert.equal(await page.locator('#actionsToggleBtn').isVisible(),true);
   console.log('PASS desktop: original navigation preserved');
 } finally {await browser.close();}
