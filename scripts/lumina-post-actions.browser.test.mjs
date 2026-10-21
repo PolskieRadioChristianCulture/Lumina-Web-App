@@ -71,8 +71,8 @@ test('post actions: only heart/comments/Facebook, disclosure preserves functions
 test('both board themes load exactly one matching enhancement pair, without changing auth or renderer',()=>{
   for(const file of ['lumina-tablica.html','lumina-tablica-light.html']){
     const html=fs.readFileSync(file,'utf8');
-    assert.equal((html.match(/src="\/js\/lumina-post-actions\.js\?v=20261021_1"/g)||[]).length,1);
-    assert.equal((html.match(/href="\/css\/lumina-post-actions\.css\?v=20261021_1"/g)||[]).length,1);
+    assert.equal((html.match(/src="\/js\/lumina-post-actions\.js\?v=20261021_2"/g)||[]).length,1);
+    assert.equal((html.match(/href="\/css\/lumina-post-actions\.css\?v=20261021_2"/g)||[]).length,1);
     assert.ok(html.includes('window.buildPostShareDockHtml = function(item)'));
   }
 });

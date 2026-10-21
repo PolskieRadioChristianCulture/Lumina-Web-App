@@ -2928,12 +2928,13 @@
                 text-align: center !important;
                 vertical-align: middle !important;
             }
-            .post-action-btn.action-icon-only i,
-            .post-action-btn.action-comments i,
-            .post-action-btn.action-story i,
-            .post-action-btn.action-report i,
-            .post-action-btn.action-share i,
-            .post-action-btn.action-pin i {
+            /* Ikony w glownym pasku (poza overflow) — koła 40px */
+            .post-action-btn.action-icon-only:not(.cc-post-overflow *) i,
+            .post-action-btn.action-comments:not(.cc-post-overflow *) i,
+            .post-action-btn.action-story:not(.cc-post-overflow *) i,
+            .post-action-btn.action-report:not(.cc-post-overflow *) i,
+            .post-action-btn.action-share:not(.cc-post-overflow *) i,
+            .post-action-btn.action-pin:not(.cc-post-overflow *) i {
                 width: 100% !important;
                 height: 100% !important;
                 display: flex !important;
@@ -2941,6 +2942,28 @@
                 justify-content: center !important;
                 margin: 0 auto !important;
                 padding: 0 !important;
+            }
+            /* Reset ikon w overflow — zapobiega rozciaganiu przyciskow Story i Report */
+            .cc-post-overflow .post-action-btn.action-story i,
+            .cc-post-overflow .post-action-btn.action-report i,
+            .cc-post-overflow .post-action-btn.action-icon-only i,
+            .cc-post-overflow .post-action-btn.action-comments i,
+            .cc-post-overflow .post-action-btn.action-share i,
+            .cc-post-overflow .post-action-btn.action-pin i,
+            .cc-post-overflow :is(button, a) i {
+                width: 20px !important;
+                min-width: 20px !important;
+                max-width: 20px !important;
+                height: 20px !important;
+                min-height: 20px !important;
+                max-height: 20px !important;
+                line-height: 20px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                flex: 0 0 20px !important;
             }
             .post-action-btn .btn-text,
             .post-action-btn.action-comments .btn-text,
@@ -5259,8 +5282,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
   body .lumina-nav :is(.nav-circle-btn, .notif-bell-btn, .nav-menu-btn) { width: 40px !important; height: 40px !important; min-width: 40px !important; flex-basis: 40px !important; }
 }
 </style>
-<link rel="stylesheet" href="/css/lumina-post-actions.css?v=20261021_1">
-<script defer src="/js/lumina-post-actions.js?v=20261021_1"></script>
+<link rel="stylesheet" href="/css/lumina-post-actions.css?v=20261021_2">
+<script defer src="/js/lumina-post-actions.js?v=20261021_2"></script>
 </head>
 <body>
 
