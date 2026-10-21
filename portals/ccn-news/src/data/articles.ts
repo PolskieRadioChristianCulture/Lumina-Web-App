@@ -120,7 +120,6 @@ export const INITIAL_ARTICLES: Article[] = [
     "dateFormatted": "21 października 2026",
     "imageUrl": "/images/news/art-prosicie-a-bedzie-wam-dane.jpg",
     "imageCaption": "Cezary Rogowski — eM Motywacja Christian Culture: Proście, a będzie wam dane! Fot. EkoCC SDS / Christian Culture",
-    "readTime": "6 min",
     "readTimeMinutes": 6,
     "isHero": true,
     "isPopular": true,
@@ -138,23 +137,25 @@ export const INITIAL_ARTICLES: Article[] = [
       "rozwój osobisty",
       "pokój serca"
     ],
-    "scriptureReference": "Mt 7,7–11; Mt 26,36–46; Jk 1,5; 1 J 5,14–15; 2 Kor 12,7–10; Ef 3,20; Prz 3,5–6; Rz 8,38–39 (UBG)",
-    "sourceCitation": "eM — Motywacja Christian Culture | polskieradio.cc/eM",
-    "relatedCourse": {
-      "title": "eM • Motywacja Christian Culture — Odkryj programy przemiany",
-      "url": "/em"
+    "scriptureReference": {
+      "verse": "Mt 7,7–11; Mt 26,36–46; Jk 1,5; 1 J 5,14–15; 2 Kor 12,7–10; Ef 3,20; Prz 3,5–6; Rz 8,38–39 (UBG)",
+      "text": ""
+    },
+    "sourceCitation": {
+      "sourceName": "eM — Motywacja Christian Culture",
+      "sourceUrl": "https://polskieradio.cc/em"
     },
     "resourceLinks": [
       {
-        "title": "Pobierz bezpłatny kompletny pakiet (DOCX + TXT + Grafika 4K)",
+        "label": "Pobierz bezpłatny kompletny pakiet (DOCX + TXT + Grafika 4K)",
         "url": "/pakiety/eM_Prosicie_a_bedzie_wam_dane_Kompletny_Pakiet.zip"
       },
       {
-        "title": "eM • Motywacja Christian Culture",
+        "label": "eM • Motywacja Christian Culture",
         "url": "/em"
       },
       {
-        "title": "Akademia Biblijna CC",
+        "label": "Akademia Biblijna CC",
         "url": "/akademia"
       }
     ]
@@ -216,7 +217,6 @@ export const INITIAL_ARTICLES: Article[] = [
     "dateFormatted": "21 października 2026",
     "imageUrl": "/images/news/survival-christian-culture-przygotowanie-na-trudne-czasy.jpg",
     "imageCaption": "Cezary Rogowski — inauguracja projektu SURVIVAL Christian Culture na tle górskiego krajobrazu i oficjalnego symbolu 3D.",
-    "readTime": "8 min czytania",
     "readTimeMinutes": 8,
     "isHero": true,
     "isPopular": true,
@@ -391,7 +391,7 @@ export const INITIAL_ARTICLES: Article[] = [
   "dateFormatted": "21 października 2026",
   "imageUrl": "/images/news/nie-czekaj-az-zycie-sie-zmieni-em-hero.jpg",
   "imageCaption": "Cezary Rogowski na premierze projektu eM — Motywacja Christian Culture (@MCC). Scena z trójwymiarowym symbolem eM.",
-  "readTime": "7 min czytania",
+  "readTimeMinutes": 7,
   "tags": [
     "eM",
     "motywacja",
@@ -465,7 +465,7 @@ export const INITIAL_ARTICLES: Article[] = [
       "dateFormatted": "20 października 2026",
       "imageUrl": "/images/news/paryz-godzina-policyjna-protesty-francja-biblia.jpg",
       "imageCaption": "Fotoreportaż prasowy CCN News: Nocny Paryż podczas protestów pod godziną policyjną — płonące barykady na bulwarze, dym i kordon służb na tle architektury Haussmanna (20.10.2026).",
-      "readTime": "6 min czytania",
+      "readTimeMinutes": 6,
       "tags": [
           "paryż",
           "francja",
@@ -488,7 +488,6 @@ export const INITIAL_ARTICLES: Article[] = [
       "primaryPortalLabel": "CCN Finanse — Główne wydanie pełne",
       "audio": {
           "articleId": "art-cbdc-prawo-niedzielne-apokalipsa-13",
-          "src": "/audio/ccn/cbdc-prawo-niedzielne-apokalipsa-13.m4a",
           "audioUrl": "/audio/ccn/cbdc-prawo-niedzielne-apokalipsa-13.m4a",
           "title": "Programowalny pieniądz: CBDC a proroctwo Apokalipsy",
           "reader": "AI Lektor",

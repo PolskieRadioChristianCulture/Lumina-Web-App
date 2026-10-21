@@ -111,6 +111,7 @@ export interface Article {
   categoryLabel: string;
   author: Author;
   publishedAt: string;
+  updatedAt?: string;
   dateFormatted: string;
   imageUrl: string;
   imageCaption?: string;

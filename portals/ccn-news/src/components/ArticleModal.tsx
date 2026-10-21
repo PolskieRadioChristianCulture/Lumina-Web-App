@@ -429,9 +429,9 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
                   </a>
                 )}
               </div>
-              <blockquote className="font-serif italic text-gray-800 text-base sm:text-lg leading-relaxed">
+              {article.scriptureReference.text && <blockquote className="font-serif italic text-gray-800 text-base sm:text-lg leading-relaxed">
                 „{article.scriptureReference.text}”
-              </blockquote>
+              </blockquote>}
             </div>
           )}
 

@@ -286,7 +286,7 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
   if (!isOpen || typeof document === 'undefined') return null;
 
   return createPortal(
-    <div data-cc-edge-root>
+    <div data-cc-edge-root className="fixed inset-0 z-[2147483647] isolate">
       {/* Background Scrim Backdrop */}
       <div
         className={`fixed inset-0 z-[9998] transition-opacity motion-reduce:transition-none duration-200 md:hidden ${

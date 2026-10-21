@@ -221,9 +221,7 @@ function generateArticleHtml(article, allArticles, portalOpts = {}) {
   ];
 
   if (hasPublishedAudio) {
-    const audioContentUrl = article.audio.src.startsWith('http')
-      ? article.audio.src
-      : `https://polskieradio.cc${article.audio.src}`;
+    const audioContentUrl = new URL(audioSrc, 'https://polskieradio.cc').href;
     graphNodes.push({
       "@type": "AudioObject",
       "@id": `${canonicalUrl}#audio`,
