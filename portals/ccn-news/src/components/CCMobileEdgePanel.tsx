@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Home,
   Radio,
@@ -15,9 +15,7 @@ import {
   Bookmark,
   Info,
   User,
-  Settings,
-  LogIn,
-  X
+  LogIn
 } from 'lucide-react';
 
 export interface CCMobileEdgePanelProps {
@@ -46,6 +44,7 @@ interface EdgeAction {
   isActive?: boolean;
   badge?: number | string;
   pulse?: boolean;
+  dataAttr?: string;
 }
 
 export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
@@ -107,7 +106,7 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
           firstInteractive?.focus();
         }
       }
-    }, 50);
+    }, 40);
 
     return () => {
       document.body.style.overflow = originalOverflow;
@@ -125,8 +124,8 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
     if (touchStartXRef.current === null) return;
     const touchEndX = e.changedTouches[0].clientX;
     const deltaX = touchEndX - touchStartXRef.current;
-    if (deltaX < -45) {
-      // Swiped left > 45px -> close
+    if (deltaX < -40) {
+      // Swiped left > 40px -> close
       onClose();
     }
     touchStartXRef.current = null;
@@ -233,6 +232,7 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
       id: 'info',
       label: 'O portalu informacyjnym CCN News',
       icon: Info,
+      dataAttr: 'data-ekocc-info-trigger',
       onClick: () => {
         onClose();
         onOpenAbout?.();
@@ -255,13 +255,13 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
       {/* Background Scrim Backdrop */}
       <div
         className={`fixed inset-0 z-[9998] transition-opacity duration-200 md:hidden ${
-          isOpen ? 'opacity-100 pointer-events-auto bg-black/55 backdrop-blur-[2px]' : 'opacity-0 pointer-events-none'
+          isOpen ? 'opacity-100 pointer-events-auto bg-black/60 backdrop-blur-[2px]' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Slide-out Mobile Edge Panel */}
+      {/* Slide-out Mobile Edge Panel — Pure Black Background (#000000) */}
       <nav
         ref={panelRef}
         id="cc-mobile-edge-panel"
@@ -270,29 +270,16 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
         role="dialog"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className={`fixed top-0 left-0 bottom-0 z-[9999] w-[72px] md:hidden flex flex-col items-center bg-[#091526]/95 backdrop-blur-xl border-r border-[#C4A35A]/35 rounded-r-[22px] shadow-[6px_0_30px_rgba(0,0,0,0.75)] overflow-y-auto overflow-x-hidden scrollbar-none transition-transform duration-220 ease-out ${
+        className={`fixed top-0 left-0 bottom-0 z-[9999] w-[70px] md:hidden flex flex-col items-center bg-[#000000]/98 backdrop-blur-xl border-r border-[#C4A35A]/35 rounded-r-[22px] shadow-[6px_0_30px_rgba(0,0,0,0.85)] overflow-y-auto overflow-x-hidden scrollbar-none transition-transform duration-220 ease-out overscroll-contain ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{
-          paddingTop: 'max(env(safe-area-inset-top), 14px)',
-          paddingBottom: 'max(env(safe-area-inset-bottom), 14px)',
+          paddingTop: 'max(env(safe-area-inset-top), 8px)',
+          paddingBottom: 'max(env(safe-area-inset-bottom), 8px)',
         }}
       >
-        {/* Close Button at top */}
-        <button
-          onClick={onClose}
-          className="w-11 h-11 min-h-[44px] min-w-[44px] mb-3 flex items-center justify-center rounded-xl text-[#E2CC9A] hover:text-white hover:bg-[#C4A35A]/20 transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C4A35A]"
-          aria-label="Zamknij panel nawigacji"
-          title="Zamknij panel nawigacji"
-        >
-          <X className="w-5 h-5 text-[#E2CC9A]" strokeWidth={2.2} />
-        </button>
-
-        {/* Separator */}
-        <div className="w-8 h-[1px] bg-gradient-to-r from-transparent via-[#C4A35A]/40 to-transparent mb-2" />
-
-        {/* Vertical Icon List */}
-        <div className="flex flex-col items-center gap-2 w-full px-2 py-1">
+        {/* Compact Vertical Icon List — perfectly sized to fit on all mobile screens */}
+        <div className="flex flex-col items-center gap-[3px] w-full px-2 py-1 my-auto">
           {items.map((item) => {
             const Icon = item.icon;
             const isCurrent = Boolean(item.isActive);
@@ -300,30 +287,30 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
             const content = (
               <>
                 <Icon
-                  className={`w-[22px] h-[22px] shrink-0 transition-transform group-hover:scale-110 ${
+                  className={`w-[20px] h-[20px] shrink-0 transition-transform group-hover:scale-110 ${
                     item.pulse ? 'text-rose-400 animate-pulse' : ''
                   }`}
-                  strokeWidth={isCurrent ? 2.4 : 1.9}
+                  strokeWidth={isCurrent ? 2.3 : 1.85}
                 />
                 {item.badge !== undefined && (
-                  <span className="absolute top-1 right-1 bg-[#f9282b] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                  <span className="absolute top-0.5 right-0.5 bg-[#f9282b] text-white text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center shadow-xs">
                     {item.badge}
                   </span>
                 )}
                 {/* Floating tooltip on hover/focus (hidden on touch, visible on cursor/focus) */}
                 <span
                   role="tooltip"
-                  className="hidden sm:group-hover:block sm:group-focus:block absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 bg-[#091526] border border-[#C4A35A]/40 text-[#F3E5C8] text-[11px] font-bold px-2.5 py-1 rounded-md whitespace-nowrap shadow-xl pointer-events-none z-50"
+                  className="hidden sm:group-hover:block sm:group-focus:block absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 bg-[#000000] border border-[#C4A35A]/40 text-[#F3E5C8] text-[11px] font-bold px-2.5 py-1 rounded-md whitespace-nowrap shadow-xl pointer-events-none z-50"
                 >
                   {item.label}
                 </span>
               </>
             );
 
-            const commonClasses = `group relative w-12 h-12 min-w-[44px] min-h-[44px] rounded-xl flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C4A35A] focus:ring-offset-1 focus:ring-offset-[#091526] ${
+            const commonClasses = `group relative w-[44px] h-[38px] rounded-xl flex items-center justify-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C4A35A] focus:ring-offset-1 focus:ring-offset-black ${
               isCurrent
-                ? 'bg-gradient-to-br from-[#C4A35A]/35 to-[#C4A35A]/12 text-[#F3E5C8] border-l-[3px] border-[#C4A35A] shadow-[inset_0_0_12px_rgba(196,163,90,0.3),0_0_16px_rgba(196,163,90,0.2)]'
-                : 'text-[#E2CC9A]/75 hover:text-white hover:bg-[#C4A35A]/15'
+                ? 'bg-gradient-to-br from-[#C4A35A]/40 to-[#C4A35A]/12 text-[#F3E5C8] border-l-[3px] border-[#C4A35A] shadow-[inset_0_0_12px_rgba(196,163,90,0.35),0_0_14px_rgba(196,163,90,0.2)]'
+                : 'text-[#E2CC9A]/80 hover:text-white hover:bg-white/10'
             }`;
 
             if (item.href) {
@@ -336,6 +323,7 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
                   title={item.label}
                   aria-current={isCurrent ? 'page' : undefined}
                   onClick={onClose}
+                  {...(item.dataAttr ? { [item.dataAttr]: 'true' } : {})}
                 >
                   {content}
                 </a>
@@ -351,6 +339,7 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
                 aria-label={item.label}
                 title={item.label}
                 aria-current={isCurrent ? 'page' : undefined}
+                {...(item.dataAttr ? { [item.dataAttr]: 'true' } : {})}
               >
                 {content}
               </button>

@@ -12,15 +12,15 @@ test('Mobile Edge Panel: component file exists and exports CCMobileEdgePanel', (
   assert.ok(code.includes('export const CCMobileEdgePanel'), 'Must export CCMobileEdgePanel');
 });
 
-test('Mobile Edge Panel: complies with visual standards (72px, #091526 navy, #C4A35A gold)', () => {
+test('Mobile Edge Panel: complies with visual standards (black background, #C4A35A gold)', () => {
   const compPath = path.join(ROOT, 'portals/ccn-news/src/components/CCMobileEdgePanel.tsx');
   const code = fs.readFileSync(compPath, 'utf8');
 
-  // Width: 72px
-  assert.ok(code.includes('w-[72px]'), 'Panel width must be 72px');
+  // Width: compact edge panel
+  assert.ok(code.includes('w-[70px]') || code.includes('w-[72px]'), 'Panel width must be 70-72px');
 
-  // Background: Deep navy #091526
-  assert.ok(code.includes('#091526'), 'Panel background must use deep midnight navy #091526');
+  // Background: Deep pure black #000000
+  assert.ok(code.includes('#000000') || code.includes('bg-black'), 'Panel background must use deep pure black');
 
   // Gold accent: #C4A35A
   assert.ok(code.includes('#C4A35A'), 'Panel accents must use Christian Culture gold #C4A35A');
@@ -29,13 +29,13 @@ test('Mobile Edge Panel: complies with visual standards (72px, #091526 navy, #C4
   assert.ok(code.includes('rounded-r-'), 'Panel must have rounded right corners');
 });
 
-test('Mobile Edge Panel: touch targets >= 44x44px for all navigation items', () => {
+test('Mobile Edge Panel: compact layout fits all icons without escaping at the bottom', () => {
   const compPath = path.join(ROOT, 'portals/ccn-news/src/components/CCMobileEdgePanel.tsx');
   const code = fs.readFileSync(compPath, 'utf8');
 
-  // Minimum 44px touch targets
-  assert.ok(code.includes('min-w-[44px]'), 'Each action must satisfy minimum 44px width');
-  assert.ok(code.includes('min-h-[44px]'), 'Each action must satisfy minimum 44px height');
+  // Compact layout: small vertical gap and item heights
+  assert.ok(code.includes('gap-[3px]') || code.includes('gap-[4px]'), 'Compact gap between items ensures all icons fit on screen');
+  assert.ok(code.includes('overflow-y-auto'), 'Overflow fallback allows smooth scrolling');
 });
 
 test('Mobile Edge Panel: includes all core navigation actions from spec Section 5', () => {

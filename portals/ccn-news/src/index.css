@@ -86,3 +86,14 @@
 .ccn-ticker-track:hover {
   animation-play-state: paused !important;
 }
+
+
+/* Suppression of redundant floating info button on /news (handled by Edge Panel) */
+.ekocc-info-trigger,
+#ekoccInfoTriggerBtn,
+button.ekocc-info-trigger {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
