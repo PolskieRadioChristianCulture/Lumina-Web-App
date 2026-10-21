@@ -1321,17 +1321,7 @@ async function handleMotywacjaEmRoute(request, env) {
   if (p === '/em' || p === '/motywacja' || p === '/m') {
     const assetUrl = new URL(request.url);
     assetUrl.pathname = '/em.html';
-    assetUrl.search = '';
-    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
-    const body = await assetResp.arrayBuffer();
-    return new Response(body, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public, max-age=0, must-revalidate',
-        'X-Content-Type-Options': 'nosniff',
-      },
-    });
+    return env.ASSETS.fetch(new Request(assetUrl, request));
   }
   return null;
 }
