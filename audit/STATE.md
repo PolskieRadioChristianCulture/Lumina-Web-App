@@ -35,3 +35,12 @@
      - Pełna synchronizacja clean routing Akademii i Kursu Codziennego dla Dnia 21 (`akademia/kurscodzienny/`, `kursy/kurscodzienny/`).
      - Aktualizacja dwóch przycisków Hero CTA (`CZYTAJ DZIEŃ 21 (21 PAŹDZIERNIKA) →` / `← DZIEŃ 20`).
      - Aktualizacja indeksu wyszukiwarki @w (`szukaj/catalog.json` i `data/cc-search-index.json`).
+  3. Commit `98dfac3e`:
+     - Moduł M6 `scripts/action-card.mjs` (silnik Kart Akcji i Decyzji L0 „5 sekund”).
+     - Testy jednostkowe `tests/action-card.test.mjs` (4/4 PASS).
+     - Dokumentacja kontraktowa w `audit/mission-control-l0/`: CONTRACT.md, ACCESS_AUDIT.md, E2E_EVIDENCE.md.
+  4. Organic Global Expansion (`@EkoCC-v2-PREMIUM`):
+     - Wzbogacenie sitemapy `sitemaps/en.xml` o 6 artykułów międzynarodowych Global oraz kanały nadawcze `bibleaudio-global.html` i `cctv24-global.html`.
+     - Wzbogacenie `sitemaps/akademia.xml` o Dni 18–21 (clean routing `/akademia/kurscodzienny/dzien-XX` i `/akademia/dzien-XX`) z aktualizacją `lastmod: 2026-10-21`.
+     - Aktualizacja `Global/llms.txt` oraz sekcji 9 `llms.txt` dla crawlerów AEO/GEO (ChatGPT, Claude, Perplexity, Applebot).
+     - Rozwiązanie F-002 (P2): Ujednolicenie palety kart VIP w `css/lumi-messenger-design.css` z kanonicznym Champagne Gold Design System (`#C4A35A` / `#D4B578` / `#E2CC9A`).

@@ -13,7 +13,7 @@
 | ID Usterki | Priorytet | Moduł / Ścieżka | Opis / Ryzyko | Status | Dowód / Test |
 |---|---|---|---|---|---|
 | **F-001** | P1 | `scripts/build-pages-release.mjs` | Ryzyko pomijania plików untracked z katalogu `news/` w paczce `.pages-release` | 🟢 ROZWIĄZANE LOKALNIE | `tests/p0-pages-release-sync.test.mjs` (PASS na gałęzi staging) |
-| **F-002** | P2 | `components/lumi-dashboard.js` | Potrzeba ujednolicenia palety kolorystycznej z Champagne Gold `#C4A35A` | 🟡 W TOKU (Faza C) | Do wdrożenia w ramach v2 Design System |
+| **F-002** | P2 | `components/lumi-dashboard.js` & `css/lumi-messenger-design.css` | Potrzeba ujednolicenia palety kolorystycznej z Champagne Gold `#C4A35A` | 🟢 ROZWIĄZANE I PRZETESTOWANE | Zaktualizowano paletę VIP/karty na canonical Champagne Gold (`#C4A35A`/`#D4B578`/`#E2CC9A`), 100% testów PASS |
 | **F-003** | P2 | `index.html` & `css/christian-culture-design-system.css` | Brak reguł `@media (prefers-reduced-motion: reduce)` w głównym CSS i stronie głównej | 🟢 ROZWIĄZANE I PRZETESTOWANE | WCAG 2.2 AA reduced motion dodane do `index.html` i `css/` (`test:guardian` PASS) |
 | **F-004** | P1 | `player.html` / `js/audio-player.js` | Utrzymanie płynnego odtwarzania audio w tle na urządzeniach mobilnych (iOS/Android) | 🟢 STABILNE / ZAMROŻONE | Wymagana ciągła weryfikacja zgodności z MediaSession API |
 | **F-005** | P2 | `akademia/kurscodzienny/` | Spójność przycisków CTA hero oraz przycisku skoku `#kcJumpShareBtn` na nowych lekcjach | 🟢 PASS (Dzień 20) | Zgodne z Dyrektywą @Akademia |
