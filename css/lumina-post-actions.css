@@ -35,9 +35,18 @@ html[data-lumina-theme=light] .post-actions-bar.cc-post-compact,body.theme-lumin
 #feedStream1x1 .post-actions-bar.cc-post-compact .cc-post-overflow .cc-post-action-label,
 .post-actions-bar.cc-post-compact .cc-post-overflow .cc-post-action-label{display:inline-block!important;flex:1 1 auto!important;min-width:0!important;max-width:100%!important;font:600 12px/1.3 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif!important;text-align:left!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;letter-spacing:0.1px!important}
 
-.cc-post-overflow .pray-live-badge,.cc-post-overflow .pray-sos-badge{flex-shrink:0}
-.cc-post-overflow .action-pray-now{grid-column:1/-1;height:auto!important;min-height:44px!important;max-height:none!important;white-space:normal!important;flex-wrap:wrap!important;overflow:visible!important}
-.cc-post-overflow .action-pray-now .cc-post-action-label{white-space:normal!important;overflow:visible!important;text-overflow:unset!important}
+.cc-post-overflow .pray-live-badge,.cc-post-overflow .pray-sos-badge{flex-shrink:0!important;display:inline-flex!important;align-items:center!important}
+
+/* Hero prayer card in overflow: auto height, full-width, clean 2-line layout without clipping */
+#feedStream1x1 .post-actions-bar.cc-post-compact .cc-post-overflow .action-pray-now,
+.post-actions-bar.cc-post-compact .cc-post-overflow .post-action-btn.action-pray-now,
+.post-actions-bar.cc-post-compact .cc-post-overflow .action-pray-now,
+.cc-post-overflow .post-action-btn.action-pray-now,
+.cc-post-overflow .action-pray-now{grid-column:1/-1!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;justify-content:flex-start!important;gap:4px 8px!important;width:100%!important;min-height:52px!important;height:auto!important;max-height:none!important;padding:8px 12px 10px 12px!important;white-space:normal!important;overflow:visible!important;box-sizing:border-box!important}
+
+#feedStream1x1 .post-actions-bar.cc-post-compact .cc-post-overflow .action-pray-now .cc-post-action-label,
+.post-actions-bar.cc-post-compact .cc-post-overflow .action-pray-now .cc-post-action-label,
+.cc-post-overflow .action-pray-now .cc-post-action-label{display:block!important;flex:1 1 100%!important;width:100%!important;min-width:0!important;max-width:100%!important;white-space:normal!important;overflow:visible!important;text-overflow:unset!important;font-size:11px!important;line-height:1.35!important;letter-spacing:0.1px!important;margin-top:2px!important}
 .cc-post-compact :is(button,a):focus-visible{outline:2px solid #e2cc9a!important;outline-offset:2px}
 html[data-lumina-theme=light] .cc-post-compact>.cc-post-more,body.theme-lumina-light .cc-post-compact>.cc-post-more{background:#f8f5ec;border-color:#d5c8aa;color:#765414}
 html[data-lumina-theme=light] .cc-post-compact :is(button,a):focus-visible{outline-color:#765414!important}

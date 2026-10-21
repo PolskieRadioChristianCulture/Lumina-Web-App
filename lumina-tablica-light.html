@@ -2966,6 +2966,26 @@
                 padding: 0 !important;
                 flex: 0 0 20px !important;
             }
+            /* Pelna widocznosc przycisku modlitwy SOS w overflow na telefonach */
+            .cc-post-overflow .post-action-btn.action-pray-now,
+            .post-actions-bar.cc-post-compact .cc-post-overflow .action-pray-now {
+                height: auto !important;
+                min-height: 52px !important;
+                max-height: none !important;
+                overflow: visible !important;
+                white-space: normal !important;
+                flex-wrap: wrap !important;
+                padding: 8px 12px 10px 12px !important;
+            }
+            .cc-post-overflow .action-pray-now .cc-post-action-label {
+                white-space: normal !important;
+                overflow: visible !important;
+                text-overflow: unset !important;
+                display: block !important;
+                width: 100% !important;
+                font-size: 11px !important;
+                line-height: 1.35 !important;
+            }
             .post-action-btn .btn-text,
             .post-action-btn.action-comments .btn-text,
             .post-action-btn.action-story .btn-text {
@@ -5283,8 +5303,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
   body .lumina-nav :is(.nav-circle-btn, .notif-bell-btn, .nav-menu-btn) { width: 40px !important; height: 40px !important; min-width: 40px !important; flex-basis: 40px !important; }
 }
 </style>
-<link rel="stylesheet" href="/css/lumina-post-actions.css?v=20261021_2">
-<script defer src="/js/lumina-post-actions.js?v=20261021_2"></script>
+<link rel="stylesheet" href="/css/lumina-post-actions.css?v=20261021_3">
+<script defer src="/js/lumina-post-actions.js?v=20261021_3"></script>
 </head>
 <body>
 

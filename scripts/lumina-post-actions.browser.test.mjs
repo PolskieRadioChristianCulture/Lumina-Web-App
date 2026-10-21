@@ -43,8 +43,10 @@ test('post actions: only heart/comments/Facebook, disclosure preserves functions
       for(const action of ['amen','pray-now','story','report'])assert.equal(await bar.locator('.cc-post-overflow .action-'+action).isVisible(),true);
       const storyHeight=await bar.locator('.cc-post-overflow .action-story').evaluate(el=>el.getBoundingClientRect().height);
       const reportHeight=await bar.locator('.cc-post-overflow .action-report').evaluate(el=>el.getBoundingClientRect().height);
+      const prayNowHeight=await bar.locator('.cc-post-overflow .action-pray-now').evaluate(el=>el.getBoundingClientRect().height);
       assert.ok(storyHeight<=54&&storyHeight>=40,`action-story height must be ~44px, got ${storyHeight}`);
       assert.ok(reportHeight<=54&&reportHeight>=40,`action-report height must be ~44px, got ${reportHeight}`);
+      assert.ok(prayNowHeight>=44,`action-pray-now height must be at least 44px, got ${prayNowHeight}`);
       if(width===390&&process.env.CC_POST_ACTIONS_SCREENSHOT) await page.screenshot({path:process.env.CC_POST_ACTIONS_SCREENSHOT.replace('.png',`-${theme}.png`)});
       await page.keyboard.press('Escape');assert.equal(await bar.locator('.cc-post-overflow').isVisible(),false);
       assert.equal(await bar.locator('.cc-post-more').evaluate(el=>el===document.activeElement),true);
@@ -71,8 +73,8 @@ test('post actions: only heart/comments/Facebook, disclosure preserves functions
 test('both board themes load exactly one matching enhancement pair, without changing auth or renderer',()=>{
   for(const file of ['lumina-tablica.html','lumina-tablica-light.html']){
     const html=fs.readFileSync(file,'utf8');
-    assert.equal((html.match(/src="\/js\/lumina-post-actions\.js\?v=20261021_2"/g)||[]).length,1);
-    assert.equal((html.match(/href="\/css\/lumina-post-actions\.css\?v=20261021_2"/g)||[]).length,1);
+    assert.equal((html.match(/src="\/js\/lumina-post-actions\.js\?v=20261021_3"/g)||[]).length,1);
+    assert.equal((html.match(/href="\/css\/lumina-post-actions\.css\?v=20261021_3"/g)||[]).length,1);
     assert.ok(html.includes('window.buildPostShareDockHtml = function(item)'));
   }
 });
