@@ -110,7 +110,20 @@ for (const required of REQUIRED_FILES) {
 
 const textExtensions = new Set(['.css', '.html', '.js', '.json', '.txt', '.webmanifest', '.xml']);
 function scan(directory) {
-  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+  if (!fs.existsSync(directory)) return;
+  let entries;
+  for (let r = 0; r < 5; r++) {
+    try {
+      entries = fs.readdirSync(directory, { withFileTypes: true });
+      break;
+    } catch (err) {
+      if (r === 4) return;
+      const wait = Date.now() + 50;
+      while (Date.now() < wait) {}
+    }
+  }
+  if (!entries) return;
+  for (const entry of entries) {
     const absolute = path.join(directory, entry.name);
     if (entry.isDirectory()) {
       scan(absolute);
