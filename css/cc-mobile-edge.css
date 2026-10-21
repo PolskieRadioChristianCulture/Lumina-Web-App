@@ -40,6 +40,12 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   --edge-bg:#fffdf7; --edge-text:#272016; --edge-accent:#76570b;
 }
 @media (max-width:767px) {
+  html.cc-edge-search-ready body #mobileNavSearchBtn,
+  html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn { display:none!important; }
+  /* Close the gap left in the radio/chat dock by the relocated theme switch. */
+  html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized {
+    bottom:calc(var(--cc-lumina-action-base,76px) + 120px)!important;
+  }
   .cc-edge-legacy { display:none!important; }
   #ccTopBarFavBtn,
   .cc-topbar-fav-btn,

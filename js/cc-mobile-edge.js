@@ -16,6 +16,7 @@
     user: 'M20 21v-2a6 6 0 0 0-6-6h-4a6 6 0 0 0-6 6v2M16 6a4 4 0 1 1-8 0 4 4 0 0 1 8 0',
     star: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z',
     info: 'M12 16v-4M12 8h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0',
+    theme: 'M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z',
   };
   const icon = name => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -69,6 +70,39 @@
       return b;
     }
     button('close','Zamknij panel nawigacji',close).autofocus = true;
+    // Reuse the canonical LUMINA controllers, never a second search/theme engine.
+    let searchAction, themeAction;
+    function syncLuminaControls() {
+      if (profile !== 'lumina') return;
+      const searchReady = !!document.getElementById('mobileNavSearchBtn') && typeof window.toggleMobileNavbarSearch === 'function';
+      const themeReady = !!document.getElementById('luminaThemeSwitchBtn') && typeof window.toggleLuminaTheme === 'function';
+      document.documentElement.classList.toggle('cc-edge-search-ready', searchReady);
+      document.documentElement.classList.toggle('cc-edge-theme-ready', themeReady);
+      const localSearch = searchReady && !document.body.classList.contains('user-is-guest');
+      searchAction.hidden = !localSearch;
+      const globalSearch = nav.querySelector('a[href="/szukaj"]');
+      if (globalSearch) globalSearch.hidden = localSearch;
+      themeAction.hidden = !themeReady;
+      const light = document.documentElement.getAttribute('data-lumina-theme') === 'light';
+      themeAction.title = light ? 'Przełącz na motyw ciemny' : 'Przełącz na motyw jasny';
+      themeAction.setAttribute('aria-label', themeAction.title);
+      themeAction.setAttribute('aria-pressed', String(!light));
+    }
+    if (profile === 'lumina') {
+      searchAction = button('search','Szukaj na portalu LUMINA',event => {
+        event.stopPropagation(); close();
+        document.getElementById('mobileNavSearchBtn')?.click();
+      });
+      searchAction.dataset.ccEdgeAction = 'search';
+      themeAction = button('theme','Przełącz motyw',event => {
+        event.stopPropagation();
+        document.getElementById('luminaThemeSwitchBtn')?.click();
+        syncLuminaControls();
+      });
+      themeAction.dataset.ccEdgeAction = 'theme';
+      window.addEventListener('luminathemechange',syncLuminaControls);
+      window.addEventListener('load',syncLuminaControls,{once:true});
+    }
     const current = location.pathname.replace(/\.html$/, '').replace(/\/$/,'') || '/';
     for (const [name,label,href] of items) {
       // Only trusted same-origin routes/fragments; never executable URLs.
@@ -80,10 +114,27 @@
       if (current === url.pathname && !url.hash) a.setAttribute('aria-current','page');
       a.addEventListener('click',close); nav.append(a);
     }
-    const favBtn = button('star','Dodaj tę stronę do Ulubionych',event => {
+    let favoriteRevision = 0;
+    async function syncFavorite() {
+      const revision = ++favoriteRevision;
+      const api = window.CCFavorites;
+      if (!api?.getPageMeta || !api?.isFavorite) return;
+      try {
+        const isFav = await api.isFavorite(api.getPageMeta().url);
+        if (revision !== favoriteRevision) return;
+        favBtn.classList.toggle('is-active', !!isFav);
+        favBtn.setAttribute('aria-pressed', String(!!isFav));
+        favBtn.title = isFav ? 'Usuń tę stronę z Ulubionych' : 'Dodaj tę stronę do Ulubionych';
+        favBtn.setAttribute('aria-label',favBtn.title);
+      } catch { /* The canonical favorite controller retains its own error UI. */ }
+    }
+    const favBtn = button('star','Dodaj tę stronę do Ulubionych',async event => {
       event.stopPropagation();
       if (window.CCFavorites && typeof window.CCFavorites.toggleFavorite === 'function') {
-        window.CCFavorites.toggleFavorite();
+        favBtn.disabled = true;
+        try { await window.CCFavorites.toggleFavorite(); await syncFavorite(); }
+        catch { /* Do not display a false success. */ }
+        finally { favBtn.disabled = false; }
       }
     });
     favBtn.setAttribute('data-cc-favorite-toggle','true');
@@ -104,14 +155,8 @@
       if (!mobile.matches || dialog.open || document.querySelector('dialog[open]')) return;
       previousFocus = document.activeElement;
       fullMenu.hidden = !canUseFullMenu();
-      if (favBtn && window.CCFavorites) {
-        const meta = window.CCFavorites.getPageMeta ? window.CCFavorites.getPageMeta() : null;
-        const isFav = meta ? window.CCFavorites.isFavorite(meta.id) : false;
-        favBtn.classList.toggle('is-active', !!isFav);
-        favBtn.setAttribute('aria-pressed', isFav ? 'true' : 'false');
-        favBtn.setAttribute('title', isFav ? 'Usuń tę stronę z Ulubionych' : 'Dodaj tę stronę do Ulubionych');
-        favBtn.setAttribute('aria-label', isFav ? 'Usuń tę stronę z Ulubionych' : 'Dodaj tę stronę do Ulubionych');
-      }
+      syncLuminaControls();
+      void syncFavorite();
       restoreOverflow = document.body.style.overflow;
       dialog.showModal();
       active = true;
@@ -138,6 +183,7 @@
     legacy.dataset.ccEdgeMounted = 'true';
     legacy.classList.add('cc-edge-legacy');
     for (const element of secondary) element?.classList.add('cc-edge-legacy');
+    syncLuminaControls();
     return {close, dialog, trigger};
   }
   window.CCMobileEdge = Object.freeze({mount});

@@ -28,8 +28,8 @@ try {
     const triggerSize=await trigger.boundingBox();
     assert.ok(triggerSize.width>=44&&triggerSize.height>=44);
     if(process.env.CC_EDGE_THEME) await page.evaluate(theme=>{
-      document.documentElement.dataset.theme=theme;
-      document.documentElement.dataset.luminaTheme=theme;
+      if(typeof window.applyLuminaTheme==='function') window.applyLuminaTheme(theme,false);
+      else document.documentElement.dataset.theme=theme;
     },process.env.CC_EDGE_THEME);
     await trigger.click();
     const panel=page.locator('#cc-mobile-edge-dialog');
@@ -39,6 +39,17 @@ try {
     const sizes=await panel.locator('a:visible,button:visible').evaluateAll(els=>els.map(el=>({w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height})));
     assert.ok(sizes.every(s=>s.w>=44&&s.h>=44));
     assert.equal(await panel.locator('[aria-current="page"]').getAttribute('href'),routePath);
+    if(routePath==='/lumina') {
+      assert.equal(await page.locator('#mobileNavSearchBtn').isVisible(),false);
+      assert.equal(await page.locator('#luminaThemeSwitchBtn').isVisible(),false);
+      const theme=panel.locator('[data-cc-edge-action="theme"]');
+      const before=await page.locator('html').getAttribute('data-lumina-theme');
+      await theme.click();
+      assert.equal(await page.locator('html').getAttribute('data-lumina-theme'),before==='light'?'dark':'light');
+      await theme.click();
+      assert.equal(await page.locator('html').getAttribute('data-lumina-theme'),before);
+      assert.equal(await panel.locator('a[href="/szukaj"]').isVisible(),true);
+    }
     if(width===390&&process.env.CC_EDGE_SCREENSHOT) await page.screenshot({path:process.env.CC_EDGE_SCREENSHOT});
     await page.keyboard.press('Escape');
     assert.equal(await panel.isVisible(),false);

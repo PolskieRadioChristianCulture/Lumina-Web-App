@@ -3,6 +3,94 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { chromium } from 'playwright';
 
+test('LUMINA controls: canonical search/theme, late readiness, guest fallback and desktop recovery', async () => {
+  const browser = await chromium.launch({headless:true,channel:'chrome'});
+  try {
+    const page = await browser.newPage({viewport:{width:390,height:740}});
+    await page.route('https://edge.invalid/**',route=>route.fulfill({contentType:'text/html',body:`
+      <script data-cc-edge-profile="lumina"></script>
+      <button id="mobileNavSearchBtn" onclick="toggleMobileNavbarSearch()">Search</button>
+      <div class="nav-menu-wrapper"><button id="topNavMenuBtn">Menu</button></div>
+      <div id="navSearchWrapper"><input id="omniSearchInput"></div>
+      <button id="luminaThemeSwitchBtn" onclick="toggleLuminaTheme()">Theme</button>
+      <div id="luminaMiniPlayerContainer" class="minimized">Radio</div><button id="ccGlobalChatFab">Chat</button>`}));
+    await page.goto('https://edge.invalid/lumina');
+    await page.addStyleTag({content:fs.readFileSync('css/cc-mobile-edge.css','utf8')+`
+      #navSearchWrapper{display:none} #navSearchWrapper.mobile-open{display:block}
+      body.user-is-guest #navSearchWrapper{display:none!important}
+      html body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn{display:flex!important}
+      #luminaMiniPlayerContainer{position:fixed;right:16px;bottom:256px}`});
+    await page.addScriptTag({content:fs.readFileSync('js/cc-mobile-edge.js','utf8')});
+    assert.equal(await page.locator('#mobileNavSearchBtn').isVisible(),true,'preserve original until controller ready');
+    assert.equal(await page.locator('#luminaThemeSwitchBtn').isVisible(),true);
+    const html = fs.readFileSync('lumina.html','utf8');
+    await page.addScriptTag({content:html.slice(html.indexOf('window.toggleMobileNavbarSearch ='),html.indexOf('window.clearOmniSearch ='))});
+    await page.addScriptTag({content:fs.readFileSync('js/lumina-theme-manager.js','utf8')});
+    // Native controllers loaded after edge runtime: opening retries readiness.
+    const trigger=page.locator('.cc-mobile-edge-trigger'), panel=page.locator('.cc-mobile-edge');
+    for (const width of [320,390,430]) {
+      await page.setViewportSize({width,height:740});
+      await trigger.click();
+      assert.equal(await page.locator('#mobileNavSearchBtn').isVisible(),false);
+      assert.equal(await page.locator('#luminaThemeSwitchBtn').isVisible(),false,'overrides old floating dock display rule');
+      assert.equal(await panel.locator('a[href="/szukaj"]').isVisible(),false,'one magnifier for members');
+      const theme=panel.locator('[data-cc-edge-action="theme"]');
+      assert.equal(await page.locator('html').getAttribute('data-lumina-theme'),'light');
+      await theme.click();
+      assert.equal(await page.locator('html').getAttribute('data-lumina-theme'),'dark');
+      assert.equal(await page.evaluate(()=>localStorage.getItem('lumina_theme')),'dark');
+      assert.equal(await theme.getAttribute('aria-pressed'),'true');
+      assert.equal(await theme.getAttribute('aria-label'),'Przełącz na motyw jasny');
+      assert.equal(await panel.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(11, 17, 32)');
+      await theme.click();
+      assert.equal(await page.locator('html').getAttribute('data-lumina-theme'),'light');
+      assert.equal(await panel.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(255, 250, 255)');
+      await panel.locator('[data-cc-edge-action="search"]').click();
+      assert.equal(await panel.isVisible(),false);
+      await page.locator('#omniSearchInput').waitFor({state:'visible'});
+      await page.waitForFunction(()=>document.activeElement?.id==='omniSearchInput');
+      assert.equal(await page.locator('#ccGlobalChatFab').isVisible(),true);
+      assert.equal(await page.locator('#luminaMiniPlayerContainer').isVisible(),true);
+      assert.equal(await page.locator('#luminaMiniPlayerContainer').evaluate(el=>getComputedStyle(el).bottom),'196px');
+      await page.evaluate(()=>window.closeMobileNavbarSearch());
+    }
+    await page.evaluate(()=>document.body.classList.add('user-is-guest'));
+    await trigger.click();
+    assert.equal(await panel.locator('[data-cc-edge-action="search"]').isVisible(),false);
+    assert.equal(await panel.locator('a[href="/szukaj"]').isVisible(),true,'guest keeps a working global search, not a hidden local field');
+    await page.setViewportSize({width:1280,height:900});
+    await page.waitForFunction(()=>!document.querySelector('dialog').open);
+    assert.equal(await page.locator('#mobileNavSearchBtn').isVisible(),true);
+    assert.equal(await page.locator('#luminaThemeSwitchBtn').isVisible(),true);
+  } finally { await browser.close(); }
+});
+
+test('favorite async result uses URL and toggles exactly once with delegated listener present', async () => {
+  const browser=await chromium.launch({headless:true,channel:'chrome'});
+  try {
+    const page=await browser.newPage({viewport:{width:390,height:740}});
+    await page.route('https://edge.invalid/**',route=>route.fulfill({contentType:'text/html',body:'<script data-cc-edge-profile="home"></script><button id="hamburgerBtn">Menu</button><button id="actionsToggleBtn">All</button>'}));
+    await page.goto('https://edge.invalid/');
+    await page.addStyleTag({content:fs.readFileSync('css/cc-mobile-edge.css','utf8')});
+    await page.evaluate(()=>{
+      let active=false;
+      window.favoriteCalls=0;
+      window.CCFavorites={getPageMeta:()=>({url:'/',id:'not-the-url'}),isFavorite:async url=>{if(url!=='/')throw Error('wrong key');return active;},toggleFavorite:async()=>{window.favoriteCalls++;active=!active;}};
+      document.addEventListener('click',e=>{if(e.target.closest('[data-cc-favorite-toggle]'))window.CCFavorites.toggleFavorite();});
+    });
+    await page.addScriptTag({content:fs.readFileSync('js/cc-mobile-edge.js','utf8')});
+    await page.locator('.cc-mobile-edge-trigger').click();
+    const fav=page.locator('dialog [data-cc-favorite-toggle]');
+    await page.waitForFunction(()=>document.querySelector('dialog [data-cc-favorite-toggle]').getAttribute('aria-pressed')==='false');
+    await fav.click();
+    await page.waitForFunction(()=>document.querySelector('dialog [data-cc-favorite-toggle]').getAttribute('aria-pressed')==='true');
+    assert.equal(await page.evaluate(()=>window.favoriteCalls),1);
+    await fav.click();
+    await page.waitForFunction(()=>document.querySelector('dialog [data-cc-favorite-toggle]').getAttribute('aria-pressed')==='false');
+    assert.equal(await page.evaluate(()=>window.favoriteCalls),2);
+  } finally { await browser.close(); }
+});
+
 test('static edge: one instance, native modal focus, full menu handoff, theme and desktop recovery', async () => {
   const browser = await chromium.launch({headless:true,channel:'chrome'});
   try {
