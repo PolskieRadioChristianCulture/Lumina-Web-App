@@ -104,7 +104,8 @@ test('static edge: one instance, native modal focus, full menu handoff, theme an
     await page.evaluate(()=>document.querySelector('#actionsToggleBtn').onclick=()=>{document.body.dataset.fullMenu='open';document.body.style.overflow='hidden';});
     const trigger=page.locator('.cc-mobile-edge-trigger'), panel=page.locator('.cc-mobile-edge');
     assert.equal(await trigger.count(),1);
-    assert.equal(await page.locator('#hamburgerBtn').isVisible(),false);
+    assert.equal(await page.locator('#hamburgerBtn').isVisible(),true,'homepage keeps the original side drawer button');
+    assert.equal(await page.locator('#actionsToggleBtn').isVisible(),true,'homepage keeps MENU CC as well as the edge panel');
     assert.equal(await panel.isVisible(),false);
     await trigger.click();
     assert.equal(await panel.isVisible(),true);

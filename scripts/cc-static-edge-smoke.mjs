@@ -11,7 +11,9 @@ try {
   const page=await browser.newPage();
   await page.route('**/*',async route=>{
     const url=new URL(route.request().url());
-    if(url.origin!==base) return route.abort();
+    // Public SDK modules only, never Firebase API/account traffic. Needed to exercise
+    // the homepage's original app.js drawer handler (which imports Firestore).
+    if(url.origin!==base) return process.env.CC_EDGE_PUBLIC_SDK && url.origin==='https://www.gstatic.com' && url.pathname.endsWith('.js') ? route.continue() : route.abort();
     if(process.env.CC_EDGE_BASE) return route.continue();
     const target=path.resolve(url.pathname===routePath?file:decodeURIComponent(url.pathname.slice(1)));
     if(!target.startsWith(process.cwd()+path.sep)||!fs.existsSync(target)||!fs.statSync(target).isFile()) return route.fulfill({status:404,body:''});
@@ -27,6 +29,26 @@ try {
     assert.equal(await trigger.count(),1);
     const triggerSize=await trigger.boundingBox();
     assert.ok(triggerSize.width>=44&&triggerSize.height>=44);
+    if(routePath==='/') {
+      const menu=page.locator('#actionsToggleBtn'), side=page.locator('#hamburgerBtn');
+      for(const control of [menu,side,trigger]) {
+        assert.equal(await control.isVisible(),true);
+        const box=await control.boundingBox();
+        assert.ok(box.width>=44 && box.height>=44 && box.x>=0 && box.x+box.width<=width);
+      }
+      assert.equal(await page.locator('.cc-home-menu-label').isVisible(),true);
+      await menu.click();
+      await page.locator('#actionsList.open').waitFor({state:'visible'});
+      await page.locator('#actionsCloseBtn').click();
+      if(process.env.CC_EDGE_PUBLIC_SDK) {
+        await side.click();
+        await page.locator('#sideDrawer.active').waitFor({state:'visible'});
+        await page.locator('#drawerCloseBtn').click();
+        await page.waitForFunction(()=>!document.querySelector('#sideDrawer').classList.contains('active'));
+        await page.waitForFunction(()=>document.querySelector('#sideDrawer').getBoundingClientRect().right<=1);
+      }
+      if(width===390&&process.env.CC_EDGE_SCREENSHOT) await page.screenshot({path:process.env.CC_EDGE_SCREENSHOT.replace(/\.png$/, '-header.png')});
+    }
     if(process.env.CC_EDGE_THEME) await page.evaluate(theme=>{
       if(typeof window.applyLuminaTheme==='function') window.applyLuminaTheme(theme,false);
       else document.documentElement.dataset.theme=theme;

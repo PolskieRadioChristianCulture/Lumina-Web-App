@@ -34,7 +34,7 @@
     ['search','Szukaj w ekosystemie','/szukaj'],
   ];
 
-  function mount({legacy, placement = legacy, secondary = [], profile = 'home', items = commonItems, canUseFullMenu = () => true}) {
+  function mount({legacy, placement = legacy, secondary = [], hideLegacy = true, profile = 'home', items = commonItems, canUseFullMenu = () => true}) {
     if (!(legacy instanceof HTMLElement) || !(placement instanceof HTMLElement) || legacy.dataset.ccEdgeMounted || document.getElementById('cc-mobile-edge-dialog') || typeof HTMLDialogElement === 'undefined' || !HTMLDialogElement.prototype.showModal) return null;
     const mobile = matchMedia('(max-width: 767px)');
     const dialog = document.createElement('dialog');
@@ -181,14 +181,15 @@
     document.body.append(dialog);
     placement.before(trigger);
     legacy.dataset.ccEdgeMounted = 'true';
-    legacy.classList.add('cc-edge-legacy');
+    if (hideLegacy) legacy.classList.add('cc-edge-legacy');
     for (const element of secondary) element?.classList.add('cc-edge-legacy');
     syncLuminaControls();
     return {close, dialog, trigger};
   }
   window.CCMobileEdge = Object.freeze({mount});
   const script = document.querySelector('script[data-cc-edge-profile]');
-  if (script?.dataset.ccEdgeProfile === 'home') mount({legacy:document.getElementById('actionsToggleBtn'),placement:document.getElementById('hamburgerBtn'),secondary:[document.getElementById('hamburgerBtn')]});
+  // Homepage exception requested by the owner: retain both original header controls.
+  if (script?.dataset.ccEdgeProfile === 'home') mount({legacy:document.getElementById('actionsToggleBtn'),placement:document.getElementById('hamburgerBtn'),hideLegacy:false});
   // /mess is generated from lumina.html but retains its dedicated app navigation.
   if (script?.dataset.ccEdgeProfile === 'lumina' && /^\/lumina(?:\.html)?\/?$/i.test(location.pathname)) {
     const legacy = document.getElementById('topNavMenuBtn');

@@ -1,5 +1,6 @@
 /* Native dialog top layer protects the panel from radio/chat stacking conflicts. */
 .cc-mobile-edge-trigger { display:none; }
+.cc-home-menu-label { display:none; }
 .cc-mobile-edge {
   --edge-bg:#090909; --edge-text:#f5e9d0; --edge-accent:#d4af37;
   position:fixed; inset:0 auto 0 0; margin:0; padding:0;
@@ -40,6 +41,11 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   --edge-bg:#fffdf7; --edge-text:#272016; --edge-accent:#76570b;
 }
 @media (max-width:767px) {
+  #mainHeader #hamburgerBtn { width:44px; height:44px; min-width:44px; min-height:44px; padding:12px 10px; box-sizing:border-box; }
+  #mainHeader #actionsToggleBtn { width:56px!important; height:44px!important; min-width:56px; padding:0; }
+  #mainHeader #actionsToggleBtn .avatar-ring { width:56px; height:44px; box-sizing:border-box; border-radius:13px; }
+  #mainHeader #actionsToggleIcon { display:none; }
+  #mainHeader .cc-home-menu-label { display:inline; color:var(--gold-primary,#d4af37); font:700 11px/1 system-ui,sans-serif; letter-spacing:.04em; }
   html.cc-edge-search-ready body #mobileNavSearchBtn,
   html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn { display:none!important; }
   /* Close the gap left in the radio/chat dock by the relocated theme switch. */
