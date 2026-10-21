@@ -5,12 +5,24 @@ const zipSrcDir = 'C:/Users/czark/.gemini/antigravity/brain/db144fde-c11f-407d-a
 const currentHtml = fs.readFileSync('C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/kursy/pokonac-goliata.html', 'utf8');
 const match = currentHtml.match(/const MODULES = (\[[\s\S]*?\]);/);
 if (!match) {
-  console.error('Could not extract MODULES from kursy/pokonac-goliata.html');
+  console.error('Could not extract MODULES');
   process.exit(1);
 }
 
 const modulesData = JSON.parse(match[1]);
-console.log('Extracted modulesData with count:', modulesData.length);
+
+const cleanTitles = [
+  { title: 'Twoja Dolina Terebintu', subtitle: 'Diagnoza przedstartowa' },
+  { title: 'Świadomość', subtitle: 'Od deformacji do reformacji' },
+  { title: 'Wiara i zaufanie', subtitle: 'Życie w systemie DZIŚ' },
+  { title: 'Modlitwa i post', subtitle: 'Reset bodźców i dialog serca' },
+  { title: 'Słowo Boże', subtitle: 'Przebudowa tożsamości' },
+  { title: 'Wytrwałość', subtitle: 'Uświęcenie charakteru' },
+  { title: 'Zapobieganie', subtitle: 'Okulary Jezusa' },
+  { title: 'Miłość i Boża troska', subtitle: 'Styl życia Agape' },
+  { title: 'Nagroda', subtitle: 'Perspektywa Wieczności' },
+  { title: 'Odporność w kryzysie', subtitle: 'Karta Kontrolna Zwycięzcy' }
+];
 
 const moduleIds = ['start', 'awareness', 'faith', 'prayer', 'scripture', 'perseverance', 'prevention', 'love', 'reward', 'master'];
 
@@ -18,8 +30,8 @@ const richModules = modulesData.map((m, idx) => {
   return {
     id: moduleIds[idx],
     tag: m.badge,
-    title: m.title.includes('—') ? m.title.split('—')[0].replace(/\(.*?\)/g, '').trim() : m.title.replace(/\(.*?\)/g, '').trim(),
-    subtitle: m.title.includes('—') ? m.title.split('—')[1].trim() : (idx === 0 ? 'Diagnoza przedstartowa' : 'Krok do wolności'),
+    title: cleanTitles[idx].title,
+    subtitle: cleanTitles[idx].subtitle,
     verse: m.scripture,
     duration: 15 + (idx % 3) * 5,
     motto: m.motto,
@@ -43,4 +55,4 @@ export const BACKUP_STORAGE_KEY = 'cc_pokonac_goliata_worksheet_v1_backup';
 `;
 
 fs.writeFileSync(path.join(zipSrcDir, 'course.js'), courseJsContent, 'utf8');
-console.log('Successfully written enriched course.js with full book texts!');
+console.log('Successfully updated course.js with clean titles and rich book content!');
