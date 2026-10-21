@@ -1620,6 +1620,8 @@ export default {
     if (supportPageRoute) return supportPageRoute;
     const motywacjaRoute = await handleMotywacjaEmRoute(request, env);
     if (motywacjaRoute) return motywacjaRoute;
+    const survivalRoute = await handleSurvivalRoute(request, env);
+    if (survivalRoute) return survivalRoute;
     const worshipRoute = await handleBiblijneUwielbienieRoute(request, env);
     if (worshipRoute) return worshipRoute;
     const personalHubRoute = await handlePersonalHubRoute(request, env);
