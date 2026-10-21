@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { CcnLogo } from './CcnLogo';
 import { Category } from '../types';
-import { Search, Radio, Bookmark, Menu, X, LogIn, User, ExternalLink, LogOut, BookOpen, GraduationCap, ChevronDown } from 'lucide-react';
+import { Search, Radio, Bookmark, Menu, X, Plus, LogIn, User, ExternalLink, LogOut, BookOpen, GraduationCap, ChevronDown } from 'lucide-react';
+import { CCMobileEdgePanel } from './CCMobileEdgePanel';
 
 interface HeaderProps {
   currentCategory: Category;
@@ -45,6 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleRadio,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [edgePanelOpen, setEdgePanelOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<StoredUser | null>(null);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
@@ -140,7 +142,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-200 transition-shadow shadow-xs">
       {/* Top CC Ecosystem Navigation Bar */}
-      <div className="news-ecosystem-strip bg-[#010101] text-zinc-300 text-[11px] font-bold tracking-wider uppercase border-b border-[#1f1f1f] px-4 sm:px-6 py-2">
+      <div className="news-ecosystem-strip hidden md:block bg-[#010101] text-zinc-300 text-[11px] font-bold tracking-wider uppercase border-b border-[#1f1f1f] px-4 sm:px-6 py-2">
         <div className="news-ecosystem-row max-w-7xl mx-auto flex items-center justify-between">
           <div className="news-ecosystem-links flex items-center gap-3">
             <span className="hidden md:inline-flex items-center gap-1.5 text-zinc-400">
@@ -173,7 +175,28 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="news-brand-row flex flex-wrap items-center justify-between gap-3 py-3 sm:py-4">
           {/* Logo */}
-          <a href="/news" className="news-brand-button group cursor-pointer focus:outline-none text-left block" aria-label="CCN News – Christian Culture Strona Główna" title="Przejdź do strony głównej CCN News"><CcnLogo layout="horizontal" className="news-header-logo" disableLink={true} /></a>
+          
+          {/* Brand & Mobile Edge Panel Trigger */}
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            {/* Mobile + Trigger Button for Edge Panel */}
+            <button
+              type="button"
+              onClick={() => setEdgePanelOpen(!edgePanelOpen)}
+              className="md:hidden flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-[#091526] border border-[#C4A35A]/50 text-[#E2CC9A] hover:text-white hover:border-[#C4A35A] transition-all cursor-pointer shadow-md focus:outline-none focus:ring-2 focus:ring-[#C4A35A]"
+              aria-label={edgePanelOpen ? 'Zamknij panel nawigacji' : 'Otwórz panel nawigacji EkoCC'}
+              aria-expanded={edgePanelOpen}
+              aria-controls="cc-mobile-edge-panel"
+            >
+              {edgePanelOpen ? (
+                <X className="w-5 h-5 text-[#E2CC9A]" strokeWidth={2.4} />
+              ) : (
+                <Plus className="w-6 h-6 text-[#E2CC9A]" strokeWidth={2.6} />
+              )}
+            </button>
+
+            {/* Logo */}
+            <a href="/news" className="news-brand-button group cursor-pointer focus:outline-none text-left block" aria-label="CCN News – Christian Culture Strona Główna" title="Przejdź do strony głównej CCN News"><CcnLogo layout="horizontal" className="news-header-logo" disableLink={true} /></a>
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden 2xl:flex order-3 w-full flex-wrap items-center gap-5 xl:gap-7 text-sm font-medium text-gray-700">
@@ -201,7 +224,7 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Action buttons (Radio Live, Search, Bookmarks, CC Auth) */}
-          <div className="news-header-actions flex items-center justify-center gap-2 sm:gap-3">
+          <div className="news-header-actions hidden md:flex items-center justify-center gap-2 sm:gap-3">
             {/* Live Radio Stream Button */}
             <button
               onClick={onToggleRadio}
@@ -364,7 +387,39 @@ export const Header: React.FC<HeaderProps> = ({
             })}
           </div>
         )}
+        {/* Mobile Horizontal Category Pills */}
+        <div className="mobile-category-pills md:hidden border-t border-gray-100 -mx-4 px-4 py-2 overflow-x-auto flex items-center gap-1.5 scrollbar-none">
+          {NAV_ITEMS.map((item) => {
+            const isActive = currentCategory === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                  isActive
+                    ? 'bg-[#bb142e] text-white shadow-xs'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      <CCMobileEdgePanel
+        isOpen={edgePanelOpen}
+        onClose={() => setEdgePanelOpen(false)}
+        onOpenSearch={onOpenSearch}
+        onOpenBookmarks={onOpenBookmarks}
+        onOpenAbout={() => handleNavClick('about')}
+        onToggleRadio={onToggleRadio}
+        isRadioPlaying={isRadioPlaying}
+        bookmarksCount={bookmarksCount}
+        currentUser={currentUser}
+        onLoginClick={handleLoginClick}
+      />
     </header>
   );
 };
