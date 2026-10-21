@@ -1176,7 +1176,8 @@
         "kod-zrodlowy",
         "biblioteka-ccn",
         "lumina-main",
-        "revolut-cc"
+        "revolut-cc",
+        "kurs-pokonac-goliata"
       ]
     },
     {
@@ -3007,6 +3008,35 @@
         "swiadectwa",
         "akademia-main",
         "cclite"
+      ]
+    },
+    {
+      "id": "kurs-pokonac-goliata",
+      "branchId": "biblia-edukacja",
+      "name": "Kurs: Pokonać Goliata (8 Kroków)",
+      "shortDesc": "Nowoczesny chrześcijańsko-psychologiczny kurs formacji i motywacji w 8 krokach.",
+      "fullDesc": "Interaktywny kurs motywacji i formacji charakteru na podstawie książki Cezarego Rogowskiego. Lektura biblijna, psychologia zmiany, prywatna karta pracy w przeglądarce (zero cloud), quizy i plan działania.",
+      "type": "course",
+      "url": "https://polskieradio.cc/kursy/pokonac-goliata",
+      "status": "active",
+      "lang": "pl",
+      "icon": "⚔️",
+      "category": "Biblia & Edukacja",
+      "verifiedDate": "2026-10-21",
+      "keywords": [
+        "pokonać goliata",
+        "kurs",
+        "8 kroków",
+        "cezary rogowski",
+        "psychologia",
+        "motywacja",
+        "karta pracy",
+        "zero cloud"
+      ],
+      "connections": [
+        "pokonac-goliata",
+        "kurs-codzienny",
+        "akademia"
       ]
     }
   ]
