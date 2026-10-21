@@ -1315,17 +1315,6 @@ async function handleSupportApi(request, env, adapter = luminaSupportAdapter) {
   }
 }
 
-async function handleMotywacjaEmRoute(request, env) {
-  const url = new URL(request.url);
-  const p = url.pathname.replace(/\/$/, '').toLowerCase();
-  if (p === '/em' || p === '/motywacja' || p === '/m') {
-    const assetUrl = new URL(request.url);
-    assetUrl.pathname = '/em.html';
-    return env.ASSETS.fetch(new Request(assetUrl, request));
-  }
-  return null;
-}
-
 async function handleSurvivalRoute(request, env) {
   const url = new URL(request.url);
   const p = url.pathname.replace(/\/$/, '').toLowerCase();
@@ -1608,8 +1597,6 @@ export default {
     if (supportApiResponse) return supportApiResponse;
     const supportPageRoute = await handleSupportRoute(request, env);
     if (supportPageRoute) return supportPageRoute;
-    const motywacjaRoute = await handleMotywacjaEmRoute(request, env);
-    if (motywacjaRoute) return motywacjaRoute;
     const survivalRoute = await handleSurvivalRoute(request, env);
     if (survivalRoute) return survivalRoute;
     const worshipRoute = await handleBiblijneUwielbienieRoute(request, env);
