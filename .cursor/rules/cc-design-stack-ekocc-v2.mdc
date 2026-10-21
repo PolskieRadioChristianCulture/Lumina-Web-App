@@ -1,0 +1,36 @@
+---
+description: EkoCC v2 PREMIUM — Standard Zestawu Projektowego (Magic UI, Motion Primitives, Pexels, Taste Skill)
+alwaysApply: true
+---
+
+# EkoCC v2 PREMIUM — STANDARD ZESTAWU PROJEKTOWEGO
+**Identyfikator:** `EKOCC-V2-DESIGN-STACK-P0-20261021` | **Decyzja L0:** `JOMA-D045` (21.10.2026)
+**Dokument źródłowy:** `Misja CC/JOMA_SHARED_MEMORY/EKOCC_V2_DESIGN_STACK_PROTOCOL_2026-10-21.md`
+
+Dopuszczono Magic UI, Motion Primitives, Pexels oraz Taste Skill jako oficjalny, kontrolowany zestaw projektowy warstwy prezentacji EkoCC v2 PREMIUM. Efekt WOW bez kompromisów w prawdzie, misji, bezpieczeństwie, wydajności i kosztach.
+
+---
+
+## 1. Cztery Filary Zestawu
+
+| Narzędzie | Rola | Polityka i Źródło | Wymogi Techniczne |
+|---|---|---|---|
+| **Magic UI** | Wizualne komponenty premium (hero, siatki, światło, Border Beam, Bento Grid) | https://magicui.design/ (MIT, oficjalny rejestr shadcn/ui) | Kopiowanie komponentów z przypiętej rewizji, import lokalny, tree-shaking, brak obcego CDN |
+| **Motion Primitives** | Mikrointerakcje i przejścia stanów w React | https://motion-primitives.com/ (MIT, beta) | `prefers-reduced-motion: reduce`, wyłącznie `transform`/`opacity` (CLS=0, INP ≤ 200ms) |
+| **Pexels** | Legalne fotografie i krótkie wideo do artykułów, sekcji i hero | https://www.pexels.com/ (ZERO COST, API 200 req/h, 20k/mies.) | Klucze API po stronie serwera/build, obowiązkowy kredyt autora i Pexels, zakaz fałszywych świadectw |
+| **Taste Skill** | Wytyczne art direction, hierarchii informacji, typografii i audytu | https://github.com/Leonxlnx/taste-skill (MIT) | Champagne Gold `#C4A35A`, touch target min. 44px, zakaz niesprawdzonych skryptów instalacyjnych npx |
+
+---
+
+## 2. Pancerne Reguły Architektoniczne
+
+1. **ZERO COST (0 zł):** Bezwzględny zakaz kupowania subskrypcji, szablonów, płatnych bibliotek lub usług.
+2. **Zero-QA dla Dowódcy:** Dowódca Nazir nie testuje kodu za agenta. Każda zmiana musi przejść lokalne testy (`npm.cmd run test:guardian`, `npm.cmd run test:mobile-premium`, `npm.cmd run test:cc-regression`).
+3. **Nienaruszalność Działających Kanałów LIVE i Radia:** KATEGORYCZNY ZAKAZ dotykania `cctv24-worship.html`, radia 24/7, stream-scene, karaoke, odtwarzania przy wygaszonym ekranie, autoryzacji czy automatyzacji publikacji.
+4. **Zakaz Ciągłej Animacji Świętych Treści:** Kategoryczny zakaz stałej animacji tekstu Pisma Świętego, modlitwy, karaoke i komunikatów krytycznych.
+5. **Prawda i Etyka Mediów:** W artykułach religijnych NIE PRZYPISYWAĆ osobom ze zdjęć stockowych prawdziwego świadectwa wiary, nawrócenia ani poparcia dla misji. Stock służy wyłącznie jako neutralna ilustracja z oznaczeniem.
+6. **Mobilna Nawigacja EkoCC:** Na smartfonach jedyny widoczny przycisk `+` na górnej belce; kliknięcie otwiera współdzielony lewy panel wysuwany od krawędzi (Drawer/Sheet) z ikonami o pełnych etykietach dostępności (`aria-label`, focus trap, Escape zamyka).
+7. **Bramka P0 (STOP przed Produkcją):**
+   - **P0-A:** Audyt repozytoriów, zależności, licencji i stylów bez zmian na produkcji.
+   - **P0-B:** Odizolowany pilotaż nieprodukcyjny w osobnej gałęzi (rekomendacja: `/mapa` lub Mission Control).
+   - Żadne wydanie produkcyjne nie może nastąpić bez formalnej bramki GO od Dowódcy L0.

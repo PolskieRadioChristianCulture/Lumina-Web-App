@@ -171,3 +171,20 @@ Każdy agent podejmujący prace nad portalem LUMINA realizuje poniższy harmonog
 3. **Fundament Biblijny:** Każdy artykuł informacyjny musi zawierać odniesienie biblijne (`scriptureReference`) oraz egzegezę kluczowych pojęć hebrajskich/greckich z kodami Stronga (`lexiconTerms`).
 4. **Autorstwo:** Wyłącznie oficjalne profile: Cezary Rogowski, Wioletta Rogowska lub Redakcja CCN News.
 
+
+
+---
+
+## 🎨 7. EkoCC v2 PREMIUM — STANDARD ZESTAWU PROJEKTOWEGO (MAGIC UI + MOTION PRIMITIVES + PEXELS + TASTE SKILL)
+> 💎 **Dokument Normatywny:** `Misja CC/JOMA_SHARED_MEMORY/EKOCC_V2_DESIGN_STACK_PROTOCOL_2026-10-21.md` (identyfikator: `EKOCC-V2-DESIGN-STACK-P0-20261021`), decyzja `JOMA-D045`.
+1. **Cel i Doktryna:** Efekt WOW bez kompromisów w prawdzie, misji, bezpieczeństwie, wydajności i kosztach. ZERO COST (0 zł). Animacje wspierają przekaz, a nie dominują nad treścią, radiem, modlitwą, Biblią i funkcjami użytkownika.
+2. **Cztery Filary:**
+   - **Magic UI:** Wizualne komponenty premium (hero, siatki, światło, Border Beam, Bento Grid) — wyłącznie komponenty MIT z oficjalnego rejestru shadcn/ui. Kopiowanie z przypiętej rewizji, import lokalny, tree-shaking, izolacja stylów tokenami CC.
+   - **Motion Primitives:** Mikrointerakcje i przejścia stanów w React (MIT, ibelick) — oszczędne ujawnianie sekcji, interakcje kart. Bezwzględny wymóg `prefers-reduced-motion: reduce`, animacja wyłącznie `transform`/`opacity` (CLS=0, INP ≤ 200ms). KATEGORYCZNY ZAKAZ stałej animacji tekstu Pisma Świętego, modlitwy, karaoke i komunikatów krytycznych.
+   - **Pexels:** Legalne fotografie i krótkie wideo — standard ZERO COST (darmowe API: 200 req/h, 20k/mies., klucze po stronie serwera/build). Zawsze rejestrować metadane: autor, źródło, data, licencja. KATEGORYCZNY ZAKAZ przypisywania osobom ze stocka prawdziwego świadectwa wiary, nawrócenia czy przynależności do misji CC.
+   - **Taste Skill:** Wytyczne art direction, hierarchii informacji, typografii i audytu — kanoniczna tożsamość Champagne Gold (`#C4A35A`, hover `#D4B578`, light `#E2CC9A`, dark `#A08040`), touch target min. 44x44px. ZAKAZ uruchamiania niesprawdzonych skryptów instalacyjnych npx/npm bez audytu bezpieczeństwa.
+3. **Mobilna Nawigacja EkoCC:** Na smartfonach jedyny widoczny przycisk `+` na górnej belce; kliknięcie otwiera współdzielony lewy panel wysuwany od krawędzi (Drawer/Sheet) z ikonami o pełnych etykietach dostępności (`aria-label`, focus trap, Escape zamyka).
+4. **Bramka P0 (STOP przed Produkcją):**
+   - **P0-A:** Audyt repozytoriów, zależności, licencji i stylów bez zmian na produkcji.
+   - **P0-B:** Odizolowany pilotaż nieprodukcyjny w osobnej gałęzi (rekomendacja: `/mapa` lub Mission Control).
+   - Wdrożenie produkcyjne wymaga formalnej bramki GO od Dowódcy L0.
