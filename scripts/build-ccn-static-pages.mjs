@@ -1354,6 +1354,7 @@ ${JSON.stringify(jsonLd, null, 2)}
     ${hasPublishedAudio ? '<script src="/components/ccn-audio-player.js" defer></script>' : ''}
     <!-- Global Support Footer -->
     <script src="/components/cc-support-footer.js" defer></script>
+    <script defer src="/components/ekocc-info.js?v=20261020_1"></script>
 
     <!-- Floating Back to Top -->
     <button class="back-to-top" id="backToTopBtn" aria-label="Przewiń do góry" title="Przewiń do góry">
