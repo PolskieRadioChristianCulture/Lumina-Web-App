@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "NOWY PROJEKT SURVIVAL CC: Przetrwać to za mało. Jak przygotować się na trudne czasy, nie tracąc wiary, człowieczeństwa i nadziei? Artykuł inaugurujący Cezarego Rogowskiego (https://polskieradio.cc/survival)",
   "NOWY PROJEKT eM (@MCC): Nie czekaj, aż życie się zmieni. Zacznij od siebie — z Bogiem możesz więcej! Artykuł inaugurujący Cezarego Rogowskiego (https://polskieradio.cc/eM)",
   "CCN FINANSE + AUDIO (17:51): Cyfrowy pieniądz, prawo niedzielne i Apokalipsa 13 — analiza Cezarego Rogowskiego o CBDC i wolności sumienia (Ap 13:16–17; Wj 20:8–11)",
   "CCN ŚWIAT: Wojna, ciemność i nadzieja. Ukraina przed zimą — czego Jezus uczy o pokoju? Analiza Cezarego Rogowskiego (Mt 24:4–14; Mt 5:9)",
@@ -70,6 +71,115 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    "id": "art-survival-christian-culture-przygotowanie-na-trudne-czasy",
+    "title": "SURVIVAL — przetrwać to za mało. Jak przygotować się na trudne czasy, nie tracąc wiary, człowieczeństwa i nadziei?",
+    "slug": "survival-christian-culture-przygotowanie-na-trudne-czasy",
+    "excerpt": "Co zrobisz, gdy nagle zabraknie prądu, telefonu i podstawowych usług? Jak przygotować rodzinę na kryzys, nie żyjąc w strachu? Inauguracja projektu SURVIVAL Christian Culture — wiedza, odpowiedzialność i nadzieja na fundamencie Słowa Bożego.",
+    "content": [
+      "Co zrobisz, gdy nagle zabraknie prądu, przestanie działać telefon, a dostęp do podstawowych usług zostanie ograniczony? Czy Twoja rodzina będzie wiedziała, jak postępować? I czy można przygotować się na kryzys, nie żyjąc w ciągłym strachu?",
+      "DLACZEGO POWSTAJE SURVIVAL CHRISTIAN CULTURE?",
+      "Nie wiemy, co przyniesie jutro. Możemy jednak nauczyć się działać odpowiedzialnie dzisiaj. Właśnie z tej myśli rodzi się SURVIVAL Christian Culture — przestrzeń poświęcona praktycznej gotowości na trudne sytuacje, samodzielności, bezpieczeństwu, współpracy i duchowej odporności.",
+      "Nie chcę tworzyć kolejnego miejsca, w którym człowiek będzie codziennie straszony katastrofą, wojną czy końcem świata. Chcę budować społeczność ludzi przygotowanych, odpowiedzialnych i gotowych pomagać innym.",
+      "Żyjemy w świecie zależnym od energii elektrycznej, internetu, łączności i dostaw. Dłuższa awaria, powódź czy gwałtowna burza pokazują, jak ważne stają się podstawowe umiejętności. Czy mamy wodę pitną, apteczkę, sprawną latarkę i rodzinny plan awaryjny? Takie pytania nie są przejawem paniki, lecz roztropności.",
+      "BIBLIA UCZY PRZEZORNOŚCI, A NIE LEKKOMYŚLNOŚCI",
+      "Księga Przysłów 22,3 opisuje roztropnego człowieka, który dostrzega niebezpieczeństwo i podejmuje środki ostrożności. Ten werset nie jest szczegółową instrukcją survivalu, ale wskazuje ogólną zasadę odpowiedzialnego działania.",
+      "W 41. rozdziale Księgi Rodzaju Józef, po wyjaśnieniu snów faraona, zalecił gromadzenie żywności w latach obfitości w przygotowaniu na głód. Nie oznacza to, że każdy dzisiejszy kryzys został przez Boga zapowiedziany. Pokazuje jednak wartość przezornego gospodarowania zasobami.",
+      "Wiara nie wymaga od nas bierności. Możemy ufać Bogu, a jednocześnie planować, zdobywać wiedzę i chronić bliskich.",
+      "SURVIVAL ZACZYNA SIĘ W DOMU",
+      "Survival często kojarzy się z lasem, budowaniem schronienia i rozpalaniem ognia. Tymczasem dla wielu rodzin najbardziej użyteczne będzie przygotowanie własnego mieszkania na krótkotrwałe zakłócenia.",
+      "Sprawdź zapas wody i żywności, leki, latarki, baterie, źródła zasilania, dokumenty oraz możliwości uzyskania wiarygodnych komunikatów. Ustal z rodziną sposób kontaktu i miejsce spotkania, gdyby podstawowa łączność zawiodła. Uwzględnij potrzeby dzieci, seniorów i osób przewlekle chorych.",
+      "Nie chodzi o masowe wykupywanie produktów ani gromadzenie rzeczy kosztem innych. Najlepsze przygotowanie zwiększa bezpieczeństwo bez odbierania człowiekowi pokoju.",
+      "NAJWAŻNIEJSZE WYPOSAŻENIE NIE MIEŚCI SIĘ W PLECAKU",
+      "Sprzęt jest przydatny, ale nie zastępuje umiejętności. Pierwsza pomoc, ocena ryzyka, rozsądne zachowanie podczas ewakuacji, bezpieczne korzystanie z informacji oraz współpraca mogą być ważniejsze niż drogie wyposażenie.",
+      "Warto uczestniczyć w profesjonalnych szkoleniach pierwszej pomocy i korzystać z zaleceń właściwych służb. Prawdziwa gotowość oznacza również opanowanie i gotowość do przyjęcia pomocy — nie udawanie, że poradzimy sobie ze wszystkim sami.",
+      "CHRZEŚCIJAŃSKI SURVIVAL NIE OZNACZA RATOWANIA WYŁĄCZNIE SIEBIE",
+      "Dla mnie to najważniejsza zasada tego projektu. W przypowieści o miłosiernym Samarytaninie (Łk 10,25–37) Jezus pokazuje człowieka, który nie przechodzi obojętnie obok potrzebującego. Zatrzymuje się i podejmuje konkretne działania.",
+      "Jeżeli jesteś przygotowany, możesz pomóc także sąsiadowi: wesprzeć go, udzielić pierwszej pomocy, podzielić się zapasami lub zwrócić uwagę na osobę samotną. Chrześcijański survival nie powinien prowadzić do izolacji i egoizmu.",
+      "Przygotowuję się nie po to, by zostawić innych za sobą, lecz również po to, by mieć możliwość im pomóc.",
+      "A CO Z PROROCTWAMI I CZASAMI KOŃCA?",
+      "Nie zamierzam unikać tematów proroczych. W 24. rozdziale Ewangelii Mateusza Jezus mówi o wojnach, głodzie, trzęsieniach ziemi i prześladowaniach, ale jednocześnie przestrzega przed zwiedzeniem i wyznaczaniem terminu końca (Mt 24,4–14.36).",
+      "Apokalipsa 13,16–17 opisuje ograniczenie kupowania i sprzedawania w kontekście przymusu oddawania czci. Ten fragment warto studiować razem z Ap 14,6–12. Nie daje on jednak podstaw do uznania każdej nowej technologii płatniczej za znamię bestii.",
+      "Nie chcę straszyć Apokalipsą. Chcę pomagać ludziom rozumieć ją w świetle Ewangelii, wolności sumienia i wierności Chrystusowi.",
+      "DUCHOWA ODPORNOŚĆ W NIEPEWNYCH CZASACH",
+      "Psalm 46 przedstawia Boga jako schronienie i pomoc w utrapieniu. Nie obiecuje, że człowiek wierzący nie spotka cierpienia, ale kieruje jego nadzieję ku Bogu.",
+      "Strach może być naturalną reakcją na zagrożenie. Odwaga polega na tym, że pomimo niepewności działamy rozważnie: rozmawiamy z bliskimi, zdobywamy wiedzę, przyjmujemy pomoc i podejmujemy odpowiedzialne decyzje.",
+      "Nie musimy udawać niezniszczalnych. Potrzebujemy mądrości, pokory i współpracy.",
+      "CZEGO BĘDZIEMY SIĘ UCZYĆ?",
+      "Chcę, aby SURVIVAL Christian Culture łączył edukację praktyczną z chrześcijańskim spojrzeniem na odpowiedzialność. Będziemy omawiać bezpieczeństwo rodziny, podstawy przygotowania awaryjnego, pierwszą pomoc, rozsądne zapasy, łączność, orientację w terenie oraz korzystanie z wiarygodnych informacji.",
+      "Poruszymy również pytania o radzenie sobie z lękiem, pomaganie innym, ochronę prywatności i odpowiedzialne rozumienie tekstów proroczych. Nie chcę społeczności zamkniętej w przekonaniu, że wszyscy wokół stanowią zagrożenie. Chcę społeczności przygotowanej do odpowiedzialnego życia.",
+      "PIERWSZE WYZWANIE: PLAN NA 72 GODZINY",
+      "Zastanów się, czy Twoje gospodarstwo domowe poradziłoby sobie przez trzy doby w razie poważnego zakłócenia usług. Sprawdź wodę, żywność, niezbędne leki, oświetlenie, dokumenty i sposób kontaktu z bliskimi.",
+      "Zacznij od sprawdzenia rzeczy, które już masz. Sporządź listę braków i uzupełniaj je stopniowo. Uwzględnij szczególne potrzeby domowników i zapoznaj się z oficjalnymi zaleceniami Rządowego Centrum Bezpieczeństwa oraz Państwowej Straży Pożarnej.",
+      "Jeśli w Twoim otoczeniu jest osoba samotna lub starsza, zastanów się, jak możesz ją wesprzeć. To niewielki, ale konkretny krok.",
+      "PRZETRWAĆ TO ZA MAŁO — TRZEBA WIEDZIEĆ, PO CO ŻYJEMY",
+      "Możemy poświęcić mnóstwo czasu na zabezpieczenia. Ale jeżeli utracimy przy tym miłość, zaufanie i poczucie sensu, to czego właściwie bronimy?",
+      "Jezus w Ewangelii Mateusza 6,25–34 uczy, by troska o codzienne potrzeby nie zamieniła życia w nieustanny lęk. To nie pochwała lekkomyślności, lecz przypomnienie o właściwej hierarchii wartości.",
+      "Przygotowuj się, ale nie żyj w panice. Planuj, lecz nie buduj nadziei wyłącznie na zgromadzonych rzeczach. Dbaj o siebie i nie zapominaj o drugim człowieku.",
+      "SURVIVAL Christian Culture powstaje z przekonania, że człowiek najlepiej przygotowany to nie ten, który boi się wszystkiego, ale ten, który potrafi odpowiedzialnie działać, pomagać innym i zachować nadzieję.",
+      "Bo prawdziwy survival to nie tylko sztuka przetrwania. To sztuka pozostania człowiekiem — również w najtrudniejszych czasach.",
+      "BIBLIA: Rdz 41; Prz 22,3; Ps 46; Mt 6,25–34; Mt 24,4–14.36; Łk 10,25–37; Ap 13,16–17; Ap 14,6–12.",
+      "Oficjalny portal projektu: https://polskieradio.cc/survival"
+    ],
+    "category": "wiara",
+    "categoryLabel": "SURVIVAL • PRZYGOTOWANIE I WIARA",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-21T11:00:00Z",
+    "dateFormatted": "21 października 2026",
+    "imageUrl": "/images/news/survival-christian-culture-przygotowanie-na-trudne-czasy.jpg",
+    "imageCaption": "Cezary Rogowski — inauguracja projektu SURVIVAL Christian Culture na tle górskiego krajobrazu i oficjalnego symbolu 3D.",
+    "readTime": "8 min czytania",
+    "readTimeMinutes": 8,
+    "isHero": true,
+    "isPopular": true,
+    "popularRank": 1,
+    "tags": [
+      "survival",
+      "christian culture",
+      "cezary rogowski",
+      "bezpieczeństwo",
+      "rodzina",
+      "przygotowanie awaryjne",
+      "wiara",
+      "nadzieja",
+      "psalm 46",
+      "odporność",
+      "odpowiedzialność"
+    ],
+    "scriptureReference": {
+      "verse": "Księga Przysłów 22:3 / Psalm 46:1-2 (UBG)",
+      "text": "Roztropny widzi zło i ukrywa się, a prości idą dalej i ponoszą karę. Bóg jest naszą ucieczką i siłą, bardzo pewną pomocą w utrapieniach."
+    },
+    "sourceCitation": {
+      "sourceName": "Pismo Święte — Uwspółcześniona Biblia Gdańska (UBG), Fundacja Wrota Nadziei",
+      "sourceUrl": "https://polskieradio.cc/survival",
+      "quotationDate": "Weryfikacja cytatów: 21 października 2026"
+    },
+    "relatedCourse": {
+      "title": "Akademia Przetrwania CC",
+      "lesson": "7 Filarów Przygotowania i Checklisty 72h",
+      "url": "/survival",
+      "badge": "Nowy Portal Ekosystemu"
+    },
+    "resourceLinks": [
+      {
+        "label": "Portal SURVIVAL CC — 7 filarów i checklisty",
+        "url": "https://polskieradio.cc/survival"
+      },
+      {
+        "label": "Akademia Biblijna CC",
+        "url": "https://polskieradio.cc/akademia"
+      },
+      {
+        "label": "Społeczność LUMINA",
+        "url": "https://polskieradio.cc/lumina"
+      },
+      {
+        "label": "Pokonać Goliata — Program Zwycięzcy",
+        "url": "https://polskieradio.cc/pokonac-goliata"
+      }
+    ]
+  },
   {
   "id": "art-nie-czekaj-az-zycie-sie-zmieni-em-motywacja",
   "title": "Nie czekaj, aż życie się zmieni. Zacznij od siebie — z Bogiem możesz więcej!",
