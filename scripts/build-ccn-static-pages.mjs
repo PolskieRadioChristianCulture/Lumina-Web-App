@@ -1273,7 +1273,15 @@ ${JSON.stringify(jsonLd, null, 2)}
               trimmed.startsWith('CZY MASZYNA MOŻE') ||
               trimmed.startsWith('PERSPEKTYWA BIBLIJNA') ||
               trimmed.startsWith('TECHNOLOGIA W SŁUŻBIE') ||
-              trimmed.startsWith('PIĘĆ PYTAŃ')
+              trimmed.startsWith('PIĘĆ PYTAŃ') ||
+              trimmed.startsWith('DLACZEGO POWSTAJE') ||
+              trimmed.startsWith('NIE JESTEŚ SUMĄ') ||
+              trimmed.startsWith('WIARA NIE ZASTĘPUJE') ||
+              trimmed.startsWith('NIE MUSISZ BYĆ') ||
+              trimmed.startsWith('MOTYWACJA, KTÓRA') ||
+              trimmed.startsWith('NIE TYLKO DLA') ||
+              trimmed.startsWith('PIERWSZE WYZWANIE') ||
+              trimmed.startsWith('DOBRZE, ŻE JESTEŚ')
             ) {
               return `<h2>${escapeHtml(trimmed)}</h2>`;
             }

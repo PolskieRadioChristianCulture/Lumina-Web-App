@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "Projekt eM (@MCC): Utworzenie fundamentów projektu Motywacja Christian Culture (polskieradio.cc/eM, /em, /m, /motywacja), trasy Clean URLs, indeks @w i przygotowanie mount-root dla kodu Dowódcy",
+      "date": "2026-10-21",
+      "agent": "A"
+    },
+    {
       "topic": "Dystrybucja & Czaty: Wdrożenie odpornej na restarty kolejki publikacji P0 (file lock, digest snapshotu) oraz bezpiecznej obsługi błędów czatu Lumina z przyciskiem ponowienia",
       "date": "2026-10-21",
       "agent": "A"
@@ -2929,6 +2934,39 @@
         "akademia-cc",
         "mojabiblia",
         "biblijne-uwielbienie"
+      ]
+    },
+    {
+      "id": "em-motywacja",
+      "branchId": "biblia-edukacja",
+      "name": "eM — Motywacja Christian Culture (@MCC)",
+      "shortDesc": "Centralna platforma biblijnej motywacji, determinacji i pokonywania życiowych olbrzymów.",
+      "fullDesc": "Projekt eM (@MCC) integruje biblijne zasady sukcesu, przełamywanie lęku na fundamencie książki „Pokonać Goliata”, formację nawyków Kursu Codziennego oraz autentyczne świadectwa zwycięstwa.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/em",
+      "status": "active",
+      "lang": "pl",
+      "icon": "⚡",
+      "category": "Motywacja & Rozwój",
+      "verifiedDate": "2026-10-21",
+      "keywords": [
+        "eM",
+        "em",
+        "m",
+        "motywacja",
+        "mcc",
+        "pokonać goliata",
+        "odwaga",
+        "determinacja",
+        "zwycięstwo",
+        "siła",
+        "przełamanie"
+      ],
+      "connections": [
+        "pokonac-goliata",
+        "swiadectwa",
+        "akademia-main",
+        "cclite"
       ]
     }
   ]
