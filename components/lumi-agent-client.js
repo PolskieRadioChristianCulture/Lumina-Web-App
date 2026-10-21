@@ -1,8 +1,9 @@
 // Owner-only web queue; no credentials, local conversation cache or background sends.
 export function createAgentClient({db, auth, sdk}) {
-  let generation = 0;
+  let generation = 0, disposed = false;
   const stop = sdk.onAuthStateChanged(auth, () => { generation++; });
   function session() {
+    if (disposed) throw Error('agent/disposed');
     const u = auth.currentUser;
     if (!u || u.isAnonymous || !u.emailVerified || u.email?.toLowerCase() !== 'nazirczarkes@gmail.com') throw Error('agent/owner-required');
     return {uid:u.uid, generation};
@@ -33,6 +34,6 @@ export function createAgentClient({db, auth, sdk}) {
     async refresh(id) {
       const s=session(); await sdk.updateDoc(ref(s,id),{needsSync:true,checkAt:sdk.serverTimestamp()}); current(s);
     },
-    dispose() { generation++; stop(); }
+    dispose() { if (disposed) return; disposed = true; generation++; stop(); }
   };
 }

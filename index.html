@@ -298,6 +298,15 @@
     <link rel="stylesheet" href="css/christian-culture-design-system.css">
     <link rel="stylesheet" href="style.css?v=48">
     <style>
+        /* WCAG 2.2 AA: prefers-reduced-motion (CC v2 Premium) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
         /* Mobile Full-Screen Side Drawer Navigation (<= 768px) */
         @media (max-width: 768px) {
             .side-drawer {
