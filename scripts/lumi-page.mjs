@@ -31,7 +31,7 @@ try {
 <link rel="stylesheet" href="/css/lumi-standalone.css?v=20261019_dialog1">
 <link rel="stylesheet" href="/css/lumi-messenger-design.css?v=20261015_clean_v1">
 <script defer src="/js/lumi-standalone.js?v=20261015_clean_v1"></script>
-<script defer src="/js/lumi-dashboard.js?v=20261021_single_open1"></script>
+<script defer src="/js/lumi-dashboard.js?v=20261021_room_copy1"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
 </head>`)
     .replace('<body class="user-is-guest">', `<body class="user-is-guest lumi-standalone">

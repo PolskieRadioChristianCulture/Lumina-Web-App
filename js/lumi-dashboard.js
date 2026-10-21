@@ -63,7 +63,7 @@
     const description = document.createElement('span'); description.className = 'lumi-card-description';
     description.textContent = 'Planer Omega 5.10.15 & Sztab Dowództwa';
     const preview = document.createElement('span'); preview.className = 'lumi-card-preview';
-    preview.textContent = '🔒 Szyfrowany kanał misji · Autoryzacja Biometryczna';
+    preview.textContent = 'Dyspozycje i odpowiedzi agentów CC';
     body.append(title, description, preview);
     const arrow = document.createElement('span'); arrow.className = 'lumi-card-arrow'; arrow.textContent = '›'; arrow.setAttribute('aria-hidden', 'true');
     button.prepend(img, body); button.append(arrow);
@@ -117,7 +117,7 @@
     const description = document.createElement('span'); description.className = 'lumi-card-description';
     description.textContent = 'Prywatna przestrzeń rodziny Rogowskich · LUMI Family';
     const preview = document.createElement('span'); preview.className = 'lumi-card-preview';
-    preview.textContent = '🔒 Bezpieczna komunikacja domowa';
+    preview.textContent = 'Wiadomości rodzinne · LUMI Family';
     body.append(title, description, preview);
     const arrow = document.createElement('span'); arrow.className = 'lumi-card-arrow'; arrow.textContent = '›'; arrow.setAttribute('aria-hidden', 'true');
     button.prepend(img, body); button.append(arrow);
@@ -204,10 +204,10 @@
       ['Radio Christian Culture', 'Wszystkie sześć stacji', toggleRadioPanel]
     ];
     if (isRogowscy()) {
-      channels.unshift(['👨‍👩‍👧‍👦 Pokój Rodzinny — Rogowscy', 'Prywatny bezpieczny pokój rodziny Rogowskich · LUMI Family', openFamilyRoom]);
+      channels.unshift(['👨‍👩‍👧‍👦 Pokój Rodzinny — Rogowscy', 'Pokój rodziny Rogowskich · LUMI Family', openFamilyRoom]);
     }
     if (isCommander()) {
-      channels.unshift(['👑 Pokój Agentów & Planer Omega', 'Szyfrowany kanał dowodzenia misji · Autoryzacja Biometryczna L0', openCommanderRoom]);
+      channels.unshift(['👑 Pokój Agentów & Planer Omega', 'Dyspozycje agentów i planowanie działań misji', openCommanderRoom]);
     }
     for (const [name, description, action] of channels) {
       const button = document.createElement('button'); button.type = 'button';

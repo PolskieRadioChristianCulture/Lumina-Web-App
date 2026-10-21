@@ -46,6 +46,25 @@ function fixture(loggedIn = false, commander = false) {
 }
 const settle = async () => { for (let i = 0; i < 6; i++) await Promise.resolve(); };
 
+test('room cards and channels describe their purpose without unverified security promises', () => {
+  const f = fixture(true, true);
+  const unverified = /szyfrowan|biometryczn|bezpieczn/i;
+  const agent = f.win.document.querySelector('[data-commander-card]');
+  const family = f.win.document.querySelector('[data-family-card]');
+  assert.ok(agent && family);
+  assert.doesNotMatch(agent.textContent, unverified);
+  assert.doesNotMatch(family.textContent, unverified);
+  agent.click();
+  family.click();
+  assert.equal(f.opens[0].tab, 'commander');
+  assert.equal(f.opens[1].tab, 'family');
+  f.win.document.querySelector('[data-lumi-category="channels"]').click();
+  const channels = f.win.document.getElementById('lumiConversationCards');
+  assert.doesNotMatch(channels.textContent, unverified);
+  assert.match(channels.textContent, /Pokój Agentów|Planer Omega/);
+  assert.match(channels.textContent, /Rogowscy/);
+});
+
 test('delayed commander opening uses the canonical opener once even when it returns undefined', () => {
   const f = fixture(true, true);
   delete f.win.openDirectMessagesModal;
@@ -189,7 +208,7 @@ test('new conversation button uses feather quill icon and radio dropdown uses el
   assert.match(css, /\.cc-chat-radio select\{[^}]*appearance:none!important/);
 });
 
-test('Commander Nazir sees VIP Agent Room card, #1 channel entry, and quick-launch button leading to biometric room', () => {
+test('Commander Nazir sees VIP Agent Room card, #1 channel entry, and quick-launch button leading to canonical room', () => {
   // 1. Regular user fixture
   const regular = fixture(true, false);
   assert.equal(regular.win.document.querySelector('[data-commander-card]'), null);
@@ -203,7 +222,7 @@ test('Commander Nazir sees VIP Agent Room card, #1 channel entry, and quick-laun
   assert.ok(card, 'VIP Commander card must be present');
   assert.match(card.textContent, /Pokój Agentów CC/);
   assert.match(card.textContent, /VIP L0/);
-  assert.match(card.textContent, /Autoryzacja Biometryczna/);
+  assert.match(card.textContent, /Dyspozycje i odpowiedzi agentów CC/);
 
   // Quick-launch heading button
   const quickBtn = cmd.win.document.getElementById('lumiOpenCommander');
