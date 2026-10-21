@@ -1318,20 +1318,15 @@ async function handleSupportApi(request, env, adapter = luminaSupportAdapter) {
 async function handleSurvivalRoute(request, env) {
   const url = new URL(request.url);
   const p = url.pathname.replace(/\/$/, '').toLowerCase();
-  if (p === '/survival' || p === '/surwiwal') {
-    const assetUrl = new URL(request.url);
-    assetUrl.pathname = '/survival.html';
-    assetUrl.search = '';
-    const assetResp = await env.ASSETS.fetch(new Request(assetUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
-    const body = await assetResp.arrayBuffer();
-    return new Response(body, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public, max-age=0, must-revalidate',
-        'X-Content-Type-Options': 'nosniff',
-      },
-    });
+  if (p === '/surwiwal' || p === '/survival.html') {
+    const targetUrl = new URL(request.url);
+    targetUrl.pathname = '/survival';
+    return Response.redirect(targetUrl.toString(), 301);
+  }
+  if (p === '/survival') {
+    const targetUrl = new URL(request.url);
+    targetUrl.pathname = '/survival/';
+    return env.ASSETS.fetch(new Request(targetUrl, request));
   }
   return null;
 }
