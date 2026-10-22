@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "Ewangelia: Wdrożenie portalu Dobrej Nowiny (EkoCC Premium, wizualizer Web Audio FFT, integracja radia z licznikiem /milion, profil LUMINA)",
+      "date": "2026-10-22",
+      "agent": "A"
+    },
+    {
       "topic": "Kurs Pokonać Goliata: Wdrożenie makiety EkoCC PREMIUM — panoramiczna scena hero, 10 modułów tematycznych, bezstratna migracja danych i autorskie treści 2026",
       "date": "2026-10-21",
       "agent": "A"
@@ -3061,6 +3066,35 @@
       "connections": [
         "pokonac-goliata",
         "kurs-codzienny",
+        "akademia"
+      ]
+    },
+    {
+      "id": "ewangelia-portal",
+      "branchId": "biblia-edukacja",
+      "name": "Ewangelia – Dobra Nowina",
+      "shortDesc": "Nowoczesny portal Ewangelii z interaktywnym odtwarzaczem, wizualizacją FFT i integracją radiową.",
+      "fullDesc": "Oficjalny portal Ewangelii w ekosystemie Christian Culture (polskieradio.cc/Ewangelia). Prezentacja Dobrej Nowiny, cytatów Pisma Świętego, odtwarzacz audio z wizualizatorem częstotliwości Web Audio FFT, zintegrowany przycisk Radia CC z licznikiem /milion oraz logowanie LUMINA.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/Ewangelia",
+      "status": "active",
+      "lang": "pl",
+      "icon": "✝️",
+      "category": "Biblia & Edukacja",
+      "verifiedDate": "2026-10-22",
+      "keywords": [
+        "ewangelia",
+        "dobra nowina",
+        "jezus",
+        "zbawienie",
+        "wiara",
+        "biblia",
+        "audio",
+        "radio"
+      ],
+      "connections": [
+        "radio-main",
+        "mojabiblia",
         "akademia"
       ]
     }
