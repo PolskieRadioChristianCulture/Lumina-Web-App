@@ -168,7 +168,7 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 .hero-backdrop {
   position: absolute;
   inset: 0;
-  background-image: url('/Ewangelia/assets/hero-jezus-v2.webp');
+  background-image: url('/Ewangelia/assets/hero-jezus-v3.webp');
   background-size: cover;
   background-position: center top;
 }
@@ -915,13 +915,28 @@ footer {
 [hidden] { display: none !important; }
 .hero {
   display: grid;
+  background: #202830;
   grid-template-columns: minmax(0, 1fr) minmax(0, .65fr);
   grid-template-areas: 'copy copy' 'choices choices' 'player player' 'quote quote' 'actions actions' 'strap strap';
   gap: 28px;
   height: auto; min-height: 0; max-height: none;
   padding: 145px clamp(24px, 6.5vw, 110px) 65px;
 }
-.hero-backdrop { background-position: center top; }
+.hero-backdrop {
+  /* Keep the artwork's frame independent of the player/footer content height. */
+  bottom: auto;
+  height: clamp(720px, 65vw, 1000px);
+  background-size: cover;
+  background-position: 64% top;
+  background-repeat: no-repeat;
+}
+.hero-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 160px;
+  background: linear-gradient(transparent, #202830);
+}
 .hero-shading { background: linear-gradient(90deg, #101a23d9, #16212a66 55%, #16212a22), linear-gradient(0deg, #202830, transparent 65%); }
 .hero-copy, .verse, .player, .actions, .hero-strap, #feedback {
   position: relative; inset: auto;
@@ -1040,9 +1055,9 @@ footer {
   .hero {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: 'copy' 'choices' 'player' 'quote' 'actions' 'strap';
-    padding: 116px 20px 36px; gap: 24px;
+    padding: 320px 20px 36px; gap: 24px;
   }
-  .hero-backdrop { background-size: auto 780px; background-position: 57% top; }
+  .hero-backdrop { height: 780px; background-size: auto 780px; background-position: 60% top; }
   .hero-copy h1 { font-size: clamp(72px, 18vw, 100px); }
   .kicker { font-size: 9px; letter-spacing: .15em; line-height: 1.7; }
   .gold-rule { margin: 23px 0 18px; }
