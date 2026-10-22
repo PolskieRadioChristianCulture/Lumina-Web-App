@@ -278,6 +278,33 @@ footer { padding: 70px 6vw 28px; background: #19191b; color: #eee9e5; }
   .whatsapp-qr-card { max-width: 430px; width: 100%; margin: auto; }
 }
 
+/* === RADIO CC PLAYER === */
+.hero-radio {
+  display: flex; align-items: center; gap: 12px 18px;
+  flex-wrap: wrap; margin-top: 18px;
+}
+.radio-cta {
+  border: 1.5px solid #f2ca8e;
+  border-radius: 40px; padding: 13px 22px;
+  background: rgba(196, 163, 90, 0.12); color: #ffe1a9;
+  font-weight: 700; font-size: 13px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; min-width: 44px;
+  transition: background .2s, box-shadow .2s;
+}
+.radio-cta:hover { background: rgba(242, 202, 142, 0.25); box-shadow: 0 4px 18px rgba(242,202,142,.35); }
+.radio-cta[aria-pressed="true"] {
+  background: linear-gradient(135deg, rgba(168,40,40,.85), rgba(125,25,25,.85));
+  border-color: #ff9b9b; color: #fff;
+  box-shadow: 0 4px 20px rgba(180,40,40,.5);
+}
+.radio-cta[aria-pressed="true"] .radio-cta-dot { animation: radio-pulse 1.2s ease-in-out infinite; color: #ff8080; }
+.radio-cta[data-state='loading'] { border-style: dashed; opacity: .8; }
+.radio-cta-dot { font-size: 10px; }
+@keyframes radio-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+.counter-link { color: #f4d7a3; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.counter-badge { font-weight: 700; color: var(--gold); }
+
 @media (max-width: 650px) {
   .topbar { height: 74px; padding: 0 17px; }
   .brand { font-size: 12px; }
@@ -296,6 +323,8 @@ footer { padding: 70px 6vw 28px; background: #19191b; color: #eee9e5; }
   .promise { font-size: 9px; line-height: 1.7; margin-top: 18px; }
   .hero-actions { gap: 9px; }
   .primary, .secondary { padding: 12px 15px; font-size: 11px; }
+  .hero-radio { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .radio-cta { width: 100%; justify-content: center; font-size: 12px; }
   .hero-hint { font-size: 9px; width: 100%; text-align: center; }
   .host-info { flex-direction: column; align-items: flex-start; }
   .listen { padding: 74px 14px; }

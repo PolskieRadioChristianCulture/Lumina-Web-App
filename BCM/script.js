@@ -63,3 +63,47 @@ if (shareBtn) {
 /* Rok w stopce */
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+/* === RADIO CC PLAYER === */
+const STREAM_URL = 'https://stream.zeno.fm/vz96pvl3pnktv';
+const radioBtn = document.getElementById('radioCtaBtn');
+const radioAudio = document.getElementById('ccRadioAudio');
+
+if (radioBtn && radioAudio) {
+  const radioLabel = radioBtn.querySelector('.radio-cta-label');
+  let requested = false;
+
+  function stopRadio() {
+    requested = false;
+    radioAudio.pause();
+    radioAudio.removeAttribute('src');
+    radioAudio.load();
+    radioBtn.setAttribute('aria-pressed', 'false');
+    radioBtn.setAttribute('aria-label', 'Włącz Radio Christian Culture na żywo');
+    radioBtn.dataset.state = 'idle';
+    if (radioLabel) radioLabel.textContent = 'Słuchaj Radia CC';
+  }
+
+  radioBtn.addEventListener('click', () => {
+    if (requested) { stopRadio(); return; }
+    requested = true;
+    radioBtn.dataset.state = 'loading';
+    if (radioLabel) radioLabel.textContent = 'Łączenie…';
+    radioAudio.src = STREAM_URL;
+    radioAudio.play().catch(() => { if (requested) { stopRadio(); radioBtn.dataset.state = 'error'; } });
+  });
+
+  radioAudio.addEventListener('playing', () => {
+    if (!requested) return;
+    radioBtn.dataset.state = 'playing';
+    radioBtn.setAttribute('aria-pressed', 'true');
+    radioBtn.setAttribute('aria-label', 'Zatrzymaj Radio Christian Culture');
+    if (radioLabel) radioLabel.textContent = 'Stop Radia CC';
+  });
+  radioAudio.addEventListener('waiting', () => {
+    if (requested) { radioBtn.dataset.state = 'loading'; if (radioLabel) radioLabel.textContent = 'Buforowanie…'; }
+  });
+  radioAudio.addEventListener('ended', stopRadio);
+  radioAudio.addEventListener('error', () => { if (requested) { stopRadio(); radioBtn.dataset.state = 'error'; } });
+  radioAudio.addEventListener('pause', () => { if (radioBtn.getAttribute('aria-pressed') === 'true') stopRadio(); });
+}

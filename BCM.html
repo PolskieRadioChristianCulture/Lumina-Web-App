@@ -22,7 +22,8 @@
 <meta name="twitter:image" content="https://polskieradio.cc/BCM/assets/og-bcm-v2.jpg">
 <link rel="preload" as="image" href="/BCM/assets/hero-bcm-v2.webp">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/BCM/style.css?v=20261022_v3">
+<link rel="stylesheet" href="/BCM/style.css?v=20261022_v4">
+<script defer src="/js/cc-radio-milion.js?v=20261011_2"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -65,6 +66,8 @@
   <nav aria-label="Menu główne">
     <a href="#start">Start</a>
     <a href="#odtwarzacz">Modlitwy</a>
+    <a href="#radioCtaBtn">Radio CC</a>
+    <a href="https://polskieradio.cc/milion">Licznik /milion</a>
     <a href="#intencja">Intencje</a>
     <a href="#grupa-modlitewna">Grupa modlitewna</a>
     <a href="#o-projekcie">O projekcie</a>
@@ -89,6 +92,16 @@
       <div class="hero-actions">
         <a class="primary" href="#odtwarzacz"><span aria-hidden="true">▶</span> Rozpocznij słuchanie</a>
         <a class="secondary" href="#intencja">♡ Powierz intencję</a>
+      </div>
+      <div class="hero-radio">
+        <button class="radio-cta" id="radioCtaBtn" type="button" aria-label="Włącz Radio Christian Culture na żywo" aria-pressed="false" data-state="idle">
+          <span class="radio-cta-dot" aria-hidden="true">●</span>
+          <span class="radio-cta-label">Słuchaj Radia CC</span>
+        </button>
+        <a class="counter-link" href="https://polskieradio.cc/milion" title="Zobacz licznik słuchaczy — Celujemy w pierwszy milion">
+          <span class="counter-badge">/milion</span> Celujemy w pierwszy milion →
+        </a>
+        <audio id="ccRadioAudio" data-cc-radio="true" preload="none"></audio>
       </div>
       <p class="promise">BÓG SŁUCHA &nbsp; · &nbsp; BÓG DZIAŁA &nbsp; · &nbsp; BÓG JEST BLISKO</p>
     </div>
