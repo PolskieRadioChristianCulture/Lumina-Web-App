@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "BCM: Wdrożenie portalu Biblijny Czas Modlitwy z Jolą Wójcik (CC Women, odtwarzacz playlisty YouTube, grupa modlitewna WhatsApp, routing /BCM)",
+      "date": "2026-10-22",
+      "agent": "A"
+    },
+    {
       "topic": "Ewangelia: Wdrożenie portalu Dobrej Nowiny (EkoCC Premium, wizualizer Web Audio FFT, integracja radia z licznikiem /milion, profil LUMINA)",
       "date": "2026-10-22",
       "agent": "A"
@@ -3096,6 +3101,34 @@
         "radio-main",
         "mojabiblia",
         "akademia"
+      ]
+    },
+    {
+      "id": "bcm-modlitwa",
+      "branchId": "spolecznosc",
+      "name": "Biblijny Czas Modlitwy (BCM)",
+      "shortDesc": "Seria modlitewna CC Women prowadzona przez Jolę Wójcik z odtwarzaczem i grupą modlitewną WhatsApp.",
+      "fullDesc": "Oficjalna strona serii Biblijny Czas Modlitwy (polskieradio.cc/BCM). Codzienne rozważania i modlitwy z Jolą Wójcik, oficjalna playlista YouTube CC Women, powierzanie intencji oraz otwarta grupa modlitewna WhatsApp „Jeśli chcesz, pomodlę się o Ciebie”.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/BCM",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🙏",
+      "category": "Społeczność & Modlitwa",
+      "verifiedDate": "2026-10-22",
+      "keywords": [
+        "modlitwa",
+        "bcm",
+        "biblijny czas modlitwy",
+        "jola wójcik",
+        "cc women",
+        "kobiety",
+        "intencje",
+        "whatsapp"
+      ],
+      "connections": [
+        "yt-cc-women",
+        "ewangelia-portal"
       ]
     }
   ]

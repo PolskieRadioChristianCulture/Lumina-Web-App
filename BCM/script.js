@@ -2,7 +2,7 @@
 'use strict';
 
 const PLAYLIST_ID = 'PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN';
-const PAGE_URL = 'https://polskieradio.cc/bcm';
+const PAGE_URL = 'https://polskieradio.cc/BCM';
 const PAGE_TITLE = 'Biblijny Czas Modlitwy z Jolą Wójcik';
 const PAGE_TEXT = 'Na Słowo. Na modlitwę. Na Ciebie. — CC Women';
 
