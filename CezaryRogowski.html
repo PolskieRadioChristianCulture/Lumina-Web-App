@@ -27,11 +27,12 @@
   <meta name="twitter:image" content="https://polskieradio.cc/images/cezaryrogowski/cezary-hero.jpg">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/cezary-rogowski.css?v=20261022f">
+  <link rel="stylesheet" href="/css/cezary-rogowski.css?v=20261022h">
 
   <!-- Scripts -->
+  <script defer src="/js/cc-radio-milion.js?v=20261011_2"></script>
   <script defer src="/components/cc-omni-search.js"></script>
-  <script defer src="/js/cezary-rogowski.js?v=20261022c"></script>
+  <script defer src="/js/cezary-rogowski.js?v=20261022h"></script>
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -100,10 +101,11 @@
         <kbd>Ctrl+K</kbd>
       </button>
 
-      <a class="btn-radio" href="/" target="_blank" rel="noopener" aria-label="Otwórz radio internetowe Christian Culture w nowym oknie">
-        <span aria-hidden="true">◉</span>
-        <span>Słuchaj radia ↗</span>
-      </a>
+      <button class="btn-radio" id="crRadioBtn" type="button" aria-label="Włącz Radio Christian Culture" aria-pressed="false">
+        <span class="cr-radio-dot" aria-hidden="true">◉</span>
+        <span class="cr-radio-label">Słuchaj radia</span>
+      </button>
+      <audio id="crRadioAudio" src="https://stream.zeno.fm/vz96pvl3pnktv" data-cc-radio="true" preload="none"></audio>
     </div>
   </header>
 

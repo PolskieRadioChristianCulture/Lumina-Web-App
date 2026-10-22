@@ -152,4 +152,46 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // 6. Radio Play/Stop Toggle (integrates with /milion counter via cc-radio-milion.js)
+  const crRadioBtn = document.getElementById('crRadioBtn');
+  const crRadioAudio = document.getElementById('crRadioAudio');
+  const crRadioLabel = crRadioBtn ? crRadioBtn.querySelector('.cr-radio-label') : null;
+
+  if (crRadioBtn && crRadioAudio) {
+    let crIsPlaying = false;
+    const STREAM_URL = 'https://stream.zeno.fm/vz96pvl3pnktv';
+
+    const setPlayingState = (playing) => {
+      crIsPlaying = playing;
+      crRadioBtn.setAttribute('aria-pressed', String(playing));
+      crRadioBtn.setAttribute(
+        'aria-label',
+        playing ? 'Zatrzymaj Radio Christian Culture' : 'Włącz Radio Christian Culture'
+      );
+      if (crRadioLabel) {
+        crRadioLabel.textContent = playing ? '■ Stop' : 'Słuchaj radia';
+      }
+    };
+
+    crRadioBtn.addEventListener('click', () => {
+      if (crIsPlaying) {
+        crRadioAudio.pause();
+        crRadioAudio.src = ''; // release stream / save bandwidth
+        setPlayingState(false);
+      } else {
+        crRadioAudio.src = STREAM_URL;
+        crRadioAudio.play().catch(() => {
+          setPlayingState(false);
+        });
+        setPlayingState(true);
+      }
+    });
+
+    crRadioAudio.addEventListener('ended', () => setPlayingState(false));
+    crRadioAudio.addEventListener('error', () => setPlayingState(false));
+    crRadioAudio.addEventListener('pause', () => {
+      if (crIsPlaying) setPlayingState(false);
+    });
+  }
 });

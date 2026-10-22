@@ -227,6 +227,26 @@ img {
   box-shadow: 0 6px 20px rgba(196, 163, 90, 0.4);
 }
 
+/* Radio playing state */
+.btn-radio[aria-pressed="true"] {
+  background: linear-gradient(135deg, #b04040 0%, #8b2020 100%);
+  box-shadow: 0 4px 16px rgba(180, 60, 60, 0.35);
+  color: #fff;
+}
+
+.btn-radio[aria-pressed="true"]:hover {
+  box-shadow: 0 6px 20px rgba(180, 60, 60, 0.5);
+}
+
+.btn-radio[aria-pressed="true"] .cr-radio-dot {
+  animation: cr-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes cr-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
 .menu-toggle {
   display: none;
   min-height: 44px;
