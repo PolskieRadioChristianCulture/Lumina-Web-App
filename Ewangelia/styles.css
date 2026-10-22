@@ -913,6 +913,7 @@ footer {
 .volume input { width: 100px; min-height: 44px; accent-color: #C4A35A; }
 .actions { grid-area: actions; min-width: 0; flex-wrap: wrap; }
 .glass-btn { font-size: 13px; }
+.support-cta { border-color: #e2cc9a; color: #e2cc9a; background: #172129e6; font-weight: 600; }
 .social a, .social button { width: 44px; height: 44px; flex-shrink: 0; }
 .social a::before, .social button::before { display: none; }
 .hero-strap { grid-area: strap; margin-top: 8px; line-height: 1.8; }
