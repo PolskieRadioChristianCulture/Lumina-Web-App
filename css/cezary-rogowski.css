@@ -1481,3 +1481,41 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   BOOK PHOTO FRAME (REPLACING 3D COVER)
+   ========================================================================== */
+.book-photo-frame {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line-gold);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(196, 163, 90, 0.15);
+  background: var(--panel-card);
+  max-width: 440px;
+  width: 100%;
+  transition: transform var(--motion-normal) ease, box-shadow var(--motion-normal) ease;
+}
+
+.book-photo-frame:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(196, 163, 90, 0.25);
+}
+
+.book-photo-frame img {
+  width: 100%;
+  height: auto;
+  max-height: 560px;
+  object-fit: cover;
+  display: block;
+}
+
+.book-photo-caption {
+  padding: 10px 14px;
+  background: rgba(10, 10, 10, 0.85);
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
