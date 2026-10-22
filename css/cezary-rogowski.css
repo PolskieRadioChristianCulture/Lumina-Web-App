@@ -208,7 +208,7 @@ img {
 .btn-radio {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   min-height: 44px;
   padding: 10px 22px;
   border-radius: var(--radius-pill);
@@ -218,33 +218,169 @@ img {
   font-weight: 700;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  box-shadow: 0 4px 16px rgba(196, 163, 90, 0.25);
-  transition: transform var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
+  box-shadow: 0 4px 16px rgba(196, 163, 90, 0.28);
+  transition: transform var(--motion-fast) ease, box-shadow var(--motion-fast) ease, background var(--motion-fast) ease;
+  animation: cr-btn-glow 3.8s ease-in-out infinite;
+  cursor: pointer;
+  border: none;
+}
+
+@keyframes cr-btn-glow {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(196, 163, 90, 0.28);
+  }
+  50% {
+    box-shadow: 0 4px 22px rgba(196, 163, 90, 0.62), 0 0 0 2px rgba(226, 204, 154, 0.35);
+  }
 }
 
 .btn-radio:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(196, 163, 90, 0.4);
+  box-shadow: 0 6px 22px rgba(196, 163, 90, 0.55);
+  animation-play-state: paused;
+}
+
+/* Radio animated icon wrapper */
+.cr-radio-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Stan 1: Play (Idle / Beckoning) */
+.cr-icon-play-state {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.cr-play-svg {
+  display: block;
+  fill: currentColor;
+  animation: cr-play-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes cr-play-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+
+.cr-play-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(7, 7, 7, 0.45);
+  pointer-events: none;
+  animation: cr-ring-sonar 2.2s cubic-bezier(0.1, 0.7, 0.1, 1) infinite;
+}
+
+@keyframes cr-ring-sonar {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.95;
+  }
+  65% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* Stan 2: Stop (Active Playing) */
+.cr-icon-stop-state {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.cr-stop-sq {
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 1.5px;
+  flex-shrink: 0;
+}
+
+.cr-eq-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.cr-eq-bar {
+  width: 2px;
+  background: #ffffff;
+  border-radius: 1px;
+}
+
+.cr-eq-1 {
+  height: 4px;
+  animation: cr-eq-anim-1 0.7s ease-in-out infinite alternate;
+}
+
+.cr-eq-2 {
+  height: 12px;
+  animation: cr-eq-anim-2 0.5s ease-in-out infinite alternate 0.15s;
+}
+
+.cr-eq-3 {
+  height: 7px;
+  animation: cr-eq-anim-3 0.8s ease-in-out infinite alternate 0.3s;
+}
+
+@keyframes cr-eq-anim-1 {
+  0% { height: 3px; }
+  100% { height: 11px; }
+}
+
+@keyframes cr-eq-anim-2 {
+  0% { height: 12px; }
+  100% { height: 4px; }
+}
+
+@keyframes cr-eq-anim-3 {
+  0% { height: 4px; }
+  100% { height: 10px; }
 }
 
 /* Radio playing state */
 .btn-radio[aria-pressed="true"] {
-  background: linear-gradient(135deg, #b04040 0%, #8b2020 100%);
-  box-shadow: 0 4px 16px rgba(180, 60, 60, 0.35);
-  color: #fff;
+  background: linear-gradient(135deg, #a82828 0%, #7d1919 100%);
+  box-shadow: 0 4px 18px rgba(168, 40, 40, 0.4);
+  color: #ffffff;
+  animation: none;
 }
 
 .btn-radio[aria-pressed="true"]:hover {
-  box-shadow: 0 6px 20px rgba(180, 60, 60, 0.5);
+  box-shadow: 0 6px 24px rgba(180, 50, 50, 0.6);
+  transform: translateY(-2px);
 }
 
-.btn-radio[aria-pressed="true"] .cr-radio-dot {
-  animation: cr-pulse 1.2s ease-in-out infinite;
+.btn-radio[aria-pressed="true"] .cr-icon-play-state {
+  display: none;
 }
 
-@keyframes cr-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+.btn-radio[aria-pressed="true"] .cr-icon-stop-state {
+  display: inline-flex;
 }
 
 .menu-toggle {

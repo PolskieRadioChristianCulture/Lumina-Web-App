@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playing ? 'Zatrzymaj Radio Christian Culture' : 'Włącz Radio Christian Culture'
       );
       if (crRadioLabel) {
-        crRadioLabel.textContent = playing ? '■ Stop' : 'Słuchaj radia';
+        crRadioLabel.textContent = playing ? 'Stop radia' : 'Słuchaj radia';
       }
     };
 
