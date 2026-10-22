@@ -64,6 +64,28 @@ if (shareBtn) {
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+/* === ULUBIONE / GWIAZDKA === */
+const starBtn = document.getElementById('btnFavorite');
+if (starBtn) {
+  try {
+    if (localStorage.getItem('bcm_is_favorite') === 'true') {
+      starBtn.classList.add('active');
+    }
+  } catch (e) {}
+
+  starBtn.addEventListener('click', () => {
+    const isActive = starBtn.classList.toggle('active');
+    try {
+      localStorage.setItem('bcm_is_favorite', isActive ? 'true' : 'false');
+    } catch (e) {}
+    if (isActive) {
+      toast('Dodano stronę do ulubionych! ★');
+    } else {
+      toast('Usunięto z ulubionych.');
+    }
+  });
+}
+
 /* === RADIO CC PLAYER === */
 const STREAM_URL = 'https://stream.zeno.fm/vz96pvl3pnktv';
 const radioBtn = document.getElementById('radioCtaBtn');
