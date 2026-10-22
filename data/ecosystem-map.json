@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "#antyHALLOWEEN: Wdrożenie kampanii „My świętujemy inaczej” (deklaracja Cezarego Rogowskiego, pakiety grafik do pobrania, alternatywy dla kultury strachu, routing /Halloween)",
+      "date": "2026-10-22",
+      "agent": "A"
+    },
+    {
       "topic": "Akademia Biblijna: Publikacja Dnia 23 Kursu Codziennego „Pojednanie i powrót do Betel” (Rdz 33–35) wraz z kompletem 5 wersji redakcyjnych",
       "date": "2026-10-23",
       "agent": "A"
@@ -3134,6 +3139,36 @@
       "connections": [
         "yt-cc-women",
         "ewangelia-portal"
+      ]
+    },
+    {
+      "id": "anty-halloween",
+      "branchId": "wiedza",
+      "name": "#antyHALLOWEEN — My świętujemy inaczej",
+      "shortDesc": "Ogólnopolska kampania chrześcijańska Christian Culture promująca kulturę światła, dobra i rodziny zamiast kultury strachu.",
+      "fullDesc": "Oficjalna strona kampanii #antyHALLOWEEN (polskieradio.cc/Halloween). Pełna deklaracja teologiczna i kulturowa Cezarego Rogowskiego, pakiety bezpłatnych grafik do pobrania (post 1:1, story 9:16, baner 16:9), leksykon pojęć biblijnych oraz pozytywne alternatywy wieczoru.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/Halloween",
+      "status": "active",
+      "lang": "pl",
+      "icon": "✨",
+      "category": "Wiedza & Misja",
+      "verifiedDate": "2026-10-22",
+      "keywords": [
+        "antyhalloween",
+        "anty-halloween",
+        "halloween",
+        "kampania",
+        "swiatlosc",
+        "światłość",
+        "deklaracja",
+        "rodzina",
+        "alternatywa",
+        "grafiki"
+      ],
+      "connections": [
+        "ewangelia-portal",
+        "ccn-portal"
       ]
     }
   ]
