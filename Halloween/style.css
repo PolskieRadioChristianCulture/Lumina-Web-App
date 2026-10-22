@@ -182,7 +182,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid #fff; outline-offset:
 /* Campaign Downloads */
 .campaign { background: #0c1014; }
 .downloads {
-  max-width: 1220px; margin: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+  max-width: 1240px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px;
+}
+.dl-actions {
+  display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px;
+}
+.dl-actions .btn {
+  padding: 10px 14px; font-size: 12px; flex: 1 1 120px;
 }
 .downloads article {
   padding: 15px 15px 25px; background: #151a21; border: 1px solid #ffffff1c;

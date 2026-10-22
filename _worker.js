@@ -2208,8 +2208,16 @@ export default {
     const lowerPath = url.pathname.toLowerCase().replace(/\/$/, '');
     if (lowerPath === '/global') {
       const globalUrl = new URL(request.url);
-      globalUrl.pathname = '/Global/index.html';
-      return env.ASSETS.fetch(new Request(globalUrl, request));
+      globalUrl.pathname = '/Global.html';
+      const assetResp = await env.ASSETS.fetch(new Request(globalUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
+      const body = await assetResp.arrayBuffer();
+      return new Response(body, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'public, max-age=0, must-revalidate'
+        }
+      });
     }
 
     if (
