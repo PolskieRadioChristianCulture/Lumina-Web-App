@@ -1011,6 +1011,20 @@ img {
   cursor: pointer;
   transition: all var(--motion-fast) ease;
   width: fit-content;
+  /* Reset button defaults */
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.footer-named-link:focus-visible,
+.footer-named-btn:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 2px;
 }
 
 .footer-named-link:hover,
@@ -1034,6 +1048,45 @@ img {
   background: rgba(196, 163, 90, 0.18);
   border-color: var(--gold-light);
   box-shadow: 0 4px 18px rgba(196, 163, 90, 0.2);
+}
+
+/* Studio button — wyróżnienie kursywą jak link tekstowy */
+.footer-studio-btn {
+  background: transparent !important;
+  border: none !important;
+  padding: 6px 0 !important;
+  min-height: 44px;
+  color: var(--gold-light) !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: underline;
+  text-decoration-color: rgba(196, 163, 90, 0.4);
+  text-underline-offset: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--motion-fast) ease;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  letter-spacing: 0;
+  width: fit-content;
+}
+
+.footer-studio-btn:hover {
+  color: #E2CC9A !important;
+  text-decoration-color: var(--gold-light);
+  transform: translateX(4px);
+}
+
+.footer-studio-btn:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 .footer-inner {

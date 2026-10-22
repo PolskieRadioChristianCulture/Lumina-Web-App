@@ -89,6 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
           tracksContainer.appendChild(trackItem);
         });
       })
+      .catch(() => {
+        // Gracefully ignore fetch errors
+      });
+  }
+
   // 5. Your Imagination Studio Modal Dialog
   const openModalBtn = document.getElementById('openStudioModalBtn');
   const closeModalBtn = document.getElementById('closeStudioModalBtn');
