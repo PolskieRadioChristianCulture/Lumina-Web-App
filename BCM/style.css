@@ -36,29 +36,35 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--rose); outline-
 .topbar nav a { font-size: 12px; letter-spacing: .03em; }
 .topbar nav a:hover { color: var(--champagne); }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
-.topbar-star {
+#ccTopBarFavBtn.topbar-star, .topbar-star {
   display: inline-flex; align-items: center; justify-content: center;
   width: 44px; height: 44px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 50%;
-  color: #f7d89b;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  border-radius: 50% !important;
+  color: #f7d89b !important;
   font-size: 18px;
   cursor: pointer;
   transition: all 0.2s;
   backdrop-filter: blur(12px);
+  padding: 0;
 }
-.topbar-star:hover {
-  background: rgba(247, 216, 155, 0.28);
-  border-color: #f7d89b;
+#ccTopBarFavBtn.topbar-star:hover, .topbar-star:hover {
+  background: rgba(247, 216, 155, 0.28) !important;
+  border-color: #f7d89b !important;
   transform: scale(1.06);
   box-shadow: 0 0 14px rgba(247, 216, 155, 0.45);
 }
-.topbar-star.active {
-  background: #f7d89b;
-  color: #1a171a;
-  border-color: #f7d89b;
+#ccTopBarFavBtn.topbar-star.is-active, #ccTopBarFavBtn.topbar-star.active, .topbar-star.active {
+  background: #f7d89b !important;
+  color: #1a171a !important;
+  border-color: #f7d89b !important;
   box-shadow: 0 0 16px rgba(247, 216, 155, 0.7);
+}
+#ccTopBarFavBtn.topbar-star svg {
+  width: 20px; height: 20px;
+  fill: currentColor;
+  stroke: none;
 }
 .lumina-google-btn {
   display: inline-flex; align-items: center; gap: 8px;
