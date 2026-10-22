@@ -1,4 +1,4 @@
-"use strict";
+import { createAudioVisualizer } from './visualizer.js?v=20261022_premium1';
 
 document.addEventListener('DOMContentLoaded', () => {
   const $ = (id) => document.getElementById(id);
@@ -11,6 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const buttons = [...document.querySelectorAll('[data-toggle]')];
   const status = $('feedback');
   const base = 'https://polskieradio.cc/Ewangelia';
+  const visualizer = createAudioVisualizer(audio, wave);
+  const waveToggle = $('waveToggle');
+  function updateWaveToggle() {
+    waveToggle.setAttribute('aria-pressed', String(visualizer.getEnabled()));
+    waveToggle.textContent = visualizer.getEnabled() ? 'Wyłącz wskaźniki dźwięku' : 'Włącz wskaźniki dźwięku';
+  }
+  waveToggle.onclick = () => {
+    visualizer.setEnabled(!visualizer.getEnabled());
+    updateWaveToggle();
+  };
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', updateWaveToggle);
+  updateWaveToggle();
 
   function time(n) {
     if (!Number.isFinite(n)) return '--:--';
@@ -40,6 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const radioCtaLabel = radioCtaBtn ? radioCtaBtn.querySelector('.radio-cta-label') : null;
   const STREAM_URL = 'https://stream.zeno.fm/vz96pvl3pnktv';
   let isRadioPlaying = false;
+  let radioRequested = false;
+
+  function stopRadio() {
+    radioRequested = false;
+    ccRadioAudio.pause();
+    ccRadioAudio.removeAttribute('src');
+    ccRadioAudio.load();
+    setRadioPlayingState(false);
+    radioCtaBtn.dataset.state = 'idle';
+  }
 
   const setRadioPlayingState = (playing) => {
     isRadioPlaying = playing;
@@ -57,26 +79,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (radioCtaBtn && ccRadioAudio) {
     radioCtaBtn.addEventListener('click', () => {
-      if (isRadioPlaying) {
-        ccRadioAudio.pause();
-        ccRadioAudio.src = ''; // Zwolnienie połączenia strumieniowego
-        setRadioPlayingState(false);
+      if (radioRequested) {
+        stopRadio();
       } else {
         // Wzajemne wykluczenie: zatrzymaj odtwarzanie pliku MP3, jeśli gra
         if (audio && !audio.paused) {
           audio.pause();
         }
+        radioRequested = true;
+        radioCtaBtn.dataset.state = 'loading';
+        radioCtaLabel.textContent = 'Łączenie z Radiem CC…';
+        radioCtaBtn.setAttribute('aria-label', 'Anuluj łączenie z Radiem CC');
         ccRadioAudio.src = STREAM_URL;
         ccRadioAudio.play().catch(() => {
+          if (!radioRequested) return;
+          radioRequested = false;
           setRadioPlayingState(false);
+          radioCtaBtn.dataset.state = 'error';
           notice('Nie udało się uruchomić strumienia radia. Spróbuj ponownie za chwilę.');
         });
-        setRadioPlayingState(true);
       }
     });
 
-    ccRadioAudio.addEventListener('ended', () => setRadioPlayingState(false));
-    ccRadioAudio.addEventListener('error', () => setRadioPlayingState(false));
+    ccRadioAudio.addEventListener('playing', () => {
+      if (!radioRequested) return;
+      radioCtaBtn.dataset.state = 'playing';
+      setRadioPlayingState(true);
+    });
+    ccRadioAudio.addEventListener('waiting', () => {
+      if (!radioRequested) return;
+      setRadioPlayingState(false);
+      radioCtaBtn.dataset.state = 'loading';
+      radioCtaLabel.textContent = 'Buforowanie Radia CC…';
+    });
+    ccRadioAudio.addEventListener('ended', stopRadio);
+    ccRadioAudio.addEventListener('error', () => {
+      if (!radioRequested) return;
+      stopRadio();
+      radioCtaBtn.dataset.state = 'error';
+      notice('Nie udało się połączyć z Radiem CC. Spróbuj ponownie.');
+    });
     ccRadioAudio.addEventListener('pause', () => {
       if (isRadioPlaying) setRadioPlayingState(false);
     });
@@ -88,12 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
       b.addEventListener('click', async () => {
         if (audio.paused) {
           // Wzajemne wykluczenie: zatrzymaj strumień radia na żywo, jeśli gra
-          if (isRadioPlaying && ccRadioAudio) {
-            ccRadioAudio.pause();
-            ccRadioAudio.src = '';
-            setRadioPlayingState(false);
-          }
+          if (radioRequested && ccRadioAudio) stopRadio();
           try {
+            await visualizer.prepare();
             await audio.play();
           } catch (e) {
             notice('Nie udało się rozpocząć odtwarzania. Sprawdź ustawienia przeglądarki.');
@@ -106,25 +145,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     audio.addEventListener('play', () => {
       uiPlay(true);
-      if (isRadioPlaying && ccRadioAudio) {
-        ccRadioAudio.pause();
-        ccRadioAudio.src = '';
-        setRadioPlayingState(false);
-      }
+      if (radioRequested && ccRadioAudio) stopRadio();
     });
 
     audio.addEventListener('pause', () => uiPlay(false));
     audio.addEventListener('ended', () => uiPlay(false));
 
-    audio.addEventListener('loadedmetadata', () => {
+    function updateDuration() {
       const end = $('endTime');
       if (end) end.textContent = time(audio.duration);
-    });
+    }
+    audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('durationchange', updateDuration);
+    updateDuration();
 
     audio.addEventListener('timeupdate', () => {
       if (!seek) return;
       const v = audio.duration ? Math.floor((audio.currentTime / audio.duration) * 1000) : 0;
       seek.value = String(v);
+      seek.setAttribute('aria-valuetext', time(audio.currentTime) + ' z ' + time(audio.duration));
       seek.style.setProperty('--prog', v / 10 + '%');
       const cur = $('curTime');
       if (cur) cur.textContent = time(audio.currentTime);
@@ -174,6 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
       muteBtn.onclick = () => {
         audio.muted = !audio.muted;
         muteBtn.textContent = audio.muted ? '×' : '♬';
+        muteBtn.setAttribute('aria-label', audio.muted ? 'Włącz dźwięk' : 'Wycisz');
+        muteBtn.setAttribute('aria-pressed', String(audio.muted));
       };
     }
 
@@ -182,27 +223,35 @@ document.addEventListener('DOMContentLoaded', () => {
       vol.oninput = (e) => {
         audio.volume = Number(e.target.value);
         audio.muted = false;
+        if (muteBtn) {
+          muteBtn.textContent = '♬';
+          muteBtn.setAttribute('aria-label', 'Wycisz');
+          muteBtn.setAttribute('aria-pressed', 'false');
+        }
       };
     }
   }
 
   // ── 4. ULUBIONE ──
-  function favorite() {
+  function renderFavorite() {
     const b = $('fav');
     const s = $('save');
+    const newValue = Boolean(window.CCFavorites?.getFavorites().some(item => item.id === 'ewangelia'));
     if (!b) return;
-    const newValue = b.getAttribute('aria-pressed') !== 'true';
     b.setAttribute('aria-pressed', String(newValue));
     b.textContent = newValue ? '♥' : '♡';
     if (s) {
       s.textContent = newValue ? '♥  Dodano do ulubionych' : '♡  Dodaj do ulubionych';
     }
-    notice(
-      newValue
-        ? 'Zaznaczono jako ulubione w bieżącej sesji. Zapis w chmurze po zalogowaniu do LUMINA.'
-        : 'Usunięto z ulubionych.'
-    );
   }
+  async function favorite() {
+    if (!window.CCFavorites) return notice('Ulubione są chwilowo niedostępne. Spróbuj ponownie.');
+    await window.CCFavorites.toggleFavorite();
+    renderFavorite();
+    // The shared module owns persistence. Do not promise cloud confirmation here.
+  }
+  window.CCFavorites?.onFavoritesChange(renderFavorite);
+  renderFavorite();
 
   const favBtn = $('fav');
   if (favBtn) favBtn.onclick = favorite;
@@ -230,7 +279,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const shareBtn = $('share');
   if (shareBtn) shareBtn.onclick = () => share(base);
   const copyBtn = $('copy');
-  if (copyBtn) copyBtn.onclick = () => share(base);
+  if (copyBtn) copyBtn.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(base);
+      notice('Link do nagrania został skopiowany.');
+    } catch { notice('Adres do udostępnienia: ' + base); }
+  };
 
   const fb = $('fb');
   if (fb) fb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(base);
@@ -260,16 +314,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── 7. ROK W STOPCE ──
+  const menu = $('siteMenu');
+  const menuToggle = $('menuToggle');
+  menuToggle.onclick = () => menu.showModal();
+  $('menuClose').onclick = () => menu.close();
+  menu.addEventListener('click', event => {
+    if (event.target.closest('a')) menu.close();
+    if (event.target === menu) {
+      const box = menu.getBoundingClientRect();
+      if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) menu.close();
+    }
+  });
+  menu.addEventListener('close', () => menuToggle.focus());
   const yearEl = $('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // ── 8. WIZUALNA FALA DEKORACYJNA ──
-  if (wave) {
-    for (let i = 0; i < 92; i++) {
-      const el = document.createElement('i');
-      el.style.setProperty('--h', 3 + 25 * Math.abs(Math.sin(i * 0.57) * Math.cos(i * 0.16)) + 'px');
-      el.style.setProperty('--delay', (i % 14) * 0.085 + 's');
-      wave.append(el);
-    }
-  }
 });

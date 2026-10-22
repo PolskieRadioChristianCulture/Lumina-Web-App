@@ -29,12 +29,14 @@
   <meta name="twitter:image" content="https://polskieradio.cc/Ewangelia/assets/og-ewangelia.jpg">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/Ewangelia/styles.css?v=20261022">
+  <link rel="stylesheet" href="/Ewangelia/styles.css?v=20261022_premium1">
 
   <!-- Scripts -->
   <script defer src="/js/cc-radio-milion.js?v=20261011_2"></script>
   <script defer src="/components/cc-omni-search.js"></script>
-  <script defer src="/Ewangelia/app.js?v=20261022"></script>
+  <script defer src="/js/cc-favorites.js?v=20261015_topbar1"></script>
+  <script type="module" src="/Ewangelia/app.js?v=20261022_premium1"></script>
+  <script type="module" src="/Ewangelia/account.js?v=20261022_premium1"></script>
 
   <!-- JSON-LD -->
   <script type="application/ld+json">
@@ -88,11 +90,31 @@
       <button class="search-btn" id="searchBtn" type="button" aria-label="Szukaj w ekosystemie Christian Culture">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 5 5"/></svg>
       </button>
-      <a class="lumina" href="https://polskieradio.cc/lumina" aria-label="Przejdź do portalu LUMINA, aby się zalogować">
-        Zaloguj się <span class="sun">☼</span><strong>LUMINA</strong>
+      <a class="lumina" id="accountLogin" href="/lumina-login?redirect=%2FEwangelia" aria-label="Zaloguj się przez Google do LUMINA">
+        <span class="google-mark" aria-hidden="true">G</span><span>Zaloguj przez Google</span><strong>LUMINA</strong>
       </a>
+      <details class="account-menu" id="accountMenu" hidden>
+        <summary id="accountSummary" aria-label="Konto LUMINA">
+          <img id="accountAvatar" alt="" width="36" height="36" hidden>
+          <span id="accountInitial" aria-hidden="true"></span><span id="accountName"></span>
+        </summary>
+        <div class="account-dropdown">
+          <a id="accountProfile" href="/lumina-profile.html">Mój profil</a>
+          <a href="/lumina">Przejdź do LUMINA</a>
+          <button id="accountLogout" type="button">Wyloguj się</button>
+        </div>
+      </details>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Otwórz menu Christian Culture" aria-haspopup="dialog">+</button>
     </div>
   </header>
+  <dialog class="site-menu" id="siteMenu" aria-labelledby="menuTitle">
+    <div class="menu-heading"><h2 id="menuTitle">Christian Culture</h2><button type="button" id="menuClose" aria-label="Zamknij menu" autofocus>×</button></div>
+    <nav aria-label="Menu mobilne">
+      <a href="/">Strona główna</a><a href="#audio-player">Posłuchaj Dobrej Nowiny</a>
+      <a href="#radioCtaBtn">Radio CC</a><a href="/milion">Licznik słuchaczy</a>
+      <a href="/szukaj">Szukaj w Christian Culture</a><a href="/lumina">LUMINA</a>
+    </nav>
+  </dialog>
 
   <!-- MAIN -->
   <main>
@@ -105,13 +127,24 @@
         <p class="kicker">SŁOWA, KTÓRE ZMIENIAJĄ ŻYCIE</p>
         <h1>Dobra<br><em>Nowina</em></h1>
         <span class="gold-rule" aria-hidden="true"></span>
-        <p class="intro">Rozmowa o życiu, nadziei i tym,<br>co naprawdę ważne. Odkryj przesłanie,<br>które wciąż jest aktualne.</p>
+        <p class="intro">Rozmowa o życiu, nadziei i tym, co naprawdę ważne. Odkryj przesłanie, które wciąż jest aktualne.</p>
       </div>
 
       <blockquote class="verse">
         <p>„Przyszedłem,<br>aby mieli życie<br>i mieli je w obfitości.”</p>
         <cite>— J 10,10</cite>
       </blockquote>
+
+      <div class="listening-choice">
+        <a class="listen-recording" href="#audio-player"><span aria-hidden="true">▶</span> Posłuchaj Dobrej Nowiny</a>
+        <div class="radio-choice">
+          <button class="glass-btn radio-cta" id="radioCtaBtn" type="button" aria-label="Włącz Radio Christian Culture na żywo" aria-pressed="false" data-state="idle">
+            <span class="radio-cta-dot" aria-hidden="true">◉</span><span class="radio-cta-label">Słuchaj Radia CC</span>
+          </button>
+          <a class="counter-link" href="/milion">Celujemy w pierwszy milion ↗</a>
+          <audio id="ccRadioAudio" data-cc-radio="true" preload="none"></audio>
+        </div>
+      </div>
 
       <!-- AUDIO PLAYER -->
       <section class="player" id="audio-player" aria-label="Odtwarzacz Dobra Nowina">
@@ -134,9 +167,10 @@
             </div>
           </div>
 
+          <div class="visual-wave" id="wave" aria-hidden="true"></div>
+          <button id="waveToggle" class="wave-toggle" type="button" aria-pressed="false">Wskaźniki dźwięku</button>
           <div class="timeline">
             <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Przewiń nagranie">
-            <div class="visual-wave" id="wave" aria-hidden="true"></div>
           </div>
 
           <div class="time-row">
@@ -168,12 +202,6 @@
           <a class="glass-btn" download="Dobra_Nowina_Radio_CC.mp3" href="/Ewangelia/assets/dobra-nowina.mp3">↓ &nbsp; Pobierz MP3</a>
           <button id="save" class="glass-btn" type="button">♡ &nbsp; Dodaj do ulubionych</button>
           
-          <!-- LIVE RADIO CTA BUTTON — INTEGRACJA Z LICZNIKIEM /milion -->
-          <button class="glass-btn radio-cta" id="radioCtaBtn" type="button" aria-label="Włącz Radio Christian Culture na żywo" aria-pressed="false">
-            <span class="radio-cta-dot" aria-hidden="true">◉</span>
-            <span class="radio-cta-label">Słuchaj Radia CC</span>
-          </button>
-          <audio id="ccRadioAudio" src="https://stream.zeno.fm/vz96pvl3pnktv" data-cc-radio="true" preload="none"></audio>
         </div>
 
         <div class="social" aria-label="Udostępnij">
