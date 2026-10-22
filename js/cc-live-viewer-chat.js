@@ -23,7 +23,7 @@
   const cfg = (k, d) => (script && script.dataset && script.dataset[k] !== undefined ? script.dataset[k] : d);
   const ROOMS = String(cfg('rooms', 'tv_zapolske,tv_cctv24,tv_master_live,tv_cctv24_pl,tv_worship,tv_biblia_spiewana')).split(',').map((s) => s.trim()).filter(Boolean);
   const MAX = Math.max(1, Math.min(6, Number(cfg('max', 2)) || 2));
-  const WINDOW_MS = 24 * 3600000;
+  const WINDOW_MS = 72 * 3600000; // 72h - keeps chat visible across publication breaks
   const BLOCK = /(https?:|www\.|\.(pl|com|net|org|eu|io|info)\b|@|\d[\d\s-]{6,}\d|kurw|chuj|pierd|jeba|jebi|jebn|pizd|spierd|dziwk|cwel|fuck|shit)/i;
   const safe = (t) => typeof t === 'string' && t.trim().length >= 2 && t.length <= 500 && !BLOCK.test(t);
   const hhmm = (ms) => { try { return new Date(ms).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Warsaw' }); } catch (_) { return ''; } };
