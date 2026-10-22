@@ -89,8 +89,62 @@ document.addEventListener('DOMContentLoaded', () => {
           tracksContainer.appendChild(trackItem);
         });
       })
-      .catch(() => {
-        // Gracefully ignore fetch errors
-      });
+  // 5. Your Imagination Studio Modal Dialog
+  const openModalBtn = document.getElementById('openStudioModalBtn');
+  const closeModalBtn = document.getElementById('closeStudioModalBtn');
+  const studioModal = document.getElementById('studioModal');
+  const modalVideo = document.getElementById('studioModalVideo');
+
+  if (openModalBtn && studioModal) {
+    const openModal = () => {
+      if (typeof studioModal.showModal === 'function') {
+        studioModal.showModal();
+      } else {
+        studioModal.setAttribute('open', '');
+      }
+      document.body.style.overflow = 'hidden';
+      if (closeModalBtn) closeModalBtn.focus();
+    };
+
+    const closeModal = () => {
+      if (typeof studioModal.close === 'function') {
+        studioModal.close();
+      } else {
+        studioModal.removeAttribute('open');
+      }
+      document.body.style.overflow = '';
+      if (modalVideo && !modalVideo.paused) {
+        modalVideo.pause();
+      }
+      openModalBtn.focus();
+    };
+
+    openModalBtn.addEventListener('click', openModal);
+
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', closeModal);
+    }
+
+    // Dismiss on click outside modal surface
+    studioModal.addEventListener('click', (e) => {
+      const rect = studioModal.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape & pause video
+    studioModal.addEventListener('cancel', () => {
+      document.body.style.overflow = '';
+      if (modalVideo && !modalVideo.paused) {
+        modalVideo.pause();
+      }
+    });
   }
 });

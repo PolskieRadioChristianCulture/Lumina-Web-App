@@ -948,12 +948,92 @@ img {
 }
 
 /* ==========================================================================
-   SITE FOOTER
+   SITE FOOTER & CUSTOM NAMED NAVIGATION
    ========================================================================== */
 .site-footer {
   border-top: 1px solid var(--line);
-  padding: 48px 0;
+  padding: 56px 0 40px;
   background-color: var(--bg-darker);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.footer-custom-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--line);
+}
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-nav-heading {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold-light);
+}
+
+.footer-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-named-link,
+.footer-named-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--motion-fast) ease;
+  width: fit-content;
+}
+
+.footer-named-link:hover,
+.footer-named-btn:hover {
+  background: rgba(196, 163, 90, 0.08);
+  border-color: var(--line-gold);
+  color: var(--gold-light);
+  transform: translateX(4px);
+}
+
+.footer-named-link.highlight-gold,
+.footer-named-btn.highlight-gold {
+  background: rgba(196, 163, 90, 0.08);
+  border-color: rgba(196, 163, 90, 0.35);
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+.footer-named-link.highlight-gold:hover,
+.footer-named-btn.highlight-gold:hover {
+  background: rgba(196, 163, 90, 0.18);
+  border-color: var(--gold-light);
+  box-shadow: 0 4px 18px rgba(196, 163, 90, 0.2);
 }
 
 .footer-inner {
@@ -974,6 +1054,211 @@ img {
   color: var(--muted-dark);
   font-size: 12px;
   margin: 0;
+}
+
+/* ==========================================================================
+   MODAL DIALOG: YOUR IMAGINATION STUDIO
+   ========================================================================== */
+.modal-dialog {
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: 900px;
+  width: calc(100% - 32px);
+  margin: auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 50px rgba(196, 163, 90, 0.2);
+}
+
+.modal-dialog::backdrop {
+  background: rgba(5, 5, 5, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.modal-surface {
+  background: #0d0d0f;
+  border: 1px solid var(--line-gold);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 400;
+  color: var(--cream);
+  margin: 0;
+}
+
+.modal-title em {
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+.modal-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all var(--motion-fast) ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(196, 163, 90, 0.15);
+  border-color: var(--gold-light);
+  color: var(--gold-light);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 28px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.modal-video-wrap {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line-gold);
+  background: #000;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+.modal-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  object-fit: cover;
+  background: #000;
+}
+
+.modal-content-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-lead {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-soft);
+  margin: 0;
+}
+
+.modal-offer-card {
+  padding: 16px 18px;
+  background: rgba(196, 163, 90, 0.06);
+  border: 1px solid var(--line-gold);
+  border-radius: var(--radius-md);
+}
+
+.modal-offer-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.modal-offer-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.modal-offer-heading {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-pure);
+  margin: 0;
+}
+
+.modal-offer-p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-soft);
+  margin: 0 0 10px 0;
+}
+
+.modal-email-row {
+  margin-bottom: 10px;
+}
+
+.modal-email-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--line-gold);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  min-height: 44px;
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--gold-light);
+  text-decoration: none;
+}
+
+.modal-closing {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--gold-light);
+  margin: 0;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 16px;
+  }
+
+  .modal-header {
+    padding: 16px 20px;
+  }
 }
 
 /* ==========================================================================
