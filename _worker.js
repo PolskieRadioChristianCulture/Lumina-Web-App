@@ -2231,6 +2231,17 @@ export default {
       return Response.redirect(podUrl.toString(), 301);
     }
 
+    if (
+      lowerPath === '/cezaryrogowski' ||
+      lowerPath === '/cezary-rogowski' ||
+      lowerPath === '/cezary_rogowski' ||
+      lowerPath === '/autor'
+    ) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/CezaryRogowski.html';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && !url.pathname.includes('.')) {
       const dirUrl = new URL(request.url);
