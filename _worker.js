@@ -2238,7 +2238,7 @@ export default {
       lowerPath === '/autor'
     ) {
       const targetUrl = new URL(request.url);
-      targetUrl.pathname = '/CezaryRogowski.html';
+      targetUrl.pathname = '/CezaryRogowski/';
       return env.ASSETS.fetch(new Request(targetUrl, request));
     }
 
