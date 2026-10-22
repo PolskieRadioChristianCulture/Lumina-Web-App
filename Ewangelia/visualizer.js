@@ -7,7 +7,7 @@ export function createAudioVisualizer(audio, container, env = window) {
     return bar;
   });
   const reduced = env.matchMedia('(prefers-reduced-motion: reduce)');
-  let enabled = !reduced.matches;
+  let enabled = true;
   let context, analyser, source, bins, frame = 0, last = 0;
   const flat = () => bars.forEach(bar => { bar.style.transform = 'scaleY(0.06)'; });
   function stop() {

@@ -12,17 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const status = $('feedback');
   const base = 'https://polskieradio.cc/Ewangelia';
   const visualizer = createAudioVisualizer(audio, wave);
+  visualizer.setEnabled(true);
   const waveToggle = $('waveToggle');
-  function updateWaveToggle() {
-    waveToggle.setAttribute('aria-pressed', String(visualizer.getEnabled()));
-    waveToggle.textContent = visualizer.getEnabled() ? 'Wyłącz wskaźniki dźwięku' : 'Włącz wskaźniki dźwięku';
-  }
-  waveToggle.onclick = () => {
-    visualizer.setEnabled(!visualizer.getEnabled());
+  if (waveToggle) {
+    function updateWaveToggle() {
+      waveToggle.setAttribute('aria-pressed', String(visualizer.getEnabled()));
+      waveToggle.textContent = visualizer.getEnabled() ? 'Wyłącz wskaźniki dźwięku' : 'Włącz wskaźniki dźwięku';
+    }
+    waveToggle.onclick = () => {
+      visualizer.setEnabled(!visualizer.getEnabled());
+      updateWaveToggle();
+    };
+    matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', updateWaveToggle);
     updateWaveToggle();
-  };
-  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', updateWaveToggle);
-  updateWaveToggle();
+  }
 
   function time(n) {
     if (!Number.isFinite(n)) return '--:--';
