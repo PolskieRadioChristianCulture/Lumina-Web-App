@@ -1,6 +1,15 @@
-import { createAudioVisualizer } from './visualizer.js?v=20261022_premium1';
+import { createAudioVisualizer } from './visualizer.js?v=20261022_v4';
 
 document.addEventListener('DOMContentLoaded', () => {
+  const listenRecordingBtn = document.querySelector('.listen-recording');
+  if (listenRecordingBtn) {
+    listenRecordingBtn.addEventListener('click', (e) => {
+      const audioEl = document.getElementById('audio');
+      if (audioEl && audioEl.paused) {
+        audioEl.play().catch(() => {});
+      }
+    });
+  }
   const $ = (id) => document.getElementById(id);
 
   // ── 1. ELEMENTY DOM DLA DOBREJ NOWINY (MP3) ──
