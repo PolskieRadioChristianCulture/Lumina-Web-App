@@ -233,6 +233,14 @@ const CONTEXT_GUIDES = {
 // --- 2. GŁÓWNE PLATFORMY I MODUŁY EKOSYSTEMU ---
 const CORE_PROJECTS = [
 {
+  title: "Kącik Ewangelizacyjny Ewy — CC WOMEN",
+  category: "Muzyka i świadectwa",
+  url: "https://polskieradio.cc/Ewa",
+  description: "Nagrania CC WOMEN, muzyka z przesłaniem i pełne świadectwo Ewy „Jak poznałam prawdę?” w PDF.",
+  tags: ["Ewa", "CC WOMEN", "świadectwo", "muzyka", "wiara", "ewangelizacja"],
+  featured: false
+},
+{
   "title": "Christian Culture Global (Międzynarodowa Platforma Chrześcijańska)",
   "category": "Radio i audio",
   "url": "https://polskieradio.cc/Global/",

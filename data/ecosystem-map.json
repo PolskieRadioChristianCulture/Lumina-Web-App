@@ -787,6 +787,21 @@
   ],
   "nodes": [
     {
+      "id": "ewa-cc-women",
+      "branchId": "cc-network",
+      "name": "Kącik Ewangelizacyjny Ewy — CC WOMEN",
+      "shortDesc": "Muzyka, wiara i pełne świadectwo Ewy.",
+      "fullDesc": "Siedem nagrań CC WOMEN oraz oryginalny PDF świadectwa Ewy „Jak poznałam prawdę?”.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/Ewa",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🎵",
+      "category": "CC Network",
+      "keywords": ["Ewa", "CC WOMEN", "świadectwo", "muzyka", "wiara"],
+      "connections": ["yt-cc-women"]
+    },
+    {
       "id": "radio-main",
       "branchId": "radio-tv",
       "name": "Radio Christian Culture",
