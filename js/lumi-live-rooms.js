@@ -238,6 +238,7 @@ function injectUi() {
 
   const css = el('style', { id: 'lumiLiveRoomsCss' });
   css.textContent = `
+    body.user-is-guest #directMessagesModal.open[data-lumi-live-room]{display:flex!important;pointer-events:auto!important;opacity:1!important;visibility:visible!important}
     #messengerLiveView .llr-list{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:rgba(0,0,0,.2)}
     #messengerLiveView .llr-card{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font:inherit;cursor:pointer;min-height:64px}
     #messengerLiveView .llr-card:hover,#messengerLiveView .llr-card:focus-visible{border-color:#f59e0b;outline:none}
@@ -299,6 +300,7 @@ function hookTabs() {
       return;
     }
     if (view) view.style.display = 'none';
+    $('directMessagesModal')?.removeAttribute('data-lumi-live-room');
     styleTab($('tabBtnLiveTv'), false);
     leaveRoom();
     return original.apply(this, arguments);
@@ -317,7 +319,7 @@ function isAdmin() {
 async function openLive() {
   if (!state.fb) state.fb = await firebaseReady();
   await loadSession();
-  if (state.room) renderRoom(); else renderList();
+  if (state.room) { subscribeRoom(state.room); renderRoom(); } else renderList();
 }
 
 function renderList() {
@@ -393,7 +395,13 @@ function enterRoom(roomId) {
       el('div', { class: 'llr-row' }, input, el('button', { type: 'button', class: 'llr-send', 'aria-label': 'Wyślij', onclick: send, text: '➤' })),
       err));
 
-  if (state.fb) {
+  subscribeRoom(r);
+  state.tick = setInterval(() => renderRoom(false), 1000);
+  renderRoom(true);
+}
+
+function subscribeRoom(r) {
+  if (state.fb && state.room === r && !state.unsub) {
     const q = query(collection(state.fb.db, 'lumina_live_rooms', r.id, 'messages'), orderBy('createdAt', 'desc'), limit(80));
     state.unsub = onSnapshot(q, (snap) => {
       const docs = [];
@@ -402,8 +410,6 @@ function enterRoom(roomId) {
       renderRoom(true);
     }, () => { renderRoom(true); });
   }
-  state.tick = setInterval(() => renderRoom(false), 1000);
-  renderRoom(true);
 }
 
 function renderRoom(force) {
@@ -472,6 +478,36 @@ function renderRoom(force) {
   if (force || nearBottom) box.scrollTop = box.scrollHeight;
 }
 
+// Open the canonical room and its modal together, including anonymous visitors.
+// Selecting a room alone leaves its composer inside a hidden modal.
+function openRoom(roomId) {
+  if (!ROOM[roomId] || !injectUi()) return false;
+  if (!window._lumiLiveTabsHooked && !hookTabs()) return false;
+  const modal = $('directMessagesModal');
+  if (!modal) return false;
+  modal.removeAttribute('inert');
+  modal.setAttribute('aria-hidden', 'false');
+  modal.style.display = 'flex';
+  modal.classList.add('open');
+  modal.setAttribute('data-lumi-live-room', roomId);
+  const intro = $('lumiIntroOverlay');
+  if (intro) intro.hidden = true;
+  try { $('lumiIntroVideo')?.pause(); } catch (_) {}
+  window.switchMessengerMainTab('livetv');
+  enterRoom(roomId);
+  return true;
+}
+
+function openRequestedRoom() {
+  const want = new URLSearchParams(location.search).get('room');
+  if (!ROOM[want]) return;
+  if (openRoom(want)) return;
+  const wait = setInterval(() => {
+    if (openRoom(want)) clearInterval(wait);
+  }, 250);
+  setTimeout(() => clearInterval(wait), 15000);
+}
+
 // ── Start ────────────────────────────────────────────────────────────────────
 async function boot() {
   for (let i = 0; i < 80; i++) {
@@ -480,26 +516,13 @@ async function boot() {
     await new Promise((r) => setTimeout(r, 250));
   }
   hookPublicChat();
+  // Routing must not wait for the unrelated daily reflection download.
+  openRequestedRoom();
   await loadSession();
   try { window.renderPublicChatMessages && window._cachedPublicChatMessages && window.renderPublicChatMessages(window._cachedPublicChatMessages); } catch (_) {}
   // Co 30 s: nowa doba → nowy scenariusz; kolejna sesja tego dnia (np. 11:00) → przesunięcie osi czasu.
   setInterval(() => { if (warsawDay() !== session.day) session.ready = false; loadSession(); }, 30000);
-  // /mess?room=tv_zapolske otwiera od razu wskazany pokój.
-  try {
-    const want = new URLSearchParams(location.search).get('room');
-    if (want && ROOM[want]) {
-      const wait = setInterval(() => {
-        if (typeof window.openDirectMessagesModal === 'function' && $('tabBtnLiveTv')) {
-          clearInterval(wait);
-          try { window.openDirectMessagesModal('public'); } catch (_) {}
-          window.switchMessengerMainTab('livetv');
-          setTimeout(() => enterRoom(want), 300);
-        }
-      }, 300);
-      setTimeout(() => clearInterval(wait), 15000);
-    }
-  } catch (_) {}
 }
 
-window.LumiLiveRooms = { LIVE_ROOMS, PRAYER_CATEGORIES, publicMessageRoom, enterRoom: (id) => { window.switchMessengerMainTab('livetv'); setTimeout(() => enterRoom(id), 200); }, session: () => session, getPresenterMessages };
+window.LumiLiveRooms = { LIVE_ROOMS, PRAYER_CATEGORIES, publicMessageRoom, enterRoom: openRoom, session: () => session, getPresenterMessages };
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

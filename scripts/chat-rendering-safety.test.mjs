@@ -51,7 +51,7 @@ test('TV presenters open TV from button, name and avatar; ordinary and forged me
     }
     assert.deepEqual(dmCalls.map(args=>args[2]),['member','noemi']);
     assert.equal(window.LumiLiveRooms.publicMessageRoom(forged),null);
-    assert.match(page,/lumi-live-rooms\.js\?v=20261023_rooms_v7/);
+    assert.match(page,/lumi-live-rooms\.js\?v=20261023_rooms_v8/);
   } finally { await w.happyDOM.close(); }
 });
 
@@ -193,3 +193,48 @@ test('public chat is opened first as default tab across ekosystem', async () => 
 });
 
 
+
+test('room deep link opens BCM composer and modal before reflection data is ready', async () => {
+  const source = (await readFile('js/lumi-live-rooms.js', 'utf8'))
+    .replace(/^import[\s\S]*?from '[^']+';\r?$/gm, '')
+    .replace('export const LIVE_ROOMS', 'const LIVE_ROOMS');
+  const w = new Window({url:'https://polskieradio.cc/mess?room=tv_bcm24'});
+  w.document.body.className = 'user-is-guest';
+  w.document.body.innerHTML = '<div id="lumiIntroOverlay"></div><div id="directMessagesModal" inert aria-hidden="true" style="display:none"><button id="tabBtnPrivateChat"></button><div id="messengerPublicView"></div></div>';
+  const win = {switchMessengerMainTab(){}};
+  const context=vm.createContext({window:win,document:{readyState:'loading',addEventListener(){}},location:{search:'?room=tv_bcm24'},URLSearchParams,console,setTimeout(){},setInterval(){return 1;},clearInterval(){}});
+  try {
+    vm.runInContext(source,context);
+    context.document=w.document;
+    vm.runInContext('openLive = async () => {}; loadSession = () => new Promise(() => {}); boot();',context);
+    const modal=w.document.getElementById('directMessagesModal');
+    assert.equal(modal.style.display,'flex');
+    assert.equal(modal.hasAttribute('inert'),false);
+    assert.equal(modal.getAttribute('aria-hidden'),'false');
+    assert.equal(modal.classList.contains('open'),true);
+    assert.equal(modal.getAttribute('data-lumi-live-room'),'tv_bcm24');
+    assert.ok([...w.document.styleSheets].some(s => [...s.cssRules].some(r => r.selectorText?.includes('[data-lumi-live-room]') && r.style?.display === 'flex')));
+    assert.equal(w.document.getElementById('lumiIntroOverlay').hidden,true);
+    assert.match(w.document.querySelector('.llr-title').textContent,/Biblijny Czas Modlitwy/);
+    assert.match(w.document.querySelector('#llrInput').getAttribute('aria-label'),/Biblijny Czas Modlitwy/);
+    modal.style.display='none';modal.classList.remove('open');
+    win.LumiLiveRooms.enterRoom('tv_bcm24');
+    assert.equal(modal.style.display,'flex','manual dashboard shortcut opens the modal too');
+    win.switchMessengerMainTab('private');
+    assert.equal(modal.hasAttribute('data-lumi-live-room'),false,'guest visibility exception must not apply to private chats');
+    modal.style.display='none';
+    assert.equal(win.LumiLiveRooms.enterRoom('unknown_room'),false);
+    assert.equal(modal.style.display,'none','unknown room must not open a conversation');
+  } finally {await w.happyDOM.close();}
+});
+
+test('deep-linked room subscribes once when Firebase becomes ready after room selection',async()=>{
+ const source=(await readFile('js/lumi-live-rooms.js','utf8')).replace(/^import[\s\S]*?from '[^']+';\r?$/gm,'').replace('export const LIVE_ROOMS','const LIVE_ROOMS');
+ let ready;const connection=new Promise(resolve=>{ready=resolve;});const reads=[];
+ const context=vm.createContext({window:{},document:{readyState:'loading',addEventListener(){}},URLSearchParams,location:{search:''},console,setTimeout(){},setInterval(){},clearInterval(){},collection:(db,...parts)=>parts,query:(...args)=>args,orderBy(){},limit(){},onSnapshot:q=>{reads.push(q);return ()=>{};}});
+ vm.runInContext(source,context);context.connection=connection;
+ vm.runInContext('firebaseReady=()=>connection; loadSession=async()=>{};renderRoom=()=>{};state.room=ROOM.tv_bcm24;',context);
+ const opening=vm.runInContext('openLive()',context);assert.equal(reads.length,0);
+ ready({db:{}});await opening;assert.equal(reads.length,1);assert.deepEqual(Array.from(reads[0][0]),['lumina_live_rooms','tv_bcm24','messages']);
+ await vm.runInContext('openLive()',context);assert.equal(reads.length,1,'reopening does not duplicate the listener');
+});
