@@ -121,7 +121,7 @@ try {
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.2.3-20260924-tijani-real-avatar';
+const CACHE_NAME = 'lumina-pwa-cache-v4.2.4-20261023-bcm24-rooms';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
