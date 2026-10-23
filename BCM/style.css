@@ -120,14 +120,15 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--rose); outline-
 .eyebrow { font-size: 11px; letter-spacing: .3em; font-weight: 700; color: #f2d7a6; }
 .line { display: inline-block; width: 28px; height: 1px; vertical-align: middle; margin-right: 13px; background: #f2d7a6; }
 h1, h2, h3, h4, p { margin-top: 0; }
-.hero h1 { line-height: .99; margin: 28px 0 24px; text-transform: none; }
-.hero h1 span { display: block; font: italic 400 clamp(63px, 9vw, 127px)/1 'Playfair Display', Georgia, serif; color: #fff; }
+.hero h1 { line-height: 1.05; margin: 28px 0 24px; text-transform: none; }
+.hero h1 span { display: block; font: italic 400 clamp(63px, 9vw, 127px)/1.08 'Playfair Display', Georgia, serif; color: #fff; }
 .hero h1 em {
   display: block; max-width: 660px;
-  font: 500 clamp(65px, 8.2vw, 120px)/.97 'Playfair Display', Georgia, serif;
+  font: 500 clamp(65px, 8.2vw, 120px)/1.06 'Playfair Display', Georgia, serif;
   background: linear-gradient(120deg, #fbf0d6, #efcd8d 50%, #bc844c);
   background-clip: text; -webkit-background-clip: text;
   color: transparent; text-shadow: 0 12px 32px #0001;
+  padding-bottom: 0.08em;
 }
 .hero-subtitle { font-size: 19px; letter-spacing: .02em; color: #e8e1d8; }
 .hero-subtitle strong { color: #f7d6a0; }
