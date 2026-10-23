@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   'use strict';
   if (window.LumiDashboard) return;
   const root = document.getElementById('lumiLanding');
@@ -18,6 +18,24 @@
       if (email.toLowerCase().trim() === 'nazirczarkes@gmail.com' || slug === 'cezaryrgowski') return true;
     } catch (_) {}
     return false;
+  }
+  function openBcm24Room() {
+    if (window.LumiLiveRooms?.enterRoom) {
+      window.LumiLiveRooms.enterRoom('tv_bcm24');
+    } else if (typeof window.openDirectMessagesModal === 'function') {
+      window.openDirectMessagesModal('livetv');
+      setTimeout(() => { window.LumiLiveRooms?.enterRoom?.('tv_bcm24'); }, 300);
+    } else {
+      lumiOpen?.click();
+      setTimeout(() => {
+        if (typeof window.openDirectMessagesModal === 'function') {
+          window.openDirectMessagesModal('livetv');
+        } else {
+          window.switchMessengerMainTab?.('livetv');
+        }
+        setTimeout(() => { window.LumiLiveRooms?.enterRoom?.('tv_bcm24'); }, 300);
+      }, 200);
+    }
   }
   function openCommanderRoom() {
     if (!isCommander() && !isMember()) {
@@ -198,6 +216,7 @@
   function renderChannels() {
     const list = $('lumiConversationCards'); list.replaceChildren();
     const channels = [
+      ['📿 Biblijny Czas Modlitwy 24/7 (LIVE)', 'Kanał modlitewny i intencje na żywo z Jolą Wójcik', openBcm24Room],
       ['Czat ogólny LUMINA', 'Rozmowy całej społeczności', () => $('lumiOpen').click()],
       ['Formacja biblijna', 'Akademia Christian Culture', () => { location.href = '/akademia'; }],
       ['Społeczność i grupy', 'Odkrywaj społeczność LUMINA', () => { location.href = '/lumina'; }],
@@ -328,6 +347,7 @@
     $('lumiFilterButton').addEventListener('click', () => { const active = $('lumiFilters').classList.toggle('is-expanded'); $('lumiFilterButton').setAttribute('aria-expanded', String(active)); });
     $('lumiNewConversation').addEventListener('click', () => { category = 'all'; filter = 'all'; query = ''; $('lumiDirectorySearch').value = ''; render(); $('lumiDirectorySearch').focus(); $('lumiDirectorySearch').scrollIntoView?.({ block: 'center' }); });
     $('lumiAccountAction').addEventListener('click', () => isMember() ? window.openChatSettingsModal?.() : login());
+    $('lumiFilterBcm24')?.addEventListener('click', openBcm24Room);
     $('lumiOpenCommander')?.addEventListener('click', openCommanderRoom);
     $('lumiOpenFamily')?.addEventListener('click', openFamilyRoom);
     window.addEventListener('lumina-auth-state', bindSession);

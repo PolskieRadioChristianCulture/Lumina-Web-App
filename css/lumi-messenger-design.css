@@ -1,4 +1,4 @@
-/* Owner's 14 October reference: midnight glass, orbital hero, violet accents. */
+﻿/* Owner's 14 October reference: midnight glass, orbital hero, violet accents. */
 html[data-lumina-theme] body.lumi-standalone { background-color:#050b1d!important;background-image:radial-gradient(ellipse at 95% 65%,#50265f44,transparent 60%)!important;color:#f2f5ff!important;padding:0!important;margin:0!important; }
 html body.lumi-standalone #lumiLanding.lumi-dashboard { display:block;max-width:1080px;margin:0 auto;padding:24px 24px 132px;min-height:100dvh;box-sizing:border-box;font-family:Manrope,system-ui,sans-serif; }
 #lumiLanding.lumi-dashboard [hidden]{display:none!important}
@@ -42,6 +42,9 @@ html body #lumiLanding .lumi-category-grid{display:grid;grid-template-columns:re
 html body #lumiLanding .lumi-filter-bar{display:flex;justify-content:flex-start;gap:9px;margin:0 0 20px;overflow:auto;scrollbar-width:none;flex-wrap:nowrap}
 .lumi-filter-bar button{display:flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;min-height:44px;padding:8px 16px;border:1px solid #6880ac44;border-radius:24px;background:#101b32;color:#c9d9ef;font-size:13px;cursor:pointer}
 .lumi-filter-bar button svg{width:20px;height:20px}.lumi-filter-bar button[aria-pressed=true]{background:linear-gradient(135deg,#e951ce,#8944ef);color:white;border-color:#e987f1}
+.lumi-filter-bar button.lumi-filter-bcm24{background:linear-gradient(135deg,#b91c1c,#be185d)!important;color:#fff!important;border:1px solid #f43f5e!important;font-weight:800!important;box-shadow:0 0 10px rgba(244,63,94,0.4)!important;animation:lumi-bcm-pulse 2s infinite ease-in-out}
+.lumi-filter-bar button.lumi-filter-bcm24:hover{filter:brightness(1.15)}
+@keyframes lumi-bcm-pulse{0%,100%{box-shadow:0 0 10px rgba(244,63,94,0.4)}50%{box-shadow:0 0 18px rgba(244,63,94,0.7)}}
 .lumi-filter-bar.is-expanded{flex-wrap:wrap}
 .lumi-directory-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}.lumi-directory-heading h2{font-size:16px;margin:0;color:#e4ebfc;font-weight:700}
 .lumi-heading-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
