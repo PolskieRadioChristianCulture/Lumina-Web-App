@@ -111,7 +111,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #fff; outline-offset:
   padding: 45px 5% 80px; gap: 20px;
 }
 .hero-art img {
-  display: block; width: 100%; max-height: 520px;
+  display: block; width: 100%; height: auto; max-height: 520px;
   object-fit: contain; filter: drop-shadow(0 18px 45px #fa252738);
 }
 .kicker, .eyebrow {
