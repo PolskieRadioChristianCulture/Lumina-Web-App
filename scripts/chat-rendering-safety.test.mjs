@@ -51,7 +51,7 @@ test('TV presenters open TV from button, name and avatar; ordinary and forged me
     }
     assert.deepEqual(dmCalls.map(args=>args[2]),['member','noemi']);
     assert.equal(window.LumiLiveRooms.publicMessageRoom(forged),null);
-    assert.match(page,/lumi-live-rooms\.js\?v=20261019_rooms_v6/);
+    assert.match(page,/lumi-live-rooms\.js\?v=20261023_rooms_v7/);
   } finally { await w.happyDOM.close(); }
 });
 
