@@ -69,3 +69,53 @@ test('Ewa is discoverable without removing existing catalog entries', () => {
   assert.ok(map.nodes.some(n=>n.id==='ewa-cc-women'&&n.connections.includes('yt-cc-women')));
   assert.match(readFileSync('_redirects','utf8'),/^\/Ewa \/Ewa\/index.html 200$/m);
 });
+test('radio stays unloaded until click, reflects actual playback and stops the connection', async () => {
+  let playCalls=0, pauses=0, loads=0;
+  const w=mount(win=>{
+    win.HTMLMediaElement.prototype.play=function(){playCalls++;return Promise.resolve();};
+    win.HTMLMediaElement.prototype.pause=function(){pauses++;};
+    win.HTMLMediaElement.prototype.load=function(){loads++;};
+  });
+  const d=w.document, audio=d.getElementById('ewa-radio-audio'), button=d.getElementById('radio-toggle');
+  assert.equal(audio.getAttribute('src'),null);assert.equal(playCalls,0);
+  button.click();await Promise.resolve();
+  assert.equal(audio.src,'https://stream.zeno.fm/vz96pvl3pnktv');
+  assert.match(d.getElementById('radio-status').textContent,/Łączenie/);
+  audio.dispatchEvent(new w.Event('playing'));
+  assert.match(d.getElementById('radio-status').textContent,/Słuchasz/);
+  button.click();assert.equal(button.getAttribute('aria-pressed'),'false');
+  assert.equal(audio.getAttribute('src'),null);assert.ok(pauses>0&&loads>0);
+  w.close();
+});
+test('late play promise after Stop cannot restore playback; failed play permits retry', async () => {
+  let resolvePlay, calls=0;
+  const w=mount(win=>{
+    win.HTMLMediaElement.prototype.play=function(){calls++;return calls===1?new Promise(r=>{resolvePlay=r;}):Promise.reject(Error('offline'));};
+    win.HTMLMediaElement.prototype.pause=function(){};
+    win.HTMLMediaElement.prototype.load=function(){};
+  });
+  const d=w.document, b=d.getElementById('radio-toggle');
+  b.click();b.click();resolvePlay();await new Promise(resolve=>setTimeout(resolve,0));
+  assert.equal(b.getAttribute('aria-pressed'),'false');assert.match(d.getElementById('radio-status').textContent,/zatrzymane/);
+  b.click();await new Promise(resolve=>setTimeout(resolve,0));
+  assert.equal(b.getAttribute('aria-pressed'),'false');assert.match(d.getElementById('radio-status').textContent,/Nie udało/);
+  w.close();
+});
+test('canonical milion integration reports one radio start per page, using only fake transport', async () => {
+  const sent=[];
+  const w=mount(win=>{
+    win.HTMLMediaElement.prototype.play=function(){return Promise.resolve();};
+    win.HTMLMediaElement.prototype.pause=function(){};
+    win.HTMLMediaElement.prototype.load=function(){};
+    Object.defineProperty(win.navigator,'sendBeacon',{value:(url,body)=>{sent.push({url,body});return true;}});
+  });
+  w.eval(readFileSync('js/cc-radio-milion.js','utf8'));
+  w.document.getElementById('radio-toggle').click();await Promise.resolve();await Promise.resolve();
+  const audio=w.document.getElementById('ewa-radio-audio');
+  audio.dispatchEvent(new w.Event('play'));audio.dispatchEvent(new w.Event('play'));
+  assert.equal(sent.length,1);assert.equal(sent[0].url,'/api/milion/count');
+  assert.deepEqual(JSON.parse(await sent[0].body.text()),{type:'radio'});
+  assert.equal(w.document.querySelectorAll('script[src*="cc-radio-milion"]').length,1);
+  assert.equal(w.document.querySelector('.radio-milion').getAttribute('href'),'/milion');
+  w.close();
+});

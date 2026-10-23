@@ -1,6 +1,45 @@
 (() => {
   'use strict';
   const pageUrl = 'https://polskieradio.cc/Ewa';
+  const radio = document.getElementById('ewa-radio-audio');
+  const radioToggle = document.getElementById('radio-toggle');
+  const radioStatus = document.getElementById('radio-status');
+  let radioWanted = false, radioAttempt = 0;
+  function radioUI(state) {
+    const active = state === 'playing' || state === 'loading';
+    radioToggle.setAttribute('aria-pressed', String(active));
+    radioToggle.setAttribute('aria-label', active ? 'Zatrzymaj Radio Christian Culture' : 'Włącz Radio Christian Culture');
+    document.getElementById('radio-icon').textContent = active ? '■' : '▶';
+    document.getElementById('radio-label').textContent = active ? 'Zatrzymaj radio' : 'Włącz radio';
+    radioStatus.textContent = {playing:'Słuchasz Radia Christian Culture.',loading:'Łączenie z radiem…',stopped:'Radio zatrzymane.',error:'Nie udało się połączyć z radiem. Spróbuj ponownie.'}[state];
+  }
+  function stopRadio(state = 'stopped') {
+    radioWanted = false; radioAttempt++;
+    radio.pause();
+    radio.removeAttribute('src');
+    radio.load();
+    radioUI(state);
+  }
+  radioToggle.addEventListener('click', async () => {
+    if (radioWanted) { stopRadio(); return; }
+    const attempt = ++radioAttempt;
+    radioWanted = true; radioUI('loading');
+    radio.src = 'https://stream.zeno.fm/vz96pvl3pnktv';
+    try {
+      await radio.play();
+      // A stale promise must never resurrect stopped or newer playback.
+      if (attempt !== radioAttempt) { if (!radioWanted) radio.pause(); return; }
+    } catch {
+      if (attempt === radioAttempt) stopRadio('error');
+    }
+  });
+  radio.addEventListener('playing', () => {
+    if (radioWanted) radioUI('playing'); else radio.pause();
+  });
+  radio.addEventListener('waiting', () => { if (radioWanted) radioUI('loading'); });
+  radio.addEventListener('pause', () => { if (radioWanted) stopRadio(); });
+  radio.addEventListener('error', () => { if (radioWanted) stopRadio('error'); });
+  radio.addEventListener('ended', () => { if (radioWanted) stopRadio(); });
   const allowedVideos = new Set(["5Qb-6dR3Y1U","TiDU417xvmk","YK_7IXZyM1w","P76aoV15rtM","GRgKy0cms_I","PCX6x8w2LBw","Bu6G2ihCumk"]);
   document.getElementById('year').textContent = String(new Date().getFullYear());
   const menu = document.getElementById('ewa-menu');
@@ -21,6 +60,7 @@
     button.addEventListener('click', () => {
       const id = button.dataset.video;
       if (!allowedVideos.has(id)) return;
+      if (radioWanted) stopRadio();
       const frame = document.createElement('iframe');
       frame.src = 'https://www.youtube-nocookie.com/embed/' + id;
       frame.title = button.getAttribute('aria-label');

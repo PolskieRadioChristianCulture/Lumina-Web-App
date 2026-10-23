@@ -14,12 +14,13 @@
   <meta property="og:url" content="https://polskieradio.cc/Ewa">
   <meta property="og:image" content="https://polskieradio.cc/Ewa/assets/ewa-hero.webp">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="/Ewa/style.css?v=20261023_1">
+  <link rel="stylesheet" href="/Ewa/style.css?v=20261023_radio1">
   <link rel="stylesheet" href="/css/cc-mobile-edge.css?v=20261021_edge5">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Kącik Ewangelizacyjny Ewy","url":"https://polskieradio.cc/Ewa","inLanguage":"pl","isPartOf":{"@type":"WebSite","name":"Christian Culture","url":"https://polskieradio.cc/"}}</script>
   <script src="/js/cc-mobile-edge.js?v=20261021_edge5" defer></script>
   <script src="/components/ekocc-info.js" defer></script>
-  <script src="/Ewa/app.js?v=20261023_1" defer></script>
+  <script src="/js/cc-radio-milion.js?v=20261011_2" defer></script>
+  <script src="/Ewa/app.js?v=20261023_radio1" defer></script>
 </head>
 <body>
 <a class="skip" href="#muzyka">Przejdź do nagrań</a>
@@ -35,6 +36,12 @@
     <h1 id="ewa-title">Kącik Ewangelizacyjny Ewy</h1>
     <p>Muzyka, wiara i osobista historia. Zatrzymaj się, posłuchaj i poznaj świadectwo Ewy.</p>
     <div class="actions"><a class="button primary" href="#muzyka">Posłuchaj nagrań ↓</a><a class="button secondary" href="#swiadectwo">Poznaj świadectwo</a><a class="button support" href="/wspieraj">WspieramTo</a></div>
+  </section>
+  <section class="ewa-radio" aria-labelledby="radio-title">
+    <div><p class="kicker">TOWARZYSZY CI NA CO DZIEŃ</p><h2 id="radio-title">Radio Christian Culture</h2><p id="radio-status" role="status" aria-live="polite">Włącz radio i posłuchaj.</p></div>
+    <div class="radio-actions"><button class="button primary" type="button" id="radio-toggle" aria-label="Włącz Radio Christian Culture" aria-controls="ewa-radio-audio" aria-pressed="false"><span id="radio-icon" aria-hidden="true">▶</span> <span id="radio-label">Włącz radio</span></button><a href="/milion" class="radio-milion">Poznaj akcję „Pierwszy milion” ↗</a></div>
+    <audio id="ewa-radio-audio" data-cc-radio="true" preload="none"></audio>
+    <noscript><p><a href="https://stream.zeno.fm/vz96pvl3pnktv">Otwórz strumień Radia Christian Culture ↗</a></p></noscript>
   </section>
   <section class="section dark" id="muzyka" aria-labelledby="music-title">
     <div class="section-head"><div><p class="kicker">ZATRZYMAJ SIĘ I POSŁUCHAJ</p><h2 id="music-title">Muzyka z przesłaniem.</h2></div></div>
