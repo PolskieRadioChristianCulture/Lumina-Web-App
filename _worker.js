@@ -2206,6 +2206,20 @@ export default {
 
     // CC Clean Routing & Case-Insensitive Aliases (P0 / P1)
     const lowerPath = url.pathname.toLowerCase().replace(/\/$/, '');
+    if (lowerPath === '/yis') {
+      const yisUrl = new URL(request.url);
+      yisUrl.pathname = '/YIS.html';
+      const assetResp = await env.ASSETS.fetch(new Request(yisUrl.toString(), { method: 'GET', headers: { 'Accept': 'text/html' } }));
+      const body = await assetResp.arrayBuffer();
+      return new Response(body, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'public, max-age=0, must-revalidate'
+        }
+      });
+    }
+
     if (lowerPath === '/global') {
       const globalUrl = new URL(request.url);
       globalUrl.pathname = '/Global.html';

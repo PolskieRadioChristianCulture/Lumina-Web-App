@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "Your Imagination Studio (YIS): Wdrożenie autorskiego studia projektowego (branding, web design, grafika cyfrowa, multimedia, merch, routing /YIS)",
+      "date": "2026-10-23",
+      "agent": "A"
+    },
+    {
       "topic": "#antyHALLOWEEN: Wdrożenie kampanii „My świętujemy inaczej” (deklaracja Cezarego Rogowskiego, pakiety grafik do pobrania, alternatywy dla kultury strachu, routing /Halloween)",
       "date": "2026-10-22",
       "agent": "A"
@@ -3169,6 +3174,33 @@
       "connections": [
         "ewangelia-portal",
         "ccn-portal"
+      ]
+    },
+    {
+      "id": "yis-studio",
+      "branchId": "platformy",
+      "name": "Your Imagination Studio (YIS)",
+      "shortDesc": "Autorskie studio projektowe Christian Culture (branding, strony WWW, grafika użytkowa i merch).",
+      "fullDesc": "Oficjalna strona Your Imagination Studio (polskieradio.cc/YIS). Projektowanie stron internetowych, identyfikacji wizualnej, multimediów, materiałów do druku oraz personalizacji odzieży i gadżetów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/YIS",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🎨",
+      "category": "Platformy & Narzędzia",
+      "verifiedDate": "2026-10-23",
+      "keywords": [
+        "yis",
+        "your imagination studio",
+        "design",
+        "branding",
+        "grafika",
+        "strony www",
+        "studio"
+      ],
+      "connections": [
+        "projektant-cc",
+        "sklep-cc"
       ]
     }
   ]
