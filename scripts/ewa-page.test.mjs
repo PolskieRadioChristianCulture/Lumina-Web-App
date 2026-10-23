@@ -134,3 +134,22 @@ test('an old queued pause event cannot stop a newly playing stream', async () =>
   paused=true;audio.dispatchEvent(new w.Event('pause'));
   assert.equal(button.getAttribute('aria-pressed'),'false');w.close();
 });
+test('edge panel distinguishes support heart from the one favorites star', () => {
+  const w=mount(win=>{
+    win.matchMedia=()=>({matches:true,addEventListener(){}});
+    win.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
+    win.eval(readFileSync('js/cc-mobile-edge.js','utf8'));
+  });
+  const dialog=w.document.getElementById('cc-mobile-edge-dialog');
+  assert.ok(dialog);
+  const support=dialog.querySelector('a[href="/wspieraj"]');
+  const favorites=dialog.querySelector('[data-cc-favorite-toggle]');
+  assert.equal(dialog.querySelectorAll('[data-cc-favorite-toggle]').length,1);
+  const heart=support.querySelector('path').getAttribute('d');
+  const star=favorites.querySelector('path').getAttribute('d');
+  assert.notEqual(heart,star);
+  assert.ok(heart.startsWith('M20.8 4.6'));
+  assert.equal([...dialog.querySelectorAll('path')].filter(p=>p.getAttribute('d')===star).length,1);
+  assert.equal(support.getAttribute('aria-label'),'WspieramTo — wspieraj misję');
+  w.close();
+});

@@ -54,7 +54,7 @@
     ['play','Nagrania Ewy','/Ewa#muzyka'], ['book','Świadectwo Ewy','/Ewa#swiadectwo'],
     ['home','Christian Culture','/'], ['users','LUMINA — społeczność','/lumina'],
     ['chat','LUMI Messenger','/mess'], ['search','Szukaj w ekosystemie','/szukaj'],
-    ['star','WspieramTo — wspieraj misję','/wspieraj']
+    ['heart','WspieramTo — wspieraj misję','/wspieraj']
   ]});
   document.querySelectorAll('.video-load').forEach(button => {
     button.addEventListener('click', () => {
