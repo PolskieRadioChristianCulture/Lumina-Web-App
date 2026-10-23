@@ -37,7 +37,7 @@
     if (radioWanted) radioUI('playing'); else radio.pause();
   });
   radio.addEventListener('waiting', () => { if (radioWanted) radioUI('loading'); });
-  radio.addEventListener('pause', () => { if (radioWanted) stopRadio(); });
+  radio.addEventListener('pause', () => { if (radioWanted && radio.paused) stopRadio(); });
   radio.addEventListener('error', () => { if (radioWanted) stopRadio('error'); });
   radio.addEventListener('ended', () => { if (radioWanted) stopRadio(); });
   const allowedVideos = new Set(["5Qb-6dR3Y1U","TiDU417xvmk","YK_7IXZyM1w","P76aoV15rtM","GRgKy0cms_I","PCX6x8w2LBw","Bu6G2ihCumk"]);

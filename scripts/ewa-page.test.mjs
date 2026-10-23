@@ -119,3 +119,18 @@ test('canonical milion integration reports one radio start per page, using only 
   assert.equal(w.document.querySelector('.radio-milion').getAttribute('href'),'/milion');
   w.close();
 });
+test('an old queued pause event cannot stop a newly playing stream', async () => {
+  let paused=true;
+  const w=mount(win=>{
+    win.HTMLMediaElement.prototype.play=function(){paused=false;return Promise.resolve();};
+    win.HTMLMediaElement.prototype.pause=function(){paused=true;};
+    win.HTMLMediaElement.prototype.load=function(){};
+  });
+  const d=w.document, audio=d.getElementById('ewa-radio-audio'), button=d.getElementById('radio-toggle');
+  Object.defineProperty(audio,'paused',{get:()=>paused});
+  button.click();button.click();button.click();
+  audio.dispatchEvent(new w.Event('pause'));
+  assert.equal(button.getAttribute('aria-pressed'),'true');
+  paused=true;audio.dispatchEvent(new w.Event('pause'));
+  assert.equal(button.getAttribute('aria-pressed'),'false');w.close();
+});
