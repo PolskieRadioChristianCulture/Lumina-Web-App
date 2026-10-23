@@ -21,12 +21,15 @@
 
   const script = document.currentScript;
   const cfg = (k, d) => (script && script.dataset && script.dataset[k] !== undefined ? script.dataset[k] : d);
-  const ROOMS = String(cfg('rooms', 'tv_zapolske,tv_cctv24,tv_master_live,tv_cctv24_pl,tv_worship,tv_biblia_spiewana')).split(',').map((s) => s.trim()).filter(Boolean);
+  const ROOMS = String(cfg('rooms', 'tv_zapolske,tv_cctv24,tv_master_live,tv_cctv24_pl,tv_worship,tv_biblia_spiewana,tv_bcm24')).split(',').map((s) => s.trim()).filter(Boolean);
   const MAX = Math.max(1, Math.min(6, Number(cfg('max', 2)) || 2));
   const WINDOW_MS = 72 * 3600000; // 72h - keeps chat visible across publication breaks
   const BLOCK = /(https?:|www\.|\.(pl|com|net|org|eu|io|info)\b|@|\d[\d\s-]{6,}\d|kurw|chuj|pierd|jeba|jebi|jebn|pizd|spierd|dziwk|cwel|fuck|shit)/i;
   const safe = (t) => typeof t === 'string' && t.trim().length >= 2 && t.length <= 500 && !BLOCK.test(t);
   const hhmm = (ms) => { try { return new Date(ms).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Warsaw' }); } catch (_) { return ''; } };
+  // Kategoria intencji z pokoju BCM24 zapisana jako prefiks „[Kategoria] ” — na antenie pokazujemy ikonę zamiast nawiasu.
+  const CAT = { 'Intencja': '🙏', 'Prośba': '🕊️', 'Podziękowanie': '💛', 'Życzenia': '🎉', 'Świadectwo': '✨' };
+  const splitCat = (t) => { const m = String(t || '').match(/^\[(Intencja|Prośba|Podziękowanie|Życzenia|Świadectwo)\]\s*/); return m ? { icon: CAT[m[1]], body: String(t).slice(m[0].length) } : { icon: '', body: String(t || '') }; };
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
   const byRoom = new Map();
@@ -104,11 +107,12 @@
     r.appendChild(img);
     const b = el('div', 'ccvc-b');
     const who = el('div', 'ccvc-who');
-    who.appendChild(el('span', '', (m.kind === 'prayer' ? '🙏 ' : '💬 ') + m.name));
+    const parts = splitCat(m.text);
+    who.appendChild(el('span', '', (parts.icon || (m.kind === 'prayer' ? '🙏' : '💬')) + ' ' + m.name));
     const t = hhmm(m.at);
     who.appendChild(el('span', 'ccvc-badge', '🔴 NA ŻYWO' + (t ? ' · ' + t : '')));
     b.appendChild(who);
-    b.appendChild(el('div', 'ccvc-text', m.text));
+    b.appendChild(el('div', 'ccvc-text', parts.body));
     r.appendChild(b);
     return r;
   }

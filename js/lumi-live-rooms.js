@@ -19,12 +19,35 @@ import {
 export const LIVE_ROOMS = [
   { id: 'tv_cctv24', name: 'CCTV24 · Telewizja Śniadaniowa', url: '/cctv24', icon: '📺', reflection: true, desc: 'Rozważanie „Z Biblią za Pan Brat” z Noemi i Sarą — na żywo.' },
   { id: 'tv_zapolske', name: 'Zjednoczeni za Polskę', url: '/zapolske-live', icon: '🇵🇱', reflection: true, prayers: true, desc: 'Módl się z nami — Twoja modlitwa pojawi się na antenie.' },
+  // BCM24 (2026-10-23): całodobowy kanał modlitwy — intencje z kategorią trafiają na antenę /BCM24 po kilku sekundach.
+  { id: 'tv_bcm24', name: 'Biblijny Czas Modlitwy 24/7', url: '/BCM24', icon: '🙏', prayers: true, categories: true,
+    placeholder: 'Napisz intencję lub podziękowanie…',
+    prayerLabel: '🙏 Pokaż na antenie „Biblijny Czas Modlitwy 24/7”',
+    prayerNote: '🙏 Intencje, prośby, podziękowania i życzenia z tego pokoju pojawiają się na antenie /BCM24 po kilku sekundach — modlimy się za nie całą dobę. Treści z linkami, numerami telefonów lub wulgaryzmami nie trafiają na antenę. Nie podawaj wrażliwych danych.',
+    liveBarText: 'Twoja intencja trafiła na antenę Biblijny Czas Modlitwy 24/7. Modlimy się razem.',
+    desc: 'Całodobowa modlitwa — Twoja intencja pojawi się na antenie.' },
   { id: 'tv_master_live', name: 'Master Live · Główna antena', url: '/live', icon: '🎬', reflection: true, desc: 'Główna antena Christian Culture TV.' },
   { id: 'tv_cctv24_pl', name: 'CCTV24 PL', url: '/cctv24-pl', icon: '📡', reflection: true, desc: 'Kopia transmisyjna CCTV24.' },
   { id: 'tv_worship', name: 'CCTV24 Worship', url: '/cctv24-worship', icon: '🎶', desc: 'Uwielbienie na żywo przez całą dobę.' },
   { id: 'tv_biblia_spiewana', name: 'Biblia Śpiewana LIVE', url: '/biblia-spiewana-live', icon: '📖', desc: 'Śpiewamy Pismo Święte razem.' }
 ];
 const ROOM = Object.fromEntries(LIVE_ROOMS.map((r) => [r.id, r]));
+// Kategorie intencji (pokoje z categories: true). Zapis jako prefiks „[Kategoria] ” w polu text —
+// reguły Firestore pozostają bez zmian (dozwolone pola: text/kind), a antena /BCM24 odczytuje kategorię z prefiksu.
+const PRAYER_CATEGORIES = [
+  { id: 'Intencja', icon: '🙏' },
+  { id: 'Prośba', icon: '🕊️' },
+  { id: 'Podziękowanie', icon: '💛' },
+  { id: 'Życzenia', icon: '🎉' },
+  { id: 'Świadectwo', icon: '✨' }
+];
+const CATEGORY_RE = /^\[(Intencja|Prośba|Podziękowanie|Życzenia|Świadectwo)\]\s*/;
+function splitCategory(text) {
+  const s = String(text || '');
+  const m = s.match(CATEGORY_RE);
+  if (!m) return { cat: null, body: s };
+  return { cat: PRAYER_CATEGORIES.find((c) => c.id === m[1]) || null, body: s.slice(m[0].length) };
+}
 const PRESENTER = {
   noemi: { id: 'noemi', name: 'Noemi', avatar: '/avatar_noemi.jpg?v=20261019c' },
   sara: { id: 'sara', name: 'Sara', avatar: '/avatar_sara.jpg?v=20261019c' },
@@ -249,6 +272,11 @@ function injectUi() {
     #messengerLiveView .llr-send{min-width:48px;min-height:44px;border-radius:12px;border:none;background:linear-gradient(135deg,#ef4444,#f59e0b);color:#fff;font-weight:800;cursor:pointer}
     #messengerLiveView .llr-check{display:flex;gap:8px;align-items:center;font-size:.75rem;color:#fde68a}
     #messengerLiveView .llr-err{font-size:.75rem;color:#fca5a5}
+    #messengerLiveView .llr-cats{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+    #messengerLiveView .llr-cats::-webkit-scrollbar{display:none}
+    #messengerLiveView .llr-cat{flex-shrink:0;min-height:44px;min-width:44px;padding:0 12px;border-radius:999px;border:1px solid rgba(226,204,154,.35);background:rgba(255,255,255,.05);color:#f1e4c6;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+    #messengerLiveView .llr-cat[aria-pressed="true"]{background:linear-gradient(120deg,#e7cf9e,#c5a15f);color:#2f2825;border-color:#e7cf9e}
+    #messengerLiveView .llr-tag{display:inline-block;margin-right:6px;font-size:.66rem;font-weight:800;letter-spacing:.4px;color:#2f2825;background:linear-gradient(120deg,#e7cf9e,#c5a15f);padding:1px 7px;border-radius:999px;vertical-align:1px}
   `;
   document.head.appendChild(css);
   return true;
@@ -320,14 +348,25 @@ function enterRoom(roomId) {
   const view = $('messengerLiveView');
   const box = el('div', { class: 'llr-box', id: 'llrBox', role: 'log', 'aria-live': 'polite', 'aria-label': 'Wiadomości w pokoju ' + r.name });
   const typing = el('div', { class: 'llr-typing', id: 'llrTyping', 'aria-hidden': 'true' });
-  const input = el('textarea', { id: 'llrInput', maxlength: '1000', rows: '1', placeholder: r.prayers ? 'Napisz modlitwę lub pozdrowienie…' : 'Napisz do widzów…', 'aria-label': 'Wiadomość w pokoju ' + r.name });
+  const input = el('textarea', { id: 'llrInput', maxlength: '1000', rows: '1', placeholder: r.placeholder || (r.prayers ? 'Napisz modlitwę lub pozdrowienie…' : 'Napisz do widzów…'), 'aria-label': 'Wiadomość w pokoju ' + r.name });
   const err = el('div', { class: 'llr-err', role: 'alert' });
   const prayer = r.prayers ? el('input', { type: 'checkbox', id: 'llrPrayer', checked: true }) : null;
+  let category = r.categories ? PRAYER_CATEGORIES[0].id : null;
+  const cats = r.categories ? el('div', { class: 'llr-cats', role: 'group', 'aria-label': 'Rodzaj wiadomości' },
+    PRAYER_CATEGORIES.map((c, i) => el('button', {
+      type: 'button', class: 'llr-cat', 'aria-pressed': i === 0 ? 'true' : 'false', 'data-cat': c.id,
+      onclick: (e) => {
+        category = c.id;
+        e.currentTarget.parentElement.querySelectorAll('.llr-cat').forEach((b) => b.setAttribute('aria-pressed', b.dataset.cat === c.id ? 'true' : 'false'));
+        input.focus();
+      }
+    }, el('span', { 'aria-hidden': 'true', text: c.icon }), c.id))) : null;
   const send = async () => {
     err.textContent = '';
     const user = currentUser();
-    const text = input.value.trim();
-    if (!text) return;
+    const raw = input.value.trim();
+    if (!raw) return;
+    const text = category ? `[${category}] ${raw}` : raw;
     if (!user) { err.textContent = 'Zaloguj się, aby pisać w pokoju LIVE.'; return; }
     if (!state.fb) { err.textContent = 'Brak połączenia — spróbuj za chwilę.'; return; }
     const prof = (window.LuminaDB && window.LuminaDB.getCurrentProfile && window.LuminaDB.getCurrentProfile()) || {};
@@ -349,7 +388,8 @@ function enterRoom(roomId) {
       el('a', { href: r.url, target: '_blank', rel: 'noopener', text: 'Oglądaj ↗', 'aria-label': 'Otwórz transmisję ' + r.name })),
     box, typing,
     el('div', { class: 'llr-compose' },
-      prayer ? el('label', { class: 'llr-check', for: 'llrPrayer' }, prayer, el('span', { text: '🙏 To modlitwa — pokaż ją na antenie „Zjednoczeni za Polskę”' })) : null,
+      prayer ? el('label', { class: 'llr-check', for: 'llrPrayer' }, prayer, el('span', { text: r.prayerLabel || '🙏 To modlitwa — pokaż ją na antenie „Zjednoczeni za Polskę”' })) : null,
+      cats,
       el('div', { class: 'llr-row' }, input, el('button', { type: 'button', class: 'llr-send', 'aria-label': 'Wyślij', onclick: send, text: '➤' })),
       err));
 
@@ -401,7 +441,7 @@ function renderRoom(force) {
   } else if (r.reflection) {
     nodes.push(el('div', { class: 'llr-note', text: 'Codziennie o 9:00 Noemi i Sara prowadzą tu rozważanie na żywo.' }));
   }
-  if (r.prayers) nodes.push(el('div', { class: 'llr-note', text: '🙏 Modlitwy z tego pokoju pojawiają się na antenie /zapolske-live po kilku sekundach. Treści z linkami lub wulgaryzmami nie trafiają na antenę.' }));
+  if (r.prayers) nodes.push(el('div', { class: 'llr-note', text: r.prayerNote || '🙏 Modlitwy z tego pokoju pojawiają się na antenie /zapolske-live po kilku sekundach. Treści z linkami lub wulgaryzmami nie trafiają na antenę.' }));
   let lastSec = null;
   all.forEach((m) => {
     if (m.virtual) {
@@ -414,15 +454,16 @@ function renderRoom(force) {
     const del = (!m.virtual && (mine || admin)) ? el('button', { type: 'button', class: 'llr-del', text: 'Usuń', 'aria-label': 'Usuń wiadomość', onclick: async () => {
       try { await deleteDoc(doc(state.fb.db, 'lumina_live_rooms', r.id, 'messages', m.id)); } catch (_) {}
     } }) : null;
-    const liveBar = !m.virtual ? el('div', { class: 'llr-live-bar', role: 'status', 'aria-label': 'Potwierdzenie nadania w programie na żywo' },
+    const liveBar = (!m.virtual && (!r.categories || m.kind === 'prayer')) ? el('div', { class: 'llr-live-bar', role: 'status', 'aria-label': 'Potwierdzenie nadania w programie na żywo' },
       el('span', { class: 'llr-live-dot', 'aria-hidden': 'true' }),
-      el('span', { class: 'llr-live-text', text: 'Twoja wiadomość została opublikowana w programie na żywo CCTV LIVE 24.' })
+      el('span', { class: 'llr-live-text', text: r.liveBarText || 'Twoja wiadomość została opublikowana w programie na żywo CCTV LIVE 24.' })
     ) : null;
+    const parts = m.virtual ? { cat: null, body: m.text || '' } : splitCategory(m.text);
     nodes.push(el('div', { class: 'llr-msg' + (mine ? ' me' : '') + (m.virtual ? ' host' : '') + (m.kind === 'prayer' ? ' prayer' : '') },
       img,
       el('div', { class: 'llr-b' },
         el('div', { class: 'llr-who', text: (m.virtual ? '🎙️ ' : (m.kind === 'prayer' ? '🙏 ' : '')) + (mine ? 'Ty' : (m.senderName || 'Uczestnik')) }),
-        el('div', { text: m.text || '' }),
+        el('div', {}, parts.cat ? el('span', { class: 'llr-tag', text: parts.cat.icon + ' ' + parts.cat.id }) : null, parts.body),
         el('div', { class: 'llr-meta' }, el('span', { text: hhmm(m.at) }), del),
         liveBar)));
   });
@@ -460,5 +501,5 @@ async function boot() {
   } catch (_) {}
 }
 
-window.LumiLiveRooms = { LIVE_ROOMS, publicMessageRoom, enterRoom: (id) => { window.switchMessengerMainTab('livetv'); setTimeout(() => enterRoom(id), 200); }, session: () => session, getPresenterMessages };
+window.LumiLiveRooms = { LIVE_ROOMS, PRAYER_CATEGORIES, publicMessageRoom, enterRoom: (id) => { window.switchMessengerMainTab('livetv'); setTimeout(() => enterRoom(id), 200); }, session: () => session, getPresenterMessages };
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

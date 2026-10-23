@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#171319">
+<title>BCM24 · Biblijny Czas Modlitwy 24/7 — kanał na żywo | Christian Culture</title>
+<meta name="description" content="Biblijny Czas Modlitwy 24/7 — całodobowy kanał modlitwy z Jolą Wójcik (CC Women). Wysyłaj na żywo intencje, prośby, podziękowania i życzenia z LUMINA MESS.">
+<link rel="canonical" href="https://polskieradio.cc/BCM24">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:title" content="BCM24 · Biblijny Czas Modlitwy 24/7 — na żywo">
+<meta property="og:description" content="Całodobowa modlitwa na żywo. Twoja intencja z LUMINA MESS pojawi się na antenie.">
+<meta property="og:url" content="https://polskieradio.cc/BCM24">
+<meta property="og:image" content="https://polskieradio.cc/BCM24/assets/og-bcm24.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://polskieradio.cc/BCM24/assets/og-bcm24.jpg">
+<link rel="icon" type="image/png" href="/BCM24/assets/bcm24-favicon.png">
+<link rel="preload" as="image" href="/BCM24/assets/bcm24-logo.webp">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.youtube-nocookie.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&display=swap">
+<script defer src="/js/vendor-qrcode.min.js"></script>
+<style>
+/* === BCM24 — Biblijny Czas Modlitwy 24/7 | kanał nadawczy 1920×1080 | paleta BCM (grafit · złoto szampańskie · róż) === */
+:root{
+  --dark:#19191b; --ink:#121014; --gold:#c4a35a; --champagne:#e2cc9a; --gold-hi:#f2d7a6; --rose:#dc98a8;
+  --cream:#f7f2ed; --muted:#c8bcba; --line:rgba(226,204,154,.38); --panel:rgba(22,19,24,.78);
+  --band-tint:rgba(196,163,90,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#0d0c0f}
+body{font:400 16px/1.5 'DM Sans',Arial,sans-serif;color:var(--cream)}
+#app-container{width:1920px;height:1080px;position:absolute;top:0;left:0;transform-origin:top left;overflow:hidden;background:var(--ink)}
+
+/* — tło ambientowe (portret BCM rozmyty, ciepła poświata) — */
+.ambient{position:absolute;inset:-60px;background:url('/BCM/assets/hero-bcm-v2.webp') 70% center/cover no-repeat;filter:blur(38px) brightness(.30) saturate(1.15);transform:scale(1.08)}
+.ambient-grad{position:absolute;inset:0;background:
+  radial-gradient(1100px 620px at 30% 42%,var(--band-tint),transparent 70%),
+  radial-gradient(700px 500px at 88% 30%,rgba(220,152,168,.12),transparent 70%),
+  linear-gradient(180deg,rgba(13,12,15,.35),rgba(13,12,15,.15) 40%,rgba(13,12,15,.75));transition:background 4s}
+.particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.particles i{position:absolute;bottom:-20px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle,#f7d89b,rgba(247,216,155,0));opacity:0;animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0) scale(.6);opacity:0}12%{opacity:.75}85%{opacity:.35}100%{transform:translateY(-1120px) scale(1.2);opacity:0}}
+
+/* — nagłówek — */
+.hdr{position:absolute;left:56px;right:56px;top:28px;height:108px;display:flex;align-items:center;gap:28px}
+.hdr-logo{position:relative;height:104px;flex-shrink:0}
+.hdr-logo::before{content:'';position:absolute;inset:-18px -26px;background:radial-gradient(closest-side,rgba(242,215,166,.28),transparent);animation:breathe 6s ease-in-out infinite;z-index:0}
+.hdr-logo img{position:relative;z-index:1;height:104px;width:auto;display:block;filter:drop-shadow(0 6px 18px rgba(0,0,0,.55))}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
+.hdr-div{width:1px;height:74px;background:linear-gradient(transparent,var(--gold),transparent)}
+.hdr-text .eyebrow{font-size:13px;letter-spacing:.3em;font-weight:800;color:var(--gold-hi)}
+.hdr-text h1{font:italic 500 38px/1.12 'Playfair Display',Georgia,serif;color:#fff;margin:6px 0 2px}
+.hdr-text h1 strong{font-weight:500;background:linear-gradient(120deg,#fbf0d6,#efcd8d 50%,#bc844c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hdr-text p{font-size:15px;color:var(--muted);letter-spacing:.02em}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:22px}
+.live-pill{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px;border-radius:999px;background:linear-gradient(90deg,#dc2626,#b91c1c);color:#fff;font-weight:800;font-size:16px;letter-spacing:.14em;box-shadow:0 8px 24px rgba(220,38,38,.35)}
+.live-pill::before{content:'';width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
+.band{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.band small{font-size:12px;letter-spacing:.28em;color:var(--gold-hi);font-weight:800}
+.band span{font:italic 500 21px/1.2 'Playfair Display',serif;color:#fff}
+.clock{min-width:236px;text-align:right;padding-left:22px;border-left:1px solid var(--line)}
+.clock b{display:block;font:700 48px/1 'DM Sans',sans-serif;letter-spacing:.02em;color:#fff;font-variant-numeric:tabular-nums}
+.clock span{display:block;margin-top:6px;font-size:15px;color:var(--champagne)}
+
+/* — scena wideo — */
+.stage{position:absolute;left:56px;top:156px;width:1232px;height:693px;border-radius:22px;overflow:hidden;background:#000;
+  border:1.5px solid rgba(226,204,154,.55);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 7px rgba(196,163,90,.07)}
+#ytHost,#ytHost iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.stage-bug{position:absolute;top:22px;right:24px;height:58px;opacity:.92;filter:drop-shadow(0 3px 10px rgba(0,0,0,.7));pointer-events:none;z-index:3}
+.slate{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;
+  background:radial-gradient(circle at 50% 40%,rgba(196,163,90,.22),transparent 60%),linear-gradient(160deg,#211c22,#141116);transition:opacity 1.2s}
+.slate img{height:250px;filter:drop-shadow(0 10px 30px rgba(0,0,0,.6))}
+.slate p{font:italic 500 28px/1.3 'Playfair Display',serif;color:var(--champagne)}
+.slate.off{opacity:0;pointer-events:none}
+.unmute{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;min-height:64px;min-width:64px;padding:0 34px;border-radius:999px;border:1.5px solid #f2ca8e;
+  background:linear-gradient(120deg,#e7cf9e,#c5a15f);color:#2f2825;font:800 22px 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 14px 40px rgba(0,0,0,.5);display:none}
+.unmute.on{display:inline-flex;align-items:center;gap:12px}
+
+/* — intencja na żywo (lower third) — */
+.feature{position:absolute;left:1320px;top:156px;width:544px;height:592px;z-index:8;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:34px 34px 34px 38px;border-radius:22px;
+  background:radial-gradient(420px 300px at 50% 0%,rgba(242,215,166,.20),transparent 70%),linear-gradient(160deg,#201a23,#30252f);border:1.5px solid rgba(242,202,142,.8);box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 40px rgba(242,202,142,.18);
+  opacity:0;transform:translateX(40px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.feature.on{opacity:1;transform:none}
+.feature::before{content:'';position:absolute;left:0;top:34px;bottom:34px;width:5px;border-radius:0 5px 5px 0;background:linear-gradient(var(--gold-hi),var(--rose))}
+.feature-av{width:92px;height:92px;border-radius:50%;flex-shrink:0;object-fit:cover;border:2.5px solid var(--gold-hi);background:linear-gradient(135deg,var(--gold),var(--rose));
+  display:grid;place-items:center;font:700 30px 'Playfair Display',serif;color:#2a1f28}
+.feature-who{display:flex;align-items:center;gap:16px}
+.feature-body{min-width:0}
+.feature-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.feature-kicker{font-size:13px;font-weight:800;letter-spacing:.22em;color:#fecaca;background:rgba(220,38,38,.32);border:1px solid rgba(248,113,113,.6);padding:3px 12px;border-radius:999px}
+.feature-kicker.memory{color:#2f2825;background:linear-gradient(120deg,#e7cf9e,#c5a15f);border-color:#e7cf9e}
+.feature-cat{font-size:15px;font-weight:800;color:var(--gold-hi)}
+.feature-name{font:600 28px/1.2 'Playfair Display',serif;color:#fff}
+.feature-cat{display:block;margin-top:4px}
+.feature-text{font:italic 400 29px/1.4 'Playfair Display',serif;color:#fbf3ea;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+.feature-amen{padding-top:14px;border-top:1px solid rgba(226,204,154,.3);font:italic 400 20px 'Playfair Display',serif;color:var(--champagne)}
+
+/* — teraz na antenie + słowo na teraz — */
+.now{position:absolute;left:56px;top:871px;width:800px;height:114px;display:flex;gap:18px;align-items:center;padding:14px 20px 14px 14px;border-radius:18px;background:var(--panel);border:1px solid var(--line)}
+.now-thumb{width:152px;height:86px;border-radius:12px;object-fit:cover;flex-shrink:0;background:#2a2230;border:1px solid rgba(226,204,154,.3)}
+.now-body{flex:1;min-width:0}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.26em;color:var(--gold-hi)}
+.now-title{font:600 25px/1.2 'Playfair Display',serif;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:3px 0 2px}
+.now-meta{font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:12px}
+.now-meta span:first-child{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-meta span:last-child{flex-shrink:0;font-variant-numeric:tabular-nums}
+.now-bar{height:5px;border-radius:5px;background:rgba(255,255,255,.12);margin-top:8px;overflow:hidden}
+.now-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-hi),var(--rose));border-radius:5px;transition:width 1s linear}
+.verse{position:absolute;left:872px;top:871px;width:416px;height:114px;padding:14px 20px;border-radius:18px;background:linear-gradient(135deg,rgba(42,34,48,.88),rgba(61,47,58,.82));border:1px solid var(--line);overflow:hidden}
+.verse-inner{transition:opacity .9s}
+.verse-inner.fade{opacity:0}
+.verse q{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font:italic 400 18px/1.35 'Playfair Display',serif;color:#fff;margin-top:4px;quotes:'„' '”'}
+.verse small{display:block;margin-top:4px;font-size:12px;letter-spacing:.16em;color:var(--champagne);font-weight:700}
+
+/* — prawa kolumna: ściana modlitwy + zaproszenie — */
+.wall{position:absolute;left:1320px;top:156px;width:544px;height:592px;border-radius:22px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+.wall-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid rgba(226,204,154,.22)}
+.wall-head h2{font:600 26px/1.1 'Playfair Display',serif;color:#fff}
+.wall-head h2 em{font-style:italic;color:var(--gold-hi)}
+.wall-head .sub{font-size:12px;letter-spacing:.24em;color:var(--gold-hi);font-weight:800;margin-bottom:4px}
+.count{text-align:right}
+.count b{display:block;font:700 36px/1 'DM Sans',sans-serif;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.count span{font-size:12px;color:var(--muted);letter-spacing:.06em}
+.wall-list{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.card{display:flex;gap:12px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(226,204,154,.18);animation:cardIn .8s cubic-bezier(.2,.8,.2,1) both}
+.card.fresh{border-color:rgba(242,202,142,.75);background:linear-gradient(120deg,rgba(196,163,90,.16),rgba(220,152,168,.10));box-shadow:0 0 24px rgba(242,202,142,.18)}
+@keyframes cardIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+.card-av{width:44px;height:44px;border-radius:50%;flex-shrink:0;object-fit:cover;border:1.5px solid var(--gold);background:linear-gradient(135deg,var(--gold),var(--rose));display:grid;place-items:center;font:700 18px 'Playfair Display',serif;color:#2a1f28}
+.card-body{flex:1;min-width:0}
+.card-top{display:flex;align-items:center;gap:8px;font-size:15px}
+.card-name{font-weight:800;color:#fde9c4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.card-cat{font-size:11px;font-weight:800;letter-spacing:.06em;color:#2f2825;background:linear-gradient(120deg,#e7cf9e,#c5a15f);padding:1px 8px;border-radius:999px;white-space:nowrap}
+.card-time{margin-left:auto;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card-text{font-size:16.5px;line-height:1.38;color:#f1e9e1;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.wall-empty{margin:auto;text-align:center;padding:10px 28px;color:var(--muted)}
+.wall-empty .big{font-size:52px;line-height:1;margin-bottom:12px}
+.wall-empty h3{font:italic 500 25px/1.25 'Playfair Display',serif;color:#fff;margin-bottom:10px}
+.wall-empty p{font-size:16px;line-height:1.55}
+
+.invite{position:absolute;left:1320px;top:764px;width:544px;height:221px;border-radius:22px;padding:18px 20px;display:flex;gap:20px;align-items:center;
+  background:linear-gradient(135deg,rgba(196,163,90,.24),rgba(220,152,168,.16)),var(--panel);border:1.5px solid rgba(242,202,142,.6)}
+.qr{width:176px;height:176px;flex-shrink:0;border-radius:16px;background:#fff;padding:10px;display:grid;place-items:center}
+.qr img,.qr canvas{width:156px!important;height:156px!important;display:block}
+.invite-body .kicker{color:#fde9c4}
+.invite-body{min-width:0}
+.invite-body h3{font:600 25px/1.15 'Playfair Display',serif;color:#fff;margin:6px 0 10px}
+.invite-body h3 em{color:var(--gold-hi)}
+.invite-body p{font-size:15px;line-height:1.45;color:#eadfd6}
+.invite-url{margin-top:10px;font-size:14px;font-weight:800;letter-spacing:.08em;color:var(--gold-hi)}
+.invite-body p b{color:#fff}
+.cats{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.cats span{font-size:12.5px;font-weight:700;color:#f6e7c8;border:1px solid rgba(242,202,142,.45);border-radius:999px;padding:2px 9px;background:rgba(0,0,0,.18)}
+
+/* — pasek informacyjny z logo — */
+.ticker{position:absolute;left:0;right:0;bottom:0;height:80px;display:flex;align-items:stretch;background:linear-gradient(180deg,rgba(18,16,20,.96),rgba(10,9,12,.98));border-top:2px solid var(--gold)}
+.ticker::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,236,190,.9),transparent)}
+.tk-badge{position:relative;z-index:2;flex-shrink:0;display:flex;align-items:center;gap:14px;padding:0 26px 0 30px;background:linear-gradient(120deg,#2a2230,#3d2f3a);border-right:2px solid var(--gold);box-shadow:12px 0 28px rgba(0,0,0,.55)}
+.tk-badge img{height:60px;width:auto;display:block}
+.tk-badge span{font-weight:800;font-size:15px;letter-spacing:.2em;color:#fff;background:#dc2626;padding:4px 10px;border-radius:8px}
+.tk-viewport{position:relative;flex:1;overflow:hidden;display:flex;align-items:center;-webkit-mask-image:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
+.tk-track{display:flex;align-items:center;white-space:nowrap;will-change:transform;animation:tk var(--tk-dur,120s) linear infinite}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk-item{font-size:24px;font-weight:500;color:#f5ede4;padding:0 6px}
+.tk-item b{color:var(--gold-hi);font-weight:800}
+.tk-item.prayer b{color:#fecdd3}
+.tk-sep{height:34px;width:auto;margin:0 30px;opacity:.95;vertical-align:middle}
+
+/* — panel operatora (niewidoczny dla widzów) — */
+.op{position:absolute;left:0;bottom:80px;width:150px;height:150px;z-index:20}
+.op-panel{position:absolute;left:18px;bottom:18px;display:flex;gap:8px;opacity:0;transition:opacity .3s}
+.op:hover .op-panel,.op:focus-within .op-panel{opacity:1}
+.op-panel button{min-width:44px;min-height:44px;border-radius:12px;border:1px solid var(--line);background:rgba(20,17,22,.92);color:#fff;font-size:20px;cursor:pointer}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div id="app-container">
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="ambient-grad" id="ambientGrad" aria-hidden="true"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <header class="hdr">
+    <div class="hdr-logo"><img src="/BCM24/assets/bcm24-logo.webp" width="900" height="626" alt="Biblijny Czas Modlitwy"></div>
+    <div class="hdr-div" aria-hidden="true"></div>
+    <div class="hdr-text">
+      <div class="eyebrow">✧ CC WOMEN · KANAŁ MODLITWY 24/7</div>
+      <h1>Na Słowo. Na modlitwę. <strong>Na Ciebie.</strong></h1>
+      <p>z Jolą Wójcik · Christian Culture</p>
+    </div>
+    <div class="hdr-right">
+      <div class="band"><small id="bandKicker">TERAZ</small><span id="bandName">Modlitwa</span></div>
+      <div class="live-pill">NA ŻYWO</div>
+      <div class="clock" aria-live="off"><b id="clockTime">--:--:--</b><span id="clockDate"></span></div>
+    </div>
+  </header>
+
+  <section class="stage" aria-label="Transmisja: Biblijny Czas Modlitwy">
+    <div id="ytHost"></div>
+    <img class="stage-bug" src="/BCM24/assets/bcm24-logo-sm.webp" alt="" aria-hidden="true">
+    <div class="slate" id="slate" role="status">
+      <img src="/BCM24/assets/bcm24-logo.webp" alt="Biblijny Czas Modlitwy">
+      <p id="slateText">Za chwilę rozpoczynamy modlitwę…</p>
+    </div>
+    <button type="button" class="unmute" id="unmuteBtn" aria-label="Włącz dźwięk transmisji"><span aria-hidden="true">🔊</span> Włącz dźwięk</button>
+  </section>
+
+  <section class="now" aria-label="Teraz na antenie">
+    <img class="now-thumb" id="nowThumb" src="/BCM/assets/hero-bcm-v2.webp" alt="">
+    <div class="now-body">
+      <div class="kicker">▶ TERAZ NA ANTENIE</div>
+      <div class="now-title" id="nowTitle">Biblijny Czas Modlitwy</div>
+      <div class="now-meta"><span id="nowMeta">Jola Wójcik · CC Women</span><span id="nowTime">0:00 / 0:00</span></div>
+      <div class="now-bar"><i id="nowBar"></i></div>
+    </div>
+  </section>
+
+  <section class="verse" aria-label="Słowo na teraz">
+    <div class="kicker">✧ SŁOWO NA TERAZ</div>
+    <div class="verse-inner" id="verseInner"><q id="verseText"></q><small id="verseRef"></small></div>
+  </section>
+
+  <aside class="wall" aria-label="Intencje na żywo z LUMINA MESS">
+    <div class="wall-head">
+      <div><div class="sub">LUMINA MESS · NA ŻYWO</div><h2>Ściana <em>Modlitwy</em></h2></div>
+      <div class="count"><b id="countToday">0</b><span>intencji dzisiaj</span></div>
+    </div>
+    <div class="wall-list" id="wallList" role="log" aria-live="polite"></div>
+  </aside>
+
+  <section class="feature" id="feature" role="status" aria-live="polite" aria-label="Intencja na żywo">
+    <div><span class="feature-kicker" id="featureKicker">🔴 NOWA INTENCJA NA ŻYWO</span></div>
+    <div class="feature-who">
+      <div class="feature-av" id="featureAv" aria-hidden="true">?</div>
+      <div class="feature-body"><div class="feature-name" id="featureName"></div><span class="feature-cat" id="featureCat"></span></div>
+    </div>
+    <div class="feature-text" id="featureText"></div>
+    <div class="feature-amen">Módlmy się razem · Panie, wysłuchaj nas. Amen.</div>
+  </section>
+
+  <aside class="invite" aria-label="Jak wysłać intencję">
+    <div class="qr" id="qrBox" aria-label="Kod QR do pokoju modlitwy w LUMINA MESS"></div>
+    <div class="invite-body">
+      <div class="kicker">✧ NAPISZ NA ŻYWO</div>
+      <h3>Powierz Bogu<br><em>swoją intencję</em></h3>
+      <p>Zeskanuj kod lub otwórz <b>LUMINA MESS → 📺 LIVE TV → Biblijny Czas Modlitwy 24/7</b></p>
+      <div class="invite-url">polskieradio.cc/mess</div>
+    </div>
+  </aside>
+
+  <footer class="ticker" aria-label="Pasek informacyjny">
+    <div class="tk-badge"><img src="/BCM24/assets/bcm24-logo-sm.webp" width="86" height="60" alt="Biblijny Czas Modlitwy"><span>24/7</span></div>
+    <div class="tk-viewport"><div class="tk-track" id="tkTrack"></div></div>
+  </footer>
+
+  <div class="op" aria-label="Panel operatora">
+    <div class="op-panel">
+      <button type="button" id="opMute" aria-label="Wycisz lub włącz dźwięk">🔈</button>
+      <button type="button" id="opNext" aria-label="Następna modlitwa">⏭</button>
+      <button type="button" id="opReload" aria-label="Odśwież playlistę">🔄</button>
+    </div>
+  </div>
+  <div class="sr" id="srLive" aria-live="polite"></div>
+</div>
+
+<script>
+/* BCM24 — silnik kanału nadawczego (2026-10-23)
+ * • YouTube IFrame API: playlista BCM w pętli 24/7, wznawianie po odświeżeniu, automatyczne pomijanie filmów
+ *   niedostępnych do osadzenia, watchdog zawieszeń, odświeżanie playlisty co 6 h (nowe odcinki pojawiają się same).
+ * • LUMINA MESS: pokój „tv_bcm24” (Firestore lumina_live_rooms/tv_bcm24/messages, odczyt publiczny, zero zapisu z anteny).
+ *   Intencje oznaczone „Pokaż na antenie” (kind: prayer) trafiają na ścianę modlitwy, pasek i belkę „Intencja na żywo”.
+ * • Treść użytkowników wyłącznie przez textContent; filtr linków, numerów telefonów i wulgaryzmów jak na innych antenach.
+ */
+(function () {
+  'use strict';
+  var PLAYLIST = 'PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN';
+  var ROOM_ID = 'tv_bcm24';
+  var MESS_URL = 'https://polskieradio.cc/mess?room=tv_bcm24';
+  var TZ = 'Europe/Warsaw';
+  var params = new URLSearchParams(location.search);
+  var IS_OBS = /\bOBS\//.test(navigator.userAgent) || params.get('obs') === '1';
+  var WINDOW_MS = 72 * 3600000;
+  var REFRESH_MS = 6 * 3600000;
+  var BLOCK = /(https?:|www\.|\.(pl|com|net|org|eu|io|info)\b|@|\d[\d\s-]{6,}\d|kurw|chuj|pierd|jeba|jebi|jebn|pizd|spierd|dziwk|cwel|fuck|shit)/i;
+  var CAT_RE = /^\[(Intencja|Prośba|Podziękowanie|Życzenia|Świadectwo)\]\s*/;
+  var CAT_ICON = { 'Intencja': '🙏', 'Prośba': '🕊️', 'Podziękowanie': '💛', 'Życzenia': '🎉', 'Świadectwo': '✨' };
+
+  var $ = function (id) { return document.getElementById(id); };
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function fmtTime(s) {
+    s = Math.max(0, Math.floor(s || 0));
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60;
+    return (h ? h + ':' + String(m).padStart(2, '0') : String(m)) + ':' + String(x).padStart(2, '0');
+  }
+  function hhmm(ms) { try { return new Date(ms).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', timeZone: TZ }); } catch (_) { return ''; } }
+  function warsawDay(ms) { return new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms)); }
+  function warsawHour() { return Number(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', hourCycle: 'h23' }).format(new Date())); }
+
+  /* ── skalowanie 1920×1080 (wzorzec @live) ── */
+  function resizeViewport() {
+    var c = $('app-container'); if (!c) return;
+    var w = document.documentElement.clientWidth || window.innerWidth || 0;
+    var h = document.documentElement.clientHeight || window.innerHeight || 0;
+    if (w <= 0 || h <= 0) { c.style.transform = 'scale(0.29)'; return; }
+    var s = Math.min(w / 1920, h / 1080);
+    c.style.transformOrigin = 'top left';
+    c.style.transform = 'scale(' + s + ')';
+    c.style.left = Math.max(0, (w - 1920 * s) / 2) + 'px';
+    c.style.top = Math.max(0, (h - 1080 * s) / 2) + 'px';
+  }
+  window.addEventListener('resize', resizeViewport);
+  window.addEventListener('load', resizeViewport);
+  resizeViewport(); setTimeout(resizeViewport, 300); setTimeout(resizeViewport, 1500);
+
+  /* ── cząsteczki światła ── */
+  (function () {
+    var p = $('particles');
+    for (var i = 0; i < 16; i++) {
+      var d = el('i');
+      d.style.left = (Math.random() * 100).toFixed(2) + '%';
+      d.style.animationDuration = (16 + Math.random() * 18).toFixed(1) + 's';
+      d.style.animationDelay = (-Math.random() * 30).toFixed(1) + 's';
+      var sz = (3 + Math.random() * 6).toFixed(1) + 'px'; d.style.width = sz; d.style.height = sz;
+      p.appendChild(d);
+    }
+  })();
+
+  /* ── zegar i pasma dobowe ── */
+  var BANDS = [
+    { from: 5, to: 9, name: 'Modlitwa poranna', tint: 'rgba(242,202,142,.20)' },
+    { from: 9, to: 12, name: 'Modlitwa przedpołudniowa', tint: 'rgba(226,204,154,.18)' },
+    { from: 12, to: 18, name: 'Modlitwa popołudniowa', tint: 'rgba(196,163,90,.16)' },
+    { from: 18, to: 22, name: 'Modlitwa wieczorna', tint: 'rgba(220,152,168,.17)' },
+    { from: 22, to: 29, name: 'Nocne czuwanie modlitewne', tint: 'rgba(120,110,190,.16)' }
+  ];
+  var lastBand = '';
+  function tickClock() {
+    var now = new Date();
+    $('clockTime').textContent = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: TZ });
+    var ds = now.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long', timeZone: TZ });
+    $('clockDate').textContent = ds.charAt(0).toUpperCase() + ds.slice(1);
+    var h = warsawHour(); var hh = h < 5 ? h + 24 : h;
+    var b = BANDS.filter(function (x) { return hh >= x.from && hh < x.to; })[0] || BANDS[2];
+    if (b.name !== lastBand) {
+      lastBand = b.name;
+      $('bandName').textContent = b.name;
+      document.documentElement.style.setProperty('--band-tint', b.tint);
+    }
+  }
+  tickClock(); setInterval(tickClock, 1000);
+
+  /* ── Słowo na teraz (por. UBG / BW) ── */
+  var VERSES = [
+    ['O nic się nie troszczcie, ale w każdej sprawie wasze prośby przedstawiajcie Bogu w modlitwie i błaganiu z dziękczynieniem.', 'LIST DO FILIPIAN 4,6'],
+    ['Gdzie bowiem dwaj albo trzej są zgromadzeni w moje imię, tam jestem pośród nich.', 'EWANGELIA MATEUSZA 18,20'],
+    ['Módlcie się jeden za drugiego, abyście byli uzdrowieni. Wiele może usilna modlitwa sprawiedliwego.', 'LIST JAKUBA 5,16'],
+    ['Zawsze się radujcie. Nieustannie się módlcie. Za wszystko dziękujcie.', '1 LIST DO TESALONICZAN 5,16–18'],
+    ['Proście, a będzie wam dane; szukajcie, a znajdziecie; kołaczcie, a będzie wam otworzone.', 'EWANGELIA MATEUSZA 7,7'],
+    ['Bliski jest PAN wszystkim, którzy go wzywają, wszystkim, którzy go wzywają w prawdzie.', 'PSALM 145,18'],
+    ['Wołaj do mnie, a odpowiem ci i oznajmię ci rzeczy wielkie i niedostępne, o których nie wiesz.', 'KSIĘGA JEREMIASZA 33,3'],
+    ['Wszelką swoją troskę złóżcie na niego, bo on troszczy się o was.', '1 LIST PIOTRA 5,7'],
+    ['Przystąpmy więc z ufnością do tronu łaski, abyśmy dostąpili miłosierdzia i znaleźli łaskę ku pomocy w stosownej chwili.', 'LIST DO HEBRAJCZYKÓW 4,16']
+  ];
+  var verseIdx = Math.floor(Date.now() / 60000) % VERSES.length;
+  function showVerse() {
+    var v = VERSES[verseIdx % VERSES.length];
+    var box = $('verseInner');
+    box.classList.add('fade');
+    setTimeout(function () { $('verseText').textContent = v[0]; $('verseRef').textContent = v[1] + ' · POR. UBG'; box.classList.remove('fade'); }, 900);
+    verseIdx++;
+  }
+  showVerse(); setInterval(showVerse, 45000);
+
+  /* ── kod QR do pokoju LUMINA MESS ── */
+  (function qr(attempt) {
+    if (typeof window.QRCode !== 'function') { if (attempt < 40) setTimeout(function () { qr(attempt + 1); }, 250); return; }
+    try { new window.QRCode($('qrBox'), { text: MESS_URL, width: 160, height: 160, colorDark: '#19191b', colorLight: '#ffffff', correctLevel: window.QRCode.CorrectLevel.M }); } catch (_) {}
+  })(0);
+
+  /* ════════════════ ODTWARZACZ 24/7 ════════════════ */
+  var player = null, ytLoaded = false, ready = false, wantSound = params.get('muted') !== '1';
+  var lastT = -1, lastProgressAt = Date.now(), errStreak = 0, recoverStep = 0, lastRefresh = Date.now(), curId = '', mutedFallback = false;
+  var titleCache = {};
+
+  function slate(on, text) { var s = $('slate'); if (text) $('slateText').textContent = text; s.classList.toggle('off', !on); }
+  function readResume() {
+    try { var r = JSON.parse(localStorage.getItem('bcm24_resume') || 'null'); if (r && Date.now() - r.at < 12 * 3600000) return r; } catch (_) {}
+    return { index: 0, t: 0 };
+  }
+  function saveResume() {
+    if (!ready || !player || typeof player.getPlaylistIndex !== 'function') return;
+    try { localStorage.setItem('bcm24_resume', JSON.stringify({ index: Math.max(0, player.getPlaylistIndex() || 0), t: Math.floor(player.getCurrentTime() || 0), at: Date.now() })); } catch (_) {}
+  }
+
+  function loadApi() {
+    if (window.YT && window.YT.Player) { buildPlayer(); return; }
+    var s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; s.async = true;
+    s.onerror = function () { slate(true, 'Łączymy się z transmisją… spróbujemy ponownie za chwilę.'); setTimeout(loadApi, 20000); };
+    document.head.appendChild(s);
+    setTimeout(function () { if (!ytLoaded) { slate(true, 'Łączymy się z transmisją…'); } }, 15000);
+  }
+  window.onYouTubeIframeAPIReady = function () { ytLoaded = true; buildPlayer(); };
+
+  function buildPlayer() {
+    ytLoaded = true; ready = false;
+    var r = readResume();
+    try { if (player && player.destroy) player.destroy(); } catch (_) {}
+    var host = $('ytHost'); host.textContent = '';
+    var div = el('div'); div.id = 'ytPlayer'; host.appendChild(div);
+    player = new YT.Player('ytPlayer', {
+      host: 'https://www.youtube-nocookie.com', width: '100%', height: '100%',
+      playerVars: { listType: 'playlist', list: PLAYLIST, index: r.index || 0, start: r.t || 0, autoplay: 1, controls: 0, rel: 0, modestbranding: 1,
+        iv_load_policy: 3, playsinline: 1, fs: 0, disablekb: 1, cc_load_policy: 0, origin: location.origin },
+      events: { onReady: onReady, onStateChange: onState, onError: onError }
+    });
+    lastProgressAt = Date.now(); lastRefresh = Date.now();
+  }
+
+  function onReady() {
+    ready = true;
+    try { player.setLoop(true); player.setShuffle(false); } catch (_) {}
+    if (wantSound && !mutedFallback) { try { player.unMute(); player.setVolume(100); } catch (_) {} } else { try { player.mute(); } catch (_) {} }
+    try { player.playVideo(); } catch (_) {}
+    // Autoplay z dźwiękiem bywa blokowany w zwykłej przeglądarce (OBS go nie blokuje) → start wyciszony + przycisk dźwięku.
+    setTimeout(function () {
+      var st = player && player.getPlayerState ? player.getPlayerState() : -1;
+      if (st !== 1 && st !== 3) {
+        mutedFallback = true;
+        try { player.mute(); player.playVideo(); } catch (_) {}
+        if (!IS_OBS) $('unmuteBtn').classList.add('on');
+      }
+    }, 3500);
+  }
+
+  function onState(e) {
+    var YTS = window.YT && YT.PlayerState ? YT.PlayerState : { PLAYING: 1, ENDED: 0 };
+    if (e.data === YTS.PLAYING) {
+      errStreak = 0; recoverStep = 0; lastProgressAt = Date.now();
+      slate(false);
+      if (player.isMuted && !player.isMuted()) $('unmuteBtn').classList.remove('on');
+      var data = player.getVideoData ? player.getVideoData() : {};
+      if (data && data.video_id && data.video_id !== curId) {
+        var changed = !!curId; curId = data.video_id;
+        updateNow(true);
+        // Co 6 h na granicy odcinków ponownie wczytujemy playlistę — nowe filmy z YouTube wchodzą do pętli bez odświeżania strony.
+        if (changed && Date.now() - lastRefresh > REFRESH_MS) refreshPlaylist();
+      }
+    } else if (e.data === YTS.ENDED) {
+      try {
+        var list = player.getPlaylist() || [];
+        if (player.getPlaylistIndex() >= list.length - 1) player.playVideoAt(0); else player.nextVideo();
+      } catch (_) { setTimeout(buildPlayer, 3000); }
+    }
+  }
+
+  function onError() {
+    errStreak++;
+    var list = (player && player.getPlaylist && player.getPlaylist()) || [];
+    if (errStreak > Math.max(6, list.length)) { slate(true, 'Łączymy się ponownie z transmisją…'); errStreak = 0; setTimeout(buildPlayer, 30000); return; }
+    setTimeout(function () { try { player.nextVideo(); } catch (_) {} }, 1500);
+  }
+
+  function refreshPlaylist() {
+    lastRefresh = Date.now();
+    try { var i = Math.max(0, player.getPlaylistIndex() || 0); player.loadPlaylist({ list: PLAYLIST, listType: 'playlist', index: i, startSeconds: 0 }); } catch (_) { buildPlayer(); }
+  }
+
+  function nextTitle(id, cb) {
+    if (!id) return cb('');
+    if (titleCache[id] !== undefined) return cb(titleCache[id]);
+    fetch('https://www.youtube.com/oembed?format=json&url=' + encodeURIComponent('https://www.youtube.com/watch?v=' + id))
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { titleCache[id] = j && j.title ? String(j.title) : ''; cb(titleCache[id]); })
+      .catch(function () { titleCache[id] = ''; cb(''); });
+  }
+
+  function updateNow(full) {
+    if (!ready || !player || !player.getVideoData) return;
+    var d = player.getVideoData() || {};
+    var t = player.getCurrentTime() || 0, dur = player.getDuration() || 0;
+    $('nowTime').textContent = fmtTime(t) + ' / ' + fmtTime(dur);
+    $('nowBar').style.width = (dur > 0 ? Math.min(100, (t / dur) * 100) : 0).toFixed(2) + '%';
+    if (!full) return;
+    if (d.title) { $('nowTitle').textContent = d.title; $('srLive').textContent = 'Teraz na antenie: ' + d.title; }
+    if (d.video_id) { var th = $('nowThumb'); th.onerror = function () { th.onerror = null; th.src = '/BCM/assets/hero-bcm-v2.webp'; }; th.src = 'https://i.ytimg.com/vi/' + d.video_id + '/mqdefault.jpg'; }
+    var list = player.getPlaylist() || [], idx = player.getPlaylistIndex();
+    var base = 'Jola Wójcik · CC Women' + (list.length ? ' · modlitwa ' + (idx + 1) + ' z ' + list.length : '');
+    $('nowMeta').textContent = base;
+    if (list.length > 1) {
+      nextTitle(list[(idx + 1) % list.length], function (title) {
+        if (title) $('nowMeta').textContent = base + ' · następnie: ' + title;
+      });
+    }
+  }
+
+  // Watchdog: zamrożony obraz, utknięte buforowanie, nieoczekiwana pauza → kolejno: play → następny → przebudowa odtwarzacza.
+  setInterval(function () {
+    if (!ready || !player || !player.getPlayerState) return;
+    var st = player.getPlayerState(), t = player.getCurrentTime() || 0, now = Date.now();
+    if (st === 1 && Math.abs(t - lastT) > 0.4) { lastT = t; lastProgressAt = now; recoverStep = 0; return; }
+    lastT = t;
+    if (now - lastProgressAt < 40000) { if (st === 2) { try { player.playVideo(); } catch (_) {} } return; }
+    recoverStep++; lastProgressAt = now;
+    try {
+      if (recoverStep === 1) player.playVideo();
+      else if (recoverStep === 2) player.nextVideo();
+      else { recoverStep = 0; buildPlayer(); }
+    } catch (_) { buildPlayer(); }
+  }, 10000);
+  setInterval(function () { updateNow(false); }, 1000);
+  setInterval(saveResume, 10000);
+
+  $('unmuteBtn').addEventListener('click', function () {
+    mutedFallback = false; wantSound = true;
+    try { player.unMute(); player.setVolume(100); player.playVideo(); } catch (_) {}
+    $('unmuteBtn').classList.remove('on');
+  });
+  function toggleMute() { if (!player || !player.isMuted) return; if (player.isMuted()) { player.unMute(); player.setVolume(100); $('unmuteBtn').classList.remove('on'); } else player.mute(); }
+  $('opMute').addEventListener('click', toggleMute);
+  $('opNext').addEventListener('click', function () { try { player.nextVideo(); } catch (_) {} });
+  $('opReload').addEventListener('click', function () { refreshPlaylist(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.target && /input|textarea/i.test(e.target.tagName)) return;
+    var k = (e.key || '').toLowerCase();
+    if (k === 'm') toggleMute(); else if (k === 'n') { try { player.nextVideo(); } catch (_) {} } else if (k === 'r') refreshPlaylist();
+  });
+
+  loadApi();
+
+  /* ════════════════ INTENCJE Z LUMINA MESS ════════════════ */
+  var wall = [];            // intencje z ostatnich 72 h (najnowsze pierwsze)
+  var seen = {}, removed = {}, queue = [], featuring = false, freshIds = {};
+  var bootAt = Date.now();
+  var lastFeatureAt = Date.now();
+
+  function parse(id, x) {
+    var at = x.createdAt && typeof x.createdAt.toMillis === 'function' ? x.createdAt.toMillis() : 0;
+    var raw = String(x.text || '').trim();
+    var m = raw.match(CAT_RE);
+    var cat = m ? m[1] : (x.kind === 'prayer' ? 'Intencja' : '');
+    var body = m ? raw.slice(m[0].length).trim() : raw;
+    return { id: id, at: at, kind: x.kind === 'prayer' ? 'prayer' : 'text', cat: cat, icon: CAT_ICON[cat] || '🙏', body: body,
+      name: String(x.senderName || 'Uczestnik LUMINA').slice(0, 60), avatar: String(x.senderAvatar || '').trim() };
+  }
+  function ok(m) { return m.at && m.kind === 'prayer' && m.body.length >= 3 && m.body.length <= 500 && !BLOCK.test(m.body) && !BLOCK.test(m.name); }
+  function avatar(m, cls) {
+    var raw = m.avatar, src = raw ? (/^(https?:|\/|data:)/.test(raw) ? raw : '/' + raw) : '';
+    if (!src || /lumina_icon/.test(src)) return el('div', cls, (m.name || 'U').charAt(0).toUpperCase());
+    var img = el('img', cls); img.alt = ''; img.loading = 'lazy'; img.src = src;
+    img.onerror = function () { img.replaceWith(el('div', cls, (m.name || 'U').charAt(0).toUpperCase())); };
+    return img;
+  }
+
+  function renderWall() {
+    var box = $('wallList'); box.textContent = '';
+    var today = warsawDay(Date.now());
+    var n = wall.filter(function (m) { return warsawDay(m.at) === today; }).length;
+    $('countToday').textContent = n >= 50 ? '50+' : String(n);
+    var list = wall.slice(0, 5);
+    if (!list.length) {
+      var e = el('div', 'wall-empty');
+      e.appendChild(el('div', 'big', '🕊️'));
+      e.appendChild(el('h3', '', 'Twoja intencja może być dziś pierwsza'));
+      e.appendChild(el('p', '', 'Zeskanuj kod QR poniżej i napisz w LUMINA MESS. Modlimy się za każdą powierzoną intencję — przez całą dobę.'));
+      box.appendChild(e); return;
+    }
+    list.forEach(function (m) {
+      var c = el('div', 'card' + (freshIds[m.id] ? ' fresh' : ''));
+      c.appendChild(avatar(m, 'card-av'));
+      var b = el('div', 'card-body'), top = el('div', 'card-top');
+      top.appendChild(el('span', 'card-name', m.name));
+      top.appendChild(el('span', 'card-cat', m.icon + ' ' + m.cat));
+      top.appendChild(el('span', 'card-time', hhmm(m.at)));
+      b.appendChild(top); b.appendChild(el('div', 'card-text', m.body));
+      c.appendChild(b); box.appendChild(c);
+    });
+    // Bez ucinania: zostaje tyle kart, ile mieści się w całości.
+    while (box.children.length > 1 && box.scrollHeight > box.clientHeight + 1) box.removeChild(box.lastChild);
+  }
+
+  function showFeature(m, memory) {
+    featuring = true; lastFeatureAt = Date.now();
+    var av = $('featureAv'); var fresh = avatar(m, 'feature-av'); fresh.id = 'featureAv'; fresh.setAttribute('aria-hidden', 'true'); av.replaceWith(fresh);
+    var k = $('featureKicker');
+    k.textContent = memory ? '✧ MODLIMY SIĘ ZA TĘ INTENCJĘ' : '🔴 NOWA INTENCJA NA ŻYWO';
+    k.classList.toggle('memory', !!memory);
+    $('featureCat').textContent = m.icon + ' ' + m.cat;
+    $('featureName').textContent = m.name + ' · ' + hhmm(m.at);
+    $('featureText').textContent = '„' + m.body + '”';
+    $('feature').classList.add('on');
+    setTimeout(function () {
+      $('feature').classList.remove('on');
+      setTimeout(function () { featuring = false; nextFeature(); }, 4500);
+    }, memory ? 14000 : 18000);
+  }
+  function nextFeature() {
+    if (featuring) return;
+    while (queue.length && removed[queue[0].id]) queue.shift();
+    if (queue.length) { showFeature(queue.shift(), false); return; }
+  }
+  // Gdy nikt nie pisze: co 2,5 min przypominamy jedną z intencji z ostatnich 72 h — modlitwa trwa bez przerwy.
+  setInterval(function () {
+    if (featuring || queue.length || Date.now() - lastFeatureAt < 150000 || !wall.length) return;
+    showFeature(wall[Math.floor(Math.random() * Math.min(wall.length, 12))], true);
+  }, 10000);
+
+  /* ── pasek informacyjny (logo jako separator) ── */
+  var STATIC_TICKER = [
+    ['✍️ Napisz intencję na żywo:', ' LUMINA MESS → 📺 LIVE TV → Biblijny Czas Modlitwy 24/7'],
+    ['Biblijny Czas Modlitwy', ' z Jolą Wójcik · CC Women · polskieradio.cc/BCM'],
+    ['🙏 Modlimy się za każdą intencję', ' — prośby, podziękowania, życzenia i świadectwa pojawiają się na antenie po kilku sekundach'],
+    ['Grupa modlitewna WhatsApp', ' „Jeśli chcesz, pomodlę się o Ciebie” — dołącz przez polskieradio.cc/BCM'],
+    ['Oglądaj i udostępniaj:', ' polskieradio.cc/BCM24 · kanał modlitwy 24 godziny na dobę, 7 dni w tygodniu'],
+    ['Wspieraj misję:', ' polskieradio.cc/wspieraj · Darmo wzięliście — darmo dawajcie'],
+    ['Dbamy o Ciebie:', ' nie podawaj w intencjach wrażliwych danych — treści z linkami i numerami telefonów nie są emitowane']
+  ];
+  var tkDirty = true;
+  function buildTicker() {
+    var track = $('tkTrack');
+    var items = [];
+    wall.slice(0, 6).forEach(function (m) {
+      var t = m.body.length > 150 ? m.body.slice(0, 147) + '…' : m.body;
+      items.push([m.icon + ' ' + m.cat + ' — ' + m.name + ':', ' „' + t + '”', 'prayer']);
+    });
+    var v = VERSES[(verseIdx + 3) % VERSES.length];
+    var mixed = STATIC_TICKER.slice();
+    mixed.splice(2, 0, ['✧ ' + v[1] + ':', ' „' + v[0] + '”']);
+    // przeplot: intencje między komunikatami stałymi
+    var out = [];
+    for (var i = 0; i < Math.max(mixed.length, items.length); i++) { if (mixed[i]) out.push(mixed[i]); if (items[i]) out.push(items[i]); }
+    track.textContent = '';
+    for (var pass = 0; pass < 2; pass++) {
+      out.forEach(function (it) {
+        var s = el('span', 'tk-item' + (it[2] ? ' ' + it[2] : ''));
+        s.appendChild(el('b', '', it[0])); s.appendChild(document.createTextNode(it[1]));
+        track.appendChild(s);
+        var sep = el('img', 'tk-sep'); sep.src = '/BCM24/assets/bcm24-logo-sm.webp'; sep.alt = ''; sep.setAttribute('aria-hidden', 'true');
+        track.appendChild(sep);
+      });
+    }
+    requestAnimationFrame(function () {
+      var half = track.scrollWidth / 2;
+      track.style.setProperty('--tk-dur', Math.max(60, Math.round(half / 95)) + 's');
+    });
+    tkDirty = false;
+  }
+  $('tkTrack').addEventListener('animationiteration', function () { if (tkDirty) buildTicker(); });
+  buildTicker();
+
+  function applySnapshot(docs) {
+    var now = Date.now();
+    wall = docs.filter(function (m) { return ok(m) && now - m.at <= WINDOW_MS && !removed[m.id]; }).sort(function (a, b) { return b.at - a.at; });
+    renderWall();
+    tkDirty = true;
+    if (!$('tkTrack').children.length) buildTicker();
+  }
+
+  async function startRoom() {
+    try {
+      var mods = await Promise.all([
+        import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
+        import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js')
+      ]);
+      var appMod = mods[0], fs = mods[1];
+      var app = appMod.getApps().find(function (a) { return a.name === '[DEFAULT]'; }) || appMod.initializeApp({
+        projectId: 'lumina-cc', appId: '1:413985877183:web:b0c99a686a4fb1b875aa0a', apiKey: 'AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M',
+        authDomain: 'lumina-cc.firebaseapp.com', storageBucket: 'lumina-cc.firebasestorage.app', messagingSenderId: '413985877183'
+      });
+      var db = fs.getFirestore(app);
+      var q = fs.query(fs.collection(db, 'lumina_live_rooms', ROOM_ID, 'messages'), fs.orderBy('createdAt', 'desc'), fs.limit(50));
+      fs.onSnapshot(q, function (snap) {
+        var docs = snap.docs.map(function (d) { return parse(d.id, d.data() || {}); });
+        snap.docChanges().forEach(function (ch) {
+          var id = ch.doc.id;
+          if (ch.type === 'removed') { removed[id] = true; return; }
+          if (seen[id]) return;
+          var m = parse(id, ch.doc.data() || {});
+          if (!m.at) return;            // czekamy na czas serwera
+          seen[id] = true;
+          if (!ok(m) || m.at < bootAt - 120000) return;
+          freshIds[id] = true;
+          setTimeout(function () { delete freshIds[id]; renderWall(); }, 90000);
+          setTimeout(function () { if (!removed[id]) { queue.push(m); nextFeature(); } }, Math.max(0, m.at + 5000 - Date.now()));
+        });
+        applySnapshot(docs);
+      }, function () { setTimeout(startRoom, 30000); });
+    } catch (_) { setTimeout(startRoom, 30000); }
+  }
+  renderWall();
+  startRoom();
+  // Okno 72 h i licznik „dzisiaj” przesuwają się także bez nowych wiadomości.
+  setInterval(function () { var now = Date.now(); wall = wall.filter(function (m) { return now - m.at <= WINDOW_MS; }); renderWall(); }, 60000);
+})();
+</script>
+</body>
+</html>

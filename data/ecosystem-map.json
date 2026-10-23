@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "BCM24: całodobowy kanał nadawczy „Biblijny Czas Modlitwy 24/7” (/BCM24) — playlista YouTube w pętli z automatyczną aktualizacją oraz pokój LUMINA MESS tv_bcm24 z intencjami, prośbami, podziękowaniami, życzeniami i świadectwami na antenie",
+      "date": "2026-10-23",
+      "agent": "A"
+    },
+    {
       "topic": "Your Imagination Studio (YIS): Wdrożenie autorskiego studia projektowego (branding, web design, grafika cyfrowa, multimedia, merch, routing /YIS)",
       "date": "2026-10-23",
       "agent": "A"
@@ -3201,6 +3206,36 @@
       "connections": [
         "projektant-cc",
         "sklep-cc"
+      ]
+    },
+    {
+      "id": "bcm24-live",
+      "branchId": "radio-tv",
+      "name": "BCM24 · Biblijny Czas Modlitwy 24/7",
+      "shortDesc": "Całodobowy kanał modlitwy z Jolą Wójcik — intencje z LUMINA MESS na antenie na żywo.",
+      "fullDesc": "Kanał nadawczy 24/7 (polskieradio.cc/BCM24): playlista Biblijnego Czasu Modlitwy w pętli z automatyczną aktualizacją nowych odcinków, Ściana Modlitwy z intencjami z pokoju LUMINA MESS „Biblijny Czas Modlitwy 24/7” (kategorie: intencja, prośba, podziękowanie, życzenia, świadectwo), Słowo na teraz, pasek informacyjny z logo i kod QR do pokoju.",
+      "type": "stream",
+      "url": "https://polskieradio.cc/BCM24",
+      "status": "active",
+      "lang": "pl",
+      "icon": "📺",
+      "category": "Radio & TV",
+      "verifiedDate": "2026-10-23",
+      "keywords": [
+        "bcm24",
+        "biblijny czas modlitwy",
+        "modlitwa 24/7",
+        "kanał modlitwy",
+        "intencje na żywo",
+        "lumina mess",
+        "jola wójcik",
+        "cc women",
+        "live"
+      ],
+      "connections": [
+        "bcm-modlitwa",
+        "yt-cc-women",
+        "cctv24-worship"
       ]
     }
   ]

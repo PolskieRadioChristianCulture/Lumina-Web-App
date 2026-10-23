@@ -32,6 +32,18 @@
 /semantic-index.html
   Cache-Control: public, max-age=3600, must-revalidate
 
+/BCM24
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/BCM24/
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/BCM24.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/BCM24/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
 /*-live.html
   Cache-Control: no-cache, no-store, must-revalidate
 
