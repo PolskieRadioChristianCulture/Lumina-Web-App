@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "NOWY ARTYKUŁ eM (@MCC): Kim jestem, gdy nikt nie patrzy? Uczciwość i sumienie według Biblii — mocny rachunek sumienia Cezarego Rogowskiego (https://polskieradio.cc/eM)",
   "NOWY PROJEKT SURVIVAL CC: Przetrwać to za mało. Jak przygotować się na trudne czasy, nie tracąc wiary, człowieczeństwa i nadziei? Artykuł inaugurujący Cezarego Rogowskiego (https://polskieradio.cc/survival)",
   "NOWY PROJEKT eM (@MCC): Nie czekaj, aż życie się zmieni. Zacznij od siebie — z Bogiem możesz więcej! Artykuł inaugurujący Cezarego Rogowskiego (https://polskieradio.cc/eM)",
   "CCN FINANSE + AUDIO (17:51): Cyfrowy pieniądz, prawo niedzielne i Apokalipsa 13 — analiza Cezarego Rogowskiego o CBDC i wolności sumienia (Ap 13:16–17; Wj 20:8–11)",
@@ -71,6 +72,102 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+  "id": "art-kim-jestem-gdy-nikt-nie-patrzy-uczciwosc-sumienie",
+  "title": "Kim jestem, gdy nikt nie patrzy? Uczciwość i sumienie według Biblii",
+  "slug": "kim-jestem-gdy-nikt-nie-patrzy-uczciwosc-sumienie",
+  "excerpt": "Kim jesteś, gdy nikt nie patrzy? Mocny chrześcijański rachunek sumienia o uczciwości, charakterze, prawdzie i łasce autorstwa Cezarego Rogowskiego w ramach eM — Motywacja Christian Culture.",
+  "content": [
+    "Są pytania, przed którymi można uciekać latami. Można zagłuszyć je pracą, sukcesem, religijną aktywnością, opinią innych. Ale przychodzi chwila, gdy zostajemy sami — i wtedy jedno pytanie nie daje spokoju: kim jestem, gdy nikt nie patrzy?",
+    "Nie pytam dziś, co ludzie o mnie mówią. Pytam, kim jestem, gdy nie ma oklasków, kontroli ani świadków. Czy mówię prawdę, choć kłamstwo byłoby wygodniejsze? Czy dotrzymuję słowa, choć nikt nie rozliczy obietnicy? Czy szanuję tych, którzy niczego nie mogą mi dać?",
+    "1. Publiczny wizerunek nie jest charakterem",
+    "Można mieć piękne zdjęcia, mądre cytaty, chrześcijańskie hasła i nienaganną opinię. Można nawet nauczać innych o uczciwości, a w tajemnicy praktykować coś przeciwnego. Jezus nazywał taki rozdźwięk obłudą. W Mt 23,25–28 potępiał troskę o zewnętrzny wygląd pobożności przy zaniedbaniu wnętrza. Jego słowa były ostre, ponieważ zakłamanie niszczy relację z Bogiem i bliźnim.",
+    "Nie oszukujmy się: charakter nie jest tym, co deklarujesz na konferencji, w Kościele lub w mediach społecznościowych. Charakter ujawnia się w wyborach podejmowanych wtedy, kiedy nikt nie klaszcze. Nie chodzi o perfekcję, lecz o prawdę. Człowiek uczciwy również popełnia błędy; różnica polega na tym, czy je uznaje, naprawia i odwraca się od nich.",
+    "2. Bóg widzi więcej niż ludzie",
+    "W 1 Sm 16,7 Bóg wyjaśnia Samuelowi, że człowiek patrzy na to, co widoczne, Pan zaś patrzy na serce. Kontekst dotyczy wyboru króla: zewnętrzne wrażenie nie rozstrzygało o Bożej ocenie. Nie jest to zachęta do osądzania innych na podstawie domysłów. To wezwanie, by samemu poddać własne motywacje uczciwemu badaniu.",
+    "Psalm 139,23–24 zawiera niezwykłą modlitwę o zbadanie serca i wskazanie złej drogi. Odważna modlitwa! Nie: „Boże, potwierdź, że mam rację”, lecz: „Pokaż mi prawdę także wtedy, gdy jest dla mnie niewygodna”. Czy naprawdę jestem gotów się tak modlić?",
+    "3. Małe nieuczciwości nie są małe dla sumienia",
+    "Nieuczciwość rzadko zaczyna się od wielkiego skandalu. Czasami od przemilczanej prawdy. Od zawyżonego rachunku. Od wykorzystania cudzego zaufania. Od pracy wykonanej niedbale, choć opłaconej uczciwie. Od kopiowania cudzej treści i podpisania jej własnym nazwiskiem. Od „niewinnego” kłamstwa, którym usprawiedliwiamy wygodę.",
+    "Łk 16,10 wiąże wierność w małych sprawach z wiernością w wielkich. Prz 11,1 potępia nieuczciwe miary. Ef 4,25 wzywa do porzucenia kłamstwa i mówienia prawdy. Biblia nie pozostawia miejsca dla pobożności, która kończy się tam, gdzie zaczynają się pieniądze, interesy i prywatne wiadomości.",
+    "Zadaj sobie konkretne pytania. Czy rozliczam się uczciwie? Czy oddaję to, co pożyczyłem? Czy przepraszam bez dopisywania „ale ty też”? Czy jestem tą samą osobą wobec słabszych i silniejszych? Czy moje słowo ma wartość także wtedy, gdy podpis pod umową nie istnieje?",
+    "4. Sumienie nie jest dekoracją",
+    "Sumienie bywa niewygodne. Przypomina o krzywdzie, każe wrócić do trudnej rozmowy, nie pozwala spokojnie zasnąć po świadomym oszustwie. Można je uciszać: „wszyscy tak robią”, „nikt nie ucierpiał”, „miałem powód”. Lecz powszechność praktyki nie czyni jej dobrą.",
+    "Rz 2,14–15 mówi o świadectwie sumienia, ale Biblia pokazuje też, że sumienie wymaga formowania w prawdzie. Nie każde mocne przekonanie jest moralnie słuszne. Dlatego potrzebujemy Słowa Bożego, rozeznania, pokory i gotowości do korekty. Miłość bez prawdy staje się pobłażaniem; prawda bez miłości może przerodzić się w okrucieństwo (Ef 4,15).",
+    "5. Nie myl łaski z przyzwoleniem",
+    "Najłatwiej wypaczyć Ewangelię słowami: „Bóg mi wybaczy, więc mogę robić to dalej”. Paweł w Rz 6,1–2 zdecydowanie odrzuca takie rozumowanie. Łaska nie daje licencji na krzywdzenie ludzi. Prowadzi do przemiany.",
+    "Jednocześnie nie głoszę religii bezbłędności ani zbawienia przez własne osiągnięcia. Ef 2,8–10 łączy zbawienie z łaską i wiarą, a dobre uczynki przedstawia jako owoc nowego życia. Gdy zawiodłem, mam wyznać winę, przyjąć przebaczenie i rozpocząć naprawę. 1 J 1,9 mówi o Bożej wierności w przebaczaniu grzechów. Przebaczenie nie unieważnia jednak obowiązku zadośćuczynienia tam, gdzie jest ono możliwe.",
+    "6. Uczciwość kosztuje — i właśnie dlatego ma wartość",
+    "Czasem prawda będzie kosztowała kontrakt. Przyznanie się do błędu — utratę twarzy. Odmowa udziału w oszustwie — czyjąś aprobatę. Jeśli moralność obowiązuje mnie tylko wtedy, kiedy nic nie kosztuje, nie jest jeszcze zasadą; jest wygodą.",
+    "Daniel 6 przedstawia człowieka, którego przeciwnicy nie mogli oskarżyć o zaniedbanie i nieuczciwość w służbie publicznej. Nie znaczy to, że Daniel był bezgrzeszny, lecz że jego publiczna odpowiedzialność była spójna z życiem wiary. Właśnie takiej spójności potrzebujemy dziś: w redakcji, w biznesie, w rodzinie, w Kościele, w samotności.",
+    "7. Dzisiejszy rachunek sumienia: pięć decyzji",
+    "Po pierwsze: nazwij jedną prawdę, przed którą uciekasz. Po drugie: przerwij jedną nieuczciwą praktykę, nawet jeśli wydaje się drobna. Po trzecie: napraw konkretną krzywdę — oddaj, sprostuj, przeproś, wypłać należność. Po czwarte: poproś zaufaną osobę o możliwość rozliczania Cię z podjętych zmian. Po piąte: każdego wieczoru zapytaj, czy moje prywatne wybory potwierdziły dziś moją publiczną wiarę.",
+    "Nie odkładaj zmiany na dzień, gdy poczujesz się godny. Zacznij od prawdy. Jeśli Twoje postępowanie naraża innych na niebezpieczeństwo, sama modlitwa i przeprosiny nie wystarczą — trzeba przerwać szkodliwe zachowanie, zapewnić bezpieczeństwo i podjąć rzeczywistą odpowiedzialność.",
+    "8. Kim jestem, gdy nikt nie patrzy?",
+    "Ostatecznie to nie jest pytanie o cudzą opinię. To pytanie o moje serce przed Bogiem. O to, czy moja wiara jest także uczciwością, a moje wyznanie — postępowaniem. Czy jestem człowiekiem, któremu można zaufać, kiedy nikt nie sprawdza?",
+    "Nie chcę budować Christian Culture na pięknych słowach, za którymi nie stoją czyny. Chcę zacząć od siebie. Jeśli mówię o prawdzie — mam ją praktykować. Jeśli mówię o miłości — mam szanować ludzi. Jeśli mówię o Chrystusie — mam pozwolić, by Jego nauka osądzała najpierw moje własne wybory.",
+    "Dzisiaj nie pytaj przede wszystkim: „Czy ludzie uważają mnie za dobrego?”. Zapytaj: „Czy mogę uczciwie stanąć przed Bogiem, przyznać się do prawdy i zrobić następny dobry krok?”.",
+    "Bo człowiek nie staje się prawdziwy wtedy, gdy wszyscy na niego patrzą. Prawdziwy okazuje się wtedy, gdy mógłby oszukać — ale wybiera uczciwość."
+  ],
+  "scriptureReference": {
+    "verse": "1 Sm 16,7",
+    "text": "Pan bowiem nie patrzy na to, na co patrzy człowiek, bo człowiek patrzy na to, co jest przed oczyma, ale Pan patrzy na serce."
+  },
+  "category": "wiara",
+  "categoryLabel": "Motywacja / Etyka chrześcijańska",
+  "author": AUTHORS.cezary,
+  "publishedAt": "2026-10-24T12:00:00Z",
+  "dateFormatted": "24 października 2026",
+  "imageUrl": "/images/news/art-kim-jestem-gdy-nikt-nie-patrzy-uczciwosc-sumienie.jpg",
+  "imageCaption": "Christian Culture / ilustracja wygenerowana.",
+  "readTimeMinutes": 7,
+  "isHero": true,
+  "isPopular": true,
+  "popularRank": 1,
+  "tags": [
+    "eM",
+    "motywacja",
+    "mcc",
+    "cezary rogowski",
+    "uczciwość",
+    "sumienie",
+    "etyka chrześcijańska",
+    "biblia",
+    "charakter",
+    "prawda",
+    "łaska",
+    "rozliczenie"
+  ],
+  "primaryPortalUrl": "https://polskieradio.cc/eM",
+  "primaryPortalLabel": "eM • Motywacja Christian Culture",
+  "resourceLinks": [
+    {
+      "label": "Portal eM Motywacja CC",
+      "url": "https://polskieradio.cc/eM"
+    },
+    {
+      "label": "Program Pokonać Goliata",
+      "url": "https://polskieradio.cc/pokonac-goliata"
+    }
+  ],
+  "biblicalCommentary": {
+    "thesis": "Prawdziwy charakter człowieka ujawnia się w wyborach podejmowanych w samotności, gdy nie ma świadków ani nagród.",
+    "verses": [
+      {
+        "ref": "1 Sm 16,7",
+        "text": "Pan patrzy na serce."
+      },
+      {
+        "ref": "Łk 16,10",
+        "text": "Kto jest wierny w bardzo małym, ten i w wielkim jest wierny."
+      },
+      {
+        "ref": "Ps 139,23-24",
+        "text": "Zbadaj mnie, Boże, i poznaj moje serce."
+      }
+    ],
+    "explanation": "Chrześcijaństwo bez wewnętrznej uczciwości staje się faryzejską dekoracją. Bóg wzywa nas do integralności życia i sumienia poddanego prawdzie."
+  }
+},
   {
     "id": "art-z-biblia-za-pan-brat-dzien-22",
     "title": "Z Biblią za Pan Brat: Dzień 22 — Jakub walczy z Bogiem: Przemiana człowieka i noc nad Jabbokiem (Rdz 31–32)",
