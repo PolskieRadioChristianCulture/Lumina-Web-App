@@ -45,6 +45,14 @@ test('provided transparent Bible and logo replace opaque versions; hero fills th
   assert.match(css,/height:100svh/);assert.match(css,/object-fit:cover/);
   assert.match(css,/\.bible-image\{background:transparent/);w.close();
 });
+test('header space is reserved inside fullscreen hero and the artwork is anchored at the top',()=>{
+  const css=fs.readFileSync('Zaneta/style.css','utf8');
+  assert.match(css,/--zaneta-header-height:80px/);
+  assert.match(css,/padding-top:var\(--zaneta-header-height\)/);
+  assert.match(css,/object-position:60% 0%/);
+  assert.match(css,/object-position:65% 0%/);
+  assert.ok(html.includes('/Zaneta/style.css?v=20261024_header4'));
+});
 test('radio actual playing, Stop, failed start and late promise remain truthful',async()=>{
   let resolvePlay,calls=0,paused=true;
   const w=mount(win=>{

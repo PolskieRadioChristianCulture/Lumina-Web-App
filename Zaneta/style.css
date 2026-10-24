@@ -13,12 +13,13 @@
 
 .zaneta-hero{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:48px;background:radial-gradient(ellipse at 90% 0%,#a7687e,#281528 80%);color:#fff;padding:60px clamp(20px,5vw,80px)}.hero-copy{max-width:660px}.hero-copy .kicker{color:#f2b3cf}.hero-copy h1{font-size:clamp(36px,4.4vw,70px);margin:20px 0}.hero-copy h1 em{display:block;color:#e2cc9a;font-style:italic}.hero-copy .actions{justify-content:flex-start}.hero-lead{font:24px/1.4 Georgia,serif}.shipping-note{color:#f7d9e7;font-size:14px}.hero-portrait img{display:block;width:100%;height:auto;max-height:660px;object-fit:cover;border-radius:28px;box-shadow:0 20px 65px #11081355}.bible-section{display:grid;grid-template-columns:minmax(180px,350px) minmax(0,1fr);gap:60px;align-items:center;max-width:1300px;margin:auto}.bible-image{padding:35px;background:#f4dfe9;border-radius:24px;text-align:center}.bible-image img{display:block;width:auto;max-width:100%;max-height:420px;margin:auto}.phone-number{display:inline-flex;align-items:center;min-height:48px;font-size:clamp(22px,3vw,36px);font-weight:650;color:#8b345c;white-space:nowrap}.shipping-box{border-left:3px solid #a08040;padding:16px 20px;background:#fff0e4}.bible-section .actions{justify-content:flex-start}.small-note{font-size:13px;color:#654852}.testimony-film{max-width:1000px;margin:28px auto}.testimony-film+.video-note{max-width:1000px;margin-top:20px}.channel-link{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline}.join .button{margin:0}.top nav{gap:18px}
 .kicker{color:#8b3f60}
-.top{position:absolute;inset:0 0 auto;z-index:5;background:linear-gradient(#281528ed,#2815289c)}
-.hero-art{height:100vh;height:100svh}
-.hero-art img{display:block;width:100%;height:100%;max-height:none;object-fit:cover;object-position:60% 50%}
+:root{--zaneta-header-height:80px}
+.top{position:absolute;inset:0 0 auto;z-index:5;height:var(--zaneta-header-height);min-height:var(--zaneta-header-height);background:#281528}
+.hero-art{height:100vh;height:100svh;padding-top:var(--zaneta-header-height)}
+.hero-art img{display:block;width:100%;height:100%;max-height:none;object-fit:cover;object-position:60% 0%}
 .bible-image{background:transparent;padding:20px}
 .bible-image img{height:auto;filter:drop-shadow(0 16px 18px #28152822)}
 .join img{background:transparent;mix-blend-mode:normal}
-@media(max-width:767px){.hero-art img{object-position:65% 50%}}
+@media(max-width:767px){.hero-art img{object-position:65% 0%}}
 @media(max-width:960px){.zaneta-hero{gap:24px;padding-top:40px}.bible-section{gap:30px}.top nav{gap:12px;font-size:14px}}
 @media(max-width:767px){.zaneta-hero{grid-template-columns:1fr;padding:28px 20px 40px}.hero-portrait{grid-row:1;max-width:360px;justify-self:center}.hero-portrait img{max-height:340px;object-position:50% 30%}.hero-copy h1{font-size:38px}.hero-lead{font-size:22px}.bible-section{grid-template-columns:1fr;gap:22px}.bible-image{max-width:260px;justify-self:center;padding:24px}.bible-image img{max-height:280px}.hero-copy .actions{gap:10px}.phone-number{font-size:26px}.top .brand{max-width:230px}}
