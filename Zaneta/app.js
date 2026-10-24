@@ -40,7 +40,6 @@
   radio.addEventListener('pause', () => { if (radioWanted && radio.paused) stopRadio(); });
   radio.addEventListener('error', () => { if (radioWanted) stopRadio('error'); });
   radio.addEventListener('ended', () => { if (radioWanted) stopRadio(); });
-  const allowedVideos = new Set(["XuMzhfeYNWU"]);
   document.getElementById('year').textContent = String(new Date().getFullYear());
   const menu = document.getElementById('zaneta-menu');
   const nav = document.getElementById('zaneta-nav');
@@ -56,22 +55,6 @@
     ['chat','LUMI Messenger','/mess'], ['search','Szukaj w ekosystemie','/szukaj'],
     ['heart','WspieramTo — wspieraj misję','/wspieraj']
   ]});
-  document.querySelectorAll('.video-load').forEach(button => {
-    button.addEventListener('click', () => {
-      const id = button.dataset.video;
-      if (!allowedVideos.has(id)) return;
-      if (radioWanted) stopRadio();
-      const frame = document.createElement('iframe');
-      frame.src = 'https://www.youtube-nocookie.com/embed/' + id;
-      frame.title = button.getAttribute('aria-label');
-      frame.allow = 'encrypted-media; picture-in-picture; fullscreen';
-      frame.allowFullscreen = true;
-      frame.referrerPolicy = 'strict-origin-when-cross-origin';
-      frame.tabIndex = 0;
-      button.replaceWith(frame);
-      frame.focus({preventScroll:true});
-    }, {once: true});
-  });
   document.getElementById('share-page').addEventListener('click', async () => {
     const status = document.getElementById('share-status');
     status.textContent = '';

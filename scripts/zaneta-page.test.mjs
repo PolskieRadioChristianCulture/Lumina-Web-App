@@ -21,12 +21,17 @@ test('contact and shipping preserve the approved offer without collecting addres
   for(const el of d.querySelectorAll('img,script[src],link[rel=stylesheet]')) assert.ok((el.getAttribute('src')||el.getAttribute('href')).startsWith('/'));
   w.close();
 });
-test('testimony connects to YouTube only on request, once, without a forced autoplay',()=>{
+test('testimony is preloaded once without autoplay; hero preserves the supplied full composition',()=>{
   const w=mount(),d=w.document;
-  assert.equal(d.querySelectorAll('iframe').length,0);
-  const b=d.querySelector('.video-load');b.click();b.click();
   assert.equal(d.querySelectorAll('iframe').length,1);
   assert.equal(d.querySelector('iframe').src,'https://www.youtube-nocookie.com/embed/XuMzhfeYNWU');
+  assert.equal(d.querySelector('iframe').getAttribute('loading'),'eager');
+  assert.doesNotMatch(d.querySelector('iframe').src,/autoplay/);
+  assert.equal(d.querySelectorAll('.video-load').length,0);
+  const hero=d.querySelector('.hero-art img');
+  assert.equal(hero.getAttribute('src'),'/Zaneta/assets/zaneta-hero-20261024.png');
+  assert.equal(hero.getAttribute('width'),'1672');assert.equal(hero.getAttribute('height'),'941');
+  assert.match(html,/Odtwarzacz YouTube jest wczytywany wraz ze stroną/);
   w.close();
 });
 test('radio actual playing, Stop, failed start and late promise remain truthful',async()=>{
