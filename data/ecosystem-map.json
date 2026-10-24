@@ -787,6 +787,21 @@
   ],
   "nodes": [
     {
+      "id": "zaneta-cc-women",
+      "branchId": "cc-network",
+      "name": "Kącik Ewangelizacyjny Żanety — CC WOMEN",
+      "shortDesc": "Świadectwo i misja udostępniania Biblii UBG.",
+      "fullDesc": "Poznaj świadectwo Żanety i poproś o Biblię UBG bez opłaty za egzemplarz, pokrywając koszt przesyłki ustalony bezpośrednio z Żanetą.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/%C5%BBaneta",
+      "status": "active",
+      "lang": "pl",
+      "icon": "📖",
+      "category": "CC Network",
+      "keywords": ["Żaneta", "Zaneta", "Biblia UBG", "CC WOMEN", "świadectwo"],
+      "connections": ["yt-cc-women", "ewa-cc-women"]
+    },
+    {
       "id": "ewa-cc-women",
       "branchId": "cc-network",
       "name": "Kącik Ewangelizacyjny Ewy — CC WOMEN",

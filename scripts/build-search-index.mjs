@@ -233,6 +233,14 @@ const CONTEXT_GUIDES = {
 // --- 2. GŁÓWNE PLATFORMY I MODUŁY EKOSYSTEMU ---
 const CORE_PROJECTS = [
 {
+  title: "Kącik Ewangelizacyjny Żanety — CC WOMEN",
+  category: "Wiara i świadectwa",
+  url: "https://polskieradio.cc/%C5%BBaneta",
+  description: "Misja Żanety, świadectwo wideo i Biblia UBG bez opłaty za egzemplarz. Odbiorca pokrywa koszt przesyłki.",
+  tags: ["Żaneta", "Zaneta", "CC WOMEN", "Biblia UBG", "świadectwo", "ewangelizacja"],
+  featured: false
+},
+{
   title: "Kącik Ewangelizacyjny Ewy — CC WOMEN",
   category: "Muzyka i świadectwa",
   url: "https://polskieradio.cc/Ewa",
