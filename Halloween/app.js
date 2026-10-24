@@ -1,6 +1,24 @@
 // #antyHALLOWEEN — app.js v=20261022_v1
 'use strict';
 
+const lightActionPost = document.getElementById('lightActionPost');
+const copyLightAction = document.getElementById('copyLightAction');
+if (copyLightAction) copyLightAction.onclick = async () => {
+  if (!lightActionPost) return;
+  try {
+    await navigator.clipboard.writeText(lightActionPost.textContent.trim());
+    notice('Wpis akcji skopiowany ✓');
+  } catch {
+    notice('Zaznacz gotowy wpis poniżej i skopiuj go ręcznie.');
+  }
+};
+const shareLightAction = document.getElementById('shareLightAction');
+if (shareLightAction) shareLightAction.onclick = () => share(
+  'https://polskieradio.cc/Halloween#plyne-pod-prad',
+  'Płynę pod prąd — promuję światłość. #AntyHALLOWEEN',
+  lightActionPost?.textContent.trim()
+);
+
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
@@ -14,10 +32,10 @@ function notice(msg) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
 }
 
-async function share(url, title) {
+async function share(url, title, text) {
   if (navigator.share) {
     try {
-      await navigator.share({ url, title });
+      await navigator.share({ url, title, ...(text ? { text } : {}) });
       return;
     } catch (e) {
       if (e.name === 'AbortError') return;

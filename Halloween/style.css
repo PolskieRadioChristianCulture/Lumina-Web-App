@@ -27,6 +27,34 @@ a:focus-visible, button:focus-visible { outline: 3px solid #fff; outline-offset:
 }
 .skip:focus { left: 10px; }
 
+/* Social action: scoped layout, no change to the existing campaign. */
+.light-action {
+  display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  align-items: center; gap: clamp(24px, 5vw, 72px);
+  max-width: 1400px; margin: 32px auto 0; padding: clamp(28px, 5vw, 72px) 5%;
+  background: radial-gradient(ellipse at 12% 40%, #58281744, transparent 65%);
+  scroll-margin-top: 24px;
+}
+.light-action-art img { display: block; width: 100%; height: auto; object-fit: contain; }
+.light-action-content { min-width: 0; }
+.light-action h2 { font-size: clamp(32px, 4vw, 60px); line-height: 1.12; letter-spacing: -.035em; margin: 18px 0; }
+.light-action h2 em { color: var(--orange); font-style: normal; }
+.light-action p, .light-action-steps { line-height: 1.75; color: #c7cbd2; }
+.light-action-steps { padding-left: 22px; }
+.light-action-steps li { margin: 12px 0; padding-left: 4px; }
+.light-action-steps strong { color: var(--cream); }
+.light-action-post { border-left: 2px solid var(--orange); padding: 14px 18px; margin: 24px 0; background: #ffffff06; }
+.light-action-post p { overflow-wrap: anywhere; margin-bottom: 0; user-select: text; }
+.light-action .actions { flex-wrap: wrap; }
+.light-action .btn { min-height: 44px; white-space: normal; text-align: center; }
+.light-action .light-action-note { font-size: 12px; color: var(--muted); margin-top: 20px; }
+@media (max-width: 760px) {
+  .light-action { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .light-action-art { max-width: 420px; width: 100%; margin: auto; }
+  .light-action .actions { align-items: stretch; }
+  .light-action .btn { flex: 1 1 100%; }
+}
+
 /* Top Navigation */
 .top {
   height: 88px;
