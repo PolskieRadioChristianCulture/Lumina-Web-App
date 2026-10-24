@@ -1145,10 +1145,10 @@ ${JSON.stringify(jsonLd, null, 2)}
         <div class="ccn-primary-portal-banner">
           <div>
             <span class="ccn-primary-portal-eyebrow">${escapeHtml(article.primaryPortalLabel || 'CCN Finanse — Główne wydanie pełne')}</span>
-            <p class="ccn-primary-portal-text">Główne, pełne wydanie redakcyjne tej analizy zostało opublikowane w portalu tematycznym <strong>CCN Finanse</strong>.</p>
+            <p class="ccn-primary-portal-text">Główne, pełne wydanie redakcyjne tej analizy zostało opublikowane w portalu tematycznym <strong>${escapeHtml(article.primaryPortalLabel || "portalu partnerskim")}</strong>.</p>
           </div>
           <a href="${escapeAttribute(article.primaryPortalUrl)}" class="ccn-primary-portal-btn">
-            <span>Przejdź do CCN Finanse</span>
+            <span>Przejdź do ${escapeHtml(article.primaryPortalLabel || "portalu")}</span>
             <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
           </a>
         </div>` : ''}
