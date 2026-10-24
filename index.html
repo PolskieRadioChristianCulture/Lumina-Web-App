@@ -247,6 +247,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6762200025251358"
          crossorigin="anonymous"></script>
 
+    <style>.cc-home-skip{position:fixed;top:8px;left:12px;z-index:2147483647;transform:translateY(-160%);padding:12px 18px;min-height:44px;background:#fff;color:#171319;border-radius:8px;font:600 16px system-ui}.cc-home-skip:focus{transform:translateY(0);outline:3px solid #c4a35a;outline-offset:3px}</style>
     <!-- Google Fonts: Cinzel (Headers) and Montserrat (UI & Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -543,6 +544,7 @@
     <script defer src="/js/cc-mobile-edge.js?v=20261021_edge5" data-cc-edge-profile="home"></script>
 </head>
 <body>
+<a class="cc-home-skip" href="#main-content">Przejdź do głównej treści</a>
 
     <!-- ===== FIXED SIDE PROMO PANELS (desktop only) ===== -->
     <style>
@@ -936,7 +938,7 @@
             </section>
 
                         <!-- 5 Columns Container (Desktop 5 columns / Mobile Accordion) -->
-            <main class="menu-cc-grid" id="menuCcGrid">
+            <nav class="menu-cc-grid" id="menuCcGrid" aria-label="Kategorie ekosystemu">
                 <!-- COL 1: STACJE & MEDIA LIVE (Cyan/Blue) -->
                 <div class="cc-col cc-col-media" data-col="media">
                     <div class="cc-col-banner">
@@ -1665,7 +1667,7 @@
                         </a>
                     </div>
                 </div>
-            </main>
+            </nav>
 
             <!-- No search results state -->
             <div id="menuCcNoResults" class="menu-cc-no-results" style="display: none;">
@@ -2151,7 +2153,8 @@
     <div class="drawer-overlay" id="drawerOverlay"></div>
 
     <!-- SECTION B: GŁÓWNY HERO BANNER -->
-    <section class="hero-section">
+    <main id="main-content" tabindex="-1">
+    <section class="hero-section" id="hero">
         <!-- Golden Mandala SVG Background -->
         <div class="mandala-bg-container">
             <svg class="mandala-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -2198,7 +2201,7 @@
         <div class="hero-container">
             <!-- Left Column: Character Image (masked) -->
             <div class="hero-image-col">
-                <img loading="lazy" decoding="async" src="./CC CR+J.png" alt="Christian Culture - Portret" class="hero-character-img">
+                <img loading="eager" fetchpriority="high" decoding="async" src="/images/home/cc-portrait-lossless-20261024.webp" width="940" height="788" alt="Christian Culture - Portret" class="hero-character-img">
             </div>
             
             <!-- Right Column: Branding Typography -->
@@ -3600,6 +3603,7 @@
     <!-- ==========================================
          SITE FOOTER (GLOBALNY, ZAWSZE WIDOCZNY, BEZPIECZNY ODSTĘP NAD PASKIEM PLAYERA)
          ========================================== -->
+    </main>
     <footer class="site-footer" id="siteFooter">
         <p class="footer-copyright">&copy; 2026 Polskie Radio Christian Culture. Wszelkie prawa zastrzeżone.</p>
         <div class="footer-links">
