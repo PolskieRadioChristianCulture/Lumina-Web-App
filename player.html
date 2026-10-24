@@ -122,28 +122,19 @@
             width: 3px;
             background: #D4A94A;
             border-radius: 2px;
-            transition: height 0.15s ease;
-            height: 4px;
+            height: 22px;
+            transform: scaleY(0.12);
+            transform-origin: bottom;
         }
-        .playing .eq-bar {
-            animation: bounce 1.1s ease-in-out infinite alternate;
+        /* The radio spectrum uses actual audio samples; YouTube stays flat. */
+        .playing .eq-bar { opacity: 1; }
+        button[disabled] { opacity: .45; cursor: not-allowed; }
+        button:focus-visible, [role="button"]:focus-visible { outline: 2px solid #C4A35A; outline-offset: 3px; }
+        #mobile-player-controls button, button[onclick^="skipSeconds"], button[onclick="prevTrack()"], button[onclick="nextTrack()"], button[onclick="toggleMute()"] { min-width: 44px; min-height: 44px; }
+        @media (max-width: 767px) {
+            #mobile-player-controls { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+            #ccGlobalChatFab { bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important; }
         }
-        @keyframes bounce {
-            0% { height: 4px; opacity: 0.4; }
-            50% { height: 22px; opacity: 1; }
-            100% { height: 8px; opacity: 0.7; }
-        }
-        .eq-bar:nth-child(2) { animation-delay: 0.15s; }
-        .eq-bar:nth-child(3) { animation-delay: 0.35s; }
-        .eq-bar:nth-child(4) { animation-delay: 0.5s; }
-        .eq-bar:nth-child(5) { animation-delay: 0.25s; }
-        .eq-bar:nth-child(6) { animation-delay: 0.65s; }
-        .eq-bar:nth-child(7) { animation-delay: 0.4s; }
-        .eq-bar:nth-child(8) { animation-delay: 0.8s; }
-        .eq-bar:nth-child(9) { animation-delay: 0.2s; }
-        .eq-bar:nth-child(10) { animation-delay: 0.55s; }
-        .eq-bar:nth-child(11) { animation-delay: 0.3s; }
-        .eq-bar:nth-child(12) { animation-delay: 0.7s; }
 
         /* Sliders */
         input[type="range"] {
@@ -312,7 +303,7 @@
                     </button>
                     <button onclick="showPlaylistModal()" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
                         <i class="fa-solid fa-heart text-sm text-gray-400"></i>
-                        <span>Moje playlisty</span>
+                        <span>Zapisane na urządzeniu</span>
                     </button>
                     <a href="/mojabiblia" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
                         <i class="fa-solid fa-book-bible text-sm text-[#D4A94A]"></i>
@@ -473,6 +464,9 @@
                         Doświadczaj żywego Słowa Bożego bez przerw, w doskonałej jakości studyjnej lektora.
                     </p>
 
+                    <p id="playback-status" role="status" aria-live="polite" class="text-xs text-amber-200 mb-3">Gotowy do odtwarzania</p>
+                    <button id="spectrum-toggle" type="button" aria-pressed="false" class="text-xs text-amber-200 underline min-h-[44px] mr-3">Włącz wskaźniki dźwięku</button>
+                    <a href="/milion" class="inline-flex items-center min-h-[44px] text-xs text-amber-200 underline mb-3">Celujemy w pierwszy milion — licznik aktywności</a>
                     <!-- Pasek sterowania w Hero -->
                     <div class="flex flex-wrap items-center gap-4 pt-1">
                         <button onclick="togglePlay()" id="hero-play-btn" class="gold-button-gradient px-6 py-3 rounded-full text-xs md:text-sm font-bold text-gray-950 flex items-center gap-2.5 transition active:scale-95 cursor-pointer">
@@ -480,8 +474,8 @@
                             <span id="hero-play-label">Odtwarzaj</span>
                         </button>
 
-                        <!-- Animowane fale audio (Equalizer) -->
-                        <div id="hero-waveform" class="flex items-end gap-1 h-6 px-3 py-1 bg-black/50 backdrop-blur-md rounded-xl border border-white/10">
+                        <!-- Wskaźniki reagują na próbki strumienia radiowego. -->
+                        <div id="hero-waveform" aria-hidden="true" class="flex items-end gap-1 h-6 px-3 py-1 bg-black/50 backdrop-blur-md rounded-xl border border-white/10">
                             <span class="eq-bar"></span>
                             <span class="eq-bar"></span>
                             <span class="eq-bar"></span>
@@ -498,7 +492,7 @@
 
                         <!-- Ticker bieżącego wersetu / utworu -->
                         <div class="flex items-center gap-2 text-xs font-semibold text-amber-200/90 bg-black/40 px-3 py-1.5 rounded-lg border border-amber-500/20">
-                            <span id="hero-track-ticker" class="truncate max-w-[200px] md:max-w-[280px]">J 1:1 Na początku było Słowo...</span>
+                            <span id="hero-track-ticker" class="truncate max-w-[200px] md:max-w-[280px]">Radio Biblia — strumień na żywo</span>
                             <span id="hero-time-ticker" class="text-gray-400 font-mono text-[11px]">- 23:17</span>
                         </div>
                     </div>
@@ -525,7 +519,7 @@
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399] animate-pulse"></span>
                         <span>Stacje Radiowe & Strumienie na Żywo</span>
                     </h2>
-                    <span class="text-xs text-gray-400 font-mono">6 strumieni 24/7</span>
+                    <span class="text-xs text-gray-400 font-mono">Radio na żywo i playlisty</span>
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
@@ -902,8 +896,8 @@
                 <!-- Kolejka utworów (Queue) -->
                 <div class="pt-2 border-t border-white/5 space-y-2">
                     <div class="flex items-center justify-between">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 font-cinzel">Następne w kolejce</span>
-                        <button onclick="shuffleQueue()" class="text-[10px] text-gray-400 hover:text-amber-400 transition flex items-center gap-1">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 font-cinzel">Playlista odtwarzacza</span>
+                        <button id="queue-shuffle" onclick="shuffleQueue()" disabled class="text-[10px] text-gray-400 hover:text-amber-400 transition flex items-center gap-1">
                             <i class="fa-solid fa-shuffle"></i>
                             <span>Losowo</span>
                         </button>
@@ -919,7 +913,7 @@
             <div class="pt-3 border-t border-white/5 flex items-center gap-2">
                 <button onclick="addToPlaylist()" class="flex-1 min-h-[44px] py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-white flex items-center justify-center gap-2 transition active:scale-95">
                     <i class="fa-solid fa-plus text-amber-400"></i>
-                    <span>Zapisz w bibliotece</span>
+                    <span>Zapisz na tym urządzeniu</span>
                 </button>
                 <button onclick="openMoreOptions()" class="w-11 h-11 min-h-[44px] min-w-[44px] rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center transition active:scale-95" title="Udostępnij">
                     <i class="fa-solid fa-share-nodes"></i>
@@ -935,7 +929,7 @@
     <!-- ═══════════════════════════════════════════════════════════════
          3. MOBILNY DOLNY PASEK ODTWARZACZA (DLA SMARTFONÓW)
          ═══════════════════════════════════════════════════════════════ -->
-    <div class="md:hidden flex-shrink-0 bg-[#12121A] border-t border-[rgba(212,169,74,0.18)] p-3 flex items-center justify-between z-40">
+    <div id="mobile-player-controls" class="md:hidden flex-shrink-0 bg-[#12121A] border-t border-[rgba(212,169,74,0.18)] p-3 flex items-center justify-between z-40">
         <div class="flex items-center gap-3 min-w-0 flex-1 mr-2">
             <img loading="lazy" decoding="async" id="mobile-thumb" src="/images/player/art-chan-biblia.jpg?v=2" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-[rgba(212,169,74,0.3)]">
             <div class="min-w-0">
@@ -945,13 +939,13 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <button onclick="prevTrack()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-300 text-xs active:scale-95">
+            <button onclick="prevTrack()" aria-label="Poprzednia stacja lub film" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-300 text-xs active:scale-95">
                 <i class="fa-solid fa-backward-step"></i>
             </button>
-            <button onclick="togglePlay()" class="w-10 h-10 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-sm shadow-md active:scale-95">
+            <button onclick="togglePlay()" id="mobile-play-btn" aria-label="Odtwarzaj" class="w-10 h-10 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-sm shadow-md active:scale-95">
                 <i id="mobile-play-icon" class="fa-solid fa-play"></i>
             </button>
-            <button onclick="nextTrack()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-300 text-xs active:scale-95">
+            <button onclick="nextTrack()" aria-label="Następna stacja lub film" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-300 text-xs active:scale-95">
                 <i class="fa-solid fa-forward-step"></i>
             </button>
         </div>
@@ -960,7 +954,8 @@
     <!-- ═══════════════════════════════════════════════════════════════
          4. SILNIK AUDIO (HTML5 DLA TRANSMISJI LIVE + YOUTUBE AUDIO WORKER)
          ═══════════════════════════════════════════════════════════════ -->
-    <audio id="native-audio" preload="none"></audio>
+    <audio id="native-audio" crossorigin="anonymous" preload="none"></audio>
+    <script src="/js/cc-player-spectrum.js?v=20261024_1"></script>
     <div id="yt-audio-worker"></div>
 
     <!-- ═══════════════════════════════════════════════════════════════
@@ -983,7 +978,7 @@
                 heroImg: '/images/player/hero-pure-art.jpg?v=2',
                 headline: 'Biblia czytana <span class="gold-gradient-text">24 godziny</span> na dobę, 7 dni w tygodniu.',
                 desc: 'Doświadczaj żywego Słowa Bożego bez przerw, w doskonałej jakości studyjnej lektora.',
-                ticker: 'J 1:1 Na początku było Słowo...',
+                ticker: 'Radio Biblia — strumień na żywo',
                 timeText: 'LIVE STREAM'
             },
             cc: {
@@ -1374,13 +1369,7 @@
 };
 
         // Kolejka odtwarzania
-        let currentQueue = [
-            { title: 'J 1:2 On był na początku u Boga', artist: 'Radio Biblia', duration: '23:45' },
-            { title: 'J 1:3 Wszystko przez Niego powstało', artist: 'Radio Biblia', duration: '24:12' },
-            { title: 'J 1:4 W Nim było życie', artist: 'Radio Biblia', duration: '22:37' },
-            { title: 'J 1:5 A światłość świeci w ciemności', artist: 'Radio Biblia', duration: '21:08' },
-            { title: 'J 1:6 Pojawił się człowiek posłany od Boga', artist: 'Radio Biblia', duration: '20:15' }
-        ];
+        let currentQueue = [];
 
         // Stan odtwarzacza
         let currentItem = LIVE_STATIONS.biblia;
@@ -1390,9 +1379,48 @@
         let activeEngine = 'native'; // 'native' lub 'youtube'
         let ytPlayer = null;
         let ytReady = false;
+        let youtubePlaylistReady = false;
         let progressTimer = null;
 
         const nativeAudio = document.getElementById('native-audio');
+        const spectrum = window.createCCPlayerSpectrum?.(nativeAudio, [document.getElementById('hero-waveform'), document.getElementById('side-waveform')]);
+        function renderSpectrumToggle() {
+            const button = document.getElementById('spectrum-toggle');
+            button.disabled = !spectrum || activeEngine === 'youtube';
+            button.setAttribute('aria-pressed', String(Boolean(spectrum?.getEnabled())));
+            button.textContent = spectrum?.getEnabled() ? 'Wyłącz wskaźniki dźwięku' : 'Włącz wskaźniki dźwięku';
+        }
+        document.getElementById('spectrum-toggle').addEventListener('click', () => {
+            spectrum?.setEnabled(!spectrum.getEnabled());
+            renderSpectrumToggle();
+        });
+        matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', renderSpectrumToggle);
+        renderSpectrumToggle();
+        function playbackStatus(text) {
+            document.getElementById('playback-status').textContent = text;
+        }
+        nativeAudio.addEventListener('playing', () => {
+            if (activeEngine !== 'native') return;
+            setPlaybackState(true);
+            playbackStatus('Odtwarzanie radia na żywo');
+        });
+        for (const event of ['pause', 'ended', 'error']) nativeAudio.addEventListener(event, () => {
+            if (activeEngine !== 'native') return;
+            setPlaybackState(false);
+            playbackStatus(event === 'error' ? 'Nie można odtworzyć radia. Spróbuj ponownie.' : 'Odtwarzanie zatrzymane');
+        });
+        nativeAudio.addEventListener('waiting', () => {
+            if (activeEngine === 'native') playbackStatus('Buforowanie radia…');
+        });
+
+        function loadSelectedYouTube() {
+            if (activeEngine !== 'youtube') return;
+            youtubePlaylistReady = false;
+            setPlaybackState(false);
+            playbackStatus(ytReady ? 'Ładowanie playlisty YouTube…' : 'Ładowanie odtwarzacza YouTube…');
+            if (!ytReady || !ytPlayer) return;
+            ytPlayer.loadPlaylist({list: currentItem.playlistId || currentItem.id, listType: 'playlist', index: 0, startSeconds: 0});
+        }
 
         // ── GENEROWANIE KART PLAYLIST NA STRONIE ──
         function renderAllPlaylists() {
@@ -1481,7 +1509,12 @@
                 },
                 events: {
                     'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onStateChange': onPlayerStateChange,
+                    'onError': () => {
+                        if (activeEngine !== 'youtube') return;
+                        setPlaybackState(false);
+                        playbackStatus('YouTube nie udostępnił tej playlisty. Wybierz inną.');
+                    }
                 }
             });
         }
@@ -1489,14 +1522,22 @@
         function onPlayerReady(event) {
             ytReady = true;
             ytPlayer.setVolume(currentVolume * 100);
+            if (activeEngine === 'youtube') loadSelectedYouTube();
         }
 
         function onPlayerStateChange(event) {
+            if (activeEngine !== 'youtube') return;
             if (event.data === YT.PlayerState.PLAYING) {
+                youtubePlaylistReady = true;
                 setPlaybackState(true);
+                playbackStatus('Odtwarzanie YouTube');
                 syncTrackInfoFromYT();
+                renderQueue();
             } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                if (activeEngine === 'youtube') setPlaybackState(false);
+                setPlaybackState(false);
+                playbackStatus('Odtwarzanie zatrzymane');
+            } else if (event.data === YT.PlayerState.BUFFERING) {
+                playbackStatus('Buforowanie YouTube…');
             }
         }
 
@@ -1525,6 +1566,8 @@
             if (!st) return;
 
             currentItem = st;
+            setPlaybackState(false);
+            playbackStatus('Ładowanie…');
             updateHeroAndPlayerUI(st.title, st.subtitle, st.badge, st.heroBadge, st.cover, st.heroImg, st.headline, st.desc, st.ticker, st.timeText);
 
             // Podświetlenie w bocznym menu
@@ -1540,24 +1583,19 @@
 
             if (st.type === 'live') {
                 switchEngine('native');
+                spectrum?.prepare();
                 nativeAudio.src = st.streamUrl + '?t=' + Date.now();
-                nativeAudio.play().then(() => setPlaybackState(true)).catch(err => {
+                nativeAudio.play().catch(err => {
+                    if (activeEngine !== 'native' || currentItem !== st || err.name === 'AbortError') return;
                     console.log("Autoplay policy:", err);
                     setPlaybackState(false);
+                    playbackStatus('Nie udało się uruchomić radia. Naciśnij Odtwarzaj.');
                 });
             } else if (st.type === 'youtube_playlist') {
                 switchEngine('youtube');
-                if (ytReady && ytPlayer) {
-                    ytPlayer.loadPlaylist({
-                        list: st.playlistId,
-                        listType: 'playlist',
-                        index: 0,
-                        startSeconds: 0
-                    });
-                    ytPlayer.playVideo();
-                    setPlaybackState(true);
-                }
+                loadSelectedYouTube();
             }
+            renderQueue();
         }
 
         function playYouTubePlaylist(playlistId, title, channelName, thumb) {
@@ -1583,16 +1621,8 @@
             );
 
             switchEngine('youtube');
-            if (ytReady && ytPlayer) {
-                ytPlayer.loadPlaylist({
-                    list: playlistId,
-                    listType: 'playlist',
-                    index: 0,
-                    startSeconds: 0
-                });
-                ytPlayer.playVideo();
-                setPlaybackState(true);
-            }
+            loadSelectedYouTube();
+            renderQueue();
 
             // Przewiń płynnie do Hero
             scrollToSection('top-hero');
@@ -1637,10 +1667,11 @@
                 document.getElementById('stream-engine-badge').textContent = '• STRUMIEŃ LIVE';
             }
             activeEngine = newEngine;
+            setPlaybackState(false);
         }
 
         function togglePlay() {
-            if (isPlaying) {
+            if (isPlaying || (activeEngine === 'native' && !nativeAudio.paused)) {
                 pauseCurrent();
             } else {
                 resumeCurrent();
@@ -1654,18 +1685,21 @@
                 ytPlayer.pauseVideo();
             }
             setPlaybackState(false);
+            playbackStatus('Odtwarzanie zatrzymane');
         }
 
         function resumeCurrent() {
             if (activeEngine === 'native') {
+                spectrum?.prepare();
                 if (!nativeAudio.src || nativeAudio.src === '') {
                     playStation('biblia');
                 } else {
-                    nativeAudio.play().then(() => setPlaybackState(true)).catch(e => console.log(e));
+                    playbackStatus('Ładowanie radia…');
+                    nativeAudio.play().catch(e => { if (e.name !== 'AbortError' && activeEngine === 'native') { setPlaybackState(false); playbackStatus('Nie udało się uruchomić radia. Spróbuj ponownie.'); } });
                 }
             } else if (activeEngine === 'youtube' && ytReady && ytPlayer) {
                 ytPlayer.playVideo();
-                setPlaybackState(true);
+                playbackStatus('Ładowanie YouTube…');
             }
         }
 
@@ -1694,6 +1728,16 @@
 
         function setPlaybackState(playing) {
             isPlaying = playing;
+            renderSpectrumToggle();
+            for (const id of ['hero-play-btn', 'player-main-play-btn', 'mobile-play-btn']) {
+                const button = document.getElementById(id);
+                if (button) {
+                    button.setAttribute('aria-label', playing ? 'Zatrzymaj odtwarzanie' : 'Odtwarzaj');
+                    button.setAttribute('aria-pressed', String(playing));
+                }
+            }
+            const seek = document.getElementById('seek-bar');
+            if (seek) seek.disabled = activeEngine === 'native';
 
             const heroIcon = document.getElementById('hero-play-icon');
             const heroLabel = document.getElementById('hero-play-label');
@@ -1754,7 +1798,7 @@
 
         function skipSeconds(sec) {
             if (activeEngine === 'native') {
-                nativeAudio.currentTime += sec;
+                playbackStatus('Transmisji na żywo nie można przewijać.');
             } else if (activeEngine === 'youtube' && ytReady && ytPlayer) {
                 const cur = ytPlayer.getCurrentTime() || 0;
                 ytPlayer.seekTo(Math.max(0, cur + sec), true);
@@ -1803,38 +1847,36 @@
         function renderQueue() {
             const container = document.getElementById('queue-container');
             if (!container) return;
-            let html = '';
-            currentQueue.forEach((t, i) => {
-                html += `
-                    <div onclick="playQueueTrack(${i})" class="queue-item flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white/5 cursor-pointer transition group">
-                        <span class="text-[11px] font-mono text-gray-500 group-hover:text-amber-400 w-4 text-center">${i + 1}</span>
-                        <div class="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0 bg-black">
-                            <img loading="lazy" decoding="async" src="/images/player/art-chan-biblia.jpg?v=2" class="w-full h-full object-cover">
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <span class="text-xs font-semibold text-gray-200 group-hover:text-white truncate block">${t.title}</span>
-                            <p class="text-[9px] text-gray-400 truncate">${t.artist}</p>
-                        </div>
-                        <span class="text-[10px] font-mono text-gray-500">${t.duration}</span>
-                    </div>
-                `;
+            container.replaceChildren();
+            const ids = activeEngine === 'youtube' && youtubePlaylistReady && ytReady && ytPlayer?.getPlaylist ? ytPlayer.getPlaylist() : [];
+            currentQueue = Array.isArray(ids) ? ids.filter(id => typeof id === 'string') : [];
+            document.getElementById('queue-shuffle').disabled = !currentQueue.length;
+            if (!currentQueue.length) {
+                const note = document.createElement('p');
+                note.className = 'text-xs text-gray-400';
+                note.textContent = activeEngine === 'native' ? 'Radio nadaje na żywo. Nadawca nie udostępnia kolejki audycji.' : 'Lista filmów pojawi się po załadowaniu playlisty przez YouTube.';
+                container.append(note);
+            }
+            currentQueue.slice(0, 50).forEach((id, index) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'queue-item block w-full text-left text-xs text-gray-300 rounded-xl hover:bg-white/5';
+                button.style.minHeight = '44px';
+                button.textContent = `Film ${index + 1} z playlisty YouTube`;
+                button.addEventListener('click', () => playQueueTrack(index));
+                container.append(button);
             });
-            container.innerHTML = html;
         }
 
         function playQueueTrack(idx) {
-            const track = currentQueue[idx];
-            if (!track) return;
-            document.getElementById('now-playing-verse').textContent = track.title;
-            document.getElementById('now-playing-desc').textContent = track.artist;
-            document.getElementById('now-playing-time').textContent = track.duration;
-            document.getElementById('hero-track-ticker').textContent = track.title;
-            playStation('biblia');
+            if (activeEngine !== 'youtube' || !currentQueue[idx] || !ytReady) return;
+            ytPlayer.playVideoAt(idx);
         }
 
         function shuffleQueue() {
-            currentQueue.sort(() => Math.random() - 0.5);
-            renderQueue();
+            if (activeEngine !== 'youtube' || !currentQueue.length || !ytReady) return;
+            ytPlayer.setShuffle(true);
+            playbackStatus('Włączono losową kolejność playlisty YouTube');
         }
 
         // ── WYSZUKIWANIE & FILTROWANIE ──
@@ -1881,22 +1923,30 @@
         }
 
         function showPlaylistModal() {
-            alert("Moje Playlisty: Zaloguj się w portalu LUMINA, aby tworzyć i synchronizować własne playlisty chrześcijańskie!");
+            try {
+                const saved = JSON.parse(localStorage.getItem('cc-player-library-v1') || '[]');
+                playbackStatus(saved.length ? 'Zapisane na tym urządzeniu: ' + saved.map(item => item.title).join(', ') : 'Brak zapisanych stacji i playlist na tym urządzeniu.');
+            } catch { playbackStatus('Nie można odczytać biblioteki na tym urządzeniu.'); }
         }
 
         function addToPlaylist() {
-            alert("Dodano bieżący utwór do Twojej biblioteki w pamięci podręcznej!");
+            try {
+                const saved = JSON.parse(localStorage.getItem('cc-player-library-v1') || '[]');
+                const item = {id: currentItem.id, title: currentItem.title, type: currentItem.type};
+                localStorage.setItem('cc-player-library-v1', JSON.stringify([item, ...saved.filter(entry => entry.id !== item.id)].slice(0, 100)));
+                playbackStatus('Zapisano na tym urządzeniu: ' + item.title);
+            } catch { playbackStatus('Nie udało się zapisać. Pamięć przeglądarki jest niedostępna.'); }
         }
 
         function openMoreOptions() {
-            navigator.clipboard.writeText(window.location.href);
-            alert("Skopiowano bezpośredni link do odtwarzacza PolskieRadio.cc do schowka! ✨");
+            if (!navigator.clipboard) { playbackStatus('Link do odtwarzacza: ' + window.location.href); return; }
+            navigator.clipboard.writeText(window.location.href).then(() => playbackStatus('Skopiowano link do odtwarzacza.'), () => playbackStatus('Nie udało się skopiować linku.'));
         }
 
         function sharePlayerToLumina() {
-            const currentTitle = document.getElementById('current-title') ? document.getElementById('current-title').textContent.trim() : 'Radio Biblia Audio';
-            const currentArtist = document.getElementById('current-artist') ? document.getElementById('current-artist').textContent.trim() : 'Christian Culture';
-            const currentCover = document.getElementById('current-cover') ? document.getElementById('current-cover').src : '';
+            const currentTitle = document.getElementById('player-title').textContent.trim();
+            const currentArtist = document.getElementById('player-artist').textContent.trim();
+            const currentCover = document.getElementById('player-cover-art').src;
             const text = `Słucham właśnie stacji: 🎙️ ${currentTitle} (${currentArtist})\n\nDołącz do audycji i słuchaj Pisma Świętego 24/7 w odtwarzaczu PolskieRadio.cc:`;
             const url = window.location.origin + '/player';
 
@@ -1923,7 +1973,13 @@
 
         // Skróty klawiszowe (Space = Play/Pause, M = Mute, Strzałki = Skip)
         document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT') return;
+            const card = e.target.closest('.channel-card, .channel-side-item, .playlist-card');
+            if (card && e.target === card && (e.code === 'Space' || e.code === 'Enter')) {
+                e.preventDefault();
+                card.click();
+                return;
+            }
+            if (e.target.closest('input, textarea, select, button, a, [role="button"], [contenteditable="true"]')) return;
             if (e.code === 'Space') {
                 e.preventDefault();
                 togglePlay();
@@ -1940,6 +1996,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderAllPlaylists();
             renderQueue();
+            document.querySelectorAll('.channel-card, .channel-side-item, .playlist-card').forEach(card => {
+                card.setAttribute('role', 'button');
+                card.tabIndex = 0;
+                card.setAttribute('aria-label', 'Odtwórz: ' + (card.querySelector('h3, h4')?.textContent || card.textContent).trim().replace(/\s+/g, ' '));
+            });
+            document.getElementById('seek-bar').setAttribute('aria-label', 'Pozycja w nagraniu');
+            document.getElementById('volume-bar').setAttribute('aria-label', 'Głośność');
+            document.querySelector('button[onclick="toggleMute()"]').setAttribute('aria-label', 'Wycisz lub włącz dźwięk');
             updateHeroAndPlayerUI(
                 LIVE_STATIONS.biblia.title,
                 LIVE_STATIONS.biblia.subtitle,
@@ -1953,6 +2017,7 @@
                 LIVE_STATIONS.biblia.timeText
             );
             onVolumeChange(80);
+            setPlaybackState(false);
         });
     </script>
     <script defer src="js/lumina-share.js"></script>

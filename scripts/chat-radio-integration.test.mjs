@@ -150,6 +150,8 @@ test('all six stations qualify for /milion including MP3; pause, duplicate event
   radio.setAttribute('data-cc-radio', 'true'); win.document.body.appendChild(radio);
   await radio.play(); await settle();
   radio.dispatchEvent(new win.Event('play')); radio.dispatchEvent(new win.Event('pause'));
+  assert.equal(reports.length, 0, 'an attempted play does not prove audio started');
+  radio.dispatchEvent(new win.Event('playing'));
   await radio.play(); await settle();
   assert.equal(reports.length, 1);
   assert.equal(reports[0].url, '/api/milion/count');
@@ -175,5 +177,22 @@ test('/milion keeps its own play-button count while the chat radio still reports
   assert.equal(reports.length, 0);
   const chatRadio = win.document.createElement('audio'); chatRadio.src = 'https://stream.zeno.fm/vz96pvl3pnktv';
   chatRadio.setAttribute('data-cc-radio', 'true'); win.document.body.appendChild(chatRadio);
-  await chatRadio.play(); await settle(); assert.equal(reports.length, 1);
+  await chatRadio.play(); await settle();
+  assert.equal(reports.length, 0);
+  chatRadio.dispatchEvent(new win.Event('playing'));
+  assert.equal(reports.length, 1);
+});
+
+test('detached radio counts only after playing; rejected starts do not count', async () => {
+  const {win, run} = fixture('/player'); const reports = [];
+  win.navigator.sendBeacon = url => { reports.push(url); return true; };
+  win.HTMLMediaElement.prototype.play = function () { return Promise.reject(new Error('unavailable')); };
+  run(files[3]);
+  const radio = new win.Audio('https://stream.zeno.fm/test');
+  await assert.rejects(radio.play());
+  radio.dispatchEvent(new win.Event('play'));
+  assert.equal(reports.length, 0);
+  radio.dispatchEvent(new win.Event('playing'));
+  radio.dispatchEvent(new win.Event('playing'));
+  assert.equal(reports.length, 1);
 });

@@ -47,21 +47,23 @@
     } catch (e) {}
   }
 
-  // Zdarzenie „play” nie „bąbelkuje”, ale łapiemy je w fazie przechwytywania dla całej strony.
-  document.addEventListener('play', function (event) {
+  // „playing” potwierdza rozpoczęcie odtwarzania; „play” oznacza tylko próbę.
+  document.addEventListener('playing', function (event) {
     if (isRadio(event.target)) report();
   }, true);
   // Odtwarzacze tworzone poza drzewem DOM (new Audio()) — przechwycenie metody play().
   try {
     var originalPlay = HTMLMediaElement.prototype.play;
+    var observed = new WeakSet();
     HTMLMediaElement.prototype.play = function () {
-      var result = originalPlay.apply(this, arguments);
       var el = this;
-      if (isRadio(el) || (!SELF_COUNTING_PAGE && STREAM.test(el.src || ''))) {
-        if (result && typeof result.then === 'function') result.then(report, function () {});
-        else report();
+      if (!observed.has(el)) {
+        observed.add(el);
+        el.addEventListener('playing', function () {
+          if (isRadio(el)) report();
+        });
       }
-      return result;
+      return originalPlay.apply(this, arguments);
     };
   } catch (e) {}
 })();

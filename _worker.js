@@ -1909,7 +1909,7 @@ export default {
         } catch (err) {
           console.error('D1 GET Error:', err);
         }
-        return new Response(JSON.stringify({ success: true, count: 0, source: 'fallback' }), { status: 200, headers });
+        return new Response(JSON.stringify({ success: false, error: 'counter_unavailable' }), { status: 503, headers });
       }
 
       if (request.method === 'POST') {
@@ -1946,12 +1946,12 @@ export default {
 
             const row = await db.prepare('SELECT count, updated_at FROM counters WHERE id = ?').bind('milion_listeners').first();
             const count = row ? Number(row.count || 0) : 1;
-            return new Response(JSON.stringify({ success: true, count, source: 'd1' }), { status: 200, headers });
+            return new Response(JSON.stringify({ success: true, counted: true, count, source: 'd1' }), { status: 200, headers });
           }
         } catch (err) {
           console.error('D1 POST Error:', err);
         }
-        return new Response(JSON.stringify({ success: true, count: 1, source: 'fallback' }), { status: 200, headers });
+        return new Response(JSON.stringify({ success: false, error: 'counter_unavailable' }), { status: 503, headers });
       }
 
       return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers });

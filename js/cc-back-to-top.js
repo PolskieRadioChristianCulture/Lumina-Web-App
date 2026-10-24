@@ -155,7 +155,7 @@
   function loadRadioMilion() {
     if (typeof document.createElement !== 'function' || !document.head || window.CCRadioMilion) return;
     var script = document.createElement('script');
-    script.src = '/js/cc-radio-milion.js?v=20261011_1';
+    script.src = '/js/cc-radio-milion.js?v=20261024_playing';
     script.defer = true;
     document.head.appendChild(script);
   }

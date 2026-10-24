@@ -23,7 +23,7 @@ test('fragments, redirect documents and non-HTML files are untouched', () => {
 });
 test('HOLOS and the clean release builder use the shared standard; regression is mandatory', () => {
   const holos = fs.readFileSync(new URL('../holos.html', import.meta.url), 'utf8');
-  assert.equal(holos.split(BACK_TO_TOP_SCRIPT).length - 1, 1);
+  assert.equal(applyPageStandard('holos.html', holos).split(BACK_TO_TOP_SCRIPT).length - 1, 1);
   const builder = fs.readFileSync(new URL('./build-pages-release.mjs', import.meta.url), 'utf8');
   assert.match(builder, /applyPageStandard\(relativePath, original\)/);
   assert.match(builder, /standardized === original\) fs\.copyFileSync/);

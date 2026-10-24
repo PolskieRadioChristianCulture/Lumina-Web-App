@@ -436,20 +436,20 @@
 
         <!-- 7 dynamicznych kasetek cyfr licznika klapkowego -->
         <div class="counter-overlay active" id="counter-overlay" aria-hidden="true">
-          <div class="digit-patch"><span id="d6">0</span></div>
-          <div class="digit-patch"><span id="d5">0</span></div>
-          <div class="digit-patch"><span id="d4">0</span></div>
-          <div class="digit-patch"><span id="d3">0</span></div>
-          <div class="digit-patch"><span id="d2">0</span></div>
-          <div class="digit-patch"><span id="d1">0</span></div>
-          <div class="digit-patch"><span id="d0">0</span></div>
+          <div class="digit-patch"><span id="d6">—</span></div>
+          <div class="digit-patch"><span id="d5">—</span></div>
+          <div class="digit-patch"><span id="d4">—</span></div>
+          <div class="digit-patch"><span id="d3">—</span></div>
+          <div class="digit-patch"><span id="d2">—</span></div>
+          <div class="digit-patch"><span id="d1">—</span></div>
+          <div class="digit-patch"><span id="d0">—</span></div>
         </div>
 
-        <output class="sr-only" id="counter-live" aria-live="polite">Łączna aktywność ekosystemu: 0</output>
+        <output class="sr-only" id="counter-live" aria-live="polite">Trwa pobieranie licznika</output>
 
         <!-- Przyciski typu Hotspot w kompozycji 16:9 -->
         <button class="hotspot" id="btn-widget" onclick="handleWidgetClick()" aria-label="Pobierz widget Christian Culture (+1)"></button>
-        <button class="hotspot" id="btn-radio" onclick="handleRadioClick()" aria-label="Włącz Radio Christian Culture (+1)"></button>
+        <button class="hotspot" id="btn-radio" onclick="handleRadioClick()" aria-label="Włącz Radio Christian Culture" aria-pressed="false"></button>
         <button class="hotspot" id="btn-share" onclick="handleShareClick()" aria-label="Udostępnij kampanię (+1)"></button>
         <button class="hotspot" id="btn-support" onclick="handleSupportClick()" aria-label="Wspieraj Christian Culture (+1)"></button>
 
@@ -462,7 +462,7 @@
       <button onclick="handleWidgetClick()" class="mob-btn mob-btn-primary">
         <i class="fa-solid fa-code"></i> Pobierz Widget (+1)
       </button>
-      <button id="mob-radio-btn" onclick="handleRadioClick()" class="mob-btn">
+      <button id="mob-radio-btn" onclick="handleRadioClick()" class="mob-btn" aria-pressed="false">
         <i id="mob-radio-icon" class="fa-solid fa-play text-[#c5a059]"></i> 
         <span id="mob-radio-text">Włącz Radio (+1)</span>
       </button>
@@ -478,6 +478,8 @@
 
   <!-- 4. STOPKA INFORMACYJNA -->
   <footer class="site-footer">
+    <p id="counter-sync" role="status">Pobieranie licznika…</p>
+    <p>Każdy rodzaj aktywności jest liczony najwyżej raz dziennie dla tej samej osoby i przeglądarki. Włączenie radia oznacza rozpoczęcie odtwarzania, a kliknięcie Patronite — przejście do serwisu, nie wpłatę.</p>
     <div>
       © 2026 Christian Culture • Oficjalna Kampania Społeczności „Celujemy w Pierwszy Milion” • 
       <a href="/widget">Konfigurator Widgetu Audio</a> • 
@@ -507,7 +509,9 @@
     const audio = document.getElementById('cc-audio');
     let isPlaying = false;
     let currentCount = 0;
+    let hasServerCount = false;
     let bannerTimeout = null;
+    const flipTimers = new Map();
 
     function showStatus(text) {
       if (!banner) return;
@@ -523,21 +527,24 @@
     function setCount(value) {
       if (!Number.isSafeInteger(value) || value < 0) return;
       const targetCount = Math.min(value, 9999999);
-      const oldStr = String(currentCount).padStart(7, '0');
       const newStr = String(targetCount).padStart(7, '0');
       currentCount = targetCount;
 
       for (let i = 0; i < 7; i++) {
         if (cells[i]) {
+          clearTimeout(flipTimers.get(cells[i]));
           if (cells[i].textContent !== newStr[i]) {
             const cell = cells[i];
             cell.classList.add('flipping');
-            setTimeout(() => {
+            flipTimers.set(cell, setTimeout(() => {
               cell.textContent = newStr[i];
               cell.classList.remove('flipping');
-            }, 180);
+              flipTimers.delete(cell);
+            }, 180));
           } else {
             cells[i].textContent = newStr[i];
+            cells[i].classList.remove('flipping');
+            flipTimers.delete(cells[i]);
           }
         }
       }
@@ -554,13 +561,14 @@
       isFetching = true;
       try {
         const res = await fetch('/api/milion/count', { cache: 'no-store' });
-        if (res.ok) {
-          const data = await res.json();
-          if (typeof data.count === 'number' && data.count >= 0) {
-            setCount(data.count);
-          }
-        }
+        const data = await res.json();
+        if (!res.ok || data.success !== true || data.source !== 'd1' || !Number.isSafeInteger(data.count) || data.count < 0) throw new Error('counter_unavailable');
+        setCount(data.count);
+        hasServerCount = true;
+        document.getElementById('counter-sync').textContent = 'Licznik zsynchronizowany z serwerem';
       } catch (err) {
+        if (!hasServerCount) liveOutput.textContent = 'Licznik jest chwilowo niedostępny.';
+        document.getElementById('counter-sync').textContent = 'Brak połączenia z licznikiem. Wyświetlany wynik może być nieaktualny.';
         console.warn('Błąd pobierania stanu licznika:', err);
       } finally {
         isFetching = false;
@@ -569,7 +577,7 @@
 
     /* SMART REAL-TIME POLLING: Cykliczna synchronizacja z chmurą D1 w tle */
     let pollInterval = null;
-    const POLL_INTERVAL_MS = 3500; // 3.5s dla natychmiastowej reakcji
+    const POLL_INTERVAL_MS = 15000; // Wynik własnej akcji wraca w POST; rzadszy odczyt tła oszczędza sieć.
 
     function startLivePolling() {
       if (pollInterval) clearInterval(pollInterval);
@@ -606,47 +614,69 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: String(type || 'akcja').slice(0, 20) })
         });
-        if (res.ok) {
-          const data = await res.json();
-          if (typeof data.count === 'number') {
-            setCount(data.count);
-          }
-        }
+        const data = await res.json();
+        if (!res.ok || data.success !== true || data.source !== 'd1' || !Number.isSafeInteger(data.count) || data.count < 0) throw new Error('counter_unavailable');
+        setCount(data.count);
+        document.getElementById('counter-sync').textContent = 'Licznik zsynchronizowany z serwerem';
+        showStatus(data.counted === false ? 'Ta aktywność została już dziś uwzględniona.' : 'Serwer zapisał aktywność w liczniku.');
+        hasServerCount = true;
+        return data;
       } catch (err) {
+        showStatus('Akcja wykonana, ale nie udało się potwierdzić zapisu w liczniku.');
         console.warn('Błąd rejestracji aktywności w chmurze:', err);
+        return null;
       }
     }
 
     /* Obsługa akcji 1: Pobierz Widget */
     function handleWidgetClick() {
       recordRealActivity('widget');
-      showStatus('Przekierowanie do konfiguratora i pobierania widgetu (+1)...');
+      showStatus('Otwieranie konfiguratora widgetu…');
       setTimeout(() => {
         window.location.href = '/widget';
       }, 600);
     }
 
     /* Obsługa akcji 2: Włącz Radio */
+    let radioPending = false;
+    function syncRadioState() {
+      isPlaying = !audio.paused && !audio.ended && !audio.error;
+      document.getElementById('mob-radio-icon').className = isPlaying ? 'fa-solid fa-pause text-[#c5a059]' : 'fa-solid fa-play text-[#c5a059]';
+      document.getElementById('mob-radio-text').textContent = isPlaying ? 'Zatrzymaj radio' : 'Włącz radio';
+      for (const id of ['btn-radio', 'mob-radio-btn']) {
+        const button = document.getElementById(id);
+        button.setAttribute('aria-pressed', String(isPlaying));
+        button.setAttribute('aria-label', isPlaying ? 'Zatrzymaj Radio Christian Culture' : 'Włącz Radio Christian Culture');
+        button.setAttribute('aria-busy', String(radioPending));
+      }
+    }
+    for (const event of ['playing', 'pause', 'ended', 'error']) audio.addEventListener(event, syncRadioState);
+    audio.addEventListener('error', () => showStatus('Radio jest chwilowo niedostępne. Spróbuj ponownie.'));
     async function handleRadioClick() {
-      const mobIcon = document.getElementById('mob-radio-icon');
-      const mobText = document.getElementById('mob-radio-text');
+      if (radioPending) {
+        audio.pause();
+        radioPending = false;
+        syncRadioState();
+        showStatus('Ładowanie radia anulowane.');
+        return;
+      }
       try {
-        if (!isPlaying) {
+        if (audio.paused) {
+          radioPending = true;
+          syncRadioState();
           await audio.play();
-          isPlaying = true;
           recordRealActivity('radio');
-          showStatus('Radio Christian Culture gra na żywo (+1 do miliona)!');
-          if (mobIcon) mobIcon.className = 'fa-solid fa-pause text-[#c5a059]';
-          if (mobText) mobText.textContent = 'Pauza Radia';
+          showStatus('Radio Christian Culture gra na żywo.');
         } else {
           audio.pause();
-          isPlaying = false;
           showStatus('Radio zatrzymane.');
-          if (mobIcon) mobIcon.className = 'fa-solid fa-play text-[#c5a059]';
-          if (mobText) mobText.textContent = 'Włącz Radio (+1)';
         }
       } catch (err) {
-        showStatus('Kliknij ponownie, aby zezwolić na odtwarzanie audio.');
+        if (err.name === 'AbortError') return;
+        showStatus('Nie udało się uruchomić radia. Sprawdź połączenie i spróbuj ponownie.');
+      } finally {
+        radioPending = false;
+        syncRadioState();
       }
     }
 
@@ -661,11 +691,11 @@
         if (navigator.share && navigator.canShare && navigator.canShare(data)) {
           await navigator.share(data);
           recordRealActivity('share');
-          showStatus('Dziękujemy za udostępnienie kampanii (+1)!');
+          showStatus('Dziękujemy za udostępnienie kampanii.');
         } else if (navigator.clipboard) {
           await navigator.clipboard.writeText(data.url);
           recordRealActivity('share');
-          showStatus('Link do licznika skopiowany do schowka (+1)!');
+          showStatus('Link do licznika skopiowany do schowka.');
         } else {
           showStatus(data.url);
         }
@@ -679,13 +709,14 @@
     /* Obsługa akcji 4: Wspieram Patronite */
     function handleSupportClick() {
       recordRealActivity('support');
-      showStatus('Dziękujemy za wsparcie dzieła na Patronite (+1)!');
+      showStatus('Otwieranie strony wsparcia na Patronite.');
       window.open('https://patronite.pl/osobowoscplus', '_blank', 'noopener,noreferrer');
     }
 
     // Inicjalizacja przy załadowaniu strony
     window.addEventListener('DOMContentLoaded', () => {
       fetchCountFromServer();
+      syncRadioState();
       startLivePolling();
     });
   </script>
