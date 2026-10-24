@@ -29,7 +29,7 @@ service cloud.firestore {
     }
     function guardian(roomId) {
       let root = roomPath(roomId);
-      return signed() && kidGate() && exists(root) && get(root).data.ownerUid == request.auth.uid;
+      return signed() && kidGate() && familyPinUnlocked(roomId) && exists(root) && get(root).data.ownerUid == request.auth.uid;
     }
     function activeSlot(roomId, uid) {
       let root = roomPath(roomId);
@@ -38,9 +38,18 @@ service cloud.firestore {
     }
     function accepted(roomId) {
       let m = membershipPath(roomId, request.auth.uid);
-      return signed() && kidGate() && activeSlot(roomId, request.auth.uid) &&
+      return signed() && kidGate() && familyPinUnlocked(roomId) && activeSlot(roomId, request.auth.uid) &&
         exists(m) && get(m).data.state == 'accepted' && get(m).data.uid == request.auth.uid &&
         get(m).data.roomId == roomId;
+    }
+    // Server-only PIN verifier and sessions. No browser may create an unlock.
+    function familyPinUnlocked(roomId) {
+      let policy = /databases/$(database)/documents/lumina_family_rooms/$(roomId)/security/pin;
+      let session = /databases/$(database)/documents/lumina_family_rooms/$(roomId)/pin_sessions/$(request.auth.uid);
+      return exists(policy) && exists(session) &&
+        get(session).data.version == get(policy).data.version &&
+        get(session).data.authTime == request.auth.token.auth_time &&
+        get(session).data.expiresAt > request.time;
     }
     function validSlots(s, ownerUid) {
       return s is list && s.size() >= 1 && s.size() <= 4 && s.toSet().size() == s.size() &&

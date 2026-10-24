@@ -124,16 +124,16 @@
     button.setAttribute('data-family-card', 'true');
     const img = document.createElement('img');
     img.src = '/images/chat/cc-chat-button-128.webp';
-    img.alt = 'Pokój Rodzinny Rogowscy';
+    img.alt = 'Pokój rodzinny';
     img.loading = 'lazy'; img.width = 72; img.height = 72;
     img.style.borderColor = '#10b981';
     const body = document.createElement('span'); body.className = 'lumi-card-body';
     const title = document.createElement('span'); title.className = 'lumi-card-title';
-    title.textContent = '👨‍👩‍👧‍👦 Pokój Rodzinny — Rogowscy';
-    const badge = document.createElement('span'); badge.className = 'lumi-card-role'; badge.textContent = 'Rogowscy';
+    title.textContent = '👨‍👩‍👧‍👦 Pokój rodzinny';
+    const badge = document.createElement('span'); badge.className = 'lumi-card-role'; badge.textContent = 'Prywatny';
     title.append(badge);
     const description = document.createElement('span'); description.className = 'lumi-card-description';
-    description.textContent = 'Prywatna przestrzeń rodziny Rogowskich · LUMI Family';
+    description.textContent = 'Prywatna przestrzeń rodzinna · LUMI Family';
     const preview = document.createElement('span'); preview.className = 'lumi-card-preview';
     preview.textContent = 'Wiadomości rodzinne · LUMI Family';
     body.append(title, description, preview);
@@ -223,14 +223,14 @@
       ['Radio Christian Culture', 'Wszystkie sześć stacji', toggleRadioPanel]
     ];
     if (isRogowscy()) {
-      channels.unshift(['👨‍👩‍👧‍👦 Pokój Rodzinny — Rogowscy', 'Pokój rodziny Rogowskich · LUMI Family', openFamilyRoom]);
+      channels.unshift(['👨‍👩‍👧‍👦 Pokój rodzinny', 'Prywatna przestrzeń rodzinna · LUMI Family', openFamilyRoom]);
     }
     if (isCommander()) {
       channels.unshift(['👑 Pokój Agentów & Planer Omega', 'Dyspozycje agentów i planowanie działań misji', openCommanderRoom]);
     }
     for (const [name, description, action] of channels) {
       const button = document.createElement('button'); button.type = 'button';
-      button.className = 'lumi-conversation-card lumi-channel-card' + (name.includes('Pokój Agentów') ? ' lumi-commander-card' : name.includes('Rogowscy') ? ' lumi-family-card' : '');
+      button.className = 'lumi-conversation-card lumi-channel-card' + (name.includes('Pokój Agentów') ? ' lumi-commander-card' : action === openFamilyRoom ? ' lumi-family-card' : '');
       const text = document.createElement('span'); text.className = 'lumi-card-body';
       const title = document.createElement('strong'); title.textContent = name;
       const desc = document.createElement('span'); desc.className = 'lumi-card-description'; desc.textContent = description;
@@ -264,7 +264,7 @@
     if (filter === 'recent') list.sort((a, b) => timestamp(b.room?.lastMessageTimestamp) - timestamp(a.room?.lastMessageTimestamp));
     const cards = list.map(card);
     if (isRogowscy()) {
-      const familyMatches = !query || 'rogowscy rodzina pokój rodzinny lumi family dom'.includes(query);
+      const familyMatches = !query || 'rodzina pokój rodzinny lumi family dom'.includes(query);
       if (familyMatches && (filter === 'all' || filter === 'mine')) {
         cards.unshift(familyCard());
       }

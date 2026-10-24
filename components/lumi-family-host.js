@@ -2,7 +2,9 @@ import { getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.12.2/fire
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import * as sdk from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { createFamilyClient } from './lumi-family-client.js?v=20261019_family1';
-import { mountFamilyView } from './lumi-family-view.js?v=20261019_family2';
+import { mountFamilyView } from './lumi-family-view.js?v=20261023_pin1';
+import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js';
+import { createFamilyPinGate } from './lumi-family-pin.js?v=20261023_pin1';
 
 let active = null;
 export function openFamilyPanel({ nameForUid } = {}) {
@@ -21,6 +23,8 @@ export function openFamilyPanel({ nameForUid } = {}) {
         active = { dialog }; return;
     }
     const app = getApp(), auth = getAuth(app), db = sdk.getFirestore(app), uid = auth.currentUser.uid;
+    const pinCall = httpsCallable(getFunctions(app, 'europe-west1'), 'familyRoomPin', {timeout: 12000});
+    const unlockRoom = createFamilyPinGate({document, call: async data => (await pinCall(data)).data});
     const client = createFamilyClient({ db, auth, sdk: { ...sdk, onAuthStateChanged }, enabled: true });
     const names = new Map([[uid, 'Ty']]);
     const resolveName = async memberUid => {
@@ -44,7 +48,7 @@ export function openFamilyPanel({ nameForUid } = {}) {
         } catch {}
         return clean;
     };
-    const view = mountFamilyView({ element: dialog, client, userUid: uid, nameForUid: resolveName, resolveUid,
+    const view = mountFamilyView({ element: dialog, client, userUid: uid, nameForUid: resolveName, resolveUid, unlockRoom,
         inviteContacts: async () => {
             const contactMap = new Map();
             // 1. Sprawdź konfigurację kids_pilot jeśli istnieje

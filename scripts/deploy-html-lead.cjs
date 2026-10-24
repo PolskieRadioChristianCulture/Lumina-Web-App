@@ -1,0 +1,11 @@
+const { execSync } = require('child_process');
+const cwd = 'C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc';
+execSync('git add kursy/', { cwd, encoding: 'utf8' });
+execSync('git commit -m "fix(kursy): break hero lead into two lines in semantic html"', { cwd, encoding: 'utf8' });
+console.log('Committed HTML fix.');
+execSync('git push origin main', { cwd, encoding: 'utf8' });
+execSync('git push lumina-repo main', { cwd, encoding: 'utf8' });
+console.log('Dual pushed.');
+const env = { ...process.env, NODE_OPTIONS: '--dns-result-order=ipv4first' };
+const out = execSync('npx.cmd wrangler pages deploy .pages-release --project-name polskieradio --branch main --commit-dirty=true', { cwd, env, encoding: 'utf8' });
+console.log(out);

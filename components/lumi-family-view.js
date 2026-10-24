@@ -2,9 +2,10 @@
 // Never render message/profile strings as HTML. No private drafts in localStorage.
 import {readWithDeadline,chatReadError} from './lumi-chat-readiness.js?v=20261019_read1';
 export function mountFamilyView({ element, client, userUid, nameForUid = async () => 'Członek rodziny',
-    resolveUid = async u => u, inviteContacts = async () => [], onClose = () => {}, read=readWithDeadline }) {
+    resolveUid = async u => u, inviteContacts = async () => [], onClose = () => {}, read=readWithDeadline, unlockRoom }) {
     const doc = element.ownerDocument;
     let stopped = false, epoch = 0, stopMessages = () => {}, outbox = null;
+    let pinAbort = null, pinTimer = null;
     function el(tag, text, props = {}) {
         const e = doc.createElement(tag); if (text != null) e.textContent = text;
         Object.assign(e, props); return e;
@@ -16,7 +17,7 @@ export function mountFamilyView({ element, client, userUid, nameForUid = async (
     const status = el('p', '', { className: 'lf-status' }); status.setAttribute('role', 'status');
     const content = el('div', null, { className: 'lf-content' });
     header.append(back, title, close); root.append(header, status, content); element.replaceChildren(root);
-    function reset(name) { epoch++; stopMessages(); stopMessages = () => {}; outbox = null;
+    function reset(name) { epoch++; pinAbort?.abort(); pinAbort = null; clearTimeout(pinTimer); pinTimer = null; stopMessages(); stopMessages = () => {}; outbox = null;
         title.textContent = name; content.replaceChildren(); status.textContent = ''; return epoch; }
     const current = n => !stopped && epoch === n;
     const errorText = chatReadError;
@@ -44,7 +45,7 @@ export function mountFamilyView({ element, client, userUid, nameForUid = async (
                 } else {
                     const b = el('button', 'Otwórz rodzinę', { type: 'button' }); b.onclick = () => room(m.roomId);
                     card.append(b);
-                    try { const r = await read(()=>client.getRoom(m.roomId)); if (!current(n)) return; b.textContent = r.name; }
+                    try { if (!unlockRoom) { const r = await read(()=>client.getRoom(m.roomId)); if (!current(n)) return; b.textContent = r.name; } }
                     catch(e) { if(!current(n))return; b.disabled = true; b.textContent = 'Pokój niedostępny';status.textContent=errorText(e); }
                 }
                 if (!current(n)) return; content.append(card);
@@ -57,6 +58,12 @@ export function mountFamilyView({ element, client, userUid, nameForUid = async (
     async function room(roomId) {
         const n = reset('Rodzina'); back.hidden = false; status.textContent = 'Otwieram pokój…';
         try {
+            if (unlockRoom) {
+                pinAbort = new doc.defaultView.AbortController();
+                const session = await unlockRoom(roomId, {element: content, status, signal: pinAbort.signal});
+                if (!current(n)) return;
+                pinTimer = setTimeout(() => { if (current(n)) room(roomId); }, Math.max(0, session.expiresAt - Date.now()));
+            }
             const r = await read(()=>client.getRoom(roomId)); if (!current(n)) return;
             title.textContent = r.name;
             const members = await read(()=>client.listMembers(roomId)); if (!current(n)) return;

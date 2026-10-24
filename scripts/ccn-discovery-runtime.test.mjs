@@ -21,7 +21,7 @@ test('CBDC PL and EN equivalent queries lead to the real CBDC article', () => {
 
 test('current public article registry is searchable with valid dates and unique URLs', () => {
   const articles = catalog.items.filter(i => i.type === 'article');
-  assert.equal(articles.length, 82);
+  assert.equal(articles.length, 83);
   assert.equal(new Set(articles.map(i => i.url)).size, articles.length);
   assert.ok(articles.every(i => i.access === 'public' && Number.isFinite(Date.parse(i.publishedAt))));
   assert.deepEqual(catalog, JSON.parse(fs.readFileSync('data/cc-search-index.json', 'utf8')));

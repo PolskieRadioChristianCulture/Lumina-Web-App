@@ -3,6 +3,7 @@
  */
 
 const chatPush = require('./lumina-chat-push-functions.js');
+exports.familyRoomPin = require('./lumi-family-pin.cjs').familyRoomPin;
 
 exports.onDirectMessageCreated = chatPush.onDirectMessageCreated;
 exports.onMessageRequestCreated = chatPush.onMessageRequestCreated;

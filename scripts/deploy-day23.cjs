@@ -1,0 +1,11 @@
+const { execSync } = require('child_process');
+const cwd = 'C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc';
+execSync('git add akademia* kursy* data/ szukaj/ images/academy/daily/kc_day_23*', { cwd, encoding: 'utf8' });
+execSync('git commit -m "feat(akademia): publish Day 23 lesson - Pojednanie i powrot do Betel (Rdz 33-35) with 5 versions & clean URLs"', { cwd, encoding: 'utf8' });
+console.log('Committed Day 23.');
+execSync('git push origin main', { cwd, encoding: 'utf8' });
+execSync('git push lumina-repo main', { cwd, encoding: 'utf8' });
+console.log('Dual pushed.');
+const env = { ...process.env, NODE_OPTIONS: '--dns-result-order=ipv4first' };
+const out = execSync('npx.cmd wrangler pages deploy .pages-release --project-name polskieradio --branch main --commit-dirty=true', { cwd, env, encoding: 'utf8' });
+console.log(out);

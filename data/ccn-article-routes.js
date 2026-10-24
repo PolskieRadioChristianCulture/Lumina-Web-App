@@ -121,6 +121,8 @@ export default {
     "ekspansja-kosmosu-a-proroctwo-izajasza": "/nauka/ekspansja-kosmosu-a-proroctwo-izajasza",
     "nauka-kryzys-ojcostwa": "/nauka/kryzys-ojcostwa-w-badaniach-socjologicznych",
     "kryzys-ojcostwa-w-badaniach-socjologicznych": "/nauka/kryzys-ojcostwa-w-badaniach-socjologicznych",
+    "art-co-dalej-z-ta-niedziela-szabat-bacchiocchi": "/historia/co-dalej-z-ta-niedziela-szabat-bacchiocchi",
+    "co-dalej-z-ta-niedziela-szabat-bacchiocchi": "/historia/co-dalej-z-ta-niedziela-szabat-bacchiocchi",
     "historia-qumran": "/historia/zwoje-z-qumran-dead-sea-scrolls-rzetelnosc-tekstu",
     "zwoje-z-qumran-dead-sea-scrolls-rzetelnosc-tekstu": "/historia/zwoje-z-qumran-dead-sea-scrolls-rzetelnosc-tekstu",
     "historia-stela-tel-dan": "/historia/stela-z-tel-dan-dom-dawida-dowod-historyczny",
@@ -175,6 +177,8 @@ export default {
     "kryzys-ojcostwa-w-badaniach-socjologicznych": "/nauka/kryzys-ojcostwa-w-badaniach-socjologicznych"
   },
   "historia": {
+    "art-co-dalej-z-ta-niedziela-szabat-bacchiocchi": "/historia/co-dalej-z-ta-niedziela-szabat-bacchiocchi",
+    "co-dalej-z-ta-niedziela-szabat-bacchiocchi": "/historia/co-dalej-z-ta-niedziela-szabat-bacchiocchi",
     "art-z-biblia-za-pan-brat-dzien-03": "/historia/gdzie-jestes-anatomia-upadku-i-pierwsza-ewangelia-edenu",
     "gdzie-jestes-anatomia-upadku-i-pierwsza-ewangelia-edenu": "/historia/gdzie-jestes-anatomia-upadku-i-pierwsza-ewangelia-edenu",
     "art-historia-halloween-od-samhain-do-popkultury": "/historia/od-celtyckiego-samhain-do-amerykanskiego-przemyslu-strachu-fakty-i-mity",

@@ -62,7 +62,7 @@ test('room cards and channels describe their purpose without unverified security
   const channels = f.win.document.getElementById('lumiConversationCards');
   assert.doesNotMatch(channels.textContent, unverified);
   assert.match(channels.textContent, /Pokój Agentów|Planer Omega/);
-  assert.match(channels.textContent, /Rogowscy/);
+  assert.doesNotMatch(channels.textContent, /Rogows/);
 });
 
 test('delayed commander opening uses the canonical opener once even when it returns undefined', () => {
@@ -249,7 +249,7 @@ test('Commander Nazir sees VIP Agent Room card, #1 channel entry, and quick-laun
 
 
 
-test('Rogowscy family room card, channel entry, and heading button appear for authorized family member', () => {
+test('family room entries use generic private labels', () => {
   // 1. Regular non-Rogowscy user
   const regular = fixture(true, false);
   assert.equal(regular.win.document.querySelector('[data-family-card]'), null);
@@ -260,14 +260,14 @@ test('Rogowscy family room card, channel entry, and heading button appear for au
   // 2. Rogowscy / Commander user
   const cmd = fixture(true, true);
   const card = cmd.win.document.querySelector('[data-family-card]');
-  assert.ok(card, 'Family Rogowscy card must be present');
-  assert.match(card.textContent, /Pokój Rodzinny — Rogowscy/);
-  assert.match(card.textContent, /Rogowscy/);
+  assert.ok(card, 'Family room card must be present');
+  assert.match(card.textContent, /Pokój rodzinny/);
+  assert.doesNotMatch(card.textContent, /Rogows/);
 
   // Quick-launch heading button
   const quickBtn = cmd.win.document.getElementById('lumiOpenFamily');
   assert.equal(quickBtn.hidden, false);
-  assert.match(quickBtn.textContent, /Rogowscy/);
+  assert.doesNotMatch(quickBtn.textContent, /Rogows/);
   quickBtn.click();
   assert.equal(cmd.opens[0].tab, 'family');
 
@@ -278,9 +278,9 @@ test('Rogowscy family room card, channel entry, and heading button appear for au
 
   // Channels view includes Rogowscy family room
   cmd.win.document.querySelector('[data-lumi-category="channels"]').click();
-  const familyChannel = [...cmd.win.document.querySelectorAll('.lumi-channel-card')].find(c => c.textContent.includes('Rogowscy'));
+  const familyChannel = [...cmd.win.document.querySelectorAll('.lumi-channel-card')].find(c => c.textContent.includes('Pokój rodzinny'));
   assert.ok(familyChannel, 'Family channel must exist');
-  assert.match(familyChannel.textContent, /Pokój Rodzinny — Rogowscy/);
+  assert.match(familyChannel.textContent, /Pokój rodzinny/);
   cmd.opens.length = 0;
   familyChannel.click();
   assert.equal(cmd.opens[0].tab, 'family');

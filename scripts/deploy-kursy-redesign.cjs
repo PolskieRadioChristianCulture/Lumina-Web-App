@@ -1,0 +1,11 @@
+const { execSync } = require('child_process');
+const cwd = 'C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc';
+execSync('git add kursy.html kursy/index.html assets/hero-david-goliath-valley.jpg', { cwd, encoding: 'utf8' });
+execSync('git commit -m "feat(kursy): redesign kursy#goliata hero with authentic David vs Goliath painting & unclipped layout"', { cwd, encoding: 'utf8' });
+console.log('Committed kursy#goliata redesign.');
+execSync('git push origin main', { cwd, encoding: 'utf8' });
+execSync('git push lumina-repo main', { cwd, encoding: 'utf8' });
+console.log('Dual pushed.');
+const env = { ...process.env, NODE_OPTIONS: '--dns-result-order=ipv4first' };
+const out = execSync('npx.cmd wrangler pages deploy .pages-release --project-name polskieradio --branch main --commit-dirty=true', { cwd, env, encoding: 'utf8' });
+console.log(out);
