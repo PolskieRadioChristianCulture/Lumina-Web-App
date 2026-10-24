@@ -50,7 +50,8 @@
   });
   nav.addEventListener('click', () => { menu.setAttribute('aria-expanded', 'false'); nav.classList.remove('is-open'); });
   window.CCMobileEdge?.mount({legacy: menu, profile: 'zaneta', canUseFullMenu: () => false, items: [
-    ['play','Świadectwo Żanety','/%C5%BBaneta#swiadectwo'], ['book','Poproś o Biblię','/%C5%BBaneta#biblia'],
+    ['play','Moje świadectwo','/%C5%BBaneta#swiadectwo'], ['book','Poproś o Biblię','/%C5%BBaneta#biblia'],
+    ['heart','Moja zbiórka — rehabilitacja','/%C5%BBaneta#zbiorka'],
     ['home','Christian Culture','/'], ['users','LUMINA — społeczność','/lumina'],
     ['chat','LUMI Messenger','/mess'], ['search','Szukaj w ekosystemie','/szukaj'],
     ['heart','WspieramTo — wspieraj misję','/wspieraj']
