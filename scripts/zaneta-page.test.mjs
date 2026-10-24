@@ -21,7 +21,7 @@ test('contact and shipping preserve the approved offer without collecting addres
   for(const el of d.querySelectorAll('img,script[src],link[rel=stylesheet]')) assert.ok((el.getAttribute('src')||el.getAttribute('href')).startsWith('/'));
   w.close();
 });
-test('testimony is preloaded once without autoplay; hero preserves the supplied full composition',()=>{
+test('testimony is preloaded once without autoplay; hero uses the supplied artwork',()=>{
   const w=mount(),d=w.document;
   assert.equal(d.querySelectorAll('iframe').length,1);
   assert.equal(d.querySelector('iframe').src,'https://www.youtube-nocookie.com/embed/XuMzhfeYNWU');
@@ -33,6 +33,17 @@ test('testimony is preloaded once without autoplay; hero preserves the supplied 
   assert.equal(hero.getAttribute('width'),'1672');assert.equal(hero.getAttribute('height'),'941');
   assert.match(html,/Odtwarzacz YouTube jest wczytywany wraz ze stroną/);
   w.close();
+});
+test('provided transparent Bible and logo replace opaque versions; hero fills the viewport',()=>{
+  const w=mount(),d=w.document;
+  const bible=d.querySelector('.bible-image img'),logo=d.querySelector('.join img');
+  assert.equal(bible.getAttribute('src'),'/Zaneta/assets/biblia-ubg-transparent.png');
+  assert.equal(logo.getAttribute('src'),'/Zaneta/assets/cc-women-transparent.png');
+  assert.equal(bible.getAttribute('width'),'1137');assert.equal(bible.getAttribute('height'),'1383');
+  assert.equal(logo.getAttribute('width'),'180');
+  const css=fs.readFileSync('Zaneta/style.css','utf8');
+  assert.match(css,/height:100svh/);assert.match(css,/object-fit:cover/);
+  assert.match(css,/\.bible-image\{background:transparent/);w.close();
 });
 test('radio actual playing, Stop, failed start and late promise remain truthful',async()=>{
   let resolvePlay,calls=0,paused=true;
