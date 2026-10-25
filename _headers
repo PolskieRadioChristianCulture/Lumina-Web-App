@@ -131,6 +131,12 @@
 
 /js/cc-radio-milion.js
   Cache-Control: public, max-age=0, must-revalidate
+/js/cc-daily-course-share*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/lumina-share*
+  Cache-Control: public, max-age=0, must-revalidate
+
 
 /assets/bu/*
   Cache-Control: no-cache, must-revalidate
