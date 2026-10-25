@@ -4959,7 +4959,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
     <nav class="lumina-nav">
         <div class="nav-brand-group">
         <a href="index.html" class="nav-logo-text" style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
-            <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" alt="LUMINA Logo" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(192,132,252,0.8); box-shadow: 0 0 12px rgba(168,85,247,0.5);">
+            <img loading="lazy" decoding="async" src="/images/lumina/lumina-icon-transparent.png" alt="LUMINA Logo" onerror="this.onerror=null; this.src='/lumina_icon.jpg';" style="width: 34px; height: 34px; border-radius: 50%; object-fit: contain; background: rgba(15,23,42,0.8); border: 2px solid rgba(196,163,90,0.8); box-shadow: 0 0 12px rgba(196,163,90,0.4);">
             <span style="font-weight: 800; letter-spacing: 1.5px;">LUMINA</span>
         </a>
 
@@ -5673,8 +5673,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             <div>
                 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #ec4899, #8b5cf6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem; box-shadow:0 4px 12px rgba(236,72,153,0.4);">
-                            <i class="fa-solid fa-rectangle-list"></i>
+                        <div class="tablica-badge-icon" style="width:38px; height:38px; min-width:38px; min-height:38px; border-radius:50%; background:rgba(15,23,42,0.85); border:1.5px solid rgba(196,163,90,0.6); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.5), 0 0 10px rgba(196,163,90,0.25); flex-shrink:0;">
+                            <img src="/images/lumina/lumina-icon-transparent.png" alt="LUMINA" class="tablica-badge-icon-img" style="width:24px; height:24px; object-fit:contain; display:block; pointer-events:none;">
                         </div>
                         <span style="font-weight:800; font-size:1.05rem; color:#fff;">Tablica LUMINA</span>
                     </div>
@@ -9888,10 +9888,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         // ── Render Online Logged-In Users Avatars with Celadon / Seledynowa Ring in Tablica LUMINA Box ──
         window.renderTablicaOnlineAvatars = function() {
             if (window.LuminaMemberPresence) window.LuminaMemberPresence.render();
-            else {
-                const container = document.getElementById('tablicaOnlineAvatarsContainer');
-                if (container) { container.replaceChildren(); container.hidden = true; }
-            }
         };
 
         // Realtime Presence Listener dla Tablicy LUMINA

@@ -233,6 +233,14 @@ const CONTEXT_GUIDES = {
 // --- 2. GŁÓWNE PLATFORMY I MODUŁY EKOSYSTEMU ---
 const CORE_PROJECTS = [
 {
+  title: "Pobierz — Biblioteka Plików Christian Culture",
+  category: "Narzędzia i misja",
+  url: "https://polskieradio.cc/pobierz",
+  description: "Otwarta biblioteka plików Christian Culture: oficjalne logotypy Radio CC i LUMINA, grafiki kampanii (#antyHALLOWEEN, #WspieramTo), materiały audio i wideo.",
+  tags: ["pobierz", "pliki", "biblioteka", "logo", "grafiki", "zasoby", "media kit", "identyfikacja", "download"],
+  featured: true
+},
+{
   title: "Kącik Ewangelizacyjny Żanety — CC WOMEN",
   category: "Wiara i świadectwa",
   url: "https://polskieradio.cc/%C5%BBaneta",

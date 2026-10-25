@@ -24,6 +24,11 @@
       if (!p.online || !p.uid || !p.slug || p.uid === me || seen.has(p.uid)) return false;
       seen.add(p.uid); return true;
     }) : [];
+    if (container.id === 'tablicaOnlineAvatarsContainer' && !online.length) {
+      container.hidden = false;
+      container.style.display = 'flex';
+      return;
+    }
     const signature = JSON.stringify(online.map(p => [p.uid, p.slug, p.displayName, p.avatar]));
     if (container.dataset.presenceSignature === signature) return;
     container.dataset.presenceSignature = signature;

@@ -63,6 +63,7 @@
   <style>
     body { background: #07090E; color: #f1f5f9; }
     .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(196,163,90,0.18); position: sticky; top: 0; z-index: 50; }
+
     /* Topbar Icon-First Standard (Desktop & Mobile Clean Action Bar) */
     .ak-header #reader-font-label,
     .ak-header #tts-btn-text,
@@ -207,6 +208,7 @@
 <body class="min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
 
   <!-- ── TOP HEADER ── -->
+    <!-- ── TOP HEADER ── -->
   <header class="ak-header">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3 sm:gap-4">
@@ -230,7 +232,7 @@
           <span id="reader-font-label" class="sr-only font-semibold">Krój: Lora</span>
         </button>
 
-<!-- Przełącznik motywu (Jasny / Ciemny) -->
+        <!-- Przełącznik motywu (Jasny / Ciemny) -->
         <button type="button" id="btn-theme-toggle" onclick="toggleCourseTheme()" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
           <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
         </button>
@@ -257,6 +259,7 @@
   </header>
 
   <!-- ── BREADCRUMB STRIP ── -->
+    <!-- ── BREADCRUMB STRIP ── -->
   <nav class="bg-[#0A0D14] border-b border-brand-line py-2.5 px-4" aria-label="Nawigacja lekcji">
     <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-500 flex-wrap gap-2">
       <div class="flex items-center gap-2">
@@ -273,11 +276,11 @@
           <i class="fa-solid fa-font text-amber-400 text-[10px]"></i>
           <span class="kc-font-mobile-label">Lora</span>
         </button>
-        <a href="/akademia/kurscodzienny/dzien-01" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">← Dzień 1</a>
-        <span class="text-zinc-700">|</span>
         <a href="/akademia/kurscodzienny" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">Spis Dni</a>
         <span class="text-zinc-700">|</span>
-        <a href="#jutro" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Dzień 3 →</a>
+        <a href="/akademia/kurscodzienny/dzien-01" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-amber-300 min-h-[32px] flex items-center">← Dzień 1</a>
+        <span class="text-zinc-700">|</span>
+        <a href="/akademia/kurscodzienny/dzien-03" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Dzień 3 →</a>
       </div>
     </div>
   </nav>
@@ -1274,7 +1277,7 @@
             <p class="text-xs text-zinc-400 mb-4">Dotrzyj do swoich znajomych i społeczności w sieci.</p>
           </div>
           <a href="/tablica?share=dzien-02" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs hover:bg-amber-500/30 transition min-h-[44px]">
-            <span class="text-base font-display font-bold">L</span> Udostępnij na Tablicy
+            <img src="/images/lumina/lumina-icon-transparent.png" alt="LUMINA" class="w-5 h-5 object-contain shrink-0" width="20" height="20" aria-hidden="true" /> <span>Udostępnij na Tablicy</span>
           </a>
         </div>
 
@@ -1592,6 +1595,6 @@
   <button class="back-to-top" id="backToTopBtn" type="button" aria-label="Przewiń do góry" title="Przewiń do góry">
     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
   </button>
-  <script src="/js/cc-daily-course-share.js?v=20261009_coursekv2" defer></script>
+  <script src="/js/cc-daily-course-share.js?v=20261025_v4" defer></script>
 </body>
 </html>

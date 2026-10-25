@@ -1259,7 +1259,7 @@ class LuminaCoursesEngine {
     const percent = Math.min(100, Math.round((completedCount / 28) * 100));
 
     if (this.dom.heroStatsBadge) {
-      this.dom.heroStatsBadge.textContent = `${completedCount} / 28 LEKCJI (${percent}%)`;
+      this.dom.heroStatsBadge.textContent = `${completedCount} / 29 LEKCJI (${percent}%)`;
     }
 
     if (this.dom.heroProgressBarFill) {

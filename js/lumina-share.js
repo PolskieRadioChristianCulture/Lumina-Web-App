@@ -55,6 +55,7 @@
       }
 
       /* Kanoniczna ikona LUMINA Share: purpurowy/karmazynowy krążek #a61229, złota obwódka #d4af37, czysta biała litera L */
+      /* Oficjalna ikona LUMINA Share z tłem przeźroczystym (Dyrektywa Dowódcy 2026-10-25) */
       .lumina-badge-l-icon {
         display: inline-flex;
         align-items: center;
@@ -63,17 +64,26 @@
         height: 26px;
         min-width: 26px;
         min-height: 26px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #b3182d 0%, #8f0f22 100%);
-        border: 1.5px solid #d4af37;
-        color: #ffffff !important;
-        font-family: 'Cinzel', 'Montserrat', -apple-system, system-ui, sans-serif;
-        font-weight: 900;
-        font-size: 0.95rem;
-        line-height: 1;
-        box-shadow: 0 2px 8px rgba(166, 18, 41, 0.45), 0 0 8px rgba(212, 175, 55, 0.35);
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        background: transparent url('/images/lumina/lumina-icon-transparent.png') center/contain no-repeat;
+        border: none;
+        color: transparent !important;
+        font-size: 0 !important;
+        line-height: 0;
+        box-shadow: none;
         box-sizing: border-box;
+        flex-shrink: 0;
+      }
+      .lumina-badge-l-icon img, .lumina-badge-l-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* Wariant dla trybu jasnego (Dual-Theme Standard JOMA-D047) */
+      html[data-lumina-theme="light"] .lumina-badge-l-icon,
+      .lumina-light-theme .lumina-badge-l-icon {
+        background-image: url('/images/lumina/lumina-icon-light-transparent.png') !important;
       }
 
       .lumina-share-btn-l.icon-only {
@@ -83,19 +93,30 @@
         min-width: 44px;
         min-height: 44px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #b3182d 0%, #8f0f22 100%);
-        border: 2px solid #d4af37;
+        background: rgba(15, 23, 42, 0.7);
+        border: 1.5px solid rgba(196, 163, 90, 0.6);
         color: #ffffff !important;
-        box-shadow: 0 4px 14px rgba(166, 18, 41, 0.45), 0 0 10px rgba(212, 175, 55, 0.3);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 10px rgba(196, 163, 90, 0.25);
       }
 
       .lumina-share-btn-l.icon-only .lumina-badge-l-icon {
-        width: 100%;
-        height: 100%;
-        border: none;
-        background: transparent;
-        box-shadow: none;
-        font-size: 1.15rem;
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        min-height: 28px;
+        background: transparent url('/images/lumina/lumina-icon-transparent.png') center/contain no-repeat;
+      }
+
+      html[data-lumina-theme="light"] .lumina-share-btn-l.icon-only .lumina-badge-l-icon,
+      .lumina-light-theme .lumina-share-btn-l.icon-only .lumina-badge-l-icon {
+        background-image: url('/images/lumina/lumina-icon-light-transparent.png') !important;
+      }
+
+      html[data-lumina-theme="light"] .lumina-share-btn-l.icon-only,
+      .lumina-light-theme .lumina-share-btn-l.icon-only {
+        background: #faf8f5;
+        border-color: rgba(196, 163, 90, 0.6);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 0 10px rgba(196, 163, 90, 0.15);
       }
 
       .lumina-share-btn-l.icon-only:hover {
