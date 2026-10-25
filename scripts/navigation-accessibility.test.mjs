@@ -78,3 +78,30 @@ test('Tablica alias is active and primary URLs remain rooted from nested profile
   }
   assert.match(source,/\.lumina-nav-tab:focus-visible/);
 });
+
+test('LUMINA discovery cards provide native keyboard links to real destinations instead of placeholder toasts', async () => {
+  const html = await readFile('lumina.html', 'utf8');
+  const win = new Window({url:'https://polskieradio.cc/lumina/',settings:{disableJavaScriptEvaluation:true,disableJavaScriptFileLoading:true,disableCSSFileLoading:true,disableIframePageLoading:true}});
+  try {
+    win.document.write(html);
+    const cards = Array.from(win.document.querySelectorAll('.why-item'));
+    assert.equal(cards.length, 3);
+    assert.deepEqual(cards.map(card => card.getAttribute('href')), ['#odkrywaj','/lumina-safety.html','/mess']);
+    for (const card of cards) {
+      assert.equal(card.tagName, 'A');
+      assert.equal(card.hasAttribute('onclick'), false, 'navigation must work without a toast or JavaScript controller');
+      assert.equal(card.tabIndex, 0);
+      assert.ok(card.textContent.trim());
+      assert.equal(card.querySelector('i').getAttribute('aria-hidden'), 'true');
+    }
+    const target = win.document.getElementById('odkrywaj');
+    assert.ok(target);
+    assert.equal(target.tabIndex, -1);
+    const footerLinks = Array.from(win.document.querySelectorAll('.footer-links-row a'));
+    assert.equal(footerLinks.find(link => link.textContent.trim() === 'O Nas').getAttribute('href'), '/o-nas');
+    for (const link of footerLinks.filter(link => link.textContent.trim() !== 'Baza Wiedzy i Pomoc')) {
+      assert.ok(link.getAttribute('href').startsWith('/'), 'footer destinations stay correct from nested aliases');
+    }
+    assert.match(html, /\.why-item:focus-visible/);
+  } finally { await win.happyDOM.close(); }
+});
