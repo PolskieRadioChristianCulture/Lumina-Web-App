@@ -129,6 +129,12 @@
         /* The radio spectrum uses actual audio samples; YouTube stays flat. */
         .playing .eq-bar { opacity: 1; }
         button[disabled] { opacity: .45; cursor: not-allowed; }
+        header { gap: 12px; }
+        header > nav { min-width: 0; flex: 1 1 0; overflow-x: auto; scrollbar-width: thin; }
+        header > nav::-webkit-scrollbar { height: 4px; }
+        header > nav::-webkit-scrollbar-track { background: #12121A; }
+        header > nav::-webkit-scrollbar-thumb { background: #806B39; border-radius: 4px; }
+        header > nav .nav-tab { flex-shrink: 0; white-space: nowrap; min-height: 44px; }
         button:focus-visible, [role="button"]:focus-visible { outline: 2px solid #C4A35A; outline-offset: 3px; }
         #mobile-player-controls button, button[onclick^="skipSeconds"], button[onclick="prevTrack()"], button[onclick="nextTrack()"], button[onclick="toggleMute()"] { min-width: 44px; min-height: 44px; }
         @media (max-width: 767px) {
