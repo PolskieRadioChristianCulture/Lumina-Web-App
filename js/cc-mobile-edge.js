@@ -18,6 +18,7 @@
     heart: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z',
     info: 'M12 16v-4M12 8h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0',
     theme: 'M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z',
+    yis: 'M6 4l6 8 6-8M12 12v8',
   };
   const icon = name => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -32,6 +33,7 @@
     ['chat','LUMI Messenger','/mess'], ['news','CCN News','/news'],
     ['book','Moja Biblia','/mojabiblia'], ['study','Akademia Biblijna','/akademia'],
     ['calendar','HOLOS — planer','/holos'], ['play','Kino VOD','/vod'],
+    ['yis','Your Imagination Studio (YIS)','/yis'],
     ['search','Szukaj w ekosystemie','/szukaj'],
   ];
 
