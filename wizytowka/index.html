@@ -132,21 +132,21 @@ p { margin: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dot { width: 10px; height: 13px; border-radius: 5px 5px 0 0; background: var(--accent); flex: none; }
 
-/* HERO: tytuł + sześcioro drzwi */
+/* HERO: tytuł + siedmioro drzwi */
 .hero { padding: clamp(24px, 4vw, 56px) var(--margin) 0; }
 .hero-top { display: grid; grid-template-columns: 6fr 6fr; gap: clamp(24px, 4vw, 64px); align-items: end; }
 .hero h1 { font-size: var(--s-h1); }
 .hero .lead { font-size: var(--s-sub); line-height: 1.4; max-width: 34ch; }
 .hero .verse { margin-top: 18px; color: var(--muted); font-size: var(--s-small); }
 .hero .verse q { font-family: var(--display); font-size: var(--s-body); color: var(--ink); }
-.doors { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(10px, 1.4vw, 20px); align-items: end; margin-top: clamp(32px, 5vw, 64px); }
-.door { display: flex; flex-direction: column; gap: 10px; }
+.doors { display: grid; grid-template-columns: repeat(7, 1fr); gap: clamp(10px, 1.2vw, 18px); align-items: end; margin-top: clamp(32px, 5vw, 64px); }
+.door { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .door-frame { display: block; position: relative; border-radius: var(--arch); overflow: hidden; background: var(--ground-2); aspect-ratio: 8 / 11; }
 .door-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transition: transform .9s var(--ease); }
 .door:nth-child(2) .door-frame, .door:nth-child(5) .door-frame { aspect-ratio: 8 / 12.4; }
-.door:nth-child(3) .door-frame { aspect-ratio: 8 / 11.8; }
+.door:nth-child(3) .door-frame, .door:nth-child(7) .door-frame { aspect-ratio: 8 / 11.8; }
 .door-frame:hover img, .door-frame:focus-visible img { transform: scale(1.05); }
-.door h2 { font-size: 20px; }
+.door h2 { font-size: clamp(16px, 1.25vw, 20px); }
 .door h2 a { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
 .door p { color: var(--muted); font-size: var(--s-small); line-height: 1.4; }
 
@@ -219,6 +219,26 @@ p { margin: 0; }
 .akademia-pic { border-radius: 50% 50% 0 0 / 30% 30% 0 0; overflow: hidden; aspect-ratio: 16 / 9; }
 .akademia-pic img { width: 100%; height: 100%; object-fit: cover; }
 
+/* KĄCIK EWANGELIZACYJNY: bezpłatna przestrzeń misji + 6 przykładowych wizytówek */
+.kacik { margin-top: var(--gap); background: var(--ground-2); padding: clamp(64px, 7vw, 112px) var(--margin); }
+.kacik-head { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 64px); align-items: end; margin-bottom: clamp(40px, 5vw, 64px); }
+.kacik h2 { font-size: var(--s-h2); }
+.kacik-lead { margin-top: 20px; font-size: var(--s-sub); line-height: 1.4; max-width: 44ch; }
+.kacik-mail { color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.kacik-mail:hover { text-decoration: underline; }
+.kacik-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.kacik-cta p { color: var(--muted); font-size: var(--s-body); }
+.kacik-sub { font-size: var(--s-sub); margin-bottom: 24px; color: var(--accent); }
+.kacik-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(12px, 1.5vw, 20px); }
+.kacik-card { display: flex; flex-direction: column; gap: 10px; text-decoration: none; background: var(--ground); padding: 14px 14px 18px; border-radius: 999px 999px 0 0; transition: transform .25s var(--ease), background-color .25s var(--ease); min-width: 0; }
+.kacik-card:hover, .kacik-card:focus-visible { transform: translateY(-4px); background: var(--ground-3); }
+.kacik-pic { border-radius: var(--arch); overflow: hidden; aspect-ratio: 4 / 5; background: var(--ground-3); }
+.kacik-pic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; transition: transform .9s var(--ease); }
+.kacik-card:hover .kacik-pic img, .kacik-card:focus-visible .kacik-pic img { transform: scale(1.05); }
+.kacik-card h3 { font-size: 18px; line-height: 1.2; margin-top: 4px; }
+.kacik-slug { color: var(--accent); font-weight: 600; font-size: var(--s-small); word-break: break-word; }
+.kacik-card p { color: var(--muted); font-size: var(--s-small); line-height: 1.35; }
+
 /* LICZBY */
 .stats { padding: var(--gap) var(--margin); display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; align-items: start; }
 .stats h2 { grid-column: 7 / 13; grid-row: 1; font-size: var(--s-sub); align-self: end; padding: 0 0 12px; }
@@ -276,6 +296,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 @media (max-width: 1100px) {
   .bar nav { display: none; }
   .bar .actions { margin-left: auto; }
+  .kacik-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 900px) {
   .bar .btn-google { display: none; }
@@ -287,7 +308,8 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   .door h2 { font-size: var(--s-small); }
   .door p { display: none; }
   .door .door-frame, .door:nth-child(n) .door-frame { aspect-ratio: 8 / 11; }
-  .akcja, .radio, .tv, .lumina, .akademia, .ccn-grid, .card { grid-template-columns: 1fr; }
+  .akcja, .radio, .tv, .lumina, .akademia, .kacik-head, .ccn-grid, .card { grid-template-columns: 1fr; }
+  .kacik-grid { grid-template-columns: repeat(2, 1fr); }
   .radio .arch-big { order: -1; aspect-ratio: 4 / 4.4; }
   .lumina .arch-photo { order: 0; }
   .station { font-size: var(--s-h2); }
@@ -312,7 +334,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   html { scroll-behavior: auto; }
   .door-frame img { animation: none; }
   .js .rise { opacity: 1; transform: none; transition: none; }
-  .arch-big img, .btn, .door-frame img, .edge, .scrim, .edge-tip { transition: none; }
+  .arch-big img, .btn, .door-frame img, .kacik-card, .kacik-pic img, .edge, .scrim, .edge-tip { transition: none; }
 }
 </style>
 <script src="/js/cc-radio-milion.js?v=20261011_2" defer></script>
@@ -368,6 +390,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     <a href="#lumina" data-track="lumina" data-place="menu">LUMINA</a>
     <a href="#ccn" data-track="ccn" data-place="menu">CCN</a>
     <a href="#akademia" data-track="akademia" data-place="menu">Akademia</a>
+    <a href="#kacik" data-track="kacik" data-place="menu">Kącik Ewangelizacyjny</a>
   </nav>
   <div class="actions">
     <button class="btn btn-google" type="button" data-google><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.06H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg><span data-google-label>Zaloguj z Google</span></button>
@@ -415,6 +438,11 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
         <a class="door-frame" href="/akademia" data-track="akademia" data-place="drzwi" aria-label="Akademia Biblijna"><img src="/wizytowka/img/akademia.webp" width="800" height="1100" alt="Otwarta Biblia na stole przy oknie o świcie"></a>
         <h2><a href="#akademia" data-track="akademia" data-place="drzwi-tytul">Akademia</a></h2>
         <p>Lekcje biblijne co dzień.</p>
+      </article>
+      <article class="door rise" style="--i:7">
+        <a class="door-frame" href="#kacik" data-track="kacik" data-place="drzwi" aria-label="Kącik Ewangelizacyjny"><img src="/wizytowka/img/biblia.webp" width="1200" height="800" alt="Otwarte Pismo Święte na drewnianym stole"></a>
+        <h2><a href="#kacik" data-track="kacik" data-place="drzwi-tytul">Kącik Ewangelizacyjny</a></h2>
+        <p>Bezpłatna przestrzeń misji.</p>
       </article>
     </div>
   </section>
@@ -515,6 +543,58 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     <div class="akademia-pic rise" style="--i:1"><img src="/wizytowka/img/akademia-wide.webp" width="1024" height="576" alt="LUMINA Bible Academy: Z Biblią za Pan Brat, kurs codzienny" loading="lazy"></div>
   </section>
 
+  <section class="kacik" id="kacik" aria-labelledby="kacik-h">
+    <div class="kacik-head">
+      <div>
+        <h2 id="kacik-h" class="rise">Kącik Ewangelizacyjny</h2>
+        <p class="kacik-lead rise" style="--i:1">Udostępniamy bezpłatną przestrzeń Christian Culture. Chcesz mieć własne miejsce dla swojej misji? Napisz do nas: <a class="kacik-mail" href="mailto:polskiercctv@gmail.com">polskiercctv@gmail.com</a></p>
+      </div>
+      <div class="kacik-cta rise" style="--i:2">
+        <p>Tworzymy autorskie wizytówki świadectw, służb, inicjatyw i projektów z wartościami.</p>
+        <a class="btn" href="mailto:polskiercctv@gmail.com?subject=K%C4%85cik%20Ewangelizacyjny%20-%20w%C5%82asna%20wizyt%C3%B3wka%20w%20Christian%20Culture" data-track="kacik_kontakt" data-place="kacik">Napisz: polskiercctv@gmail.com</a>
+      </div>
+    </div>
+    <h3 class="kacik-sub rise" style="--i:2">Przykładowe wizytówki</h3>
+    <div class="kacik-grid">
+      <a class="kacik-card rise" style="--i:1" href="/Żaneta" data-track="kacik_zaneta" data-place="kacik">
+        <div class="kacik-pic"><img src="/Zaneta/assets/zaneta-portret.webp" width="1024" height="1024" alt="Żaneta, Kącik Ewangelizacyjny i bezpłatna Biblia UBG" loading="lazy"></div>
+        <span class="kacik-slug">/Żaneta</span>
+        <h3>Kącik Żanety</h3>
+        <p>Świadectwo i bezpłatna Biblia UBG.</p>
+      </a>
+      <a class="kacik-card rise" style="--i:2" href="/CezaryRogowski" data-track="kacik_cezary" data-place="kacik">
+        <div class="kacik-pic"><img src="/images/cezaryrogowski/cezary-hero.jpg" width="1536" height="864" alt="Cezary Rogowski z gitarą akustyczną" loading="lazy"></div>
+        <span class="kacik-slug">/CezaryRogowski</span>
+        <h3>Cezary Rogowski</h3>
+        <p>Muzyka, Słowo i misja Christian Culture.</p>
+      </a>
+      <a class="kacik-card rise" style="--i:3" href="/Ewa" data-track="kacik_ewa" data-place="kacik">
+        <div class="kacik-pic"><img src="/Ewa/assets/ewa-portret.webp" width="783" height="1536" alt="Ewa, Kącik Ewangelizacyjny CC WOMEN" loading="lazy"></div>
+        <span class="kacik-slug">/Ewa</span>
+        <h3>Kącik Ewy</h3>
+        <p>CC WOMEN: muzyka, wiara i świadectwo.</p>
+      </a>
+      <a class="kacik-card rise" style="--i:4" href="/holistyczny-coaching" data-track="kacik_coaching" data-place="kacik">
+        <div class="kacik-pic"><img src="/images/ogloszenia-pawel-murawski.webp" width="600" height="600" alt="Paweł Murawski, Holistyczny Coaching w Duchu Biblijnym" loading="lazy"></div>
+        <span class="kacik-slug">/holistyczny-coaching</span>
+        <h3>Holistyczny Coaching</h3>
+        <p>Paweł Murawski: ciało, dusza i duch.</p>
+      </a>
+      <a class="kacik-card rise" style="--i:5" href="/herbatka" data-track="kacik_herbatka" data-place="kacik">
+        <div class="kacik-pic"><img src="/images/ogloszenia-herbatka.webp" width="500" height="500" alt="Herbatka między słowami, aromatyczna mieszanka herbaty" loading="lazy"></div>
+        <span class="kacik-slug">/herbatka</span>
+        <h3>Herbatka między słowami</h3>
+        <p>Klimatyczna herbaciarnia i rozmowy.</p>
+      </a>
+      <a class="kacik-card rise" style="--i:6" href="/premier-heatfix" data-track="kacik_heatfix" data-place="kacik">
+        <div class="kacik-pic"><img src="/images/ogloszenia-premier-heatfix.webp" width="1408" height="792" alt="Premier HeatFix, profesjonalne narzędzia i instalacje" loading="lazy"></div>
+        <span class="kacik-slug">/premier-heatfix</span>
+        <h3>Premier HeatFix</h3>
+        <p>Mariusz: profesjonalne instalacje i serwis.</p>
+      </a>
+    </div>
+  </section>
+
   <section class="stats" aria-labelledby="liczby-h">
     <h2 id="liczby-h" class="rise">Misja w liczbach</h2>
     <div class="tile tile-a rise" style="--i:1"><strong data-count>—</strong><span>osób w liczniku „Celujemy w Pierwszy Milion”, stan na żywo</span></div>
@@ -556,6 +636,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
       <a href="/lumina" data-track="lumina" data-place="stopka">LUMINA</a>
       <a href="/news" data-track="ccn" data-place="stopka">CCN News</a>
       <a href="/akademia" data-track="akademia" data-place="stopka">Akademia</a>
+      <a href="#kacik" data-track="kacik" data-place="stopka">Kącik Ewangelizacyjny</a>
       <a href="/Halloween" data-track="akcja" data-place="stopka">#antyHALLOWEEN</a>
       <a href="/milion" data-track="milion" data-place="stopka">Pierwszy Milion</a>
       <a href="/privacy">Polityka prywatności</a>
