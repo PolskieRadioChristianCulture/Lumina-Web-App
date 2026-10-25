@@ -605,6 +605,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     if (open) { panel.querySelector('.edge-grid a').focus(); track('wizytowka_menu', { miejsce: 'panel' }); } else { tip.classList.remove('show'); if (opener) opener.focus(); }
   }
   var tip = document.querySelector('[data-edge-tip]');
+  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   openers.forEach(function (b) { b.addEventListener('click', function () { opener = b; setMenu(!panel.classList.contains('open')); }); });
   // Zamknięcie przesunięciem palcem w lewo, jak w standardzie EkoCC
   var touchX = null;
@@ -613,8 +614,9 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   // Podpowiedź z nazwą obok ikony (najechanie lub fokus)
   function showTip(el) { var r = el.getBoundingClientRect(); tip.textContent = el.getAttribute('aria-label'); tip.style.top = (r.top + r.height / 2) + 'px'; tip.classList.add('show'); }
   panel.querySelectorAll('.edge-btn[aria-label]').forEach(function (el) {
-    el.addEventListener('mouseenter', function () { showTip(el); });
-    el.addEventListener('focus', function () { showTip(el); });
+    // Tylko mysz lub klawiatura; na ekranie dotykowym dymek zostawałby pod palcem
+    el.addEventListener('mouseenter', function () { if (canHover) showTip(el); });
+    el.addEventListener('focus', function () { if (el.matches(':focus-visible')) showTip(el); });
     el.addEventListener('mouseleave', function () { tip.classList.remove('show'); });
     el.addEventListener('blur', function () { tip.classList.remove('show'); });
   });
