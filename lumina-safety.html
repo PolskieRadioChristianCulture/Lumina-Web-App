@@ -25,6 +25,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Standardy Ochrony Dzieci - Aplikacja LUMINA</title>
     <meta name="description" content="Standardy Ochrony Dzieci i Zapobiegania Wykorzystywaniu Seksualnemu w Aplikacji LUMINA w ramach misji Christian Culture.">
+    <link rel="canonical" href="https://polskieradio.cc/lumina-safety.html">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="pl_PL">
+    <meta property="og:title" content="Standardy Ochrony Dzieci — Aplikacja LUMINA">
+    <meta property="og:description" content="Standardy Ochrony Dzieci i Zapobiegania Wykorzystywaniu Seksualnemu w Aplikacji LUMINA w ramach misji Christian Culture.">
+    <meta property="og:url" content="https://polskieradio.cc/lumina-safety.html">
+    <meta property="og:image" content="https://polskieradio.cc/lumina_logo_portal.jpg?v=20261025">
+    <meta name="twitter:card" content="summary">
 
     <!-- Google Fonts: Cinzel and Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,6 +121,31 @@
         .safety-content li::marker {
             color: var(--gold-primary);
         }
+        /* Jasny motyw (domyślny): treść dokumentu była biała na białej karcie */
+        html[data-lumina-theme="light"] .safety-content p,
+        html[data-lumina-theme="light"] .safety-content li { color: #334155; }
+        html[data-lumina-theme="light"] .safety-content strong { color: #0f172a; }
+        html[data-lumina-theme="light"] .safety-date,
+        html[data-lumina-theme="light"] .safety-note { color: #6b5314; }
+        .safety-note { margin-top: 2rem; border-top: 1px solid rgba(212, 175, 55, 0.15); padding-top: 1rem; font-size: 0.85rem; color: var(--text-muted-gold); }
+        /* Cele dotyku 44 px */
+        .logo-link { display: inline-flex; flex-direction: column; justify-content: center; min-height: 44px; }
+        .header-right .btn-back-top { min-height: 44px; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0 1.1rem !important; font-size: 0.8rem; }
+        .btn-back-home { min-height: 44px; }
+        /* Baner cookies: na telefonie tekst na pełną szerokość, przyciski pod nim */
+        #lumina-cookie-banner .cookie-actions button { min-height: 44px; }
+        #lumina-cookie-banner .cookie-link { color: #f59e0b; text-decoration: underline; padding: 14px 2px; }
+        html[data-lumina-theme="light"] #lumina-cookie-banner .cookie-link { color: #8a4205; }
+        @media (max-width: 640px) {
+            #lumina-cookie-banner { flex-wrap: wrap; padding: 14px 16px !important; gap: 10px !important; }
+            #lumina-cookie-banner .cookie-text { flex: 1 1 100%; }
+            #lumina-cookie-banner .cookie-actions { flex: 1 1 100%; }
+            #lumina-cookie-banner .cookie-actions button { flex: 1; }
+        }
+        @media (max-width: 420px) {
+            .header-right .btn-back-top .btn-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+            .header-right .btn-back-top { min-width: 44px; justify-content: center; padding: 0 !important; }
+        }
         .btn-back-home {
             margin-top: 3rem;
             display: inline-flex;
@@ -145,7 +178,7 @@
                 </div>
             </div>
             <div class="header-right">
-                <a href="index.html" class="btn btn-outline" style="padding: 0.5rem 1.25rem; font-size: 0.8rem;"><i class="fa-solid fa-arrow-left"></i> Powrót</a>
+                <a href="index.html" class="btn btn-outline btn-back-top" aria-label="Powrót do strony głównej"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <span class="btn-label">Powrót</span></a>
             </div>
         </div>
     </header>
@@ -160,7 +193,7 @@
 
             <div class="safety-content">
                 <p>
-                    Aplikacja **LUMINA**, działająca w ramach misji **Christian Culture**, kategorycznie i bezwzględnie potępia wszelkie formy krzywdzenia dzieci, w tym w szczególności ich wykorzystywanie seksualne oraz naruszanie ich praw (<em>Child Sexual Abuse Material</em> – **CSAM** / <em>Child Sexual Exploitation and Abuse</em> – **CSAE**).
+                    Aplikacja <strong>LUMINA</strong>, działająca w ramach misji <strong>Christian Culture</strong>, kategorycznie i bezwzględnie potępia wszelkie formy krzywdzenia dzieci, w tym w szczególności ich wykorzystywanie seksualne oraz naruszanie ich praw (<em>Child Sexual Abuse Material</em> – <strong>CSAM</strong> / <em>Child Sexual Exploitation and Abuse</em> – <strong>CSAE</strong>).
                 </p>
                 <p>
                     Jako platforma oparta na fundamentalnych wartościach chrześcijańskich, szacunku do godności każdego człowieka oraz na rygorystycznych przepisach prawa międzynarodowego i krajowego, wdrażamy najwyższe standardy bezpieczeństwa mające na celu całkowite wyeliminowanie ryzyka pojawienia się takich treści lub zachowań.
@@ -206,7 +239,7 @@
                     LUMINA ściśle współpracuje z policją, prokuraturą oraz organizacjami zajmującymi się bezpieczeństwem w sieci. Wszelkie uzasadnione próby przestępstw są natychmiast przekazywane odpowiednim służbom wraz z zabezpieczoną dokumentacją techniczną.
                 </p>
 
-                <p style="margin-top: 2rem; border-top: 1px solid rgba(212, 175, 55, 0.15); padding-top: 1rem; font-size: 0.85rem; color: var(--text-muted-gold);">
+                <p class="safety-note">
                     Niniejszy dokument stanowi integralną część Regulaminu oraz Polityki Prywatności portalu LUMINA i jest stale aktualizowany zgodnie z wytycznymi prawnymi Unii Europejskiej (RODO, Digital Services Act).
                 </p>
             </div>
@@ -222,11 +255,11 @@
     <link rel="apple-touch-icon" href="icon.png">
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(11, 22, 51, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #fff; padding: 16px 20px; z-index: 99999; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(245,158,11,0.3); font-family: inherit; font-size: 13px; gap: 16px; box-shadow: 0 -4px 20px rgba(0,0,0,0.5);">
-    <div style="line-height: 1.4; max-width: 800px;">
-        🕊️ Portal <strong>LUMINA</strong> (Christian Culture) używa plików cookies w celach analitycznych oraz zapewnienia bezpieczeństwa i prawidłowego działania społeczności. Korzystając z portalu, wyrażasz na to zgodę.
-        <a href="lumina.html" style="color: #f59e0b; text-decoration: underline;">Polityka Prywatności</a>
+    <div class="cookie-text" style="line-height: 1.4; max-width: 800px;">
+        🕊️ Portal <strong>LUMINA</strong> (Christian Culture) używa plików cookies w celach analitycznych oraz zapewnienia bezpieczeństwa i prawidłowego działania społeczności. Analityka działa dopiero po kliknięciu „Akceptuję”.
+        <a href="/privacy" class="cookie-link">Polityka Prywatności</a>
     </div>
-    <div style="display: flex; gap: 10px; flex-shrink: 0;">
+    <div class="cookie-actions" style="display: flex; gap: 10px; flex-shrink: 0;">
         <button type="button" onclick="acceptCookies()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit;">Akceptuję</button>
         <button type="button" onclick="rejectCookies()" style="background: rgba(255,255,255,0.1); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: inherit;">Odrzuć</button>
     </div>
