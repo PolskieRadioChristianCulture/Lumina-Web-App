@@ -80,11 +80,6 @@ p { margin: 0; }
 
 /* Nawigacja */
 .bar { display: flex; align-items: center; gap: 16px; padding: 14px var(--margin); }
-.menu-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; padding: 0 14px 0 10px; border: 0; border-radius: 22px 22px 0 0;
-  background: var(--ground-3); color: var(--ink); font: 600 var(--s-small)/1 var(--text); cursor: pointer; transition: background-color .2s; }
-.menu-btn:hover { background: #2b2822; }
-.menu-btn .bars { display: grid; gap: 4px; }
-.menu-btn .bars span { display: block; width: 18px; height: 2px; background: currentColor; }
 .mark { font: 700 20px/1 var(--display); text-decoration: none; letter-spacing: .02em; min-height: 44px; display: inline-flex; align-items: center; }
 .bar nav { display: flex; gap: 2px; margin-left: auto; }
 .bar nav a { text-decoration: none; padding: 0 12px; min-height: 44px; display: inline-flex; align-items: center; color: var(--ink); transition: color .2s; }
@@ -92,38 +87,49 @@ p { margin: 0; }
 .bar .actions { display: flex; gap: 10px; }
 .bar .btn { min-height: 44px; padding: 0 18px; font-size: var(--s-small); white-space: nowrap; }
 
-/* Lewy panel krawędziowy: skróty EkoCC */
-.edge-tab { position: fixed; left: 0; top: 50%; z-index: 25; transform: translateY(-50%); writing-mode: vertical-rl; rotate: 180deg;
-  min-width: 44px; padding: 18px 10px; border: 0; border-radius: 0 22px 22px 0; background: var(--accent); color: var(--accent-ink);
-  font: 600 var(--s-small)/1 var(--text); cursor: pointer; transition: padding .25s var(--ease); }
-.edge-tab:hover { padding-right: 14px; }
-.scrim { position: fixed; inset: 0; z-index: 29; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s; }
+/* Panel krawędziowy EkoCC: standard jak w /news (przycisk + i pasek ikon przy lewej krawędzi); na wizytówce dwie kolumny */
+.edge-plus { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex: none; padding: 0; border-radius: 12px;
+  background: #091526; border: 1px solid rgba(196,163,90,.5); color: #E2CC9A; cursor: pointer; transition: color .2s, border-color .2s; }
+.edge-plus:hover { color: #fff; border-color: #C4A35A; }
+.edge-plus svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+.edge-plus .i-x { display: none; width: 20px; height: 20px; stroke-width: 2.4; }
+.edge-plus[aria-expanded="true"] .i-plus { display: none; }
+.edge-plus[aria-expanded="true"] .i-x { display: block; }
+.scrim { position: fixed; inset: 0; z-index: 29; background: rgba(0,0,0,.6); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity .2s; }
 .scrim.show { opacity: 1; pointer-events: auto; }
-.panel { position: fixed; left: 0; top: 0; bottom: 0; z-index: 30; width: min(380px, 92vw); background: var(--ground-2); padding: 20px 20px 28px;
-  transform: translateX(-102%); transition: transform .35s var(--ease); overflow-y: auto; visibility: hidden; }
-.panel.open { transform: none; visibility: visible; }
-.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.panel-head h2 { font-size: var(--s-sub); }
-.panel-close { min-width: 44px; min-height: 44px; border: 0; border-radius: 22px 22px 0 0; background: var(--ground-3); color: var(--ink); font: 600 24px/1 var(--text); cursor: pointer; }
-.icons { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.icons a { display: flex; flex-direction: column; gap: 6px; min-height: 104px; padding: 14px 12px 12px; border-radius: 40px 40px 0 0; background: var(--ground-3); text-decoration: none; transition: transform .25s var(--ease), background-color .2s; }
-.icons a:hover, .icons a:focus-visible { transform: translateY(-3px); background: #2b2822; }
-.icons svg { width: 28px; height: 28px; margin: 4px 0 2px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.icons b { font-weight: 600; font-size: var(--s-small); line-height: 1.25; }
-.icons span { color: var(--muted); font-size: 13px; line-height: 1.3; }
-.icons a.gold { background: var(--accent); color: var(--accent-ink); }
-.icons a.gold svg { color: var(--accent-ink); }
-.icons a.gold:hover { background: #e5c158; }
-.mini { background: var(--ground); border-radius: 40px 40px 0 0; padding: 22px 16px 16px; margin-bottom: 12px; }
-.mini h3 { font: 700 var(--s-body)/1.3 var(--display); margin: 0 0 8px; }
-.mini-now b { display: block; font: 700 20px/1.2 var(--display); }
-.mini-now span { color: var(--muted); font-size: var(--s-small); }
-.mini-yt { margin-top: 12px; aspect-ratio: 16 / 9; background: #000; }
-.mini-yt[hidden] { display: none; }
-.mini-yt iframe { width: 100%; height: 100%; display: block; border: 0; }
-.mini-ctrl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
-.mini-ctrl .btn { padding: 0 10px; font-size: var(--s-small); min-height: 48px; }
-.mini .status { margin-top: 10px; }
+.edge { position: fixed; top: 0; left: 0; bottom: 0; z-index: 30; width: 118px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: #000; color: #F3E5C8; border-right: 1px solid rgba(196,163,90,.35); border-radius: 0 22px 22px 0; box-shadow: 6px 0 30px rgba(0,0,0,.85);
+  padding: max(env(safe-area-inset-top), 8px) 8px max(env(safe-area-inset-bottom), 8px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: none;
+  transform: translateX(-102%); visibility: hidden; transition: transform .22s ease-out, visibility 0s .22s; }
+.edge.open { transform: none; visibility: visible; transition: transform .22s ease-out; }
+.edge::-webkit-scrollbar { display: none; }
+.edge-grid { display: grid; grid-template-columns: 44px 44px; gap: 6px; margin: auto 0; }
+.edge-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 12px;
+  background: transparent; color: inherit; cursor: pointer; text-decoration: none; transition: background-color .15s; }
+.edge-btn:hover, .edge-btn:focus-visible { background: rgba(255,255,255,.1); }
+.edge-btn:focus-visible { outline: 2px solid #C4A35A; outline-offset: 1px; }
+.edge-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; transition: transform .15s; }
+.edge-btn:hover svg { transform: scale(1.1); }
+.edge-gold { color: #C4A35A; }
+.edge-close { flex: none; }
+.edge-badge { position: absolute; right: 1px; bottom: 2px; font: 800 9px/1 var(--text); color: #C4A35A; }
+.edge-radio { grid-column: 1 / 3; display: grid; grid-template-columns: 44px 44px; gap: 6px; padding: 8px 0; margin: 4px 0;
+  border-top: 1px solid rgba(196,163,90,.35); border-bottom: 1px solid rgba(196,163,90,.35); } /* taste-skill-ignore: obramowanie jak w standardzie panelu EkoCC */
+.edge-station { grid-column: 1 / 3; margin: 0; text-align: center; line-height: 1.2; }
+.edge-station span { display: block; font: 700 13px/1.2 var(--text); color: #C4A35A; }
+.edge-station b { display: block; font: 600 13px/1.25 var(--text); }
+.edge-radio [data-play] { color: #C4A35A; }
+.edge-radio [data-play] .i-pause, .edge-radio [data-play][aria-pressed="true"] .i-play { display: none; }
+.edge-radio [data-play][aria-pressed="true"] .i-pause { display: block; }
+.edge-tip { position: fixed; left: 128px; z-index: 32; background: #000; color: #F3E5C8; border: 1px solid rgba(196,163,90,.4); border-radius: 6px;
+  padding: 6px 10px; font: 700 13px/1.2 var(--text); white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(-50%); transition: opacity .12s; }
+.edge-tip.show { opacity: 1; }
+.yt-float { position: fixed; left: 126px; bottom: 12px; z-index: 31; width: min(320px, calc(100vw - 138px)); aspect-ratio: 16 / 9; background: #000;
+  border: 1px solid rgba(196,163,90,.5); border-radius: 12px; overflow: hidden; } /* taste-skill-ignore: ramka pływającego odtwarzacza */
+.yt-float[hidden] { display: none; }
+.yt-float iframe { width: 100%; height: 100%; display: block; border: 0; }
+.yt-close { position: absolute; top: 0; right: 0; background: rgba(0,0,0,.7); color: #F3E5C8; border-radius: 0 0 0 12px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dot { width: 10px; height: 13px; border-radius: 5px 5px 0 0; background: var(--accent); flex: none; }
 
 /* HERO: tytuł + sześcioro drzwi */
@@ -273,8 +279,6 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 }
 @media (max-width: 900px) {
   .bar .btn-google { display: none; }
-  .edge-tab { display: none; }
-  .menu-btn .label { display: none; }
   .mark { font-size: 17px; }
   .hero-top { grid-template-columns: 1fr; gap: 14px; }
   .hero .lead { font-size: var(--s-body); }
@@ -308,7 +312,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   html { scroll-behavior: auto; }
   .door-frame img { animation: none; }
   .js .rise { opacity: 1; transform: none; transition: none; }
-  .arch-big img, .btn, .door-frame img, .panel, .scrim { transition: none; }
+  .arch-big img, .btn, .door-frame img, .edge, .scrim, .edge-tip { transition: none; }
 }
 </style>
 <script src="/js/cc-radio-milion.js?v=20261011_2" defer></script>
@@ -317,48 +321,45 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 <body>
 <a class="skip" href="#main">Przejdź do treści</a>
 
-<button class="edge-tab" type="button" data-menu-open aria-controls="ekocc-menu" aria-expanded="false">Menu EkoCC</button>
-<div class="scrim" data-menu-close></div>
-<aside class="panel" id="ekocc-menu" role="dialog" aria-modal="true" aria-labelledby="menu-h">
-  <div class="panel-head">
-    <h2 id="menu-h">Odkrywaj więcej</h2>
-    <button class="panel-close" type="button" data-menu-close aria-label="Zamknij menu">×</button>
-  </div>
+<div class="scrim" data-menu-close aria-hidden="true"></div>
+<nav class="edge" id="ekocc-menu" role="dialog" aria-modal="true" aria-label="Panel krawędziowy EkoCC: odkrywaj więcej">
+  <button class="edge-btn edge-close" type="button" data-menu-close aria-label="Zamknij panel nawigacji"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+  <div class="edge-grid">
+    <a class="edge-btn" href="https://polskieradio.cc/" aria-label="Strona główna polskieradio.cc" data-track="start" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v11h-6v-7H9v7H3Z"/></svg></a>
+    <a class="edge-btn edge-gold" href="/wspieraj" aria-label="Wspieraj misję" data-track="wspieraj" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></a>
 
-  <section class="mini" aria-labelledby="mini-h">
-    <h3 id="mini-h">Radio: 6 stacji</h3>
-    <p class="mini-now"><b data-mini-name>Radio Christian Culture</b><span data-mini-sub>Kultura · Edukacja · Inspiracja</span></p>
-    <div class="mini-yt" data-yt-wrap hidden><div id="yt-mini"></div></div>
-    <div class="mini-ctrl">
-      <button class="btn" type="button" data-play data-place="panel"><span data-play-label>Słuchaj tutaj</span></button>
-      <button class="btn btn-quiet" type="button" data-next>Następna stacja</button>
+    <div class="edge-radio" role="group" aria-label="Mini radio: 6 stacji">
+      <p class="edge-station"><span data-mini-num>1/6</span><b data-mini-name>Radio CC</b></p>
+      <button class="edge-btn" type="button" data-play data-place="panel" aria-label="Słuchaj radia"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+      <button class="edge-btn" type="button" data-next aria-label="Następna stacja"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 5 10 7-10 7ZM19 5v14"/></svg></button>
+      <p class="sr-only" aria-live="polite" data-mini-pos></p>
     </div>
-    <p class="status" aria-live="polite" data-mini-pos>Stacja 1 z 6. Każde słuchanie liczy się w misji Pierwszy Milion.</p>
-  </section>
 
-  <ul class="icons">
-    <li><a class="gold" href="https://polskieradio.cc/" data-track="start" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg><b>Strona główna</b></a></li>
-    <li><a class="gold" href="/wspieraj" data-track="wspieraj" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 5.3 3 1.7-1.9 3.2-3 5.3-3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg><b>Wspieraj misję</b></a></li>
-    <li><a href="https://www.youtube.com/@osobowoscplus" target="_blank" rel="noopener" data-track="youtube_osobowoscplus" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg><b>Osobowość Plus</b><span>YouTube</span></a></li>
-    <li><a href="https://www.youtube.com/@ChristianCultureTV" target="_blank" rel="noopener" data-track="youtube_cctv" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg><b>Christian Culture TV</b><span>YouTube</span></a></li>
-    <li><a href="https://www.youtube.com/@RadioChristianCulture" target="_blank" rel="noopener" data-track="youtube_radiocc" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg><b>Polskie Radio CC</b><span>YouTube</span></a></li>
-    <li><a href="/mess" data-track="mess" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v10H9l-5 4z"/></svg><b>LUMI Mess</b><span>Komunikator</span></a></li>
-    <li><a href="/Ewangelia" data-track="ewangelia" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/></svg><b>Dobra Nowina</b><span>Ewangelia</span></a></li>
-    <li><a href="/BCM24" data-track="modlitwa" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 3.5 5 6 5 9.5a5 5 0 0 1-10 0c0-2 .8-3.4 2-4.6.2 1.8 1 2.8 2.2 3.1C11 8.5 11.5 5.6 12 3z"/></svg><b>Modlitwa 24/7</b><span>BCM24 na żywo</span></a></li>
-    <li><a href="/music" data-track="music" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg><b>CC Music</b><span>Uwielbienie</span></a></li>
-    <li><a href="/ogloszenia" data-track="ogloszenia" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><b>Ogłoszenia</b><span>Tablica</span></a></li>
-    <li><a href="/holos" data-track="holos" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>HOLOS</b><span>Uświęcenie czasu</span></a></li>
-    <li><a href="/kalendarz" data-track="kalendarz" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><b>Kalendarz</b><span>Biblijny PDF</span></a></li>
-    <li><a href="/Global" data-track="global" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg><b>CC Global</b><span>Po angielsku</span></a></li>
-    <li><a href="/mapa" data-track="mapa" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-6.2-6-11a6 6 0 0 1 12 0c0 4.8-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></svg><b>Mapa EkoCC</b><span>Wszystkie miejsca</span></a></li>
-    <li><a href="/pobierz/" data-track="pobierz" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><b>Pobierz</b><span>Pliki i grafiki</span></a></li>
-    <li><a href="/wspolpraca" data-track="wspolpraca" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 14.6c3.2-.4 6.5 1.4 6.5 5.4"/></svg><b>Współpraca</b><span>Partnerstwo</span></a></li>
-    <li><a href="/o-nas" data-track="onas" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg><b>O nas</b><span>Misja i wiara</span></a></li>
-  </ul>
-</aside>
+    <a class="edge-btn" href="https://www.youtube.com/@osobowoscplus" target="_blank" rel="noopener" aria-label="YouTube: Osobowość Plus" data-track="youtube_osobowoscplus" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5Z"/></svg><span class="edge-badge" aria-hidden="true">O+</span></a>
+    <a class="edge-btn" href="https://www.youtube.com/@ChristianCultureTV" target="_blank" rel="noopener" aria-label="YouTube: Christian Culture TV" data-track="youtube_cctv" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5Z"/></svg><span class="edge-badge" aria-hidden="true">TV</span></a>
+    <a class="edge-btn" href="https://www.youtube.com/@RadioChristianCulture" target="_blank" rel="noopener" aria-label="YouTube: Polskie Radio Christian Culture" data-track="youtube_radiocc" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5Z"/></svg><span class="edge-badge" aria-hidden="true">R</span></a>
+    <a class="edge-btn" href="/mess" aria-label="LUMI Mess: komunikator" data-track="mess" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H3l2-5a8.5 8.5 0 1 1 16-3.5Z"/></svg></a>
+    <a class="edge-btn" href="/Ewangelia" aria-label="Dobra Nowina: Ewangelia" data-track="ewangelia" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5C8 2 3 3 2 4v16c4-2 7-1 10 1 3-2 6-3 10-1V4c-4-2-7-1-10 1Zm0 0v16"/></svg></a>
+    <a class="edge-btn" href="/BCM24" aria-label="Biblijny Czas Modlitwy 24/7" data-track="modlitwa" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 3.5 5 6 5 9.5a5 5 0 0 1-10 0c0-2 .8-3.4 2-4.6.2 1.8 1 2.8 2.2 3.1C11 8.5 11.5 5.6 12 3Z"/></svg></a>
+    <a class="edge-btn" href="/music" aria-label="CC Music: uwielbienie" data-track="music" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg></a>
+    <a class="edge-btn" href="/ogloszenia" aria-label="Ogłoszenia: tablica społeczności" data-track="ogloszenia" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z"/></svg></a>
+    <a class="edge-btn" href="/holos" aria-label="HOLOS: uświęcenie czasu" data-track="holos" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></a>
+    <a class="edge-btn" href="/kalendarz" aria-label="Kalendarz biblijny" data-track="kalendarz" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v16H4ZM8 2v6M16 2v6M4 11h16M8 15h2M14 15h2"/></svg></a>
+    <a class="edge-btn" href="/Global" aria-label="CC Global: radio po angielsku" data-track="global" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg></a>
+    <a class="edge-btn" href="/mapa" aria-label="Mapa ekosystemu" data-track="mapa" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-6.2-6-11a6 6 0 0 1 12 0c0 4.8-6 11-6 11Z"/><circle cx="12" cy="10" r="2"/></svg></a>
+    <a class="edge-btn" href="/pobierz/" aria-label="Pobierz: pliki i grafiki" data-track="pobierz" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+    <a class="edge-btn" href="/wspolpraca" aria-label="Współpraca misyjna" data-track="wspolpraca" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M16 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.87M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0"/></svg></a>
+    <a class="edge-btn" href="/o-nas" aria-label="O nas: misja i wiara" data-track="onas" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16v-4M12 8h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0"/></svg></a>
+  </div>
+</nav>
+<div class="edge-tip" role="tooltip" aria-hidden="true" data-edge-tip></div>
+<div class="yt-float" data-yt-wrap hidden>
+  <div id="yt-mini"></div>
+  <button class="edge-btn yt-close" type="button" data-yt-close aria-label="Zamknij okienko YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+</div>
 
 <header class="bar">
-  <button class="menu-btn" type="button" data-menu-open aria-controls="ekocc-menu" aria-expanded="false" aria-label="Otwórz menu EkoCC"><span class="bars" aria-hidden="true"><span></span><span></span><span></span></span><span class="label">Menu</span></button>
+  <button class="edge-plus" type="button" data-menu-open aria-controls="ekocc-menu" aria-expanded="false" aria-haspopup="dialog" aria-label="Otwórz panel nawigacji EkoCC"><svg class="i-plus" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><svg class="i-x" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
   <a class="mark" href="/" aria-label="Christian Culture, strona główna">Christian Culture</a>
   <nav aria-label="Najważniejsze">
     <a href="#radio" data-track="radio" data-place="menu">Radio</a>
@@ -600,9 +601,24 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   function setMenu(open) {
     panel.classList.toggle('open', open); scrim.classList.toggle('show', open); document.body.classList.toggle('menu-open', open);
     openers.forEach(function (b) { b.setAttribute('aria-expanded', open ? 'true' : 'false'); });
-    if (open) { panel.querySelector('a').focus(); track('wizytowka_menu', { miejsce: 'panel' }); } else if (opener) opener.focus();
+    openers.forEach(function (b) { b.setAttribute('aria-label', open ? 'Zamknij panel nawigacji' : 'Otwórz panel nawigacji EkoCC'); });
+    if (open) { panel.querySelector('.edge-grid a').focus(); track('wizytowka_menu', { miejsce: 'panel' }); } else { tip.classList.remove('show'); if (opener) opener.focus(); }
   }
-  openers.forEach(function (b) { b.addEventListener('click', function () { opener = b; setMenu(true); }); });
+  var tip = document.querySelector('[data-edge-tip]');
+  openers.forEach(function (b) { b.addEventListener('click', function () { opener = b; setMenu(!panel.classList.contains('open')); }); });
+  // Zamknięcie przesunięciem palcem w lewo, jak w standardzie EkoCC
+  var touchX = null;
+  panel.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+  panel.addEventListener('touchend', function (e) { if (touchX !== null && e.changedTouches[0].clientX - touchX < -40) setMenu(false); touchX = null; });
+  // Podpowiedź z nazwą obok ikony (najechanie lub fokus)
+  function showTip(el) { var r = el.getBoundingClientRect(); tip.textContent = el.getAttribute('aria-label'); tip.style.top = (r.top + r.height / 2) + 'px'; tip.classList.add('show'); }
+  panel.querySelectorAll('.edge-btn[aria-label]').forEach(function (el) {
+    el.addEventListener('mouseenter', function () { showTip(el); });
+    el.addEventListener('focus', function () { showTip(el); });
+    el.addEventListener('mouseleave', function () { tip.classList.remove('show'); });
+    el.addEventListener('blur', function () { tip.classList.remove('show'); });
+  });
+  panel.addEventListener('scroll', function () { tip.classList.remove('show'); }, { passive: true });
   document.querySelectorAll('[data-menu-close]').forEach(function (b) { b.addEventListener('click', function () { setMenu(false); }); });
   document.addEventListener('keydown', function (e) {
     if (!panel.classList.contains('open')) return;
@@ -651,12 +667,12 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 
   // Radio: 6 stacji jak w /player (2 strumienie na żywo, 4 playlisty YouTube)
   var STATIONS = [
-    { name: 'Radio Christian Culture', sub: 'Kultura · Edukacja · Inspiracja', live: 'https://stream.zeno.fm/vz96pvl3pnktv' },
-    { name: 'Radio Biblia', sub: 'Biblia czytana 24/7', live: 'https://stream.zeno.fm/imo45hqnshyuv' },
-    { name: 'Radio Wykłady', sub: 'Biblia · Historia · Proroctwa', yt: 'PLKOxPWmme0G0' },
-    { name: 'Radio Muzyka', sub: 'Worship · Uwielbienie · Gospel', yt: 'PL2hyFNkHB21aWs336brvfXgHizPc6y0Z0' },
-    { name: 'Radio Słowo', sub: 'Komentarze · Rozmowy · Tematy', yt: 'PL2hyFNkHB21b9DNCiEfWXc47fKEUxjgi7' },
-    { name: 'Clash of Minds', sub: 'Walter Veith · Proroctwa i prawda', yt: 'PLKOxPWmme0G0' }
+    { name: 'Radio Christian Culture', short: 'Radio CC', live: 'https://stream.zeno.fm/vz96pvl3pnktv' },
+    { name: 'Radio Biblia', short: 'Biblia', live: 'https://stream.zeno.fm/imo45hqnshyuv' },
+    { name: 'Radio Wykłady', short: 'Wykłady', yt: 'PLKOxPWmme0G0' },
+    { name: 'Radio Muzyka', short: 'Muzyka', yt: 'PL2hyFNkHB21aWs336brvfXgHizPc6y0Z0' },
+    { name: 'Radio Słowo', short: 'Słowo', yt: 'PL2hyFNkHB21b9DNCiEfWXc47fKEUxjgi7' },
+    { name: 'Clash of Minds', short: 'Clash', yt: 'PLKOxPWmme0G0' }
   ];
   var idx = 0, playing = false;
   var audio = new Audio();
@@ -707,11 +723,13 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     var head = document.querySelector('.bar [data-play]');
     if (head) head.textContent = playing ? 'Zatrzymaj' : 'Słuchaj';
     document.querySelectorAll('.station').forEach(function (b) { b.setAttribute('aria-pressed', Number(b.dataset.index) === idx ? 'true' : 'false'); });
-    document.querySelector('[data-mini-name]').textContent = st.name;
-    document.querySelector('[data-mini-sub]').textContent = st.sub;
+    document.querySelector('[data-mini-name]').textContent = st.short;
+    document.querySelector('[data-mini-num]').textContent = (idx + 1) + '/6';
+    document.querySelectorAll('.edge [data-play]').forEach(function (b) { b.setAttribute('aria-label', (playing ? 'Zatrzymaj: ' : 'Słuchaj: ') + st.name); });
+    document.querySelector('[data-next]').setAttribute('aria-label', 'Następna stacja: ' + STATIONS[(idx + 1) % STATIONS.length].name);
     document.querySelector('[data-mini-pos]').textContent = msg || ('Stacja ' + (idx + 1) + ' z 6' + (playing ? ', gra na żywo' : '') + '. Każde słuchanie liczy się w misji Pierwszy Milion.');
     status.textContent = msg || ((playing ? 'Na żywo: ' : 'Gotowe: ') + st.name);
-    ytWrap.hidden = !st.yt;
+    if (!st.yt) ytWrap.hidden = true;
   }
 
   function stopAll() {
@@ -750,6 +768,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   document.querySelectorAll('.station').forEach(function (s) {
     s.addEventListener('click', function () { idx = Number(s.dataset.index); if (playing) play('stacja'); else paint(); });
   });
+  document.querySelector('[data-yt-close]').addEventListener('click', function () { stopAll(); ytWrap.hidden = true; paint(); });
 
   // Licznik misji z serwera (te same zasady co /milion)
   function refreshCount(delay) { setTimeout(loadCount, delay || 0); }
