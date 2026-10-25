@@ -133,4 +133,5 @@ html body.lumi-standalone .cc-chat-radio select{flex:1;border:none!important;bac
 #commanderFingerprintPad.is-verified i {
   color: #22c55e !important;
 }
-
+/* EkoCC v2 PREMIUM (@007, 25.10): dolna nawigacja LUMI na ekranach ≤360 px — każdy przycisk co najmniej 44 px szerokości (WCAG 2.5.8). */
+@media(max-width:360px){html body #lumiLanding .lumi-bottom-navigation{width:calc(100% - 16px);padding-left:4px;padding-right:4px}html body #lumiLanding.lumi-dashboard .lumi-bottom-navigation button,html body #lumiLanding.lumi-dashboard .lumi-bottom-navigation a{min-width:44px!important;font-size:12px!important}}

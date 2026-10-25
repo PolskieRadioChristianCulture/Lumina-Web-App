@@ -29,7 +29,7 @@ try {
 </script>
 <style>html.cc-mess-embedded #lumiLanding,html.cc-mess-embedded #lumiIntroOverlay{display:none!important}</style>
 <link rel="stylesheet" href="/css/lumi-standalone.css?v=20261019_dialog1">
-<link rel="stylesheet" href="/css/lumi-messenger-design.css?v=20261015_clean_v1">
+<link rel="stylesheet" href="/css/lumi-messenger-design.css?v=20261025_a007">
 <script defer src="/js/lumi-standalone.js?v=20261015_clean_v1"></script>
 <script defer src="/js/lumi-dashboard.js?v=20261023_bcm24_live1"></script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:'LUMI Messenger',url:'https://polskieradio.cc/mess',applicationCategory:'CommunicationApplication',description,inLanguage:'pl'})}</script>
