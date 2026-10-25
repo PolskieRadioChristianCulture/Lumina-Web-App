@@ -7,6 +7,10 @@
 <meta name="description" content="Wizytówka Christian Culture: radio i telewizja 24/7, społeczność LUMINA, portal informacyjny CCN, Akademia Biblijna i akcja #antyHALLOWEEN. Wszystko bezpłatnie.">
 <link rel="canonical" href="https://polskieradio.cc/wizytowka">
 <meta name="theme-color" content="#09090b">
+<link rel="icon" type="image/png" href="/icon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="manifest" href="/manifest.json">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Christian Culture","url":"https://polskieradio.cc/","logo":"https://polskieradio.cc/icon.png","sameAs":["https://www.youtube.com/@ChristianCultureTV","https://www.youtube.com/@RadioChristianCulture","https://www.youtube.com/@osobowoscplus"]}</script>
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:title" content="Dobrze, że jesteś | Christian Culture">
@@ -53,7 +57,7 @@
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 80px; }
 body { margin: 0; background: var(--ground); color: var(--ink); font: 400 var(--s-body)/1.55 var(--text); }
 body.menu-open { overflow: hidden; }
 img { display: block; max-width: 100%; height: auto; }
@@ -79,7 +83,7 @@ p { margin: 0; }
 .btn[disabled] { opacity: .7; cursor: progress; transform: none; }
 
 /* Nawigacja */
-.bar { display: flex; align-items: center; gap: 16px; padding: 14px var(--margin); }
+.bar { position: sticky; top: 0; z-index: 20; background: var(--ground); display: flex; align-items: center; gap: 16px; padding: 14px var(--margin); }
 .mark { font: 700 20px/1 var(--display); text-decoration: none; letter-spacing: .02em; min-height: 44px; display: inline-flex; align-items: center; }
 .bar nav { display: flex; gap: 2px; margin-left: auto; }
 .bar nav a { text-decoration: none; padding: 0 12px; min-height: 44px; display: inline-flex; align-items: center; color: var(--ink); transition: color .2s; }
@@ -148,6 +152,7 @@ p { margin: 0; }
 .door:nth-child(2) .door-frame, .door:nth-child(5) .door-frame { aspect-ratio: 8 / 12.4; }
 .door:nth-child(3) .door-frame, .door:nth-child(7) .door-frame { aspect-ratio: 8 / 11.8; }
 .door-frame:hover img, .door-frame:focus-visible img { transform: scale(1.05); }
+.door-frame picture { display: block; height: 100%; }
 .door h2 { font-size: clamp(16px, 1.25vw, 20px); }
 .door h2 a { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
 .door p { color: var(--muted); font-size: var(--s-small); line-height: 1.4; }
@@ -229,7 +234,7 @@ p { margin: 0; }
 .kacik-head { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 64px); align-items: end; margin-bottom: clamp(40px, 5vw, 64px); }
 .kacik h2 { font-size: var(--s-h2); }
 .kacik-lead { margin-top: 20px; font-size: var(--s-sub); line-height: 1.4; max-width: 44ch; }
-.kacik-mail { color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.kacik-mail { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 44px; }
 .kacik-mail:hover { text-decoration: underline; }
 .kacik-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .kacik-cta p { color: var(--muted); font-size: var(--s-body); }
@@ -313,6 +318,10 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   .door h2 { font-size: var(--s-small); }
   .door p { display: none; }
   .door .door-frame, .door:nth-child(n) .door-frame { aspect-ratio: 8 / 11; }
+  .door:nth-child(7) { grid-column: 1 / -1; }
+  .door:nth-child(7) .door-frame { aspect-ratio: 16 / 7; border-radius: 48% 48% 0 0 / 70% 70% 0 0; }
+  .door:nth-child(7) h2 { font-size: var(--s-body); }
+  .door:nth-child(7) p { display: block; }
   .akcja, .radio, .tv, .lumina, .akademia, .kacik-head, .ccn-grid, .card { grid-template-columns: 1fr; }
   .kacik-grid { grid-template-columns: repeat(2, 1fr); }
   .radio .arch-big { order: -1; aspect-ratio: 4 / 4.4; }
@@ -409,7 +418,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
       <h1 id="tytul" class="rise">Dobrze, że jesteś.</h1>
       <div>
         <p class="lead rise" style="--i:1">Christian Culture to radio i telewizja 24/7, społeczność LUMINA, portal CCN i Akademia Biblijna. Wszystko bezpłatnie. Wybierz drzwi.</p>
-        <p class="verse rise" style="--i:2"><q>Oto stoję u drzwi i kołaczę.</q> Apokalipsa 3:20</p>
+        <p class="verse"><q>Oto stoję u drzwi i kołaczę.</q> Apokalipsa 3:20</p>
       </div>
     </div>
 
@@ -425,7 +434,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
         <p>Kanał CC24 na żywo.</p>
       </article>
       <article class="door rise" style="--i:3">
-        <a class="door-frame" href="/lumina" data-track="lumina" data-place="drzwi" aria-label="Społeczność LUMINA"><img src="/wizytowka/img/lumina.webp" width="800" height="1100" alt="Para patrzy na świetlisty krzyż nad górami"></a>
+        <a class="door-frame" href="/lumina" data-track="lumina" data-place="drzwi" aria-label="Społeczność LUMINA"><img src="/wizytowka/img/lumina-v5.webp" width="800" height="1100" alt="Para patrzy na świetlisty krzyż nad górami"></a>
         <h2><a href="#lumina" data-track="lumina" data-place="drzwi-tytul">LUMINA</a></h2>
         <p>Ludzie wiary i świadectwa.</p>
       </article>
@@ -435,9 +444,9 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
         <p>Wiadomości i analizy.</p>
       </article>
       <article class="door rise" style="--i:5">
-        <a class="door-frame" href="/Halloween" data-track="akcja" data-place="drzwi" aria-label="Akcja #antyHALLOWEEN"><img src="/wizytowka/img/akcja.webp" width="800" height="1100" alt="Logo akcji #antyHALLOWEEN: my świętujemy inaczej"></a>
+        <a class="door-frame" href="/Halloween" data-track="akcja" data-place="drzwi" aria-label="Akcja #antyHALLOWEEN"><img src="/wizytowka/img/akcja-swiatlo.webp" width="800" height="1100" alt="Zapalone świece przy otwartej księdze: wybieramy światło"></a>
         <h2><a href="#akcja" data-track="akcja" data-place="drzwi-tytul">Akcja</a></h2>
-        <p>#antyHALLOWEEN 2026.</p>
+        <p>31.10: świętujemy inaczej.</p>
       </article>
       <article class="door rise" style="--i:6">
         <a class="door-frame" href="/akademia" data-track="akademia" data-place="drzwi" aria-label="Akademia Biblijna"><img src="/wizytowka/img/akademia.webp" width="800" height="1100" alt="Otwarta Biblia na stole przy oknie o świcie"></a>
@@ -445,7 +454,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
         <p>Lekcje biblijne co dzień.</p>
       </article>
       <article class="door rise" style="--i:7">
-        <a class="door-frame" href="#kacik" data-track="kacik" data-place="drzwi" aria-label="Kącik Ewangelizacyjny"><img src="/wizytowka/img/biblia.webp" width="1200" height="800" alt="Otwarte Pismo Święte na drewnianym stole"></a>
+        <a class="door-frame" href="#kacik" data-track="kacik" data-place="drzwi" aria-label="Kącik Ewangelizacyjny"><picture><source media="(max-width: 900px)" srcset="/wizytowka/img/kacik-wide.webp" width="1600" height="700"><img src="/wizytowka/img/kacik.webp" width="800" height="1100" alt="Gałązka oliwna na wspólnym stole: miejsce dla Twojej misji"></picture></a>
         <h2><a href="#kacik" data-track="kacik" data-place="drzwi-tytul">Kącik Ewangelizacyjny</a></h2>
         <p>Bezpłatna przestrzeń misji.</p>
       </article>
@@ -510,7 +519,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   </section>
 
   <section class="lumina" id="lumina" aria-labelledby="lumina-h">
-    <div class="arch-photo rise"><img src="/wizytowka/img/lumina.webp" width="800" height="1100" alt="Para patrzy w niebo, nad nimi świetlisty krzyż" loading="lazy"></div>
+    <div class="arch-photo rise"><img src="/wizytowka/img/lumina-v5.webp" width="800" height="1100" alt="Para patrzy w niebo, nad nimi świetlisty krzyż" loading="lazy"></div>
     <div>
       <h2 id="lumina-h" class="rise">Społeczność LUMINA</h2>
       <p class="lead rise" style="--i:1">Chrześcijański portal relacji i wartości. Piszesz świadectwo, rozmawiasz z ludźmi wiary i modlisz się razem z innymi. Dołączasz jednym kliknięciem przez Google.</p>
@@ -786,6 +795,9 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   ];
   var idx = 0, playing = false;
   var nativeRadio = window.CCChatRadio;
+  if (nativeRadio) setTimeout(function () {
+    STATIONS.forEach(function (st) { if (st.nativeId) nativeRadio.prepare(st.nativeId).catch(function () {}); });
+  }, 2500);
   var playRequest = 0;
   var status = document.querySelector('[data-status]');
   var ytWrap = document.querySelector('[data-yt-wrap]'), ytPlayer = null, ytReady = null, ytCounted = false;
