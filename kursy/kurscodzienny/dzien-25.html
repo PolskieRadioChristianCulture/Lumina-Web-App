@@ -573,18 +573,18 @@
     };
 
     // Font Controls
-    document.getElementById('kcFontToggle').onclick = () => {
+    (document.getElementById('kcFontToggle') || {}).onclick = () => {
       const isSans = document.documentElement.getAttribute('data-kc-font') === 'sans';
       document.documentElement.setAttribute('data-kc-font', isSans ? 'serif' : 'sans');
       localStorage.setItem('kc_font_pref', isSans ? 'serif' : 'sans');
     };
 
     let curFontSize = 1.05;
-    document.getElementById('kcFontSizeUp').onclick = () => {
+    (document.getElementById('kcFontSizeUp') || {}).onclick = () => {
       curFontSize = Math.min(1.4, curFontSize + 0.05);
       document.documentElement.style.setProperty('--kc-font-size', curFontSize + 'rem');
     };
-    document.getElementById('kcFontSizeDown').onclick = () => {
+    (document.getElementById('kcFontSizeDown') || {}).onclick = () => {
       curFontSize = Math.max(0.85, curFontSize - 0.05);
       document.documentElement.style.setProperty('--kc-font-size', curFontSize + 'rem');
     };
@@ -632,7 +632,8 @@
   <button class="back-to-top" id="backToTopBtn" type="button" aria-label="Przewiń do góry" title="Przewiń do góry">
     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
   </button>
-  <script src="/js/cc-daily-course-share.js?v=20261025_v4" defer>
+  <script src="/js/cc-daily-course-share.js?v=20261025_v4" defer></script>
+  <script>
     // ── Lektor Audio TTS ──
     let ttsUtterance = null;
     let isTtsPlaying = false;
