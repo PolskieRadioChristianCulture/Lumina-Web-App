@@ -1751,6 +1751,12 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    if (decodedP === '/wizytówka' || decodedP === '/wizytowka') {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/wizytowka/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
     
     if (decodedP === '/ai-antychryst' || decodedP === '/ai-kontra-antychryst' || decodedP === '/si-antychryst') {
       const redirectUrl = new URL(request.url);
