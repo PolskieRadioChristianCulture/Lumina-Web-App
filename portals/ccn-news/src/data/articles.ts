@@ -73,6 +73,83 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    "id": "art-z-biblia-za-pan-brat-dzien-26",
+    "title": "Z Biblią za Pan Brat: Dzień 26 — Od więzienia do pałacu: Teologia oczekiwania, roztropności gospodarczej i opatrzności (Rdz 40–41)",
+    "slug": "z-biblia-za-pan-brat-dzien-26-od-wiezienia-do-palacu",
+    "excerpt": "Księga Rodzaju 40–41: Józef zapomniany w więzieniu, sny podczaszego, piekarza i faraona, plan na siedem lat obfitości i głodu oraz wywyższenie Józefa jako sługi ocalenia wielu.",
+    "content": [
+      "W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, dzisiejsze opracowanie leksykonu teologicznego na portalu CCN analizuje rozdziały czterdziesty i czterdziesty pierwszy Księgi Rodzaju. Tekst ten opisuje przełomowy etap biografii Józefa w Egipcie: od posługi uwięzionym dygnitarzom i dwuletniego okresu zapomnienia, przez interpretację snów faraona, aż po objęcie urzędu zarządcy państwa w obliczu nadciągającego kryzysu żywnościowego.",
+      "1. EMPATIA I PRAWDOMÓWNOŚĆ W WARUNKACH NIESPRAWIEDLIWOŚCI (RDZ 40:1–23)",
+      "Osadzony w więzieniu królewskim Józef zostaje przydzielony do obsługi dwóch wysokich urzędników dworu faraona — przełożonego podczaszych i przełożonego piekarzy (Rdz 40:1–4). Egzegeza biblijna zwraca uwagę na postawę etyczną Józefa, który mimo własnego niezawinionego cierpienia zachowuje wrażliwość na stan emocjonalny współwięźniów („Dlaczego wasze twarze są dziś tak smutne?” — Rdz 40:7).",
+      "W obliczu niepokojących snów obu urzędników Józef formułuje fundamentalną zasadę teologiczną:",
+      "„Czyż wykład snów nie należy do Boga?” (Rdz 40:8; por. Dn 2:27–28).",
+      "Józef przekazuje obu więźniom pełną prawdę — zarówno pomyślną zapowiedź rehabilitacji podczaszego, jak i tragiczny wyrok czekający piekarza (Rdz 40:12–19). Jednocześnie zwraca się do podczaszego z naturalną, ludzką prośbą o wstawiennictwo u faraona, wskazując na bezprawność swojego uprowadzenia i uwięzienia (Rdz 40:14–15). Choć zapowiedzi spełniają się trzeciego dnia podczas urodzin faraona, przywrócony do łask podczaszy zapomina o Józefie (Rdz 40:20–23).",
+      "2. SNY FARAONA I POKORA WOBEC BOŻEGO OBJAWIENIA (RDZ 41:1–32)",
+      "Dopiero po upływie dwóch pełnych lat (Rdz 41:1), gdy trzydziestoletni Józef ma już za sobą około trzynastu lat niewoli i więzienia (por. Rdz 37:2; 41:46), podwójny sen faraona o siedmiu krowach tłustych i chudych oraz siedmiu kłosach pełnych i wysuszonych wywołuje kryzys na dworze egipskim. Bezradność nadwornych wróżbitów i mędrców skłania podczaszego do wyznania swojego zaniedbania i wskazania na Józefa (Rdz 41:8–13).",
+      "Stając przed władcą, Józef konsekwentnie odrzuca przypisywanie sobie nadzwyczajnych zdolności („To nie ja! Bóg da pomyślną odpowiedź faraonowi” — Rdz 41:16), wyjaśniając, że oba sny zapowiadają ten sam Boży wyrok: siedem lat wyjątkowego urodzaju, po których nastąpi siedem lat wyniszczającego głodu (Rdz 41:25–32).",
+      "3. ROZTROPNOŚĆ ADMINISTRACYJNA I WŁADZA JAKO SŁUŻBA (RDZ 41:33–57)",
+      "Narracja biblijna łączy nadprzyrodzone objawienie z praktyczną mądrością zarządczą. Józef przedstawia program prewencji kryzysowej, obejmujący powołanie centralnego zarządcy, sieć lokalnych nadzorców oraz magazynowanie jednej piątej plonów w latach obfitości (Rdz 41:33–36). Uznając w Józefie obecność Ducha Bożego, faraon powierza mu urząd drugiego po sobie zarządcy Egiptu, nadając mu imię Safnat-Paneach oraz dając za żonę Asenat, z którą Józef ma dwóch synów: Manassesa i Efraima (Rdz 41:37–52).",
+      "Rzetelna hermeneutyka podkreśla, że historia awansu Józefa jest szczególnym dziełem Bożej opatrzności mającym na celu ocalenie wielu narodów (oraz rodziny Jakuba) od śmierci głodowej (Rdz 41:53–57), nie stanowi natomiast uniwersalnej gwarancji sukcesu politycznego czy finansowego dla każdego wierzącego.",
+      "4. PERSPEKTYWA CHRYSTOCENTRYCZNA: ODRZUCONY I WYWYŻSZONY DAWCA ŻYCIA",
+      "W ujęciu kanonicznym postać Józefa — niesprawiedliwie cierpiącego, a następnie wywyższonego ku ocaleniu wielu — ukazuje wyraźne analogie chrystologiczne (przy zachowaniu unikalnego, zbawczego charakteru dzieła Chrystusa — Dz 2:22–24, 36):",
+      "Chleb Życia: Podczas gdy faraon kierował głodnych do Józefa po doczesne zboże („Idźcie do Józefa” — Rdz 41:55), Jezus Chrystus ogłasza siebie prawdziwym Chlebem Życia, który zstąpił z nieba, aby dać światu życie wieczne (J 6:35).",
+      "Cierpliwa służba i troska o potrzebujących: Obecność Boga z Józefem w więzieniu zapowiada obietnicę Chrystusa towarzyszącego uczniom pośród ucisków świata (J 16:33; Mt 28:20) i wzywającego swój Kościół do praktycznej miłości wobec głodnych i cierpiących (Mt 25:35–40; Ef 2:8–10).",
+      "PODSUMOWANIE REDAKCYJNE CCN",
+      "Rozdziały czterdziesty i czterdziesty pierwszy Księgi Rodzaju uczą, że czas pozornej zwłoki i ludzkiej niewdzięczności nie oznacza nieobecności Boga. Prawdziwa dojrzałość duchowa łączy wierność w małych zadaniach, pokorę w obliczu sukcesu oraz roztropne planowanie służące ochronie ludzkiego życia, wskazując ostatecznie na Chrystusa jako jedyne źródło życia wiecznego."
+    ],
+    "category": "wiara",
+    "categoryLabel": "Wiara & Rozwój",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-26T06:00:00.000Z",
+    "dateFormatted": "26 października 2026",
+    "imageUrl": "/images/news/art-z-biblia-za-pan-brat-dzien-26-od-wiezienia-do-palacu.jpg",
+    "imageCaption": "Józef od więzienia do pałacu — Z Biblią za Pan Brat Dzień 26. Fot. EkoCC / Christian Culture",
+    "readTimeMinutes": 7,
+    "isHero": false,
+    "isPopular": true,
+    "popularRank": 2,
+    "tags": [
+      "Z Biblią za Pan Brat",
+      "Księga Rodzaju",
+      "Józef",
+      "faraon",
+      "sny",
+      "opatrzność",
+      "roztropność",
+      "Chleb Życia",
+      "Rdz 40",
+      "Rdz 41",
+      "J 6:35"
+    ],
+    "scriptureReference": {
+      "verse": "Rdz 40:1–41:57; Dn 2:27–28; J 6:35; J 16:33 (UBG)",
+      "text": ""
+    },
+    "sourceCitation": {
+      "sourceName": "Z Biblią za Pan Brat",
+      "sourceUrl": "https://polskieradio.cc/akademia#kurscodzienny"
+    },
+    "relatedCourse": {
+      "title": "Kurs Codzienny Pisma Świętego — Dzień 26",
+      "lesson": "Dzień 26",
+      "url": "/akademia/kurscodzienny/dzien-26"
+    },
+    "resourceLinks": [
+      {
+        "label": "Otwórz Lekcję Dnia 26 w Akademii Biblijnej",
+        "url": "/akademia/kurscodzienny/dzien-26"
+      },
+      {
+        "label": "Interlinearna MojaBiblia CC (Rdz 40–41)",
+        "url": "/mojabiblia"
+      },
+      {
+        "label": "Akademia Biblijna LUMINA",
+        "url": "/akademia"
+      }
+    ]
+  },
+  {
   "id": "art-kim-jestem-gdy-nikt-nie-patrzy-uczciwosc-sumienie",
   "title": "Kim jestem, gdy nikt nie patrzy? Uczciwość i sumienie według Biblii",
   "slug": "kim-jestem-gdy-nikt-nie-patrzy-uczciwosc-sumienie",
