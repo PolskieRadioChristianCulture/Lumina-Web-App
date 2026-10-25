@@ -80,6 +80,12 @@
         display: block;
       }
 
+      /* Wariant dla trybu jasnego (Dual-Theme Standard JOMA-D047) */
+      html[data-lumina-theme="light"] .lumina-badge-l-icon,
+      .lumina-light-theme .lumina-badge-l-icon {
+        background-image: url('/images/lumina/lumina-icon-light-transparent.png') !important;
+      }
+
       .lumina-share-btn-l.icon-only {
         padding: 0;
         width: 44px;
@@ -99,6 +105,18 @@
         min-width: 28px;
         min-height: 28px;
         background: transparent url('/images/lumina/lumina-icon-transparent.png') center/contain no-repeat;
+      }
+
+      html[data-lumina-theme="light"] .lumina-share-btn-l.icon-only .lumina-badge-l-icon,
+      .lumina-light-theme .lumina-share-btn-l.icon-only .lumina-badge-l-icon {
+        background-image: url('/images/lumina/lumina-icon-light-transparent.png') !important;
+      }
+
+      html[data-lumina-theme="light"] .lumina-share-btn-l.icon-only,
+      .lumina-light-theme .lumina-share-btn-l.icon-only {
+        background: #faf8f5;
+        border-color: rgba(196, 163, 90, 0.6);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 0 10px rgba(196, 163, 90, 0.15);
       }
 
       .lumina-share-btn-l.icon-only:hover {

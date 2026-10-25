@@ -1,12 +1,13 @@
 ---
-description: Standard oficjalnego logo Portalu LUMINA w EkoCC oraz ikony z tłem przeźroczystym dla przycisków udostępniania i publikowania
+description: Standard oficjalnego logo Portalu LUMINA w EkoCC (Dual-Theme: Dark & Light) oraz ikony z tłem przeźroczystym dla przycisków udostępniania i publikowania
 globs: **/*lumina*,**/share*,**/tablica*,**/mess*,**/components/*
 ---
 
 # Standard Oficjalnego Logo Portalu LUMINA w EkoCC (Dyrektywa 2026-10-25)
 
-## 1. Oficjalne Logo Portalu LUMINA
-- Stylizowany monogram litery **„L”** (płomień Ducha Świętego, przejście od bieli/błękitu do Champagne Gold `#C4A35A`).
+## 1. Oficjalne Logo Portalu LUMINA (Dual-Theme)
+- **Tryb Ciemny (Dark Mode):** Stylizowany monogram litery **„L”** (płomień Ducha Świętego, przejście od bieli/błękitu do Champagne Gold `#C4A35A`).
+- **Tryb Jasny (Light Mode):** Monogram litery **„L”** o głębokim granatowym/midnight blue rdzeniu ze srebrnym fasetowaniem i ciepłą obwódką Champagne Gold `#C4A35A`, zapewniający maksymalny kontrast na jasnych tłach (`html[data-lumina-theme="light"]`, `#FFFFFF`, `#FAF8F5`).
 - Dotyczy **Portalu LUMINA** (`/lumina`, Tablica `/tablica`, Profile `/profil`, materiały brandingowe).
 
 ## 2. Klauzula Wyłączenia: ZAKAZ dla LUMI MESS
@@ -15,10 +16,16 @@ globs: **/*lumina*,**/share*,**/tablica*,**/mess*,**/components/*
 
 ## 3. Przyciski Udostępniania i Publikowania (Tło Przeźroczyste)
 - Wszystkie przyciski `Opublikuj na LUMINA`, `Udostępnij na Tablicy LUMINA` oraz przyciski „L” w całym ekosystemie Christian Culture **muszą stosować wersję ikony z tłem w 100% przeźroczystym**:
-  - Ścieżka: `/images/lumina/lumina-icon-transparent.png` (oraz `/images/lumina-icon-transparent.png`).
+  - Tryb ciemny: `/images/lumina/lumina-icon-transparent.png` (oraz `/images/lumina-icon-transparent.png`).
+  - Tryb jasny: `/images/lumina/lumina-icon-light-transparent.png` (oraz `/images/lumina-icon-light-transparent.png`).
 - Touch target: minimum 44×44px (WCAG 2.2 AA / `@SMCC`).
 
 ## 4. Ścieżki Masterów
-- Transparent: `/images/lumina/lumina-logo-transparent.png`
-- Black: `/images/lumina/lumina-logo-black.jpg`
-- Neon: `/images/lumina/lumina-logo-neon.jpg`
+- **Tryb Ciemny:**
+  - Transparent: `/images/lumina/lumina-logo-transparent.png`
+  - Black: `/images/lumina/lumina-logo-black.jpg`
+  - Neon: `/images/lumina/lumina-logo-neon.jpg`
+- **Tryb Jasny:**
+  - Transparent Icon: `/images/lumina/lumina-icon-light-transparent.png`
+  - Light Master PNG: `/images/lumina/lumina-logo-light.png`
+  - Light Master JPG: `/images/lumina/lumina-logo-light.jpg`
