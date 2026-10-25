@@ -61,151 +61,172 @@
   </script>
 
   <style>
+    body { background: #07090E; color: #f1f5f9; }
+    .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(196,163,90,0.18); position: sticky; top: 0; z-index: 50; }
+
+    /* Topbar Icon-First Standard (Desktop & Mobile Clean Action Bar) */
+    .ak-header #reader-font-label,
+    .ak-header #tts-btn-text,
+    .ak-header .theme-toggle-label,
+    .ak-header #ccTopSubLink span,
+    .ak-header a[href*="patronite"] span:not(:first-child) {
+      display: none !important;
+    }
+    .ak-header .kc-reader-pill,
+    .ak-header #btn-audio-tts,
+    .ak-header #btn-theme-toggle,
+    .ak-header #ccTopSubLink,
+    .ak-header a[href*="patronite"] {
+      width: 38px !important;
+      height: 38px !important;
+      min-width: 38px !important;
+      min-height: 38px !important;
+      padding: 0 !important;
+      justify-content: center !important;
+      align-items: center !important;
+      display: inline-flex !important;
+      border-radius: 9999px !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+    .ak-header .rounded-full.border-zinc-800 {
+      height: 38px !important;
+      padding: 2px 4px !important;
+      box-sizing: border-box !important;
+      display: inline-flex !important;
+      align-items: center !important;
+    }
+    .ak-header .ak-header-course-title {
+      max-width: none !important;
+      white-space: nowrap !important;
+      text-overflow: clip !important;
+      display: inline-block !important;
+    }
+    @media (max-width: 768px) {
+      .ak-header .ak-header-slash, .ak-header .ak-header-course-title, .ak-header .ak-header-brand-sub { display: none !important; }
+      .ak-header .max-w-6xl, .ak-header .max-w-7xl { padding-left: 12px !important; padding-right: 12px !important; }
+    }
+    .kc-card { background: #0E121A; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 24px; margin-bottom: 24px; }
+    @media (min-width: 640px) { .kc-card { padding: 32px; } }
+    .kc-card h2, .kc-card h3 { font-family: 'Cinzel', serif; letter-spacing: 0.06em; color: #E2CC9A; }
+
+    /* Master Reader Typography - Maksymalny komfort i płynność długiego czytania */
     :root {
-      --kc-font-body: 'Lora', Georgia, serif;
-      --kc-font-size: 1.05rem;
-      --kc-line-height: 1.85;
-      --kc-letter-spacing: 0.01em;
-    }
-    [data-kc-font="sans"] {
-      --kc-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --kc-font-size: 1.0rem;
-      --kc-line-height: 1.75;
-      --kc-letter-spacing: 0em;
+      --kc-font-body: 'Lora', Georgia, 'Times New Roman', serif;
+      --kc-font-size: 1.05rem; /* ~16.8px - idealna wielkość książkowa */
+      --kc-line-height: 1.82;   /* optymalny oddech między wierszami */
+      --kc-letter-spacing: 0.012em; /* delikatne rozluźnienie czytelnicze */
+      --kc-text-color: #f1f5f9; /* Slate 100 - wysoki kontrast, miękki dla wzroku */
     }
 
-    body {
-      background-color: #07090E;
-      color: #E2E8F0;
-      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    html[data-kc-font="sans"] {
+      --kc-font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --kc-font-size: 1.00rem; /* 16px */
+      --kc-line-height: 1.78;
+      --kc-letter-spacing: 0.015em;
     }
 
-    #lesson-text-body p,
-    #lesson-text-body li,
-    .kc-reader-content {
+    /* Akapity i listy w kartach lekcji */
+    .kc-card p,
+    .kc-card li {
       font-family: var(--kc-font-body) !important;
       font-size: var(--kc-font-size) !important;
       line-height: var(--kc-line-height) !important;
       letter-spacing: var(--kc-letter-spacing) !important;
-      color: #cbd5e1 !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .kc-card p:not([class*="text-amber-"]):not([class*="text-brand-"]):not([class*="text-rose-"]):not([class*="text-emerald-"]):not([class*="text-white"]),
+    .kc-card li:not([class*="text-amber-"]):not([class*="text-brand-"]):not([class*="text-rose-"]):not([class*="text-emerald-"]):not([class*="text-white"]) {
+      color: var(--kc-text-color) !important;
+    }
+
+    .kc-card p {
       margin-bottom: 1.15rem;
     }
-
-    .kc-card {
-      background: #0E121A;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 28px;
-      margin-bottom: 24px;
-      transition: border-color .3s, transform .2s;
-    }
-    .kc-card:hover {
-      border-color: rgba(196, 163, 90, 0.3);
+    .kc-card p:last-child {
+      margin-bottom: 0;
     }
 
-    .kc-verse-box {
-      background: linear-gradient(135deg, rgba(196, 163, 90, 0.12) 0%, rgba(14, 18, 26, 0.8) 100%);
+    .kc-card strong, .kc-card b {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .kc-card em, .kc-card i {
+      color: #E2CC9A;
+      font-style: italic;
+    }
+
+    .kc-verse-box, blockquote {
+      background: rgba(196,163,90,0.08);
       border-left: 4px solid #C4A35A;
       border-radius: 0 16px 16px 0;
-      padding: 24px;
-    }
-
-    .quiz-option {
-      background: #161B26;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 14px 18px;
-      cursor: pointer;
-      transition: all .2s;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-    }
-    .quiz-option:hover {
-      border-color: #C4A35A;
-      background: #1f2637;
-    }
-    .quiz-option.correct {
-      border-color: #10B981 !important;
-      background: rgba(16, 185, 129, 0.15) !important;
-      color: #34D399 !important;
-    }
-    .quiz-option.wrong {
-      border-color: #EF4444 !important;
-      background: rgba(239, 68, 68, 0.15) !important;
-      color: #F87171 !important;
+      padding: 20px 24px;
+      font-family: 'Lora', Georgia, serif !important;
+      font-size: 1.08rem !important;
+      line-height: 1.82 !important;
+      letter-spacing: 0.012em !important;
+      color: #f1e7d0 !important;
+      margin: 1.3rem 0;
     }
 
     .kc-reader-pill {
-      min-width: 38px;
-      min-height: 38px;
-      border-radius: 9999px;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(22, 27, 38, 0.85);
       color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 0.8rem;
+      min-height: 44px;
     }
     .kc-reader-pill:hover {
-      background: rgba(196,163,90,0.18);
-      border-color: rgba(196,163,90,0.45);
-      color: #ffffff;
+      border-color: rgba(196,163,90,0.6);
+      color: #fef08a;
+      background: rgba(30, 37, 51, 0.95);
     }
-
-    .back-to-top {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #C4A35A;
-      color: #07090E;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s;
-      z-index: 50;
-      border: none;
-      cursor: pointer;
-    }
-    .back-to-top.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-    .back-to-top:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 24px rgba(196,163,90,0.4);
-    }
+    .quiz-option { background: #0E121A; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 18px; cursor: pointer; transition: all .2s; font-size: 14px; color: #d4d4d8; }
+    .quiz-option:hover { border-color: rgba(196,163,90,0.4); background: #161B26; }
+    .quiz-option.correct { border-color: #4ade80 !important; background: rgba(34,197,94,0.12) !important; color: #4ade80 !important; }
+    .quiz-option.wrong { border-color: #f87171 !important; background: rgba(248,113,113,0.12) !important; color: #f87171 !important; }
+    .custom-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #C4A35A; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; }
+    .custom-check.checked { background: #C4A35A; color: #07090E; }
   </style>
+  <script src="/js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
+  <link rel="stylesheet" href="/css/lumina-courses.css?v=20261008_desktop_icons_v2" />
+  <script src="/js/cc-course-theme.js?v=20261008_desktop_icons_v3" defer></script>
 </head>
 
 <body class="min-h-screen flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
 
   <!-- ── TOP GLOBAL STRIP ── -->
-  <header class="sticky top-0 z-40 bg-[#07090E]/95 backdrop-blur-md border-b border-brand-line">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <a href="/akademia/kurscodzienny" class="flex items-center gap-2 text-zinc-400 hover:text-white transition group min-h-[44px]">
-          <i class="fa-solid fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
-          <span class="text-xs font-semibold uppercase tracking-wider hidden sm:inline">Katalog Dni</span>
+    <!-- ── TOP HEADER ── -->
+  <header class="ak-header">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 sm:gap-4">
+        <a href="/akademia/kurscodzienny" class="flex items-center gap-2.5 min-h-[44px]" title="Powrót do Kursu Codziennego">
+          <span class="text-amber-400 text-lg">←</span>
+          <div class="flex items-center gap-2">
+            <span class="font-display text-sm font-bold text-brand-gold tracking-widest">LUMINA</span>
+            <span class="text-xs font-semibold text-zinc-400 hidden md:inline ak-header-brand-sub">BIBLE ACADEMY</span>
+          </div>
         </a>
-        <span class="text-zinc-600">/</span>
-        <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-          <span class="font-display text-xs font-bold tracking-widest text-brand-gold uppercase">Lekcja 22 • Rdz 31–32</span>
-        </div>
+        <span class="text-zinc-700 hidden md:inline ak-header-slash">/</span>
+        <a href="/akademia/kurscodzienny" class="text-xs font-semibold text-amber-200/90 hover:text-amber-300 whitespace-nowrap hidden md:inline ak-header-course-title">
+          Z Biblią za Pan Brat
+        </a>
       </div>
 
-      <div class="flex items-center gap-2">
-        <!-- Font Family Toggle (Lora Serif / Inter Sans) -->
-        <button type="button" id="btn-reader-font" onclick="toggleReaderFont()" class="kc-reader-pill" title="Zmień krój pisma: Lora (Książkowa szeryfowa) / Inter (Ekranowa bezszeryfowa)" aria-label="Zmień krój pisma">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Reader Typography Toggle Hook -->
+        <button type="button" id="btn-reader-font" onclick="toggleReaderFont()" class="kc-reader-pill" title="Zmień krój pisma: Lora (Książkowa szeryfowa) / Inter (Ekranowa bezszeryfowa)">
           <i class="fa-solid fa-font text-amber-400 text-xs"></i>
           <span id="reader-font-label" class="sr-only font-semibold">Krój: Lora</span>
         </button>
@@ -222,24 +243,22 @@
         </div>
 
         <!-- Audio TTS Hook -->
-        <button type="button" id="btn-audio-tts" onclick="toggleAudioLesson()" class="w-[38px] h-[38px] min-w-[38px] min-h-[38px] p-0 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-bold hover:bg-amber-500/20 transition flex items-center justify-center" title="Słuchaj lekcji z lektorem" aria-label="Słuchaj lekcji z lektorem">
+        <button type="button" id="btn-audio-tts" onclick="toggleAudioLesson()" class="w-[38px] h-[38px] min-w-[38px] min-h-[38px] p-0 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-bold hover:bg-amber-500/20 transition flex items-center justify-center" title="Słuchaj lekcji z lektorem">
           <i class="fa-solid fa-volume-high text-xs" id="tts-icon"></i>
           <span id="tts-btn-text" class="sr-only">Słuchaj Audio</span>
         </button>
 
-        <!-- Wsparcie Patronite -->
-        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="w-[38px] h-[38px] min-w-[38px] min-h-[38px] p-0 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 inline-flex items-center justify-center" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
+        <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="w-[38px] h-[38px] min-w-[38px] min-h-[38px] p-0 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 inline-flex items-center justify-center" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
           <span>❤️</span>
           <span class="sr-only">Wspieraj</span>
         </a>
-
-        <!-- CC Global Auth Connector Injection Point -->
         <div id="cc-auth-nav-container" class="cc-auth-widget-container"></div>
       </div>
     </div>
   </header>
 
   <!-- ── BREADCRUMB STRIP ── -->
+    <!-- ── BREADCRUMB STRIP ── -->
   <nav class="bg-[#0A0D14] border-b border-brand-line py-2.5 px-4" aria-label="Nawigacja lekcji">
     <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-500 flex-wrap gap-2">
       <div class="flex items-center gap-2">
@@ -249,16 +268,16 @@
         <span>›</span>
         <span class="text-zinc-400">Miesiąc 1: Księga Rodzaju</span>
         <span>›</span>
-        <span class="text-amber-400 font-bold">DZIEŃ 22</span>
+        <span class="text-amber-400 font-bold">Dzień 22</span>
       </div>
       <div class="flex items-center gap-2">
         <button type="button" onclick="toggleReaderFont()" class="text-zinc-300 hover:text-amber-300 px-2 py-1 min-h-[32px] flex items-center gap-1 sm:hidden text-[11px] rounded bg-zinc-900 border border-zinc-800" title="Przełącz krój pisma">
           <i class="fa-solid fa-font text-amber-400 text-[10px]"></i>
           <span class="kc-font-mobile-label">Lora</span>
         </button>
-        <a href="/akademia/kurscodzienny/dzien-21" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">← Dzień 21</a>
-        <span class="text-zinc-700">|</span>
         <a href="/akademia/kurscodzienny" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">Spis Dni</a>
+        <span class="text-zinc-700">|</span>
+        <a href="/akademia/kurscodzienny/dzien-21" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-amber-300 min-h-[32px] flex items-center">← Dzień 21</a>
         <span class="text-zinc-700">|</span>
         <a href="/akademia/kurscodzienny/dzien-23" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Dzień 23 →</a>
       </div>
@@ -979,6 +998,129 @@
   <button class="back-to-top" id="backToTopBtn" type="button" aria-label="Przewiń do góry" title="Przewiń do góry">
     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
   </button>
-  <script src="/js/cc-daily-course-share.js?v=20261025_v4" defer></script>
+  <script src="/js/cc-daily-course-share.js?v=20261025_v4" defer>
+    // ── Lektor Audio TTS ──
+    let ttsUtterance = null;
+    let isTtsPlaying = false;
+
+    function toggleAudioLesson() {
+      if (!('speechSynthesis' in window)) {
+        alert('Twoja przeglądarka nie wspiera odtwarzania mowy (Web Speech API).');
+        return;
+      }
+
+      if (isTtsPlaying) {
+        window.speechSynthesis.cancel();
+        isTtsPlaying = false;
+        updateTtsUi(false);
+        return;
+      }
+
+      const title = document.querySelector('h1')?.textContent?.trim() || '';
+      const thought = document.querySelector('.p-5 p, .p-6 p, .kc-card p')?.textContent?.trim() || '';
+      const body = document.getElementById('lesson-text-body')?.innerText || document.querySelector('main')?.innerText || '';
+      const fullSpeech = title + '. ' + thought + '. ' + body.slice(0, 4500);
+
+      window.speechSynthesis.cancel();
+      ttsUtterance = new SpeechSynthesisUtterance(fullSpeech);
+      ttsUtterance.lang = 'pl-PL';
+      ttsUtterance.rate = 0.96;
+
+      ttsUtterance.onend = () => {
+        isTtsPlaying = false;
+        updateTtsUi(false);
+      };
+
+      ttsUtterance.onerror = () => {
+        isTtsPlaying = false;
+        updateTtsUi(false);
+      };
+
+      window.speechSynthesis.speak(ttsUtterance);
+      isTtsPlaying = true;
+      updateTtsUi(true);
+    }
+
+    function updateTtsUi(playing) {
+      const icon = document.getElementById('tts-icon');
+      const text = document.getElementById('tts-btn-text');
+      const btn = document.getElementById('btn-audio-tts');
+      if (playing) {
+        if (icon) icon.className = 'fa-solid fa-pause text-xs text-amber-300';
+        if (text) text.textContent = 'Pauza Audio';
+        if (btn) btn.classList.add('ring-2', 'ring-amber-400');
+      } else {
+        if (icon) icon.className = 'fa-solid fa-volume-high text-xs text-amber-300';
+        if (text) text.textContent = 'Słuchaj Audio';
+        if (btn) btn.classList.remove('ring-2', 'ring-amber-400');
+      }
+    }
+
+    // ── Master Reader Typography Controller ──
+    let currentReaderZoom = 0;
+
+    function initReaderSettings() {
+      const savedFont = localStorage.getItem('kc_reader_font') || 'serif';
+      const savedZoom = parseInt(localStorage.getItem('kc_reader_zoom') || '0', 10);
+      applyReaderFont(savedFont, false);
+      applyReaderZoom(savedZoom);
+    }
+
+    function toggleReaderFont() {
+      const current = document.documentElement.getAttribute('data-kc-font') === 'sans' ? 'sans' : 'serif';
+      const next = current === 'serif' ? 'sans' : 'serif';
+      localStorage.setItem('kc_reader_font', next);
+      applyReaderFont(next, true);
+    }
+
+    function applyReaderFont(font, updateZoom = true) {
+      if (font === 'sans') {
+        document.documentElement.setAttribute('data-kc-font', 'sans');
+      } else {
+        document.documentElement.removeAttribute('data-kc-font');
+      }
+
+      const desktopLabel = document.getElementById('reader-font-label');
+      if (desktopLabel) {
+        desktopLabel.textContent = font === 'sans' ? 'Krój: Inter' : 'Krój: Lora';
+      }
+
+      const mobileLabels = document.querySelectorAll('.kc-font-mobile-label');
+      mobileLabels.forEach(el => {
+        el.textContent = font === 'sans' ? 'Inter' : 'Lora';
+      });
+
+      const btn = document.getElementById('btn-reader-font');
+      if (btn) {
+        btn.title = font === 'sans' 
+          ? 'Aktywna: Inter (Ekranowa bezszeryfowa). Kliknij, aby zmienić na Lora (Książkowa szeryfowa)' 
+          : 'Aktywna: Lora (Książkowa szeryfowa). Kliknij, aby zmienić na Inter (Ekranowa bezszeryfowa)';
+      }
+
+      if (updateZoom) {
+        applyReaderZoom(currentReaderZoom);
+      }
+    }
+
+    function adjustFontSize(delta) {
+      currentReaderZoom = Math.max(-2, Math.min(3, currentReaderZoom + delta));
+      localStorage.setItem('kc_reader_zoom', currentReaderZoom);
+      applyReaderZoom(currentReaderZoom);
+    }
+
+    function applyReaderZoom(zoom) {
+      currentReaderZoom = zoom;
+      const isSans = document.documentElement.getAttribute('data-kc-font') === 'sans';
+      const baseRem = isSans ? (1.00 + (zoom * 0.07)) : (1.05 + (zoom * 0.07));
+      document.documentElement.style.setProperty('--kc-font-size', baseRem.toFixed(3) + 'rem');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initReaderSettings);
+    } else {
+      initReaderSettings();
+    }
+
+  </script>
 </body>
 </html>

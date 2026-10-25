@@ -312,9 +312,14 @@
 
       <!-- WERSET PAMIĘCIOWY -->
       <div class="kc-verse-box mb-8">
-        <div class="text-xs font-bold text-amber-400 font-sans uppercase tracking-wider mb-2 flex items-center gap-2">
-          <i class="fa-solid fa-bookmark"></i>
-          <span>Werset do zapamiętania na dziś:</span>
+        <div class="text-xs font-bold text-amber-400 font-sans uppercase tracking-wider mb-2 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bookmark"></i>
+            <span>Werset do zapamiętania na dziś:</span>
+          </div>
+          <button type="button" onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling?.textContent?.trim() || ''); alert('Skopiowano werset!');" class="text-zinc-400 hover:text-amber-300 text-xs normal-case font-sans">
+            <i class="fa-regular fa-copy mr-1"></i>Kopiuj
+          </button>
         </div>
         <blockquote class="text-lg sm:text-xl text-amber-100 italic leading-relaxed mb-2 font-serif">
           „I ustanowię nieprzyjaźń między tobą a kobietą, między twoim potomstwem a jej potomstwem; ono zrani ci głowę, a ty zranisz mu piętę.”

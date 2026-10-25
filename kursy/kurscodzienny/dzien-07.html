@@ -63,6 +63,7 @@
   <style>
     body { background: #07090E; color: #f1f5f9; }
     .ak-header { background: rgba(7,9,14,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(196,163,90,0.18); position: sticky; top: 0; z-index: 50; }
+
     /* Topbar Icon-First Standard (Desktop & Mobile Clean Action Bar) */
     .ak-header #reader-font-label,
     .ak-header #tts-btn-text,
@@ -109,22 +110,23 @@
     @media (min-width: 640px) { .kc-card { padding: 32px; } }
     .kc-card h2, .kc-card h3 { font-family: 'Cinzel', serif; letter-spacing: 0.06em; color: #E2CC9A; }
 
-    /* Master Reader Typography */
+    /* Master Reader Typography - Maksymalny komfort i płynność długiego czytania */
     :root {
       --kc-font-body: 'Lora', Georgia, 'Times New Roman', serif;
-      --kc-font-size: 1.05rem;
-      --kc-line-height: 1.82;
-      --kc-letter-spacing: 0.012em;
-      --kc-text-color: #f1f5f9;
+      --kc-font-size: 1.05rem; /* ~16.8px - idealna wielkość książkowa */
+      --kc-line-height: 1.82;   /* optymalny oddech między wierszami */
+      --kc-letter-spacing: 0.012em; /* delikatne rozluźnienie czytelnicze */
+      --kc-text-color: #f1f5f9; /* Slate 100 - wysoki kontrast, miękki dla wzroku */
     }
 
     html[data-kc-font="sans"] {
       --kc-font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --kc-font-size: 1.00rem;
+      --kc-font-size: 1.00rem; /* 16px */
       --kc-line-height: 1.78;
       --kc-letter-spacing: 0.015em;
     }
 
+    /* Akapity i listy w kartach lekcji */
     .kc-card p,
     .kc-card li {
       font-family: var(--kc-font-body) !important;
@@ -140,10 +142,22 @@
       color: var(--kc-text-color) !important;
     }
 
-    .kc-card p { margin-bottom: 1.15rem; }
-    .kc-card p:last-child { margin-bottom: 0; }
-    .kc-card strong, .kc-card b { color: #ffffff; font-weight: 700; }
-    .kc-card em, .kc-card i { color: #E2CC9A; font-style: italic; }
+    .kc-card p {
+      margin-bottom: 1.15rem;
+    }
+    .kc-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .kc-card strong, .kc-card b {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .kc-card em, .kc-card i {
+      color: #E2CC9A;
+      font-style: italic;
+    }
 
     .kc-verse-box, blockquote {
       background: rgba(196,163,90,0.08);
@@ -159,19 +173,31 @@
     }
 
     .kc-reader-pill {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 6px 14px; border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 9999px;
       border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(22, 27, 38, 0.85); color: #e2e8f0;
-      font-size: 12px; font-weight: 600; cursor: pointer;
-      transition: all 0.2s ease; min-height: 44px;
+      background: rgba(22, 27, 38, 0.85);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 44px;
     }
-    .kc-reader-pill:hover { border-color: rgba(196,163,90,0.6); color: #fef08a; background: rgba(30, 37, 51, 0.95); }
-
+    .kc-reader-pill:hover {
+      border-color: rgba(196,163,90,0.6);
+      color: #fef08a;
+      background: rgba(30, 37, 51, 0.95);
+    }
     .quiz-option { background: #0E121A; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px 18px; cursor: pointer; transition: all .2s; font-size: 14px; color: #d4d4d8; }
     .quiz-option:hover { border-color: rgba(196,163,90,0.4); background: #161B26; }
     .quiz-option.correct { border-color: #4ade80 !important; background: rgba(34,197,94,0.12) !important; color: #4ade80 !important; }
     .quiz-option.wrong { border-color: #f87171 !important; background: rgba(248,113,113,0.12) !important; color: #f87171 !important; }
+    .custom-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #C4A35A; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; }
+    .custom-check.checked { background: #C4A35A; color: #07090E; }
   </style>
 
   <!-- Universal CC Global Auth -->
@@ -182,6 +208,7 @@
 <body class="min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black">
 
   <!-- ── TOP HEADER ── -->
+    <!-- ── TOP HEADER ── -->
   <header class="ak-header">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3 sm:gap-4">
@@ -199,23 +226,29 @@
       </div>
 
       <div class="flex items-center gap-2 sm:gap-3">
-        <button type="button" id="btn-reader-font" onclick="toggleReaderFont()" class="kc-reader-pill" title="Zmień krój pisma">
+        <!-- Reader Typography Toggle Hook -->
+        <button type="button" id="btn-reader-font" onclick="toggleReaderFont()" class="kc-reader-pill" title="Zmień krój pisma: Lora (Książkowa szeryfowa) / Inter (Ekranowa bezszeryfowa)">
           <i class="fa-solid fa-font text-amber-400 text-xs"></i>
           <span id="reader-font-label" class="sr-only font-semibold">Krój: Lora</span>
         </button>
 
-<!-- Przełącznik motywu (Jasny / Ciemny) -->
+        <!-- Przełącznik motywu (Jasny / Ciemny) -->
         <button type="button" id="btn-theme-toggle" onclick="toggleCourseTheme()" class="kc-reader-pill cin-btn-theme" title="Przełącz motyw (Jasny / Ciemny)" aria-label="Przełącz motyw">
           <i class="fa-solid fa-sun text-amber-400 text-xs theme-toggle-icon"></i>
         </button>
+
+        <!-- Font Zoom Controls (A- / A+) -->
         <div class="hidden md:flex items-center rounded-full border border-zinc-800 bg-zinc-900/80 p-0.5 text-xs text-zinc-400">
           <button type="button" onclick="adjustFontSize(-1)" class="w-8 h-8 flex items-center justify-center rounded-full hover:text-white hover:bg-zinc-800 transition" title="Mniejszy tekst">A-</button>
           <button type="button" onclick="adjustFontSize(1)" class="w-8 h-8 flex items-center justify-center rounded-full hover:text-white hover:bg-zinc-800 font-bold transition" title="Większy tekst">A+</button>
         </div>
+
+        <!-- Audio TTS Hook -->
         <button type="button" id="btn-audio-tts" onclick="toggleAudioLesson()" class="w-[38px] h-[38px] min-w-[38px] min-h-[38px] p-0 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-bold hover:bg-amber-500/20 transition flex items-center justify-center" title="Słuchaj lekcji z lektorem">
           <i class="fa-solid fa-volume-high text-xs" id="tts-icon"></i>
           <span id="tts-btn-text" class="sr-only">Słuchaj Audio</span>
         </button>
+
         <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener" class="w-[38px] h-[38px] min-w-[38px] min-h-[38px] p-0 rounded-full border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/10 inline-flex items-center justify-center" title="Wspieraj Misję Christian Culture" aria-label="Wspieraj Misję">
           <span>❤️</span>
           <span class="sr-only">Wspieraj</span>
@@ -226,6 +259,7 @@
   </header>
 
   <!-- ── BREADCRUMB STRIP ── -->
+    <!-- ── BREADCRUMB STRIP ── -->
   <nav class="bg-[#0A0D14] border-b border-brand-line py-2.5 px-4" aria-label="Nawigacja lekcji">
     <div class="max-w-4xl mx-auto flex items-center justify-between text-xs text-zinc-500 flex-wrap gap-2">
       <div class="flex items-center gap-2">
@@ -235,18 +269,18 @@
         <span>›</span>
         <span class="text-zinc-400">Miesiąc 1: Księga Rodzaju</span>
         <span>›</span>
-        <span class="text-amber-400 font-bold">DZIEŃ 7</span>
+        <span class="text-amber-400 font-bold">Dzień 7</span>
       </div>
       <div class="flex items-center gap-2">
         <button type="button" onclick="toggleReaderFont()" class="text-zinc-300 hover:text-amber-300 px-2 py-1 min-h-[32px] flex items-center gap-1 sm:hidden text-[11px] rounded bg-zinc-900 border border-zinc-800" title="Przełącz krój pisma">
           <i class="fa-solid fa-font text-amber-400 text-[10px]"></i>
           <span class="kc-font-mobile-label">Lora</span>
         </button>
-        <a href="/akademia/kurscodzienny/dzien-06" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">← Dzień 6</a>
-        <span class="text-zinc-700">|</span>
         <a href="/akademia/kurscodzienny" class="text-zinc-400 hover:text-white px-2 py-1 min-h-[32px] flex items-center">Spis Dni</a>
         <span class="text-zinc-700">|</span>
-        <a href="/akademia/kurscodzienny/dzien-07" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Dzień 8 →</a>
+        <a href="/akademia/kurscodzienny/dzien-06" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-amber-300 min-h-[32px] flex items-center">← Dzień 6</a>
+        <span class="text-zinc-700">|</span>
+        <a href="/akademia/kurscodzienny/dzien-08" class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-400 hover:text-amber-300 min-h-[32px] flex items-center font-bold">Dzień 8 →</a>
       </div>
     </div>
   </nav>
@@ -945,6 +979,129 @@
   <button class="back-to-top" id="backToTopBtn" type="button" aria-label="Przewiń do góry" title="Przewiń do góry">
     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
   </button>
-  <script src="/js/cc-daily-course-share.js?v=20261025_v4" defer></script>
+  <script src="/js/cc-daily-course-share.js?v=20261025_v4" defer>
+    // ── Lektor Audio TTS ──
+    let ttsUtterance = null;
+    let isTtsPlaying = false;
+
+    function toggleAudioLesson() {
+      if (!('speechSynthesis' in window)) {
+        alert('Twoja przeglądarka nie wspiera odtwarzania mowy (Web Speech API).');
+        return;
+      }
+
+      if (isTtsPlaying) {
+        window.speechSynthesis.cancel();
+        isTtsPlaying = false;
+        updateTtsUi(false);
+        return;
+      }
+
+      const title = document.querySelector('h1')?.textContent?.trim() || '';
+      const thought = document.querySelector('.p-5 p, .p-6 p, .kc-card p')?.textContent?.trim() || '';
+      const body = document.getElementById('lesson-text-body')?.innerText || document.querySelector('main')?.innerText || '';
+      const fullSpeech = title + '. ' + thought + '. ' + body.slice(0, 4500);
+
+      window.speechSynthesis.cancel();
+      ttsUtterance = new SpeechSynthesisUtterance(fullSpeech);
+      ttsUtterance.lang = 'pl-PL';
+      ttsUtterance.rate = 0.96;
+
+      ttsUtterance.onend = () => {
+        isTtsPlaying = false;
+        updateTtsUi(false);
+      };
+
+      ttsUtterance.onerror = () => {
+        isTtsPlaying = false;
+        updateTtsUi(false);
+      };
+
+      window.speechSynthesis.speak(ttsUtterance);
+      isTtsPlaying = true;
+      updateTtsUi(true);
+    }
+
+    function updateTtsUi(playing) {
+      const icon = document.getElementById('tts-icon');
+      const text = document.getElementById('tts-btn-text');
+      const btn = document.getElementById('btn-audio-tts');
+      if (playing) {
+        if (icon) icon.className = 'fa-solid fa-pause text-xs text-amber-300';
+        if (text) text.textContent = 'Pauza Audio';
+        if (btn) btn.classList.add('ring-2', 'ring-amber-400');
+      } else {
+        if (icon) icon.className = 'fa-solid fa-volume-high text-xs text-amber-300';
+        if (text) text.textContent = 'Słuchaj Audio';
+        if (btn) btn.classList.remove('ring-2', 'ring-amber-400');
+      }
+    }
+
+    // ── Master Reader Typography Controller ──
+    let currentReaderZoom = 0;
+
+    function initReaderSettings() {
+      const savedFont = localStorage.getItem('kc_reader_font') || 'serif';
+      const savedZoom = parseInt(localStorage.getItem('kc_reader_zoom') || '0', 10);
+      applyReaderFont(savedFont, false);
+      applyReaderZoom(savedZoom);
+    }
+
+    function toggleReaderFont() {
+      const current = document.documentElement.getAttribute('data-kc-font') === 'sans' ? 'sans' : 'serif';
+      const next = current === 'serif' ? 'sans' : 'serif';
+      localStorage.setItem('kc_reader_font', next);
+      applyReaderFont(next, true);
+    }
+
+    function applyReaderFont(font, updateZoom = true) {
+      if (font === 'sans') {
+        document.documentElement.setAttribute('data-kc-font', 'sans');
+      } else {
+        document.documentElement.removeAttribute('data-kc-font');
+      }
+
+      const desktopLabel = document.getElementById('reader-font-label');
+      if (desktopLabel) {
+        desktopLabel.textContent = font === 'sans' ? 'Krój: Inter' : 'Krój: Lora';
+      }
+
+      const mobileLabels = document.querySelectorAll('.kc-font-mobile-label');
+      mobileLabels.forEach(el => {
+        el.textContent = font === 'sans' ? 'Inter' : 'Lora';
+      });
+
+      const btn = document.getElementById('btn-reader-font');
+      if (btn) {
+        btn.title = font === 'sans' 
+          ? 'Aktywna: Inter (Ekranowa bezszeryfowa). Kliknij, aby zmienić na Lora (Książkowa szeryfowa)' 
+          : 'Aktywna: Lora (Książkowa szeryfowa). Kliknij, aby zmienić na Inter (Ekranowa bezszeryfowa)';
+      }
+
+      if (updateZoom) {
+        applyReaderZoom(currentReaderZoom);
+      }
+    }
+
+    function adjustFontSize(delta) {
+      currentReaderZoom = Math.max(-2, Math.min(3, currentReaderZoom + delta));
+      localStorage.setItem('kc_reader_zoom', currentReaderZoom);
+      applyReaderZoom(currentReaderZoom);
+    }
+
+    function applyReaderZoom(zoom) {
+      currentReaderZoom = zoom;
+      const isSans = document.documentElement.getAttribute('data-kc-font') === 'sans';
+      const baseRem = isSans ? (1.00 + (zoom * 0.07)) : (1.05 + (zoom * 0.07));
+      document.documentElement.style.setProperty('--kc-font-size', baseRem.toFixed(3) + 'rem');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initReaderSettings);
+    } else {
+      initReaderSettings();
+    }
+
+  </script>
 </body>
 </html>
