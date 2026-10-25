@@ -25,10 +25,20 @@
     control.setAttribute('aria-label', label);
     control.title = label;
     control.style.cssText = 'width:44px;height:44px;padding:0;font-size:20px';
-    const glyph = document.createElement(icons[label] === 'L' ? 'span' : 'i');
+    if (label === 'Tablica LUMINA' || icons[label] === 'L') {
+      const img = document.createElement('img');
+      img.src = '/images/lumina/lumina-icon-transparent.png';
+      img.alt = 'LUMINA';
+      img.width = 24;
+      img.height = 24;
+      img.setAttribute('aria-hidden', 'true');
+      img.style.cssText = 'width:24px;height:24px;object-fit:contain;display:block;margin:auto;pointer-events:none;';
+      control.appendChild(img);
+      return;
+    }
+    const glyph = document.createElement('i');
     glyph.setAttribute('aria-hidden', 'true');
-    if (icons[label] === 'L') { glyph.textContent = 'L'; glyph.style.fontWeight = '900'; }
-    else glyph.className = icons[label];
+    glyph.className = icons[label];
     control.appendChild(glyph);
   }
   function link(label, href, external) {
