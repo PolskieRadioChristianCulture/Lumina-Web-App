@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090B0E">
+  <title>Wizytówka Pierwszego Kontaktu | Christian Culture EkoCC</title>
+  <meta name="description" content="Wizytówka pierwszego kontaktu ekosystemu Christian Culture. Sześć stacji radia 24/7, interlinearna MojaBiblia UBG, Akademia Biblijna, społeczność LUMINA i kino VOD bez opłat.">
+  <link rel="canonical" href="https://polskieradio.cc/wizytowka">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:title" content="Wizytówka Pierwszego Kontaktu | Christian Culture">
+  <meta property="og:description" content="Poznaj cały ekosystem Christian Culture w jednym miejscu: 6 stacji radia 24/7, Biblia UBG z kodami Stronga, Akademia Biblijna, portal LUMINA i kino VOD.">
+  <meta property="og:url" content="https://polskieradio.cc/wizytowka">
+  <meta property="og:image" content="https://polskieradio.cc/images/kultura/card-live.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wizytówka Pierwszego Kontaktu | Christian Culture">
+  <meta name="twitter:description" content="Sześć stacji radia 24/7, interlinearna Biblia UBG, Akademia Biblijna, społeczność LUMINA i kino VOD.">
+  <meta name="twitter:image" content="https://polskieradio.cc/images/kultura/card-live.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Rokkitt:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-obsidian: #090B0E;
+      --bg-slate: #131820;
+      --bg-forest: #121B17;
+      --bg-espresso: #1A1614;
+      --bg-navy: #151C26;
+      --paper-bone: #E6E5E2;
+      --paper-stone: #DAD9D5;
+      --ink-light: #F0F0EE;
+      --ink-light-muted: #B5B5B0;
+      --ink-dark: #111317;
+      --ink-dark-muted: #3E3F42;
+      --cc-gold: #C4A35A;
+      --cc-gold-hover: #D4B578;
+      --cc-gold-light: #DDD3BC;
+      --cc-gold-dark: #8C6D2E;
+      --font-display: 'Rokkitt', Georgia, serif;
+      --font-text: 'Literata', Georgia, serif;
+      --size-small: 0.9375rem;
+      --size-body: 1.125rem;
+      --size-lead: 1.375rem;
+      --size-subhead: 1.75rem;
+      --size-head: clamp(2.125rem, 3.1vw, 2.75rem);
+      --size-display: clamp(3.1rem, 7.1vw, 6.4rem);
+      --page-margin: 24px;
+      --container-max: 1344px;
+      --cc-motion-fast: 180ms;
+      --cc-motion-normal: 260ms;
+      --cc-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root {
+        --cc-motion-fast: 0ms;
+        --cc-motion-normal: 0ms;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: var(--bg-obsidian);
+      color: var(--ink-light);
+      font-family: var(--font-text);
+      font-size: 16px;
+      line-height: 1.55;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background-color: var(--bg-obsidian);
+      color: var(--ink-light);
+      overflow-x: clip;
+      min-height: 100svh;
+    }
+
+    img, video {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 0.22em;
+      transition: color var(--cc-motion-fast) var(--cc-ease-out), background-color var(--cc-motion-fast) var(--cc-ease-out), transform var(--cc-motion-fast) var(--cc-ease-out);
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--cc-gold);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 12px;
+      z-index: 200;
+      background: var(--cc-gold);
+      color: var(--ink-dark);
+      padding: 12px 20px;
+      font-weight: 600;
+      font-size: var(--size-small);
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      left: var(--page-margin);
+    }
+
+    .frame {
+      width: 100%;
+      max-width: var(--container-max);
+      margin-inline: auto;
+      padding-inline: var(--page-margin);
+    }
+
+    /* TOP NAVIGATION */
+    .top-bar {
+      padding-block: 16px;
+      background-color: var(--bg-obsidian);
+    }
+    .top-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .wordmark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-lead);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--ink-light);
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .top-nav a {
+      font-size: var(--size-small);
+      text-decoration: none;
+      color: var(--ink-light);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      padding-inline: 6px;
+    }
+    .top-nav a:hover {
+      color: var(--cc-gold);
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* BUTTONS — flat, square-cornered, min 44px */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      min-width: 44px;
+      padding: 12px 24px;
+      font-family: var(--font-text);
+      font-weight: 600;
+      font-size: var(--size-small);
+      text-decoration: none;
+      background-color: var(--cc-gold);
+      color: var(--ink-dark);
+      transition: transform var(--cc-motion-fast) var(--cc-ease-out), background-color var(--cc-motion-fast) var(--cc-ease-out);
+    }
+    .btn:hover {
+      background-color: var(--cc-gold-hover);
+      transform: translateY(-2px);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+    .btn-dark {
+      background-color: var(--ink-dark);
+      color: var(--paper-bone);
+    }
+    .btn-dark:hover {
+      background-color: #252A34;
+    }
+    .btn-stone {
+      background-color: var(--paper-stone);
+      color: var(--ink-dark);
+    }
+    .btn-stone:hover {
+      background-color: var(--cc-gold-light);
+    }
+
+    /* MOBILE "+" BUTTON AND LEFT DRAWER (EkoCC v2 §9) */
+    .mobile-plus-btn {
+      display: none;
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      min-height: 48px;
+      background-color: var(--cc-gold);
+      color: var(--ink-dark);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-subhead);
+      line-height: 1;
+      align-items: center;
+      justify-content: center;
+      transition: transform var(--cc-motion-fast) var(--cc-ease-out), background-color var(--cc-motion-fast) var(--cc-ease-out);
+    }
+    .mobile-plus-btn:hover {
+      background-color: var(--cc-gold-hover);
+    }
+
+    .drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: rgba(9, 11, 14, 0.78);
+      z-index: 140;
+    }
+    .drawer-backdrop.is-open {
+      display: block;
+    }
+    .ekocc-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: min(320px, 86vw);
+      background-color: var(--bg-slate);
+      color: var(--ink-light);
+      z-index: 150;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: translateX(-104%);
+      transition: transform var(--cc-motion-normal) var(--cc-ease-out);
+      overflow-y: auto;
+    }
+    .ekocc-drawer.is-open {
+      transform: translateX(0);
+    }
+    .drawer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .drawer-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-lead);
+      color: var(--cc-gold);
+    }
+    .drawer-close {
+      min-width: 44px;
+      min-height: 44px;
+      background-color: var(--bg-obsidian);
+      color: var(--ink-light);
+      padding: 8px 14px;
+      font-weight: 600;
+      font-size: var(--size-small);
+    }
+    .drawer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .drawer-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 48px;
+      padding: 10px 14px;
+      background-color: var(--bg-obsidian);
+      color: var(--ink-light);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: var(--size-small);
+    }
+    .drawer-link:hover, .drawer-link.is-active {
+      background-color: var(--cc-gold);
+      color: var(--ink-dark);
+    }
+    .drawer-link svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .drawer-foot {
+      margin-top: 24px;
+      font-size: var(--size-small);
+      color: var(--ink-light-muted);
+    }
+
+    /* HERO — TABBED FOLDER STACK (The page is the object) */
+    .hero {
+      padding-top: 24px;
+      padding-bottom: 0;
+      background-color: var(--bg-obsidian);
+    }
+    .hero-head {
+      text-align: center;
+      max-width: 960px;
+      margin-inline: auto;
+      margin-bottom: 36px;
+    }
+    .hero-head h1 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-display);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 20px;
+    }
+    .hero-lead {
+      font-size: var(--size-lead);
+      color: var(--ink-light);
+      max-width: 54ch;
+      margin-inline: auto;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    /* FOLDER STACK */
+    .folder-stack {
+      width: 100%;
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .folder-tabs-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      align-items: end;
+    }
+    .folder-tab {
+      min-height: 48px;
+      padding: 12px 16px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: var(--size-body);
+      text-align: left;
+      clip-path: polygon(0 100%, 14px 0, calc(100% - 14px) 0, 100% 100%);
+      transition: transform var(--cc-motion-fast) var(--cc-ease-out), background-color var(--cc-motion-fast) var(--cc-ease-out);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .folder-tab[data-folder="radio"] {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+    }
+    .folder-tab[data-folder="biblia"] {
+      background-color: var(--bg-navy);
+      color: var(--ink-light);
+    }
+    .folder-tab[data-folder="akademia"] {
+      background-color: var(--bg-forest);
+      color: var(--ink-light);
+    }
+    .folder-tab[data-folder="lumina"] {
+      background-color: var(--bg-espresso);
+      color: var(--ink-light);
+    }
+    .folder-tab[data-folder="vod"] {
+      background-color: var(--bg-slate);
+      color: var(--ink-light);
+    }
+    .folder-tab[aria-selected="true"] {
+      background-color: var(--cc-gold);
+      color: var(--ink-dark);
+      transform: translateY(-4px);
+    }
+
+    .front-folder {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: stretch;
+    }
+    .folder-console {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .folder-console h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 1.02;
+      color: var(--ink-dark);
+      margin-bottom: 10px;
+    }
+    .folder-console p {
+      font-size: var(--size-body);
+      color: var(--ink-dark);
+    }
+
+    /* LIVE RADIO TUNER (The One Live Thing, data-ui) */
+    .tuner-panel {
+      background-color: var(--paper-stone);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .tuner-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .tuner-now {
+      font-weight: 600;
+      font-size: var(--size-small);
+      color: var(--ink-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--ink-dark);
+      display: inline-block;
+    }
+    .live-dot.is-playing {
+      background-color: #166534;
+    }
+    .station-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .station-btn {
+      min-height: 46px;
+      padding: 10px 12px;
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+      font-size: var(--size-small);
+      font-weight: 600;
+      text-align: left;
+      transition: background-color var(--cc-motion-fast) var(--cc-ease-out), transform var(--cc-motion-fast) var(--cc-ease-out);
+    }
+    .station-btn:hover {
+      background-color: var(--cc-gold-light);
+    }
+    .station-btn[aria-pressed="true"] {
+      background-color: var(--ink-dark);
+      color: var(--paper-bone);
+    }
+    .tuner-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .folder-media {
+      position: relative;
+      background-color: var(--bg-obsidian);
+      overflow: hidden;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .folder-media video,
+    .folder-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+    .folder-media-caption {
+      position: relative;
+      z-index: 2;
+      background-color: rgba(9, 11, 14, 0.86);
+      color: var(--ink-light);
+      padding: 16px 20px;
+      font-size: var(--size-small);
+    }
+
+    /* SECTION 1: INTRO — TITLE, NOTE, FACTS ROW */
+    .sec-intro {
+      padding-block: 64px;
+      background-color: var(--bg-obsidian);
+    }
+    .intro-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+      margin-bottom: 48px;
+    }
+    .intro-top h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 0.98;
+      color: var(--ink-light);
+    }
+    .intro-top p {
+      font-size: var(--size-body);
+      color: var(--ink-light);
+    }
+    .facts-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+    .fact-item {
+      padding-block: 8px;
+    }
+    .fact-value {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 1;
+      color: var(--cc-gold);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 10px;
+    }
+    .fact-desc {
+      font-size: var(--size-small);
+      color: var(--ink-light);
+      line-height: 1.45;
+    }
+    .intro-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: stretch;
+    }
+    .intro-photo-box {
+      background-color: var(--bg-slate);
+      overflow: hidden;
+    }
+    .intro-photo-box img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      transition: transform 600ms var(--cc-ease-out);
+    }
+    .intro-photo-box:hover img {
+      transform: scale(1.03);
+    }
+
+    /* SECTION 2: SHOWCASE — OUTPUT SLIPS ALONG THE EDGE */
+    .sec-showcase {
+      position: relative;
+      background-color: var(--bg-slate);
+      padding-top: 64px;
+      padding-bottom: 0;
+      overflow: hidden;
+    }
+    .showcase-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .showcase-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.24;
+    }
+    .showcase-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .showcase-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 44px;
+      background-color: rgba(9, 11, 14, 0.88);
+      padding: 32px;
+    }
+    .showcase-header h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 0.98;
+      color: var(--ink-light);
+    }
+    .showcase-header p {
+      font-size: var(--size-body);
+      color: var(--ink-light);
+    }
+    .slips-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      align-items: end;
+    }
+    .output-slip {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+      padding: 22px 32px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 270px;
+      transition: transform var(--cc-motion-normal) var(--cc-ease-out), background-color var(--cc-motion-fast) var(--cc-ease-out);
+    }
+    .output-slip:nth-child(2),
+    .output-slip:nth-child(5) {
+      min-height: 310px;
+      background-color: var(--paper-stone);
+    }
+    .output-slip:nth-child(3) {
+      min-height: 336px;
+    }
+    .output-slip:nth-child(4) {
+      min-height: 292px;
+    }
+    .output-slip:hover {
+      transform: translateY(-6px);
+      background-color: var(--cc-gold-light);
+    }
+    .slip-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-lead);
+      line-height: 1.1;
+      color: var(--ink-dark);
+      margin-bottom: 8px;
+    }
+    .slip-body {
+      font-size: var(--size-small);
+      color: var(--ink-dark);
+      line-height: 1.5;
+    }
+    .slip-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-weight: 600;
+      font-size: var(--size-small);
+      color: var(--ink-dark);
+    }
+
+    /* SECTION 3: FEATURES — INDEX WITH PREVIEW + STACKING COLOUR SHEETS */
+    .sec-features {
+      padding-block: 64px;
+      background-color: var(--bg-obsidian);
+    }
+    .features-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+      margin-bottom: 40px;
+    }
+    .features-head h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 0.98;
+    }
+    .features-head p {
+      font-size: var(--size-body);
+      color: var(--ink-light);
+    }
+
+    /* SIGNATURE MOVE: INDEX WITH PREVIEW */
+    .preview-index {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 52px;
+      align-items: stretch;
+    }
+    .index-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .index-row {
+      background-color: var(--bg-slate);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      text-decoration: none;
+      min-height: 64px;
+      transition: background-color var(--cc-motion-fast) var(--cc-ease-out), opacity var(--cc-motion-fast) var(--cc-ease-out), transform var(--cc-motion-fast) var(--cc-ease-out);
+    }
+    .index-rows.has-hover .index-row:not(.is-active) {
+      opacity: 0.58;
+    }
+    .index-row.is-active,
+    .index-row:hover,
+    .index-row:focus-visible {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+      transform: translateX(6px);
+    }
+    .index-row-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-subhead);
+      line-height: 1.05;
+    }
+    .index-row-meta {
+      font-size: var(--size-small);
+      font-weight: 600;
+    }
+    .preview-stage {
+      background-color: var(--bg-slate);
+      position: relative;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .preview-stage img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 240ms var(--cc-ease-out), transform 360ms var(--cc-ease-out);
+    }
+    .preview-stage-caption {
+      position: relative;
+      z-index: 2;
+      background-color: rgba(9, 11, 14, 0.88);
+      padding: 20px 32px;
+      color: var(--ink-light);
+    }
+    .preview-stage-caption h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-lead);
+      color: var(--cc-gold);
+      margin-bottom: 6px;
+    }
+    .preview-stage-caption p {
+      font-size: var(--size-small);
+      color: var(--ink-light);
+    }
+
+    /* STACKING COLOUR SHEETS */
+    .sheets-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .colour-sheet {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      padding: 32px;
+      align-items: center;
+    }
+    .sheet-bone {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+    }
+    .sheet-navy {
+      background-color: var(--bg-navy);
+      color: var(--ink-light);
+    }
+    .sheet-stone {
+      background-color: var(--paper-stone);
+      color: var(--ink-dark);
+    }
+    .sheet-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .sheet-copy h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 1.02;
+    }
+    .sheet-copy p {
+      font-size: var(--size-body);
+    }
+    .sheet-media img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+    }
+
+    /* SECTION 4: HOW IT WORKS — ITINERARY ON A SLIP */
+    .sec-itinerary {
+      padding-block: 64px;
+      background-color: var(--bg-slate);
+    }
+    .itinerary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .itinerary-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .itinerary-left h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 0.98;
+      color: var(--ink-light);
+    }
+    .itinerary-left p {
+      font-size: var(--size-body);
+      color: var(--ink-light);
+    }
+    .itinerary-left img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+    }
+    .receipt-slip {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+      padding: 32px 32px 44px;
+      clip-path: polygon(
+        0% 0%, 100% 0%, 100% calc(100% - 16px),
+        95% 100%, 90% calc(100% - 16px), 85% 100%, 80% calc(100% - 16px),
+        75% 100%, 70% calc(100% - 16px), 65% 100%, 60% calc(100% - 16px),
+        55% 100%, 50% calc(100% - 16px), 45% 100%, 40% calc(100% - 16px),
+        35% 100%, 30% calc(100% - 16px), 25% 100%, 20% calc(100% - 16px),
+        15% 100%, 10% calc(100% - 16px), 5% 100%, 0% calc(100% - 16px)
+      );
+    }
+    .receipt-group {
+      margin-bottom: 24px;
+    }
+    .receipt-group h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-lead);
+      color: var(--ink-dark);
+      margin-bottom: 10px;
+    }
+    .receipt-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-block: 6px;
+      font-size: var(--size-body);
+      font-variant-numeric: tabular-nums;
+    }
+    .receipt-row span:first-child {
+      font-weight: 600;
+    }
+    .receipt-time {
+      font-weight: 600;
+      color: var(--ink-dark-muted);
+      white-space: nowrap;
+    }
+    .receipt-total {
+      margin-top: 20px;
+      background-color: var(--ink-dark);
+      color: var(--paper-bone);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: var(--size-small);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* SECTION 5: ABOUT — FOUNDER'S LETTER */
+    .sec-about {
+      padding-block: 64px;
+      background-color: var(--bg-obsidian);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .about-portraits {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .about-main-photo {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+    }
+    .founders-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .founder-card {
+      background-color: var(--bg-slate);
+      padding: 16px;
+    }
+    .founder-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .founder-card p {
+      font-size: var(--size-body);
+      font-weight: 600;
+      color: var(--ink-light);
+    }
+
+    .letter-sheet {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+      padding: 32px;
+    }
+    .letter-sheet h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 0.98;
+      color: var(--ink-dark);
+      margin-bottom: 20px;
+    }
+    .letter-sheet p {
+      font-size: var(--size-body);
+      line-height: 1.6;
+      color: var(--ink-dark);
+      margin-bottom: 18px;
+    }
+    .letter-highlight {
+      background-color: var(--cc-gold-light);
+      color: var(--ink-dark);
+      padding-inline: 6px;
+      font-weight: 600;
+    }
+    .letter-signoff {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .letter-signoff strong {
+      display: block;
+      font-style: italic;
+      font-size: var(--size-lead);
+      color: var(--ink-dark);
+    }
+    .letter-signoff span {
+      font-size: var(--size-small);
+      color: var(--ink-dark-muted);
+    }
+    .tear-off-strip {
+      background-color: var(--paper-stone);
+      padding: 16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* SECTION 6: CTA — THE REPLY CARD */
+    .sec-cta {
+      padding-block: 64px;
+      background-color: var(--bg-forest);
+    }
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .cta-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .cta-left h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 0.98;
+      color: var(--ink-light);
+    }
+    .cta-left p {
+      font-size: var(--size-lead);
+      color: var(--ink-light);
+    }
+    .lumina-share-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 48px;
+      padding: 10px 20px;
+      background-color: var(--bg-obsidian);
+      color: var(--ink-light);
+      font-weight: 600;
+      font-size: var(--size-small);
+      width: fit-content;
+    }
+    .lumina-share-action:hover {
+      background-color: var(--cc-gold);
+      color: var(--ink-dark);
+    }
+    .lumina-share-action img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .reply-card {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+      padding: 32px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .reply-card h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 1.02;
+      color: var(--ink-dark);
+    }
+    .reply-card p {
+      font-size: var(--size-body);
+      color: var(--ink-dark);
+    }
+    .reply-actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .reply-actions .btn {
+      width: 100%;
+      min-height: 52px;
+      font-size: var(--size-body);
+    }
+
+    /* FOOTER — THE BACK OF THE CARD */
+    .site-footer {
+      padding-block: 56px;
+      background-color: var(--bg-obsidian);
+    }
+    .postcard-back {
+      background-color: var(--paper-bone);
+      color: var(--ink-dark);
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .postcard-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .postcard-left h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--size-head);
+      line-height: 1.02;
+      color: var(--ink-dark);
+    }
+    .postcard-left p {
+      font-size: var(--size-body);
+      color: var(--ink-dark);
+    }
+    .postcard-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .postcard-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .address-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .address-list a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: var(--size-body);
+      font-weight: 600;
+      color: var(--ink-dark);
+    }
+    .address-list a:hover {
+      color: var(--cc-gold-dark);
+    }
+    .postage-stamp {
+      background-color: var(--paper-stone);
+      padding: 8px;
+      width: 104px;
+      flex-shrink: 0;
+    }
+    .postage-stamp img {
+      width: 88px;
+      height: 116px;
+      object-fit: cover;
+    }
+    .imprint-line {
+      grid-column: 1 / -1;
+      padding-top: 16px;
+      text-align: center;
+      font-size: var(--size-small);
+      color: var(--ink-dark-muted);
+    }
+
+    /* MOTION LAYER — STAGGERED REVEALS (transform & opacity only) */
+    @keyframes ekocc-arrive {
+      0% {
+        transform: translate3d(0, 14px, 0);
+      }
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+    .hero-head h1,
+    .hero-lead,
+    .hero-cta-row,
+    .folder-tabs-bar,
+    .front-folder {
+      animation: ekocc-arrive 520ms var(--cc-ease-out) both;
+    }
+    .hero-lead {
+      animation-delay: 60ms;
+    }
+    .hero-cta-row {
+      animation-delay: 110ms;
+    }
+    .folder-tabs-bar {
+      animation-delay: 160ms;
+    }
+    .front-folder {
+      animation-delay: 210ms;
+    }
+    .reveal-item {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 420ms var(--cc-ease-out), transform 420ms var(--cc-ease-out);
+    }
+    .js-motion-ready .reveal-item.is-pending {
+      opacity: 0.15;
+      transform: translate3d(0, 22px, 0);
+    }
+    .reveal-delay-1 {
+      transition-delay: 70ms;
+    }
+    .reveal-delay-2 {
+      transition-delay: 140ms;
+    }
+    .reveal-delay-3 {
+      transition-delay: 210ms;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-head h1,
+      .hero-lead,
+      .hero-cta-row,
+      .folder-tabs-bar,
+      .front-folder {
+        animation: none;
+      }
+      .js-motion-ready .reveal-item.is-pending {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* RESPONSIVE (TABLET & PHONE) */
+    @media (max-width: 1024px) {
+      .front-folder {
+        grid-template-columns: 1fr;
+      }
+      .slips-row {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .preview-index,
+      .colour-sheet {
+        grid-template-columns: 1fr;
+      }
+      .facts-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --page-margin: 18px;
+      }
+      .top-nav,
+      .top-actions .btn {
+        display: none;
+      }
+      .mobile-plus-btn {
+        display: inline-flex;
+      }
+      .folder-tabs-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .station-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .front-folder,
+      .showcase-header,
+      .colour-sheet,
+      .receipt-slip,
+      .letter-sheet,
+      .reply-card,
+      .postcard-back,
+      .output-slip {
+        padding: 22px 18px;
+      }
+      .intro-top,
+      .facts-row,
+      .features-head,
+      .itinerary-left,
+      .cta-left,
+      .intro-top p,
+      .showcase-header p,
+      .features-head p {
+        padding-inline: 0;
+      }
+      .index-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 16px 18px;
+      }
+      .intro-top,
+      .showcase-header,
+      .features-head,
+      .itinerary-grid,
+      .about-grid,
+      .cta-grid,
+      .intro-photos,
+      .slips-row,
+      .postcard-back {
+        grid-template-columns: 1fr;
+      }
+      .postcard-top-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Przejdź do głównej treści</a>
+
+  <!-- MOBILE LEFT DRAWER (EkoCC v2 §9) -->
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true" hidden></div>
+  <aside class="ekocc-drawer" id="ekoccDrawer" role="dialog" aria-modal="true" aria-label="Menu nawigacji ekosystemu Christian Culture" hidden>
+    <div>
+      <div class="drawer-head">
+        <span class="drawer-title">CHRISTIAN CULTURE</span>
+        <button type="button" class="drawer-close" id="drawerCloseBtn" aria-label="Zamknij menu nawigacji">Zamknij</button>
+      </div>
+      <ul class="drawer-list">
+        <li>
+          <a class="drawer-link is-active" href="/wizytowka" aria-label="Wizytówka pierwszego kontaktu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6"/></svg>
+            <span>Wizytówka Startowa</span>
+          </a>
+        </li>
+        <li>
+          <a class="drawer-link" href="/player" aria-label="Odtwarzacz Audio i 6 stacji radia">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Player i 6 Stacji 24/7</span>
+          </a>
+        </li>
+        <li>
+          <a class="drawer-link" href="/mojabiblia" aria-label="Interlinearna MojaBiblia UBG">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>MojaBiblia (UBG + Strong)</span>
+          </a>
+        </li>
+        <li>
+          <a class="drawer-link" href="/akademia#kurscodzienny" aria-label="Akademia Biblijna i Kurs Codzienny">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <span>Akademia i Kurs 31 Dni</span>
+          </a>
+        </li>
+        <li>
+          <a class="drawer-link" href="/lumina" aria-label="Portal społecznościowy LUMINA">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+            <span>Społeczność LUMINA</span>
+          </a>
+        </li>
+        <li>
+          <a class="drawer-link" href="/BCM" aria-label="Całodobowe Boże Centrum Modlitwy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>Centrum Modlitwy BCM24</span>
+          </a>
+        </li>
+        <li>
+          <a class="drawer-link" href="/vod" aria-label="Kino Chrześcijańskie VOD">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
+            <span>Kino Chrześcijańskie VOD</span>
+          </a>
+        </li>
+        <li>
+          <a class="drawer-link" href="/mapa" aria-label="Żywa Mapa Ekosystemu Christian Culture">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span>Mapa Ekosystemu</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <p class="drawer-foot">Darmo wzięliście, darmo dawajcie (Mt 10,8 UBG).</p>
+  </aside>
+
+  <!-- HEADER -->
+  <header class="top-bar">
+    <div class="frame top-bar-inner">
+      <a class="wordmark" href="/" aria-label="Christian Culture strona główna">CHRISTIAN CULTURE</a>
+      <nav class="top-nav" aria-label="Nawigacja po wizytówce">
+        <a href="#kartoteka">Kartoteka</a>
+        <a href="#slowo">Słowo i Głos</a>
+        <a href="#filary">Pięć Filarów</a>
+        <a href="#plan">Plan Dnia</a>
+        <a href="#list">Założyciele</a>
+      </nav>
+      <div class="top-actions">
+        <a class="btn" role="button" href="/player">Otwórz Player 24/7</a>
+        <button type="button" class="mobile-plus-btn" id="ekoccDrawerBtn" aria-label="Otwórz panel nawigacji EkoCC" aria-expanded="false" aria-controls="ekoccDrawer" title="Menu EkoCC">+</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO: TABBED FOLDER STACK -->
+    <section class="hero" aria-label="Wizytówka pierwszego kontaktu">
+      <div class="frame">
+        <div class="hero-head reveal-item">
+          <h1>WIZYTÓWKA MISJI</h1>
+          <p class="hero-lead">Pierwszy kontakt z ekosystemem Christian Culture. Sześć stacji radia całodobowego, interlinearna Biblia UBG, Akademia Biblijna, społeczność LUMINA i kino VOD bez opłat.</p>
+          <div class="hero-cta-row">
+            <button type="button" class="btn" id="heroQuickPlayBtn">Włącz Radio Na Żywo</button>
+            <a class="btn btn-stone" role="button" href="/mojabiblia">Czytaj Biblię UBG</a>
+          </div>
+        </div>
+
+        <div class="folder-stack reveal-item reveal-delay-1" role="region" aria-label="Interaktywna kartoteka ekosystemu">
+          <div class="folder-tabs-bar" role="tablist" aria-label="Wybierz zakładkę ekosystemu">
+            <button type="button" class="folder-tab" role="tab" aria-selected="true" data-folder="radio" data-title="Sześć stacji radia na żywo" data-desc="Wybierz kanał i słuchaj od razu w przeglądarce: Główny Kanał CC, Biblia Audio, Biblia Śpiewana, Audycja Śniadaniowa, Ambient Sleep oraz Worship 24/7." data-href="/player" data-cta="Otwórz pełny odtwarzacz Player">
+              <span>Radio 24/7</span>
+            </button>
+            <button type="button" class="folder-tab" role="tab" aria-selected="false" data-folder="biblia" data-title="Interlinearna MojaBiblia UBG" data-desc="Wszystkie 66 ksiąg Pisma Świętego w przekładzie Uwspółcześnionej Biblii Gdańskiej z kodami Stronga, tekstem greckim i hebrajskim oraz konkordancją." data-href="/mojabiblia" data-cta="Otwórz MojaBiblia UBG">
+              <span>MojaBiblia</span>
+            </button>
+            <button type="button" class="folder-tab" role="tab" aria-selected="false" data-folder="akademia" data-title="Akademia i Kurs Codzienny" data-desc="Codzienna ścieżka Z Biblią za Pan Brat: lekcje rozdział po rozdziale, komentarz teologiczny, kompendium wiedzy i nagranie lektorskie." data-href="/akademia#kurscodzienny" data-cta="Przejdź do dzisiejszej lekcji">
+              <span>Akademia</span>
+            </button>
+            <button type="button" class="folder-tab" role="tab" aria-selected="false" data-folder="lumina" data-title="Społeczność LUMINA i BCM24" data-desc="Chrześcijańska tablica świadectw, profile autorskie, komunikator LUMI Mess oraz całodobowy pokój modlitwy wstawienniczej Boże Centrum Modlitwy." data-href="/lumina" data-cta="Wejdź na tablicę LUMINA">
+              <span>LUMINA</span>
+            </button>
+            <button type="button" class="folder-tab" role="tab" aria-selected="false" data-folder="vod" data-title="Kino VOD i Publicystyka CCN" data-desc="Filmy fabularne i dokumentalne w Kinie Chrześcijańskim VOD, seria wykładów Apokalipsa oraz portale tematyczne Nauka, Historia, Biologia i Prawo." data-href="/vod" data-cta="Otwórz salę projekcyjną VOD">
+              <span>Kino i CCN</span>
+            </button>
+          </div>
+
+          <div class="front-folder" id="folderPanel" role="tabpanel">
+            <div class="folder-console">
+              <div>
+                <h2 id="folderTitle">Sześć stacji radia na żywo</h2>
+                <p id="folderDesc">Wybierz kanał i słuchaj od razu w przeglądarce: Główny Kanał CC, Biblia Audio, Biblia Śpiewana, Audycja Śniadaniowa, Ambient Sleep oraz Worship 24/7.</p>
+              </div>
+
+              <div class="tuner-panel" data-ui="true" aria-label="Tuner stacji radiowych na żywo">
+                <div class="tuner-status">
+                  <span class="tuner-now" id="tunerStatusText">
+                    <span class="live-dot" id="tunerLiveDot" aria-hidden="true"></span>
+                    <span>Gotowy do odsłuchu: Główny Kanał CC</span>
+                  </span>
+                  <button type="button" class="btn btn-dark" id="tunerToggleBtn">Odtwórz teraz</button>
+                </div>
+                <div class="station-grid" role="group" aria-label="Wybór stacji radiowej">
+                  <button type="button" class="station-btn" aria-pressed="true" data-stream="https://s3.slotex.pl/shoutcast/7592/stream" data-name="Główny Kanał CC">Główny Kanał</button>
+                  <button type="button" class="station-btn" aria-pressed="false" data-stream="https://s3.slotex.pl/shoutcast/7592/stream" data-name="Biblia Audio">Biblia Audio</button>
+                  <button type="button" class="station-btn" aria-pressed="false" data-stream="https://s3.slotex.pl/shoutcast/7592/stream" data-name="Biblia Śpiewana">Biblia Śpiewana</button>
+                  <button type="button" class="station-btn" aria-pressed="false" data-stream="https://s3.slotex.pl/shoutcast/7592/stream" data-name="Audycja Śniadaniowa">Śniadaniowa</button>
+                  <button type="button" class="station-btn" aria-pressed="false" data-stream="https://s3.slotex.pl/shoutcast/7592/stream" data-name="Ambient Sleep">Ambient Sleep</button>
+                  <button type="button" class="station-btn" aria-pressed="false" data-stream="https://s3.slotex.pl/shoutcast/7592/stream" data-name="Worship 24/7">Worship 24/7</button>
+                </div>
+                <div class="tuner-actions">
+                  <a class="btn" role="button" id="folderPrimaryLink" href="/player">Otwórz pełny odtwarzacz Player</a>
+                  <a class="btn btn-stone" role="button" href="/mapa">Zobacz Mapę Ekosystemu</a>
+                </div>
+                <audio id="liveRadioAudio" preload="none"></audio>
+              </div>
+            </div>
+
+            <div class="folder-media">
+              <video muted loop playsinline autoplay preload="metadata" poster="/images/kultura/card-live.webp" width="1920" height="1080">
+                <source src="/assets/mapa/planeta.mp4" type="video/mp4">
+              </video>
+              <div class="folder-media-caption">
+                Całodobowa emisja Słowa Bożego, muzyki uwielbienia i audycji z Polski dla słuchaczy na całym świecie.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: INTRO — TITLE, NOTE, FACTS ROW -->
+    <section class="sec-intro" id="kartoteka">
+      <div class="frame">
+        <div class="intro-top">
+          <h2 class="reveal-item">Darmo otrzymaliście</h2>
+          <p class="reveal-item reveal-delay-1">Cały ekosystem Christian Culture powstaje w oparciu o biblijną zasadę z Ewangelii Mateusza 10,8: darmo wzięliście, darmo dawajcie. Nie ma tu płatnych bramek, reklam przerywających modlitwę ani ukrytych abonamentów.</p>
+        </div>
+
+        <div class="facts-row">
+          <div class="fact-item reveal-item">
+            <div class="fact-value">6 stacji</div>
+            <p class="fact-desc">Całodobowe strumienie radia, Biblii czytanej i śpiewanej bez bloków reklamowych.</p>
+          </div>
+          <div class="fact-item reveal-item reveal-delay-1">
+            <div class="fact-value">66 ksiąg</div>
+            <p class="fact-desc">Interlinearna Biblia UBG ze słownikiem grecko-hebrajskim Stronga i morfologią.</p>
+          </div>
+          <div class="fact-item reveal-item reveal-delay-2">
+            <div class="fact-value">31 lekcji</div>
+            <p class="fact-desc">Codzienny kurs biblijny prowadzący rozdział po rozdziale przez Pismo Święte.</p>
+          </div>
+          <div class="fact-item reveal-item reveal-delay-3">
+            <div class="fact-value">0 złotych</div>
+            <p class="fact-desc">Pełny dostęp do radia, kursów, kina VOD i społeczności od pierwszej chwili.</p>
+          </div>
+        </div>
+
+        <div class="intro-photos">
+          <div class="intro-photo-box reveal-item">
+            <img src="/images/kultura/card-biblia.jpg" alt="Otwarta Biblia i studium Pisma Świętego w MojaBiblia" width="1600" height="900" loading="lazy">
+          </div>
+          <div class="intro-photo-box reveal-item reveal-delay-1">
+            <img src="/images/cezaryrogowski/cezary-ruins-monumental.jpg" alt="Cezary Rogowski podczas nagrania plenerowego dla misji Christian Culture" width="1024" height="576" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SHOWCASE — OUTPUT SLIPS ALONG THE EDGE -->
+    <section class="sec-showcase" id="slowo">
+      <div class="showcase-bg" aria-hidden="true">
+        <img src="/images/kultura/card-live.webp" alt="" width="1920" height="1080" loading="lazy">
+      </div>
+      <div class="frame showcase-inner">
+        <div class="showcase-header reveal-item">
+          <h2>Słowo na dziś</h2>
+          <p>Każdego poranka o godzinie szóstej ekosystem wydaje nową porcję żywego Słowa: rozważanie poranne, lekcję kursu biblijnego, artykuł redakcyjny i całodobową modlitwę. Wybierz kartę, od której chcesz zacząć dzisiejszy dzień.</p>
+        </div>
+
+        <div class="slips-row">
+          <article class="output-slip reveal-item">
+            <div>
+              <h3 class="slip-title">Werset Dnia UBG</h3>
+              <p class="slip-body">„Ja jestem światłością świata. Kto idzie za mną, nie będzie chodził w ciemności, ale będzie miał światłość życia.” Ewangelia Jana 8,12.</p>
+            </div>
+            <a class="slip-link" href="/mojabiblia">Badaj w MojaBiblia</a>
+          </article>
+
+          <article class="output-slip reveal-item reveal-delay-1">
+            <div>
+              <h3 class="slip-title">Kurs Codzienny</h3>
+              <p class="slip-body">Cykl „Z Biblią za Pan Brat” z pełnym tekstem UBG, tłem historycznym, leksykonem pojęć oraz nagraniem audio do odsłuchu w drodze.</p>
+            </div>
+            <a class="slip-link" href="/akademia#kurscodzienny">Otwórz dzisiejszą lekcję</a>
+          </article>
+
+          <article class="output-slip reveal-item reveal-delay-2">
+            <div>
+              <h3 class="slip-title">Dobrze, że jesteś</h3>
+              <p class="slip-body">Codzienna inspiracja poranna przygotowana do czytania i słuchania przy pierwszej kawie, dostępna na stronie oraz w aplikacji mobilnej.</p>
+            </div>
+            <a class="slip-link" href="/akademia">Czytaj rozważanie</a>
+          </article>
+
+          <article class="output-slip reveal-item">
+            <div>
+              <h3 class="slip-title">Centrum Modlitwy</h3>
+              <p class="slip-body">Boże Centrum Modlitwy BCM24 gromadzi wierzących na wspólnej modlitwie wstawienniczej na żywo przez całą dobę.</p>
+            </div>
+            <a class="slip-link" href="/BCM">Dołącz do pokoju BCM24</a>
+          </article>
+
+          <article class="output-slip reveal-item reveal-delay-1">
+            <div>
+              <h3 class="slip-title">Publicystyka CCN</h3>
+              <p class="slip-body">Artykuły redakcyjne Cezarego i Wioletty Rogowskich w działach Nauka, Historia, Biologia, Prawo i Rodzina w świetle Biblii.</p>
+            </div>
+            <a class="slip-link" href="/news">Czytaj artykuły CCN</a>
+          </article>
+
+          <article class="output-slip reveal-item reveal-delay-2">
+            <div>
+              <h3 class="slip-title">Sala Projekcyjna</h3>
+              <p class="slip-body">Kino Chrześcijańskie VOD z pełnometrażowymi filmami fabularnymi, świadectwami oraz serią wykładów biblijnych Apokalipsa.</p>
+            </div>
+            <a class="slip-link" href="/vod">Włącz seans w VOD</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: FEATURES — INDEX WITH PREVIEW + STACKING SHEETS -->
+    <section class="sec-features" id="filary">
+      <div class="frame">
+        <div class="features-head">
+          <h2 class="reveal-item">Pięć filarów misji</h2>
+          <p class="reveal-item reveal-delay-1">Wskaż dowolny filar w spisie poniżej, aby podejrzeć jego zawartość i przejść bezpośrednio do wybranej przestrzeni ekosystemu.</p>
+        </div>
+
+        <div class="preview-index reveal-item" id="previewIndex">
+          <div class="index-rows" id="indexRows">
+            <a class="index-row is-active" href="/player" data-img="/images/kultura/card-live.webp" data-title="Odtwarzacz Player i 6 Stacji" data-caption="Strumieniowy dashboard audio z sześcioma kanałami tematycznymi, playlistami uwielbienia i odtwarzaniem w tle na telefonie.">
+              <span class="index-row-title">Radio 24/7</span>
+              <span class="index-row-meta">6 kanałów na żywo</span>
+            </a>
+            <a class="index-row" href="/mojabiblia" data-img="/images/kultura/card-biblia.jpg" data-title="Interlinearna MojaBiblia UBG" data-caption="Porównanie przekładów UBG, BW, BT i BG wraz z oryginalnym tekstem hebrajskim i greckim oraz słownikiem Stronga.">
+              <span class="index-row-title">MojaBiblia UBG</span>
+              <span class="index-row-meta">Kody Stronga i UBG</span>
+            </a>
+            <a class="index-row" href="/akademia#kurscodzienny" data-img="/images/kultura/card-akademia.jpg" data-title="Akademia Biblijna" data-caption="Ustrukturyzowane kursy biblijne, lekcje codzienne i materiały do osobistego oraz domowego studium Pisma Świętego.">
+              <span class="index-row-title">Akademia Biblijna</span>
+              <span class="index-row-meta">Studium krok po kroku</span>
+            </a>
+            <a class="index-row" href="/lumina" data-img="/images/kultura/card-lumina.jpg" data-title="Portal Społecznościowy LUMINA" data-caption="Miejsce spotkania chrześcijan bez algorytmów agresji: tablica wpisów, świadectwa życia i komunikator LUMI Mess.">
+              <span class="index-row-title">Społeczność LUMINA</span>
+              <span class="index-row-meta">Relacje i świadectwa</span>
+            </a>
+            <a class="index-row" href="/vod" data-img="/images/swiadectwa/hero-swiadectwa.webp" data-title="Kino VOD i Świadectwa" data-caption="Wyselekcjonowane kino chrześcijańskie, poruszające historie przemiany życia i wykłady Studia Dobrego Słowa.">
+              <span class="index-row-title">Kino VOD</span>
+              <span class="index-row-meta">Filmy i dokumenty</span>
+            </a>
+          </div>
+
+          <div class="preview-stage" aria-live="polite">
+            <img id="previewStageImg" src="/images/kultura/card-live.webp" alt="Podgląd wybranego filaru ekosystemu Christian Culture" width="1920" height="1080" loading="lazy">
+            <div class="preview-stage-caption">
+              <h3 id="previewStageTitle">Odtwarzacz Player i 6 Stacji</h3>
+              <p id="previewStageDesc">Strumieniowy dashboard audio z sześcioma kanałami tematycznymi, playlistami uwielbienia i odtwarzaniem w tle na telefonie.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sheets-stack">
+          <article class="colour-sheet sheet-bone reveal-item">
+            <div class="sheet-copy">
+              <h3>Biblia Śpiewana i Audio</h3>
+              <p>Słowo Boże nagrane w pełnych słuchowiskach oraz wyśpiewane wers po wersie. Towarzyszy słuchaczom w pracy, w podróży i podczas wieczornego wyciszenia.</p>
+              <div>
+                <a class="btn btn-dark" role="button" href="/BibliaSpiewana">Słuchaj Biblii Śpiewanej</a>
+              </div>
+            </div>
+            <div class="sheet-media">
+              <img src="/images/cezaryrogowski/cezary-ibanez-electric.jpg" alt="Sesja nagraniowa muzyki chrześcijańskiej w studiu Christian Culture" width="1024" height="576" loading="lazy">
+            </div>
+          </article>
+
+          <article class="colour-sheet sheet-navy reveal-item">
+            <div class="sheet-copy">
+              <h3>Narzędzia Głębokiego Studium</h3>
+              <p>Każdy werset w MojaBiblia odsłania rdzeń hebrajski lub grecki, pełną definicję leksykalną oraz powiązane fragmenty w całym Piśmie Świętym.</p>
+              <div>
+                <a class="btn" role="button" href="/mojabiblia">Otwórz konkordancję UBG</a>
+              </div>
+            </div>
+            <div class="sheet-media">
+              <img src="/images/academy/daily/kc_day_01_creation.jpg" alt="Ilustracja studium Księgi Rodzaju w Akademii Biblijnej" width="1376" height="768" loading="lazy">
+            </div>
+          </article>
+
+          <article class="colour-sheet sheet-stone reveal-item">
+            <div class="sheet-copy">
+              <h3>Wspólnota i Żywa Mapa</h3>
+              <p>Odkryj wszystkie portale tematyczne, kanały telewizyjne na żywo oraz inicjatywy modlitewne na interaktywnej Mapie Ekosystemu Christian Culture.</p>
+              <div>
+                <a class="btn btn-dark" role="button" href="/mapa">Przejdź do Mapy CC</a>
+              </div>
+            </div>
+            <div class="sheet-media">
+              <img src="/images/kultura/card-lumina.jpg" alt="Społeczność i spotkania w ekosystemie LUMINA" width="1376" height="768" loading="lazy">
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: HOW IT WORKS — ITINERARY ON A SLIP -->
+    <section class="sec-itinerary" id="plan">
+      <div class="frame itinerary-grid">
+        <div class="itinerary-left reveal-item">
+          <h2>Rytm twojego dnia</h2>
+          <p>Christian Culture zostało zaprojektowane tak, aby towarzyszyć ci od pierwszej myśli o poranku aż po wieczorną modlitwę i sen w pokoju Bożym.</p>
+          <img src="/images/cezaryrogowski/cezary-12string-stairs.jpg" alt="Cezary Rogowski z gitarą dwunastostrunową" width="1024" height="576" loading="lazy">
+        </div>
+
+        <div class="receipt-slip reveal-item reveal-delay-1" aria-label="Harmonogram dnia z Christian Culture">
+          <div class="receipt-group">
+            <h3>Poranny start ze Słowem</h3>
+            <div class="receipt-row">
+              <span>Rozważanie „Dobrze, że jesteś”</span>
+              <span class="receipt-time">06:00</span>
+            </div>
+            <div class="receipt-row">
+              <span>Poranna Audycja Śniadaniowa</span>
+              <span class="receipt-time">07:00</span>
+            </div>
+            <div class="receipt-row">
+              <span>Lekcja Kursu Codziennego</span>
+              <span class="receipt-time">08:00</span>
+            </div>
+          </div>
+
+          <div class="receipt-group">
+            <h3>W ciągu dnia i pracy</h3>
+            <div class="receipt-row">
+              <span>Studium wersetu w MojaBiblia UBG</span>
+              <span class="receipt-time">12:00</span>
+            </div>
+            <div class="receipt-row">
+              <span>Artykuł w portalach CCN News</span>
+              <span class="receipt-time">15:00</span>
+            </div>
+            <div class="receipt-row">
+              <span>Rozmowy i świadectwa na LUMINA</span>
+              <span class="receipt-time">17:30</span>
+            </div>
+          </div>
+
+          <div class="receipt-group">
+            <h3>Wieczorne wyciszenie</h3>
+            <div class="receipt-row">
+              <span>Seans w Kinie Chrześcijańskim VOD</span>
+              <span class="receipt-time">19:30</span>
+            </div>
+            <div class="receipt-row">
+              <span>Wspólna modlitwa w pokoju BCM24</span>
+              <span class="receipt-time">21:00</span>
+            </div>
+            <div class="receipt-row">
+              <span>Biblia Audio i kanał Ambient Sleep</span>
+              <span class="receipt-time">22:30</span>
+            </div>
+          </div>
+
+          <div class="receipt-total">
+            <span>Dostępność stacji i Biblii</span>
+            <span>24 godziny / 7 dni</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: ABOUT — FOUNDER'S LETTER -->
+    <section class="sec-about" id="list">
+      <div class="frame about-grid">
+        <article class="letter-sheet reveal-item">
+          <h2>Słowo od założycieli</h2>
+          <p>Cieszymy się, że tu jesteś. Tworzymy Christian Culture z przekonaniem, że w świecie pełnym zgiełku, pośpiechu i powierzchownych treści każdy człowiek potrzebuje miejsca zakorzenionego w prawdzie Pisma Świętego, pokoju i autentycznej relacji z Bogiem.</p>
+          <p>Oddajemy w twoje ręce całą tę przestrzeń bez żadnych opłat: sześć całodobowych stacji radiowych, interlinearną Biblię UBG, Akademię Biblijną, kino chrześcijańskie oraz społeczność LUMINA. <span class="letter-highlight">Wszystko służy jednemu celowi: aby Ewangelia Jezusa Chrystusa była na wyciągnięcie ręki o każdej porze dnia i nocy.</span></p>
+          <p>Rozgość się. Włącz stację, która odpowiada twojemu sercu, otwórz dzisiejszą lekcję Kursu Codziennego lub napisz do nas bezpośrednio na tablicy LUMINA. Dobrze, że jesteś z nami.</p>
+
+          <div class="letter-signoff">
+            <strong>Cezary i Wioletta Rogowscy</strong>
+            <span>Założyciele i gospodarze misji Christian Culture</span>
+          </div>
+
+          <div class="tear-off-strip">
+            <a class="btn btn-dark" role="button" href="/lumina.cezaryrgowski">Profil Cezarego Rogowskiego</a>
+            <a class="btn btn-stone" role="button" href="/lumina.wiolettarogowska">Profil Wioletty Rogowskiej</a>
+          </div>
+        </article>
+
+        <div class="about-portraits reveal-item reveal-delay-1">
+          <img class="about-main-photo" src="/images/cezaryrogowski/cezary-anchor-book.jpg" alt="Cezary Rogowski z Pismem Świętym" width="768" height="1024" loading="lazy">
+          <div class="founders-pair">
+            <div class="founder-card">
+              <img src="/images/team/cezary-rogowski.webp" alt="Cezary Rogowski" width="600" height="600" loading="lazy">
+              <p>Cezary Rogowski</p>
+            </div>
+            <div class="founder-card">
+              <img src="/images/team/wioletta-rogowska.jpg" alt="Wioletta Rogowska" width="600" height="600" loading="lazy">
+              <p>Wioletta Rogowska</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: CTA — THE REPLY CARD -->
+    <section class="sec-cta" id="dolacz">
+      <div class="frame cta-grid">
+        <div class="cta-left reveal-item">
+          <h2>Wejdź do środka</h2>
+          <p>Wybierz swoje pierwsze miejsce w ekosystemie lub przekaż tę wizytówkę bliskiej osobie jednym kliknięciem.</p>
+          <button type="button" class="lumina-share-action" id="shareWizytowkaBtn" aria-label="Udostępnij wizytówkę Christian Culture">
+            <img src="/images/lumina/lumina-icon-transparent.png" alt="" width="28" height="28">
+            <span id="shareBtnLabel">Udostępnij wizytówkę bliskim</span>
+          </button>
+        </div>
+
+        <div class="reply-card reveal-item reveal-delay-1">
+          <h3>Twoja karta startowa</h3>
+          <p>Od którego miejsca w Christian Culture chcesz rozpocząć dzisiejsze spotkanie?</p>
+          <div class="reply-actions">
+            <a class="btn btn-dark" role="button" href="/">Otwórz Główny Portal PolskieRadio.cc</a>
+            <a class="btn" role="button" href="/akademia#kurscodzienny">Rozpocznij Kurs Codzienny</a>
+            <a class="btn btn-stone" role="button" href="/lumina">Dołącz do Społeczności LUMINA</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER: THE BACK OF THE CARD -->
+  <footer class="site-footer">
+    <div class="frame">
+      <div class="postcard-back">
+        <div class="postcard-left">
+          <div>
+            <h2>Do zobaczenia w drodze</h2>
+            <p>Wizytówka pierwszego kontaktu ekosystemu Christian Culture. Służymy Bogu i ludziom poprzez radio, Pismo Święte, edukację biblijną i budowanie żywej wspólnoty.</p>
+          </div>
+          <div>
+            <a class="btn btn-dark" role="button" href="/wspieraj">Wspieraj rozwój misji</a>
+          </div>
+        </div>
+
+        <div class="postcard-right">
+          <div class="postcard-top-row">
+            <ul class="address-list">
+              <li><a href="https://polskieradio.cc">Portal główny Christian Culture</a></li>
+              <li><a href="/mojabiblia">Interlinearna MojaBiblia UBG</a></li>
+              <li><a href="/akademia">Akademia i Kurs Codzienny</a></li>
+              <li><a href="/lumina">Społeczność Chrześcijańska LUMINA</a></li>
+              <li><a href="/mapa">Żywa Mapa Ekosystemu CC</a></li>
+            </ul>
+            <div class="postage-stamp">
+              <img src="/images/cezaryrogowski/cezary-hero.jpg" alt="Znaczek misji Christian Culture" width="88" height="116" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <p class="imprint-line">Christian Culture EkoCC · Wszystkie materiały udostępniane bezpłatnie · Przekład kanoniczny: Uwspółcześniona Biblia Gdańska (UBG)</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // 1. Mobile EkoCC "+" Drawer (with focus trap & Escape close)
+      var drawerBtn = document.getElementById('ekoccDrawerBtn');
+      var drawer = document.getElementById('ekoccDrawer');
+      var drawerClose = document.getElementById('drawerCloseBtn');
+      var backdrop = document.getElementById('drawerBackdrop');
+
+      function openDrawer() {
+        if (!drawer || !drawerBtn) return;
+        drawer.hidden = false;
+        if (backdrop) {
+          backdrop.hidden = false;
+          backdrop.classList.add('is-open');
+        }
+        requestAnimationFrame(function () {
+          drawer.classList.add('is-open');
+        });
+        drawerBtn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+        if (drawerClose) drawerClose.focus();
+      }
+
+      function closeDrawer() {
+        if (!drawer || !drawerBtn) return;
+        drawer.classList.remove('is-open');
+        if (backdrop) {
+          backdrop.classList.remove('is-open');
+          backdrop.hidden = true;
+        }
+        drawerBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+        setTimeout(function () {
+          if (!drawer.classList.contains('is-open')) drawer.hidden = true;
+        }, 260);
+        drawerBtn.focus();
+      }
+
+      if (drawerBtn) drawerBtn.addEventListener('click', openDrawer);
+      if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+      if (backdrop) backdrop.addEventListener('click', closeDrawer);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && drawer && drawer.classList.contains('is-open')) {
+          closeDrawer();
+        }
+      });
+
+      // 2. Hero Tabbed Folder Stack switcher
+      var tabs = document.querySelectorAll('.folder-tab');
+      var folderTitle = document.getElementById('folderTitle');
+      var folderDesc = document.getElementById('folderDesc');
+      var folderLink = document.getElementById('folderPrimaryLink');
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          tabs.forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+          tab.setAttribute('aria-selected', 'true');
+          if (folderTitle) folderTitle.textContent = tab.getAttribute('data-title') || '';
+          if (folderDesc) folderDesc.textContent = tab.getAttribute('data-desc') || '';
+          if (folderLink) {
+            folderLink.setAttribute('href', tab.getAttribute('data-href') || '/');
+            folderLink.textContent = tab.getAttribute('data-cta') || 'Przejdź dalej';
+          }
+        });
+      });
+
+      // 3. Live Radio Tuner (The One Live Thing)
+      var audio = document.getElementById('liveRadioAudio');
+      var toggleBtn = document.getElementById('tunerToggleBtn');
+      var heroPlayBtn = document.getElementById('heroQuickPlayBtn');
+      var statusText = document.getElementById('tunerStatusText');
+      var liveDot = document.getElementById('tunerLiveDot');
+      var stationBtns = document.querySelectorAll('.station-btn');
+      var currentStation = 'Główny Kanał CC';
+      var currentStream = 'https://s3.slotex.pl/shoutcast/7592/stream';
+      var isPlaying = false;
+
+      function updateTunerUI(stateText, playing) {
+        isPlaying = playing;
+        if (statusText) {
+          var span = statusText.querySelector('span:last-child');
+          if (span) span.textContent = stateText;
+        }
+        if (liveDot) {
+          if (playing) liveDot.classList.add('is-playing');
+          else liveDot.classList.remove('is-playing');
+        }
+        if (toggleBtn) toggleBtn.textContent = playing ? 'Zatrzymaj odsłuch' : 'Odtwórz teraz';
+        if (heroPlayBtn) heroPlayBtn.textContent = playing ? 'Gra: ' + currentStation : 'Włącz Radio Na Żywo';
+      }
+
+      function togglePlayback() {
+        if (!audio) return;
+        if (isPlaying) {
+          audio.pause();
+          updateTunerUI('Zatrzymano: ' + currentStation, false);
+        } else {
+          if (audio.src !== currentStream) audio.src = currentStream;
+          updateTunerUI('Łączenie ze strumieniem: ' + currentStation, false);
+          audio.play().then(function () {
+            updateTunerUI('Nadaje na żywo: ' + currentStation, true);
+          }).catch(function () {
+            window.location.href = '/player';
+          });
+        }
+      }
+
+      if (toggleBtn) toggleBtn.addEventListener('click', togglePlayback);
+      if (heroPlayBtn) heroPlayBtn.addEventListener('click', togglePlayback);
+
+      stationBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          stationBtns.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+          btn.setAttribute('aria-pressed', 'true');
+          currentStation = btn.getAttribute('data-name') || 'Główny Kanał CC';
+          currentStream = btn.getAttribute('data-stream') || currentStream;
+          if (audio) {
+            audio.src = currentStream;
+            audio.play().then(function () {
+              updateTunerUI('Nadaje na żywo: ' + currentStation, true);
+            }).catch(function () {
+              updateTunerUI('Wybrano kanał: ' + currentStation, false);
+            });
+          }
+        });
+      });
+
+      // 4. Signature Move: Index with Preview
+      var indexContainer = document.getElementById('indexRows');
+      var indexRows = document.querySelectorAll('.index-row');
+      var stageImg = document.getElementById('previewStageImg');
+      var stageTitle = document.getElementById('previewStageTitle');
+      var stageDesc = document.getElementById('previewStageDesc');
+
+      function activateRow(row) {
+        indexRows.forEach(function (r) { r.classList.remove('is-active'); });
+        row.classList.add('is-active');
+        var newImg = row.getAttribute('data-img');
+        var newTitle = row.getAttribute('data-title');
+        var newCaption = row.getAttribute('data-caption');
+        if (stageImg && newImg && stageImg.getAttribute('src') !== newImg) {
+          stageImg.style.opacity = '0.25';
+          setTimeout(function () {
+            stageImg.setAttribute('src', newImg);
+            stageImg.style.opacity = '1';
+          }, 110);
+        }
+        if (stageTitle && newTitle) stageTitle.textContent = newTitle;
+        if (stageDesc && newCaption) stageDesc.textContent = newCaption;
+      }
+
+      indexRows.forEach(function (row) {
+        row.addEventListener('mouseenter', function () {
+          if (indexContainer) indexContainer.classList.add('has-hover');
+          activateRow(row);
+        });
+        row.addEventListener('focus', function () {
+          activateRow(row);
+        });
+      });
+      if (indexContainer) {
+        indexContainer.addEventListener('mouseleave', function () {
+          indexContainer.classList.remove('has-hover');
+        });
+      }
+
+      // 5. Share Button with Web Share API / Clipboard fallback
+      var shareBtn = document.getElementById('shareWizytowkaBtn');
+      var shareLabel = document.getElementById('shareBtnLabel');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', function () {
+          var shareData = {
+            title: 'Wizytówka Christian Culture',
+            text: 'Poznaj ekosystem Christian Culture: 6 stacji radia 24/7, interlinearna Biblia UBG, Akademia Biblijna i społeczność LUMINA.',
+            url: 'https://polskieradio.cc/wizytowka'
+          };
+          if (navigator.share) {
+            navigator.share(shareData).catch(function () {});
+          } else if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareData.url).then(function () {
+              if (shareLabel) shareLabel.textContent = 'Skopiowano link: polskieradio.cc/wizytowka';
+            });
+          }
+        });
+      }
+
+      // 6. Motion Layer: Staggered section entrances
+      if ('IntersectionObserver' in window) {
+        document.documentElement.classList.add('js-motion-ready');
+        var items = document.querySelectorAll('.reveal-item');
+        items.forEach(function (el) {
+          var rect = el.getBoundingClientRect();
+          if (rect.top > window.innerHeight * 0.88) {
+            el.classList.add('is-pending');
+            el.style.transform = 'translate3d(0, 22px, 0)';
+            el.style.opacity = '0.18';
+          }
+        });
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove('is-pending');
+              entry.target.style.transform = 'translate3d(0, 0, 0)';
+              entry.target.style.opacity = '1';
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08 });
+        items.forEach(function (el) { observer.observe(el); });
+      }
+    })();
+  </script>
+</body>
+</html>
