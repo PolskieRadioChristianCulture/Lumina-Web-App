@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dobrze, że jesteś | Christian Culture</title>
-<meta name="description" content="Wizytówka Christian Culture: chrześcijańskie radio 24/7, społeczność LUMINA i misja Celujemy w Pierwszy Milion. Wybierz drzwi i wejdź.">
+<meta name="description" content="Wizytówka Christian Culture: radio i telewizja 24/7, społeczność LUMINA, portal informacyjny CCN, Akademia Biblijna i akcja #antyHALLOWEEN. Wszystko bezpłatnie.">
 <link rel="canonical" href="https://polskieradio.cc/wizytowka">
 <meta name="theme-color" content="#09090b">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
 <meta property="og:title" content="Dobrze, że jesteś | Christian Culture">
-<meta property="og:description" content="Radio 24/7, społeczność LUMINA i misja Pierwszy Milion. Trzy drzwi do Christian Culture.">
+<meta property="og:description" content="Radio i telewizja 24/7, LUMINA, CCN News, Akademia Biblijna i #antyHALLOWEEN. Drzwi do całego ekosystemu Christian Culture.">
 <meta property="og:url" content="https://polskieradio.cc/wizytowka">
 <meta property="og:image" content="https://polskieradio.cc/wizytowka/img/og-wizytowka.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -43,7 +43,7 @@
   --display: 'Cinzel', 'Times New Roman', serif;
   --text: 'Plus Jakarta Sans', system-ui, sans-serif;
   --margin: clamp(16px, 3vw, 40px);
-  --gap: clamp(120px, 14vw, 200px);
+  --gap: clamp(96px, 11vw, 168px);
   --arch: 999px 999px 0 0;
   --s-small: 15px;
   --s-body: 17px;
@@ -55,13 +55,14 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body { margin: 0; background: var(--ground); color: var(--ink); font: 400 var(--s-body)/1.55 var(--text); }
-img { display: block; max-width: 100%; }
+body.menu-open { overflow: hidden; }
+img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
 h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.01em; margin: 0; line-height: 1.04; }
 p { margin: 0; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 ::selection { background: var(--accent); color: var(--accent-ink); }
-.skip { position: absolute; left: -999px; top: 8px; background: var(--accent); color: var(--accent-ink); padding: 12px 16px; z-index: 10; }
+.skip { position: absolute; left: -999px; top: 8px; background: var(--accent); color: var(--accent-ink); padding: 12px 16px; z-index: 40; }
 .skip:focus { left: var(--margin); }
 
 /* Przycisk w kształcie drzwi: łuk u góry, prosto u dołu */
@@ -72,81 +73,158 @@ p { margin: 0; }
 .btn:active { transform: translateY(0) scale(.98); }
 .btn-quiet { background: var(--ground-3); color: var(--ink); }
 .btn-quiet:hover { background: #2b2822; }
+.btn-google { background: #fff; color: #1f1f1f; }
+.btn-google:hover { background: #f1f1f1; }
+.btn-google svg { width: 20px; height: 20px; flex: none; }
+.btn[disabled] { opacity: .7; cursor: progress; transform: none; }
 
 /* Nawigacja */
-.bar { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px var(--margin); }
+.bar { display: flex; align-items: center; gap: 16px; padding: 14px var(--margin); }
+.menu-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; padding: 0 14px 0 10px; border: 0; border-radius: 22px 22px 0 0;
+  background: var(--ground-3); color: var(--ink); font: 600 var(--s-small)/1 var(--text); cursor: pointer; transition: background-color .2s; }
+.menu-btn:hover { background: #2b2822; }
+.menu-btn .bars { display: grid; gap: 4px; }
+.menu-btn .bars span { display: block; width: 18px; height: 2px; background: currentColor; }
 .mark { font: 700 20px/1 var(--display); text-decoration: none; letter-spacing: .02em; min-height: 44px; display: inline-flex; align-items: center; }
-.bar nav { display: flex; gap: 8px; }
-.bar nav a { text-decoration: none; padding: 0 14px; min-height: 44px; display: inline-flex; align-items: center; color: var(--ink); transition: color .2s; }
+.bar nav { display: flex; gap: 2px; margin-left: auto; }
+.bar nav a { text-decoration: none; padding: 0 12px; min-height: 44px; display: inline-flex; align-items: center; color: var(--ink); transition: color .2s; }
 .bar nav a:hover { color: var(--accent); }
-.bar .btn { min-height: 44px; padding: 0 20px; font-size: var(--s-small); white-space: nowrap; }
+.bar .actions { display: flex; gap: 10px; }
+.bar .btn { min-height: 44px; padding: 0 18px; font-size: var(--s-small); white-space: nowrap; }
 
-/* HERO: tekst + troje drzwi */
-.hero { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(24px, 4vw, 64px); align-items: end; padding: clamp(24px, 5vw, 72px) var(--margin) 0; min-height: calc(100svh - 72px); }
-.hero h1 { font-size: var(--s-h1); }
-.hero .lead { font-size: var(--s-sub); line-height: 1.4; margin-top: 28px; max-width: 30ch; }
-.hero .verse { margin-top: 32px; color: var(--muted); font-size: var(--s-small); }
-.hero .verse q { font-family: var(--display); font-size: var(--s-body); color: var(--ink); }
-.hero-text { padding-bottom: clamp(24px, 6vh, 72px); align-self: center; }
-
-.doors { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 1.6vw, 24px); align-items: end; }
-.door { display: flex; flex-direction: column; gap: 14px; }
-.door-frame { display: block; position: relative; border-radius: var(--arch); overflow: hidden; background: var(--ground-2); text-decoration: none; }
-.door-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
-.door:nth-child(1) .door-frame { aspect-ratio: 5 / 8.6; }
-.door:nth-child(2) .door-frame { aspect-ratio: 5 / 9.6; }
-.door:nth-child(3) .door-frame { aspect-ratio: 5 / 8; }
-.door-frame:hover img, .door-frame:focus-visible img { transform: scale(1.06); }
-.door h2 { font-size: var(--s-sub); }
-.door h2 a { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
-.door p { color: var(--muted); font-size: var(--s-small); line-height: 1.45; }
-.door .live { color: var(--ink); font-weight: 600; min-height: 44px; display: flex; align-items: center; gap: 10px; }
+/* Lewy panel krawędziowy: skróty EkoCC */
+.edge-tab { position: fixed; left: 0; top: 50%; z-index: 25; transform: translateY(-50%); writing-mode: vertical-rl; rotate: 180deg;
+  min-width: 44px; padding: 18px 10px; border: 0; border-radius: 0 22px 22px 0; background: var(--accent); color: var(--accent-ink);
+  font: 600 var(--s-small)/1 var(--text); cursor: pointer; transition: padding .25s var(--ease); }
+.edge-tab:hover { padding-right: 14px; }
+.scrim { position: fixed; inset: 0; z-index: 29; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .3s; }
+.scrim.show { opacity: 1; pointer-events: auto; }
+.panel { position: fixed; left: 0; top: 0; bottom: 0; z-index: 30; width: min(380px, 92vw); background: var(--ground-2); padding: 20px 20px 28px;
+  transform: translateX(-102%); transition: transform .35s var(--ease); overflow-y: auto; visibility: hidden; }
+.panel.open { transform: none; visibility: visible; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.panel-head h2 { font-size: var(--s-sub); }
+.panel-close { min-width: 44px; min-height: 44px; border: 0; border-radius: 22px 22px 0 0; background: var(--ground-3); color: var(--ink); font: 600 24px/1 var(--text); cursor: pointer; }
+.icons { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.icons a { display: flex; flex-direction: column; gap: 6px; min-height: 104px; padding: 14px 12px 12px; border-radius: 40px 40px 0 0; background: var(--ground-3); text-decoration: none; transition: transform .25s var(--ease), background-color .2s; }
+.icons a:hover, .icons a:focus-visible { transform: translateY(-3px); background: #2b2822; }
+.icons svg { width: 28px; height: 28px; margin: 4px 0 2px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.icons b { font-weight: 600; font-size: var(--s-small); line-height: 1.25; }
+.icons span { color: var(--muted); font-size: 13px; line-height: 1.3; }
+.icons a.gold { background: var(--accent); color: var(--accent-ink); }
+.icons a.gold svg { color: var(--accent-ink); }
+.icons a.gold:hover { background: #e5c158; }
+.mini { background: var(--ground); border-radius: 40px 40px 0 0; padding: 22px 16px 16px; margin-bottom: 12px; }
+.mini h3 { font: 700 var(--s-body)/1.3 var(--display); margin: 0 0 8px; }
+.mini-now b { display: block; font: 700 20px/1.2 var(--display); }
+.mini-now span { color: var(--muted); font-size: var(--s-small); }
+.mini-yt { margin-top: 12px; aspect-ratio: 16 / 9; background: #000; }
+.mini-yt[hidden] { display: none; }
+.mini-yt iframe { width: 100%; height: 100%; display: block; border: 0; }
+.mini-ctrl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+.mini-ctrl .btn { padding: 0 10px; font-size: var(--s-small); min-height: 48px; }
+.mini .status { margin-top: 10px; }
 .dot { width: 10px; height: 13px; border-radius: 5px 5px 0 0; background: var(--accent); flex: none; }
-.play-mini { background: none; border: 0; color: var(--ink); font: 600 var(--s-small)/1 var(--text); padding: 0; min-height: 44px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
-.play-mini:hover { color: var(--accent); }
 
-/* Zdanie z miniaturami */
-.statement { padding: var(--gap) var(--margin); display: grid; place-items: center; }
-.statement p { font: 500 clamp(24px, 2.6vw, 36px)/1.3 var(--display); max-width: 30ch; text-align: center; }
-.thumb { display: inline-block; height: .85em; width: 1.1em; vertical-align: -0.1em; margin: 0 .12em; border-radius: var(--arch); overflow: hidden; }
-.thumb img { width: 100%; height: 100%; object-fit: cover; }
+/* HERO: tytuł + sześcioro drzwi */
+.hero { padding: clamp(24px, 4vw, 56px) var(--margin) 0; }
+.hero-top { display: grid; grid-template-columns: 6fr 6fr; gap: clamp(24px, 4vw, 64px); align-items: end; }
+.hero h1 { font-size: var(--s-h1); }
+.hero .lead { font-size: var(--s-sub); line-height: 1.4; max-width: 34ch; }
+.hero .verse { margin-top: 18px; color: var(--muted); font-size: var(--s-small); }
+.hero .verse q { font-family: var(--display); font-size: var(--s-body); color: var(--ink); }
+.doors { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(10px, 1.4vw, 20px); align-items: end; margin-top: clamp(32px, 5vw, 64px); }
+.door { display: flex; flex-direction: column; gap: 10px; }
+.door-frame { display: block; position: relative; border-radius: var(--arch); overflow: hidden; background: var(--ground-2); aspect-ratio: 8 / 11; }
+.door-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transition: transform .9s var(--ease); }
+.door:nth-child(2) .door-frame, .door:nth-child(5) .door-frame { aspect-ratio: 8 / 12.4; }
+.door:nth-child(3) .door-frame { aspect-ratio: 8 / 11.8; }
+.door-frame:hover img, .door-frame:focus-visible img { transform: scale(1.05); }
+.door h2 { font-size: 20px; }
+.door h2 a { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.door p { color: var(--muted); font-size: var(--s-small); line-height: 1.4; }
 
-/* RADIO: lista stacji + wielki łuk z przenikaniem światła */
-.radio { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(24px, 4vw, 64px); padding: 0 var(--margin) clamp(72px, 8vw, 120px); align-items: end; }
+/* AKCJA: pełna szerokość */
+.akcja { margin-top: var(--gap); background: #000; display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 64px); align-items: center; padding: clamp(48px, 6vw, 96px) var(--margin); }
+.akcja-img { width: 100%; height: auto; }
+.akcja-text { display: grid; gap: 20px; }
+.akcja h2 { font-size: var(--s-h2); }
+.akcja p { max-width: 46ch; }
+.akcja .btn { margin-top: 12px; }
+
+/* RADIO */
+.radio { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(24px, 4vw, 64px); padding: var(--gap) var(--margin) 0; align-items: end; }
 .radio-list { display: flex; flex-direction: column; gap: 6px; }
 .radio-list h2 { font-size: var(--s-h2); color: var(--muted); margin-bottom: 8px; }
 .station { background: none; border: 0; padding: 4px 0; text-align: left; cursor: pointer; font: 700 var(--s-h2)/1.1 var(--display); color: var(--muted); min-height: 44px; transition: color .25s; }
 .station[aria-pressed="true"] { color: var(--ink); }
 .station:hover { color: var(--accent); }
 .radio-desc { margin-top: 24px; max-width: 38ch; }
-.radio-controls { margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.controls { margin-top: 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .status { color: var(--muted); font-size: var(--s-small); }
-.arch-big { position: relative; border-radius: var(--arch); overflow: hidden; aspect-ratio: 4 / 5; width: min(100%, calc(86svh * .8)); justify-self: end; background: var(--ground-2); }
+.arch-big { position: relative; border-radius: var(--arch); overflow: hidden; aspect-ratio: 4 / 5; width: min(100%, calc(84svh * .8)); justify-self: end; background: var(--ground-2); }
 .arch-big img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.6s ease; }
 .arch-big img.on { opacity: 1; }
 
+/* TELEWIZJA: szeroki łuk po lewej */
+.tv { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 64px); padding: var(--gap) var(--margin) 0; align-items: center; }
+.tv-frame { border-radius: 50% 50% 0 0 / 34% 34% 0 0; overflow: hidden; aspect-ratio: 16 / 10; }
+.tv-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+.tv h2 { font-size: var(--s-h2); }
+.tv p { margin-top: 20px; max-width: 40ch; }
+.tv .btn { margin-top: 28px; }
+
 /* LUMINA: zmiana pola koloru */
-.lumina { background: var(--ground-2); display: grid; grid-template-columns: 6fr 6fr; gap: clamp(24px, 4vw, 64px); padding: clamp(72px, 9vw, 140px) var(--margin); align-items: center; }
-.lumina .arch-photo { border-radius: var(--arch); overflow: hidden; aspect-ratio: 4 / 5; width: min(100%, calc(80svh * .8)); justify-self: center; }
-.lumina .arch-photo img { width: 100%; height: 100%; object-fit: cover; }
+.lumina { margin-top: var(--gap); background: var(--ground-2); display: grid; grid-template-columns: 6fr 6fr; gap: clamp(24px, 4vw, 64px); padding: clamp(72px, 8vw, 128px) var(--margin); align-items: center; }
+.lumina .arch-photo { border-radius: var(--arch); overflow: hidden; aspect-ratio: 4 / 5; width: min(100%, calc(80svh * .8)); justify-self: center; order: 2; }
+.lumina .arch-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
 .lumina h2 { font-size: var(--s-h2); }
 .lumina .lead { margin-top: 24px; max-width: 40ch; }
-.lumina ul { list-style: none; padding: 0; margin: 32px 0 36px; display: grid; gap: 14px; }
+.lumina ul { list-style: none; padding: 0; margin: 28px 0 32px; display: grid; gap: 12px; }
 .lumina li { display: flex; gap: 14px; align-items: baseline; font-size: var(--s-sub); font-family: var(--display); }
 .lumina li .dot { transform: translateY(-2px); }
+.login-note { margin-top: 14px; color: var(--muted); font-size: var(--s-small); min-height: 1.4em; }
+.login-note a { color: var(--accent); }
 
-/* LICZBY: stopniowane płytki */
+/* CCN: artykuł wiodący + lista */
+.ccn { padding: var(--gap) var(--margin) 0; }
+.ccn-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 32px; }
+.ccn h2 { font-size: var(--s-h2); }
+.ccn-head p { max-width: 44ch; color: var(--muted); }
+.ccn-grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
+.lead-art { text-decoration: none; display: block; }
+.lead-art .pic { border-radius: 40% 40% 0 0 / 22% 22% 0 0; overflow: hidden; aspect-ratio: 16 / 10; }
+.lead-art img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
+.lead-art:hover img { transform: scale(1.04); }
+.lead-art h3 { font-size: var(--s-sub); line-height: 1.25; margin-top: 18px; }
+.lead-art p { margin-top: 8px; color: var(--muted); font-size: var(--s-small); }
+.ccn ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.ccn ol a { display: flex; gap: 14px; align-items: baseline; padding: 14px 0; text-decoration: none; font: 600 var(--s-sub)/1.25 var(--display); transition: color .2s; }
+.ccn ol a:hover { color: var(--accent); }
+.ccn ol .dot { transform: translateY(-3px); }
+.ccn ol small { display: block; font: 400 var(--s-small)/1.4 var(--text); color: var(--muted); margin-top: 6px; }
+.ccn .btn { margin-top: 24px; }
+
+/* AKADEMIA */
+.akademia { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(24px, 4vw, 64px); padding: var(--gap) var(--margin) 0; align-items: center; }
+.akademia h2 { font-size: var(--s-h2); }
+.akademia p { margin-top: 20px; max-width: 40ch; }
+.akademia .btn { margin-top: 28px; }
+.akademia-pic { border-radius: 50% 50% 0 0 / 30% 30% 0 0; overflow: hidden; aspect-ratio: 16 / 9; }
+.akademia-pic img { width: 100%; height: 100%; object-fit: cover; }
+
+/* LICZBY */
 .stats { padding: var(--gap) var(--margin); display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; align-items: start; }
 .stats h2 { grid-column: 7 / 13; grid-row: 1; font-size: var(--s-sub); align-self: end; padding: 0 0 12px; }
 .tile { display: flex; flex-direction: column; justify-content: space-between; padding: 28px; border-radius: 120px 0 0 0; }
 .tile strong { font: 700 var(--s-h1)/1 var(--display); }
 .tile span { font-size: var(--s-body); max-width: 24ch; }
-.tile-a { grid-column: 1 / 7; grid-row: 1 / 3; min-height: 64vh; background: var(--accent); color: var(--accent-ink); }
-.tile-b { grid-column: 7 / 10; grid-row: 2; min-height: 44vh; background: var(--ground-3); }
-.tile-c { grid-column: 10 / 13; grid-row: 2; margin-top: 12vh; min-height: 32vh; background: var(--ground-2); }
+.tile-a { grid-column: 1 / 7; grid-row: 1 / 3; min-height: 56vh; background: var(--accent); color: var(--accent-ink); }
+.tile-b { grid-column: 7 / 10; grid-row: 2; min-height: 40vh; background: var(--ground-3); }
+.tile-c { grid-column: 10 / 13; grid-row: 2; margin-top: 10vh; min-height: 30vh; background: var(--ground-2); }
 
-/* MILION: obiekt wraca na końcu */
-.milion { position: relative; overflow: hidden; background: #0d1220; min-height: 90svh; display: grid; grid-template-columns: 8fr 4fr; align-items: center; }
+/* MILION */
+.milion { position: relative; overflow: hidden; background: #0d1220; min-height: 80svh; display: grid; grid-template-columns: 8fr 4fr; align-items: center; }
 .milion .globe { align-self: stretch; position: relative; }
 .milion .globe img { position: absolute; left: -12%; bottom: -14%; width: 118%; height: 128%; object-fit: cover; border-radius: var(--arch); }
 .milion .milion-text { padding: 72px var(--margin) 72px 0; position: relative; }
@@ -156,17 +234,18 @@ p { margin: 0; }
 
 /* KARTA Z KODEM QR */
 .card { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(24px, 4vw, 64px); padding: clamp(96px, 10vw, 160px) var(--margin); align-items: center; }
-.card .qr { border-radius: var(--arch); overflow: hidden; background: #000; max-width: 460px; width: 100%; padding: 13% 7% 7%; text-align: center; }
+.card .qr { border-radius: var(--arch); overflow: hidden; background: #000; max-width: 440px; width: 100%; padding: 13% 7% 7%; text-align: center; justify-self: center; }
 .card .qr p { margin: 0 0 9%; font: 700 clamp(15px, 1.5vw, 20px)/1.3 var(--display); color: var(--accent); }
+.card .qr img { width: 100%; height: auto; aspect-ratio: 1 / 1; }
 .card h2 { font-size: var(--s-h2); }
-.card p { margin-top: 20px; max-width: 42ch; }
-.card .actions { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.card p.say { margin-top: 20px; max-width: 42ch; }
+.card .controls { margin-top: 32px; }
 
-/* STOPKA: znak zbudowany z łuków */
+/* STOPKA */
 footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--margin) 28px; }
-.skyline { display: flex; align-items: flex-end; gap: 4px; height: 30svh; min-height: 160px; }
+.skyline { display: flex; align-items: flex-end; gap: 4px; height: 26svh; min-height: 150px; }
 .skyline span { flex: 1; background: var(--accent-ink); border-radius: var(--arch); }
-.foot { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; margin-top: 56px; }
+.foot { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; margin-top: 48px; }
 .foot nav { display: grid; grid-template-columns: repeat(4, auto); gap: 4px 24px; justify-content: start; }
 .foot a { text-decoration: none; font-size: var(--s-small); min-height: 44px; display: inline-flex; align-items: center; font-weight: 600; }
 .foot a:hover { text-decoration: underline; }
@@ -175,129 +254,191 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 
 /* Zgoda na analitykę */
 .consent { position: fixed; left: var(--margin); right: var(--margin); bottom: 16px; z-index: 20; max-width: 720px; margin: 0 auto; background: var(--ground-3); color: var(--ink);
-  border-radius: 28px 28px 0 0; padding: 18px 20px; display: none; gap: 14px; align-items: center; flex-wrap: wrap; box-shadow: 0 12px 40px rgba(0,0,0,.55); } /* taste-skill-ignore: prawdziwe okno zgody, unosi się nad stroną */
+  border-radius: 28px 28px 0 0; padding: 18px 20px; display: none; gap: 14px; align-items: center; flex-wrap: wrap; box-shadow: 0 12px 40px rgba(0,0,0,.55); } /* taste-skill-ignore: prawdziwe okno zgody */
 .consent.show { display: flex; }
 .consent p { flex: 1 1 260px; font-size: var(--s-small); }
 .consent a { color: var(--accent); }
 .consent .btn { min-height: 44px; padding: 0 18px; font-size: var(--s-small); }
 
-/* Wejścia sekcji — treść widoczna także bez skryptu */
+/* Wejścia sekcji: treść widoczna także bez skryptu */
 .js .rise { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--i, 0) * 80ms); }
 .js .rise.in { opacity: 1; transform: none; }
-@keyframes drift { from { transform: scale(1.02); } to { transform: scale(1.12) translateY(-2%); } }
+@keyframes drift { from { transform: scale(1.02); } to { transform: scale(1.08); } }
 .door-frame img { animation: drift 18s ease-in-out infinite alternate; }
 .door-frame:hover img { animation-play-state: paused; }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .bar nav { display: none; }
-  .hero { grid-template-columns: 1fr; min-height: auto; gap: 28px; align-items: start; }
-  .hero-text { padding-bottom: 0; }
-  .hero .lead { font-size: var(--s-body); margin-top: 16px; }
-  .hero .verse { margin-top: 16px; }
-  .doors { gap: 10px; }
-  .door { gap: 8px; }
-  .door h2 { font-size: 17px; }
-  .door p.desc { display: none; }
-  .door .live, .play-mini { font-size: var(--s-small); gap: 6px; line-height: 1.2; }
-  .statement p { text-align: left; font-size: 24px; }
-  .radio, .lumina, .card { grid-template-columns: 1fr; }
+  .bar .actions { margin-left: auto; }
+}
+@media (max-width: 900px) {
+  .bar .btn-google { display: none; }
+  .edge-tab { display: none; }
+  .menu-btn .label { display: none; }
+  .mark { font-size: 17px; }
+  .hero-top { grid-template-columns: 1fr; gap: 14px; }
+  .hero .lead { font-size: var(--s-body); }
+  .doors { grid-template-columns: repeat(3, 1fr); gap: 10px; row-gap: 18px; margin-top: 24px; }
+  .door { gap: 4px; }
+  .door h2 { font-size: var(--s-small); }
+  .door p { display: none; }
+  .door .door-frame, .door:nth-child(n) .door-frame { aspect-ratio: 8 / 11; }
+  .akcja, .radio, .tv, .lumina, .akademia, .ccn-grid, .card { grid-template-columns: 1fr; }
   .radio .arch-big { order: -1; aspect-ratio: 4 / 4.4; }
+  .lumina .arch-photo { order: 0; }
   .station { font-size: var(--s-h2); }
   .stats { grid-template-columns: 1fr 1fr; gap: 6px; }
-  .stats h2 { grid-column: 1 / 3; grid-row: auto; font-size: var(--s-sub); }
+  .stats h2 { grid-column: 1 / 3; grid-row: auto; }
   .tile { padding: 20px; border-radius: 64px 0 0 0; }
-  .tile-a { grid-column: 1 / 3; grid-row: auto; min-height: 56vw; }
-  .tile-b { grid-column: 1; grid-row: auto; min-height: 48vw; }
-  .tile-c { grid-column: 2; grid-row: auto; margin-top: 32px; min-height: 40vw; }
-  .tile strong { font-size: var(--s-h1); }
+  .tile-a { grid-column: 1 / 3; grid-row: auto; min-height: 52vw; }
+  .tile-b { grid-column: 1; grid-row: auto; min-height: 46vw; }
+  .tile-c { grid-column: 2; grid-row: auto; margin-top: 28px; min-height: 40vw; }
   .milion { grid-template-columns: 1fr; min-height: auto; }
   .milion .milion-text { padding: 72px var(--margin) 24px; order: -1; }
-  .milion .globe { height: 55svh; }
+  .milion .globe { height: 52svh; }
   .milion .globe img { left: 6%; width: 130%; height: 120%; bottom: -20%; }
-  .card .qr { max-width: 360px; }
-  .card { padding: 96px var(--margin); }
-  .consent { padding: 14px 16px; gap: 10px; }
-  .consent p { flex-basis: 100%; }
-  .skyline { height: 22svh; }
+  .card .qr { max-width: 340px; }
+  .skyline { height: 20svh; }
   .foot { grid-template-columns: 1fr; }
   .foot nav { grid-template-columns: 1fr 1fr; }
+  .consent { padding: 14px 16px; gap: 10px; }
+  .consent p { flex-basis: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .door-frame img { animation: none; }
   .js .rise { opacity: 1; transform: none; transition: none; }
-  .arch-big img { transition: none; }
-  .btn, .door-frame img { transition: none; }
+  .arch-big img, .btn, .door-frame img, .panel, .scrim { transition: none; }
 }
 </style>
+<script src="/js/cc-radio-milion.js?v=20261011_2" defer></script>
 <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 <a class="skip" href="#main">Przejdź do treści</a>
 
+<button class="edge-tab" type="button" data-menu-open aria-controls="ekocc-menu" aria-expanded="false">Menu EkoCC</button>
+<div class="scrim" data-menu-close></div>
+<aside class="panel" id="ekocc-menu" role="dialog" aria-modal="true" aria-labelledby="menu-h">
+  <div class="panel-head">
+    <h2 id="menu-h">Odkrywaj więcej</h2>
+    <button class="panel-close" type="button" data-menu-close aria-label="Zamknij menu">×</button>
+  </div>
+
+  <section class="mini" aria-labelledby="mini-h">
+    <h3 id="mini-h">Radio: 6 stacji</h3>
+    <p class="mini-now"><b data-mini-name>Radio Christian Culture</b><span data-mini-sub>Kultura · Edukacja · Inspiracja</span></p>
+    <div class="mini-yt" data-yt-wrap hidden><div id="yt-mini"></div></div>
+    <div class="mini-ctrl">
+      <button class="btn" type="button" data-play data-place="panel"><span data-play-label>Słuchaj tutaj</span></button>
+      <button class="btn btn-quiet" type="button" data-next>Następna stacja</button>
+    </div>
+    <p class="status" aria-live="polite" data-mini-pos>Stacja 1 z 6. Każde słuchanie liczy się w misji Pierwszy Milion.</p>
+  </section>
+
+  <ul class="icons">
+    <li><a class="gold" href="https://polskieradio.cc/" data-track="start" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg><b>Strona główna</b></a></li>
+    <li><a class="gold" href="/wspieraj" data-track="wspieraj" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 5.3 3 1.7-1.9 3.2-3 5.3-3 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg><b>Wspieraj misję</b></a></li>
+    <li><a href="https://www.youtube.com/@osobowoscplus" target="_blank" rel="noopener" data-track="youtube_osobowoscplus" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg><b>Osobowość Plus</b><span>YouTube</span></a></li>
+    <li><a href="https://www.youtube.com/@ChristianCultureTV" target="_blank" rel="noopener" data-track="youtube_cctv" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg><b>Christian Culture TV</b><span>YouTube</span></a></li>
+    <li><a href="https://www.youtube.com/@RadioChristianCulture" target="_blank" rel="noopener" data-track="youtube_radiocc" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg><b>Polskie Radio CC</b><span>YouTube</span></a></li>
+    <li><a href="/mess" data-track="mess" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v10H9l-5 4z"/></svg><b>LUMI Mess</b><span>Komunikator</span></a></li>
+    <li><a href="/Ewangelia" data-track="ewangelia" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z"/></svg><b>Dobra Nowina</b><span>Ewangelia</span></a></li>
+    <li><a href="/BCM24" data-track="modlitwa" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 3.5 5 6 5 9.5a5 5 0 0 1-10 0c0-2 .8-3.4 2-4.6.2 1.8 1 2.8 2.2 3.1C11 8.5 11.5 5.6 12 3z"/></svg><b>Modlitwa 24/7</b><span>BCM24 na żywo</span></a></li>
+    <li><a href="/music" data-track="music" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg><b>CC Music</b><span>Uwielbienie</span></a></li>
+    <li><a href="/ogloszenia" data-track="ogloszenia" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><b>Ogłoszenia</b><span>Tablica</span></a></li>
+    <li><a href="/holos" data-track="holos" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>HOLOS</b><span>Uświęcenie czasu</span></a></li>
+    <li><a href="/kalendarz" data-track="kalendarz" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><b>Kalendarz</b><span>Biblijny PDF</span></a></li>
+    <li><a href="/Global" data-track="global" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg><b>CC Global</b><span>Po angielsku</span></a></li>
+    <li><a href="/mapa" data-track="mapa" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-6.2-6-11a6 6 0 0 1 12 0c0 4.8-6 11-6 11z"/><circle cx="12" cy="10" r="2"/></svg><b>Mapa EkoCC</b><span>Wszystkie miejsca</span></a></li>
+    <li><a href="/pobierz/" data-track="pobierz" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><b>Pobierz</b><span>Pliki i grafiki</span></a></li>
+    <li><a href="/wspolpraca" data-track="wspolpraca" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 14.6c3.2-.4 6.5 1.4 6.5 5.4"/></svg><b>Współpraca</b><span>Partnerstwo</span></a></li>
+    <li><a href="/o-nas" data-track="onas" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg><b>O nas</b><span>Misja i wiara</span></a></li>
+  </ul>
+</aside>
+
 <header class="bar">
+  <button class="menu-btn" type="button" data-menu-open aria-controls="ekocc-menu" aria-expanded="false" aria-label="Otwórz menu EkoCC"><span class="bars" aria-hidden="true"><span></span><span></span><span></span></span><span class="label">Menu</span></button>
   <a class="mark" href="/" aria-label="Christian Culture, strona główna">Christian Culture</a>
-  <nav aria-label="Trzy drzwi">
+  <nav aria-label="Najważniejsze">
     <a href="#radio" data-track="radio" data-place="menu">Radio</a>
+    <a href="#tv" data-track="tv" data-place="menu">Telewizja</a>
     <a href="#lumina" data-track="lumina" data-place="menu">LUMINA</a>
-    <a href="#milion" data-track="milion" data-place="menu">Pierwszy Milion</a>
+    <a href="#ccn" data-track="ccn" data-place="menu">CCN</a>
+    <a href="#akademia" data-track="akademia" data-place="menu">Akademia</a>
   </nav>
-  <button class="btn" type="button" data-play data-place="menu">Słuchaj teraz</button>
+  <div class="actions">
+    <button class="btn btn-google" type="button" data-google><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.06H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg><span data-google-label>Zaloguj z Google</span></button>
+    <button class="btn" type="button" data-play data-place="menu">Słuchaj</button>
+  </div>
 </header>
 
 <main id="main">
   <section class="hero" aria-labelledby="tytul">
-    <div class="hero-text">
+    <div class="hero-top">
       <h1 id="tytul" class="rise">Dobrze, że jesteś.</h1>
-      <p class="lead rise" style="--i:1">Christian Culture to chrześcijańskie radio 24/7, społeczność LUMINA i misja: pierwszy milion ludzi bliżej Boga. Wybierz drzwi.</p>
-      <p class="verse rise" style="--i:2"><q>Oto stoję u drzwi i kołaczę.</q> Apokalipsa 3:20</p>
+      <div>
+        <p class="lead rise" style="--i:1">Christian Culture to radio i telewizja 24/7, społeczność LUMINA, portal CCN i Akademia Biblijna. Wszystko bezpłatnie. Wybierz drzwi.</p>
+        <p class="verse rise" style="--i:2"><q>Oto stoję u drzwi i kołaczę.</q> Apokalipsa 3:20</p>
+      </div>
     </div>
 
     <div class="doors">
+      <article class="door rise" style="--i:1">
+        <a class="door-frame" href="/player" data-track="radio" data-place="drzwi" aria-label="Radio 24/7"><img src="/wizytowka/img/radio.webp" width="800" height="1100" alt="Studio radiowe z napisem ON AIR"></a>
+        <h2><a href="#radio" data-track="radio" data-place="drzwi-tytul">Radio</a></h2>
+        <p>Muzyka i Biblia czytana 24/7.</p>
+      </article>
       <article class="door rise" style="--i:2">
-        <a class="door-frame" href="/player" data-track="radio" data-place="drzwi" aria-label="Drzwi pierwsze: Radio 24/7">
-          <img src="/wizytowka/img/radio.webp" width="800" height="1100" alt="Studio radiowe z mikrofonami i napisem ON AIR">
-        </a>
-        <h2><a href="/player" data-track="radio" data-place="drzwi-tytul">Radio</a></h2>
-        <p class="desc">Muzyka, Biblia czytana i dobre rozmowy przez całą dobę.</p>
-        <button class="play-mini" type="button" data-play data-place="drzwi"><span class="dot" aria-hidden="true"></span><span data-play-label>Słuchaj tutaj</span></button>
+        <a class="door-frame" href="/cctv24" data-track="tv" data-place="drzwi" aria-label="Telewizja CC24"><img src="/wizytowka/img/tv.webp" width="800" height="1100" alt="Wokalistki programu Instrumental Worship Music"></a>
+        <h2><a href="#tv" data-track="tv" data-place="drzwi-tytul">Telewizja</a></h2>
+        <p>Kanał CC24 na żywo.</p>
       </article>
-
       <article class="door rise" style="--i:3">
-        <a class="door-frame" href="/lumina" data-track="lumina" data-place="drzwi" aria-label="Drzwi drugie: społeczność LUMINA">
-          <img src="/wizytowka/img/lumina.webp" width="800" height="1100" alt="Para patrzy na świetlisty krzyż nad górami o zachodzie słońca">
-        </a>
-        <h2><a href="/lumina" data-track="lumina" data-place="drzwi-tytul">LUMINA</a></h2>
-        <p class="desc">Świadectwa, rozmowy i modlitwa z ludźmi, którzy wierzą.</p>
-        <p class="live"><span class="dot" aria-hidden="true"></span>Wejście bezpłatne</p>
+        <a class="door-frame" href="/lumina" data-track="lumina" data-place="drzwi" aria-label="Społeczność LUMINA"><img src="/wizytowka/img/lumina.webp" width="800" height="1100" alt="Para patrzy na świetlisty krzyż nad górami"></a>
+        <h2><a href="#lumina" data-track="lumina" data-place="drzwi-tytul">LUMINA</a></h2>
+        <p>Ludzie wiary i świadectwa.</p>
       </article>
-
       <article class="door rise" style="--i:4">
-        <a class="door-frame" href="/milion" data-track="milion" data-place="drzwi" aria-label="Drzwi trzecie: misja Pierwszy Milion">
-          <img src="/wizytowka/img/milion.webp" width="800" height="1100" alt="Ziemia nocą widziana z orbity, Europa w światłach miast">
-        </a>
-        <h2><a href="/milion" data-track="milion" data-place="drzwi-tytul">Milion</a></h2>
-        <p class="desc">Wspólna misja: pierwszy milion osób w społeczności.</p>
-        <p class="live"><span class="dot" aria-hidden="true"></span><span data-count-short>Licznik na żywo</span></p>
+        <a class="door-frame" href="/news" data-track="ccn" data-place="drzwi" aria-label="CCN News"><img src="/wizytowka/img/ccn.webp" width="800" height="1100" alt="Stara księga i mapy na biurku w bibliotece"></a>
+        <h2><a href="#ccn" data-track="ccn" data-place="drzwi-tytul">CCN News</a></h2>
+        <p>Wiadomości i analizy.</p>
+      </article>
+      <article class="door rise" style="--i:5">
+        <a class="door-frame" href="/Halloween" data-track="akcja" data-place="drzwi" aria-label="Akcja #antyHALLOWEEN"><img src="/wizytowka/img/akcja.webp" width="800" height="1100" alt="Logo akcji #antyHALLOWEEN: my świętujemy inaczej"></a>
+        <h2><a href="#akcja" data-track="akcja" data-place="drzwi-tytul">Akcja</a></h2>
+        <p>#antyHALLOWEEN 2026.</p>
+      </article>
+      <article class="door rise" style="--i:6">
+        <a class="door-frame" href="/akademia" data-track="akademia" data-place="drzwi" aria-label="Akademia Biblijna"><img src="/wizytowka/img/akademia.webp" width="800" height="1100" alt="Otwarta Biblia na stole przy oknie o świcie"></a>
+        <h2><a href="#akademia" data-track="akademia" data-place="drzwi-tytul">Akademia</a></h2>
+        <p>Lekcje biblijne co dzień.</p>
       </article>
     </div>
   </section>
 
-  <section class="statement" aria-label="O Christian Culture">
-    <p class="rise">Włącz radio <span class="thumb"><img src="/wizytowka/img/radio.webp" alt="" width="800" height="1100" loading="lazy"></span> o każdej porze, otwórz Biblię <span class="thumb"><img src="/wizytowka/img/biblia.webp" alt="" width="1200" height="800" loading="lazy"></span> i poznaj ludzi, z którymi warto iść <span class="thumb"><img src="/wizytowka/img/lumina.webp" alt="" width="800" height="1100" loading="lazy"></span> dalej.</p>
+  <section class="akcja" id="akcja" aria-labelledby="akcja-h">
+    <img class="akcja-img rise" src="/wizytowka/img/akcja-wide.webp" width="1200" height="784" alt="Baner akcji #antyHALLOWEEN: my świętujemy inaczej" loading="lazy">
+    <div class="akcja-text">
+      <h2 id="akcja-h" class="rise">Akcja #antyHALLOWEEN</h2>
+      <div>
+        <p class="rise" style="--i:1">Najnowsza akcja Christian Culture na 31 października. Wybieramy światło, dobro, rodzinę i nadzieję. Przeczytaj deklarację i pobierz bezpłatne grafiki kampanii.</p>
+        <a class="btn rise" style="--i:2" href="/Halloween" data-track="akcja" data-place="akcja">Dołącz do akcji</a>
+      </div>
+    </div>
   </section>
 
   <section class="radio" id="radio" aria-labelledby="radio-h">
     <div>
       <div class="radio-list" role="group" aria-labelledby="radio-h">
         <h2 id="radio-h" class="rise">Radio na żywo</h2>
-        <button class="station rise" style="--i:1" type="button" aria-pressed="true" data-station="https://stream.zeno.fm/vz96pvl3pnktv" data-name="Radio Christian Culture">Christian Culture</button>
-        <button class="station rise" style="--i:2" type="button" aria-pressed="false" data-station="https://stream.zeno.fm/imo45hqnshyuv" data-name="Radio Biblia">Biblia czytana</button>
+        <button class="station rise" style="--i:1" type="button" aria-pressed="true" data-index="0">Christian Culture</button>
+        <button class="station rise" style="--i:2" type="button" aria-pressed="false" data-index="1">Biblia czytana</button>
       </div>
       <p class="radio-desc rise" style="--i:3">Kultura, edukacja i inspiracja albo Pismo Święte czytane przez całą dobę. Wybierz stację i słuchaj od razu, bez logowania i bez opłat.</p>
-      <div class="radio-controls rise" style="--i:4">
+      <div class="controls rise" style="--i:4">
         <button class="btn" type="button" data-play data-place="radio"><span data-play-label>Słuchaj tutaj</span></button>
-        <a class="btn btn-quiet" href="/player" data-track="radio" data-place="radio-player">Pełny odtwarzacz</a>
+        <a class="btn btn-quiet" href="/player" data-track="radio" data-place="radio-player">Wszystkie 6 stacji</a>
         <p class="status" aria-live="polite" data-status>Gotowe: Radio Christian Culture</p>
       </div>
     </div>
@@ -308,36 +449,75 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     </div>
   </section>
 
-  <section class="lumina" id="lumina" aria-labelledby="lumina-h">
-    <div class="arch-photo rise">
-      <img src="/wizytowka/img/lumina.webp" width="800" height="1100" alt="Para patrzy w niebo, nad nimi świetlisty krzyż" loading="lazy">
+  <section class="tv" id="tv" aria-labelledby="tv-h">
+    <div class="tv-frame rise"><img src="/wizytowka/img/tv-wide.webp" width="1600" height="900" alt="Telewizja Christian Culture 24: na żywo, wspólne przesłanie, cały świat" loading="lazy"></div>
+    <div>
+      <h2 id="tv-h" class="rise">Telewizja CC24</h2>
+      <p class="rise" style="--i:1">Chrześcijańska telewizja internetowa na żywo: muzyka, Biblia, modlitwa i wartościowe programy przez całą dobę. Działa w przeglądarce i na telewizorze Smart TV.</p>
+      <div class="controls rise" style="--i:2">
+        <a class="btn" href="/cctv24" data-track="tv" data-place="tv">Oglądaj na żywo</a>
+        <a class="btn btn-quiet" href="/vod" data-track="vod" data-place="tv">Kino VOD</a>
+      </div>
     </div>
+  </section>
+
+  <section class="lumina" id="lumina" aria-labelledby="lumina-h">
+    <div class="arch-photo rise"><img src="/wizytowka/img/lumina.webp" width="800" height="1100" alt="Para patrzy w niebo, nad nimi świetlisty krzyż" loading="lazy"></div>
     <div>
       <h2 id="lumina-h" class="rise">Społeczność LUMINA</h2>
-      <p class="lead rise" style="--i:1">Chrześcijański portal relacji i wartości. Piszesz świadectwo, rozmawiasz z ludźmi wiary i modlisz się razem z innymi.</p>
+      <p class="lead rise" style="--i:1">Chrześcijański portal relacji i wartości. Piszesz świadectwo, rozmawiasz z ludźmi wiary i modlisz się razem z innymi. Dołączasz jednym kliknięciem przez Google.</p>
       <ul>
         <li class="rise" style="--i:2"><span class="dot" aria-hidden="true"></span>Tablica świadectw</li>
         <li class="rise" style="--i:3"><span class="dot" aria-hidden="true"></span>Komunikator LUMI Mess</li>
-        <li class="rise" style="--i:4"><span class="dot" aria-hidden="true"></span>Boże Centrum Modlitwy 24/7</li>
+        <li class="rise" style="--i:4"><span class="dot" aria-hidden="true"></span>Biblijny Czas Modlitwy 24/7</li>
       </ul>
-      <a class="btn rise" style="--i:5" href="/lumina" data-track="lumina" data-place="lumina">Wejdź do LUMINA</a>
+      <div class="controls rise" style="--i:5">
+        <button class="btn btn-google" type="button" data-google><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.06H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg><span data-google-label>Zaloguj się z Google</span></button>
+        <a class="btn btn-quiet" href="/lumina" data-track="lumina" data-place="lumina">Zobacz LUMINA</a>
+      </div>
+      <p class="login-note" aria-live="polite" data-login-status></p>
     </div>
+  </section>
+
+  <section class="ccn" id="ccn" aria-labelledby="ccn-h">
+    <div class="ccn-head">
+      <h2 id="ccn-h" class="rise">CCN News</h2>
+      <p class="rise" style="--i:1">Chrześcijański portal informacyjny: historia, kultura, nauka i rodzina. Bez sensacji, z odpowiedzią opartą na Słowie.</p>
+    </div>
+    <div class="ccn-grid">
+      <a class="lead-art rise" href="/historia/art-historia-halloween-od-samhain-do-popkultury" data-track="ccn" data-place="ccn-artykul">
+        <div class="pic"><img src="/wizytowka/img/ccn-wide.webp" width="1200" height="670" alt="Stara księga, mapy i klepsydra na biurku" loading="lazy"></div>
+        <h3>Od Samhain do przemysłu strachu: prawdziwa historia Halloween</h3>
+        <p>CCN Historia</p>
+      </a>
+      <div>
+        <ol>
+          <li class="rise" style="--i:1"><a href="/news/art-kultura-halloween-swiatlosc-vs-mrok" data-track="ccn" data-place="ccn-lista"><i class="dot" aria-hidden="true"></i><span>Kultura światłości kontra komercyjny kult mroku<small>CCN Kultura</small></span></a></li>
+          <li class="rise" style="--i:2"><a href="/news/art-dzieci-halloween-jak-rozmawiac-alternatywa" data-track="ccn" data-place="ccn-lista"><i class="dot" aria-hidden="true"></i><span>Jak rozmawiać z dziećmi o Halloween bez straszenia<small>CCN Rodzina</small></span></a></li>
+          <li class="rise" style="--i:3"><a href="/news/art-psychologia-halloween-neurobiologia-strachu" data-track="ccn" data-place="ccn-lista"><i class="dot" aria-hidden="true"></i><span>Psychologia strachu: jak kultura grozy wpływa na człowieka<small>CCN Nauka</small></span></a></li>
+        </ol>
+        <a class="btn rise" style="--i:4" href="/news" data-track="ccn" data-place="ccn">Wszystkie wiadomości CCN</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="akademia" id="akademia" aria-labelledby="akademia-h">
+    <div>
+      <h2 id="akademia-h" class="rise">Akademia Biblijna</h2>
+      <p class="rise" style="--i:1">Bezpłatny kurs 28 fundamentalnych zasad biblijnych i codzienna lekcja „Z Biblią za Pan Brat”. Poznajesz Pismo Święte rozdział po rozdziale i rozwijasz relację z Jezusem.</p>
+      <div class="controls rise" style="--i:2">
+        <a class="btn" href="/akademia" data-track="akademia" data-place="akademia">Zacznij naukę</a>
+        <a class="btn btn-quiet" href="/mojabiblia" data-track="biblia" data-place="akademia">Czytaj Biblię UBG</a>
+      </div>
+    </div>
+    <div class="akademia-pic rise" style="--i:1"><img src="/wizytowka/img/akademia-wide.webp" width="1024" height="576" alt="LUMINA Bible Academy: Z Biblią za Pan Brat, kurs codzienny" loading="lazy"></div>
   </section>
 
   <section class="stats" aria-labelledby="liczby-h">
     <h2 id="liczby-h" class="rise">Misja w liczbach</h2>
-    <div class="tile tile-a rise" style="--i:1">
-      <strong data-count>—</strong>
-      <span>osób w liczniku „Celujemy w Pierwszy Milion”, stan na żywo</span>
-    </div>
-    <div class="tile tile-b rise" style="--i:2">
-      <strong>24/7</strong>
-      <span>radio bez przerwy i bez opłat</span>
-    </div>
-    <div class="tile tile-c rise" style="--i:3">
-      <strong>66</strong>
-      <span>ksiąg Biblii w MojaBiblia UBG</span>
-    </div>
+    <div class="tile tile-a rise" style="--i:1"><strong data-count>—</strong><span>osób w liczniku „Celujemy w Pierwszy Milion”, stan na żywo</span></div>
+    <div class="tile tile-b rise" style="--i:2"><strong>24/7</strong><span>radio i telewizja bez przerwy i bez opłat</span></div>
+    <div class="tile tile-c rise" style="--i:3"><strong>28</strong><span>zasad biblijnych w Akademii</span></div>
   </section>
 
   <section class="milion" id="milion" aria-labelledby="milion-h">
@@ -354,8 +534,8 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     <div class="qr rise"><p>Christian Culture<br>polskieradio.cc</p><img src="/wizytowka/img/qr-zloty.webp" width="720" height="720" alt="Złoty kod QR Christian Culture prowadzący do tej wizytówki" loading="lazy"></div>
     <div>
       <h2 id="karta-h" class="rise">Podaj dalej te drzwi</h2>
-      <p class="rise" style="--i:1">Ten złoty kod prowadzi tutaj. Pokaż go znajomemu w telefonie albo wyślij mu link do wizytówki.</p>
-      <div class="actions rise" style="--i:2">
+      <p class="say rise" style="--i:1">Ten złoty kod prowadzi tutaj. Pokaż go znajomemu w telefonie albo wyślij mu link do wizytówki.</p>
+      <div class="controls rise" style="--i:2">
         <button class="btn" type="button" data-share>Udostępnij wizytówkę</button>
         <p class="status" aria-live="polite" data-share-status></p>
       </div>
@@ -370,13 +550,13 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   <div class="foot">
     <nav aria-label="Stopka">
       <a href="/player" data-track="radio" data-place="stopka">Radio</a>
+      <a href="/cctv24" data-track="tv" data-place="stopka">Telewizja CC24</a>
       <a href="/lumina" data-track="lumina" data-place="stopka">LUMINA</a>
+      <a href="/news" data-track="ccn" data-place="stopka">CCN News</a>
+      <a href="/akademia" data-track="akademia" data-place="stopka">Akademia</a>
+      <a href="/Halloween" data-track="akcja" data-place="stopka">#antyHALLOWEEN</a>
       <a href="/milion" data-track="milion" data-place="stopka">Pierwszy Milion</a>
-      <a href="/mojabiblia">MojaBiblia</a>
-      <a href="/akademia">Akademia</a>
-      <a href="/BCM">Modlitwa 24/7</a>
       <a href="/privacy">Polityka prywatności</a>
-      <a href="/">Strona główna</a>
     </nav>
     <div>
       <p class="wordmark">Christian Culture</p>
@@ -394,7 +574,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 
 <script>
 (function () {
-  // Pomiar kliknięć: jedno zdarzenie na drzwi (widoczne od razu w GA4 → Czas rzeczywisty)
+  // Pomiar kliknięć: zdarzenie na każde drzwi (GA4 → Czas rzeczywisty)
   function track(name, params) { try { gtag('event', name, Object.assign({ transport_type: 'beacon' }, params || {})); } catch (e) {} }
   document.addEventListener('click', function (e) {
     var el = e.target.closest('[data-track]');
@@ -414,47 +594,175 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   bar.querySelector('[data-consent-yes]').addEventListener('click', function () { setConsent('granted'); });
   bar.querySelector('[data-consent-no]').addEventListener('click', function () { setConsent('denied'); });
 
-  // Radio na żywo
+  // Lewy panel krawędziowy
+  var panel = document.getElementById('ekocc-menu'), scrim = document.querySelector('.scrim'), opener = null;
+  var openers = document.querySelectorAll('[data-menu-open]');
+  function setMenu(open) {
+    panel.classList.toggle('open', open); scrim.classList.toggle('show', open); document.body.classList.toggle('menu-open', open);
+    openers.forEach(function (b) { b.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+    if (open) { panel.querySelector('a').focus(); track('wizytowka_menu', { miejsce: 'panel' }); } else if (opener) opener.focus();
+  }
+  openers.forEach(function (b) { b.addEventListener('click', function () { opener = b; setMenu(true); }); });
+  document.querySelectorAll('[data-menu-close]').forEach(function (b) { b.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (e) {
+    if (!panel.classList.contains('open')) return;
+    if (e.key === 'Escape') setMenu(false);
+    if (e.key === 'Tab') {
+      var f = panel.querySelectorAll('a, button'), first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  // Logowanie Google do LUMINA: ten sam moduł co /lumina-login
+  var LUMINA_DB = '/lumina-db.js?v=20261013_notifsafe1';
+  var modPromise = null;
+  function loadDb() { if (!modPromise) modPromise = import(LUMINA_DB); return modPromise; }
+  var gButtons = document.querySelectorAll('[data-google]'), loginStatus = document.querySelector('[data-login-status]');
+  function setGoogle(busy, text) {
+    gButtons.forEach(function (b) { b.disabled = busy; var l = b.querySelector('[data-google-label]'); if (l) l.textContent = text; });
+  }
+  function note(html) { loginStatus.innerHTML = html; }
+  gButtons.forEach(function (b) {
+    ['pointerenter', 'touchstart', 'focus'].forEach(function (ev) { b.addEventListener(ev, function () { loadDb().catch(function () {}); }, { passive: true }); });
+    b.addEventListener('click', function () {
+      track('wizytowka_logowanie_google', { miejsce: b.closest('.panel') ? 'panel' : b.closest('.bar') ? 'menu' : 'lumina' });
+      setGoogle(true, 'Logowanie…');
+      try { sessionStorage.setItem('wizytowka_login', '1'); } catch (e) {}
+      loadDb().then(function (m) { return m.loginWithGoogle(); }).then(function (res) {
+        if (!res) { setGoogle(false, 'Zaloguj się z Google'); note('Wybierz konto Google, aby się zalogować.'); return; }
+        if (res.isRedirecting) { note('Przekierowuję do Google…'); return; }
+        note('Zalogowano. Witamy w LUMINA.');
+        location.href = '/lumina';
+      }).catch(function () {
+        setGoogle(false, 'Zaloguj się z Google');
+        note('Nie udało się zalogować tutaj. <a href="/lumina-login?redirect=lumina">Zaloguj się na stronie LUMINA</a>.');
+      });
+    });
+  });
+  // Powrót z logowania przez przekierowanie Google
+  var back = null; try { back = sessionStorage.getItem('wizytowka_login'); } catch (e) {}
+  if (back) {
+    loadDb().then(function (m) { return m.waitForAuthReady(6000); }).then(function (user) {
+      try { sessionStorage.removeItem('wizytowka_login'); } catch (e) {}
+      if (user) location.href = '/lumina';
+    }).catch(function () {});
+  }
+
+  // Radio: 6 stacji jak w /player (2 strumienie na żywo, 4 playlisty YouTube)
+  var STATIONS = [
+    { name: 'Radio Christian Culture', sub: 'Kultura · Edukacja · Inspiracja', live: 'https://stream.zeno.fm/vz96pvl3pnktv' },
+    { name: 'Radio Biblia', sub: 'Biblia czytana 24/7', live: 'https://stream.zeno.fm/imo45hqnshyuv' },
+    { name: 'Radio Wykłady', sub: 'Biblia · Historia · Proroctwa', yt: 'PLKOxPWmme0G0' },
+    { name: 'Radio Muzyka', sub: 'Worship · Uwielbienie · Gospel', yt: 'PL2hyFNkHB21aWs336brvfXgHizPc6y0Z0' },
+    { name: 'Radio Słowo', sub: 'Komentarze · Rozmowy · Tematy', yt: 'PL2hyFNkHB21b9DNCiEfWXc47fKEUxjgi7' },
+    { name: 'Clash of Minds', sub: 'Walter Veith · Proroctwa i prawda', yt: 'PLKOxPWmme0G0' }
+  ];
+  var idx = 0, playing = false;
   var audio = new Audio();
   audio.preload = 'none';
-  var current = document.querySelector('.station[aria-pressed="true"]');
   var status = document.querySelector('[data-status]');
-  var labels = document.querySelectorAll('[data-play-label]');
-  function paint() {
-    var playing = !audio.paused;
-    labels.forEach(function (l) { l.textContent = playing ? 'Zatrzymaj' : 'Słuchaj tutaj'; });
+  var ytWrap = document.querySelector('[data-yt-wrap]'), ytPlayer = null, ytReady = null, ytCounted = false;
+
+  // Licznik /milion: strumienie na żywo liczy /js/cc-radio-milion.js; playlisty YouTube zgłaszamy tym samym zapytaniem
+  function countYouTube() {
+    if (ytCounted) return;
+    ytCounted = true;
+    var body = JSON.stringify({ type: 'radio' });
+    try {
+      if (!(navigator.sendBeacon && navigator.sendBeacon('/api/milion/count', new Blob([body], { type: 'text/plain' })))) {
+        fetch('/api/milion/count', { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: body, keepalive: true }).catch(function () {});
+      }
+    } catch (e) {}
+    refreshCount(1500);
+  }
+
+  function loadYT() {
+    if (ytReady) return ytReady;
+    ytReady = new Promise(function (resolve) {
+      window.onYouTubeIframeAPIReady = function () {
+        ytPlayer = new YT.Player('yt-mini', {
+          host: 'https://www.youtube-nocookie.com', width: '100%', height: '100%',
+          playerVars: { playsinline: 1, rel: 0 },
+          events: {
+            onReady: function () { resolve(ytPlayer); },
+            onStateChange: function (e) {
+              if (e.data === YT.PlayerState.PLAYING) { playing = true; countYouTube(); paint(); }
+              if (e.data === YT.PlayerState.PAUSED) { playing = false; paint(); }
+            }
+          }
+        });
+      };
+      var s = document.createElement('script');
+      s.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(s);
+    });
+    return ytReady;
+  }
+
+  function paint(msg) {
+    var st = STATIONS[idx];
+    document.querySelectorAll('[data-play-label]').forEach(function (l) { l.textContent = playing ? 'Zatrzymaj' : 'Słuchaj tutaj'; });
     document.querySelectorAll('[data-play]').forEach(function (b) { b.setAttribute('aria-pressed', playing ? 'true' : 'false'); });
     var head = document.querySelector('.bar [data-play]');
-    if (head) head.textContent = playing ? 'Zatrzymaj radio' : 'Słuchaj teraz';
-    status.textContent = (playing ? 'Na żywo: ' : 'Gotowe: ') + current.dataset.name;
+    if (head) head.textContent = playing ? 'Zatrzymaj' : 'Słuchaj';
+    document.querySelectorAll('.station').forEach(function (b) { b.setAttribute('aria-pressed', Number(b.dataset.index) === idx ? 'true' : 'false'); });
+    document.querySelector('[data-mini-name]').textContent = st.name;
+    document.querySelector('[data-mini-sub]').textContent = st.sub;
+    document.querySelector('[data-mini-pos]').textContent = msg || ('Stacja ' + (idx + 1) + ' z 6' + (playing ? ', gra na żywo' : '') + '. Każde słuchanie liczy się w misji Pierwszy Milion.');
+    status.textContent = msg || ((playing ? 'Na żywo: ' : 'Gotowe: ') + st.name);
+    ytWrap.hidden = !st.yt;
   }
+
+  function stopAll() {
+    audio.pause();
+    if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+    playing = false;
+  }
+
   function play(place) {
-    if (audio.src !== current.dataset.station) audio.src = current.dataset.station;
-    status.textContent = 'Łączę z: ' + current.dataset.name + '…';
-    audio.play().then(paint).catch(function () { status.textContent = 'Nie udało się połączyć. Spróbuj w pełnym odtwarzaczu.'; });
-    track('wizytowka_radio_play', { drzwi: 'radio', miejsce: place, stacja: current.dataset.name });
+    var st = STATIONS[idx];
+    stopAll();
+    track('wizytowka_radio_play', { drzwi: 'radio', miejsce: place, stacja: st.name });
+    if (st.live) {
+      audio.src = st.live;
+      paint('Łączę z: ' + st.name + '…');
+      audio.play().then(function () { playing = true; paint(); refreshCount(1500); })
+        .catch(function () { paint('Nie udało się połączyć. Spróbuj w pełnym odtwarzaczu.'); });
+      return;
+    }
+    ytWrap.hidden = false;
+    paint('Ładuję playlistę: ' + st.name + '…');
+    loadYT().then(function (p) {
+      p.loadPlaylist({ list: st.yt, listType: 'playlist' });
+      setTimeout(function () { if (!playing && STATIONS[idx] === st) paint('Naciśnij odtwarzanie w okienku, aby słuchać.'); }, 3500);
+    });
   }
+
   document.querySelectorAll('[data-play]').forEach(function (b) {
-    b.addEventListener('click', function () { if (audio.paused) play(b.dataset.place); else { audio.pause(); paint(); } });
+    b.addEventListener('click', function () { if (playing) { stopAll(); paint(); } else play(b.dataset.place); });
+  });
+  document.querySelector('[data-next]').addEventListener('click', function () {
+    idx = (idx + 1) % STATIONS.length;
+    track('wizytowka_radio_nastepna', { stacja: STATIONS[idx].name });
+    play('panel-nastepna');
   });
   document.querySelectorAll('.station').forEach(function (s) {
-    s.addEventListener('click', function () {
-      current.setAttribute('aria-pressed', 'false'); s.setAttribute('aria-pressed', 'true'); current = s;
-      if (!audio.paused) play('stacja'); else paint();
-    });
+    s.addEventListener('click', function () { idx = Number(s.dataset.index); if (playing) play('stacja'); else paint(); });
   });
 
   // Licznik misji z serwera (te same zasady co /milion)
+  function refreshCount(delay) { setTimeout(loadCount, delay || 0); }
+  function loadCount() {
   fetch('/api/milion/count', { cache: 'no-store' }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
     .then(function (x) {
       var d = x.d;
       if (!x.ok || d.success !== true || d.source !== 'd1' || !Number.isSafeInteger(d.count) || d.count < 0) throw new Error('counter');
       var txt = d.count.toLocaleString('pl-PL');
       document.querySelectorAll('[data-count]').forEach(function (n) { n.textContent = txt; });
-      document.querySelectorAll('[data-count-short]').forEach(function (n) { n.textContent = txt + ' z miliona'; });
-    }).catch(function () {
-      document.querySelectorAll('[data-count]').forEach(function (n) { n.textContent = '—'; });
-    });
+    }).catch(function () {});
+  }
+  loadCount();
 
   // Udostępnianie
   var shareStatus = document.querySelector('[data-share-status]');
@@ -475,7 +783,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     items.forEach(function (i) { io.observe(i); });
   } else items.forEach(function (i) { i.classList.add('in'); });
 
-  // Światło w drzwiach: powolne przenikanie zdjęć
+  // Światło w drzwiach radia: powolne przenikanie zdjęć
   var fade = document.querySelector('[data-fade]');
   if (fade && !still) {
     var imgs = fade.querySelectorAll('img'), k = 0;
