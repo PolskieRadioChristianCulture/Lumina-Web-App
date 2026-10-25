@@ -30,7 +30,7 @@ const article = {
   publishedAt: '2026-10-26T06:00:00.000Z',
   dateFormatted: '26 października 2026',
   imageUrl: `/images/news/art-${slug}.jpg`,
-  imageCaption: 'Józef od więzienia do pałacu — Z Biblią za Pan Brat Dzień 26. Fot. EkoCC / Christian Culture',
+  imageCaption: 'Józef przed faraonem — Adrien Guignet, „Józef i faraon” (1845), domena publiczna, Wikimedia Commons. Z Biblią za Pan Brat Dzień 26',
   readTimeMinutes: 7,
   isHero: false,
   isPopular: true,

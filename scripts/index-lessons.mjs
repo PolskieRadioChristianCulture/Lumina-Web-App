@@ -13,6 +13,19 @@ const data = JSON.parse(rawData);
 // 1. Lekcje Kursu Codziennego "Z Biblią za Pan Brat"
 const dailyLessons = [
   {
+    title: "Z Biblią za Pan Brat — Dzień 26 (Lekcja 26 na dziś): Od więzienia do pałacu (Rdz 40:1–41:57)",
+    category: "Biblia i formacja",
+    url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-26",
+    description: "Kurs Codzienny Pisma Świętego — Dzień 26 (Lekcja 26 na dziś, 26 października 2026). Józef zapomniany w więzieniu, sny podczaszego, piekarza i faraona, siedem lat obfitości i głodu oraz wywyższenie Józefa — Rdz 40:1–41:57.",
+    tags: [
+      "lekcja 26", "lekcja 26 na dziś", "lekcja na dziś", "dzień 26", "dzien 26",
+      "rozważanie 26", "rozważanie na dziś", "słowo na dziś", "od więzienia do pałacu", "józef",
+      "faraon", "sny faraona", "rdz 40", "rdz 41", "z biblią za pan brat", "kurs codzienny",
+      "akademia biblijna", "26 października 2026", "dzisiaj", "dziś"
+    ],
+    featured: true
+  },
+  {
     title: "Z Biblią za Pan Brat — Dzień 22 (Lekcja 22 na dziś): Jakub walczy z Bogiem — Przemiana człowieka (Rdz 31:1–32:32)",
     category: "Biblia i formacja",
     url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-22",
