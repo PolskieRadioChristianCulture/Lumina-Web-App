@@ -31,15 +31,17 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               e.stopPropagation();
               onToggleBookmark(article);
             }}
-            className={`absolute top-2.5 right-2.5 p-1.5 rounded-md backdrop-blur-md transition cursor-pointer ${
-              isBookmarked
-                ? 'bg-[#bb142e] text-white shadow-xs'
-                : 'bg-black/50 text-white/90 hover:bg-black/80 hover:text-[#f9282b]'
-            }`}
+            className="absolute top-0.5 right-0.5 w-11 h-11 flex items-center justify-center cursor-pointer group/bm"
             title={isBookmarked ? 'Usuń z zakładek' : 'Zapisz na później'}
             aria-label="Zapisz artykuł"
           >
-            <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
+            <span className={`p-1.5 rounded-md backdrop-blur-md transition ${
+              isBookmarked
+                ? 'bg-[#bb142e] text-white shadow-xs'
+                : 'bg-black/50 text-white/90 group-hover/bm:bg-black/80 group-hover/bm:text-[#f9282b]'
+            }`}>
+              <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-current' : ''}`} />
+            </span>
           </button>
 
           {/* Central play button overlay for video articles */}
@@ -108,13 +110,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       <div className="px-4 pb-4 pt-1 flex items-center justify-between gap-2 border-t border-gray-50 mt-1">
         <button
           onClick={() => onReadArticle(article)}
-          className="inline-flex items-center gap-1 text-xs text-[#bb142e] hover:text-[#981025] font-bold transition cursor-pointer group-hover:translate-x-0.5"
+          className="inline-flex items-center gap-1 min-h-[44px] text-xs text-[#bb142e] hover:text-[#981025] font-bold transition cursor-pointer group-hover:translate-x-0.5"
         >
           <span>Czytaj artykuł</span>
           <span>→</span>
         </button>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center -mr-2.5">
           {/* Przycisk X (Twitter) */}
           <button
             onClick={(e) => {
@@ -125,13 +127,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               const text = `${article.title}\n\nCzytaj w CCN News:`;
               window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer,width=600,height=450');
             }}
-            className="p-1.5 rounded-md bg-gray-100 hover:bg-black hover:text-white text-gray-700 transition cursor-pointer flex items-center justify-center shadow-2xs"
+            className="w-11 h-11 flex items-center justify-center cursor-pointer group/x"
             title="Udostępnij na platformie X"
             aria-label="Udostępnij na platformie X"
           >
-            <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+            <span className="p-1.5 rounded-md bg-gray-100 group-hover/x:bg-black group-hover/x:text-white text-gray-700 transition flex items-center justify-center shadow-2xs"><svg className="w-3 h-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
+            </svg></span>
           </button>
 
           {/* Przycisk L (LUMINA) */}
@@ -144,11 +146,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}&share_img=${encodeURIComponent(article.imageUrl || '')}`;
               window.open(luminaUrl, '_blank', 'noopener,noreferrer');
             }}
-            className="w-6 h-6 rounded-md bg-gradient-to-br from-[#bb142e] to-[#800d1e] text-white flex items-center justify-center text-[10px] font-black hover:scale-105 transition cursor-pointer shadow-2xs border border-amber-400/40"
+            className="w-11 h-11 flex items-center justify-center cursor-pointer group/l"
             title="Udostępnij na Tablicy Społeczności LUMINA"
             aria-label="Udostępnij na Tablicy LUMINA"
           >
-            L
+            <span className="w-7 h-7 rounded-full bg-[#0b0b10] flex items-center justify-center shadow-2xs transition group-hover/l:scale-110"><img src="/images/lumina/lumina-icon-transparent.png?v=20261025" alt="" width={20} height={20} className="w-5 h-5" /></span>
           </button>
         </div>
       </div>

@@ -39,7 +39,7 @@ export const HeroArticle: React.FC<HeroArticleProps> = ({
             const text = `${article.title}\n\nCzytaj w CCN News:`;
             window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer,width=600,height=450');
           }}
-          className="p-2.5 rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-md transition cursor-pointer shadow-md"
+          className="w-11 h-11 flex items-center justify-center rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-md transition cursor-pointer shadow-md"
           title="Udostępnij na platformie X"
           aria-label="Udostępnij na platformie X"
         >
@@ -57,11 +57,11 @@ export const HeroArticle: React.FC<HeroArticleProps> = ({
             const luminaUrl = `https://polskieradio.cc/tablica?share_url=${encodeURIComponent(url)}&share_title=${encodeURIComponent(article.title)}&share_image=${encodeURIComponent(article.imageUrl || '')}&share_img=${encodeURIComponent(article.imageUrl || '')}`;
             window.open(luminaUrl, '_blank', 'noopener,noreferrer');
           }}
-          className="w-9 h-9 rounded-full bg-gradient-to-br from-[#bb142e] to-[#800d1e] text-white flex items-center justify-center font-black text-xs hover:scale-105 transition cursor-pointer shadow-md border border-amber-400/40"
+          className="w-11 h-11 rounded-full bg-black/60 hover:bg-black backdrop-blur-md flex items-center justify-center transition cursor-pointer shadow-md"
           title="Udostępnij na Tablicy Społeczności LUMINA"
           aria-label="Udostępnij na Tablicy LUMINA"
         >
-          L
+          <img src="/images/lumina/lumina-icon-transparent.png?v=20261025" alt="" width={32} height={32} className="w-8 h-8" />
         </button>
 
         <button
@@ -69,7 +69,7 @@ export const HeroArticle: React.FC<HeroArticleProps> = ({
             e.stopPropagation();
             onToggleBookmark(article);
           }}
-          className={`p-2.5 rounded-full backdrop-blur-md transition cursor-pointer ${
+          className={`w-11 h-11 flex items-center justify-center rounded-full backdrop-blur-md transition cursor-pointer ${
             isBookmarked
               ? 'bg-[#bb142e] text-white shadow-md'
               : 'bg-black/50 text-white/90 hover:bg-black/80 hover:text-[#f9282b]'
@@ -100,7 +100,7 @@ export const HeroArticle: React.FC<HeroArticleProps> = ({
 
         <button
           onClick={() => onReadArticle(article)}
-          className="inline-flex items-center gap-2 bg-[#bb142e] hover:bg-[#981025] text-white text-sm font-bold px-5 py-2.5 rounded transition cursor-pointer shadow-md active:translate-y-0.5"
+          className="inline-flex items-center gap-2 min-h-[44px] bg-[#bb142e] hover:bg-[#981025] text-white text-sm font-bold px-5 py-2.5 rounded transition cursor-pointer shadow-md active:translate-y-0.5"
         >
           <span>Czytaj więcej</span>
           <ArrowRight className="w-4 h-4" />

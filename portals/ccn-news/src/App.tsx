@@ -297,7 +297,7 @@ export default function App() {
                   article={heroArticle}
                   onReadArticle={(art) => handleSelectArticle(art)}
                   isBookmarked={bookmarkedIds.includes(heroArticle.id)}
-                  onToggleBookmark={toggleBookmark} />{heroCandidates.length > 1 && <div className="flex justify-center items-center gap-4 py-3 text-sm"><button aria-label="Poprzedni temat dnia" onClick={heroRotation.previous}>←</button><span>{heroRotation.index + 1}/{heroCandidates.length}</span><button aria-label="Następny temat dnia" onClick={heroRotation.next}>→</button><button onClick={heroRotation.toggle}>{heroRotation.paused ? "Wznów tematy" : "Wstrzymaj tematy"}</button></div>}</section>)}
+                  onToggleBookmark={toggleBookmark} />{heroCandidates.length > 1 && <div className="flex justify-center items-center gap-2 py-1 text-sm"><button className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center" aria-label="Poprzedni temat dnia" onClick={heroRotation.previous}>←</button><span>{heroRotation.index + 1}/{heroCandidates.length}</span><button className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center" aria-label="Następny temat dnia" onClick={heroRotation.next}>→</button><button className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center px-3" onClick={heroRotation.toggle}>{heroRotation.paused ? "Wznów tematy" : "Wstrzymaj tematy"}</button></div>}</section>)}
 
               {/* DEDICATED CATEGORY SECTIONS */}
               {currentCategory === 'kursy' && <CoursesBannerSection />}

@@ -142,7 +142,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-200 transition-shadow shadow-xs">
       {/* Top CC Ecosystem Navigation Bar */}
-      <div className="news-ecosystem-strip hidden md:block bg-[#010101] text-zinc-300 text-[11px] font-bold tracking-wider uppercase border-b border-[#1f1f1f] px-4 sm:px-6 py-2">
+      <div className="news-ecosystem-strip hidden md:block bg-[#010101] text-zinc-300 text-[11px] font-bold tracking-wider uppercase border-b border-[#1f1f1f] px-4 sm:px-6 py-0">
         <div className="news-ecosystem-row max-w-7xl mx-auto flex items-center justify-between">
           <div className="news-ecosystem-links flex items-center gap-3">
             <span className="hidden md:inline-flex items-center gap-1.5 text-zinc-400">
@@ -150,16 +150,16 @@ export const Header: React.FC<HeaderProps> = ({
               Ekosystem Christian Culture:
             </span>
             <nav aria-label="Portale Christian Culture" tabIndex={0} className="news-ecosystem-nav flex items-center gap-4 sm:gap-6 overflow-x-auto py-0.5">
-              <a href="/player" className="hover:text-[#f9282b] transition-colors">Radio</a>
-              <a href="/lumina" className="hover:text-[#f9282b] transition-colors">LUMINA</a>
-              <a href="/akademia" className="hover:text-[#f9282b] transition-colors">Akademia</a>
-              <a href="/vod" className="hover:text-[#f9282b] transition-colors">Kino VOD</a>
-              <a href="/mojabiblia" className="hover:text-[#f9282b] transition-colors">Biblia</a>
-              <a href="/biznes" className="hover:text-[#f9282b] transition-colors">Biznes</a>
-              <a href="/kultura" className="hover:text-[#f9282b] transition-colors">Kultura</a>
-              <a href="/biblioteka" className="hover:text-[#f9282b] transition-colors">Biblioteka</a>
-              <a href="/news" className="text-[#f9282b] font-black border-b border-[#f9282b] pb-0.5">NEWS</a>
-              <a href="/live" className="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1">
+              <a href="/player" className="hover:text-[#f9282b] transition-colors inline-flex items-center min-h-[44px]">Radio</a>
+              <a href="/lumina" className="hover:text-[#f9282b] transition-colors inline-flex items-center min-h-[44px]">LUMINA</a>
+              <a href="/akademia" className="hover:text-[#f9282b] transition-colors inline-flex items-center min-h-[44px]">Akademia</a>
+              <a href="/vod" className="hover:text-[#f9282b] transition-colors inline-flex items-center min-h-[44px]">Kino VOD</a>
+              <a href="/mojabiblia" className="hover:text-[#f9282b] transition-colors inline-flex items-center min-h-[44px]">Biblia</a>
+              <a href="/biznes" className="hover:text-[#f9282b] transition-colors inline-flex items-center min-h-[44px]">Biznes</a>
+              <a href="/kultura" className="hover:text-[#f9282b] transition-colors inline-flex items-center min-h-[44px]">Kultura</a>
+              <a href="/biblioteka" className="hover:text-[#f9282b] transition-colors inline-flex items-center min-h-[44px]">Biblioteka</a>
+              <a href="/news" aria-current="page" className="text-[#f9282b] font-black inline-flex items-center min-h-[44px] underline underline-offset-4">NEWS</a>
+              <a href="/live" className="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1 min-h-[44px]">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 LIVE
               </a>
@@ -228,7 +228,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Live Radio Stream Button */}
             <button
               onClick={onToggleRadio}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer border ${
+              className={`flex items-center gap-1.5 px-3 min-h-[44px] rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer border ${
                 isRadioPlaying
                   ? 'bg-[#bb142e] border-[#bb142e] text-white animate-pulse'
                   : 'bg-zinc-100 hover:bg-zinc-200 text-zinc-900 border-zinc-200'
@@ -243,7 +243,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Search */}
             <button
               onClick={onOpenSearch}
-              className="p-2 text-gray-700 hover:text-[#bb142e] hover:bg-gray-100 rounded-lg transition cursor-pointer"
+              className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center text-gray-700 hover:text-[#bb142e] hover:bg-gray-100 rounded-lg transition cursor-pointer"
               aria-label="Szukaj artykułów"
               title="Szukaj w portalu"
             >
@@ -253,7 +253,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Bookmarks */}
             <button
               onClick={onOpenBookmarks}
-              className="p-2 text-gray-700 hover:text-[#bb142e] hover:bg-gray-100 rounded-lg transition relative cursor-pointer"
+              className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center text-gray-700 hover:text-[#bb142e] hover:bg-gray-100 rounded-lg transition relative cursor-pointer"
               aria-label="Zapisane artykuły"
               title="Zapisane artykuły"
             >
@@ -336,7 +336,7 @@ export const Header: React.FC<HeaderProps> = ({
               ) : (
                 <button
                   onClick={handleLoginClick}
-                  className="cc-auth-google-btn flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#010101] hover:bg-[#1a1a1a] text-white border border-amber-500/40 hover:border-amber-400 text-xs font-bold transition shadow-xs cursor-pointer"
+                  className="cc-auth-google-btn flex items-center gap-1.5 px-3 min-h-[44px] rounded-full bg-[#010101] hover:bg-[#1a1a1a] text-white border border-amber-500/40 hover:border-amber-400 text-xs font-bold transition shadow-xs cursor-pointer"
                   title="Zaloguj się kontem Google do Ekosystemu Christian Culture"
                 >
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
@@ -353,7 +353,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="2xl:hidden p-2 text-gray-800 hover:text-[#bb142e] hover:bg-gray-100 rounded-lg transition cursor-pointer"
+              className="2xl:hidden min-w-[44px] min-h-[44px] inline-flex items-center justify-center text-gray-800 hover:text-[#bb142e] hover:bg-gray-100 rounded-lg transition cursor-pointer"
               aria-label={mobileMenuOpen ? 'Zamknij menu' : 'Otwórz menu'}
             >
               {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
@@ -395,7 +395,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`px-4 min-h-[44px] inline-flex items-center rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-[#bb142e] text-white shadow-xs'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'

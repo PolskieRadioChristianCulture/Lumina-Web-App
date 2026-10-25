@@ -73,7 +73,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </span>
           <button
             onClick={onNavigateToLexicon}
-            className="text-xs font-bold text-[#f9282b] hover:text-white transition flex items-center gap-1 cursor-pointer"
+            className="text-xs font-bold text-[#f9282b] hover:text-white transition flex items-center gap-1 min-h-[44px] cursor-pointer"
           >
             <span>Otwórz Leksykon</span>
             <ArrowRight className="w-3 h-3" />
@@ -96,7 +96,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <div className="flex-1">
                 <button
                   onClick={() => onReadArticle(article)}
-                  className="text-left font-semibold text-sm hover:text-[#bb142e] text-gray-900 leading-snug transition cursor-pointer"
+                  className="text-left font-semibold text-sm hover:text-[#bb142e] text-gray-900 leading-snug transition cursor-pointer min-h-[44px]"
                 >
                   {article.title}
                 </button>
@@ -163,7 +163,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         )}
 
-        <div className="text-xs text-zinc-300 space-y-2 leading-relaxed my-3 max-h-48 overflow-y-auto pr-1">
+        <div className="text-xs text-zinc-300 space-y-2 leading-relaxed my-3 max-h-48 overflow-y-auto pr-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C4A35A]" tabIndex={0} role="region" aria-label="Rozważanie dnia, pełny tekst">
           {dailyDevotional.content.slice(0, 2).map((p, idx) => (
             <p key={idx}>{p}</p>
           ))}
