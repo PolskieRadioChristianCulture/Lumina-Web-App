@@ -124,9 +124,11 @@ p { margin: 0; }
 .edge-tip { position: fixed; left: 128px; z-index: 32; background: #000; color: #F3E5C8; border: 1px solid rgba(196,163,90,.4); border-radius: 6px;
   padding: 6px 10px; font: 700 13px/1.2 var(--text); white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(-50%); transition: opacity .12s; }
 .edge-tip.show { opacity: 1; }
-.yt-float { position: fixed; left: 126px; bottom: 12px; z-index: 31; width: min(320px, calc(100vw - 138px)); aspect-ratio: 16 / 9; background: #000;
+.yt-float { position: fixed; left: 126px; bottom: 12px; z-index: 31; width: min(480px, calc(100vw - 138px)); min-height: 200px; aspect-ratio: 16 / 9; background: #000;
   border: 1px solid rgba(196,163,90,.5); border-radius: 12px; overflow: hidden; } /* taste-skill-ignore: ramka pływającego odtwarzacza */
 .yt-float[hidden] { display: none; }
+[data-radio-source][hidden] { display: none !important; }
+@media (max-width: 600px) { .yt-float { left: 12px; bottom: 92px; width: calc(100vw - 24px); } }
 .yt-float iframe { width: 100%; height: 100%; display: block; border: 0; }
 .yt-close { position: absolute; top: 0; right: 0; background: rgba(0,0,0,.7); color: #F3E5C8; border-radius: 0 0 0 12px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -163,6 +165,9 @@ p { margin: 0; }
 .radio-list { display: flex; flex-direction: column; gap: 6px; }
 .radio-list h2 { font-size: var(--s-h2); color: var(--muted); margin-bottom: 8px; }
 .station { background: none; border: 0; padding: 4px 0; text-align: left; cursor: pointer; font: 700 var(--s-h2)/1.1 var(--display); color: var(--muted); min-height: 44px; transition: color .25s; }
+.radio-list + .radio-list { margin-top: 22px; }
+.radio-list h3 { font: 600 16px/1.4 var(--text); color: var(--muted); }
+.radio-list + .radio-list .station { font: 600 20px/1.3 var(--text); }
 .station[aria-pressed="true"] { color: var(--ink); }
 .station:hover { color: var(--accent); }
 .radio-desc { margin-top: 24px; max-width: 38ch; }
@@ -351,7 +356,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     <a class="edge-btn edge-gold" href="/wspieraj" aria-label="Wspieraj misję" data-track="wspieraj" data-place="panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></a>
 
     <div class="edge-radio" role="group" aria-label="Mini radio: 6 stacji">
-      <p class="edge-station"><span data-mini-num>1/6</span><b data-mini-name>Radio CC</b></p>
+      <p class="edge-station"><span data-mini-num>1/11</span><b data-mini-name>Radio CC</b></p>
       <button class="edge-btn" type="button" data-play data-place="panel" aria-label="Słuchaj radia"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
       <button class="edge-btn" type="button" data-next aria-label="Następna stacja"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 5 10 7-10 7ZM19 5v14"/></svg></button>
       <p class="sr-only" aria-live="polite" data-mini-pos></p>
@@ -461,14 +466,27 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   <section class="radio" id="radio" aria-labelledby="radio-h">
     <div>
       <div class="radio-list" role="group" aria-labelledby="radio-h">
-        <h2 id="radio-h" class="rise">Radio na żywo</h2>
-        <button class="station rise" style="--i:1" type="button" aria-pressed="true" data-index="0">Christian Culture</button>
-        <button class="station rise" style="--i:2" type="button" aria-pressed="false" data-index="1">Biblia czytana</button>
+        <h2 id="radio-h" class="rise">Radio i nagrania CC</h2>
+        <button class="station rise" style="--i:1" type="button" aria-pressed="true" data-index="0">Polskie Radio CC · na żywo</button>
+        <button class="station rise" style="--i:2" type="button" aria-pressed="false" data-index="1">Biblia Audio po polsku · na żywo</button>
       </div>
-      <p class="radio-desc rise" style="--i:3">Kultura, edukacja i inspiracja albo Pismo Święte czytane przez całą dobę. Wybierz stację i słuchaj od razu, bez logowania i bez opłat.</p>
+      <div class="radio-list" role="group" aria-label="Nagrania z zasobów Christian Culture">
+        <h3>Z naszych zasobów · audio i YouTube</h3>
+        <button class="station" type="button" aria-pressed="false" data-index="2">Wykłady · Studio Dobrego Słowa</button>
+        <button class="station" type="button" aria-pressed="false" data-index="3">Muzyka · YouTube</button>
+        <button class="station" type="button" aria-pressed="false" data-index="4">Słowo · YouTube</button>
+        <button class="station" type="button" aria-pressed="false" data-index="5">Clash of Minds · YouTube</button>
+        <button class="station" type="button" aria-pressed="false" data-index="6">Biblijny Czas Modlitwy</button>
+        <button class="station" type="button" aria-pressed="false" data-index="7">Radio Global · muzyka po angielsku</button>
+        <button class="station" type="button" aria-pressed="false" data-index="8">Instrumental · audio</button>
+        <button class="station" type="button" aria-pressed="false" data-index="9">Biblia śpiewana · audio</button>
+        <button class="station" type="button" aria-pressed="false" data-index="10">Biblia po angielsku · audio</button>
+      </div>
+      <p class="radio-desc rise" style="--i:3">Polskie Radio CC, Radio Biblia i Radio Global na żywo. Do tego instrumental, Biblia śpiewana, angielska Biblia audio, modlitwy i wykłady. Playlisty YouTube odtwarzają się w widocznym oknie. Sam wybór nie uruchamia zatrzymanego odtwarzacza.</p>
       <div class="controls rise" style="--i:4">
         <button class="btn" type="button" data-play data-place="radio"><span data-play-label>Słuchaj tutaj</span></button>
-        <a class="btn btn-quiet" href="/player" data-track="radio" data-place="radio-player">Wszystkie 6 stacji</a>
+        <a class="btn btn-quiet" href="/player" data-track="radio" data-place="radio-player">Pełny odtwarzacz</a>
+        <a class="btn btn-quiet" data-radio-source target="_blank" rel="noopener noreferrer" hidden>Otwórz playlistę na YouTube</a>
         <p class="status" aria-live="polite" data-status>Gotowe: Radio Christian Culture</p>
       </div>
     </div>
@@ -655,6 +673,8 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   <button class="btn btn-quiet" type="button" data-consent-no>Nie, dziękuję</button>
 </div>
 
+<script src="/js/cc-radio-catalog.js?v=20261025_repertoire"></script>
+<script src="/js/cc-chat-radio.js?v=20261025_repertoire"></script>
 <script>
 (function () {
   // Pomiar kliknięć: zdarzenie na każde drzwi (GA4 → Czas rzeczywisty)
@@ -749,18 +769,24 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     }).catch(function () {});
   }
 
-  // Radio: 6 stacji jak w /player (2 strumienie na żywo, 4 playlisty YouTube)
+  // Odsłuchy: wspólny katalog audio CC oraz playlisty YouTube.
+  // Źródła nowych playlist: publiczny, zatwierdzony pobierz/catalog.json (BCM, Apokalipsa).
   var STATIONS = [
-    { name: 'Radio Christian Culture', short: 'Radio CC', live: 'https://stream.zeno.fm/vz96pvl3pnktv' },
-    { name: 'Radio Biblia', short: 'Biblia', live: 'https://stream.zeno.fm/imo45hqnshyuv' },
-    { name: 'Radio Wykłady', short: 'Wykłady', yt: 'PLKOxPWmme0G0' },
+    { name: 'Polskie Radio CC', short: 'Radio CC', nativeId: 'poland', live: true },
+    { name: 'Biblia Audio po polsku', short: 'Biblia PL', nativeId: 'biblia_audio', live: true },
+    { name: 'Wykłady — Studio Dobrego Słowa', short: 'Wykłady', yt: 'PLDA6geI28g8T0x5fNBe-WkTdZDgz5IYlR' },
     { name: 'Radio Muzyka', short: 'Muzyka', yt: 'PL2hyFNkHB21aWs336brvfXgHizPc6y0Z0' },
     { name: 'Radio Słowo', short: 'Słowo', yt: 'PL2hyFNkHB21b9DNCiEfWXc47fKEUxjgi7' },
-    { name: 'Clash of Minds', short: 'Clash', yt: 'PLKOxPWmme0G0' }
+    { name: 'Clash of Minds — Total Onslaught', short: 'Clash', yt: 'PLdbXyyVfVp-4HzN5_phwe1cU_WkfGakIm' },
+    { name: 'Biblijny Czas Modlitwy', short: 'Modlitwa BCM', yt: 'PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN' },
+    { name: 'Radio Global — muzyka po angielsku', short: 'Global EN', nativeId: 'global', live: true },
+    { name: 'Instrumental Worship', short: 'Instrumental', nativeId: 'instrumental_worship' },
+    { name: 'Biblia Śpiewana', short: 'Śpiewana', nativeId: 'biblia_spiewana' },
+    { name: 'Biblia po angielsku — World English Bible', short: 'Biblia EN', nativeId: 'global_biblia' }
   ];
   var idx = 0, playing = false;
-  var audio = new Audio();
-  audio.preload = 'none';
+  var nativeRadio = window.CCChatRadio;
+  var playRequest = 0;
   var status = document.querySelector('[data-status]');
   var ytWrap = document.querySelector('[data-yt-wrap]'), ytPlayer = null, ytReady = null, ytCounted = false;
 
@@ -779,22 +805,34 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 
   function loadYT() {
     if (ytReady) return ytReady;
-    ytReady = new Promise(function (resolve) {
+    ytReady = new Promise(function (resolve, reject) {
+      var readyTimeout = setTimeout(function () { reject(new Error('youtube_timeout')); }, 15000);
       window.onYouTubeIframeAPIReady = function () {
+        var frame = document.createElement('iframe');
+        frame.id = 'yt-mini';
+        frame.title = 'Odtwarzacz playlist Christian Culture — YouTube';
+        frame.referrerPolicy = 'strict-origin-when-cross-origin';
+        frame.allow = 'autoplay; encrypted-media; picture-in-picture';
+        frame.allowFullscreen = true;
+        frame.src = 'https://www.youtube-nocookie.com/embed/videoseries?enablejsapi=1&playsinline=1&rel=0&list=' + encodeURIComponent(STATIONS[idx].yt) + '&origin=' + encodeURIComponent(window.location.origin);
+        document.getElementById('yt-mini').replaceWith(frame);
         ytPlayer = new YT.Player('yt-mini', {
           host: 'https://www.youtube-nocookie.com', width: '100%', height: '100%',
-          playerVars: { playsinline: 1, rel: 0 },
+          playerVars: { playsinline: 1, rel: 0, listType: 'playlist', list: STATIONS[idx].yt },
           events: {
-            onReady: function () { resolve(ytPlayer); },
+            onReady: function () { clearTimeout(readyTimeout); resolve(ytPlayer); },
             onStateChange: function (e) {
+              if (!STATIONS[idx].yt) return;
               if (e.data === YT.PlayerState.PLAYING) { playing = true; countYouTube(); paint(); }
               if (e.data === YT.PlayerState.PAUSED) { playing = false; paint(); }
-            }
+            },
+            onError: function () { if (STATIONS[idx].yt) { playing = false; paint('Nie można odtworzyć tutaj. Otwórz playlistę na YouTube.'); } }
           }
         });
       };
       var s = document.createElement('script');
       s.src = 'https://www.youtube.com/iframe_api';
+      s.onerror = function () { clearTimeout(readyTimeout); reject(new Error('youtube_api')); };
       document.head.appendChild(s);
     });
     return ytReady;
@@ -802,22 +840,26 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 
   function paint(msg) {
     var st = STATIONS[idx];
+    var sourceLink = document.querySelector('[data-radio-source]');
+    sourceLink.hidden = !st.yt;
+    if (st.yt) sourceLink.href = 'https://www.youtube.com/playlist?list=' + st.yt;
     document.querySelectorAll('[data-play-label]').forEach(function (l) { l.textContent = playing ? 'Zatrzymaj' : 'Słuchaj tutaj'; });
     document.querySelectorAll('[data-play]').forEach(function (b) { b.setAttribute('aria-pressed', playing ? 'true' : 'false'); });
     var head = document.querySelector('.bar [data-play]');
     if (head) head.textContent = playing ? 'Zatrzymaj' : 'Słuchaj';
     document.querySelectorAll('.station').forEach(function (b) { b.setAttribute('aria-pressed', Number(b.dataset.index) === idx ? 'true' : 'false'); });
     document.querySelector('[data-mini-name]').textContent = st.short;
-    document.querySelector('[data-mini-num]').textContent = (idx + 1) + '/6';
+    document.querySelector('[data-mini-num]').textContent = (idx + 1) + '/' + STATIONS.length;
     document.querySelectorAll('.edge [data-play]').forEach(function (b) { b.setAttribute('aria-label', (playing ? 'Zatrzymaj: ' : 'Słuchaj: ') + st.name); });
     document.querySelector('[data-next]').setAttribute('aria-label', 'Następna stacja: ' + STATIONS[(idx + 1) % STATIONS.length].name);
-    document.querySelector('[data-mini-pos]').textContent = msg || ('Stacja ' + (idx + 1) + ' z 6' + (playing ? ', gra na żywo' : '') + '. Każde słuchanie liczy się w misji Pierwszy Milion.');
-    status.textContent = msg || ((playing ? 'Na żywo: ' : 'Gotowe: ') + st.name);
+    document.querySelector('[data-mini-pos]').textContent = msg || ('Odsłuch ' + (idx + 1) + ' z ' + STATIONS.length + (playing ? (st.live ? ', na żywo' : (st.yt ? ', nagrania YouTube' : ', nagrania audio')) : ''));
+    status.textContent = msg || ((playing ? (st.live ? 'Na żywo: ' : (st.yt ? 'Nagrania YouTube: ' : 'Nagrania audio: ')) : 'Gotowe: ') + st.name);
     if (!st.yt) ytWrap.hidden = true;
   }
 
   function stopAll() {
-    audio.pause();
+    playRequest++;
+    if (nativeRadio) nativeRadio.pause();
     if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
     playing = false;
   }
@@ -826,19 +868,24 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     var st = STATIONS[idx];
     stopAll();
     track('wizytowka_radio_play', { drzwi: 'radio', miejsce: place, stacja: st.name });
-    if (st.live) {
-      audio.src = st.live;
+    var request = playRequest;
+    if (st.nativeId) {
       paint('Łączę z: ' + st.name + '…');
-      audio.play().then(function () { playing = true; paint(); refreshCount(1500); })
-        .catch(function () { paint('Nie udało się połączyć. Spróbuj w pełnym odtwarzaczu.'); });
+      if (!nativeRadio) { paint('Odtwarzacz audio jest niedostępny. Otwórz pełny odtwarzacz.'); return; }
+      nativeRadio.prepare(st.nativeId).then(function () {
+        if (request !== playRequest || STATIONS[idx] !== st) return;
+        nativeRadio.select(st.nativeId);
+        return nativeRadio.play();
+      }).catch(function () { if (request === playRequest) paint('Nie udało się wczytać nagrań. Spróbuj ponownie.'); });
       return;
     }
     ytWrap.hidden = false;
     paint('Ładuję playlistę: ' + st.name + '…');
     loadYT().then(function (p) {
+      if (request !== playRequest || STATIONS[idx] !== st) return;
       p.loadPlaylist({ list: st.yt, listType: 'playlist' });
       setTimeout(function () { if (!playing && STATIONS[idx] === st) paint('Naciśnij odtwarzanie w okienku, aby słuchać.'); }, 3500);
-    });
+    }).catch(function () { if (request === playRequest) paint('YouTube nie odpowiedział. Otwórz playlistę na YouTube.'); });
   }
 
   document.querySelectorAll('[data-play]').forEach(function (b) {
@@ -850,9 +897,16 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     play('panel-nastepna');
   });
   document.querySelectorAll('.station').forEach(function (s) {
-    s.addEventListener('click', function () { idx = Number(s.dataset.index); if (playing) play('stacja'); else paint(); });
+    s.addEventListener('click', function () { var resume = playing; stopAll(); idx = Number(s.dataset.index); if (resume) play('stacja'); else paint(); });
   });
   document.querySelector('[data-yt-close]').addEventListener('click', function () { stopAll(); ytWrap.hidden = true; paint(); });
+
+  if (nativeRadio) nativeRadio.subscribe(function (state) {
+    if (!STATIONS[idx].nativeId || state.stationId !== STATIONS[idx].nativeId) return;
+    playing = state.playing === true;
+    paint(playing ? undefined : state.status);
+    if (playing) refreshCount(1500);
+  });
 
   // Licznik misji z serwera (te same zasady co /milion)
   function refreshCount(delay) { setTimeout(loadCount, delay || 0); }
