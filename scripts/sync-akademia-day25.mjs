@@ -7,6 +7,8 @@ const LUMINA_ROOT = 'C:/Users/czark/Desktop/@ICC/LUMINA';
 
 const akademiaPath = path.join(ROOT, 'akademia.html');
 const akademiaIndexPath = path.join(ROOT, 'akademia/index.html');
+const kursyMainHtml = path.join(ROOT, 'kursy.html');
+const kursyMainIndex = path.join(ROOT, 'kursy/index.html');
 const kurscodziennyPath = path.join(ROOT, 'akademia/kurscodzienny.html');
 const kursyHtml = path.join(ROOT, 'kursy/kurscodzienny.html');
 const kursyIndex = path.join(ROOT, 'kursy/kurscodzienny/index.html');
@@ -182,16 +184,13 @@ function updateAkademiaHtml(filePath) {
 
   // C. Siatka kart - jeśli nie zawiera Dnia 25
   if (!html.includes('/akademia/kurscodzienny/dzien-25')) {
-    // Sprawdź czy zawiera Dzień 21
     if (html.includes('/akademia/kurscodzienny/dzien-21')) {
-      // Usuń istniejące karty od 21 w górę i wstaw pełne 21-25
       const day20End = html.indexOf('<!-- KARTA DZIEŃ 21 -->');
       const gridEnd = html.indexOf('</div>\n      </section>\n\n          <!-- ── WEZWANIE DO DZIAŁANIA');
       if (day20End !== -1 && gridEnd !== -1) {
         html = html.slice(0, day20End) + dayCards.trim() + '\n\n        ' + html.slice(gridEnd);
       }
     } else {
-      // Wstaw po Dniu 20
       const day20Idx = html.indexOf('/akademia/kurscodzienny/dzien-20');
       if (day20Idx !== -1) {
         const day20EndTag = html.indexOf('</a>', day20Idx) + '</a>'.length;
@@ -204,15 +203,16 @@ function updateAkademiaHtml(filePath) {
   console.log(`✅ Zaktualizowano ${filePath}`);
 }
 
-// 1. Zaktualizuj akademia.html i akademia/index.html
+// 1. Zaktualizuj akademia.html, akademia/index.html, kursy.html, kursy/index.html
 updateAkademiaHtml(akademiaPath);
 updateAkademiaHtml(akademiaIndexPath);
+updateAkademiaHtml(kursyMainHtml);
+updateAkademiaHtml(kursyMainIndex);
 
 // 2. Zaktualizuj akademia/kurscodzienny.html
 if (fs.existsSync(kurscodziennyPath)) {
   let kcHtml = fs.readFileSync(kurscodziennyPath, 'utf8');
 
-  // Przyciski Hero
   kcHtml = kcHtml.replace(
     /href="\/akademia\/kurscodzienny\/dzien-\d+" class="cin-btn-primary min-h-\[48px\]">\s*<span>CZYTAJ DZIEŃ \d+ \([^)]+\)<\/span>\s*<span>[^<]*<\/span>\s*<\/a>/g,
     'href="/akademia/kurscodzienny/dzien-25" class="cin-btn-primary min-h-[48px]">\n          <span>CZYTAJ DZIEŃ 25 (25 PAŹDZIERNIKA)</span>\n          <span>→</span>\n        </a>'
@@ -222,13 +222,11 @@ if (fs.existsSync(kurscodziennyPath)) {
     'href="/akademia/kurscodzienny/dzien-24" class="cin-btn-secondary min-h-[48px]">\n          <span>← DZIEŃ 24</span>\n        </a>'
   );
 
-  // Badge licznika dni
   kcHtml = kcHtml.replace(
     /Dni 1–\d+ z 31 Dostępne[^\n<]*/g,
     'Dni 1–25 z 31 Dostępne (25 Października 2026)'
   );
 
-  // Dodaj karty do siatki
   if (!kcHtml.includes('/akademia/kurscodzienny/dzien-25')) {
     const day19Idx = kcHtml.lastIndexOf('/akademia/kurscodzienny/dzien-19');
     if (day19Idx !== -1) {
@@ -263,7 +261,7 @@ if (fs.existsSync(kurscodziennyPath)) {
 });
 
 // 4. Mirror do LUMINA
-[akademiaPath, akademiaIndexPath, kurscodziennyPath, kursyHtml, kursyIndex].forEach(src => {
+[akademiaPath, akademiaIndexPath, kursyMainHtml, kursyMainIndex, kurscodziennyPath, kursyHtml, kursyIndex].forEach(src => {
   const rel = path.relative(ROOT, src);
   const dst = path.join(LUMINA_ROOT, rel);
   if (fs.existsSync(src)) {
