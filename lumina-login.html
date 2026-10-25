@@ -10,12 +10,13 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Portal LUMINA — Chrześcijańska Platforma Społecznościowa dla każdego ✨">
     <meta property="og:description" content="Portal Randkowy • Platforma Dobrych Kontaktów • Wartościowe Relacje. Dołącz jednym kliknięciem przez Google ✨">
-    <meta property="og:image" content="https://polskieradio.cc/lumina_logo_portal.jpg">
+    <meta property="og:image" content="https://polskieradio.cc/lumina_logo_portal.jpg?v=20261025">
     <meta property="og:url" content="https://polskieradio.cc/login">
+    <link rel="canonical" href="https://polskieradio.cc/login">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Portal LUMINA — Chrześcijańska Platforma Społecznościowa dla każdego">
     <meta name="twitter:description" content="Portal Randkowy • Platforma Dobrych Kontaktów • Wartościowe Relacje. Dołącz jednym kliknięciem przez Google ✨">
-    <meta name="twitter:image" content="https://polskieradio.cc/lumina_logo_portal.jpg">
+    <meta name="twitter:image" content="https://polskieradio.cc/lumina_logo_portal.jpg?v=20261025">
     <link rel="icon" href="lumina_icon.jpg" type="image/jpeg">
 
     <!-- Natychmiastowa weryfikacja sesji w nagłówku: zalogowani nie widzą tego okna -->
@@ -171,16 +172,36 @@
 
         .footer-note {
             margin-top: 24px;
-            font-size: 0.78rem;
+            font-size: 0.875rem;
             color: #64748b;
             line-height: 1.4;
         }
         .footer-note a {
-            color: #d4af37;
-            text-decoration: none;
+            color: #7a5d12;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            padding: 14px 2px; /* pole dotyku 44 px bez zmiany wiersza */
         }
         .footer-note a:hover {
-            text-decoration: underline;
+            color: #4d3a08;
+        }
+        /* Ikona przełącznika motywu bez Font Awesome (ta strona go nie ładuje) */
+        .lumina-theme-switch-pill .theme-icon.fa-sun::before,
+        .lumina-theme-switch-pill .theme-icon.fa-moon::before {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: currentColor;
+            -webkit-mask: var(--lumina-icon) center / contain no-repeat;
+            mask: var(--lumina-icon) center / contain no-repeat;
+        }
+        .lumina-theme-switch-pill .theme-icon.fa-sun {
+            --lumina-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E");
+        }
+        .lumina-theme-switch-pill .theme-icon.fa-moon {
+            --lumina-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z'/%3E%3C/svg%3E");
         }
 
         /* Spinner */
@@ -204,7 +225,7 @@
 
     <div class="container" id="loginContainer">
         <div class="logo-wrap">
-            <img src="lumina_logo_portal.jpg" onerror="this.src='lumina_icon.jpg'" alt="LUMINA Logo" class="logo">
+            <img src="/images/lumina/lumina-logo-login-256.webp" width="116" height="116" onerror="this.src='lumina_icon.jpg'" alt="Oficjalne logo Portalu LUMINA" class="logo">
         </div>
 
         <h1 class="portal-title">LUMINA</h1>
