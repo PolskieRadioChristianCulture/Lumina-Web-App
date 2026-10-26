@@ -122,9 +122,9 @@ p { margin: 0; }
 .edge-station { grid-column: 1 / 3; margin: 0; text-align: center; line-height: 1.2; }
 .edge-station span { display: block; font: 700 13px/1.2 var(--text); color: #C4A35A; }
 .edge-station b { display: block; font: 600 13px/1.25 var(--text); }
-.edge-spectrum { grid-column: 1 / 3; height: 48px; position: relative; background: #09101a; border-radius: 4px; overflow: hidden; }
+.edge-spectrum { grid-column: 1 / 3; height: 48px; position: relative; background: transparent; border-radius: 4px; overflow: hidden; }
 .edge-spectrum canvas { display: block; width: 100%; height: 48px; }
-.edge-spectrum-note { position: absolute; inset: 0; display: grid; place-items: center; padding: 3px; text-align: center; font: 10px/1.25 var(--text); color: #E2CC9A; background: #09101a; }
+.edge-spectrum-note { position: absolute; inset: 0; display: grid; place-items: center; padding: 3px; text-align: center; font: 10px/1.25 var(--text); color: #E2CC9A; background: transparent; }
 .edge-spectrum-note[hidden] { display: none; }
 .edge-radio [data-play] { color: #C4A35A; }
 .edge-radio [data-play] .i-pause, .edge-radio [data-play][aria-pressed="true"] .i-play { display: none; }
@@ -715,7 +715,7 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
 
 <script src="/js/cc-radio-catalog.js?v=20261025_repertoire"></script>
 <script src="/js/cc-chat-radio.js?v=20261026_spectrum1"></script>
-<script src="/js/cc-radio-spectrum.js?v=20261026_1"></script>
+<script src="/js/cc-radio-spectrum.js?v=20261026_2"></script>
 <script>
 (function () {
   // Pomiar kliknięć: zdarzenie na każde drzwi (GA4 → Czas rzeczywisty)

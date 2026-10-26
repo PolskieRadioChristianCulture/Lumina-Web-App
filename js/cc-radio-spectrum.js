@@ -15,7 +15,7 @@
     if (!context) return;
     const width = canvas.width, height = canvas.height;
     context.clearRect(0, 0, width, height);
-    context.fillStyle = '#C4A35A';
+    context.fillStyle = getComputedStyle(panel).color || '#F3E5C8'; // kolor przycisków panelu krawędziowego
     let peak = 0;
     for (let bar = 0; bar < 20; bar++) {
       const start = Math.floor(Math.pow(128, bar / 20));
