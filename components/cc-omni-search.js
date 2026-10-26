@@ -600,8 +600,9 @@
     style.textContent = `
       /* Wyszukiwarka ekosystemu — ekran startowy jak Google, kolory EkoCC (@007, wzór L0 26.10.2026). */
       #ccOmniOverlay {
-        --omni-gold: #C4A35A;
-        --omni-gold-deep: #9a7a2e;
+        --omni-gold: #FF7A00; /* kolor akcji CC (standard L0 26.10.2026) */
+        --omni-gold-hover: #FF8C33;
+        --omni-gold-deep: #E66A00;
         --omni-ink: #F3E5C8;
         --omni-muted: #b9b0a0;
         --omni-title: #E2CC9A;
@@ -702,12 +703,12 @@
         color: var(--omni-paper-ink);
         border: 2px solid var(--omni-gold);
         border-radius: 30px;
-        box-shadow: 0 8px 30px rgba(196, 163, 90, 0.3);
+        box-shadow: 0 8px 30px rgba(255, 122, 0, 0.3);
         transition: box-shadow 0.15s;
         box-sizing: border-box;
       }
       .cc-omni-field:focus-within, .cc-omni-field:hover {
-        box-shadow: 0 12px 40px rgba(196, 163, 90, 0.5);
+        box-shadow: 0 12px 40px rgba(255, 140, 51, 0.5);
       }
       .cc-omni-search-icon {
         color: var(--omni-gold-deep);
@@ -734,7 +735,7 @@
       }
       .cc-omni-field .cc-omni-btn:hover, .cc-omni-field .cc-omni-btn:focus-visible {
         color: var(--omni-gold-deep);
-        background: rgba(196, 163, 90, 0.14);
+        background: rgba(255, 122, 0, 0.12);
       }
       #ccOmniMic.cc-listening {
         color: #b3261e;
@@ -761,7 +762,7 @@
         min-height: 56px;
         background: var(--omni-paper);
         color: var(--omni-paper-ink);
-        border: 1px solid rgba(196, 163, 90, 0.45);
+        border: 1px solid rgba(255, 122, 0, 0.4);
         border-radius: 16px;
         text-decoration: none;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
@@ -770,14 +771,14 @@
       }
       .cc-omni-card:hover, .cc-omni-card:focus-visible {
         border-color: var(--omni-gold);
-        box-shadow: 0 6px 20px rgba(196, 163, 90, 0.35);
+        box-shadow: 0 6px 20px rgba(255, 122, 0, 0.35);
         outline: none;
       }
       .cc-omni-card-icon {
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: #f6eedd;
+        background: #fff1e5;
         color: var(--omni-gold-deep);
         display: inline-flex;
         align-items: center;
@@ -822,7 +823,7 @@
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.92);
         color: var(--omni-gold-deep);
-        border: 1px solid rgba(196, 163, 90, 0.6);
+        border: 1px solid rgba(255, 122, 0, 0.55);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -830,7 +831,7 @@
         transition: background-color 0.15s, color 0.15s, transform 0.15s;
       }
       .cc-omni-shortcut:hover span:first-child, .cc-omni-shortcut:focus-visible span:first-child {
-        background: var(--omni-gold);
+        background: var(--omni-gold-hover);
         color: #fff;
         transform: scale(1.05);
       }
