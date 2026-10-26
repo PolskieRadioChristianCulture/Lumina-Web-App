@@ -28,6 +28,8 @@
 
   // 1. Sprawdzenie czy jesteśmy na dedykowanej stronie /szukaj
   const isSearchPage = /^\/szukaj(?:\/|\.html)?$/i.test(window.location.pathname);
+  // Własny adres wyszukiwarki: polskieradio.cc/wyszukiwarka (decyzja L0 26.10.2026) — otwarta na pełnym ekranie
+  const isStandalonePage = /^\/wyszukiwarka(?:\/|\.html)?$/i.test(window.location.pathname);
 
   // 2. Globalny stan wyszukiwarki
   let catalogData = window.__ccSearchCatalog || null;
@@ -1253,6 +1255,10 @@
       const val = e.target.value;
       clearBtn.style.display = val ? 'inline-flex' : 'none';
       renderResults(val, activeFilter);
+      if (isStandalonePage) {
+        const q = val.trim();
+        history.replaceState(null, '', q ? '/wyszukiwarka?q=' + encodeURIComponent(q) : '/wyszukiwarka');
+      }
     });
 
     input.addEventListener('keydown', handleKeyNavigation);
@@ -1519,7 +1525,11 @@
     document.body.style.overflow = 'hidden';
 
     if (input) {
-      if (initialQuery) input.value = initialQuery;
+      if (initialQuery) {
+        input.value = initialQuery;
+        const clearBtn = document.getElementById('ccOmniClear');
+        if (clearBtn) clearBtn.style.display = 'inline-flex';
+      }
       setTimeout(() => {
         input.focus();
         input.select();
@@ -1530,6 +1540,12 @@
   function closeSearch() {
     const overlay = document.getElementById('ccOmniOverlay');
     if (!overlay) return;
+    if (isStandalonePage) {
+      // Na własnym adresie zamknięcie wraca do poprzedniej strony CC albo na stronę główną
+      const fromCC = !!document.referrer && new URL(document.referrer).origin === location.origin;
+      if (fromCC && history.length > 1) history.back(); else location.href = '/';
+      return;
+    }
     overlay.classList.remove('cc-open');
     document.body.style.overflow = '';
   }
@@ -1665,10 +1681,14 @@
   };
 
   // Uruchomienie po załadowaniu DOM
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', wireDomSearchElements);
-  } else {
+  const startPage = () => {
     wireDomSearchElements();
+    if (isStandalonePage) openSearch(new URLSearchParams(location.search).get('q') || '');
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startPage);
+  } else {
+    startPage();
   }
 
 })();
