@@ -1344,6 +1344,30 @@
       }
       .cc-omni-view-all svg { color: var(--omni-gold); }
       .cc-omni-view-all:hover, .cc-omni-view-all:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
+      /* PLAY/STOP Radia CC w górnej belce (liczy się do /milion przez cc-radio-milion.js) */
+      .cc-omni-radio {
+        width: 44px;
+        height: 44px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--omni-gold);
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 0 14px rgba(255, 122, 0, 0.45);
+        flex-shrink: 0;
+      }
+      .cc-omni-radio:hover, .cc-omni-radio:focus-visible { background: var(--omni-gold-hover); outline: 2px solid var(--omni-gold-hover); outline-offset: 2px; }
+      .cc-omni-radio:active { background: var(--omni-gold-deep); }
+      .cc-omni-radio .cc-i-stop, .cc-omni-radio[aria-pressed="true"] .cc-i-play { display: none; }
+      .cc-omni-radio[aria-pressed="true"] .cc-i-stop { display: block; }
+      .cc-omni-radio.cc-loading { opacity: 0.7; }
+      @media (max-width: 440px) {
+        .cc-omni-toplink span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .cc-omni-toplink { padding: 0; width: 44px; justify-content: center; }
+      }
       @media (prefers-reduced-motion: reduce) {
         #ccOmniOverlay, .cc-omni-shortcut span:first-child { transition: none; }
       }
@@ -1365,6 +1389,10 @@
       <div id="ccOmniModal">
         <div class="cc-omni-top">
           <nav class="cc-omni-topnav" aria-label="Szybki dostęp">
+            <button type="button" id="ccOmniRadio" class="cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
+              <svg class="cc-i-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
+              <svg class="cc-i-stop" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+            </button>
             <a class="cc-omni-toplink" href="/mess">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5A3.5 3.5 0 0 1 6.5 2h6A3.5 3.5 0 0 1 16 5.5v3A3.5 3.5 0 0 1 12.5 12H8l-3.5 3v-3.2A3.5 3.5 0 0 1 3 8.5Z"/><path d="M18 8.2a3.5 3.5 0 0 1 3 3.5v2.8a3.5 3.5 0 0 1-2 3.2V21l-3.4-2.8H12a3.5 3.5 0 0 1-3.2-2h3.7A5.5 5.5 0 0 0 18 10.7Z"/></svg>
               <span>Czat</span>
@@ -1530,6 +1558,48 @@
       canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
       return canvas.toDataURL('image/jpeg', 0.7);
     }
+
+    // PLAY/STOP Radia CC: wspólny odtwarzacz ekosystemu (cc-chat-radio.js); start liczy się do /milion (cc-radio-milion.js)
+    const radioBtn = document.getElementById('ccOmniRadio');
+    const loadScript = (src) => new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+    let radioReady = null;
+    const ensureRadio = () => radioReady || (radioReady = (async () => {
+      if (!window.CCRadioStations) await loadScript('/js/cc-radio-catalog.js?v=20261025_repertoire');
+      if (!window.CCChatRadio) await loadScript('/js/cc-chat-radio.js?v=20261026_spectrum1');
+      if (!window.CCRadioMilion) await loadScript('/js/cc-radio-milion.js?v=20261011_2');
+      window.CCChatRadio.subscribe((st) => {
+        radioBtn.setAttribute('aria-pressed', String(!!st.playing));
+        radioBtn.setAttribute('aria-label', st.playing ? 'Zatrzymaj Radio Christian Culture' : 'Słuchaj Radia Christian Culture');
+      });
+      return window.CCChatRadio;
+    })());
+    radioBtn.addEventListener('click', async () => {
+      radioBtn.classList.add('cc-loading');
+      try {
+        const radio = await ensureRadio();
+        if (radio.state().playing) {
+          radio.pause();
+        } else {
+          const id = radio.state().stationId || 'poland';
+          await radio.prepare(id);
+          radio.select(id);
+          await radio.play();
+        }
+      } catch (_) {
+        radioBtn.setAttribute('aria-label', 'Radio chwilowo niedostępne — spróbuj ponownie');
+        radioReady = null;
+      } finally {
+        radioBtn.classList.remove('cc-loading');
+      }
+    });
+    // Jeśli radio już gra na tej stronie, przycisk od razu pokazuje STOP
+    if (window.CCChatRadio) ensureRadio();
 
     // Przełącznik G: Christian Culture ↔ Google (cały internet)
     const engineBtn = document.getElementById('ccOmniEngine');
