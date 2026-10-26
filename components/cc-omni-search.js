@@ -1329,6 +1329,28 @@
         padding: 2px 6px;
         font: inherit;
       }
+      .cc-omni-footer-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .cc-omni-iconbtn {
+        width: 44px;
+        height: 44px;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--omni-gold);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .cc-omni-iconbtn:hover, .cc-omni-iconbtn:focus-visible { background: rgba(255, 255, 255, 0.12); color: var(--omni-gold-hover); outline: none; }
+      .cc-omni-share-msg { font-size: 0.8rem; color: #fff; white-space: nowrap; }
+      .cc-omni-share-msg:empty { display: none; }
       .cc-omni-view-all {
         color: #fff;
         text-decoration: none;
@@ -1483,10 +1505,15 @@
             <input type="file" id="ccOmniWallFile" accept="image/*" hidden>
             <span id="ccOmniCredit" class="cc-omni-credit">Tło: Galaktyka Andromedy · fot. Unsplash</span>
           </div>
-          <a href="/#contact-section" id="ccOmniContact" class="cc-omni-view-all">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-            <span>Kontakt</span>
-          </a>
+          <div class="cc-omni-footer-right">
+            <span id="ccOmniShareMsg" class="cc-omni-share-msg" role="status" aria-live="polite"></span>
+            <button type="button" id="ccOmniShare" class="cc-omni-iconbtn" aria-label="Udostępnij wyszukiwarkę Christian Culture" title="Udostępnij">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
+            </button>
+            <a href="/#contact-section" id="ccOmniContact" class="cc-omni-iconbtn" aria-label="Kontakt" title="Kontakt">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </a>
+          </div>
         </div>
       </div>
     `;
@@ -1504,6 +1531,29 @@
     });
 
     closeBtn.addEventListener('click', closeSearch);
+
+    // Udostępnij wyszukiwarkę: systemowe okno udostępniania (telefon) albo skopiowanie linku (komputer)
+    const shareBtn = document.getElementById('ccOmniShare');
+    const shareMsg = document.getElementById('ccOmniShareMsg');
+    const SHARE_URL = 'https://polskieradio.cc/wyszukiwarka';
+    let shareTimer = 0;
+    const flashShare = (text) => {
+      shareMsg.textContent = text;
+      clearTimeout(shareTimer);
+      shareTimer = setTimeout(() => { shareMsg.textContent = ''; }, 2600);
+    };
+    shareBtn.addEventListener('click', async () => {
+      const data = { title: 'Wyszukiwarka Christian Culture', text: 'Szukaj w całym ekosystemie Christian Culture — Słowo Boże, rozważania, radio, kanały i LUMINA:', url: SHARE_URL };
+      if (navigator.share) {
+        try { await navigator.share(data); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+      }
+      try {
+        await navigator.clipboard.writeText(SHARE_URL);
+        flashShare('Skopiowano link');
+      } catch (_) {
+        window.prompt('Skopiuj link do wyszukiwarki:', SHARE_URL);
+      }
+    });
 
     // Własna tapeta: obraz zmniejszany w przeglądarce i zapamiętywany tylko na tym urządzeniu (bez wysyłania na serwer)
     const WALL_KEY = 'cc_search_wallpaper';
