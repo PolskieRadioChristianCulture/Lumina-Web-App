@@ -598,119 +598,65 @@
     const style = document.createElement('style');
     style.id = 'cc-omni-search-styles';
     style.textContent = `
-      /* Wyszukiwarka ekosystemu — układ w stylu Google, kolory wizytówki EkoCC (@007, decyzja L0 26.10.2026). */
+      /* Wyszukiwarka ekosystemu — ekran startowy jak Google, kolory EkoCC (@007, wzór L0 26.10.2026). */
       #ccOmniOverlay {
-        --omni-ground: #000;
-        --omni-field: #121214;
-        --omni-ink: #F3E5C8;
-        --omni-muted: #a39a89;
         --omni-gold: #C4A35A;
+        --omni-gold-deep: #9a7a2e;
+        --omni-ink: #F3E5C8;
+        --omni-muted: #b9b0a0;
         --omni-title: #E2CC9A;
-        --omni-line: rgba(196, 163, 90, 0.28);
+        --omni-line: rgba(196, 163, 90, 0.32);
+        --omni-paper: #ffffff;
+        --omni-paper-ink: #1f1a12;
+        --omni-paper-muted: #6b6457;
         position: fixed;
         inset: 0;
         z-index: 999999;
-        background: rgba(0, 0, 0, 0.72);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        padding: 5vh 16px 24px;
+        background: #05070c url('/images/search/andromeda-1600.webp') center / cover no-repeat fixed;
+        overflow-y: auto;
+        overscroll-behavior: contain;
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.2s ease-out, visibility 0.2s;
         box-sizing: border-box;
+        font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      #ccOmniOverlay::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at 50% 38%, rgba(5, 7, 12, 0.25) 0%, rgba(3, 4, 8, 0.88) 100%);
+        pointer-events: none;
+      }
+      @media (max-width: 640px) {
+        #ccOmniOverlay { background-image: url('/images/search/andromeda-800.webp'); }
       }
       #ccOmniOverlay.cc-open {
         opacity: 1;
         visibility: visible;
       }
-      [data-theme="light"] #ccOmniOverlay,
-      [data-lumina-theme="light"] #ccOmniOverlay,
-      html.light #ccOmniOverlay,
-      body.light #ccOmniOverlay {
-        --omni-ground: #ffffff;
-        --omni-field: #ffffff;
-        --omni-ink: #1f1a12;
-        --omni-muted: #5f5a50;
-        --omni-gold: #9a7a2e;
-        --omni-title: #7a5a12;
-        --omni-line: rgba(154, 122, 46, 0.3);
-        background: rgba(20, 16, 8, 0.35);
-      }
       #ccOmniModal {
+        position: relative;
         width: 100%;
-        max-width: 720px;
-        max-height: 88vh;
-        background: var(--omni-ground);
-        border: 1px solid var(--omni-line);
-        border-radius: 22px;
-        box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.85);
+        max-width: 760px;
+        min-height: 100%;
+        margin: 0 auto;
+        padding: 0 16px;
         color: var(--omni-ink);
-        font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         display: flex;
         flex-direction: column;
-        overflow: hidden;
-        transform: translateY(-12px);
-        transition: transform 0.22s ease-out;
         box-sizing: border-box;
       }
-      #ccOmniOverlay.cc-open #ccOmniModal {
-        transform: none;
-      }
-      .cc-omni-header {
+      .cc-omni-top {
         display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 18px 16px 10px;
-        flex-shrink: 0;
-      }
-      .cc-omni-field {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        height: 50px;
-        padding: 0 6px 0 16px;
-        background: var(--omni-field);
-        border: 1px solid var(--omni-line);
-        border-radius: 25px;
-        transition: border-color 0.15s, box-shadow 0.15s;
-        box-sizing: border-box;
-      }
-      .cc-omni-field:focus-within {
-        border-color: var(--omni-gold);
-        box-shadow: 0 1px 10px rgba(196, 163, 90, 0.22);
-      }
-      .cc-omni-search-icon {
-        color: var(--omni-gold);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      #ccOmniInput {
-        flex: 1;
-        min-width: 0;
-        background: transparent;
-        border: none;
-        outline: none;
-        font: 400 1.05rem/1.3 inherit;
-        color: inherit;
-        padding: 0;
-        min-height: 44px;
-        box-sizing: border-box;
-      }
-      #ccOmniInput::placeholder {
-        color: var(--omni-muted);
+        justify-content: flex-end;
+        padding: max(env(safe-area-inset-top), 12px) 0 0;
       }
       .cc-omni-btn {
         background: transparent;
         border: 0;
         border-radius: 50%;
-        color: var(--omni-muted);
+        color: var(--omni-ink);
         cursor: pointer;
         min-width: 44px;
         min-height: 44px;
@@ -724,19 +670,256 @@
       }
       .cc-omni-btn:hover, .cc-omni-btn:focus-visible {
         color: var(--omni-gold);
-        background: rgba(196, 163, 90, 0.12);
+        background: rgba(255, 255, 255, 0.1);
         outline: none;
       }
-      .cc-omni-filters {
+      .cc-omni-hero {
+        text-align: center;
+        padding: 9vh 0 28px;
+      }
+      .cc-omni-brand {
+        margin: 0;
+        font-size: clamp(2.3rem, 9vw, 4rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        color: transparent;
+        background: linear-gradient(90deg, #ffffff 0%, #f3e5c8 55%, #c4a35a 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
+      }
+      .cc-omni-header {
+        padding: 0;
+      }
+      .cc-omni-field {
         display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 56px;
+        padding: 0 8px 0 20px;
+        background: var(--omni-paper);
+        color: var(--omni-paper-ink);
+        border: 2px solid var(--omni-gold);
+        border-radius: 30px;
+        box-shadow: 0 8px 30px rgba(196, 163, 90, 0.3);
+        transition: box-shadow 0.15s;
+        box-sizing: border-box;
+      }
+      .cc-omni-field:focus-within, .cc-omni-field:hover {
+        box-shadow: 0 12px 40px rgba(196, 163, 90, 0.5);
+      }
+      .cc-omni-search-icon {
+        color: var(--omni-gold-deep);
+        display: flex;
+        flex-shrink: 0;
+      }
+      #ccOmniInput {
+        flex: 1;
+        min-width: 0;
+        background: transparent;
+        border: none;
+        outline: none;
+        font: 500 1.05rem/1.3 inherit;
+        color: var(--omni-paper-ink);
+        padding: 0;
+        min-height: 44px;
+      }
+      #ccOmniInput::placeholder {
+        color: #8d877c;
+        font-weight: 400;
+      }
+      .cc-omni-field .cc-omni-btn {
+        color: var(--omni-paper-muted);
+      }
+      .cc-omni-field .cc-omni-btn:hover, .cc-omni-field .cc-omni-btn:focus-visible {
+        color: var(--omni-gold-deep);
+        background: rgba(196, 163, 90, 0.14);
+      }
+      #ccOmniMic.cc-listening {
+        color: #b3261e;
+      }
+      /* Strona startowa: karty, skróty, kontynuacja */
+      .cc-omni-home {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        padding: 24px 0 8px;
+      }
+      .cc-omni-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+      }
+      .cc-omni-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        min-height: 56px;
+        background: var(--omni-paper);
+        color: var(--omni-paper-ink);
+        border: 1px solid rgba(196, 163, 90, 0.45);
+        border-radius: 16px;
+        text-decoration: none;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        transition: border-color 0.15s, box-shadow 0.15s;
+        box-sizing: border-box;
+      }
+      .cc-omni-card:hover, .cc-omni-card:focus-visible {
+        border-color: var(--omni-gold);
+        box-shadow: 0 6px 20px rgba(196, 163, 90, 0.35);
+        outline: none;
+      }
+      .cc-omni-card-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f6eedd;
+        color: var(--omni-gold-deep);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .cc-omni-card b {
+        display: block;
+        font-size: 0.92rem;
+        font-weight: 600;
+        line-height: 1.25;
+      }
+      .cc-omni-card small {
+        display: block;
+        font-size: 0.78rem;
+        color: var(--omni-paper-muted);
+      }
+      .cc-omni-shortcuts {
+        display: grid;
+        grid-template-columns: repeat(4, 76px);
+        gap: 18px 10px;
+        justify-content: center;
+      }
+      @media (min-width: 641px) {
+        .cc-omni-shortcuts { grid-template-columns: repeat(7, 84px); }
+      }
+      .cc-omni-shortcut {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: var(--omni-ink);
+        font-size: 0.78rem;
+        font-weight: 500;
+        text-align: center;
+        line-height: 1.2;
+      }
+      .cc-omni-shortcut span:first-child {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--omni-gold-deep);
+        border: 1px solid rgba(196, 163, 90, 0.6);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+        transition: background-color 0.15s, color 0.15s, transform 0.15s;
+      }
+      .cc-omni-shortcut:hover span:first-child, .cc-omni-shortcut:focus-visible span:first-child {
+        background: var(--omni-gold);
+        color: #fff;
+        transform: scale(1.05);
+      }
+      .cc-omni-shortcut:focus-visible { outline: none; }
+      .cc-omni-continue {
+        width: 100%;
+        background: var(--omni-paper);
+        color: var(--omni-paper-ink);
+        border-radius: 18px;
+        border-top: 4px solid var(--omni-gold);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+      }
+      .cc-omni-continue-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 18px;
+        background: linear-gradient(90deg, #fbf5e8, #fffdf8);
+        border-bottom: 1px solid #efe3c8;
+        color: var(--omni-gold-deep);
+        font-size: 0.86rem;
+        font-weight: 600;
+      }
+      .cc-omni-continue-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+      }
+      @media (min-width: 641px) {
+        .cc-omni-continue-list { grid-template-columns: 1fr 1fr; }
+      }
+      .cc-omni-continue-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        min-height: 56px;
+        border-radius: 12px;
+        background: #fcf8ef;
+        border: 1px solid #efe3c8;
+        text-decoration: none;
+        color: inherit;
+        box-sizing: border-box;
+      }
+      .cc-omni-continue-item:hover, .cc-omni-continue-item:focus-visible {
+        border-color: var(--omni-gold);
+        outline: none;
+      }
+      .cc-omni-continue-item > span:first-child {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #1a1712;
+        color: var(--omni-gold);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      .cc-omni-continue-item b {
+        display: block;
+        font-size: 0.88rem;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cc-omni-continue-item small {
+        display: block;
+        font-size: 0.74rem;
+        color: var(--omni-gold-deep);
+      }
+      .cc-omni-continue-item > span:last-child { min-width: 0; }
+      /* Stan wyników: pole u góry, wyniki na ciemnym tle */
+      #ccOmniModal.cc-has-query .cc-omni-hero { padding: 6px 0 14px; }
+      #ccOmniModal.cc-has-query .cc-omni-brand { font-size: 1.5rem; }
+      .cc-omni-filters {
+        display: none;
         gap: 4px;
-        padding: 0 16px;
-        border-bottom: 1px solid var(--omni-line);
+        margin-top: 10px;
         overflow-x: auto;
         white-space: nowrap;
         scrollbar-width: none;
-        flex-shrink: 0;
+        border-bottom: 1px solid var(--omni-line);
       }
+      #ccOmniModal.cc-has-query .cc-omni-filters { display: flex; }
       .cc-omni-filters::-webkit-scrollbar { display: none; }
       .cc-omni-filter-chip {
         position: relative;
@@ -751,14 +934,9 @@
         align-items: center;
         touch-action: manipulation;
         flex-shrink: 0;
-        transition: color 0.15s;
       }
-      .cc-omni-filter-chip:hover {
-        color: var(--omni-ink);
-      }
-      .cc-omni-filter-chip.active {
-        color: var(--omni-gold);
-      }
+      .cc-omni-filter-chip:hover { color: var(--omni-ink); }
+      .cc-omni-filter-chip.active { color: var(--omni-gold); }
       .cc-omni-filter-chip.active::after {
         content: "";
         position: absolute;
@@ -771,13 +949,20 @@
       }
       .cc-omni-body {
         flex: 1;
-        overflow-y: auto;
-        padding: 14px 20px 18px;
         display: flex;
         flex-direction: column;
         gap: 14px;
+        padding: 14px 0 18px;
       }
-      /* Przewodnik tematyczny — jak panel wiedzy */
+      #ccOmniModal.cc-has-query .cc-omni-body {
+        margin-top: 12px;
+        padding: 16px 20px 18px;
+        background: rgba(5, 6, 10, 0.86);
+        border: 1px solid var(--omni-line);
+        border-radius: 18px;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
       .cc-omni-guide {
         border: 1px solid var(--omni-line);
         border-radius: 14px;
@@ -821,13 +1006,11 @@
         font-weight: 500;
         min-height: 44px;
         box-sizing: border-box;
-        transition: border-color 0.15s, color 0.15s;
       }
       .cc-omni-guide-pill:hover, .cc-omni-guide-pill:focus-visible {
         border-color: var(--omni-gold);
         color: var(--omni-gold);
       }
-      /* Wyniki — jak lista wyników Google */
       .cc-omni-results-list {
         display: flex;
         flex-direction: column;
@@ -845,7 +1028,7 @@
         transition: background-color 0.12s;
       }
       .cc-omni-item:hover, .cc-omni-item.cc-active {
-        background: rgba(196, 163, 90, 0.08);
+        background: rgba(196, 163, 90, 0.1);
       }
       .cc-omni-item-source {
         display: flex;
@@ -858,7 +1041,7 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        border: 1px solid var(--omni-line);
+        background: rgba(255, 255, 255, 0.92);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -925,94 +1108,46 @@
         display: flex;
         align-items: flex-start;
         gap: 12px;
-        padding: 4px 0 2px;
       }
-      .cc-omni-suggestion-icon {
-        font-size: 1.1rem;
-        line-height: 1.3;
-        flex-shrink: 0;
-      }
-      .cc-omni-suggestion-title {
-        font-size: 0.92rem;
-        font-weight: 600;
-        color: var(--omni-ink);
-        margin-bottom: 2px;
-      }
-      .cc-omni-suggestion-desc {
-        font-size: 0.84rem;
-        color: var(--omni-muted);
-        line-height: 1.4;
-      }
+      .cc-omni-suggestion-icon { font-size: 1.1rem; line-height: 1.3; flex-shrink: 0; }
+      .cc-omni-suggestion-title { font-size: 0.92rem; font-weight: 600; color: var(--omni-ink); margin-bottom: 2px; }
+      .cc-omni-suggestion-desc { font-size: 0.84rem; color: var(--omni-muted); line-height: 1.4; }
       .cc-omni-empty {
         text-align: center;
-        padding: 36px 16px;
+        padding: 30px 12px;
         color: var(--omni-muted);
       }
-      .cc-omni-empty p {
-        margin: 8px 0 16px;
-        font-size: 0.92rem;
-      }
-      /* Stopka */
+      .cc-omni-empty p { margin: 8px 0 16px; font-size: 0.92rem; }
       .cc-omni-footer {
-        padding: 6px 18px;
-        border-top: 1px solid var(--omni-line);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 0.8rem;
-        color: var(--omni-muted);
-        flex-shrink: 0;
-        gap: 12px;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        padding: 10px 0 max(env(safe-area-inset-bottom), 14px);
+        font-size: 0.74rem;
+        color: rgba(243, 229, 200, 0.65);
       }
-      .cc-omni-footer-hints {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-      }
+      .cc-omni-footer-hints { display: none; }
       .cc-omni-kbd {
         border: 1px solid var(--omni-line);
         border-radius: 5px;
         padding: 2px 6px;
-        font-family: inherit;
-        font-size: 0.74rem;
-        color: var(--omni-muted);
+        font: inherit;
       }
       .cc-omni-view-all {
         color: var(--omni-gold);
         text-decoration: none;
         font-weight: 600;
+        font-size: 0.84rem;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
         min-height: 44px;
-        padding: 0 8px;
-        touch-action: manipulation;
+        padding: 0 4px;
       }
-      .cc-omni-view-all:hover {
-        text-decoration: underline;
-      }
-      @media (max-width: 640px) {
-        #ccOmniOverlay {
-          padding: 0;
-        }
-        #ccOmniModal {
-          max-height: 100vh;
-          height: 100vh;
-          border-radius: 0;
-          border: none;
-        }
-        .cc-omni-header {
-          padding: max(env(safe-area-inset-top), 12px) 10px 8px 12px;
-        }
-        .cc-omni-body {
-          padding: 12px 16px 18px;
-        }
-        .cc-omni-footer-hints {
-          display: none;
-        }
-      }
+      .cc-omni-view-all:hover { text-decoration: underline; }
       @media (prefers-reduced-motion: reduce) {
-        #ccOmniOverlay, #ccOmniModal { transition: none; }
+        #ccOmniOverlay, .cc-omni-shortcut span:first-child { transition: none; }
       }
 `;
     document.head.appendChild(style);
@@ -1030,6 +1165,15 @@
 
     overlay.innerHTML = `
       <div id="ccOmniModal">
+        <div class="cc-omni-top">
+          <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="cc-omni-hero"><p class="cc-omni-brand">Christian Culture</p></div>
         <div class="cc-omni-header">
           <div class="cc-omni-field">
           <span class="cc-omni-search-icon" aria-hidden="true">
@@ -1038,20 +1182,20 @@
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </span>
-          <input type="text" id="ccOmniInput" placeholder="Szukaj w ekosystemie: werset, nadzieja, radio, kursy..." autocomplete="off" spellcheck="false" aria-label="Wpisz szukane słowo">
+          <input type="text" id="ccOmniInput" placeholder="Zapytaj Christian Culture…" autocomplete="off" spellcheck="false" aria-label="Wpisz szukane słowo">
           <button type="button" id="ccOmniClear" class="cc-omni-btn" aria-label="Wyczyść zapytanie" style="display:none;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
-          </div>
-          <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę">
+          <button type="button" id="ccOmniMic" class="cc-omni-btn" aria-label="Szukaj głosem" hidden>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+              <rect x="9" y="3" width="6" height="11" rx="3"></rect>
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path>
             </svg>
           </button>
+          </div>
         </div>
 
         <div class="cc-omni-filters">
@@ -1069,6 +1213,7 @@
         </div>
 
         <div class="cc-omni-footer">
+          <span>Tło: Galaktyka Andromedy · fot. Unsplash</span>
           <div class="cc-omni-footer-hints">
             <span><kbd class="cc-omni-kbd">↑</kbd> <kbd class="cc-omni-kbd">↓</kbd> nawigacja</span>
             <span><kbd class="cc-omni-kbd">Enter</kbd> otwórz</span>
@@ -1109,6 +1254,35 @@
     });
 
     input.addEventListener('keydown', handleKeyNavigation);
+
+    // Wyszukiwanie głosem (Web Speech API) — przycisk pojawia się tylko, gdy przeglądarka je obsługuje
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const micBtn = document.getElementById('ccOmniMic');
+    if (Recognition && micBtn) {
+      micBtn.hidden = false;
+      let recognizer = null;
+      micBtn.addEventListener('click', () => {
+        if (recognizer) { recognizer.stop(); return; }
+        recognizer = new Recognition();
+        recognizer.lang = 'pl-PL';
+        recognizer.interimResults = false;
+        micBtn.classList.add('cc-listening');
+        micBtn.setAttribute('aria-label', 'Słucham… naciśnij, aby przerwać');
+        recognizer.onresult = (ev) => {
+          const text = ev.results[0] && ev.results[0][0] ? ev.results[0][0].transcript : '';
+          if (!text) return;
+          input.value = text;
+          clearBtn.style.display = 'inline-flex';
+          renderResults(text, activeFilter);
+        };
+        recognizer.onend = () => {
+          recognizer = null;
+          micBtn.classList.remove('cc-listening');
+          micBtn.setAttribute('aria-label', 'Szukaj głosem');
+        };
+        try { recognizer.start(); } catch (_) { recognizer.onend(); }
+      });
+    }
 
     filterChips.forEach(chip => {
       chip.addEventListener('click', () => {
@@ -1162,6 +1336,15 @@
     if (!body) return;
 
     currentQuery = query;
+    const modal = document.getElementById('ccOmniModal');
+    const hasQuery = !!String(query || '').trim();
+    if (modal) modal.classList.toggle('cc-has-query', hasQuery);
+    if (!hasQuery) {
+      currentResults = [];
+      activeIndex = -1;
+      body.innerHTML = renderHome();
+      return;
+    }
     const { items, guide, isSuggestion, suggestionNote } = performSearch(query, filter);
     currentResults = items;
     activeIndex = -1;
@@ -1253,6 +1436,58 @@
     }
 
     body.innerHTML = html;
+  }
+
+  // Strona startowa: prawdziwe skróty ekosystemu i historia odwiedzin z tej przeglądarki (cc-favorites.js)
+  const HOME_ICONS = {
+    play: '<path d="M8 5v14l11-7Z"/>',
+    tv: '<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/>',
+    book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2Z"/><path d="M4 19V5"/>',
+    mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+    news: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+    people: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>',
+    home: '<path d="m3 10 9-7 9 7v11h-6v-7H9v7H3Z"/>',
+    radio: '<rect x="3" y="8" width="18" height="12" rx="2"/><circle cx="15.5" cy="14" r="2.5"/><path d="M7 12h4M7 16h4M7 8l9-5"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'
+  };
+  const svgIcon = (name, size = 22) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${HOME_ICONS[name] || ''}</svg>`;
+  const HOME_SHORTCUTS = [
+    { label: 'YouTube', url: 'https://www.youtube.com/@ChristianCultureTV', icon: 'play', external: true },
+    { label: 'Kanały', url: '/kanaly', icon: 'tv' },
+    { label: 'Akademia', url: '/akademia', icon: 'book' },
+    { label: 'Podcasty', url: '/podcasty', icon: 'mic' },
+    { label: 'Portal CCN', url: '/news', icon: 'news' },
+    { label: 'LUMINA', url: '/lumina', icon: 'people' },
+    { label: 'Strona główna', url: '/', icon: 'home' }
+  ];
+  function visitedLabel(iso) {
+    const d = new Date(iso);
+    if (isNaN(d)) return '';
+    const now = new Date();
+    const time = d.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+    if (d.toDateString() === now.toDateString()) return 'Odwiedzono dziś, ' + time;
+    const y = new Date(now);
+    y.setDate(now.getDate() - 1);
+    if (d.toDateString() === y.toDateString()) return 'Odwiedzono wczoraj, ' + time;
+    return 'Odwiedzono ' + d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' });
+  }
+  function renderHome() {
+    const cards = `
+      <div class="cc-omni-cards">
+        <a class="cc-omni-card" href="/akademia#kurscodzienny"><span class="cc-omni-card-icon">${svgIcon('book', 16)}</span><span><b>Dzisiejsza lekcja</b><small>Kurs Codzienny · Z Biblią za Pan Brat</small></span></a>
+        <a class="cc-omni-card" href="/player"><span class="cc-omni-card-icon">${svgIcon('radio', 16)}</span><span><b>Radio i nagrania CC</b><small>Muzyka, Słowo Boże i audio</small></span></a>
+      </div>`;
+    const shortcuts = '<nav class="cc-omni-shortcuts" aria-label="Skróty ekosystemu">' + HOME_SHORTCUTS.map(sc =>
+      `<a class="cc-omni-shortcut" href="${sc.url}"${sc.external ? ' target="_blank" rel="noopener"' : ''}><span>${svgIcon(sc.icon)}</span><span>${escapeHtml(sc.label)}</span></a>`).join('') + '</nav>';
+    let history = [];
+    try { history = JSON.parse(localStorage.getItem('cc_user_visit_history') || '[]'); } catch (_) {}
+    history = (Array.isArray(history) ? history : []).filter(h => h && h.url && h.title && h.url !== location.pathname).slice(0, 4);
+    const cont = history.length ? `
+      <section class="cc-omni-continue" aria-label="Kontynuuj">
+        <div class="cc-omni-continue-head">${svgIcon('clock', 16)}<span>Kontynuuj, gdzie skończyłeś</span></div>
+        <div class="cc-omni-continue-list">${history.map(h => `<a class="cc-omni-continue-item" href="${escapeHtml(h.url)}"><span>${escapeHtml(h.icon || '✨')}</span><span><b>${escapeHtml(h.title)}</b><small>${escapeHtml(visitedLabel(h.visitedAt))}</small></span></a>`).join('')}</div>
+      </section>` : '';
+    return '<div class="cc-omni-home">' + cards + shortcuts + cont + '</div>';
   }
 
   // 8. Otwieranie i zamykanie wyszukiwarki
