@@ -53,6 +53,16 @@
     return term.length <= 3 ? text.split(/[^a-z0-9]+/).includes(term) : text.includes(term);
   }
 
+  function breadcrumbOf(rawUrl) {
+    try {
+      const u = new URL(rawUrl, 'https://polskieradio.cc');
+      const parts = u.pathname.split('/').filter(Boolean).map(p => { try { return decodeURIComponent(p); } catch (_) { return p; } }).map(p => p.replace(/\.html$/, ''));
+      return [u.hostname.replace(/^www\./, '')].concat(parts.slice(0, 3)).join(' › ');
+    } catch (_) {
+      return '';
+    }
+  }
+
   function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -588,68 +598,94 @@
     const style = document.createElement('style');
     style.id = 'cc-omni-search-styles';
     style.textContent = `
+      /* Wyszukiwarka ekosystemu — układ w stylu Google, kolory wizytówki EkoCC (@007, decyzja L0 26.10.2026). */
       #ccOmniOverlay {
+        --omni-ground: #000;
+        --omni-field: #121214;
+        --omni-ink: #F3E5C8;
+        --omni-muted: #a39a89;
+        --omni-gold: #C4A35A;
+        --omni-title: #E2CC9A;
+        --omni-line: rgba(196, 163, 90, 0.28);
         position: fixed;
         inset: 0;
         z-index: 999999;
-        background: rgba(8, 10, 15, 0.78);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         display: flex;
         align-items: flex-start;
         justify-content: center;
-        padding: 4vh 16px 24px;
+        padding: 5vh 16px 24px;
         opacity: 0;
         visibility: hidden;
-        transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s;
+        transition: opacity 0.2s ease-out, visibility 0.2s;
         box-sizing: border-box;
       }
       #ccOmniOverlay.cc-open {
         opacity: 1;
         visibility: visible;
       }
+      [data-theme="light"] #ccOmniOverlay,
+      [data-lumina-theme="light"] #ccOmniOverlay,
+      html.light #ccOmniOverlay,
+      body.light #ccOmniOverlay {
+        --omni-ground: #ffffff;
+        --omni-field: #ffffff;
+        --omni-ink: #1f1a12;
+        --omni-muted: #5f5a50;
+        --omni-gold: #9a7a2e;
+        --omni-title: #7a5a12;
+        --omni-line: rgba(154, 122, 46, 0.3);
+        background: rgba(20, 16, 8, 0.35);
+      }
       #ccOmniModal {
         width: 100%;
         max-width: 720px;
         max-height: 88vh;
-        background: #11141c;
-        border: 1px solid rgba(196, 163, 90, 0.4);
-        border-radius: 20px;
-        box-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(196, 163, 90, 0.15);
-        color: #f1f5f9;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--omni-ground);
+        border: 1px solid var(--omni-line);
+        border-radius: 22px;
+        box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.85);
+        color: var(--omni-ink);
+        font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        transform: translateY(-16px) scale(0.98);
-        transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateY(-12px);
+        transition: transform 0.22s ease-out;
         box-sizing: border-box;
       }
       #ccOmniOverlay.cc-open #ccOmniModal {
-        transform: translateY(0) scale(1);
-      }
-      /* Motyw Jasny */
-      [data-theme="light"] #ccOmniModal,
-      [data-lumina-theme="light"] #ccOmniModal,
-      html.light #ccOmniModal,
-      body.light #ccOmniModal {
-        background: #ffffff;
-        color: #0f172a;
-        border-color: rgba(180, 140, 50, 0.35);
-        box-shadow: 0 25px 65px -10px rgba(15, 23, 42, 0.25), 0 0 30px rgba(196, 163, 90, 0.12);
+        transform: none;
       }
       .cc-omni-header {
         display: flex;
         align-items: center;
-        padding: 14px 18px;
-        border-bottom: 1px solid rgba(196, 163, 90, 0.22);
-        background: rgba(255, 255, 255, 0.02);
-        gap: 12px;
+        gap: 8px;
+        padding: 18px 16px 10px;
         flex-shrink: 0;
       }
+      .cc-omni-field {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 50px;
+        padding: 0 6px 0 16px;
+        background: var(--omni-field);
+        border: 1px solid var(--omni-line);
+        border-radius: 25px;
+        transition: border-color 0.15s, box-shadow 0.15s;
+        box-sizing: border-box;
+      }
+      .cc-omni-field:focus-within {
+        border-color: var(--omni-gold);
+        box-shadow: 0 1px 10px rgba(196, 163, 90, 0.22);
+      }
       .cc-omni-search-icon {
-        color: #c4a35a;
-        font-size: 20px;
+        color: var(--omni-gold);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -657,345 +693,274 @@
       }
       #ccOmniInput {
         flex: 1;
+        min-width: 0;
         background: transparent;
         border: none;
         outline: none;
-        font-size: 1.12rem;
-        font-weight: 500;
+        font: 400 1.05rem/1.3 inherit;
         color: inherit;
-        padding: 8px 0;
+        padding: 0;
         min-height: 44px;
         box-sizing: border-box;
       }
       #ccOmniInput::placeholder {
-        color: #94a3b8;
-        font-weight: 400;
+        color: var(--omni-muted);
       }
       .cc-omni-btn {
         background: transparent;
-        border: 1px solid transparent;
-        border-radius: 10px;
-        color: #94a3b8;
+        border: 0;
+        border-radius: 50%;
+        color: var(--omni-muted);
         cursor: pointer;
         min-width: 44px;
         min-height: 44px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 15px;
-        transition: all 0.15s;
+        transition: color 0.15s, background-color 0.15s;
         touch-action: manipulation;
         padding: 0;
         flex-shrink: 0;
       }
       .cc-omni-btn:hover, .cc-omni-btn:focus-visible {
-        color: #c4a35a;
-        background: rgba(196, 163, 90, 0.1);
-        border-color: rgba(196, 163, 90, 0.3);
+        color: var(--omni-gold);
+        background: rgba(196, 163, 90, 0.12);
         outline: none;
       }
       .cc-omni-filters {
         display: flex;
-        gap: 6px;
-        padding: 10px 16px;
-        border-bottom: 1px solid rgba(196, 163, 90, 0.15);
+        gap: 4px;
+        padding: 0 16px;
+        border-bottom: 1px solid var(--omni-line);
         overflow-x: auto;
         white-space: nowrap;
-        background: rgba(0, 0, 0, 0.1);
         scrollbar-width: none;
         flex-shrink: 0;
       }
       .cc-omni-filters::-webkit-scrollbar { display: none; }
       .cc-omni-filter-chip {
-        padding: 8px 14px;
-        border-radius: 9999px;
-        border: 1px solid rgba(196, 163, 90, 0.25);
-        background: rgba(255, 255, 255, 0.04);
-        color: #cbd5e1;
-        font-size: 0.82rem;
-        font-weight: 600;
+        position: relative;
+        padding: 0 12px;
+        border: 0;
+        background: transparent;
+        color: var(--omni-muted);
+        font: 500 0.88rem/1 inherit;
         cursor: pointer;
-        transition: all 0.15s;
         min-height: 44px;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
         touch-action: manipulation;
         flex-shrink: 0;
-      }
-      [data-theme="light"] .cc-omni-filter-chip,
-      [data-lumina-theme="light"] .cc-omni-filter-chip {
-        color: #475569;
-        background: #f1f5f9;
-        border-color: #cbd5e1;
+        transition: color 0.15s;
       }
       .cc-omni-filter-chip:hover {
-        background: rgba(196, 163, 90, 0.15);
-        color: #c4a35a;
+        color: var(--omni-ink);
       }
       .cc-omni-filter-chip.active {
-        background: #c4a35a;
-        color: #0b0e14;
-        border-color: #c4a35a;
+        color: var(--omni-gold);
+      }
+      .cc-omni-filter-chip.active::after {
+        content: "";
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        bottom: 0;
+        height: 3px;
+        border-radius: 3px 3px 0 0;
+        background: var(--omni-gold);
       }
       .cc-omni-body {
         flex: 1;
         overflow-y: auto;
-        padding: 14px 16px;
+        padding: 14px 20px 18px;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
       }
-      /* Przewodnik Tematyczny Ekosystemu */
+      /* Przewodnik tematyczny — jak panel wiedzy */
       .cc-omni-guide {
-        background: linear-gradient(135deg, rgba(196, 163, 90, 0.18) 0%, rgba(20, 24, 33, 0.7) 100%);
-        border: 1px solid rgba(196, 163, 90, 0.45);
+        border: 1px solid var(--omni-line);
         border-radius: 14px;
         padding: 14px 16px;
-        margin-bottom: 8px;
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
-      }
-      [data-theme="light"] .cc-omni-guide,
-      [data-lumina-theme="light"] .cc-omni-guide {
-        background: linear-gradient(135deg, rgba(254, 243, 199, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%);
-        border-color: rgba(217, 119, 6, 0.4);
       }
       .cc-omni-guide-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
         font-size: 0.75rem;
-        font-weight: 700;
+        font-weight: 600;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: #c4a35a;
+        color: var(--omni-gold);
         margin-bottom: 6px;
       }
-      [data-theme="light"] .cc-omni-guide-badge,
-      [data-lumina-theme="light"] .cc-omni-guide-badge {
-        color: #b45309;
-      }
       .cc-omni-guide-topic {
-        font-size: 1.02rem;
-        font-weight: 700;
+        font-size: 1.1rem;
+        font-weight: 600;
         margin: 0 0 6px;
-        color: #f8fafc;
-      }
-      [data-theme="light"] .cc-omni-guide-topic,
-      [data-lumina-theme="light"] .cc-omni-guide-topic {
-        color: #0f172a;
+        color: var(--omni-ink);
       }
       .cc-omni-guide-summary {
-        font-size: 0.88rem;
-        line-height: 1.45;
-        color: #cbd5e1;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--omni-muted);
         margin: 0 0 10px;
-      }
-      [data-theme="light"] .cc-omni-guide-summary,
-      [data-lumina-theme="light"] .cc-omni-guide-summary {
-        color: #334155;
       }
       .cc-omni-guide-pills {
         display: flex;
         flex-wrap: wrap;
-        gap: 6px;
+        gap: 8px;
       }
       .cc-omni-guide-pill {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 12px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(196, 163, 90, 0.3);
-        color: #f1f5f9;
+        padding: 0 14px;
+        border-radius: 22px;
+        border: 1px solid var(--omni-line);
+        color: var(--omni-ink);
         text-decoration: none;
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 0.84rem;
+        font-weight: 500;
         min-height: 44px;
         box-sizing: border-box;
-        transition: all 0.15s;
+        transition: border-color 0.15s, color 0.15s;
       }
-      [data-theme="light"] .cc-omni-guide-pill,
-      [data-lumina-theme="light"] .cc-omni-guide-pill {
-        background: #ffffff;
-        color: #0f172a;
-        border-color: rgba(180, 140, 50, 0.4);
+      .cc-omni-guide-pill:hover, .cc-omni-guide-pill:focus-visible {
+        border-color: var(--omni-gold);
+        color: var(--omni-gold);
       }
-      .cc-omni-guide-pill:hover {
-        background: #c4a35a;
-        color: #0b0e14;
-        border-color: #c4a35a;
-      }
-      /* Wyniki */
+      /* Wyniki — jak lista wyników Google */
       .cc-omni-results-list {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
       }
       .cc-omni-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-        padding: 12px 14px;
+        display: block;
+        padding: 10px 12px;
+        margin: 0 -12px;
         border-radius: 12px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
         text-decoration: none;
         color: inherit;
-        transition: all 0.14s;
         min-height: 44px;
         box-sizing: border-box;
-      }
-      [data-theme="light"] .cc-omni-item,
-      [data-lumina-theme="light"] .cc-omni-item {
-        background: #f8fafc;
-        border-color: #e2e8f0;
+        transition: background-color 0.12s;
       }
       .cc-omni-item:hover, .cc-omni-item.cc-active {
-        background: rgba(196, 163, 90, 0.12);
-        border-color: rgba(196, 163, 90, 0.45);
-        transform: translateX(4px);
+        background: rgba(196, 163, 90, 0.08);
       }
-      [data-theme="light"] .cc-omni-item:hover,
-      [data-theme="light"] .cc-omni-item.cc-active {
-        background: #fef3c7;
-        border-color: #d97706;
-      }
-      .cc-omni-item-icon {
-        font-size: 20px;
-        padding-top: 2px;
-        flex-shrink: 0;
-      }
-      .cc-omni-item-content {
-        flex: 1;
-        min-width: 0;
-      }
-      .cc-omni-item-title-row {
+      .cc-omni-item-source {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         margin-bottom: 4px;
+        min-width: 0;
       }
-      .cc-omni-item-title {
-        font-size: 0.96rem;
-        font-weight: 700;
-        color: #f8fafc;
-        margin: 0;
+      .cc-omni-item-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1px solid var(--omni-line);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .cc-omni-item-site {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        line-height: 1.25;
+      }
+      .cc-omni-item-sitename {
+        font-size: 0.86rem;
+        color: var(--omni-ink);
+      }
+      .cc-omni-item-crumb {
+        font-size: 0.76rem;
+        color: var(--omni-muted);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      [data-theme="light"] .cc-omni-item-title,
-      [data-lumina-theme="light"] .cc-omni-item-title {
-        color: #0f172a;
+      .cc-omni-item-title-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 8px;
+      }
+      .cc-omni-item-title {
+        font-size: 1.12rem;
+        font-weight: 400;
+        line-height: 1.3;
+        color: var(--omni-title);
+        margin: 0;
+      }
+      .cc-omni-item:hover .cc-omni-item-title,
+      .cc-omni-item.cc-active .cc-omni-item-title {
+        text-decoration: underline;
+        text-underline-offset: 3px;
       }
       .cc-omni-item-badge {
         font-size: 0.72rem;
-        font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 9999px;
-        background: rgba(196, 163, 90, 0.2);
-        color: #c4a35a;
+        font-weight: 500;
+        color: var(--omni-gold);
         white-space: nowrap;
       }
-      [data-theme="light"] .cc-omni-item-badge {
-        background: #e2e8f0;
-        color: #475569;
-      }
       .cc-omni-item-desc {
-        font-size: 0.83rem;
-        color: #94a3b8;
-        line-height: 1.4;
-        margin: 0;
+        font-size: 0.88rem;
+        color: var(--omni-muted);
+        line-height: 1.5;
+        margin: 4px 0 0;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
-      [data-theme="light"] .cc-omni-item-desc {
-        color: #64748b;
-      }
       .cc-omni-hl {
-        background: rgba(196, 163, 90, 0.35);
-        color: #ffe69c;
-        border-radius: 3px;
-        padding: 1px 3px;
+        background: transparent;
+        color: var(--omni-ink);
         font-weight: 700;
       }
-      [data-theme="light"] .cc-omni-hl {
-        background: rgba(245, 158, 11, 0.3);
-        color: #78350f;
-      }
-      .cc-omni-item-badge.cc-badge-suggestion {
-        background: rgba(196, 163, 90, 0.3);
-        color: #ffe69c;
-        border: 1px solid rgba(196, 163, 90, 0.5);
-      }
-      [data-theme="light"] .cc-omni-item-badge.cc-badge-suggestion {
-        background: rgba(245, 158, 11, 0.2);
-        color: #92400e;
-        border-color: rgba(217, 119, 6, 0.4);
-      }
       .cc-omni-suggestion-header {
-        margin: 12px 16px 8px;
-        padding: 12px 14px;
-        background: rgba(196, 163, 90, 0.12);
-        border: 1px solid rgba(196, 163, 90, 0.35);
-        border-radius: 12px;
         display: flex;
         align-items: flex-start;
         gap: 12px;
-      }
-      [data-theme="light"] .cc-omni-suggestion-header,
-      [data-lumina-theme="light"] .cc-omni-suggestion-header {
-        background: rgba(245, 158, 11, 0.08);
-        border-color: rgba(217, 119, 6, 0.3);
+        padding: 4px 0 2px;
       }
       .cc-omni-suggestion-icon {
-        font-size: 1.3rem;
-        line-height: 1;
+        font-size: 1.1rem;
+        line-height: 1.3;
         flex-shrink: 0;
-        margin-top: 2px;
       }
       .cc-omni-suggestion-title {
         font-size: 0.92rem;
-        font-weight: 700;
-        color: #f8fafc;
+        font-weight: 600;
+        color: var(--omni-ink);
         margin-bottom: 2px;
       }
-      [data-theme="light"] .cc-omni-suggestion-title,
-      [data-lumina-theme="light"] .cc-omni-suggestion-title {
-        color: #0f172a;
-      }
       .cc-omni-suggestion-desc {
-        font-size: 0.82rem;
-        color: #cbd5e1;
-        line-height: 1.35;
-      }
-      [data-theme="light"] .cc-omni-suggestion-desc,
-      [data-lumina-theme="light"] .cc-omni-suggestion-desc {
-        color: #475569;
+        font-size: 0.84rem;
+        color: var(--omni-muted);
+        line-height: 1.4;
       }
       .cc-omni-empty {
         text-align: center;
         padding: 36px 16px;
-        color: #94a3b8;
+        color: var(--omni-muted);
       }
       .cc-omni-empty p {
         margin: 8px 0 16px;
         font-size: 0.92rem;
       }
-      /* Footer */
+      /* Stopka */
       .cc-omni-footer {
-        padding: 10px 18px;
-        border-top: 1px solid rgba(196, 163, 90, 0.2);
-        background: rgba(0, 0, 0, 0.15);
+        padding: 6px 18px;
+        border-top: 1px solid var(--omni-line);
         display: flex;
         align-items: center;
         justify-content: space-between;
         font-size: 0.8rem;
-        color: #94a3b8;
+        color: var(--omni-muted);
         flex-shrink: 0;
         gap: 12px;
       }
@@ -1005,23 +970,17 @@
         align-items: center;
       }
       .cc-omni-kbd {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 1px solid var(--omni-line);
         border-radius: 5px;
         padding: 2px 6px;
         font-family: inherit;
         font-size: 0.74rem;
-        color: #cbd5e1;
-      }
-      [data-theme="light"] .cc-omni-kbd {
-        background: #f1f5f9;
-        border-color: #cbd5e1;
-        color: #475569;
+        color: var(--omni-muted);
       }
       .cc-omni-view-all {
-        color: #c4a35a;
+        color: var(--omni-gold);
         text-decoration: none;
-        font-weight: 700;
+        font-weight: 600;
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -1042,11 +1001,20 @@
           border-radius: 0;
           border: none;
         }
+        .cc-omni-header {
+          padding: max(env(safe-area-inset-top), 12px) 10px 8px 12px;
+        }
+        .cc-omni-body {
+          padding: 12px 16px 18px;
+        }
         .cc-omni-footer-hints {
           display: none;
         }
       }
-    `;
+      @media (prefers-reduced-motion: reduce) {
+        #ccOmniOverlay, #ccOmniModal { transition: none; }
+      }
+`;
     document.head.appendChild(style);
   }
 
@@ -1063,6 +1031,7 @@
     overlay.innerHTML = `
       <div id="ccOmniModal">
         <div class="cc-omni-header">
+          <div class="cc-omni-field">
           <span class="cc-omni-search-icon" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
@@ -1076,6 +1045,7 @@
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
+          </div>
           <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1085,13 +1055,13 @@
         </div>
 
         <div class="cc-omni-filters">
-          <button type="button" class="cc-omni-filter-chip active" data-filter="all">✨ Wszystko</button>
-          <button type="button" class="cc-omni-filter-chip" data-filter="modules">🌐 Moduły & Platformy</button>
-          <button type="button" class="cc-omni-filter-chip" data-filter="bible">📖 Słowo & Rozważania</button>
-          <button type="button" class="cc-omni-filter-chip" data-filter="radio">📻 Audycje & Radio</button>
-          <button type="button" class="cc-omni-filter-chip" data-filter="vod">🎬 Kino VOD & Wideo</button>
-          <button type="button" class="cc-omni-filter-chip" data-filter="news">📰 Wiedza CCN</button>
-          <button type="button" class="cc-omni-filter-chip" data-filter="community">👤 Społeczność</button>
+          <button type="button" class="cc-omni-filter-chip active" data-filter="all">Wszystko</button>
+          <button type="button" class="cc-omni-filter-chip" data-filter="modules">Moduły</button>
+          <button type="button" class="cc-omni-filter-chip" data-filter="bible">Słowo i rozważania</button>
+          <button type="button" class="cc-omni-filter-chip" data-filter="radio">Radio</button>
+          <button type="button" class="cc-omni-filter-chip" data-filter="vod">Wideo</button>
+          <button type="button" class="cc-omni-filter-chip" data-filter="news">CCN</button>
+          <button type="button" class="cc-omni-filter-chip" data-filter="community">Społeczność</button>
         </div>
 
         <div class="cc-omni-body" id="ccOmniBody">
@@ -1220,7 +1190,7 @@
 
       html += `
         <div class="cc-omni-guide">
-          <div class="cc-omni-guide-badge">🧭 Przewodnik Tematyczny Ekosystemu</div>
+          <div class="cc-omni-guide-badge">Przewodnik po ekosystemie</div>
           <h4 class="cc-omni-guide-topic">${topic}</h4>
           <p class="cc-omni-guide-summary">${summary}</p>
           <div class="cc-omni-guide-pills">
@@ -1262,19 +1232,20 @@
         const url = escapeHtml(item.url || '#');
         const icon = meta.icon || '✨';
         const groupName = escapeHtml(meta.name || '');
-        const suggestionBadge = (item.isNearMatch || isSuggestion) ? '<span class="cc-omni-item-badge cc-badge-suggestion">💡 Temat pokrewny</span>' : '';
+        const suggestionBadge = (item.isNearMatch || isSuggestion) ? '<span class="cc-omni-item-badge cc-badge-suggestion">Temat pokrewny</span>' : '';
+        const crumb = escapeHtml(breadcrumbOf(item.url || ''));
 
         html += `
           <a href="${url}" class="cc-omni-item" data-url="${url}">
-            <div class="cc-omni-item-icon">${icon}</div>
-            <div class="cc-omni-item-content">
-              <div class="cc-omni-item-title-row">
-                <span class="cc-omni-item-title">${titleHl}</span>
-                <span class="cc-omni-item-badge">${groupName}</span>
-                ${suggestionBadge}
-              </div>
-              <p class="cc-omni-item-desc">${descHl}</p>
+            <div class="cc-omni-item-source">
+              <span class="cc-omni-item-icon" aria-hidden="true">${icon}</span>
+              <span class="cc-omni-item-site"><span class="cc-omni-item-sitename">${groupName}</span><span class="cc-omni-item-crumb">${crumb}</span></span>
             </div>
+            <div class="cc-omni-item-title-row">
+              <span class="cc-omni-item-title">${titleHl}</span>
+              ${suggestionBadge}
+            </div>
+            <p class="cc-omni-item-desc">${descHl}</p>
           </a>
         `;
       }
