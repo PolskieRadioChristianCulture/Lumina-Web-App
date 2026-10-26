@@ -702,7 +702,43 @@
       }
       .cc-omni-toplink svg { color: var(--omni-gold); flex-shrink: 0; }
       .cc-omni-toplink:hover, .cc-omni-toplink:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
-      .cc-omni-apps-btn { color: #fff; }
+      .cc-omni-apps-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+      }
+      .cc-omni-apps-btn .cc-i-apps {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: block;
+        pointer-events: none;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+      }
+      .cc-omni-apps-btn:hover .cc-i-apps,
+      .cc-omni-apps-btn:focus-visible .cc-i-apps {
+        transform: scale(1.08);
+        filter: drop-shadow(0 0 12px rgba(255, 175, 50, 0.85));
+      }
+      .cc-omni-apps-btn:active .cc-i-apps {
+        transform: scale(0.95);
+      }
+      /* Na dedykowanej stronie wyszukiwarki /wyszukiwarka przycisk zamykania jest ukryty */
+      #ccOmniOverlay.cc-standalone #ccOmniClose,
+      .ccw-fallback ~ #ccOmniOverlay #ccOmniClose {
+        display: none !important;
+      }
       .cc-omni-apps-wrap { position: relative; }
       .cc-omni-apps {
         position: absolute;
@@ -1417,6 +1453,7 @@
 
     const overlay = document.createElement('div');
     overlay.id = 'ccOmniOverlay';
+    if (isStandalonePage) overlay.classList.add('cc-standalone');
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-label', 'Uniwersalna wyszukiwarka ekosystemu Christian Culture');
@@ -1434,8 +1471,8 @@
               <span>Nowości</span>
             </a>
             <div class="cc-omni-apps-wrap">
-              <button type="button" id="ccOmniApps" class="cc-omni-btn cc-omni-apps-btn" aria-label="Wszystko: aplikacje Christian Culture" aria-expanded="false" aria-controls="ccOmniAppsMenu">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="5" height="5" rx="1.2"/><rect x="9.5" y="5" width="5" height="5" rx="1.2"/><rect x="16" y="5" width="5" height="5" rx="1.2"/><rect x="3" y="14" width="5" height="5" rx="1.2"/><rect x="9.5" y="14" width="5" height="5" rx="1.2"/><rect x="16" y="14" width="5" height="5" rx="1.2"/></svg>
+              <button type="button" id="ccOmniApps" class="cc-omni-btn cc-omni-apps-btn" aria-label="Wszystko: aplikacje Christian Culture" title="Wszystko — aplikacje Christian Culture" aria-expanded="false" aria-controls="ccOmniAppsMenu">
+                <img class="cc-i-apps" src="/images/search/apps-grid-gold.webp?v=20261026" width="44" height="44" alt="" decoding="async">
               </button>
               <div id="ccOmniAppsMenu" class="cc-omni-apps" hidden>
                 <p class="cc-omni-apps-title">Aplikacje Christian Culture</p>
@@ -1460,12 +1497,14 @@
               <span class="cc-omni-account-face" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
             </a>
           </nav>
-          <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę">
+${isStandalonePage ? '' : `
+          <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę" title="Zamknij (Esc)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
+`}
         </div>
         <div class="cc-omni-hero"><p class="cc-omni-brand"><img src="/images/search/christian-culture-gold.png" width="1774" height="887" alt="Christian Culture" decoding="async" fetchpriority="high"></p></div>
         <div class="cc-omni-header">
@@ -1557,7 +1596,7 @@
       if (e.target === overlay) closeSearch();
     });
 
-    closeBtn.addEventListener('click', closeSearch);
+    if (closeBtn) closeBtn.addEventListener('click', closeSearch);
 
     // Udostępnij wyszukiwarkę: systemowe okno udostępniania (telefon) albo skopiowanie linku (komputer)
     const shareBtn = document.getElementById('ccOmniShare');
