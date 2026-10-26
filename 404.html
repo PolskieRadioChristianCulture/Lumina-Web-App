@@ -9,8 +9,8 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-Y4EFTVBPE3');
-    </script>
+      gtag('config','G-Y4EFTVBPE3',(function(){try{var s=location.search,k='cc_team';if(/[?&]cc_team=1/.test(s))localStorage.setItem(k,'1');if(/[?&]cc_team=0/.test(s))localStorage.removeItem(k);if(localStorage.getItem(k)==='1'||/[?&]in_mcr=1/.test(s)||window.obsstudio)return{traffic_type:'internal'}}catch(e){}return{}})());
+    </script><script src="/js/cc-analytics.js?v=20261026_1" defer></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -144,7 +144,9 @@
             if (secEl) secEl.textContent = seconds;
             if (seconds <= 0) {
                 clearInterval(timer);
-                window.location.href = 'index.html';
+                // Adres bezwzględny: względne 'index.html' w folderze bez strony głównej (np. /akademia/apokalipsa/)
+                // dawało znów 404 i pętlę przeładowań co 5 s (172 odsłony jednej osoby w GA, @007 26.10.2026)
+                window.location.href = '/';
             }
         }, 1000);
     </script>

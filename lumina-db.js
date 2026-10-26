@@ -596,6 +596,7 @@ if (auth) {
         getRedirectResult(auth).then(async (result) => {
             if (result && result.user) {
                 console.log('Lumina Google Redirect Auth Success:', result.user.displayName);
+                if (typeof window !== 'undefined' && window.ccTrack) window.ccTrack('login', { method: 'google_redirect' });
                 await syncUserAuthProfile(result.user, db);
                 const redirectTarget = sessionStorage.getItem('cc_auth_redirect_target');
                 if (redirectTarget && redirectTarget !== window.location.href) {
@@ -1196,6 +1197,7 @@ export async function loginWithGoogle() {
             return null;
         }
 
+        if (typeof window !== 'undefined' && window.ccTrack) window.ccTrack('login', { method: 'google' });
         return await syncUserAuthProfile(result.user, activeDb);
     } catch(err) {
         console.error('Lumina Google Auth error:', err);
@@ -1283,6 +1285,7 @@ export async function loginWithEmail(email, password) {
     try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
         const user = cred.user;
+        if (typeof window !== 'undefined' && window.ccTrack) window.ccTrack('login', { method: 'email' });
         let profile = null;
         try {
             const snap = await getDoc(doc(db, 'lumina_profiles', user.uid));
