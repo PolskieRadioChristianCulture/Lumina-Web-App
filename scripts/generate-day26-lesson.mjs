@@ -111,6 +111,7 @@ rep('JÓZEF W DOMU POTIFARA I W WIĘZIENIU — A PAN BYŁ Z NIM\n      </h1>', `
 rep(/<p class="text-base sm:text-lg text-amber-300\/90 font-serif italic">\s*[^<]*<\/p>/.exec(p)[0], `<p class="text-base sm:text-lg text-amber-300/90 font-serif italic">\n        ${esc(SUB)}\n      </p>`);
 rep('src="/images/academy/daily/kc_day_25_jozef_potifar_wiezienie_pan_byl_z_nim.jpg"', `src="${IMG}?v=20261026"`);
 rep('alt="Dzień 25: Józef w domu Potifara i w więzieniu — A Pan był z nim (Rdz 38–39)"', `alt="Dzień 26: Od więzienia do pałacu — Józef przed faraonem (${REF})"`);
+rep('20 Pytań z Rdz 38–39', '20 Pytań z Rdz 40–41');
 rep('<span>Ilustracja biblijna: Józef w Egipcie — Boża obecność w próbie</span>', '<span>Ilustracja biblijna: Józef — od więzienia do pałacu</span>');
 rep('<span class="font-mono text-brand-gold">Czytanie: Rdz 38:1–39:23</span>', `<span class="font-mono text-brand-gold">Czytanie: ${REF}</span>`);
 rep(/<blockquote class="font-serif italic text-base sm:text-lg text-white">\s*[^<]*<\/blockquote>/.exec(p)[0], '<blockquote class="font-serif italic text-base sm:text-lg text-white">\n          „Czyż wykład snów nie należy do Boga?”\n        </blockquote>');
