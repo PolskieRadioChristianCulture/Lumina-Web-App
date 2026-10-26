@@ -1,4 +1,5 @@
 // Public web documents only: never alter broadcast, operational or embed screens.
+import { applyChannelNumbering } from './cc-channel-numbering.mjs';
 export const BACK_TO_TOP_SCRIPT = '/js/cc-back-to-top.js?v=20261024_playing';
 export const OMNI_SEARCH_SCRIPT = '/components/cc-omni-search.js?v=20261017_discovery';
 export const FAVORITES_SCRIPT = '/js/cc-favorites.js?v=20261015_topbar1';
@@ -8,6 +9,7 @@ export function applyPageStandard(file, html) {
   if (!name.endsWith('.html') || /(?:live|stream|obs|embed|admin|mission.control|pilot|cctv24|bcm24|lumi-kids\/app)/.test(name)) return html;
   if (!/<body\b/i.test(html) || !/<\/body\s*>/i.test(html)) return html;
   if (/http-equiv\s*=\s*["']refresh["']/i.test(html)) return html;
+  html = applyChannelNumbering(file, html);
   // Refresh the shared chat loader even when back-to-top is already installed.
   html = html.replace(/(src=["'])(\/(?:components|js)\/cc-support-footer\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261014_mockup4$3');
   html = html.replace(/(src=["'])(\/?lumina-bottom-nav\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261014_mockup4$3');
