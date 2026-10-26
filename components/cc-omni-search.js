@@ -1453,8 +1453,8 @@
               </div>
             </div>
             <button type="button" id="ccOmniRadio" class="cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
-              <svg class="cc-i-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
-              <svg class="cc-i-stop" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+              <img class="cc-i-play" src="/images/search/radio-play.webp" width="44" height="44" alt="" decoding="async">
+              <img class="cc-i-stop" src="/images/search/radio-stop.webp" width="44" height="44" alt="" decoding="async">
             </button>
             <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA">
               <span class="cc-omni-account-face" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
@@ -1533,6 +1533,19 @@
     `;
 
     document.body.appendChild(overlay);
+    // The shared favorites script mounts asynchronously; keep the requested order.
+    const topnav = overlay.querySelector('.cc-omni-topnav');
+    const placeFavorite = () => {
+      const favorite = topnav.querySelector('#ccTopBarFavBtn');
+      const apps = topnav.querySelector('.cc-omni-apps-wrap');
+      if (favorite && apps) {
+        favoriteObserver.disconnect();
+        topnav.insertBefore(favorite, apps);
+      }
+    };
+    const favoriteObserver = new MutationObserver(placeFavorite);
+    favoriteObserver.observe(topnav, { childList: true });
+    placeFavorite();
 
     // Zdarzenia wewnątrz modala
     const input = document.getElementById('ccOmniInput');
