@@ -777,6 +777,15 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
       }
+      .cc-omni-apps-sec {
+        margin: 14px 4px 6px;
+        color: var(--omni-muted);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .cc-omni-apps-title + .cc-omni-apps-sec { margin-top: 2px; }
       .cc-omni-apps-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1528,8 +1537,8 @@
                 <img class="cc-i-apps" src="/images/search/apps-grid-gold.webp?v=20261026" width="44" height="44" alt="" decoding="async">
               </button>
               <div id="ccOmniAppsMenu" class="cc-omni-apps" hidden>
-                <p class="cc-omni-apps-title">Aplikacje Christian Culture</p>
-                <div class="cc-omni-apps-grid">${renderAppsGrid()}</div>
+                <p class="cc-omni-apps-title">Cały ekosystem Christian Culture</p>
+                ${renderAppsGrid()}
               </div>
             </div>
             <button type="button" id="ccOmniRadio" class="cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
@@ -2076,30 +2085,80 @@ ${isStandalonePage ? '' : `
     heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>'
   };
   const svgIcon = (name, size = 22) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${HOME_ICONS[name] || ''}</svg>`;
-  // Menu „Wszystko”: strategiczne miejsca ekosystemu z rejestru linków (L0 24.10.2026), wszystkie adresy sprawdzone (200)
+  // Menu „Wszystko”: cały ekosystem w sekcjach z rejestru linków (L0 24.10.2026); każdy adres sprawdzony 26.10.2026 (200).
+  // Pominięte: uslugi/centrum/randka.cclite.pl (brak DNS) — do decyzji L0.
+  const APP_ICONS = {
+    worship: '<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/><path d="M12 9v6M9.5 11.5h5"/>',
+    karaoke: '<circle cx="15" cy="8" r="4"/><path d="m12.2 10.8-8.5 8.5 1 1 8.5-8.5"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+    flag: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+    scroll: '<path d="M7 4h11a2 2 0 0 1 0 4h-1v10a2 2 0 0 1-2 2H6a2 2 0 0 1 0-4h1Z"/><path d="M10 9h4M10 13h4"/>',
+    download: '<path d="M12 3v12M7 10l5 5 5-5M4 19h16"/>',
+    flask: '<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7.5 15h9"/>',
+    columns: '<path d="M3 21h18M4 9h16M12 3 3 8h18ZM6 9v9M10 9v9M14 9v9M18 9v9"/>',
+    shield: '<path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6Z"/><path d="m9 12 2 2 4-4"/>',
+    brain: '<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-1ZM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/>',
+    family: '<circle cx="8" cy="7" r="3"/><circle cx="16" cy="7" r="3"/><path d="M2 20a6 6 0 0 1 12 0M10 20a6 6 0 0 1 12 0"/>',
+    school: '<path d="m2 9 10-5 10 5-10 5Z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+    coins: '<ellipse cx="9" cy="7" rx="6" ry="3"/><path d="M3 7v5c0 1.7 2.7 3 6 3s6-1.3 6-3V7M9 15v3c0 1.7 2.7 3 6 3s6-1.3 6-3v-5c0-1.7-2.7-3-6-3"/>',
+    cpu: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+    plane: '<path d="M10.5 13.5 3 11l1.5-1.5 8 1L17 6a2 2 0 0 1 3 3l-4.5 4.5 1 8L15 23l-2.5-7.5L8 19v3l-1.5 1-1-4-4-1L3 16.5h3Z"/>',
+    library: '<path d="M4 4h4v16H4ZM10 4h4v16h-4ZM16 5l3.5-1 3 15.5-3.5 1Z"/>',
+    pen: '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7Z"/>',
+    tent: '<path d="M12 3 2 21h20ZM12 3v18M8 21l4-7 4 7"/>',
+    ban: '<circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/>',
+    board: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+    video: '<rect x="6" y="2" width="12" height="20" rx="3"/><path d="m11 9 4 3-4 3Z"/>',
+    phone: '<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/>',
+    hands: '<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.9-3.9a3 3 0 0 0-4.2 0l-.9.9a1 1 0 1 1-3-3l2.8-2.8a5.8 5.8 0 0 1 7.1-.9l.5.3a2 2 0 0 0 1.4.3L21 4M3 3l.5.5L9 9"/>',
+    broadcast: '<circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19.1 4.9a10 10 0 0 1 0 14.2M4.9 19.1a10 10 0 0 1 0-14.2"/>',
+    idcard: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2.5"/><path d="M13 10h5M13 14h3"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    palette: '<path d="M12 3a9 9 0 0 0 0 18c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.4A4.6 4.6 0 0 0 21 9.8C21 6 17 3 12 3Z"/><circle cx="7.5" cy="11.5" r="1"/><circle cx="10.5" cy="7.5" r="1"/><circle cx="15.5" cy="7.5" r="1"/>',
+    counter: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+    sparkle: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
+  };
+  Object.assign(HOME_ICONS, APP_ICONS);
   const APPS_MENU = [
-    { label: 'Radio', url: '/player', icon: 'radio' },
-    { label: 'TV 24', url: '/cctv24', icon: 'tv' },
-    { label: 'Kanały', url: '/kanaly', icon: 'channels' },
-    { label: 'Podcasty', url: '/podcasty', icon: 'mic' },
-    { label: 'Kino VOD', url: '/vod', icon: 'film' },
-    { label: 'Muzyka', url: '/music', icon: 'music' },
-    { label: 'Akademia', url: '/akademia', icon: 'book' },
-    { label: 'Lekcja dnia', url: '/akademia/kurscodzienny', icon: 'calendar' },
-    { label: 'MojaBiblia', url: '/mojabiblia', icon: 'bible' },
-    { label: 'Werset dnia', url: '/werset-dnia', icon: 'quote' },
-    { label: 'Ewangelia', url: '/Ewangelia', icon: 'cross' },
-    { label: 'Modlitwa 24/7', url: '/BCM24', icon: 'pray' },
-    { label: 'Portal CCN', url: '/news', icon: 'news' },
-    { label: 'LUMINA', url: '/lumina', icon: 'people' },
-    { label: 'LUMI Mess', url: '/mess', icon: 'chat' },
-    { label: 'Moje Centrum', url: '/moje-centrum', icon: 'user' },
-    { label: 'Mapa', url: '/mapa', icon: 'map' },
-    { label: 'Wspieraj', url: '/wspieraj', icon: 'heart' }
+    { title: 'Słuchaj i oglądaj', items: [
+      ['Radio', '/player', 'radio'], ['TV 24', '/cctv24', 'tv'], ['Kanały', '/kanaly', 'channels'],
+      ['Podcasty', '/podcasty', 'mic'], ['Kino VOD', '/vod', 'film'], ['Muzyka', '/music', 'music'],
+      ['Uwielbienie', '/BiblijneUwielbienie', 'worship'], ['Karaoke', '/karaoke-studio', 'karaoke'], ['CC Network', '/network', 'globe']
+    ] },
+    { title: 'Słowo i modlitwa', items: [
+      ['Akademia', '/akademia', 'book'], ['Lekcja dnia', '/akademia/kurscodzienny', 'calendar'], ['MojaBiblia', '/mojabiblia', 'bible'],
+      ['Werset dnia', '/werset-dnia', 'quote'], ['Ewangelia', '/Ewangelia', 'cross'], ['Modlitwa 24/7', '/BCM24', 'pray'],
+      ['Za Polskę', '/zapolske-live', 'flag'], ['Apokalipsa', '/apokalipsa-live', 'scroll'], ['Kalendarz', '/kalendarz', 'calendar'],
+      ['Biblia PDF', '/biblia-do-pobrania', 'download']
+    ] },
+    { title: 'Wiedza CCN', items: [
+      ['Portal CCN', '/news', 'news'], ['Nauka', '/nauka', 'flask'], ['Historia', '/historia', 'columns'],
+      ['Apologetyka', '/apologetyka', 'shield'], ['Psychologia', '/psychologia', 'brain'], ['Małżeństwo', '/seks', 'family'],
+      ['Edukacja', '/edukacja', 'school'], ['Finanse', '/finanse', 'coins'], ['Technologie', '/technologie', 'cpu'],
+      ['Misje', '/misje', 'plane'], ['Biblioteka', '/biblioteka', 'library'], ['Książki autora', '/ksiazki-autora', 'pen'],
+      ['eM Motywacja', '/em', 'bolt'], ['Survival', '/survival', 'tent'], ['#antyHALLOWEEN', '/Halloween', 'ban']
+    ] },
+    { title: 'Społeczność', items: [
+      ['LUMINA', '/lumina', 'people'], ['Tablica', '/tablica', 'board'], ['LUMI Mess', '/mess', 'chat'],
+      ['Shorts', '/shorts', 'video'], ['Moje Centrum', '/moje-centrum', 'user'], ['CC Lite', 'https://cclite.pl', 'phone']
+    ] },
+    { title: 'Współpraca, usługi i wsparcie', items: [
+      ['Wspieraj', '/wspieraj', 'heart'], ['Współpraca', '/wspolpraca', 'hands'], ['Nadawaj z nami', '/nadawaj', 'broadcast'],
+      ['Wizytówki', '/wizytowki', 'idcard'], ['Coaching', '/holistyczny-coaching', 'target'], ['Kreator YIS', '/YIS', 'palette'],
+      ['Milion', '/milion', 'counter'], ['HOLOS', '/holos', 'sparkle'], ['Mapa', '/mapa', 'map'],
+      ['O nas', '/o-nas', 'info'], ['Kontakt', '/#contact-section', 'mail'], ['Prywatność', '/privacy', 'lock']
+    ] }
   ];
   function renderAppsGrid() {
-    return APPS_MENU.map(app => `<a href="${app.url}"><span class="cc-omni-app-ico">${svgIcon(app.icon, 20)}</span>${escapeHtml(app.label)}</a>`).join('');
+    return APPS_MENU.map(sec => `<p class="cc-omni-apps-sec">${escapeHtml(sec.title)}</p><div class="cc-omni-apps-grid">` +
+      sec.items.map(([label, url, icon]) => `<a href="${url}"${/^https?:/.test(url) ? ' target="_blank" rel="noopener"' : ''}><span class="cc-omni-app-ico">${svgIcon(icon, 20)}</span>${escapeHtml(label)}</a>`).join('') +
+      '</div>').join('');
   }
+
   const HOME_SHORTCUTS = [
     { label: 'YouTube', url: 'https://www.youtube.com/@ChristianCultureTV', icon: 'play', external: true },
     { label: 'Kanały', url: '/kanaly', icon: 'tv' },
