@@ -651,11 +651,19 @@
         box-sizing: border-box;
       }
       .cc-omni-top {
+        /* Przypięty do prawej krawędzi ekranu, nie do kolumny treści (L0 26.10.2026) */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
         display: flex;
         justify-content: flex-end;
         align-items: center;
         gap: 4px;
-        padding: max(env(safe-area-inset-top), 12px) 0 0;
+        padding: max(env(safe-area-inset-top), 12px) max(env(safe-area-inset-right), 20px) 8px 16px;
+        background: linear-gradient(180deg, rgba(3, 4, 8, 0.85) 0%, rgba(3, 4, 8, 0) 100%);
+        box-sizing: border-box;
       }
       /* Pasek w prawym górnym rogu: Czat | Nowości | Wszystko | Logowanie LUMINA (wzór L0 26.10.2026) */
       .cc-omni-topnav {
@@ -774,7 +782,7 @@
       }
       .cc-omni-hero {
         text-align: center;
-        padding: 9vh 0 28px;
+        padding: calc(9vh + 64px) 0 28px;
       }
       .cc-omni-brand {
         margin: 0;
@@ -1008,7 +1016,7 @@
       }
       .cc-omni-continue-item > span:last-child { min-width: 0; }
       /* Stan wyników: pole u góry, wyniki na ciemnym tle */
-      #ccOmniModal.cc-has-query .cc-omni-hero { padding: 6px 0 14px; }
+      #ccOmniModal.cc-has-query .cc-omni-hero { padding: 70px 0 14px; }
       #ccOmniModal.cc-has-query .cc-omni-brand { font-size: 1.5rem; }
       .cc-omni-filters {
         display: none;
