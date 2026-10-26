@@ -45,7 +45,8 @@
   const googleUrl = (q) => 'https://www.google.com/search?q=' + encodeURIComponent(q);
 
   // Wyszukiwarka do ustawienia jako domyślna w przeglądarce (OpenSearch)
-  if (!document.querySelector('link[rel="search"][type="application/opensearchdescription+xml"]')) {
+  if (typeof document !== 'undefined' && document.head && typeof document.querySelector === 'function'
+    && !document.querySelector('link[rel="search"][type="application/opensearchdescription+xml"]')) {
     const os = document.createElement('link');
     os.rel = 'search';
     os.type = 'application/opensearchdescription+xml';
@@ -1622,7 +1623,10 @@
     // Wyszukiwanie głosem (Web Speech API) — przycisk pojawia się tylko, gdy przeglądarka je obsługuje
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const micBtn = document.getElementById('ccOmniMic');
-    if (Recognition && micBtn) {
+    // Nagłówek Permissions-Policy może zablokować mikrofon — wtedy nie pokazujemy martwego przycisku
+    const policy = document.permissionsPolicy || document.featurePolicy;
+    const micAllowed = !policy || typeof policy.allowsFeature !== 'function' || policy.allowsFeature('microphone');
+    if (Recognition && micBtn && micAllowed) {
       micBtn.hidden = false;
       let recognizer = null;
       micBtn.addEventListener('click', () => {
@@ -1638,6 +1642,17 @@
           input.value = text;
           clearBtn.style.display = 'inline-flex';
           renderResults(text, activeFilter);
+        };
+        recognizer.onerror = (ev) => {
+          const messages = {
+            'not-allowed': 'Zezwól na mikrofon w ustawieniach przeglądarki',
+            'service-not-allowed': 'Zezwól na mikrofon w ustawieniach przeglądarki',
+            'no-speech': 'Nie usłyszałem — spróbuj jeszcze raz',
+            'audio-capture': 'Nie znaleziono mikrofonu',
+            'network': 'Brak połączenia z usługą rozpoznawania mowy'
+          };
+          input.value = '';
+          input.placeholder = messages[ev.error] || 'Wyszukiwanie głosowe niedostępne';
         };
         recognizer.onend = () => {
           recognizer = null;
