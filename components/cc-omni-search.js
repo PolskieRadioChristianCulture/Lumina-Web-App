@@ -719,10 +719,10 @@
         transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
       }
       .cc-omni-apps-btn .cc-i-apps {
-        /* rysunek zajmuje 95% pliku — 46 px daje widoczne koło 44 px jak PLAY i konto (L0 26.10.2026) */
-        width: 46px;
-        height: 46px;
-        margin: -1px;
+        /* pierścień siatki zajmuje ok. 86% pliku (reszta to poświata) — 51 px daje widoczne koło 44 px jak PLAY i konto (L0 26.10.2026) */
+        width: 51px;
+        height: 51px;
+        margin: -3.5px;
         border-radius: 50%;
         display: block;
         pointer-events: none;
