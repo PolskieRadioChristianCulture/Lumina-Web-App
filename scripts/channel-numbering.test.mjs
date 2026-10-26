@@ -71,6 +71,7 @@ test('directory lists all 37 real destinations once with no script or simulated 
     assert.equal(links.length,37);assert.equal(new Set(links.map(a=>a.getAttribute('href'))).size,37);
     assert.equal(win.document.querySelectorAll('h1').length,1);
     assert.equal(win.document.querySelectorAll('script,iframe,audio,video').length,0);
-    assert.equal(fs.readFileSync('kanaly/index.html','utf8'),renderChannelDirectory());
+    const lf=s=>s.replace(/\r\n/g,'\n'); // checkout Windows zamienia LF na CRLF
+    assert.equal(lf(fs.readFileSync('kanaly/index.html','utf8')),lf(renderChannelDirectory()));
   }finally{await win.happyDOM.close()}
 });
