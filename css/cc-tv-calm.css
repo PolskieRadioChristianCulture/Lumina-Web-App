@@ -1,0 +1,71 @@
+/*
+ * Spokojna transmisja (kanał „Dobrze, że jesteś TV” i pokrewne) — @007, polecenie L0 26.10.2026:
+ * „każdy element na transmisji skacze, zanika, pojawia się” — elementy stoją w miejscu, zmienia się tylko treść.
+ * Pomiar przed zmianą (telefon, 40 s): pogoda 7–8 pozycji i ciągłe wygaszanie, Program dnia znikał na 55 s,
+ * zegar na 45 s, pasek wiadomości skakał przy obrocie 3D, CLS przy starcie 0,18.
+ */
+
+/* Program dnia, zegar i pogoda zawsze widoczne (pętle chowania w skrypcie strony są tu wyłączone) */
+#scheduleWidget,
+#cardClockWidget,
+#weatherBox {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Zmiana pozycji programu: samo przenikanie, bez podjeżdżania */
+.schedule-item {
+  transform: none !important;
+}
+
+/* Pogoda: stała szerokość tekstu, więc ikona i karta nie przesuwają się przy zmianie miasta */
+.weather-info {
+  width: 280px;
+  min-width: 280px;
+  overflow: hidden;
+}
+.weather-info .weather-city,
+.weather-info .weather-temp-desc {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Karta CTA zmieniała szerokość z treścią (398 → 386 px przy „Polub nas”) — stała szerokość jak karta pogody */
+.weather-cta-widgets .weather-widget,
+#ctaWidget {
+  width: 398px;
+  min-width: 398px;
+  box-sizing: border-box;
+}
+
+/* Pasek wiadomości: spokojne przenikanie zamiast podskakującego obrotu 3D */
+.ticker-flipper,
+.ticker-flipper.flipped {
+  transform: none !important;
+  transition: none !important;
+}
+.ticker-flipper .flipper-front,
+.ticker-flipper .flipper-back {
+  transform: none !important;
+  backface-visibility: visible !important;
+  -webkit-backface-visibility: visible !important;
+  transition: opacity 0.6s ease;
+}
+.ticker-flipper .flipper-back { opacity: 0; }
+.ticker-flipper.flipped .flipper-front { opacity: 0; }
+.ticker-flipper.flipped .flipper-back { opacity: 1; }
+
+/* Telefon w pionie: scena 16:9 jest bardzo mała — bez dodatkowych kart na twarzach prowadzących */
+@media (orientation: portrait) and (max-width: 900px) {
+  .weather-widget,
+  #ctaWidget,
+  #qrSidecar {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-flipper .flipper-front,
+  .ticker-flipper .flipper-back { transition: none; }
+}

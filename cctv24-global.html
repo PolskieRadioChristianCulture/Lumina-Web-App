@@ -1654,11 +1654,13 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         window.initStream = initStream;
     </script>
     <link rel="stylesheet" href="live-window-manager.css">
+    <link rel="stylesheet" href="/css/cc-tv-calm.css?v=20261026_1">
 </head>
 <body>
 
     <!-- Main Auto-Scaling Viewport wrapper -->
     <div id="app-container">
+    <script>/* @007 26.10.2026: skala sceny przed pierwszym narysowaniem (wcześniej skok CLS 0,18) */(function(){var c=document.getElementById("app-container");if(!c)return;var w=window.innerWidth,h=window.innerHeight;if(!w||!h)return;var s=Math.min(w/1920,h/1080);c.style.transformOrigin="top left";c.style.transform="scale("+s+")";c.style.left=Math.max(0,(w-1920*s)/2)+"px";c.style.top=Math.max(0,(h-1080*s)/2)+"px";})();</script>
 
         <!-- Background Image -->
         <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="CCTV_NOCA.jpg?v=1" alt="Breakfast Studio">
@@ -3427,6 +3429,7 @@ function getWeatherPreset(city) {
     <script src="live-window-manager.js"></script>
     <!-- Strażnik 2026-10-07: komunikaty i stan LIVE z Mission Control (projekt cc-mission-control) -->
     <script type="module" src="js/cc-live-mission-feed.js?v=20261008_kanaly3&autostart=1"></script>
+<script src="/js/cc-tv-calm.js?v=20261026_1" defer></script>
 </body>
 </html>
 
