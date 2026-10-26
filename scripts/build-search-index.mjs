@@ -233,6 +233,14 @@ const CONTEXT_GUIDES = {
 // --- 2. GŁÓWNE PLATFORMY I MODUŁY EKOSYSTEMU ---
 const CORE_PROJECTS = [
 {
+  title: "Usługi EkoCC — Chrześcijańskie Usługi, Pomoc i Specjaliści z Wartościami",
+  category: "Narzędzia i misja",
+  url: "https://polskieradio.cc/uslugi",
+  description: "Centralny katalog chrześcijańskich usług, całodobowej infolinii wsparcia duchowego, duszpasterstwa, coachingu i rzetelnych fachowców z wartościami.",
+  tags: ["usługi", "uslugi", "pomoc", "infolinia nadzieja", "duszpasterz", "coaching", "specjaliści", "fachowcy", "rzemiosło"],
+  featured: true
+},
+{
   title: "Wizytówki EkoCC — Katalog Wszystkich Wizytówek Christian Culture",
   category: "LUMINA i społeczność",
   url: "https://polskieradio.cc/wizytowki",

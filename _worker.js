@@ -1482,7 +1482,7 @@ async function handlePersonalHubRoute(request, env) {
   const path = url.pathname.replace(/\/$/, '');
   const lowerPath = path.toLowerCase();
 
-  if (lowerPath === '/moje-centrum') {
+  if (lowerPath === '/moje-centrum' || lowerPath === '/centrum') {
     const assetUrl = new URL(request.url);
     assetUrl.pathname = '/moje-centrum.html';
     assetUrl.search = '';
@@ -1501,7 +1501,7 @@ async function handlePersonalHubRoute(request, env) {
     });
   }
 
-  if (lowerPath === '/centrum' || lowerPath === '/hub') {
+  if (lowerPath === '/hub') {
     const redirectUrl = new URL(request.url);
     redirectUrl.pathname = '/moje-centrum';
     return Response.redirect(redirectUrl.toString(), 301);
@@ -1749,6 +1749,18 @@ export default {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/o-nas';
       return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    // Zamienniki subdomen cclite.pl (randka, centrum, usługi -> polskieradio.cc)
+    if (/^\/(randka|randki)\/?$/i.test(decodedP)) {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = '/lumina';
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+    if (/^\/(usługi|uslugi|katalog-uslug|katalog-usług)\/?$/i.test(decodedP)) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/uslugi/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
     }
 
     if (/^\/(wizytówki|wizytowki|katalog-wizytowek|katalog-wizytówek)\/?$/i.test(decodedP)) {

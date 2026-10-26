@@ -20,6 +20,22 @@
 /katalog-wizytowek /wizytowki 301
 /katalog-wizytówek /wizytowki 301
 
+# === USŁUGI EKOCC — KATALOG USŁUG I POMOCY (/uslugi, /usługi) ===
+/uslugi /uslugi/index.html 200
+/uslugi/ /uslugi/index.html 200
+/usługi /uslugi/index.html 200
+/usługi/ /uslugi/index.html 200
+/us%C5%82ugi /uslugi/index.html 200
+/us%C5%82ugi/ /uslugi/index.html 200
+/Uslugi /uslugi 301
+/Uslugi/ /uslugi 301
+/Usługi /uslugi 301
+/Usługi/ /uslugi 301
+/Us%C5%82ugi /uslugi 301
+/Us%C5%82ugi/ /uslugi 301
+/katalog-uslug /uslugi 301
+/katalog-usług /uslugi 301
+
 # === WIZYTÓWKA PIERWSZEGO KONTAKTU EKOCC (/wizytowka) ===
 /wizytowka /wizytowka/index.html 200
 /wizytowka/ /wizytowka/index.html 200
@@ -127,8 +143,10 @@
 # === MOJE CENTRUM CC — PERSONAL HUB 2026 ===
 /moje-centrum /moje-centrum 200
 /moje-centrum/ /moje-centrum 200
-/centrum /moje-centrum 301
-/centrum/ /moje-centrum 301
+/centrum /moje-centrum.html 200
+/centrum/ /moje-centrum.html 200
+/Centrum /centrum 301
+/Centrum/ /centrum 301
 /hub /moje-centrum 301
 /hub/ /moje-centrum 301
 
@@ -332,9 +350,18 @@
 /worship /cctv24-worship 200
 /tv-epafraz /tv-epafraz-live 200
 /epafraz /tv-epafraz-live 200
-/randki-malzenstwo /randki-malzenstwo-live 200
-/randki /randki-malzenstwo-live 200
-/malzenstwo /randki-malzenstwo-live 200
+# === RANDKA / RANDKI = PORTAL LUMINA ===
+/randka /lumina 301
+/randka/ /lumina 301
+/Randka /lumina 301
+/Randka/ /lumina 301
+/randki /lumina 301
+/randki/ /lumina 301
+/Randki /lumina 301
+/Randki/ /lumina 301
+/randki-malzenstwo /lumina 301
+
+/malzenstwo /seks 301
 /aktualnosci /news 301
 /aktualnosci/ /news 301
 /ccn /news 301
@@ -401,11 +428,11 @@
 /Centrum-biznesowe /biznes 301
 /business-hub /biznes 301
 /business /biznes 301
-/uslugi /biznes 301
+/uslugi-biznesowe /biznes 301
 /centrum-kultury /kultura 301
 /Centrum-Kultury /kultura 301
 /cc-hub /kultura 301
-/centrum /kultura 301
+/centrum-kulturalne /kultura 301
 /centrum-cc /kultura 301
 /AmbientSleep /ambientsleep 200
 /Ambient-Sleep /ambientsleep 200
