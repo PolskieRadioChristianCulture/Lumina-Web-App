@@ -1502,8 +1502,32 @@
         .cc-omni-toplink span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
         .cc-omni-toplink { padding: 0; width: 44px; justify-content: center; }
       }
+      /* Trzy koła (Wszystko, PLAY, konto) z odstępem, żeby ich poświaty się nie stykały (L0 26.10.2026) */
+      .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 10px; }
+      .cc-omni-topnav .cc-omni-radio,
+      .cc-omni-topnav .cc-omni-account { margin-left: 16px; }
+      @media (max-width: 440px) {
+        .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 6px; }
+        .cc-omni-topnav .cc-omni-radio,
+        .cc-omni-topnav .cc-omni-account { margin-left: 12px; }
+      }
+      /* /wyszukiwarka: na starcie tylko tapeta, logo i pole; karty, skróty i „Ostatnio odwiedzane”
+         odsłaniają się kaskadowo po kliknięciu w tapetę lub dotknięciu ekranu (L0 26.10.2026) */
+      #ccOmniOverlay.cc-veiled .cc-omni-cards,
+      #ccOmniOverlay.cc-veiled .cc-omni-shortcuts,
+      #ccOmniOverlay.cc-veiled .cc-omni-continue { visibility: hidden; opacity: 0; }
+      #ccOmniOverlay.cc-revealing .cc-omni-card,
+      #ccOmniOverlay.cc-revealing .cc-omni-shortcut,
+      #ccOmniOverlay.cc-revealing .cc-omni-continue {
+        animation: ccOmniRise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        animation-delay: var(--cc-d, 0ms);
+      }
+      @keyframes ccOmniRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
       @media (prefers-reduced-motion: reduce) {
         #ccOmniOverlay, .cc-omni-shortcut span:first-child { transition: none; }
+        #ccOmniOverlay.cc-revealing .cc-omni-card,
+        #ccOmniOverlay.cc-revealing .cc-omni-shortcut,
+        #ccOmniOverlay.cc-revealing .cc-omni-continue { animation: none; }
       }
 `;
     document.head.appendChild(style);
@@ -1515,7 +1539,32 @@
 
     const overlay = document.createElement('div');
     overlay.id = 'ccOmniOverlay';
-    if (isStandalonePage) overlay.classList.add('cc-standalone');
+    if (isStandalonePage) {
+      overlay.classList.add('cc-standalone', 'cc-veiled');
+      // Mysz odsłania panele tylko kliknięciem w tapetę; dotyk i klawisz Tab — zawsze
+      const reveal = (e) => {
+        if (e.type === 'pointerdown' && e.pointerType === 'mouse' && e.target.closest('a, button, input, .cc-omni-apps')) return;
+        if (e.type === 'keydown' && e.key !== 'Tab') return;
+        overlay.removeEventListener('pointerdown', reveal);
+        overlay.removeEventListener('keydown', reveal);
+        let i = 0;
+        overlay.querySelectorAll('.cc-omni-card, .cc-omni-shortcut, .cc-omni-continue:not([hidden])')
+          .forEach(el => el.style.setProperty('--cc-d', (i++ * 60) + 'ms'));
+        // Klik kończący to samo dotknięcie nie może otworzyć skrótu, który właśnie wyłania się pod palcem
+        const revealedAt = Date.now();
+        const swallow = (ev) => {
+          if (Date.now() - revealedAt > 800) { overlay.removeEventListener('click', swallow, true); return; }
+          if (ev.target.closest('.cc-omni-home')) { ev.preventDefault(); ev.stopPropagation(); }
+          overlay.removeEventListener('click', swallow, true);
+        };
+        if (e.type === 'pointerdown') overlay.addEventListener('click', swallow, true);
+        overlay.classList.remove('cc-veiled');
+        overlay.classList.add('cc-revealing');
+        setTimeout(() => overlay.classList.remove('cc-revealing'), i * 60 + 700);
+      };
+      overlay.addEventListener('pointerdown', reveal);
+      overlay.addEventListener('keydown', reveal);
+    }
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-label', 'Uniwersalna wyszukiwarka ekosystemu Christian Culture');
@@ -1645,7 +1694,8 @@ ${isStandalonePage ? '' : `
     const filterChips = overlay.querySelectorAll('.cc-omni-filter-chip');
 
     overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeSearch();
+      // Na /wyszukiwarka kliknięcie w tapetę odsłania panele, nie zamyka strony
+      if (e.target === overlay && !isStandalonePage) closeSearch();
     });
 
     if (closeBtn) closeBtn.addEventListener('click', closeSearch);
