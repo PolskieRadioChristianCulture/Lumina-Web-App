@@ -719,8 +719,10 @@
         transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
       }
       .cc-omni-apps-btn .cc-i-apps {
-        width: 44px;
-        height: 44px;
+        /* rysunek zajmuje 95% pliku — 46 px daje widoczne koło 44 px jak PLAY i konto (L0 26.10.2026) */
+        width: 46px;
+        height: 46px;
+        margin: -1px;
         border-radius: 50%;
         display: block;
         pointer-events: none;
@@ -803,7 +805,6 @@
         justify-content: center;
         width: 44px;
         height: 44px;
-        margin-left: 4px;
         border-radius: 50%;
         background: radial-gradient(circle at 35% 30%, var(--omni-gold-hover), var(--omni-gold) 55%, var(--omni-gold-deep));
         box-shadow: 0 0 18px rgba(255, 122, 0, 0.55);
@@ -812,7 +813,8 @@
         overflow: hidden;
         flex-shrink: 0;
       }
-      .cc-omni-account:hover, .cc-omni-account:focus-visible { box-shadow: 0 0 26px rgba(255, 140, 51, 0.75); outline: 2px solid var(--omni-gold-hover); outline-offset: 2px; }
+      .cc-omni-account:hover, .cc-omni-account:focus-visible { box-shadow: 0 0 22px rgba(255, 175, 50, 0.85); transform: scale(1.08); outline: none; }
+      .cc-omni-account { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease; }
       .cc-omni-account-face { font-size: 1.2rem; font-weight: 800; line-height: 1; }
       .cc-omni-account img { width: 100%; height: 100%; object-fit: cover; }
       @media (max-width: 640px) {
@@ -1422,20 +1424,42 @@
         height: 44px;
         border: 0;
         border-radius: 50%;
-        background: var(--omni-gold);
+        padding: 0;
+        background: transparent;
         color: #fff;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: 0 0 14px rgba(255, 122, 0, 0.45);
         flex-shrink: 0;
       }
-      .cc-omni-radio:hover, .cc-omni-radio:focus-visible { background: var(--omni-gold-hover); outline: 2px solid var(--omni-gold-hover); outline-offset: 2px; }
-      .cc-omni-radio:active { background: var(--omni-gold-deep); }
+      /* grafika PLAY/STOP zajmuje 92% pliku — 48 px daje widoczne koło 44 px; bez dodatkowego tła i obwódki */
+      .cc-omni-radio img { width: 48px; height: 48px; margin: -2px; border-radius: 50%; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease; }
+      .cc-omni-radio:hover img, .cc-omni-radio:focus-visible img { transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(255, 175, 50, 0.85)); }
+      .cc-omni-radio:focus-visible { outline: none; }
+      .cc-omni-radio:active img { transform: scale(0.95); }
       .cc-omni-radio .cc-i-stop, .cc-omni-radio[aria-pressed="true"] .cc-i-play { display: none; }
       .cc-omni-radio[aria-pressed="true"] .cc-i-stop { display: block; }
       .cc-omni-radio.cc-loading { opacity: 0.7; }
+      /* Gwiazdka ulubionych w belce wyszukiwarki: sama ikona, bez kwadratowej ramki (L0 26.10.2026) */
+      #ccOmniOverlay .cc-topbar-fav-btn {
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        box-shadow: none;
+        color: var(--omni-gold);
+        margin: 0;
+      }
+      #ccOmniOverlay .cc-topbar-fav-btn:hover, #ccOmniOverlay .cc-topbar-fav-btn:focus-visible {
+        background: rgba(255, 255, 255, 0.12);
+        transform: none;
+        outline: none;
+      }
+      #ccOmniOverlay .cc-topbar-fav-btn:hover svg { stroke: var(--omni-gold-hover); }
+      #ccOmniOverlay .cc-topbar-fav-btn.is-active { background: transparent; box-shadow: none; }
+      #ccOmniOverlay .cc-topbar-fav-btn.is-active svg { fill: var(--omni-gold); stroke: var(--omni-gold); }
       @media (max-width: 440px) {
         .cc-omni-toplink span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
         .cc-omni-toplink { padding: 0; width: 44px; justify-content: center; }
