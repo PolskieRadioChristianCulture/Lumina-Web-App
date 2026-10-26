@@ -857,12 +857,12 @@
       }
       .cc-omni-continue-list {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 10px;
         padding: 14px;
       }
       @media (min-width: 641px) {
-        .cc-omni-continue-list { grid-template-columns: 1fr 1fr; }
+        .cc-omni-continue-list { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
       }
       .cc-omni-continue-item {
         display: flex;
@@ -875,6 +875,7 @@
         border: 1px solid #efe3c8;
         text-decoration: none;
         color: inherit;
+        min-width: 0;
         box-sizing: border-box;
       }
       .cc-omni-continue-item:hover, .cc-omni-continue-item:focus-visible {
@@ -1484,7 +1485,7 @@
     history = (Array.isArray(history) ? history : []).filter(h => h && h.url && h.title && h.url !== location.pathname).slice(0, 4);
     const cont = history.length ? `
       <section class="cc-omni-continue" aria-label="Kontynuuj">
-        <div class="cc-omni-continue-head">${svgIcon('clock', 16)}<span>Kontynuuj, gdzie skończyłeś</span></div>
+        <div class="cc-omni-continue-head">${svgIcon('clock', 16)}<span>Ostatnio odwiedzane</span></div>
         <div class="cc-omni-continue-list">${history.map(h => `<a class="cc-omni-continue-item" href="${escapeHtml(h.url)}"><span>${escapeHtml(h.icon || '✨')}</span><span><b>${escapeHtml(h.title)}</b><small>${escapeHtml(visitedLabel(h.visitedAt))}</small></span></a>`).join('')}</div>
       </section>` : '';
     return '<div class="cc-omni-home">' + cards + shortcuts + cont + '</div>';
