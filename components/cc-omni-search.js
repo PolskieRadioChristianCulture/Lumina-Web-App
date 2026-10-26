@@ -1227,14 +1227,49 @@
       }
       .cc-omni-empty p { margin: 8px 0 16px; font-size: 0.92rem; }
       .cc-omni-footer {
+        /* Dolna belka przypięta do krawędzi ekranu: lewa — tapeta, prawa — kontakt (L0 26.10.2026) */
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 4px 12px;
-        padding: 10px 0 max(env(safe-area-inset-bottom), 14px);
+        gap: 8px 12px;
+        padding: 18px max(env(safe-area-inset-right), 20px) max(env(safe-area-inset-bottom), 8px) max(env(safe-area-inset-left), 16px);
+        background: linear-gradient(0deg, rgba(3, 4, 8, 0.9) 0%, rgba(3, 4, 8, 0) 100%);
         font-size: 0.74rem;
         color: rgba(243, 229, 200, 0.65);
+        box-sizing: border-box;
+      }
+      #ccOmniModal { padding-bottom: 76px; }
+      .cc-omni-footer-left {
+        display: flex;
+        align-items: center;
+        gap: 4px 10px;
+        flex-wrap: wrap;
+        min-width: 0;
+      }
+      .cc-omni-footlink {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 22px;
+        background: transparent;
+        color: #fff;
+        font: 600 0.84rem/1 inherit;
+        cursor: pointer;
+      }
+      .cc-omni-footlink svg { color: var(--omni-gold); }
+      .cc-omni-footlink:hover, .cc-omni-footlink:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
+      .cc-omni-footlink[hidden] { display: none; }
+      .cc-omni-credit { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      @media (max-width: 480px) {
+        .cc-omni-credit { display: none; }
       }
       .cc-omni-footer-hints { display: none; }
       .cc-omni-kbd {
@@ -1244,16 +1279,20 @@
         font: inherit;
       }
       .cc-omni-view-all {
-        color: var(--omni-gold);
+        color: #fff;
         text-decoration: none;
         font-weight: 600;
         font-size: 0.84rem;
         display: inline-flex;
         align-items: center;
+        gap: 6px;
         min-height: 44px;
-        padding: 0 4px;
+        padding: 0 10px;
+        border-radius: 22px;
+        flex-shrink: 0;
       }
-      .cc-omni-view-all:hover { text-decoration: underline; }
+      .cc-omni-view-all svg { color: var(--omni-gold); }
+      .cc-omni-view-all:hover, .cc-omni-view-all:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
       @media (prefers-reduced-motion: reduce) {
         #ccOmniOverlay, .cc-omni-shortcut span:first-child { transition: none; }
       }
@@ -1353,14 +1392,18 @@
         </div>
 
         <div class="cc-omni-footer">
-          <span>Tło: Galaktyka Andromedy · fot. Unsplash</span>
-          <div class="cc-omni-footer-hints">
-            <span><kbd class="cc-omni-kbd">↑</kbd> <kbd class="cc-omni-kbd">↓</kbd> nawigacja</span>
-            <span><kbd class="cc-omni-kbd">Enter</kbd> otwórz</span>
-            <span><kbd class="cc-omni-kbd">Esc</kbd> zamknij</span>
+          <div class="cc-omni-footer-left">
+            <button type="button" id="ccOmniWallBtn" class="cc-omni-footlink">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
+              <span>Zmień tapetę</span>
+            </button>
+            <button type="button" id="ccOmniWallReset" class="cc-omni-footlink" hidden>Przywróć tło</button>
+            <input type="file" id="ccOmniWallFile" accept="image/*" hidden>
+            <span id="ccOmniCredit" class="cc-omni-credit">Tło: Galaktyka Andromedy · fot. Unsplash</span>
           </div>
-          <a href="/szukaj" id="ccOmniViewAllLink" class="cc-omni-view-all">
-            Zobacz w pełnej wyszukiwarce /szukaj &rarr;
+          <a href="/#contact-section" id="ccOmniContact" class="cc-omni-view-all">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <span>Kontakt</span>
           </a>
         </div>
       </div>
@@ -1379,6 +1422,60 @@
     });
 
     closeBtn.addEventListener('click', closeSearch);
+
+    // Własna tapeta: obraz zmniejszany w przeglądarce i zapamiętywany tylko na tym urządzeniu (bez wysyłania na serwer)
+    const WALL_KEY = 'cc_search_wallpaper';
+    const wallBtn = document.getElementById('ccOmniWallBtn');
+    const wallReset = document.getElementById('ccOmniWallReset');
+    const wallFile = document.getElementById('ccOmniWallFile');
+    const credit = document.getElementById('ccOmniCredit');
+    const DEFAULT_CREDIT = credit.textContent;
+    const applyWall = (dataUrl) => {
+      overlay.style.backgroundImage = dataUrl ? `url("${dataUrl}")` : '';
+      wallReset.hidden = !dataUrl;
+      credit.textContent = dataUrl ? 'Tło: Twoja tapeta' : DEFAULT_CREDIT;
+    };
+    try { applyWall(localStorage.getItem(WALL_KEY)); } catch (_) {}
+    wallBtn.addEventListener('click', () => wallFile.click());
+    wallReset.addEventListener('click', () => {
+      try { localStorage.removeItem(WALL_KEY); } catch (_) {}
+      applyWall(null);
+    });
+    wallFile.addEventListener('change', () => {
+      const file = wallFile.files && wallFile.files[0];
+      wallFile.value = '';
+      if (!file || !/^image\//.test(file.type)) return;
+      const img = new Image();
+      const src = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(src);
+        // Kilka prób: coraz mniejszy obraz, aż zmieści się w pamięci przeglądarki
+        for (const [side, quality] of [[1920, 0.82], [1440, 0.75], [1024, 0.7]]) {
+          const scale = Math.min(1, side / Math.max(img.naturalWidth, img.naturalHeight));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.naturalWidth * scale);
+          canvas.height = Math.round(img.naturalHeight * scale);
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/jpeg', quality);
+          try {
+            localStorage.setItem(WALL_KEY, dataUrl);
+            applyWall(dataUrl);
+            return;
+          } catch (_) {}
+        }
+        applyWall(canvas2Url(img)); // pamięć pełna: tapeta tylko do zamknięcia strony
+      };
+      img.onerror = () => URL.revokeObjectURL(src);
+      img.src = src;
+    });
+    function canvas2Url(img) {
+      const canvas = document.createElement('canvas');
+      const scale = Math.min(1, 1024 / Math.max(img.naturalWidth, img.naturalHeight));
+      canvas.width = Math.round(img.naturalWidth * scale);
+      canvas.height = Math.round(img.naturalHeight * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/jpeg', 0.7);
+    }
 
     // „Wszystko”: menu aplikacji ekosystemu
     const appsBtn = document.getElementById('ccOmniApps');
@@ -1531,12 +1628,6 @@
     const { items, guide, isSuggestion, suggestionNote } = performSearch(query, filter);
     currentResults = items;
     activeIndex = -1;
-
-    // Aktualizacja linku "Zobacz w pełnej wyszukiwarce"
-    const viewAllLink = document.getElementById('ccOmniViewAllLink');
-    if (viewAllLink) {
-      viewAllLink.href = query ? `/szukaj?q=${encodeURIComponent(query)}` : '/szukaj';
-    }
 
     let html = '';
 
