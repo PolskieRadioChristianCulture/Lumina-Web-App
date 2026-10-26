@@ -1756,6 +1756,12 @@ export default {
       targetUrl.pathname = '/wizytowki/';
       return env.ASSETS.fetch(new Request(targetUrl, request));
     }
+    // Wyszukiwarka ekosystemu pod własnym adresem (decyzja L0 26.10.2026); 200 także bez ukośnika, bo to adres kanoniczny
+    if (/^\/wyszukiwarka\/?$/i.test(decodedP)) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/wyszukiwarka/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
     if (decodedP === '/wizytówka' || decodedP === '/wizytowka') {
       const targetUrl = new URL(request.url);
       targetUrl.pathname = '/wizytowka/';
