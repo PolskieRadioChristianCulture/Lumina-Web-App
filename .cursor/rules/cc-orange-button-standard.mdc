@@ -1,0 +1,17 @@
+---
+description: Standard klasycznego pomarańczowego przycisku akcji (#FF7A00) zamiast koloru żółtego w całym ekosystemie Christian Culture (JOMA-D052)
+globs: **/*.{html,css,js,jsx,ts,tsx}
+alwaysApply: true
+---
+
+# Standard Przycisków Akcji EkoCC — Klasyczny Pomarańczowy `#FF7A00` (JOMA-D052)
+
+Na polecenie Dowódcy Nazira (26.10.2026) w całym ekosystemie Christian Culture (`EkoCC`) **zamiast koloru żółtego** w przyciskach akcji (szczególnie `Słuchaj`, odtwarzanie i główne CTA) stosujemy **Klasyczny Pomarańczowy — Nowoczesny i Uniwersalny**:
+
+- **Stan domyślny (Default):** `#FF7A00` (`--cc-btn-orange: #FF7A00`)
+- **Po najechaniu (Hover):** `#FF8C33` (`--cc-btn-orange-hover: #FF8C33`)
+- **Po kliknięciu (Active):** `#E66A00` (`--cc-btn-orange-active: #E66A00`)
+- **Tekst i ikona:** `#FFFFFF` (biała ikona `▶` w okręgu + pogrubiony biały napis, touch target min. `44×44 px`).
+
+Dokument kanoniczny: `Misja CC/JOMA_SHARED_MEMORY/konstytucja/JOMA_STANDARD_POMARANCZOWY_PRZYCISK_CC.md`.
+Wzorzec graficzny: `images/brand/cc-orange-button-standard-20261026.png`.
