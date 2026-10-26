@@ -743,52 +743,80 @@
         display: none !important;
       }
       .cc-omni-apps-wrap { position: relative; display: flex; align-items: center; height: 44px; } /* blok 52 px podnosił siatkę o 3,8 px */
+      /* Menu „Wszystko”: ciemne szkło jak cała wyszukiwarka, ikony w kolorze akcji #FF7A00 (L0 26.10.2026) */
       .cc-omni-apps {
         position: absolute;
         right: 0;
-        top: calc(100% + 8px);
+        top: calc(100% + 10px);
         z-index: 2;
-        width: 288px;
-        padding: 14px;
-        background: var(--omni-paper);
-        color: var(--omni-paper-ink);
-        border-top: 4px solid var(--omni-gold);
-        border-radius: 16px;
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+        width: 320px;
+        max-height: calc(100vh - 96px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 16px 14px 14px;
+        background: rgba(8, 9, 14, 0.94);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        color: var(--omni-ink);
+        border: 1px solid var(--omni-line);
+        border-top: 3px solid var(--omni-gold);
+        border-radius: 18px;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.7), 0 0 24px rgba(255, 122, 0, 0.12);
         box-sizing: border-box;
+        scrollbar-width: thin;
+        scrollbar-color: var(--omni-gold) transparent;
       }
       .cc-omni-apps[hidden] { display: none; }
       .cc-omni-apps-title {
-        margin: 0 0 10px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #f1e6d6;
-        color: var(--omni-gold-deep);
+        margin: 0 0 12px;
+        padding: 0 4px 10px;
+        border-bottom: 1px solid var(--omni-line);
+        color: var(--omni-gold);
         font-size: 0.74rem;
         font-weight: 700;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
       }
       .cc-omni-apps-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
+        gap: 4px;
       }
       .cc-omni-apps-grid a {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4px;
-        min-height: 64px;
-        padding: 8px 4px;
-        border-radius: 12px;
-        color: var(--omni-paper-ink);
+        gap: 6px;
+        min-height: 78px;
+        padding: 10px 4px 8px;
+        border-radius: 14px;
+        color: var(--omni-ink);
         text-decoration: none;
-        font-size: 0.74rem;
+        font-size: 0.76rem;
         font-weight: 500;
+        line-height: 1.2;
         text-align: center;
+        transition: background-color 0.15s;
       }
-      .cc-omni-apps-grid a span { font-size: 1.25rem; line-height: 1.2; }
-      .cc-omni-apps-grid a:hover, .cc-omni-apps-grid a:focus-visible { background: #fff1e5; outline: none; }
+      .cc-omni-app-ico {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--omni-gold);
+        background: rgba(255, 122, 0, 0.1);
+        border: 1px solid rgba(255, 122, 0, 0.35);
+        box-sizing: border-box;
+        transition: background-color 0.15s, color 0.15s, box-shadow 0.15s;
+      }
+      .cc-omni-apps-grid a:hover, .cc-omni-apps-grid a:focus-visible { background: rgba(255, 255, 255, 0.06); outline: none; }
+      .cc-omni-apps-grid a:hover .cc-omni-app-ico, .cc-omni-apps-grid a:focus-visible .cc-omni-app-ico {
+        background: var(--omni-gold);
+        color: #fff;
+        box-shadow: 0 0 14px rgba(255, 122, 0, 0.55);
+      }
       #ccOmniOverlay #ccTopBarFavBtn {
         border: 0;
         background: transparent;
@@ -1501,17 +1529,7 @@
               </button>
               <div id="ccOmniAppsMenu" class="cc-omni-apps" hidden>
                 <p class="cc-omni-apps-title">Aplikacje Christian Culture</p>
-                <div class="cc-omni-apps-grid">
-                  <a href="/kanaly"><span>📺</span>Kanały</a>
-                  <a href="/news"><span>📰</span>Portal CCN</a>
-                  <a href="/podcasty"><span>🎙️</span>Podcasty</a>
-                  <a href="/akademia"><span>📖</span>Akademia</a>
-                  <a href="/player"><span>📻</span>Radio</a>
-                  <a href="/lumina"><span>👥</span>LUMINA</a>
-                  <a href="/mess"><span>💬</span>LUMI Mess</a>
-                  <a href="/mapa"><span>🗺️</span>Mapa</a>
-                  <a href="/wspieraj"><span>🤍</span>Wspieraj</a>
-                </div>
+                <div class="cc-omni-apps-grid">${renderAppsGrid()}</div>
               </div>
             </div>
             <button type="button" id="ccOmniRadio" class="cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
@@ -2043,9 +2061,45 @@ ${isStandalonePage ? '' : `
     home: '<path d="m3 10 9-7 9 7v11h-6v-7H9v7H3Z"/>',
     radio: '<rect x="3" y="8" width="18" height="12" rx="2"/><circle cx="15.5" cy="14" r="2.5"/><path d="M7 12h4M7 16h4M7 8l9-5"/>',
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-    star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/>'
+    star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/>',
+    channels: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+    film: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/>',
+    music: '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M12 14v4M10 16h4"/>',
+    bible: '<path d="M5 4a2 2 0 0 1 2-2h12v18H7a2 2 0 0 0-2 2Z"/><path d="M5 20V4M12 6v8M9 9h6"/>',
+    quote: '<path d="M7 7h4v4c0 3-1.5 5-4 6M15 7h4v4c0 3-1.5 5-4 6"/>',
+    cross: '<path d="M12 2v20M7 7h10"/>',
+    pray: '<path d="M12 3v7l-3 4v7M12 10l3 4v7M9 14l-4 2M15 14l4 2"/>',
+    chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    map: '<path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Z"/><path d="M9 3v15M15 6v15"/>',
+    heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>'
   };
   const svgIcon = (name, size = 22) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${HOME_ICONS[name] || ''}</svg>`;
+  // Menu „Wszystko”: strategiczne miejsca ekosystemu z rejestru linków (L0 24.10.2026), wszystkie adresy sprawdzone (200)
+  const APPS_MENU = [
+    { label: 'Radio', url: '/player', icon: 'radio' },
+    { label: 'TV 24', url: '/cctv24', icon: 'tv' },
+    { label: 'Kanały', url: '/kanaly', icon: 'channels' },
+    { label: 'Podcasty', url: '/podcasty', icon: 'mic' },
+    { label: 'Kino VOD', url: '/vod', icon: 'film' },
+    { label: 'Muzyka', url: '/music', icon: 'music' },
+    { label: 'Akademia', url: '/akademia', icon: 'book' },
+    { label: 'Lekcja dnia', url: '/akademia/kurscodzienny', icon: 'calendar' },
+    { label: 'MojaBiblia', url: '/mojabiblia', icon: 'bible' },
+    { label: 'Werset dnia', url: '/werset-dnia', icon: 'quote' },
+    { label: 'Ewangelia', url: '/Ewangelia', icon: 'cross' },
+    { label: 'Modlitwa 24/7', url: '/BCM24', icon: 'pray' },
+    { label: 'Portal CCN', url: '/news', icon: 'news' },
+    { label: 'LUMINA', url: '/lumina', icon: 'people' },
+    { label: 'LUMI Mess', url: '/mess', icon: 'chat' },
+    { label: 'Moje Centrum', url: '/moje-centrum', icon: 'user' },
+    { label: 'Mapa', url: '/mapa', icon: 'map' },
+    { label: 'Wspieraj', url: '/wspieraj', icon: 'heart' }
+  ];
+  function renderAppsGrid() {
+    return APPS_MENU.map(app => `<a href="${app.url}"><span class="cc-omni-app-ico">${svgIcon(app.icon, 20)}</span>${escapeHtml(app.label)}</a>`).join('');
+  }
   const HOME_SHORTCUTS = [
     { label: 'YouTube', url: 'https://www.youtube.com/@ChristianCultureTV', icon: 'play', external: true },
     { label: 'Kanały', url: '/kanaly', icon: 'tv' },
