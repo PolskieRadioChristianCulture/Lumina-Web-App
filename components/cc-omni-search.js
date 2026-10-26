@@ -744,6 +744,9 @@
       .cc-omni-account:hover, .cc-omni-account:focus-visible { box-shadow: 0 0 26px rgba(255, 140, 51, 0.75); outline: 2px solid var(--omni-gold-hover); outline-offset: 2px; }
       .cc-omni-account-face { font-size: 1.2rem; font-weight: 800; line-height: 1; }
       .cc-omni-account img { width: 100%; height: 100%; object-fit: cover; }
+      @media (max-width: 640px) {
+        .cc-omni-apps { position: fixed; left: 16px; right: 16px; top: calc(max(env(safe-area-inset-top), 12px) + 56px); width: auto; }
+      }
       @media (max-width: 420px) {
         .cc-omni-toplink { padding: 0 6px; gap: 6px; font-size: 0.86rem; }
         .cc-omni-topnav { gap: 0; }
