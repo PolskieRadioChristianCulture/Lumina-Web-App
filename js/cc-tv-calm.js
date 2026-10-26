@@ -52,8 +52,70 @@
     const ct = container.getBoundingClientRect();
     const scale = ct.width / 1920 || 1;
     const r = el.getBoundingClientRect();
-    return { top: (r.top - ct.top) / scale, bottom: (r.bottom - ct.top) / scale };
+    return {
+      top: (r.top - ct.top) / scale,
+      bottom: (r.bottom - ct.top) / scale,
+      left: (r.left - ct.left) / scale,
+      width: r.width / scale
+    };
   }
+  const visible = (el) => !!el && getComputedStyle(el).display !== 'none' && el.getBoundingClientRect().height > 0;
+
+  // 3. Dwie równe kolumny (L0 26.10.2026: „pozycje okienek są do ustawienia”): lewa kolumna zaczyna się
+  //    na wysokości zegara, czat widzów stoi pod ostatnią kartą lewej kolumny, w jej szerokości,
+  //    nad etykietą „Za chwilę”; środek kadru zostaje wolny dla prowadzących.
+  //    Tylko emisja bezpośrednia — w reżyserce (ramka /master-live) czat ma własne położenie.
+  const DIRECT = window.self === window.top && !location.search.includes('in_mcr=1');
+  const CHAT_LIMIT = 940; // nad etykietą „Za chwilę” (ok. 950 px) i paskiem wiadomości (998 px)
+  function layoutColumns() {
+    if (!DIRECT) return;
+    const schedule = document.getElementById('scheduleWidget');
+    const clock = document.getElementById('cardClockWidget');
+    const leftPanel = schedule && schedule.closest('.left-panel');
+    if (!visible(schedule) || !visible(clock) || !leftPanel) return;
+    leftPanel.style.transform = '';
+    const delta = stageBox(schedule).top - stageBox(clock).top;
+    if (Math.abs(delta) > 2) leftPanel.style.transform = 'translateY(' + Math.round(-delta) + 'px)';
+
+    const col = stageBox(schedule);
+    // QR (Patronite) zawsze tuż obok lewej kolumny, nie na środku kadru
+    const qr = document.getElementById('qrSidecar');
+    if (qr) {
+      // Pomiar bez animacji wejścia (scale/translate), potem korekta o różnicę względem celu
+      qr.style.setProperty('transform', 'none', 'important');
+      const target = col.left + col.width + 20;
+      const curLeft = parseFloat(getComputedStyle(qr).left) || 0;
+      const diff = target - stageBox(qr).left;
+      if (Math.abs(diff) > 1) qr.style.setProperty('left', Math.round(curLeft + diff) + 'px', 'important');
+      qr.style.removeProperty('transform');
+    }
+
+    const dock = document.getElementById('ccLiveViewerChat');
+    if (!dock) return;
+    let lastBottom = col.bottom;
+    leftPanel.querySelectorAll('.left-panel-standard-widget, .weather-widget, #ctaWidget').forEach((el) => {
+      if (visible(el)) lastBottom = Math.max(lastBottom, stageBox(el).bottom);
+    });
+    const card = document.querySelector('.reflection-canvas-card');
+    const cardTop = visible(card) ? stageBox(card).top : 0;
+    const top = Math.round(Math.max(lastBottom + 20, cardTop));
+    const height = Math.round(Math.max(150, Math.min(230, CHAT_LIMIT - top)));
+    dock.style.setProperty('left', Math.round(col.left) + 'px', 'important');
+    dock.style.setProperty('right', 'auto', 'important');
+    dock.style.setProperty('top', top + 'px', 'important');
+    dock.style.setProperty('bottom', 'auto', 'important');
+    dock.style.setProperty('width', Math.round(col.width) + 'px', 'important');
+    dock.style.setProperty('height', height + 'px', 'important');
+  }
+  state.layout = layoutColumns;
+  window.addEventListener('load', () => { layoutColumns(); setTimeout(layoutColumns, 1800); setTimeout(layoutColumns, 5000); });
+  window.addEventListener('orientationchange', () => setTimeout(layoutColumns, 400));
+  setInterval(layoutColumns, 30000);
+  // Okno czatu powstaje dopiero przy pierwszej wiadomości — ustawiamy je od razu, gdy się pojawi
+  let waitDock = setInterval(() => {
+    if (document.getElementById('ccLiveViewerChat')) { clearInterval(waitDock); layoutColumns(); }
+  }, 1000);
+  setTimeout(() => clearInterval(waitDock), 180000);
   function fitReflectionCard() {
     const card = document.querySelector('.reflection-canvas-card');
     if (!card || getComputedStyle(card).display === 'none') return;

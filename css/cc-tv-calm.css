@@ -20,8 +20,6 @@
 
 /* Pogoda: stała szerokość tekstu, więc ikona i karta nie przesuwają się przy zmianie miasta */
 .weather-info {
-  width: 280px;
-  min-width: 280px;
   overflow: hidden;
 }
 .weather-info .weather-city,
@@ -31,13 +29,16 @@
   text-overflow: ellipsis;
 }
 
-/* Karta CTA zmieniała szerokość z treścią (398 → 386 px przy „Polub nas”) — stała szerokość jak karta pogody */
+/* Karta CTA zmieniała szerokość z treścią (398 → 386 px przy „Polub nas”) — pogoda i CTA mają stałą
+   szerokość całej lewej kolumny (520 px), jak Program dnia i czat widzów */
+.weather-cta-widgets,
 .weather-cta-widgets .weather-widget,
 #ctaWidget {
-  width: 398px;
-  min-width: 398px;
+  width: 520px;
+  min-width: 520px;
   box-sizing: border-box;
 }
+.weather-info { width: 360px; min-width: 360px; }
 
 /* Pasek wiadomości: spokojne przenikanie zamiast podskakującego obrotu 3D */
 .ticker-flipper,
