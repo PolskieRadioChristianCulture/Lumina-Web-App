@@ -750,6 +750,17 @@
       }
       .cc-omni-apps-grid a span { font-size: 1.25rem; line-height: 1.2; }
       .cc-omni-apps-grid a:hover, .cc-omni-apps-grid a:focus-visible { background: #fff1e5; outline: none; }
+      #ccOmniOverlay #ccTopBarFavBtn {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        min-width: 44px;
+        min-height: 44px;
+      }
+      #ccOmniOverlay #ccTopBarFavBtn:focus-visible {
+        outline: 2px solid var(--omni-gold-hover);
+        outline-offset: 2px;
+      }
       .cc-omni-account {
         display: inline-flex;
         align-items: center;
@@ -801,16 +812,19 @@
         padding: calc(9vh + 64px) 0 28px;
       }
       .cc-omni-brand {
-        margin: 0;
-        font-size: clamp(2.3rem, 9vw, 4rem);
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        line-height: 1.05;
-        color: transparent;
-        background: linear-gradient(90deg, #ffffff 0%, #f3e5c8 55%, #c4a35a 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
+        position: relative;
+        width: min(600px, 100%);
+        aspect-ratio: 1774 / 440;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+      .cc-omni-brand img {
+        position: absolute;
+        top: -60%;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: auto;
       }
       .cc-omni-header {
         padding: 0;
@@ -1068,7 +1082,7 @@
       .cc-omni-continue-item > span:last-child { min-width: 0; }
       /* Stan wyników: pole u góry, wyniki na ciemnym tle */
       #ccOmniModal.cc-has-query .cc-omni-hero { padding: 70px 0 14px; }
-      #ccOmniModal.cc-has-query .cc-omni-brand { font-size: 1.5rem; }
+      #ccOmniModal.cc-has-query .cc-omni-brand { width: min(260px, 100%); }
       .cc-omni-filters {
         display: none;
         gap: 4px;
@@ -1411,10 +1425,6 @@
       <div id="ccOmniModal">
         <div class="cc-omni-top">
           <nav class="cc-omni-topnav" aria-label="Szybki dostęp">
-            <button type="button" id="ccOmniRadio" class="cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
-              <svg class="cc-i-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
-              <svg class="cc-i-stop" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
-            </button>
             <a class="cc-omni-toplink" href="/mess">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5A3.5 3.5 0 0 1 6.5 2h6A3.5 3.5 0 0 1 16 5.5v3A3.5 3.5 0 0 1 12.5 12H8l-3.5 3v-3.2A3.5 3.5 0 0 1 3 8.5Z"/><path d="M18 8.2a3.5 3.5 0 0 1 3 3.5v2.8a3.5 3.5 0 0 1-2 3.2V21l-3.4-2.8H12a3.5 3.5 0 0 1-3.2-2h3.7A5.5 5.5 0 0 0 18 10.7Z"/></svg>
               <span>Czat</span>
@@ -1442,6 +1452,10 @@
                 </div>
               </div>
             </div>
+            <button type="button" id="ccOmniRadio" class="cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
+              <svg class="cc-i-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
+              <svg class="cc-i-stop" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+            </button>
             <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA">
               <span class="cc-omni-account-face" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
             </a>
@@ -1453,7 +1467,7 @@
             </svg>
           </button>
         </div>
-        <div class="cc-omni-hero"><p class="cc-omni-brand">Christian Culture</p></div>
+        <div class="cc-omni-hero"><p class="cc-omni-brand"><img src="/images/search/christian-culture-gold.png" width="1774" height="887" alt="Christian Culture" decoding="async" fetchpriority="high"></p></div>
         <div class="cc-omni-header">
           <div class="cc-omni-field">
           <span class="cc-omni-search-icon" aria-hidden="true">
