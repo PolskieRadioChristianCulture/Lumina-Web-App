@@ -11,6 +11,32 @@
   const stations = window.CCRadioStations || [];
   const playlists = new Map();
   const listeners = new Set();
+  let spectrumContext, spectrumAnalyser, spectrumSource, spectrumWanted = false;
+  const spectrumStations = new Set(['poland', 'global', 'biblia_audio', 'instrumental_worship', 'biblia_spiewana']);
+  function enableSpectrum(id) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const wanted = spectrumStations.has(id) && !home() && !!AudioContext;
+    if (wanted !== spectrumWanted && audio) {
+      audio.pause();
+      spectrumSource?.disconnect(); spectrumAnalyser?.disconnect();
+      spectrumSource = spectrumAnalyser = null;
+      audio.remove(); audio = null;
+    }
+    spectrumWanted = wanted;
+    if (!wanted) return false;
+    try {
+      spectrumContext ||= new AudioContext();
+      Promise.resolve(spectrumContext.resume()).catch(() => {});
+      getAudio();
+      return !!spectrumAnalyser;
+    } catch (_) { return false; }
+  }
+  function readSpectrum(bytes) {
+    bytes.fill(0);
+    if (!spectrumWanted || !spectrumAnalyser || audio?.paused || spectrumContext?.state !== 'running') return false;
+    spectrumAnalyser.getByteFrequencyData(bytes);
+    return true;
+  }
   let audio, selected = stations[0], generation = 0;
   let state = { stationId: selected?.id, playing: false, status: 'Wybierz stację i naciśnij Słuchaj' };
   const notify = () => listeners.forEach(fn => fn({ ...state }));
@@ -25,8 +51,20 @@
     audio = document.createElement('audio');
     audio.id = 'ccChatRadioAudio';
     audio.preload = 'none';
+    if (spectrumWanted) audio.crossOrigin = 'anonymous';
     audio.setAttribute('data-cc-radio', 'true');
     document.body.appendChild(audio);
+    if (spectrumWanted && spectrumContext) {
+      // Element audio może mieć tylko jedno źródło Web Audio, dlatego enableSpectrum() odtwarza go od nowa przy zmianie trybu.
+      try {
+        spectrumSource = spectrumContext.createMediaElementSource(audio);
+        spectrumAnalyser = spectrumContext.createAnalyser();
+        spectrumAnalyser.fftSize = 512;
+        spectrumAnalyser.smoothingTimeConstant = 0.75;
+        spectrumSource.connect(spectrumAnalyser);
+        spectrumAnalyser.connect(spectrumContext.destination);
+      } catch (_) { spectrumSource = spectrumAnalyser = null; }
+    }
     audio.addEventListener('playing', () => update({ playing: true, status: 'Odtwarza' }));
     audio.addEventListener('pause', () => update({ playing: false, status: 'Wstrzymano' }));
     audio.addEventListener('error', () => update({ playing: false, status: 'Nie udało się odtworzyć. Spróbuj ponownie.' }));
@@ -85,7 +123,7 @@
     update({ playing: false, status: 'Wstrzymano' });
   }
   window.CCChatRadio = {
-    stations, prepare, play, pause,
+    stations, prepare, play, pause, enableSpectrum, readSpectrum,
     select(id) { selected = stations.find(s => s.id === id) || selected; update({ stationId: selected.id }); },
     state() { return home() ? home().state() : { ...state }; },
     subscribe(fn) { listeners.add(fn); fn(this.state()); return () => listeners.delete(fn); }
