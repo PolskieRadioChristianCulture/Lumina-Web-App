@@ -653,7 +653,100 @@
       .cc-omni-top {
         display: flex;
         justify-content: flex-end;
+        align-items: center;
+        gap: 4px;
         padding: max(env(safe-area-inset-top), 12px) 0 0;
+      }
+      /* Pasek w prawym górnym rogu: Czat | Nowości | Wszystko | Logowanie LUMINA (wzór L0 26.10.2026) */
+      .cc-omni-topnav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .cc-omni-toplink {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 10px;
+        border-radius: 22px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+      }
+      .cc-omni-toplink svg { color: var(--omni-gold); flex-shrink: 0; }
+      .cc-omni-toplink:hover, .cc-omni-toplink:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
+      .cc-omni-apps-btn { color: #fff; }
+      .cc-omni-apps-wrap { position: relative; }
+      .cc-omni-apps {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        z-index: 2;
+        width: 288px;
+        padding: 14px;
+        background: var(--omni-paper);
+        color: var(--omni-paper-ink);
+        border-top: 4px solid var(--omni-gold);
+        border-radius: 16px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+        box-sizing: border-box;
+      }
+      .cc-omni-apps[hidden] { display: none; }
+      .cc-omni-apps-title {
+        margin: 0 0 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f1e6d6;
+        color: var(--omni-gold-deep);
+        font-size: 0.74rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .cc-omni-apps-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+      .cc-omni-apps-grid a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        min-height: 64px;
+        padding: 8px 4px;
+        border-radius: 12px;
+        color: var(--omni-paper-ink);
+        text-decoration: none;
+        font-size: 0.74rem;
+        font-weight: 500;
+        text-align: center;
+      }
+      .cc-omni-apps-grid a span { font-size: 1.25rem; line-height: 1.2; }
+      .cc-omni-apps-grid a:hover, .cc-omni-apps-grid a:focus-visible { background: #fff1e5; outline: none; }
+      .cc-omni-account {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        margin-left: 4px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, var(--omni-gold-hover), var(--omni-gold) 55%, var(--omni-gold-deep));
+        box-shadow: 0 0 18px rgba(255, 122, 0, 0.55);
+        color: #fff;
+        text-decoration: none;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .cc-omni-account:hover, .cc-omni-account:focus-visible { box-shadow: 0 0 26px rgba(255, 140, 51, 0.75); outline: 2px solid var(--omni-gold-hover); outline-offset: 2px; }
+      .cc-omni-account-face { font-size: 1.2rem; font-weight: 800; line-height: 1; }
+      .cc-omni-account img { width: 100%; height: 100%; object-fit: cover; }
+      @media (max-width: 420px) {
+        .cc-omni-toplink { padding: 0 6px; gap: 6px; font-size: 0.86rem; }
+        .cc-omni-topnav { gap: 0; }
       }
       .cc-omni-btn {
         background: transparent;
@@ -1170,6 +1263,38 @@
     overlay.innerHTML = `
       <div id="ccOmniModal">
         <div class="cc-omni-top">
+          <nav class="cc-omni-topnav" aria-label="Szybki dostęp">
+            <a class="cc-omni-toplink" href="/mess">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5A3.5 3.5 0 0 1 6.5 2h6A3.5 3.5 0 0 1 16 5.5v3A3.5 3.5 0 0 1 12.5 12H8l-3.5 3v-3.2A3.5 3.5 0 0 1 3 8.5Z"/><path d="M18 8.2a3.5 3.5 0 0 1 3 3.5v2.8a3.5 3.5 0 0 1-2 3.2V21l-3.4-2.8H12a3.5 3.5 0 0 1-3.2-2h3.7A5.5 5.5 0 0 0 18 10.7Z"/></svg>
+              <span>Czat</span>
+            </a>
+            <a class="cc-omni-toplink" href="/news">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h13v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8h3"/><path d="M7 4v14M11 8h5M11 12h5M11 16h5"/></svg>
+              <span>Nowości</span>
+            </a>
+            <div class="cc-omni-apps-wrap">
+              <button type="button" id="ccOmniApps" class="cc-omni-btn cc-omni-apps-btn" aria-label="Wszystko: aplikacje Christian Culture" aria-expanded="false" aria-controls="ccOmniAppsMenu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="5" height="5" rx="1.2"/><rect x="9.5" y="5" width="5" height="5" rx="1.2"/><rect x="16" y="5" width="5" height="5" rx="1.2"/><rect x="3" y="14" width="5" height="5" rx="1.2"/><rect x="9.5" y="14" width="5" height="5" rx="1.2"/><rect x="16" y="14" width="5" height="5" rx="1.2"/></svg>
+              </button>
+              <div id="ccOmniAppsMenu" class="cc-omni-apps" hidden>
+                <p class="cc-omni-apps-title">Aplikacje Christian Culture</p>
+                <div class="cc-omni-apps-grid">
+                  <a href="/kanaly"><span>📺</span>Kanały</a>
+                  <a href="/news"><span>📰</span>Portal CCN</a>
+                  <a href="/podcasty"><span>🎙️</span>Podcasty</a>
+                  <a href="/akademia"><span>📖</span>Akademia</a>
+                  <a href="/player"><span>📻</span>Radio</a>
+                  <a href="/lumina"><span>👥</span>LUMINA</a>
+                  <a href="/mess"><span>💬</span>LUMI Mess</a>
+                  <a href="/mapa"><span>🗺️</span>Mapa</a>
+                  <a href="/wspieraj"><span>🤍</span>Wspieraj</a>
+                </div>
+              </div>
+            </div>
+            <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA">
+              <span class="cc-omni-account-face" aria-hidden="true">G</span>
+            </a>
+          </nav>
           <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1243,6 +1368,45 @@
     });
 
     closeBtn.addEventListener('click', closeSearch);
+
+    // „Wszystko”: menu aplikacji ekosystemu
+    const appsBtn = document.getElementById('ccOmniApps');
+    const appsMenu = document.getElementById('ccOmniAppsMenu');
+    const setApps = (open) => { appsMenu.hidden = !open; appsBtn.setAttribute('aria-expanded', String(open)); };
+    appsBtn.addEventListener('click', (e) => { e.stopPropagation(); setApps(appsMenu.hidden); });
+    overlay.addEventListener('click', (e) => { if (!appsMenu.hidden && !e.target.closest('.cc-omni-apps-wrap')) setApps(false); });
+    overlay.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !appsMenu.hidden) { e.stopPropagation(); setApps(false); appsBtn.focus(); } }, true);
+
+    // Logowanie Google — LUMINA: zalogowany widzi swój inicjał/zdjęcie, niezalogowany loguje się przez Google
+    const account = document.getElementById('ccOmniAccount');
+    let session = null;
+    try {
+      if (localStorage.getItem('lumina_user_session') === 'active') {
+        const user = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
+        if (user && (user.uid || user.email)) session = user;
+      }
+    } catch (_) {}
+    if (session) {
+      const name = session.displayName || (session.email ? session.email.split('@')[0] : 'LUMINA');
+      account.href = '/lumina';
+      account.setAttribute('aria-label', 'Twoje konto LUMINA: ' + name);
+      if (session.photoURL && /^https:\/\//.test(session.photoURL)) {
+        const img = document.createElement('img');
+        img.src = session.photoURL;
+        img.alt = '';
+        img.referrerPolicy = 'no-referrer';
+        account.replaceChildren(img);
+      } else {
+        account.querySelector('.cc-omni-account-face').textContent = name.trim().charAt(0).toUpperCase() || 'C';
+      }
+    } else {
+      account.addEventListener('click', (e) => {
+        if (typeof window.ccLoginWithGoogle === 'function') {
+          e.preventDefault();
+          window.ccLoginWithGoogle(location.pathname + location.search);
+        }
+      });
+    }
 
     clearBtn.addEventListener('click', () => {
       input.value = '';
