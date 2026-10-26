@@ -750,7 +750,7 @@
         top: calc(100% + 10px);
         z-index: 2;
         width: 320px;
-        max-height: calc(100vh - 96px);
+        max-height: calc(100vh - 160px); /* kończy się nad dolną belką */
         overflow-y: auto;
         overscroll-behavior: contain;
         padding: 16px 14px 14px;
@@ -856,7 +856,7 @@
       .cc-omni-account-face { font-size: 1.2rem; font-weight: 800; line-height: 1; }
       .cc-omni-account img { width: 100%; height: 100%; object-fit: cover; }
       @media (max-width: 640px) {
-        .cc-omni-apps { position: fixed; left: 16px; right: 16px; top: calc(max(env(safe-area-inset-top), 12px) + 56px); width: auto; }
+        .cc-omni-apps { position: fixed; left: 16px; right: 16px; top: calc(max(env(safe-area-inset-top), 12px) + 56px); bottom: calc(max(env(safe-area-inset-bottom), 8px) + 64px); max-height: none; width: auto; }
       }
       @media (max-width: 420px) {
         .cc-omni-toplink { padding: 0 6px; gap: 6px; font-size: 0.86rem; }
