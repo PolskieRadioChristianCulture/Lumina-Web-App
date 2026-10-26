@@ -867,7 +867,6 @@
       .cc-omni-engine:hover, .cc-omni-engine:focus-visible { opacity: 1; }
       .cc-omni-engine[aria-pressed="true"] { opacity: 1; background: #e8f0fe; box-shadow: inset 0 0 0 1px #4285F4; }
       .cc-omni-field.cc-engine-google { border-color: #4285F4; box-shadow: 0 8px 30px rgba(66, 133, 244, 0.35); }
-      #ccOmniModal:has(.cc-engine-google) .cc-omni-filters { display: none; }
       .cc-omni-google-go {
         display: flex;
         align-items: center;
@@ -1394,7 +1393,7 @@
               </div>
             </div>
             <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA">
-              <span class="cc-omni-account-face" aria-hidden="true">G</span>
+              <span class="cc-omni-account-face" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
             </a>
           </nav>
           <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę">
