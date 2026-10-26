@@ -1751,6 +1751,11 @@ export default {
       return Response.redirect(redirectUrl.toString(), 301);
     }
 
+    if (/^\/(wizytówki|wizytowki|katalog-wizytowek|katalog-wizytówek)\/?$/i.test(decodedP)) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/wizytowki/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
     if (decodedP === '/wizytówka' || decodedP === '/wizytowka') {
       const targetUrl = new URL(request.url);
       targetUrl.pathname = '/wizytowka/';

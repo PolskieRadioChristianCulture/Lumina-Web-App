@@ -233,6 +233,14 @@ const CONTEXT_GUIDES = {
 // --- 2. GŁÓWNE PLATFORMY I MODUŁY EKOSYSTEMU ---
 const CORE_PROJECTS = [
 {
+  title: "Wizytówki EkoCC — Katalog Wszystkich Wizytówek Christian Culture",
+  category: "LUMINA i społeczność",
+  url: "https://polskieradio.cc/wizytowki",
+  description: "Centralny katalog wszystkich 23 wizytówek ekosystemu Christian Culture: Kąciki Ewangelizacyjne (/Żaneta, /Ewa, /CezaryRogowski), służby, projekty z wartościami i profile społeczności LUMINA.",
+  tags: ["wizytówki", "wizytowki", "wizytówka", "wizytowka", "katalog wizytówek", "kącik ewangelizacyjny", "profile", "służby", "ogłoszenia"],
+  featured: true
+},
+{
   title: "Pobierz — Biblioteka Plików Christian Culture",
   category: "Narzędzia i misja",
   url: "https://polskieradio.cc/pobierz",
