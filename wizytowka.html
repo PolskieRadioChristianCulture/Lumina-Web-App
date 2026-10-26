@@ -183,6 +183,18 @@ p { margin: 0; }
 .arch-big img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.6s ease; }
 .arch-big img.on { opacity: 1; }
 
+/* Film powitalny: odtwarzacz ładowany dopiero na życzenie */
+.welcome-video { padding: var(--gap) var(--margin) 0; }
+.welcome-video h2 { font-size: var(--s-h2); }
+.welcome-video p { margin-top: 16px; max-width: 48ch; color: var(--muted); }
+.welcome-video-frame { margin-top: 28px; aspect-ratio: 16 / 9; background: var(--ground-2); overflow: hidden; }
+.welcome-video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.welcome-video-load { position: relative; display: grid; place-items: center; width: 100%; height: 100%; padding: 0; border: 0; background: var(--ground-2); color: var(--ink); cursor: pointer; }
+.welcome-video-load img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.welcome-video-load span { position: relative; display: inline-flex; align-items: center; min-height: 48px; padding: 12px 22px; background: #0b0b0b; color: #f5efdf; font: 600 16px/1.4 var(--text); border: 1px solid var(--accent); }
+.welcome-video-load:focus-visible { outline: 3px solid var(--accent); outline-offset: -5px; }
+.welcome-video-source { display: inline-flex; align-items: center; min-height: 44px; margin-top: 8px; }
+
 /* TELEWIZJA: szeroki łuk po lewej */
 .tv { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 64px); padding: var(--gap) var(--margin) 0; align-items: center; }
 .tv-frame { border-radius: 50% 50% 0 0 / 34% 34% 0 0; overflow: hidden; aspect-ratio: 16 / 10; }
@@ -462,6 +474,19 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
     </div>
   </section>
 
+  <section class="welcome-video" id="wideo" aria-labelledby="wideo-h">
+    <h2 id="wideo-h">Dobrze, że jesteś</h2>
+    <p>Piosenka o wartości człowieka i Bożej miłości.</p>
+    <div class="welcome-video-frame" data-welcome-video>
+      <button class="welcome-video-load" type="button" data-load-welcome-video aria-label="Wczytaj odtwarzacz piosenki Dobrze, że jesteś">
+        <img src="https://i.ytimg.com/vi/Qx-WxB4h6zM/hqdefault.jpg" width="480" height="360" alt="" loading="lazy" decoding="async">
+        <span>Wczytaj wideo · YouTube</span>
+      </button>
+    </div>
+    <p>Odtwarzacz YouTube wczyta się po kliknięciu. Wideo uruchomisz przyciskiem odtwarzania.</p>
+    <a class="welcome-video-source" href="https://youtu.be/Qx-WxB4h6zM" target="_blank" rel="noopener noreferrer">Otwórz w YouTube <span class="sr-only"> (w nowej karcie)</span></a>
+  </section>
+
   <section class="akcja" id="akcja" aria-labelledby="akcja-h">
     <img class="akcja-img rise" src="/wizytowka/img/akcja-wide.webp" width="1200" height="784" alt="Baner akcji #antyHALLOWEEN: my świętujemy inaczej" loading="lazy">
     <div class="akcja-text">
@@ -692,6 +717,19 @@ footer { background: var(--accent); color: var(--accent-ink); padding: 0 var(--m
   document.addEventListener('click', function (e) {
     var el = e.target.closest('[data-track]');
     if (el) track('wizytowka_' + el.dataset.track, { drzwi: el.dataset.track, miejsce: el.dataset.place || '' });
+  });
+
+  // Osobny film powitalny nie pobiera odtwarzacza przed kliknięciem.
+  var welcomeVideoButton = document.querySelector('[data-load-welcome-video]');
+  if (welcomeVideoButton) welcomeVideoButton.addEventListener('click', function () {
+    var frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/Qx-WxB4h6zM?rel=0';
+    frame.title = 'Dobrze, że jesteś — piosenka o wartości człowieka i Bożej miłości';
+    frame.allow = 'encrypted-media; picture-in-picture; fullscreen';
+    frame.allowFullscreen = true;
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    welcomeVideoButton.replaceWith(frame);
+    frame.focus();
   });
 
   // Zgoda: wspólny klucz z LUMINA
