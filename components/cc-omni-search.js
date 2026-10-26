@@ -719,10 +719,11 @@
         transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
       }
       .cc-omni-apps-btn .cc-i-apps {
-        /* pierścień siatki zajmuje ok. 86% pliku (reszta to poświata) — 51 px daje widoczne koło 44 px jak PLAY i konto (L0 26.10.2026) */
-        width: 51px;
-        height: 51px;
-        margin: -3.5px;
+        /* koło siatki = 86/96 pliku, jak PLAY — 49 px daje widoczne koło 44 px, równe z PLAY i kontem (pomiar 26.10.2026) */
+        width: 49px;
+        height: 49px;
+        margin: -2.5px;
+        flex-shrink: 0;
         border-radius: 50%;
         display: block;
         pointer-events: none;
@@ -741,7 +742,7 @@
       .ccw-fallback ~ #ccOmniOverlay #ccOmniClose {
         display: none !important;
       }
-      .cc-omni-apps-wrap { position: relative; }
+      .cc-omni-apps-wrap { position: relative; display: flex; align-items: center; height: 44px; } /* blok 52 px podnosił siatkę o 3,8 px */
       .cc-omni-apps {
         position: absolute;
         right: 0;
@@ -1434,7 +1435,7 @@
         flex-shrink: 0;
       }
       /* grafika PLAY/STOP zajmuje 92% pliku — 48 px daje widoczne koło 44 px; bez dodatkowego tła i obwódki */
-      .cc-omni-radio img { width: 48px; height: 48px; margin: -2px; border-radius: 50%; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease; }
+      .cc-omni-radio img { width: 49px; height: 49px; margin: -2.5px; flex-shrink: 0; border-radius: 50%; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease; }
       .cc-omni-radio:hover img, .cc-omni-radio:focus-visible img { transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(255, 175, 50, 0.85)); }
       .cc-omni-radio:focus-visible { outline: none; }
       .cc-omni-radio:active img { transform: scale(0.95); }
