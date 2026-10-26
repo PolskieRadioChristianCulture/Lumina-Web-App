@@ -38,6 +38,21 @@
   let currentResults = [];
   let currentQuery = '';
   let activeFilter = 'all';
+  // Tryb wyszukiwania: 'cc' (ekosystem Christian Culture) lub 'google' (cały internet) — zapamiętany na urządzeniu (L0 26.10.2026)
+  const ENGINE_KEY = 'cc_search_engine';
+  let searchEngine = 'cc';
+  try { if (localStorage.getItem(ENGINE_KEY) === 'google') searchEngine = 'google'; } catch (_) {}
+  const googleUrl = (q) => 'https://www.google.com/search?q=' + encodeURIComponent(q);
+
+  // Wyszukiwarka do ustawienia jako domyślna w przeglądarce (OpenSearch)
+  if (!document.querySelector('link[rel="search"][type="application/opensearchdescription+xml"]')) {
+    const os = document.createElement('link');
+    os.rel = 'search';
+    os.type = 'application/opensearchdescription+xml';
+    os.title = 'Christian Culture';
+    os.href = '/opensearch.xml';
+    document.head.appendChild(os);
+  }
 
   // 3. Normalizacja polskich znaków i tekstu
   function normalizeStr(str) {
@@ -846,6 +861,38 @@
       #ccOmniMic.cc-listening {
         color: #b3261e;
       }
+      /* Przełącznik G (Google) — aktywny ma podświetlenie, pole ma niebiesko-pomarańczową ramkę */
+      .cc-omni-engine { opacity: 0.55; transition: opacity 0.15s, background-color 0.15s; }
+      .cc-omni-engine:hover, .cc-omni-engine:focus-visible { opacity: 1; }
+      .cc-omni-engine[aria-pressed="true"] { opacity: 1; background: #e8f0fe; box-shadow: inset 0 0 0 1px #4285F4; }
+      .cc-omni-field.cc-engine-google { border-color: #4285F4; box-shadow: 0 8px 30px rgba(66, 133, 244, 0.35); }
+      #ccOmniModal:has(.cc-engine-google) .cc-omni-filters { display: none; }
+      .cc-omni-google-go {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 14px;
+        margin: 0 -12px;
+        border-radius: 12px;
+        background: rgba(66, 133, 244, 0.14);
+        color: var(--omni-ink);
+        text-decoration: none;
+        min-height: 56px;
+      }
+      .cc-omni-google-go:hover, .cc-omni-google-go:focus-visible { background: rgba(66, 133, 244, 0.24); outline: none; }
+      .cc-omni-google-go b { display: block; font-size: 1.05rem; font-weight: 600; color: #fff; }
+      .cc-omni-google-go small { display: block; font-size: 0.8rem; color: var(--omni-muted); }
+      .cc-omni-google-g {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #fff;
+        color: #4285F4;
+        font: 800 1.2rem/36px Arial, sans-serif;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .cc-omni-google-sub { margin: 6px 0 0; font-size: 0.78rem; color: var(--omni-muted); text-transform: uppercase; letter-spacing: 0.05em; }
       /* Strona startowa: karty, skróty, kontynuacja */
       .cc-omni-home {
         display: flex;
@@ -1372,6 +1419,9 @@
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
+          <button type="button" id="ccOmniEngine" class="cc-omni-btn cc-omni-engine" aria-pressed="false" aria-label="Szukaj w całym internecie przez Google" title="Przełącz: Christian Culture / Google">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.5-.2-2.2H12v4.3h6a5.1 5.1 0 0 1-2.2 3.3v2.8h3.6c2-1.9 3.2-4.7 3.2-8.2Z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.4-2.7l-3.6-2.8c-1 .7-2.3 1.1-3.8 1.1-2.9 0-5.4-2-6.3-4.6H2v2.9A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.7 14a6.6 6.6 0 0 1 0-4.2V7H2a11 11 0 0 0 0 10l3.7-3Z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.3 1.7l3.2-3.2A11 11 0 0 0 2 7l3.7 2.9C6.6 7.3 9.1 5.4 12 5.4Z"/></svg>
+          </button>
           <button type="button" id="ccOmniMic" class="cc-omni-btn" aria-label="Szukaj głosem" hidden>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="9" y="3" width="6" height="11" rx="3"></rect>
@@ -1480,6 +1530,25 @@
       canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
       return canvas.toDataURL('image/jpeg', 0.7);
     }
+
+    // Przełącznik G: Christian Culture ↔ Google (cały internet)
+    const engineBtn = document.getElementById('ccOmniEngine');
+    const field = overlay.querySelector('.cc-omni-field');
+    const applyEngine = () => {
+      const g = searchEngine === 'google';
+      engineBtn.setAttribute('aria-pressed', String(g));
+      engineBtn.setAttribute('aria-label', g ? 'Wróć do wyszukiwania w Christian Culture' : 'Szukaj w całym internecie przez Google');
+      field.classList.toggle('cc-engine-google', g);
+      input.placeholder = g ? 'Szukaj w Google…' : 'Zapytaj Christian Culture…';
+    };
+    applyEngine();
+    engineBtn.addEventListener('click', () => {
+      searchEngine = searchEngine === 'google' ? 'cc' : 'google';
+      try { localStorage.setItem(ENGINE_KEY, searchEngine); } catch (_) {}
+      applyEngine();
+      renderResults(input.value, activeFilter);
+      input.focus();
+    });
 
     // Skrót „Ulubione” rozwija listę ulubionych pod skrótami
     overlay.addEventListener('click', (e) => {
@@ -1607,7 +1676,8 @@
         items[activeIndex].click();
       } else {
         const val = document.getElementById('ccOmniInput').value.trim();
-        window.location.href = `/szukaj?q=${encodeURIComponent(val)}`;
+        if (searchEngine === 'google' && val) window.location.href = googleUrl(val);
+        else window.location.href = `/szukaj?q=${encodeURIComponent(val)}`;
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();
@@ -1645,6 +1715,16 @@
     activeIndex = -1;
 
     let html = '';
+
+    // Tryb Google: pierwszy wynik prowadzi do wyszukiwania w całym internecie, poniżej materiały CC
+    if (searchEngine === 'google') {
+      html += `
+        <a class="cc-omni-google-go" href="${escapeHtml(googleUrl(query))}">
+          <span class="cc-omni-google-g" aria-hidden="true">G</span>
+          <span><b>Szukaj „${escapeHtml(query)}” w Google</b><small>Naciśnij Enter, aby otworzyć wyniki z całego internetu</small></span>
+        </a>
+        <p class="cc-omni-google-sub">Z ekosystemu Christian Culture:</p>`;
+    }
 
     // 1. Jeśli jest dopasowany przewodnik tematyczny
     if (guide) {
@@ -1979,7 +2059,12 @@
   // Uruchomienie po załadowaniu DOM
   const startPage = () => {
     wireDomSearchElements();
-    if (isStandalonePage) openSearch(new URLSearchParams(location.search).get('q') || '');
+    if (isStandalonePage) {
+      const q = new URLSearchParams(location.search).get('q') || '';
+      // Wyszukiwarka domyślna przeglądarki w trybie Google: od razu wyniki z całego internetu
+      if (q && searchEngine === 'google') { location.replace(googleUrl(q)); return; }
+      openSearch(q);
+    }
   };
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startPage);

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>Christian Culture</ShortName>
+  <Description>Wyszukiwarka ekosystemu Christian Culture z przełącznikiem Google</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Language>pl-PL</Language>
+  <Image width="64" height="64" type="image/png">https://polskieradio.cc/icon.png</Image>
+  <Url type="text/html" method="get" template="https://polskieradio.cc/wyszukiwarka?q={searchTerms}"/>
+  <moz:SearchForm>https://polskieradio.cc/wyszukiwarka</moz:SearchForm>
+</OpenSearchDescription>
