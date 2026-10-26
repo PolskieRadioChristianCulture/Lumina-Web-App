@@ -942,6 +942,10 @@
         transform: scale(1.05);
       }
       .cc-omni-shortcut:focus-visible { outline: none; }
+      button.cc-omni-shortcut { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 0.78rem; font-weight: 500; }
+      button.cc-omni-shortcut[aria-expanded="true"] span:first-child { background: var(--omni-gold); color: #fff; }
+      .cc-omni-continue[hidden] { display: none; }
+      .cc-omni-favs-empty { margin: 0; padding: 16px 18px; font-size: 0.88rem; line-height: 1.5; color: var(--omni-paper-muted); }
       .cc-omni-continue {
         width: 100%;
         background: var(--omni-paper);
@@ -1477,6 +1481,17 @@
       return canvas.toDataURL('image/jpeg', 0.7);
     }
 
+    // Skrót „Ulubione” rozwija listę ulubionych pod skrótami
+    overlay.addEventListener('click', (e) => {
+      const favBtn = e.target.closest('[data-omni-action="favorites"]');
+      if (!favBtn) return;
+      const section = document.getElementById('ccOmniFavs');
+      if (!section) return;
+      section.hidden = !section.hidden;
+      favBtn.setAttribute('aria-expanded', String(!section.hidden));
+      if (!section.hidden) section.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+
     // „Wszystko”: menu aplikacji ekosystemu
     const appsBtn = document.getElementById('ccOmniApps');
     const appsMenu = document.getElementById('ccOmniAppsMenu');
@@ -1723,7 +1738,7 @@
     home: '<path d="m3 10 9-7 9 7v11h-6v-7H9v7H3Z"/>',
     radio: '<rect x="3" y="8" width="18" height="12" rx="2"/><circle cx="15.5" cy="14" r="2.5"/><path d="M7 12h4M7 16h4M7 8l9-5"/>',
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-    bible: '<path d="M5 4a2 2 0 0 1 2-2h12v18H7a2 2 0 0 0-2 2Z"/><path d="M5 20V4M12 6v8M9 9h6"/>'
+    star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/>'
   };
   const svgIcon = (name, size = 22) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${HOME_ICONS[name] || ''}</svg>`;
   const HOME_SHORTCUTS = [
@@ -1733,7 +1748,7 @@
     { label: 'Podcasty', url: '/podcasty', icon: 'mic' },
     { label: 'Portal CCN', url: '/news', icon: 'news' },
     { label: 'LUMINA', url: '/lumina', icon: 'people' },
-    { label: 'Biblia', url: '/mojabiblia', icon: 'bible' },
+    { label: 'Ulubione', action: 'favorites', icon: 'star' },
     { label: 'Strona główna', url: '/', icon: 'home' }
   ];
   function visitedLabel(iso) {
@@ -1753,8 +1768,21 @@
         <a class="cc-omni-card" href="/akademia#kurscodzienny"><span class="cc-omni-card-icon">${svgIcon('book', 16)}</span><span><b>Dzisiejsza lekcja</b><small>Kurs Codzienny · Z Biblią za Pan Brat</small></span></a>
         <a class="cc-omni-card" href="/player"><span class="cc-omni-card-icon">${svgIcon('radio', 16)}</span><span><b>Radio i nagrania CC</b><small>Muzyka, Słowo Boże i audio</small></span></a>
       </div>`;
-    const shortcuts = '<nav class="cc-omni-shortcuts" aria-label="Skróty ekosystemu">' + HOME_SHORTCUTS.map(sc =>
-      `<a class="cc-omni-shortcut" href="${sc.url}"${sc.external ? ' target="_blank" rel="noopener"' : ''}><span>${svgIcon(sc.icon)}</span><span>${escapeHtml(sc.label)}</span></a>`).join('') + '</nav>';
+    const shortcuts = '<nav class="cc-omni-shortcuts" aria-label="Skróty ekosystemu">' + HOME_SHORTCUTS.map(sc => sc.action
+      ? `<button type="button" class="cc-omni-shortcut" data-omni-action="${sc.action}" aria-expanded="false" aria-controls="ccOmniFavs"><span>${svgIcon(sc.icon)}</span><span>${escapeHtml(sc.label)}</span></button>`
+      : `<a class="cc-omni-shortcut" href="${sc.url}"${sc.external ? ' target="_blank" rel="noopener"' : ''}><span>${svgIcon(sc.icon)}</span><span>${escapeHtml(sc.label)}</span></a>`).join('') + '</nav>';
+    // Ulubione zapisane gwiazdką na stronach CC (cc-favorites.js, localStorage) — rozwijane skrótem „Ulubione”
+    let favs = [];
+    try { favs = JSON.parse(localStorage.getItem('cc_user_favorites') || '[]'); } catch (_) {}
+    favs = (Array.isArray(favs) ? favs : []).filter(f => f && f.url && f.title).slice(0, 8);
+    const favList = favs.length
+      ? `<div class="cc-omni-continue-list">${favs.map(f => `<a class="cc-omni-continue-item" href="${escapeHtml(f.url)}"><span>${escapeHtml(f.icon || '★')}</span><span><b>${escapeHtml(f.title)}</b><small>${escapeHtml(f.category || 'Ulubione')}</small></span></a>`).join('')}</div>`
+      : '<p class="cc-omni-favs-empty">Nie masz jeszcze ulubionych. Na dowolnej stronie Christian Culture kliknij gwiazdkę ☆, a strona pojawi się tutaj.</p>';
+    const favSection = `
+      <section class="cc-omni-continue" id="ccOmniFavs" aria-label="Ulubione" hidden>
+        <div class="cc-omni-continue-head">${svgIcon('star', 16)}<span>Twoje ulubione</span></div>
+        ${favList}
+      </section>`;
     let history = [];
     try { history = JSON.parse(localStorage.getItem('cc_user_visit_history') || '[]'); } catch (_) {}
     history = (Array.isArray(history) ? history : []).filter(h => h && h.url && h.title && h.url !== location.pathname).slice(0, 4);
@@ -1763,7 +1791,7 @@
         <div class="cc-omni-continue-head">${svgIcon('clock', 16)}<span>Ostatnio odwiedzane</span></div>
         <div class="cc-omni-continue-list">${history.map(h => `<a class="cc-omni-continue-item" href="${escapeHtml(h.url)}"><span>${escapeHtml(h.icon || '✨')}</span><span><b>${escapeHtml(h.title)}</b><small>${escapeHtml(visitedLabel(h.visitedAt))}</small></span></a>`).join('')}</div>
       </section>` : '';
-    return '<div class="cc-omni-home">' + cards + shortcuts + cont + '</div>';
+    return '<div class="cc-omni-home">' + cards + shortcuts + favSection + cont + '</div>';
   }
 
   // 8. Otwieranie i zamykanie wyszukiwarki
