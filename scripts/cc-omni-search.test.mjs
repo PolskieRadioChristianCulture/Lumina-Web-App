@@ -358,6 +358,13 @@ test('cc-omni-search.js: Faza 3 — Fuzzy Search & Typo Auto-Correction and Mobi
   assert.ok(omniSearchCode.includes('.cc-scripture-fuzzy-hint'), 'defines .cc-scripture-fuzzy-hint');
   assert.ok(omniSearchCode.includes('overscroll-behavior-y: contain'), 'defines mobile overscroll contain');
   assert.ok(omniSearchCode.includes('safe-area-inset-bottom'), 'respects mobile notch and bottom safe area');
+
+  // 4. Footer attribution contract (Your Imagination Studio)
+  assert.ok(omniSearchCode.includes('.cc-omni-footer-center'), 'defines .cc-omni-footer-center');
+  assert.ok(omniSearchCode.includes('.cc-omni-yis-link'), 'defines .cc-omni-yis-link');
+  assert.ok(omniSearchCode.includes('Powered by'), 'contains Powered by');
+  assert.ok(omniSearchCode.includes('https://polskieradio.cc/yis'), 'links to Your Imagination Studio https://polskieradio.cc/yis');
+  assert.ok(omniSearchCode.includes('dla Christian Culture'), 'contains dla Christian Culture');
 });
 
 
