@@ -171,5 +171,19 @@ test('cc-omni-search.js: VM execution of performSearch with synonyms, typos, and
   assert.ok(r7.items.some(i => i.url.includes('/karaoke') || i.url.includes('/BiblijneUwielbienie')), 'śpiewnik finds Karaoke / BiblijneUwielbienie');
 });
 
+test('cc-omni-search.js: Command Center World-Class UI contracts (recents, tags, 4 pillars, no veil)', () => {
+  assert.ok(omniSearchCode.includes('getRecentSearches: getRecentSearches'), 'exports getRecentSearches');
+  assert.ok(omniSearchCode.includes('saveRecentSearch: saveRecentSearch'), 'exports saveRecentSearch');
+  assert.ok(omniSearchCode.includes('removeRecentSearch: removeRecentSearch'), 'exports removeRecentSearch');
+  assert.ok(omniSearchCode.includes('clearRecentSearches: clearRecentSearches'), 'exports clearRecentSearches');
+  assert.ok(!omniSearchCode.includes('#ccOmniOverlay.cc-veiled .cc-omni-cards'), 'veil is removed from standalone search');
+  assert.ok(omniSearchCode.includes('Rozważanie „Dobrze, że jesteś”'), 'pillar 1: Dobrze że jesteś exists');
+  assert.ok(omniSearchCode.includes('Lekcja Dnia: Z Biblią za Pan Brat'), 'pillar 2: Akademia / Z Biblią za Pan Brat exists');
+  assert.ok(omniSearchCode.includes('APOKALIPSA — Księga Nadziei'), 'pillar 3: Podcast Apokalipsa exists');
+  assert.ok(omniSearchCode.includes('Radio Christian Culture & Player'), 'pillar 4: Radio CC & Player exists');
+  assert.ok(omniSearchCode.includes('#Apokalipsa') && omniSearchCode.includes('#KursCodzienny'), 'popular topic tags exist');
+  assert.ok(omniSearchCode.includes('startPlaceholderRotation'), 'rotating placeholder logic exists');
+});
+
 
 

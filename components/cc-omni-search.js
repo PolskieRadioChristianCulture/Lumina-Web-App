@@ -44,6 +44,61 @@
   try { if (localStorage.getItem(ENGINE_KEY) === 'google') searchEngine = 'google'; } catch (_) {}
   const googleUrl = (q) => 'https://www.google.com/search?q=' + encodeURIComponent(q);
 
+  const RECENTS_KEY = 'cc_recent_searches';
+  function getRecentSearches() {
+    try {
+      const list = JSON.parse(localStorage.getItem(RECENTS_KEY) || '[]');
+      return (Array.isArray(list) ? list : []).filter(item => typeof item === 'string' && item.trim().length > 0).slice(0, 8);
+    } catch (_) {
+      return [];
+    }
+  }
+  function saveRecentSearch(query) {
+    const q = String(query || '').trim();
+    if (!q || q.length < 2) return;
+    try {
+      const current = getRecentSearches().filter(item => item.toLowerCase() !== q.toLowerCase());
+      current.unshift(q);
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(current.slice(0, 10)));
+    } catch (_) {}
+  }
+  function removeRecentSearch(query) {
+    const q = String(query || '').trim().toLowerCase();
+    try {
+      const current = getRecentSearches().filter(item => item.toLowerCase() !== q);
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(current));
+    } catch (_) {}
+  }
+  function clearRecentSearches() {
+    try {
+      localStorage.removeItem(RECENTS_KEY);
+    } catch (_) {}
+  }
+
+  const PLACEHOLDERS = [
+    'Zapytaj Christian Culture…',
+    'Szukaj: np. Apokalipsa - Księga Nadziei',
+    'Szukaj: np. Rozważanie Dobrze że jesteś',
+    'Szukaj: np. Lekcja Kursu Codziennego',
+    'Szukaj: np. MojaBiblia Jan 3:16',
+    'Szukaj: np. Muzyka uwielbienia i radio',
+    'Szukaj: np. LUMINA społeczność',
+    'Szukaj: np. Modlitwa za Polskę',
+    'Szukaj: np. Wizytówki ekosystemu'
+  ];
+  let placeholderInterval = null;
+  function startPlaceholderRotation(input) {
+    if (!input || placeholderInterval) return;
+    let idx = 0;
+    placeholderInterval = setInterval(() => {
+      if (searchEngine === 'google') return;
+      if (document.activeElement === input || (input.value && input.value.trim())) return;
+      idx = (idx + 1) % PLACEHOLDERS.length;
+      input.placeholder = PLACEHOLDERS[idx];
+    }, 3500);
+  }
+
+
   // Wyszukiwarka do ustawienia jako domyślna w przeglądarce (OpenSearch)
   if (typeof document !== 'undefined' && document.head && typeof document.querySelector === 'function'
     && !document.querySelector('link[rel="search"][type="application/opensearchdescription+xml"]')) {
@@ -983,6 +1038,303 @@
         flex-shrink: 0;
       }
       .cc-omni-google-sub { margin: 6px 0 0; font-size: 0.78rem; color: var(--omni-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+      /* ── Nowe style: Historia, Tagi, Filary i Skróty (Spotlight / Raycast Standard) ── */
+      .cc-omni-recents-bar {
+        width: 100%;
+        max-width: 820px;
+        background: rgba(18, 22, 36, 0.75);
+        border: 1px solid rgba(196, 163, 90, 0.25);
+        border-radius: 14px;
+        padding: 10px 14px;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .cc-omni-recents-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.78rem;
+        color: var(--omni-gold);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .cc-omni-recents-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cc-omni-recents-clear {
+        background: transparent;
+        border: 0;
+        color: var(--omni-muted);
+        font: 500 0.74rem inherit;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: color 0.15s, background 0.15s;
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .cc-omni-recents-clear:hover {
+        color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.12);
+      }
+      .cc-omni-recents-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .cc-omni-recent-pill {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        padding: 0 4px 0 12px;
+        min-height: 36px;
+        transition: all 0.15s ease;
+      }
+      .cc-omni-recent-pill:hover {
+        background: rgba(196, 163, 90, 0.15);
+        border-color: rgba(196, 163, 90, 0.45);
+      }
+      .cc-omni-recent-query {
+        background: transparent;
+        border: 0;
+        color: var(--omni-ink);
+        font: 500 0.82rem inherit;
+        cursor: pointer;
+        padding: 6px 4px 6px 0;
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .cc-omni-recent-query:hover {
+        color: var(--omni-gold);
+      }
+      .cc-omni-recent-del {
+        background: transparent;
+        border: 0;
+        color: var(--omni-muted);
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 4px 6px;
+        border-radius: 50%;
+        line-height: 1;
+        min-height: 28px;
+        min-width: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.15s, background 0.15s;
+      }
+      .cc-omni-recent-del:hover {
+        color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.18);
+      }
+      .cc-omni-tags-bar {
+        width: 100%;
+        max-width: 820px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 10px;
+        justify-content: center;
+      }
+      .cc-omni-tags-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--omni-gold);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .cc-omni-tags-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+      .cc-omni-tag-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 14px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: var(--omni-ink);
+        font: 600 0.82rem inherit;
+        cursor: pointer;
+        transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+        text-decoration: none;
+        touch-action: manipulation;
+      }
+      .cc-omni-tag-chip:hover, .cc-omni-tag-chip:focus-visible {
+        background: rgba(196, 163, 90, 0.18);
+        border-color: var(--omni-gold);
+        color: var(--omni-gold);
+        transform: translateY(-1px);
+        outline: none;
+      }
+      .cc-omni-featured-section {
+        width: 100%;
+        max-width: 820px;
+      }
+      .cc-omni-featured-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding: 0 4px;
+      }
+      .cc-omni-featured-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--omni-gold);
+      }
+      .cc-omni-featured-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+      }
+      @media (min-width: 641px) {
+        .cc-omni-featured-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      .cc-omni-feat-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px 16px;
+        min-height: 84px;
+        background: rgba(14, 18, 30, 0.82);
+        border: 1px solid rgba(196, 163, 90, 0.25);
+        border-radius: 16px;
+        text-decoration: none;
+        color: var(--omni-ink);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+      }
+      .cc-omni-feat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(196, 163, 90, 0.08) 0%, transparent 60%);
+        pointer-events: none;
+      }
+      .cc-omni-feat-card:hover, .cc-omni-feat-card:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--omni-gold);
+        background: rgba(22, 28, 46, 0.92);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 16px rgba(196, 163, 90, 0.25);
+        outline: none;
+      }
+      .cc-omni-feat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.2), rgba(196, 163, 90, 0.3));
+        border: 1px solid rgba(255, 122, 0, 0.4);
+        color: #FF7A00;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      .cc-omni-feat-card:hover .cc-omni-feat-icon {
+        border-color: var(--omni-gold);
+        color: var(--omni-gold);
+        transform: scale(1.05);
+      }
+      .cc-omni-feat-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .cc-omni-feat-tag {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #FF7A00;
+        margin-bottom: 3px;
+      }
+      .cc-omni-feat-title {
+        display: block;
+        font-size: 0.98rem;
+        font-weight: 600;
+        line-height: 1.3;
+        color: #fff;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cc-omni-feat-card:hover .cc-omni-feat-title {
+        color: var(--omni-gold-light);
+      }
+      .cc-omni-feat-desc {
+        display: block;
+        font-size: 0.78rem;
+        color: var(--omni-muted);
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .cc-omni-feat-arrow {
+        color: var(--omni-muted);
+        font-size: 1rem;
+        align-self: center;
+        transition: transform 0.15s, color 0.15s;
+        flex-shrink: 0;
+      }
+      .cc-omni-feat-card:hover .cc-omni-feat-arrow {
+        transform: translateX(3px);
+        color: var(--omni-gold);
+      }
+      .cc-omni-pro-shortcuts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 18px;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.76rem;
+        color: rgba(243, 229, 200, 0.55);
+        margin-top: 6px;
+      }
+      .cc-omni-pro-shortcuts kbd {
+        display: inline-block;
+        padding: 2px 6px;
+        font-family: inherit;
+        font-size: 0.72rem;
+        font-weight: 600;
+        line-height: 1.2;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 4px;
+        color: var(--omni-gold);
+        margin-right: 4px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      }
+
       /* Strona startowa: karty, skróty, kontynuacja */
       .cc-omni-home {
         display: flex;
@@ -1511,24 +1863,7 @@
         .cc-omni-topnav .cc-omni-radio,
         .cc-omni-topnav .cc-omni-account { margin-left: 12px; }
       }
-      /* /wyszukiwarka: na starcie tylko tapeta, logo i pole; karty, skróty i „Ostatnio odwiedzane”
-         odsłaniają się kaskadowo po kliknięciu w tapetę lub dotknięciu ekranu (L0 26.10.2026) */
-      #ccOmniOverlay.cc-veiled .cc-omni-cards,
-      #ccOmniOverlay.cc-veiled .cc-omni-shortcuts,
-      #ccOmniOverlay.cc-veiled .cc-omni-continue { visibility: hidden; opacity: 0; }
-      #ccOmniOverlay.cc-revealing .cc-omni-card,
-      #ccOmniOverlay.cc-revealing .cc-omni-shortcut,
-      #ccOmniOverlay.cc-revealing .cc-omni-continue {
-        animation: ccOmniRise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-        animation-delay: var(--cc-d, 0ms);
-      }
-      @keyframes ccOmniRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-      @media (prefers-reduced-motion: reduce) {
-        #ccOmniOverlay, .cc-omni-shortcut span:first-child { transition: none; }
-        #ccOmniOverlay.cc-revealing .cc-omni-card,
-        #ccOmniOverlay.cc-revealing .cc-omni-shortcut,
-        #ccOmniOverlay.cc-revealing .cc-omni-continue { animation: none; }
-      }
+      /* /wyszukiwarka — pełna gotowość do natychmiastowego wyszukiwania (Spotlight/Raycast) */
 `;
     document.head.appendChild(style);
   }
@@ -1540,30 +1875,7 @@
     const overlay = document.createElement('div');
     overlay.id = 'ccOmniOverlay';
     if (isStandalonePage) {
-      overlay.classList.add('cc-standalone', 'cc-veiled');
-      // Mysz odsłania panele tylko kliknięciem w tapetę; dotyk i klawisz Tab — zawsze
-      const reveal = (e) => {
-        if (e.type === 'pointerdown' && e.pointerType === 'mouse' && e.target.closest('a, button, input, .cc-omni-apps')) return;
-        if (e.type === 'keydown' && e.key !== 'Tab') return;
-        overlay.removeEventListener('pointerdown', reveal);
-        overlay.removeEventListener('keydown', reveal);
-        let i = 0;
-        overlay.querySelectorAll('.cc-omni-card, .cc-omni-shortcut, .cc-omni-continue:not([hidden])')
-          .forEach(el => el.style.setProperty('--cc-d', (i++ * 60) + 'ms'));
-        // Klik kończący to samo dotknięcie nie może otworzyć skrótu, który właśnie wyłania się pod palcem
-        const revealedAt = Date.now();
-        const swallow = (ev) => {
-          if (Date.now() - revealedAt > 800) { overlay.removeEventListener('click', swallow, true); return; }
-          if (ev.target.closest('.cc-omni-home')) { ev.preventDefault(); ev.stopPropagation(); }
-          overlay.removeEventListener('click', swallow, true);
-        };
-        if (e.type === 'pointerdown') overlay.addEventListener('click', swallow, true);
-        overlay.classList.remove('cc-veiled');
-        overlay.classList.add('cc-revealing');
-        setTimeout(() => overlay.classList.remove('cc-revealing'), i * 60 + 700);
-      };
-      overlay.addEventListener('pointerdown', reveal);
-      overlay.addEventListener('keydown', reveal);
+      overlay.classList.add('cc-standalone');
     }
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
@@ -2231,15 +2543,96 @@ ${isStandalonePage ? '' : `
     return 'Odwiedzono ' + d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' });
   }
   function renderHome() {
-    const cards = `
-      <div class="cc-omni-cards">
-        <a class="cc-omni-card" href="/akademia#kurscodzienny"><span class="cc-omni-card-icon">${svgIcon('book', 16)}</span><span><b>Dzisiejsza lekcja</b><small>Kurs Codzienny · Z Biblią za Pan Brat</small></span></a>
-        <a class="cc-omni-card" href="/player"><span class="cc-omni-card-icon">${svgIcon('radio', 16)}</span><span><b>Radio i nagrania CC</b><small>Muzyka, Słowo Boże i audio</small></span></a>
+    // 1. Ostatnie wyszukiwania użytkownika
+    const recents = getRecentSearches();
+    const recentsHtml = recents.length ? `
+      <div class="cc-omni-recents-bar" role="region" aria-label="Ostatnie wyszukiwania">
+        <div class="cc-omni-recents-header">
+          <span class="cc-omni-recents-title">${svgIcon('clock', 14)} Ostatnie wyszukiwania</span>
+          <button type="button" class="cc-omni-recents-clear" data-omni-action="clear-recents" title="Wyczyść historię wyszukiwania">Wyczyść historię</button>
+        </div>
+        <div class="cc-omni-recents-pills">
+          ${recents.map(r => `
+            <span class="cc-omni-recent-pill">
+              <button type="button" class="cc-omni-recent-query" data-search-query="${escapeHtml(r)}">${escapeHtml(r)}</button>
+              <button type="button" class="cc-omni-recent-del" data-remove-query="${escapeHtml(r)}" aria-label="Usuń ${escapeHtml(r)} z historii">×</button>
+            </span>
+          `).join('')}
+        </div>
+      </div>` : '';
+
+    // 2. Popularne tematy / szybkie tagi
+    const tags = [
+      { label: '#Apokalipsa', query: 'Apokalipsa' },
+      { label: '#KursCodzienny', query: 'Kurs Codzienny' },
+      { label: '#WersetDnia', query: 'Werset Dnia' },
+      { label: '#DobrzeŻeJesteś', query: 'Dobrze, że jesteś' },
+      { label: '#Radio24/7', query: 'Radio CC' },
+      { label: '#Lumina', query: 'LUMINA' },
+      { label: '#Wizytówki', query: 'Wizytówki' },
+      { label: '#Modlitwa', query: 'Modlitwa' },
+      { label: '#Pomoc', query: 'Pomoc' }
+    ];
+    const tagsHtml = `
+      <div class="cc-omni-tags-bar" role="navigation" aria-label="Popularne tematy">
+        <span class="cc-omni-tags-label">${svgIcon('sparkle', 14)} Popularne tematy:</span>
+        <div class="cc-omni-tags-list">
+          ${tags.map(t => `<button type="button" class="cc-omni-tag-chip" data-search-query="${escapeHtml(t.query)}">${escapeHtml(t.label)}</button>`).join('')}
+        </div>
       </div>`;
+
+    // 3. 4 Kluczowe Filary Ekosystemu („Polecane Dziś”)
+    const featuredCards = `
+      <section class="cc-omni-featured-section" aria-label="Polecane dziś w Christian Culture">
+        <div class="cc-omni-featured-head">
+          <span class="cc-omni-featured-label">${svgIcon('star', 15)} Polecane Dziś w EkoCC</span>
+        </div>
+        <div class="cc-omni-featured-grid">
+          <a class="cc-omni-feat-card" href="/player">
+            <span class="cc-omni-feat-icon">${svgIcon('heart', 20)}</span>
+            <span class="cc-omni-feat-info">
+              <span class="cc-omni-feat-tag">Inspiracja na Dziś</span>
+              <strong class="cc-omni-feat-title">Rozważanie „Dobrze, że jesteś”</strong>
+              <span class="cc-omni-feat-desc">Codzienne słowo umocnienia, modlitwa i Boży pokój na każdy dzień.</span>
+            </span>
+            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="cc-omni-feat-card" href="/akademia#kurscodzienny">
+            <span class="cc-omni-feat-icon">${svgIcon('book', 20)}</span>
+            <span class="cc-omni-feat-info">
+              <span class="cc-omni-feat-tag">Akademia Biblijna</span>
+              <strong class="cc-omni-feat-title">Lekcja Dnia: Z Biblią za Pan Brat</strong>
+              <span class="cc-omni-feat-desc">Codzienne studium Pisma Świętego werset po wersecie z komentarzem.</span>
+            </span>
+            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="cc-omni-feat-card" href="/podcasty">
+            <span class="cc-omni-feat-icon">${svgIcon('mic', 20)}</span>
+            <span class="cc-omni-feat-info">
+              <span class="cc-omni-feat-tag">Podcast Spotify SDS</span>
+              <strong class="cc-omni-feat-title">APOKALIPSA — Księga Nadziei</strong>
+              <span class="cc-omni-feat-desc">Profetyczny cykl wykładów biblijnych Studia Dobrego Słowa.</span>
+            </span>
+            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="cc-omni-feat-card" href="/player">
+            <span class="cc-omni-feat-icon">${svgIcon('radio', 20)}</span>
+            <span class="cc-omni-feat-info">
+              <span class="cc-omni-feat-tag">Nadajemy 24/7</span>
+              <strong class="cc-omni-feat-title">Radio Christian Culture & Player</strong>
+              <span class="cc-omni-feat-desc">Muzyka uwielbienia, słuchowiska Biblia Audio i stacje tematyczne.</span>
+            </span>
+            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>`;
+
+    // 4. Skróty do aplikacji
     const shortcuts = '<nav class="cc-omni-shortcuts" aria-label="Skróty ekosystemu">' + HOME_SHORTCUTS.map(sc => sc.action
       ? `<button type="button" class="cc-omni-shortcut" data-omni-action="${sc.action}" aria-expanded="false" aria-controls="ccOmniFavs"><span>${svgIcon(sc.icon)}</span><span>${escapeHtml(sc.label)}</span></button>`
       : `<a class="cc-omni-shortcut" href="${sc.url}"${sc.external ? ' target="_blank" rel="noopener"' : ''}><span>${svgIcon(sc.icon)}</span><span>${escapeHtml(sc.label)}</span></a>`).join('') + '</nav>';
-    // Ulubione zapisane gwiazdką na stronach CC (cc-favorites.js, localStorage) — rozwijane skrótem „Ulubione”
+
+    // 5. Ulubione
     let favs = [];
     try { favs = JSON.parse(localStorage.getItem('cc_user_favorites') || '[]'); } catch (_) {}
     favs = (Array.isArray(favs) ? favs : []).filter(f => f && f.url && f.title).slice(0, 8);
@@ -2251,6 +2644,8 @@ ${isStandalonePage ? '' : `
         <div class="cc-omni-continue-head">${svgIcon('star', 16)}<span>Twoje ulubione</span></div>
         ${favList}
       </section>`;
+
+    // 6. Ostatnio odwiedzane
     let history = [];
     try { history = JSON.parse(localStorage.getItem('cc_user_visit_history') || '[]'); } catch (_) {}
     history = (Array.isArray(history) ? history : []).filter(h => h && h.url && h.title && h.url !== location.pathname).slice(0, 4);
@@ -2259,7 +2654,17 @@ ${isStandalonePage ? '' : `
         <div class="cc-omni-continue-head">${svgIcon('clock', 16)}<span>Ostatnio odwiedzane</span></div>
         <div class="cc-omni-continue-list">${history.map(h => `<a class="cc-omni-continue-item" href="${escapeHtml(h.url)}"><span>${escapeHtml(h.icon || '✨')}</span><span><b>${escapeHtml(h.title)}</b><small>${escapeHtml(visitedLabel(h.visitedAt))}</small></span></a>`).join('')}</div>
       </section>` : '';
-    return '<div class="cc-omni-home">' + cards + shortcuts + favSection + cont + '</div>';
+
+    // 7. Podpowiedzi klawiszowe (Raycast / Spotlight style)
+    const proHelper = `
+      <div class="cc-omni-pro-shortcuts" aria-hidden="true">
+        <span><kbd>↑</kbd><kbd>↓</kbd> Nawiguj</span>
+        <span><kbd>↵ Enter</kbd> Wybierz</span>
+        <span><kbd>Esc</kbd> Zamknij</span>
+        <span><kbd>Ctrl+K</kbd> / <kbd>/</kbd> Szukaj</span>
+      </div>`;
+
+    return '<div class="cc-omni-home">' + recentsHtml + tagsHtml + featuredCards + shortcuts + favSection + cont + proHelper + '</div>';
   }
 
   // 8. Otwieranie i zamykanie wyszukiwarki
@@ -2441,7 +2846,11 @@ ${isStandalonePage ? '' : `
     toggle: toggleSearch,
     loadCatalog: loadCatalog,
     publicationTime: publicationTime,
-    performSearch: performSearch
+    performSearch: performSearch,
+    getRecentSearches: getRecentSearches,
+    saveRecentSearch: saveRecentSearch,
+    removeRecentSearch: removeRecentSearch,
+    clearRecentSearches: clearRecentSearches
   };
 
   // Uruchomienie po załadowaniu DOM
