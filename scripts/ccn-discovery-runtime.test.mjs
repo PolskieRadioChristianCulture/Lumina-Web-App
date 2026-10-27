@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import articleRoutes from '../data/ccn-article-routes.js';
 
 const catalog = JSON.parse(fs.readFileSync('szukaj/catalog.json', 'utf8'));
 const engine = fs.readFileSync('components/cc-omni-search.js', 'utf8');
@@ -21,7 +22,10 @@ test('CBDC PL and EN equivalent queries lead to the real CBDC article', () => {
 
 test('current public article registry is searchable with valid dates and unique URLs', () => {
   const articles = catalog.items.filter(i => i.type === 'article');
-  assert.equal(articles.length, 85);
+  const registeredPaths = new Set(Object.values(articleRoutes).flatMap(section => Object.values(section)).map(decodeURI));
+  const indexedPaths = new Set(articles.map(item => decodeURI(new URL(item.url).pathname)));
+  assert.equal(articles.length, registeredPaths.size, 'every canonical public article must be indexed');
+  assert.deepEqual([...indexedPaths].sort(), [...registeredPaths].sort(), 'article search must match the canonical route registry');
   assert.equal(new Set(articles.map(i => i.url)).size, articles.length);
   assert.ok(articles.every(i => i.access === 'public' && Number.isFinite(Date.parse(i.publishedAt))));
   assert.deepEqual(catalog, JSON.parse(fs.readFileSync('data/cc-search-index.json', 'utf8')));

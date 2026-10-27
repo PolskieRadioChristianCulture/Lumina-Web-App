@@ -1,0 +1,6 @@
+{
+  "name":"cc-help-prototype",
+  "private":true,
+  "type":"commonjs",
+  "scripts":{"test":"node --test template.test.cjs application-contract.test.cjs retention-policy.test.cjs","preview":"node serve.cjs"}
+}
