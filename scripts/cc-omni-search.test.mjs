@@ -370,3 +370,75 @@ test('cc-omni-search.js: Faza 3 — Fuzzy Search & Typo Auto-Correction and Mobi
 
 
 
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P0 contracts (topics, scripture levels, sources register, zero cost)', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => 1,
+    clearInterval: () => {},
+    Date: Date
+  };
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const parseBible = sandbox.window.CCOmniSearch.parseBibleRef;
+  const detectTopic = sandbox.window.CCOmniSearch.detectBibleTopic;
+  const topics = sandbox.window.CCOmniSearch.BIBLE_TOPICS;
+
+  assert.ok(typeof detectTopic === 'function', 'detectBibleTopic is exported');
+  assert.ok(typeof topics === 'object' && topics.szabat, 'BIBLE_TOPICS has szabat topic');
+
+  // 1. Scripture Range support (J 3:16-17)
+  const rangeMatch = parseBible('J 3:16-17');
+  assert.ok(rangeMatch, 'parses J 3:16-17');
+  assert.equal(rangeMatch.verse, 16);
+  assert.equal(rangeMatch.verseEnd, 17);
+  assert.ok(rangeMatch.verseText.includes('[16]'), 'includes [16] in range text');
+  assert.ok(rangeMatch.verseText.includes('[17]'), 'includes [17] in range text');
+
+  // 2. Theological topic detection
+  const szabatTopic = detectTopic('szabat');
+  assert.ok(szabatTopic, 'detects szabat topic');
+  assert.equal(szabatTopic.slug, 'szabat');
+  assert.ok(szabatTopic.verses.some(v => v.ref === 'Rdz 2:2-3'));
+
+  const graceTopic = detectTopic('usprawiedliwienie z wiary');
+  assert.ok(graceTopic, 'detects usprawiedliwienie topic');
+  assert.equal(graceTopic.slug, 'usprawiedliwienie');
+
+  const mediatorTopic = detectTopic('jedyny posrednik');
+  assert.ok(mediatorTopic, 'detects posrednik topic');
+  assert.equal(mediatorTopic.slug, 'posrednik');
+
+  const prophecyTopic = detectTopic('proroctwa apokalipsy');
+  assert.ok(prophecyTopic, 'detects proroctwa topic');
+  assert.equal(prophecyTopic.slug, 'proroctwa');
+
+  // 3. UI contracts for Biblia Intelligence
+  assert.ok(omniSearchCode.includes('.cc-scripture-level'), 'defines .cc-scripture-level');
+  assert.ok(omniSearchCode.includes('TEKST BIBLIJNY'), 'contains TEKST BIBLIJNY badge');
+  assert.ok(omniSearchCode.includes('.cc-btn-scripture-sub'), 'defines .cc-btn-scripture-sub for context and compare');
+  assert.ok(omniSearchCode.includes('Kontekst rozdziału'), 'contains Kontekst rozdziału action');
+  assert.ok(omniSearchCode.includes('Porównaj przekłady'), 'contains Porównaj przekłady action');
+  assert.ok(omniSearchCode.includes('.cc-bible-topic-card'), 'defines .cc-bible-topic-card');
+  assert.ok(omniSearchCode.includes('.cc-sources-modal-backdrop'), 'defines .cc-sources-modal-backdrop');
+  assert.ok(omniSearchCode.includes('STEPBible Data'), 'cites STEPBible Data');
+  assert.ok(omniSearchCode.includes('SBL Greek New Testament'), 'cites SBLGNT');
+  assert.ok(omniSearchCode.includes('Crossreferences.org'), 'cites Crossreferences.org');
+  assert.ok(omniSearchCode.includes('ZERO COST FIRST'), 'declares ZERO COST FIRST architecture');
+});

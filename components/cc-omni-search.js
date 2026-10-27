@@ -534,7 +534,28 @@
     "ROM:6:23": "Zapłatą bowiem za grzech jest śmierć, ale darem łaski Boga jest życie wieczne w Jezusie Chrystusie, naszym Panu.",
     "1PE:5:7": "Wszystkie wasze troski przerzućcie na niego, gdyż on troszczy się o was.",
     "GAL:5:22": "Owocem zaś Ducha jest miłość, radość, pokój, cierpliwość, życzliwość, dobroć, wiara;",
-    "PSA:119:105": "Twoje słowo jest pochodnią dla moich nóg i światłością na mojej ścieżce."
+    "PSA:119:105": "Twoje słowo jest pochodnią dla moich nóg i światłością na mojej ścieżce.",
+    "GEN:2:2": "I ukończył Bóg w siódmym dniu swoje dzieło, które uczynił, i odpoczął w siódmym dniu od wszelkiego swego dzieła, które uczynił.",
+    "GEN:2:3": "I pobłogosławił Bóg dzień siódmy, i uświęcił go, bo w nim odpoczął od wszelkiego swego dzieła, które stworzył i uczynił.",
+    "EXO:20:8": "Pamiętaj o dniu szabatu, aby go święcić.",
+    "EXO:20:9": "Sześć dni będziesz pracować i wykonywać wszelką twoją pracę;",
+    "EXO:20:10": "Ale siódmy dzień jest szabatem PANA, twego Boga. W nim nie będziesz wykonywał żadnej pracy...",
+    "EXO:20:11": "Gdyż w sześciu dniach PAN stworzył niebo i ziemię, morze i wszystko, co w nich jest, a w siódmym dniu odpoczął. Dlatego PAN pobłogosławił dzień szabatu i uświęcił go.",
+    "MRK:2:27": "I powiedział im: Szabat został ustanowiony dla człowieka, a nie człowiek dla szabatu.",
+    "MRK:2:28": "Dlatego Syn Człowieczy jest Panem także szabatu.",
+    "HEB:4:9": "Pozostaje więc jeszcze odpoczynek dla ludu Bożego.",
+    "1TI:2:5": "Jeden bowiem jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus;",
+    "REV:14:6": "I widziałem innego anioła lecącego środkiem nieba, mającego wieczną ewangelię, aby ją zwiastować mieszkańcom ziemi...",
+    "REV:14:7": "Mówiącego donośnym głosem: Bójcie się Boga i oddajcie mu chwałę, gdyż przyszła godzina jego sądu. Pokłońcie się temu, który stworzył niebo i ziemię, morze i źródła wód.",
+    "REV:14:12": "Tu jest cierpliwość świętych, tu są ci, którzy strzegą przykazań Boga i wiary Jezusa.",
+    "DAN:7:13": "I widziałem w widzeniach nocnych: a oto w obłokach nieba przychodził jakby Syn Człowieczy; przyszedł aż do Przedwiecznego i przyprowadzono go przed niego.",
+    "DAN:7:14": "I dano mu panowanie, cześć i królestwo, aby mu służyły wszystkie narody, ludy i języki. Jego panowanie jest panowaniem wiecznym, które nie przeminie...",
+    "ROM:3:24": "Zostając usprawiedliwieni darmo, z jego łaski, przez odkupienie, które jest w Jezusie Chrystusie.",
+    "ROM:5:1": "Będąc więc usprawiedliwieni z wiary, mamy pokój z Bogiem przez naszego Pana Jezusa Chrystusa;",
+    "2PE:1:19": "Mamy też mocniejsze słowo prorockie, a wy dobrze robicie, trzymając się go jak lampy świecącej w ciemnym miejscu, aż dzień zaświta i jutrzenka wzejdzie w waszych sercach;",
+    "JHN:3:17": "Bo Bóg nie posłał swego Syna na świat, aby potępił świat, lecz aby świat był przez niego zbawiony.",
+    "ROM:8:38": "Jestem bowiem pewien, że ani śmierć, ani życie, ani aniołowie, ani władze, ani moce, ani teraźniejsze, ani przyszłe rzeczy;",
+    "ROM:8:39": "Ani wysokość, ani głębokość, ani żadne inne stworzenie nie będzie mogło nas odłączyć od miłości Boga, która jest w Jezusie Chrystusie, naszym Panu."
   };
 
   // Rozpoznawanie referencji biblijnych w zapytaniu
@@ -575,7 +596,15 @@
     const bookInfo = BIBLE_BOOK_NAMES[code] || { name: code, short: code };
     const refTitle = `${bookInfo.name} ${chapter}${verse ? ':' + verse : ''}${verseEnd ? '-' + verseEnd : ''}`;
     const key = `${code}:${chapter}:${verse || 1}`;
-    const cachedText = TOP_UBG_VERSES[key];
+    let cachedText = TOP_UBG_VERSES[key];
+    if (verse && verseEnd && verseEnd > verse) {
+      const parts = [];
+      for (let v = verse; v <= verseEnd; v++) {
+        const t = TOP_UBG_VERSES[`${code}:${chapter}:${v}`];
+        if (t) parts.push(`[${v}] ${t}`);
+      }
+      if (parts.length > 0) cachedText = parts.join(' ');
+    }
     return {
       bookCode: code,
       bookName: bookInfo.name,
@@ -592,6 +621,73 @@
   }
 
   // Asynchroniczne dociąganie wersetu z plików UBG-2025
+  
+  // Tematy Biblijne i Zagadnienia Teologiczne (Biblia Intelligence CC — P0)
+  const BIBLE_TOPICS = {
+    szabat: {
+      title: 'Szabat — Dzień Pański i Pamiątka Stworzenia',
+      slug: 'szabat',
+      summary: 'Siódmy dzień tygodnia ustanowiony przez Boga przy stworzeniu (Rdz 2:2-3), włączony do Dekalogu (Wj 20:8-11) i potwierdzony przez Jezusa Chrystusa (Mk 2:27-28) jako święty dar odpoczynku i komunii ze Stwórcą.',
+      verses: [
+        { ref: 'Rdz 2:2-3', text: 'I ukończył Bóg w siódmym dniu swoje dzieło... I pobłogosławił Bóg dzień siódmy, i uświęcił go.' },
+        { ref: 'Wj 20:8-11', text: 'Pamiętaj o dniu szabatu, aby go święcić. Sześć dni będziesz pracować... Ale siódmy dzień jest szabatem PANA, twego Boga.' },
+        { ref: 'Mk 2:27-28', text: 'Szabat został ustanowiony dla człowieka, a nie człowiek dla szabatu. Dlatego Syn Człowieczy jest Panem także szabatu.' },
+        { ref: 'Hbr 4:9', text: 'Pozostaje więc jeszcze odpoczynek dla ludu Bożego.' }
+      ],
+      studyUrl: '/mojabiblia?book=EXO&chapter=20',
+      mediaUrl: '/player?q=szabat'
+    },
+    usprawiedliwienie: {
+      title: 'Usprawiedliwienie z Wiary i Boża Łaska',
+      slug: 'usprawiedliwienie',
+      summary: 'Fundament ewangelii: darmowe usprawiedliwienie grzesznika z Bożej łaski wyłącznie przez wiarę w odkupieńczą ofiarę Jezusa Chrystusa na krzyżu, bez zasług z uczynków prawa.',
+      verses: [
+        { ref: 'Rz 3:24', text: 'Zostając usprawiedliwieni darmo, z jego łaski, przez odkupienie, które jest w Jezusie Chrystusie.' },
+        { ref: 'Ef 2:8-9', text: 'Łaską bowiem jesteście zbawieni przez wiarę, i to nie jest z was, jest to dar Boga. Nie z uczynków, aby nikt się nie chlubił.' },
+        { ref: 'Rz 5:1', text: 'Będąc więc usprawiedliwieni z wiary, mamy pokój z Bogiem przez naszego Pana Jezusa Chrystusa;' }
+      ],
+      studyUrl: '/mojabiblia?book=ROM&chapter=3',
+      mediaUrl: '/player?q=laska'
+    },
+    posrednik: {
+      title: 'Jeden Jedyny Pośrednik — Jezus Chrystus',
+      slug: 'posrednik',
+      summary: 'Nowy Testament jednoznacznie naucza o jedynym arcykapłanie i pośredniku pomiędzy Bogiem Ojcem a ludzkością — zmartwychwstałym Chrystusie, który wstawia się za nami w niebiańskiej świątyni.',
+      verses: [
+        { ref: '1 Tm 2:5', text: 'Jeden bowiem jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus;' },
+        { ref: 'J 14:6', text: 'Ja jestem drogą, prawdą i życiem. Nikt nie przychodzi do Ojca jak tylko przeze mnie.' }
+      ],
+      studyUrl: '/mojabiblia?book=1TI&chapter=2',
+      mediaUrl: '/player?q=jezus'
+    },
+    proroctwa: {
+      title: 'Proroctwa Daniela i Objawienia — Historia i Nadzieja',
+      slug: 'proroctwa',
+      summary: 'Wielka panorama historii zbawienia: proroctwa o sukcesji królestw, sądzie Bożym, powtórnym przyjściu Chrystusa i ostatecznym tryumfie Królestwa Bożego (Dn 2, Dn 7, Ap 14).',
+      verses: [
+        { ref: 'Dn 7:13-14', text: 'I oto w obłokach nieba przychodził jakby Syn Człowieczy... I dano mu panowanie, cześć i królestwo...' },
+        { ref: 'Ap 14:6-7', text: 'I widziałem innego anioła... mającego wieczną ewangelię... Bójcie się Boga i oddajcie mu chwałę, gdyż przyszła godzina jego sądu.' },
+        { ref: 'Ap 14:12', text: 'Tu jest cierpliwość świętych, tu są ci, którzy strzegą przykazań Boga i wiary Jezusa.' },
+        { ref: '2 P 1:19', text: 'Mamy też mocniejsze słowo prorockie, a wy dobrze robicie, trzymając się go jak lampy świecącej w ciemnym miejscu...' }
+      ],
+      studyUrl: '/mojabiblia?book=REV&chapter=14',
+      mediaUrl: '/vod?q=apokalipsa'
+    }
+  };
+
+  function detectBibleTopic(query) {
+    if (!query) return null;
+    const norm = query.toLowerCase()
+      .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
+      .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
+      .replace(/[ś]/g, 's').replace(/[źż]/g, 'z').trim();
+    if (norm.includes('szabat') || norm.includes('sabat') || norm.includes('dzien siodmy') || norm.includes('dzien panski')) return BIBLE_TOPICS.szabat;
+    if (norm.includes('usprawiedliwien') || norm.includes('laska boza') || norm.includes('zbawien') || norm.includes('z laski')) return BIBLE_TOPICS.usprawiedliwienie;
+    if (norm.includes('posrednik') || norm.includes('arcykaplan') || norm.includes('jedyny posrednik')) return BIBLE_TOPICS.posrednik;
+    if (norm.includes('proroctw') || norm.includes('apokalips') || norm.includes('daniel') || norm.includes('trzy poselstwa')) return BIBLE_TOPICS.proroctwa;
+    return null;
+  }
+
   async function fetchBibleVerse(bookCode, chapter, verse) {
     const chPad = String(chapter).padStart(3, '0');
     const url = '/data/bible/ubg-2025/' + bookCode + '-' + chPad + '.json';
@@ -747,6 +843,8 @@
     if (!match) return '';
     const quoteText = match.verseText ? escapeHtml(match.verseText) : 'Ładowanie wersetu z Uwspółcześnionej Biblii Gdańskiej (UBG)...';
     const strongUrl = `/mojabiblia?book=${encodeURIComponent(match.bookCode)}&chapter=${match.chapter}${match.verse ? '&verse=' + match.verse : ''}`;
+    const compareUrl = `/mojabiblia?book=${encodeURIComponent(match.bookCode)}&chapter=${match.chapter}${match.verse ? '&verse=' + match.verse : ''}&compare=1`;
+    const contextUrl = `/mojabiblia?book=${encodeURIComponent(match.bookCode)}&chapter=${match.chapter}`;
     const audioUrl = `/player?q=${encodeURIComponent(match.bookName + ' ' + match.chapter)}`;
     const copyPayload = escapeHtml(`„${match.verseText || ''}” — ${match.refTitle} (UBG)`);
 
@@ -755,7 +853,8 @@
         <div class="cc-scripture-head">
           <div class="cc-scripture-badge">
             <span class="cc-scripture-icon" aria-hidden="true">📖</span>
-            <span>Pismo Święte • UBG (Uwspółcześniona Biblia Gdańska)</span>
+            <span class="cc-scripture-level" title="Poziom: Kanoniczny Tekst Biblijny (Biblia w centrum)">TEKST BIBLIJNY</span>
+            <span class="cc-scripture-edition">UBG (Uwspółcześniona Biblia Gdańska)</span>
           </div>
           <span class="cc-scripture-ref">${escapeHtml(match.refTitle)}</span>
         </div>${match.isFuzzyMatch ? `
@@ -766,6 +865,12 @@
         <div class="cc-scripture-actions">
           <a href="${strongUrl}" class="cc-btn-scripture-main">
             Otwórz w MojaBiblia (Strong) →
+          </a>
+          <a href="${contextUrl}" class="cc-btn-scripture-sub" title="Zobacz cały rozdział w kontekście (±5 wersetów)">
+            Kontekst rozdziału
+          </a>
+          <a href="${compareUrl}" class="cc-btn-scripture-sub" title="Porównaj przekłady UBG, BW, BT, BG">
+            Porównaj przekłady
           </a>
           <button type="button" class="cc-btn-scripture-copy" id="ccScriptureCopyBtn" data-quote="${copyPayload}">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -780,6 +885,54 @@
             </svg>
             <span>Biblia Audio CC</span>
           </a>
+          <button type="button" class="cc-btn-scripture-sources" data-open-sources="true" title="Zobacz rejestr licencji i źródeł Biblia Intelligence CC">
+            <span>📜 Źródła (R01–R40)</span>
+          </button>
+        </div>
+        <div class="cc-scripture-license-note">
+          Kanoniczny tekst UBG • Standard ZERO COST • Dane językowe: STEPBible &amp; SBLGNT (CC BY 4.0) • Bez płatnych modeli AI
+        </div>
+      </div>
+    `;
+  }
+
+  function renderBibleTopicCard(topicData) {
+    if (!topicData) return '';
+    const versesHtml = topicData.verses.map(v => `
+      <div class="cc-bible-topic-verse-item">
+        <strong class="cc-bible-topic-ref">${escapeHtml(v.ref)}:</strong>
+        <span class="cc-bible-topic-text">„${escapeHtml(v.text)}”</span>
+      </div>
+    `).join('');
+
+    return `
+      <div class="cc-bible-topic-card" id="ccBibleTopicCard">
+        <div class="cc-bible-topic-head">
+          <div class="cc-bible-topic-badge">
+            <span class="cc-bible-topic-icon" aria-hidden="true">📜</span>
+            <span class="cc-bible-topic-level">TEMAT PISMA ŚWIĘTEGO</span>
+            <span class="cc-bible-topic-sub">BIBLIA INTELLIGENCE CC</span>
+          </div>
+          <span class="cc-bible-topic-tag">ZERO COST FIRST</span>
+        </div>
+        <h3 class="cc-bible-topic-title">${escapeHtml(topicData.title)}</h3>
+        <p class="cc-bible-topic-summary">${escapeHtml(topicData.summary)}</p>
+        <div class="cc-bible-topic-verses">
+          <div class="cc-bible-topic-verses-label">Kluczowe Referencje Biblijne (UBG):</div>
+          ${versesHtml}
+        </div>
+        <div class="cc-bible-topic-actions">
+          <a href="${escapeHtml(topicData.studyUrl)}" class="cc-btn-scripture-main">Studiuj w MojaBiblia (Strong) →</a>
+          <a href="${escapeHtml(topicData.mediaUrl)}" class="cc-btn-scripture-audio">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
+            <span>Materiały CC</span>
+          </a>
+          <button type="button" class="cc-btn-scripture-sources" data-open-sources="true" title="Zobacz rejestr licencji i źródeł Biblia Intelligence CC">
+            <span>📜 Rejestr Źródeł (R01–R40)</span>
+          </button>
+        </div>
+        <div class="cc-scripture-license-note">
+          Biblia w centrum • Oddzielenie tekstu Pisma od opracowań i komentarzy redakcyjnych Christian Culture
         </div>
       </div>
     `;
@@ -2431,6 +2584,301 @@
           border-color: #FF7A00;
         }
 
+        /* Biblia Intelligence CC — Dodatki do Karty Pisma */
+        .cc-scripture-level, .cc-bible-topic-level {
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 6px;
+          background: rgba(196, 163, 90, 0.25);
+          border: 1px solid rgba(196, 163, 90, 0.5);
+          font-size: 0.72rem;
+          font-weight: 800;
+          color: #F3E5C8;
+          letter-spacing: 0.05em;
+        }
+        .cc-scripture-edition {
+          font-size: 0.78rem;
+          color: rgba(255, 255, 255, 0.85);
+          font-weight: 600;
+        }
+        .cc-scripture-license-note {
+          font-size: 0.75rem;
+          color: rgba(243, 229, 200, 0.65);
+          padding-top: 6px;
+          border-top: 1px dashed rgba(196, 163, 90, 0.25);
+          line-height: 1.4;
+        }
+        .cc-btn-scripture-sub {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(196, 163, 90, 0.15);
+          border: 1px solid rgba(196, 163, 90, 0.35);
+          color: #F3E5C8;
+          font-size: 0.85rem;
+          font-weight: 600;
+          text-decoration: none;
+          transition: background 0.15s, border-color 0.15s, transform 0.15s;
+        }
+        .cc-btn-scripture-sub:hover, .cc-btn-scripture-sub:focus-visible {
+          background: rgba(196, 163, 90, 0.28);
+          border-color: #C4A35A;
+          color: #ffffff;
+          outline: none;
+        }
+        .cc-btn-scripture-sources {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: rgba(243, 229, 200, 0.85);
+          font-size: 0.82rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cc-btn-scripture-sources:hover, .cc-btn-scripture-sources:focus-visible {
+          background: rgba(255, 255, 255, 0.14);
+          border-color: #C4A35A;
+          color: #ffffff;
+        }
+
+        /* Karta Tematu Biblijnego (Bible Topic Guide) */
+        .cc-bible-topic-card {
+          background: linear-gradient(135deg, rgba(196, 163, 90, 0.14) 0%, rgba(11, 15, 26, 0.82) 100%);
+          border: 1.5px solid rgba(196, 163, 90, 0.45);
+          border-radius: 16px;
+          padding: 20px;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .cc-bible-topic-head {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+        }
+        .cc-bible-topic-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .cc-bible-topic-sub {
+          font-size: 0.75rem;
+          color: var(--omni-gold);
+          font-weight: 700;
+          letter-spacing: 0.05em;
+        }
+        .cc-bible-topic-tag {
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: #FF7A00;
+          background: rgba(255, 122, 0, 0.12);
+          border: 1px solid rgba(255, 122, 0, 0.35);
+          padding: 2px 8px;
+          border-radius: 12px;
+        }
+        .cc-bible-topic-title {
+          margin: 0;
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: -0.01em;
+        }
+        .cc-bible-topic-summary {
+          margin: 0;
+          font-size: 0.96rem;
+          line-height: 1.55;
+          color: rgba(255, 255, 255, 0.9);
+        }
+        .cc-bible-topic-verses {
+          background: rgba(0, 0, 0, 0.28);
+          border-radius: 12px;
+          padding: 12px 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .cc-bible-topic-verses-label {
+          font-size: 0.76rem;
+          font-weight: 700;
+          color: var(--omni-gold);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .cc-bible-topic-verse-item {
+          font-size: 0.9rem;
+          line-height: 1.45;
+          color: rgba(255, 255, 255, 0.92);
+        }
+        .cc-bible-topic-ref {
+          color: #FF8C33;
+          margin-right: 4px;
+        }
+        .cc-bible-topic-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 8px;
+          margin-top: 4px;
+        }
+
+        /* Modal Źródeł i Licencji (R01–R40) */
+        .cc-sources-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 999999;
+          background: rgba(0, 0, 0, 0.78);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+          box-sizing: border-box;
+        }
+        .cc-sources-modal-backdrop[hidden] {
+          display: none !important;
+        }
+        .cc-sources-modal {
+          background: #0B0F1A;
+          border: 1.5px solid rgba(196, 163, 90, 0.45);
+          border-radius: 18px;
+          max-width: 760px;
+          width: 100%;
+          max-height: 88vh;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(196, 163, 90, 0.2);
+          color: #ffffff;
+          overflow: hidden;
+        }
+        .cc-sources-modal-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px 24px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.03);
+        }
+        .cc-sources-kicker {
+          font-size: 0.74rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--omni-gold);
+          text-transform: uppercase;
+        }
+        .cc-sources-title {
+          margin: 4px 0 0;
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: #ffffff;
+        }
+        .cc-sources-close {
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #ffffff;
+          font-size: 1.1rem;
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cc-sources-close:hover {
+          background: rgba(255, 255, 255, 0.18);
+          border-color: #FF7A00;
+        }
+        .cc-sources-modal-body {
+          padding: 20px 24px;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .cc-sources-intro {
+          margin: 0;
+          font-size: 0.92rem;
+          line-height: 1.5;
+          color: rgba(243, 229, 200, 0.9);
+        }
+        .cc-sources-table-wrap {
+          overflow-x: auto;
+          border-radius: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .cc-sources-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 0.84rem;
+          text-align: left;
+        }
+        .cc-sources-table th {
+          background: rgba(255, 255, 255, 0.06);
+          color: var(--omni-gold);
+          padding: 10px 12px;
+          font-weight: 700;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .cc-sources-table td {
+          padding: 10px 12px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          color: rgba(255, 255, 255, 0.9);
+        }
+        .cc-sources-table tr:last-child td {
+          border-bottom: none;
+        }
+        .cc-tag-lic {
+          display: inline-block;
+          padding: 2px 7px;
+          border-radius: 6px;
+          font-size: 0.72rem;
+          font-weight: 700;
+        }
+        .cc-lic-a {
+          background: rgba(46, 204, 113, 0.18);
+          color: #2ECC71;
+          border: 1px solid rgba(46, 204, 113, 0.4);
+        }
+        .cc-lic-b {
+          background: rgba(241, 196, 15, 0.18);
+          color: #F1C40F;
+          border: 1px solid rgba(241, 196, 15, 0.4);
+        }
+        .cc-sources-footer-note {
+          font-size: 0.84rem;
+          color: rgba(243, 229, 200, 0.75);
+          margin-top: 4px;
+        }
+        .cc-sources-doc-link {
+          color: #C4A35A;
+          font-weight: 700;
+          text-decoration: underline;
+          margin-left: 4px;
+        }
+        .cc-sources-doc-link:hover {
+          color: #FF7A00;
+        }
+
+
         /* Karta Wsparcia & Pomocy Duszpasterskiej (Hope Intent Card) */
         .cc-hope-card {
           background: linear-gradient(135deg, rgba(255, 122, 0, 0.12) 0%, rgba(11, 15, 26, 0.8) 100%);
@@ -3055,6 +3503,10 @@ ${isStandalonePage ? '' : `
           </div>
           <div class="cc-omni-footer-sub">
             <div class="cc-omni-footer-left">
+              <button type="button" id="ccOmniSourcesBtn" class="cc-omni-footlink" title="Rejestr źródeł i licencji Biblia Intelligence">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+                <span>Źródła &amp; Licencje</span>
+              </button>
               <button type="button" id="ccOmniWallBtn" class="cc-omni-footlink">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
                 <span>Zmień tapetę</span>
@@ -3071,6 +3523,79 @@ ${isStandalonePage ? '' : `
               <a href="/#contact-section" id="ccOmniContact" class="cc-omni-iconbtn" aria-label="Kontakt" title="Kontakt">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
               </a>
+            </div>
+          </div>
+        </div>
+        <!-- Modal Rejestru Źródeł i Licencji (R01–R40) -->
+        <div class="cc-sources-modal-backdrop" id="ccOmniSourcesModal" hidden>
+          <div class="cc-sources-modal" role="dialog" aria-modal="true" aria-labelledby="ccSourcesTitle">
+            <div class="cc-sources-modal-head">
+              <div>
+                <div class="cc-sources-kicker">BIBLIA INTELLIGENCE CC • ZERO COST FIRST</div>
+                <h2 id="ccSourcesTitle" class="cc-sources-title">Rejestr Źródeł i Licencji (R01–R40)</h2>
+              </div>
+              <button type="button" class="cc-sources-close" id="ccSourcesClose" aria-label="Zamknij panel źródeł">✕</button>
+            </div>
+            <div class="cc-sources-modal-body">
+              <p class="cc-sources-intro">
+                Biblia Intelligence CC działa w standardzie <strong>ZERO COST FIRST</strong>, w oparciu o legalne, zweryfikowane korpusy otwarte oraz domeny publiczne. Żadne treści Pisma Świętego nie są generowane przez komercyjne modele AI.
+              </p>
+              <div class="cc-sources-table-wrap">
+                <table class="cc-sources-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Źródło / Korpus</th>
+                      <th>Zastosowanie</th>
+                      <th>Status / Licencja</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>R01</strong></td>
+                      <td><strong>STEPBible Data</strong> (Tyndale House Cambridge)</td>
+                      <td>Hebrajski, greka, morfologia, lematy, kody Stronga</td>
+                      <td><span class="cc-tag-lic cc-lic-a">CC BY 4.0 (A)</span></td>
+                    </tr>
+                    <tr>
+                      <td><strong>R02</strong></td>
+                      <td><strong>SBL Greek New Testament</strong> (Faithlife / SBL)</td>
+                      <td>Kanoniczny tekst grecki Nowego Testamentu</td>
+                      <td><span class="cc-tag-lic cc-lic-a">CC BY 4.0 (A)</span></td>
+                    </tr>
+                    <tr>
+                      <td><strong>R08</strong></td>
+                      <td><strong>Biblica Słowo Życia PL</strong> (eBible)</td>
+                      <td>Współczesny polski Nowy Testament</td>
+                      <td><span class="cc-tag-lic cc-lic-b">CC BY-SA 4.0 (B)</span></td>
+                    </tr>
+                    <tr>
+                      <td><strong>R11/R12</strong></td>
+                      <td><strong>Crossreferences.org &amp; OpenBible</strong></td>
+                      <td>340 000 odsyłaczy biblijnych i fraz paralelnych</td>
+                      <td><span class="cc-tag-lic cc-lic-a">CC BY 4.0 (A)</span></td>
+                    </tr>
+                    <tr>
+                      <td><strong>R37</strong></td>
+                      <td><strong>Polska Biblia Gdańska (1632/1881)</strong></td>
+                      <td>Klasyczny tekst reformacyjny w języku polskim</td>
+                      <td><span class="cc-tag-lic cc-lic-a">Domena Publiczna (A)</span></td>
+                    </tr>
+                    <tr>
+                      <td><strong>R40</strong></td>
+                      <td><strong>Archiwa i Produkcje Christian Culture</strong></td>
+                      <td>Apokalipsa SDS, Akademia Biblijna, Biblia Audio</td>
+                      <td><span class="cc-tag-lic cc-lic-a">Autorskie CC (A)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="cc-sources-footer-note">
+                Pełna specyfikacja 40 źródeł, aparatu krytycznego i polityki praw autorskich:
+                <a href="https://github.com/PolskieRadioChristianCulture/Strona-www-Christian-Culture/blob/main/docs/bible-intelligence/SOURCE_REGISTER.md" target="_blank" rel="noopener noreferrer" class="cc-sources-doc-link">
+                  docs/bible-intelligence/SOURCE_REGISTER.md ↗
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -3249,7 +3774,33 @@ ${isStandalonePage ? '' : `
       input.focus();
     });
 
-    // Skrót „Ulubione” rozwija listę ulubionych pod skrótami
+    // Obsługa Modalu Źródeł i Licencji Biblia Intelligence CC
+    const sourcesModal = document.getElementById('ccOmniSourcesModal');
+    const sourcesClose = document.getElementById('ccSourcesClose');
+    const openSourcesModal = () => {
+      if (sourcesModal) {
+        sourcesModal.hidden = false;
+        if (sourcesClose) sourcesClose.focus();
+      }
+    };
+    const closeSourcesModal = () => {
+      if (sourcesModal) sourcesModal.hidden = true;
+    };
+    if (sourcesClose) sourcesClose.addEventListener('click', closeSourcesModal);
+    if (sourcesModal) {
+      sourcesModal.addEventListener('click', (e) => {
+        if (e.target === sourcesModal) closeSourcesModal();
+      });
+    }
+    overlay.addEventListener('click', (e) => {
+      if (e.target.closest('[data-open-sources="true"]') || e.target.closest('#ccOmniSourcesBtn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        openSourcesModal();
+      }
+    });
+
+        // Skrót „Ulubione” rozwija listę ulubionych pod skrótami
     overlay.addEventListener('click', (e) => {
       const favBtn = e.target.closest('[data-omni-action="favorites"]');
       if (!favBtn) return;
@@ -3469,6 +4020,11 @@ ${isStandalonePage ? '' : `
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();
+      const sModal = document.getElementById('ccOmniSourcesModal');
+      if (sModal && !sModal.hidden) {
+        sModal.hidden = true;
+        return;
+      }
       closeSearch();
     }
   }
@@ -3506,6 +4062,10 @@ ${isStandalonePage ? '' : `
     const bibleMatch = parseBibleRef(query);
     const scriptureCardHtml = bibleMatch ? renderScriptureCard(bibleMatch) : '';
 
+    // Biblia Intelligence: Detekcja tematu biblijnego (jeśli brak bezpośredniego wersetu)
+    const bibleTopic = !bibleMatch ? detectBibleTopic(query) : null;
+    const bibleTopicCardHtml = bibleTopic ? renderBibleTopicCard(bibleTopic) : '';
+
     // Faza 2: Detekcja intencji duszpasterskiej / pomocy
     const isHope = detectHopeIntent(query);
     const hopeCardHtml = isHope ? renderHopeCard(query) : '';
@@ -3524,6 +4084,9 @@ ${isStandalonePage ? '' : `
 
     if (scriptureCardHtml) {
       leftColHtml += scriptureCardHtml;
+    }
+    if (bibleTopicCardHtml) {
+      leftColHtml += bibleTopicCardHtml;
     }
     if (hopeCardHtml) {
       leftColHtml += hopeCardHtml;
@@ -3583,7 +4146,7 @@ ${isStandalonePage ? '' : `
 
     // 3. Lista wyników
     if (!items.length) {
-      if (!scriptureCardHtml && !hopeCardHtml) {
+      if (!scriptureCardHtml && !bibleTopicCardHtml && !hopeCardHtml) {
         leftColHtml += `
           <div class="cc-omni-empty">
             <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
@@ -4085,6 +4648,8 @@ ${isStandalonePage ? '' : `
     clearRecentSearches: clearRecentSearches,
     parseBibleRef: parseBibleRef,
     detectHopeIntent: detectHopeIntent,
+    detectBibleTopic: detectBibleTopic,
+    BIBLE_TOPICS: BIBLE_TOPICS,
     getPreviewHtml: getPreviewHtml,
     TOP_UBG_VERSES: TOP_UBG_VERSES,
     PLACEHOLDERS: PLACEHOLDERS,
