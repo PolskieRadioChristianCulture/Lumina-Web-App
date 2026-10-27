@@ -2,12 +2,37 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {topics,sources} from '../docs/cc-help-series/topics.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-test('twenty-seven approved topics, fifty-four unique routes, existing aliases preserved',()=>{
- assert.equal(topics.length,27);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief','child-psychology','teenagers','school-difficulties','cyberbullying','child-behaviour','parenting-guide','anxiety','stress','burnout','self-worth','trauma']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,54);
+
+test('generator restores both missing debt pilot entries and preserves unrelated search data on repeated builds',()=>{
+ const temp=fs.mkdtempSync(path.join(os.tmpdir(),'cc-help-index-'));
+ // This is an exclusively test-created directory, validated before recursive cleanup.
+ assert(path.resolve(temp).startsWith(path.resolve(os.tmpdir())+path.sep+'cc-help-index-'));
+ try{
+  for(const file of ['scripts/build-cc-help-series.mjs','cc-pomoc/catalog.json','dlugi/index.html','en/debt-help/index.html']){const dst=path.join(temp,file);fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(path.join(root,file),dst);}
+  fs.cpSync(path.join(root,'docs/cc-help-series'),path.join(temp,'docs/cc-help-series'),{recursive:true});
+  const other={title:'Other agent page',url:'https://polskieradio.cc/unrelated',category:'Other',type:'page'};
+  fs.mkdirSync(path.join(temp,'szukaj'),{recursive:true});fs.mkdirSync(path.join(temp,'data'),{recursive:true});
+  fs.writeFileSync(path.join(temp,'szukaj/catalog.json'),JSON.stringify({items:[other],contextGuides:{preserved:true},totalItems:1}));
+  fs.writeFileSync(path.join(temp,'sitemap.xml'),'<urlset><url><loc>'+other.url+'</loc></url></urlset>');
+  fs.writeFileSync(path.join(temp,'data/ecosystem-map.json'),JSON.stringify({nodes:[]}));
+  for(let run=0;run<2;run++){
+   execFileSync(process.execPath,[path.join(temp,'scripts/build-cc-help-series.mjs')],{cwd:temp,windowsHide:true});
+   const a=JSON.parse(fs.readFileSync(path.join(temp,'szukaj/catalog.json')));
+   assert.deepEqual(a,JSON.parse(fs.readFileSync(path.join(temp,'data/cc-search-index.json'))));
+   assert.deepEqual(a.items.find(i=>i.url===other.url),other);assert.deepEqual(a.contextGuides,{preserved:true});
+   for(const [slug,lang] of [['dlugi','pl'],['en/debt-help','en']]){const items=a.items.filter(i=>i.url==='https://polskieradio.cc/'+slug);assert.equal(items.length,1);assert.equal(items[0].lang,lang);assert.equal(items[0].access,'public');}
+   assert.equal(a.items.length,topics.length*2+3);
+  }
+ }finally{fs.rmSync(temp,{recursive:true,force:true});}
+});
+test('thirty approved topics, sixty unique routes, existing aliases preserved',()=>{
+ assert.equal(topics.length,30);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief','child-psychology','teenagers','school-difficulties','cyberbullying','child-behaviour','parenting-guide','anxiety','stress','burnout','self-worth','trauma','digital-balance','children-separation','children-faith']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,60);
  for(const r of ['rodzina','malzenstwo','wychowanie','pomoc','psychologia','dlugi'])assert(!routes.includes(r));
  const redirects=read('_redirects');for(const r of ['/rodzina /edukacja 301','/malzenstwo /seks 301','/wychowanie /edukacja 301'])assert(redirects.includes(r));
 });
@@ -31,7 +56,7 @@ test('health pages contain crisis access; family pages protect from coercion',()
  for(const id of ['marriage','family']){const t=topics.find(t=>t.id===id);assert(read(t.route+'/index.html').includes('mediacji'));assert(read(t.route+'/index.html').includes('tel:800120002'));}
 });
 test('child and parent topics provide the child helpline and never collect case histories',()=>{
- const relevant=topics.filter(t=>t.childSupport);assert.equal(relevant.length,6);
+ const relevant=topics.filter(t=>t.childSupport);assert.equal(relevant.length,9);
  for(const t of relevant)for(const file of [t.route,'en/'+t.enRoute]){const h=read(file+'/index.html');assert(h.includes('tel:800121212'));assert(h.includes('https://czat.brpd.gov.pl/'));assert(!/<input|<textarea|<form/i.test(h));}
 });
 test('urgent help precedes the hero on both crisis pages and telephone targets have touch sizing',()=>{

@@ -3761,6 +3761,72 @@
       ]
     },
     {
+      "id": "cc-help-digital-balance",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Telefon i internet — równowaga i wsparcie",
+      "shortDesc": "Pomoc w przygotowaniu rodzinnej rozmowy o ekranach. Sam czas przed telefonem nie stanowi tu podstawy do rozpoznania uzależnienia.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/uzaleznienie-od-telefonu",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Telefon i internet — równowaga i wsparcie",
+        "Phones and internet — balance and support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-children-separation",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Dziecko podczas rozstania rodziców",
+      "shortDesc": "Przygotuj rozmowę o codzienności i wsparciu dziecka. Strona nie rozstrzyga o opiece, kontaktach ani winie któregokolwiek z rodziców.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/dziecko-a-rozwod",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Dziecko podczas rozstania rodziców",
+        "Children during parental separation",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-children-faith",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Wiara dzieci — rozmowa i przykład",
+      "shortDesc": "Chrześcijańskie wychowanie oparte na Biblii, uważnej rozmowie i godności dziecka. Bez oceniania jego wiary punktami lub porównaniami.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/wiara-dzieci",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Wiara dzieci — rozmowa i przykład",
+        "Children and faith — conversation and example",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
       "id": "cc-help-pastor",
       "branchId": "misja-wspolpraca",
       "name": "CC Pomoc — Pastor — rozmowa o wierze",

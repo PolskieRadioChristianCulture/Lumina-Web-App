@@ -67,6 +67,17 @@ const catalog=JSON.parse(await readFile(path.join(root,'szukaj/catalog.json'),'u
 const urls=new Set(topics.flatMap(t=>[origin+'/'+t.route,origin+'/en/'+t.enRoute]));
 catalog.items=catalog.items.filter(x=>!urls.has(x.url));
 for(const t of topics)for(const en of [false,true])catalog.items.push({title:`${t[en?'en':'pl'].name} — CC ${en?'Help':'Pomoc'}`,category:en?'Help and support':'Pomoc i wsparcie',url:origin+'/'+route(t,en),description:t[en?'en':'pl'].lead,tags:[t[en?'en':'pl'].name,t.route,'CC Pomoc','CC Help',en?'support':'wsparcie'],type:'page',access:'public',lang:en?'en':'pl'});
+// Upstream index rebuilds can omit the separate debt pilot. Restore it from its
+// current public documents; never roll the pilot page back to an old renderer.
+for(const [pilot,lang] of [['dlugi','pl'],['en/debt-help','en']]){
+ const url=origin+'/'+pilot;
+ if(catalog.items.some(item=>item.url===url))continue;
+ const html=await readFile(path.join(root,pilot,'index.html'),'utf8');
+ const title=html.match(/<title>([^<]+)<\/title>/)?.[1];
+ const description=html.match(/<meta name="description" content="([^"]+)"/)?.[1];
+ if(!title||!description)throw Error('Missing pilot search metadata: '+pilot);
+ catalog.items.push({title,category:lang==='en'?'Help and support':'Pomoc i wsparcie',url,description,tags:['CC Pomoc','CC Help','dlugi','debt help'],type:'page',access:'public',lang});
+}
 catalog.totalItems=catalog.items.length;catalog.updatedAt=new Date().toISOString();
 const serialized=JSON.stringify(catalog,null,2)+'\n';
 await writeFile(path.join(root,'szukaj/catalog.json'),serialized);await writeFile(path.join(root,'data/cc-search-index.json'),serialized);
