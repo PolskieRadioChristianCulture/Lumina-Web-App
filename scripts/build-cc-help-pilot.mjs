@@ -44,5 +44,7 @@ for(const lang of ['pl','en']){
   const meta=`<link rel="canonical" href="${url}">\n<link rel="alternate" hreflang="pl" href="${plUrl}">\n<link rel="alternate" hreflang="en" href="${enUrl}">\n<link rel="alternate" hreflang="x-default" href="${plUrl}">\n<meta property="og:type" content="website">\n<meta property="og:title" content="${esc(title)}">\n<meta property="og:description" content="${esc(desc)}">\n<meta property="og:url" content="${url}">\n<meta property="og:locale" content="${lang==='pl'?'pl_PL':'en_GB'}">\n<meta property="og:image" content="https://polskieradio.cc/dlugi/assets/hero.webp">\n<meta name="twitter:card" content="summary_large_image">`;
   html=html.replace('</head>',meta+'\n</head>');
   fs.writeFileSync(path.join(root,lang==='pl'?'dlugi/index.html':'en/debt-help/index.html'),html);
+  // Kopia .html jak przy innych stronach (uslugi.html + uslugi/index.html): bez niej Cloudflare przekierowuje /dlugi na /dlugi/
+  fs.writeFileSync(path.join(root,lang==='pl'?'dlugi.html':'en/debt-help.html'),html);
 }
 console.log('CC Help: two indexable language pages and four allowlisted assets built. No private contacts copied.');
