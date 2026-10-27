@@ -194,5 +194,111 @@ test('cc-omni-search.js: Command Center World-Class UI contracts (recents, tags,
   assert.ok(omniSearchCode.includes('aspect-ratio: 1774 / 400'), 'balanced distance between logo and input');
 });
 
+test('cc-omni-search.js: Faza 2 — Direct Scripture UBG Engine contracts', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    console: console,
+    setTimeout: setTimeout,
+    clearTimeout: clearTimeout,
+    URL,
+    Date: Date
+  };
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const parseRef = sandbox.window.CCOmniSearch.parseBibleRef;
+  assert.ok(typeof parseRef === 'function', 'parseBibleRef is exported');
+
+  // Test 1: J 3:16 (Ewangelia Jana 3:16)
+  const j316 = parseRef('J 3:16');
+  assert.ok(j316, 'J 3:16 parsed successfully');
+  assert.equal(j316.bookCode, 'JHN');
+  assert.equal(j316.chapter, 3);
+  assert.equal(j316.verse, 16);
+  assert.equal(j316.refTitle, 'Ewangelia Jana 3:16');
+  assert.equal(j316.isPending, false);
+  assert.ok(j316.verseText.includes('umiłował świat'), 'UBG text matches canonical verse');
+
+  // Test 2: Rz 8,28 (List do Rzymian 8:28)
+  const rz828 = parseRef('Rz 8,28');
+  assert.ok(rz828, 'Rz 8,28 parsed successfully');
+  assert.equal(rz828.bookCode, 'ROM');
+  assert.equal(rz828.chapter, 8);
+  assert.equal(rz828.verse, 28);
+  assert.ok(rz828.verseText.includes('współdziała dla dobra'));
+
+  // Test 3: Ps 23 (Księga Psalmów 23)
+  const ps23 = parseRef('Ps 23');
+  assert.ok(ps23, 'Ps 23 parsed successfully');
+  assert.equal(ps23.bookCode, 'PSA');
+  assert.equal(ps23.chapter, 23);
+  assert.ok(ps23.verseText.includes('PAN jest moim pasterzem'));
+
+  // Test 4: 1 Kor 13:4-7
+  const k13 = parseRef('1 Kor 13:4-7');
+  assert.ok(k13, '1 Kor 13:4-7 parsed successfully');
+  assert.equal(k13.bookCode, '1CO');
+  assert.equal(k13.chapter, 13);
+  assert.equal(k13.verse, 4);
+  assert.equal(k13.verseEnd, 7);
+
+  // Test 5: Apokalipsa 21:4
+  const ap21 = parseRef('Apokalipsa 21:4');
+  assert.ok(ap21, 'Apokalipsa 21:4 parsed successfully');
+  assert.equal(ap21.bookCode, 'REV');
+  assert.equal(ap21.verse, 4);
+  assert.ok(ap21.verseText.includes('otrze Bóg wszelką łzę'));
+});
+
+test('cc-omni-search.js: Faza 2 — Pastoral Hope Intent & Split-View Preview UI contracts', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    console: console,
+    setTimeout: setTimeout,
+    clearTimeout: clearTimeout,
+    URL,
+    Date: Date
+  };
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const detectHope = sandbox.window.CCOmniSearch.detectHopeIntent;
+  assert.ok(typeof detectHope === 'function', 'detectHopeIntent is exported');
+
+  // Intencje duszpasterskie
+  assert.equal(detectHope('mam lęk i nie wiem co robić'), true, 'detects lęk');
+  assert.equal(detectHope('depresja i samotność'), true, 'detects depresja');
+  assert.equal(detectHope('potrzebuję modlitwy'), true, 'detects modlitwa');
+  assert.equal(detectHope('infolinia nadziei pomoc'), true, 'detects infolinia');
+  assert.equal(detectHope('duszpasterz rozmowa'), true, 'detects duszpasterz');
+  assert.equal(detectHope('radio cc na zywo'), false, 'normal search is not hope intent');
+
+  // Wymagania CSS i struktury UI Split-View
+  assert.ok(omniSearchCode.includes('.cc-omni-split-layout'), 'defines .cc-omni-split-layout grid');
+  assert.ok(omniSearchCode.includes('.cc-omni-preview-pane'), 'defines .cc-omni-preview-pane');
+  assert.ok(omniSearchCode.includes('.cc-preview-btn-main'), 'defines .cc-preview-btn-main');
+  assert.ok(omniSearchCode.includes('.cc-scripture-card'), 'defines .cc-scripture-card');
+  assert.ok(omniSearchCode.includes('.cc-hope-card'), 'defines .cc-hope-card');
+  assert.ok(omniSearchCode.includes('+48 730 958 583'), 'contains Infolinia Nadziei number');
+  assert.ok(omniSearchCode.includes('+48 608 337 477'), 'contains Pastor Mariusz number');
+  assert.ok(omniSearchCode.includes('showCopyToast'), 'defines copy toast function');
+  assert.ok(omniSearchCode.includes('#FF7A00'), 'uses canonical classic orange #FF7A00');
+});
+
+
 
 
