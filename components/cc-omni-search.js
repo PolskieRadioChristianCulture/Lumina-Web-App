@@ -2706,6 +2706,49 @@
         padding: 2px 6px;
         font: inherit;
       }
+      .cc-omni-footer-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.8rem;
+        color: rgba(243, 229, 200, 0.7);
+        white-space: nowrap;
+        pointer-events: auto;
+      }
+      .cc-omni-yis-link {
+        color: #C4A35A;
+        font-weight: 600;
+        text-decoration: none;
+        margin: 0 4px;
+        transition: color 0.15s, text-shadow 0.15s;
+      }
+      .cc-omni-yis-link:hover, .cc-omni-yis-link:focus-visible {
+        color: #FF7A00;
+        text-shadow: 0 0 10px rgba(255, 122, 0, 0.45);
+        outline: none;
+      }
+      @media (max-width: 760px) {
+        .cc-omni-footer {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 8px 14px;
+          padding-top: 10px;
+          padding-bottom: max(env(safe-area-inset-bottom), 12px);
+        }
+        .cc-omni-footer-center {
+          order: 2;
+          width: 100%;
+          font-size: 0.76rem;
+          white-space: normal;
+        }
+        .cc-omni-footer-left {
+          order: 1;
+        }
+        .cc-omni-footer-right {
+          order: 1;
+        }
+      }
       .cc-omni-footer-right {
         display: flex;
         align-items: center;
@@ -3026,6 +3069,9 @@ ${isStandalonePage ? '' : `
             <button type="button" id="ccOmniWallReset" class="cc-omni-footlink" hidden>Przywróć tło</button>
             <input type="file" id="ccOmniWallFile" accept="image/*" hidden>
             <span id="ccOmniCredit" class="cc-omni-credit">Tło: Galaktyka Andromedy · fot. Unsplash</span>
+          </div>
+          <div class="cc-omni-footer-center">
+            Powered by <a href="https://polskieradio.cc/yis" class="cc-omni-yis-link" target="_blank" rel="noopener noreferrer">Your Imagination Studio</a> dla Christian Culture
           </div>
           <div class="cc-omni-footer-right">
             <span id="ccOmniShareMsg" class="cc-omni-share-msg" role="status" aria-live="polite"></span>
