@@ -740,64 +740,77 @@
       .cc-omni-topnav {
         display: flex;
         align-items: center;
-        gap: 4px;
-      }
-      .cc-omni-toplink {
-        display: inline-flex;
-        align-items: center;
         gap: 8px;
-        min-height: 44px;
-        padding: 0 10px;
-        border-radius: 22px;
-        color: #fff;
-        text-decoration: none;
-        font-size: 0.95rem;
-        font-weight: 600;
-        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
       }
-      .cc-omni-toplink svg { color: var(--omni-gold); flex-shrink: 0; }
-      .cc-omni-toplink:hover, .cc-omni-toplink:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
-      .cc-omni-apps-btn {
+      .cc-omni-toplink,
+      .cc-omni-apps-btn,
+      .cc-omni-radio,
+      #ccOmniOverlay #ccTopBarFavBtn,
+      #ccOmniOverlay .cc-topbar-fav-btn {
         width: 44px;
         height: 44px;
         min-width: 44px;
         min-height: 44px;
         padding: 0;
+        margin: 0;
         border: 0;
-        background: transparent;
         border-radius: 50%;
+        background: transparent;
+        color: #FF7A00;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        text-decoration: none;
         flex-shrink: 0;
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+        box-shadow: none;
+        transition: background-color 0.15s, transform 0.15s, color 0.15s;
       }
-      .cc-omni-apps-btn .cc-i-apps {
-        /* koło siatki = 86/96 pliku, jak PLAY — 49 px daje widoczne koło 44 px, równe z PLAY i kontem (pomiar 26.10.2026) */
-        width: 49px;
-        height: 49px;
-        margin: -2.5px;
-        flex-shrink: 0;
-        border-radius: 50%;
-        display: block;
-        pointer-events: none;
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
-      }
-      .cc-omni-apps-btn:hover .cc-i-apps,
-      .cc-omni-apps-btn:focus-visible .cc-i-apps {
+      .cc-omni-toplink:hover, .cc-omni-toplink:focus-visible,
+      .cc-omni-apps-btn:hover, .cc-omni-apps-btn:focus-visible,
+      .cc-omni-radio:hover, .cc-omni-radio:focus-visible,
+      #ccOmniOverlay #ccTopBarFavBtn:hover, #ccOmniOverlay #ccTopBarFavBtn:focus-visible {
+        background: rgba(255, 255, 255, 0.12);
+        color: #FF8C33;
         transform: scale(1.08);
-        filter: drop-shadow(0 0 12px rgba(255, 175, 50, 0.85));
+        outline: none;
       }
-      .cc-omni-apps-btn:active .cc-i-apps {
+      .cc-omni-toplink:active,
+      .cc-omni-apps-btn:active,
+      .cc-omni-radio:active {
         transform: scale(0.95);
       }
-      /* Na dedykowanej stronie wyszukiwarki /wyszukiwarka przycisk zamykania jest ukryty */
+      .cc-omni-toplink svg,
+      .cc-omni-apps-btn svg,
+      .cc-omni-radio svg,
+      #ccOmniOverlay #ccTopBarFavBtn svg {
+        width: 22px;
+        height: 22px;
+        color: #FF7A00;
+        flex-shrink: 0;
+      }
+      .cc-omni-radio .cc-i-stop,
+      .cc-omni-radio[aria-pressed="true"] .cc-i-play {
+        display: none;
+      }
+      .cc-omni-radio[aria-pressed="true"] .cc-i-stop {
+        display: block;
+        color: #FF7A00;
+      }
+      .cc-omni-radio.cc-loading {
+        opacity: 0.6;
+      }
+      .cc-omni-apps-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 44px;
+        margin: 0;
+      }
       #ccOmniOverlay.cc-standalone #ccOmniClose,
       .ccw-fallback ~ #ccOmniOverlay #ccOmniClose {
         display: none !important;
       }
-      .cc-omni-apps-wrap { position: relative; display: flex; align-items: center; height: 44px; } /* blok 52 px podnosił siatkę o 3,8 px */
       /* Menu „Wszystko”: ciemne szkło jak cała wyszukiwarka, ikony w kolorze akcji #FF7A00 (L0 26.10.2026) */
       .cc-omni-apps {
         position: absolute;
@@ -940,18 +953,18 @@
       }
       .cc-omni-hero {
         text-align: center;
-        padding: calc(7vh + 48px) 0 4px;
+        padding: calc(8vh + 54px) 0 16px;
       }
       .cc-omni-brand {
         position: relative;
         width: min(580px, 100%);
-        aspect-ratio: 1774 / 340;
-        margin: 0 auto -6px;
+        aspect-ratio: 1774 / 400;
+        margin: 0 auto;
         overflow: hidden;
       }
       .cc-omni-brand img {
         position: absolute;
-        top: -68%;
+        top: -60%;
         left: 0;
         display: block;
         width: 100%;
@@ -966,25 +979,29 @@
         gap: 8px;
         min-height: 56px;
         padding: 0 8px 0 20px;
-        background: rgba(11, 15, 26, 0.68);
+        background: rgba(255, 255, 255, 0.15);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        color: #fff;
-        border: 2px solid var(--omni-gold);
+        color: #ffffff;
+        border: 2px solid #FF7A00;
         border-radius: 30px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 122, 0, 0.28);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 122, 0, 0.3);
         transition: box-shadow 0.18s, border-color 0.18s, background-color 0.18s;
         box-sizing: border-box;
       }
       .cc-omni-field:focus-within, .cc-omni-field:hover {
-        border-color: var(--omni-gold-hover);
-        background: rgba(14, 18, 32, 0.78);
-        box-shadow: 0 12px 42px rgba(0, 0, 0, 0.7), 0 0 28px rgba(255, 140, 51, 0.45);
+        border-color: #FF8C33;
+        background: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 12px 42px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 140, 51, 0.45);
       }
       .cc-omni-search-icon {
-        color: var(--omni-gold);
+        color: #FF7A00;
         display: flex;
         flex-shrink: 0;
+      }
+      .cc-omni-search-icon svg {
+        color: #FF7A00;
+        stroke: #FF7A00;
       }
       #ccOmniInput {
         flex: 1;
@@ -998,15 +1015,15 @@
         min-height: 44px;
       }
       #ccOmniInput::placeholder {
-        color: rgba(243, 229, 200, 0.6);
+        color: rgba(255, 255, 255, 0.7);
         font-weight: 400;
       }
       .cc-omni-field .cc-omni-btn {
-        color: rgba(243, 229, 200, 0.75);
+        color: rgba(255, 255, 255, 0.8);
       }
       .cc-omni-field .cc-omni-btn:hover, .cc-omni-field .cc-omni-btn:focus-visible {
-        color: var(--omni-gold-hover);
-        background: rgba(255, 255, 255, 0.1);
+        color: #FF7A00;
+        background: rgba(255, 255, 255, 0.12);
       }
       #ccOmniMic.cc-listening {
         color: #b3261e;
@@ -1902,40 +1919,36 @@
           <nav class="cc-omni-topnav" aria-label="Szybki dostęp">
             <a class="cc-omni-toplink" href="/mess" aria-label="Czat" title="Czat">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5A3.5 3.5 0 0 1 6.5 2h6A3.5 3.5 0 0 1 16 5.5v3A3.5 3.5 0 0 1 12.5 12H8l-3.5 3v-3.2A3.5 3.5 0 0 1 3 8.5Z"/><path d="M18 8.2a3.5 3.5 0 0 1 3 3.5v2.8a3.5 3.5 0 0 1-2 3.2V21l-3.4-2.8H12a3.5 3.5 0 0 1-3.2-2h3.7A5.5 5.5 0 0 0 18 10.7Z"/></svg>
-              <span class="cc-omni-sr-only">Czat</span>
             </a>
             <a class="cc-omni-toplink" href="/news" aria-label="Nowości CCN" title="Nowości CCN">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h13v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8h3"/><path d="M7 4v14M11 8h5M11 12h5M11 16h5"/></svg>
-              <span class="cc-omni-sr-only">Nowości</span>
             </a>
             <div class="cc-omni-apps-wrap">
-              <button type="button" id="ccOmniApps" class="cc-omni-btn cc-omni-apps-btn" aria-label="Wszystko: aplikacje Christian Culture" title="Wszystko — aplikacje Christian Culture" aria-expanded="false" aria-controls="ccOmniAppsMenu">
-                <svg class="cc-i-apps" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <rect x="3.5" y="3.5" width="4.5" height="4.5" rx="1"/>
-                  <rect x="9.75" y="3.5" width="4.5" height="4.5" rx="1"/>
-                  <rect x="16" y="3.5" width="4.5" height="4.5" rx="1"/>
-                  <rect x="3.5" y="9.75" width="4.5" height="4.5" rx="1"/>
+              <button type="button" id="ccOmniApps" class="cc-omni-toplink cc-omni-apps-btn" aria-label="Wszystko: aplikacje Christian Culture" title="Wszystko — aplikacje Christian Culture" aria-expanded="false" aria-controls="ccOmniAppsMenu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="3" y="3" width="4.5" height="4.5" rx="1"/>
+                  <rect x="9.75" y="3" width="4.5" height="4.5" rx="1"/>
+                  <rect x="16.5" y="3" width="4.5" height="4.5" rx="1"/>
+                  <rect x="3" y="9.75" width="4.5" height="4.5" rx="1"/>
                   <rect x="9.75" y="9.75" width="4.5" height="4.5" rx="1"/>
-                  <rect x="16" y="9.75" width="4.5" height="4.5" rx="1"/>
-                  <rect x="3.5" y="16" width="4.5" height="4.5" rx="1"/>
-                  <rect x="9.75" y="16" width="4.5" height="4.5" rx="1"/>
-                  <rect x="16" y="16" width="4.5" height="4.5" rx="1"/>
+                  <rect x="16.5" y="9.75" width="4.5" height="4.5" rx="1"/>
+                  <rect x="3" y="16.5" width="4.5" height="4.5" rx="1"/>
+                  <rect x="9.75" y="16.5" width="4.5" height="4.5" rx="1"/>
+                  <rect x="16.5" y="16.5" width="4.5" height="4.5" rx="1"/>
                 </svg>
-                <span class="cc-omni-sr-only">Wszystko</span>
               </button>
               <div id="ccOmniAppsMenu" class="cc-omni-apps" hidden>
                 <p class="cc-omni-apps-title">Cały ekosystem Christian Culture</p>
                 ${renderAppsGrid()}
               </div>
             </div>
-            <button type="button" id="ccOmniRadio" class="cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
+            <button type="button" id="ccOmniRadio" class="cc-omni-toplink cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
               <svg class="cc-i-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z"/>
               </svg>
               <svg class="cc-i-stop" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <rect x="5.5" y="5.5" width="13" height="13" rx="2.5"/>
               </svg>
-              <span class="cc-omni-sr-only">Radio CC</span>
             </button>
             <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA" title="Twoje konto LUMINA">
               <span class="cc-omni-account-face" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
