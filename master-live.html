@@ -16,6 +16,7 @@
         }
     </script>
     <meta charset="UTF-8">
+    <script src="/js/cc-ramowka.js?v=20261027_v1"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -1044,7 +1045,48 @@
             checkSchedule();
         }
 
+        // Zachód słońca (algorytm NOAA, dokładność ok. 1–2 min) dla środka Polski (Warszawa).
+        const CC_LAT = 52.23, CC_LON = 21.01;
+        function ccSunsetMs(day) {
+            const rad = Math.PI / 180;
+            const y = day.getFullYear(), m = day.getMonth(), d = day.getDate();
+            const doy = Math.round((Date.UTC(y, m, d) - Date.UTC(y, 0, 0)) / 864e5);
+            const g = 2 * Math.PI / 365 * (doy - 1);
+            const eqtime = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+            const decl = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g) - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g);
+            const ha = Math.acos(Math.cos(90.833 * rad) / (Math.cos(CC_LAT * rad) * Math.cos(decl)) - Math.tan(CC_LAT * rad) * Math.tan(decl)) / rad;
+            const sunsetMinUtc = 720 - 4 * (CC_LON - ha) - eqtime;
+            return Date.UTC(y, m, d) + sunsetMinUtc * 60000;
+        }
+        // Okno wewnętrzne pt (od zachodu) – sob (do zachodu). Tylko dobór repertuaru — nigdy nie oznaczamy go publicznie.
+        function ccIsRestWindow(now) {
+            const day = now.getDay();
+            if (day === 5) return now.getTime() >= ccSunsetMs(now);
+            if (day === 6) return now.getTime() < ccSunsetMs(now);
+            return false;
+        }
+        // W oknie: zamiast pasm publicystycznych i rozrywkowych — uwielbienie i Słowo.
+        const CC_REST_SWAP = {
+            "zapolske-live.html": "spiewajmy-panu-live.html?playlist=PLHy3TNFso_uLnL_I1TPR4d35H6FuSVIUW&brand=cctv",
+            "randki-malzenstwo-live.html": "biblia-spiewana-live.html",
+            "totalny-atak-live.html": "biblia-spiewana-live.html"
+        };
+
         function getScheduleState(now = new Date()) {
+            if (window.CC_RAMOWKA && typeof window.CC_RAMOWKA.getScheduleState === 'function') {
+                return window.CC_RAMOWKA.getScheduleState(now, {
+                    earlyFinishedSlots: earlyFinishedSlots,
+                    isSafeMonetizationMode: isSafeMonetizationMode
+                });
+            }
+            const state = getBaseScheduleState(now);
+            if (ccIsRestWindow(now) && CC_REST_SWAP[state.channel]) {
+                state.channel = CC_REST_SWAP[state.channel];
+            }
+            return state;
+        }
+
+        function getBaseScheduleState(now) {
             const dayOfWeek = now.getDay(); // 0 = Niedziela, 5 = Piątek, 6 = Sobota
             const hour = now.getHours();
             const min = now.getMinutes();
@@ -1112,6 +1154,8 @@
                 blockKey = "18_20_evening_" + dayOfWeek;
                 if (dayOfWeek === 0) channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "swiadectwa-live.html";
                 else if (dayOfWeek === 6) channel = "spiewajmy-panu-live.html?mix=1"; // Sobotni Wieczór Chwały — Muzyczny Mikser CC (O+ & CCTV24 & Radio CC)
+                else if (dayOfWeek === 5) channel = "spiewajmy-panu-live.html?playlist=PLHy3TNFso_uLnL_I1TPR4d35H6FuSVIUW&brand=cctv"; // Piątkowy wieczór uwielbienia
+                else if (dayOfWeek === 2 || dayOfWeek === 4) channel = "spiewajmy-panu-live.html?mix=1"; // Wt i Czw: Wieczór Chwały — mikser (urozmaicenie)
                 else channel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
             }
             // 13) 20:00 - 20:52: Studium Telewizyjne Pisma Świętego Wieczór
@@ -1217,7 +1261,7 @@
                 };
             } else if (newChannel.includes('mix=1')) {
                 meta = {
-                    title: "SOBOTNI WIECZÓR CHWAŁY — MUZYCZNY MIKSER CC",
+                    title: new Date().getDay() === 6 ? "SOBOTNI WIECZÓR CHWAŁY — MUZYCZNY MIKSER CC" : "WIECZÓR CHWAŁY — MUZYCZNY MIKSER CC",
                     desc: "Rotacyjny miks utworów chwały i uwielbienia z kanałów Osobowość PLUS, CCTV24 i Radia CC"
                 };
             }

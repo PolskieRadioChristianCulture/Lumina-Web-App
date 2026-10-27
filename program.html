@@ -10,6 +10,7 @@
 
   gtag('config','G-Y4EFTVBPE3',(function(){try{var s=location.search,k='cc_team';if(/[?&]cc_team=1/.test(s))localStorage.setItem(k,'1');if(/[?&]cc_team=0/.test(s))localStorage.removeItem(k);if(localStorage.getItem(k)==='1'||/[?&]in_mcr=1/.test(s)||window.obsstudio)return{traffic_type:'internal'}}catch(e){}return{}})());
 </script><script src="/js/cc-analytics.js?v=20261026_1" defer></script>
+    <script src="/js/cc-ramowka.js?v=20261027_v1"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -696,13 +697,13 @@
             <div class="schedule-info">
                 <div class="card-tag-group">
                     <span class="tag-badge badge-new"><i class="fa-solid fa-fire"></i> NOWOŚĆ</span>
-                    <span class="tag-badge badge-cinema">KINO CHRZEŚCIJAŃSKIE</span>
-                    <span class="tag-badge" style="background: rgba(77,159,255,0.2); color: #80c2ff;">FILM & DOKUMENT</span>
+                    <span class="tag-badge badge-worship">PASMO WIECZORNE</span>
+                    <span class="tag-badge" style="background: rgba(77,159,255,0.2); color: #80c2ff;">WYKŁADY & UWIELBIENIE</span>
                 </div>
-                <h3 class="show-title">Chrześcijański Blok Filmowy & Dokumenty</h3>
-                <p class="show-desc">Wartościowe filmy fabularne, chrześcijańskie produkcje kinowe, dokumenty archeologiczne oraz retransmisje koncertów uwielbienia.</p>
+                <h3 class="show-title">Pasmo Wieczorne — Wykłady & Wieczory Chwały</h3>
+                <p class="show-desc">Wykłady biblijne, świadectwa wiary oraz uroczyste wieczory uwielbienia i chwały.</p>
             </div>
-            <a href="master" class="schedule-action-btn" style="border-color: #4d9fff; color: #80c2ff;"><i class="fa-solid fa-film"></i> Oglądaj Pasmo Filmowe</a>
+            <a href="master" class="schedule-action-btn" style="border-color: #4d9fff; color: #80c2ff;"><i class="fa-solid fa-film"></i> Oglądaj Pasmo Wieczorne</a>
         </article>
 
         <!-- 20:00 - 21:00 (NOWOŚĆ) -->
@@ -887,7 +888,7 @@
                     • 08:00 Sobotnie Pasmo Rodzinne & Dzieci<br>
                     • 10:00 Maraton Kursu Apokalipsa<br>
                     • 14:00 Najpiękniejsze Koncerty Worship<br>
-                    • 18:00 SOBOTNIE KINO KINOWE (Film Fabularny)<br>
+                    • 18:00 SOBOTNI WIECZÓR CHWAŁY (Muzyczny Mikser CC)<br>
                     • 21:00 Noc Uwielbienia i Modlitwy
                 </p>
             </div>
@@ -901,7 +902,7 @@
                     • 08:00 Poranny Blok Uwielbienia<br>
                     • 10:00 Uroczyste Nabożeństwo & Słowo Bożego<br>
                     • 14:00 Maraton Biblia Śpiewana<br>
-                    • 18:00 Niedzielne Kino Rodzinne<br>
+                    • 18:00 ŚWIADECTWA (Cykl Historii Wiary)<br>
                     • 21:00 Finał Tygodnia & Nocne Czuwanie
                 </p>
             </div>
@@ -1057,5 +1058,54 @@
     <!-- Christian Culture & LUMINA Universal Auth Pill -->
     <script src="js/cc-global-auth.js?v=20261007_auth_v2" defer></script>
   <script src="/components/cc-support-footer.js" defer></script>
+
+    <!-- CC_RAMOWKA Integration -->
+    <script>
+        (function() {
+            function syncProgramWithAntenna() {
+                if (!window.CC_RAMOWKA) return;
+                var now = new Date();
+                var state = window.CC_RAMOWKA.getScheduleState(now);
+
+                var heroTitle = document.getElementById('liveHeroTitle');
+                var heroDesc = document.getElementById('liveHeroDesc');
+                if (heroTitle && state.title) heroTitle.textContent = state.title;
+                if (heroDesc && state.desc) heroDesc.textContent = state.desc;
+
+                // Podświetlenie aktywnego kafelka
+                var cards = document.querySelectorAll('#todayScheduleList .schedule-card');
+                var timeInMin = now.getHours() * 60 + now.getMinutes();
+
+                cards.forEach(function(card) {
+                    var startEl = card.querySelector('.time-start');
+                    var endEl = card.querySelector('.time-end');
+                    if (!startEl || !endEl) return;
+
+                    var sParts = startEl.textContent.trim().split(':');
+                    var eParts = endEl.textContent.trim().split(':');
+                    var startMin = parseInt(sParts[0], 10) * 60 + parseInt(sParts[1], 10);
+                    var endMin = parseInt(eParts[0], 10) * 60 + parseInt(eParts[1], 10);
+                    if (endMin < startMin) endMin += 24 * 60; // slot nocny
+
+                    var isActive = (timeInMin >= startMin && timeInMin < endMin) || (timeInMin + 24 * 60 >= startMin && timeInMin + 24 * 60 < endMin);
+                    if (isActive) {
+                        card.style.borderColor = 'var(--gold-primary, #d4af37)';
+                        card.style.boxShadow = '0 0 25px rgba(212,175,55,0.25)';
+                    } else {
+                        card.style.borderColor = '';
+                        card.style.boxShadow = '';
+                    }
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', syncProgramWithAntenna);
+            } else {
+                syncProgramWithAntenna();
+            }
+            setInterval(syncProgramWithAntenna, 15000);
+        })();
+    </script>
+
 </body>
 </html>
