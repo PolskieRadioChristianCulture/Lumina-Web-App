@@ -6,8 +6,8 @@ import {fileURLToPath} from 'node:url';
 import {topics,sources} from '../docs/cc-help-series/topics.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-test('thirteen approved topics, twenty-six unique routes, existing aliases preserved',()=>{
- assert.equal(topics.length,13);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,26);
+test('sixteen approved topics, thirty-two unique routes, existing aliases preserved',()=>{
+ assert.equal(topics.length,16);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,32);
  for(const r of ['rodzina','malzenstwo','wychowanie','pomoc','psychologia','dlugi'])assert(!routes.includes(r));
  const redirects=read('_redirects');for(const r of ['/rodzina /edukacja 301','/malzenstwo /seks 301','/wychowanie /edukacja 301'])assert(redirects.includes(r));
 });
@@ -27,8 +27,12 @@ for(const t of topics)for(const lang of ['pl','en'])test(`${t.id}/${lang}: stati
  const image=fs.statSync(path.join(root,'cc-pomoc/assets',t.id+'.webp'));assert(image.size>10000&&image.size<250000);
 });
 test('health pages contain crisis access; family pages protect from coercion',()=>{
- for(const t of topics.filter(t=>['psychology','depression','addiction'].includes(t.id)))assert(read(t.route+'/index.html').includes('tel:800702222'));
+ for(const t of topics.filter(t=>t.mentalSupport||['psychology','depression','addiction'].includes(t.id)))assert(read(t.route+'/index.html').includes('tel:800702222'));
  for(const id of ['marriage','family']){const t=topics.find(t=>t.id===id);assert(read(t.route+'/index.html').includes('mediacji'));assert(read(t.route+'/index.html').includes('tel:800120002'));}
+});
+test('urgent help precedes the hero on both crisis pages and telephone targets have touch sizing',()=>{
+ for(const route of ['kryzys','en/emotional-crisis']){const h=read(route+'/index.html');assert(h.indexOf('<aside class="urgent-help wrap"')<h.indexOf('<section class="hero wrap"'));assert.equal((h.match(/id="urgent-title"/g)||[]).length,1);assert(h.includes('tel:112'));assert(h.includes('tel:800702222'));}
+ const rule=read('cc-pomoc/series.css').match(/\.urgent-help a\[href\^="tel:"\]\{([^}]+)\}/)?.[1];assert(rule);assert(rule.includes('min-height:44px'));assert(rule.includes('min-width:44px'));
 });
 test('search surfaces agree and every language route appears once in search and sitemap',()=>{
  assert.equal(read('szukaj/catalog.json'),read('data/cc-search-index.json'));const cat=JSON.parse(read('szukaj/catalog.json'));assert.equal(cat.totalItems,cat.items.length);
