@@ -183,6 +183,11 @@ test('cc-omni-search.js: Command Center World-Class UI contracts (recents, tags,
   assert.ok(omniSearchCode.includes('Radio Christian Culture & Player'), 'pillar 4: Radio CC & Player exists');
   assert.ok(omniSearchCode.includes('#Apokalipsa') && omniSearchCode.includes('#KursCodzienny'), 'popular topic tags exist');
   assert.ok(omniSearchCode.includes('startPlaceholderRotation'), 'rotating placeholder logic exists');
+  assert.ok(omniSearchCode.includes('rgba(11, 15, 26, 0.68)'), 'transparent dark-glass search input');
+  assert.ok(!omniSearchCode.includes('apps-grid-gold.webp'), 'no 3D shiny ball for apps launcher');
+  assert.ok(!omniSearchCode.includes('radio-play.webp'), 'no 3D shiny ball for radio play');
+  assert.ok(!omniSearchCode.includes('radio-stop.webp'), 'no 3D shiny ball for radio stop');
+  assert.ok(omniSearchCode.includes('aspect-ratio: 1774 / 340'), 'tighter distance between logo and input');
 });
 
 
