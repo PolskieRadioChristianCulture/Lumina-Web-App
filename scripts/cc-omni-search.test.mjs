@@ -305,6 +305,61 @@ test('cc-omni-search.js: Faza 2 — Pastoral Hope Intent & Split-View Preview UI
   assert.ok(omniSearchCode.includes('#FF7A00'), 'uses canonical classic orange #FF7A00');
 });
 
+test('cc-omni-search.js: Faza 3 — Fuzzy Search & Typo Auto-Correction and Mobile Thumb Zone contracts', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => 1,
+    clearInterval: () => {},
+    Date: Date
+  };
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const parseBible = sandbox.window.CCOmniSearch.parseBibleRef;
+  const detectTypo = sandbox.window.CCOmniSearch.detectTypoCorrection;
+
+  assert.ok(typeof parseBible === 'function', 'parseBibleRef is exported');
+  assert.ok(typeof detectTypo === 'function', 'detectTypoCorrection is exported');
+
+  // 1. Fuzzy Scripture matching (apokalispa 14 -> REV 14, pslam 23 -> PSA 23)
+  const apokFuzzy = parseBible('apokalispa 14');
+  assert.ok(apokFuzzy, 'apokalispa 14 is recognized');
+  assert.equal(apokFuzzy.bookCode, 'REV', 'resolves to REV code');
+  assert.equal(apokFuzzy.isFuzzyMatch, true, 'flagged as fuzzy match');
+  assert.equal(apokFuzzy.correctedFrom, 'apokalispa', 'tracks original typo');
+
+  const psalmFuzzy = parseBible('pslam 23');
+  assert.ok(psalmFuzzy, 'pslam 23 is recognized');
+  assert.equal(psalmFuzzy.bookCode, 'PSA', 'resolves to PSA code');
+  assert.equal(psalmFuzzy.isFuzzyMatch, true, 'flagged as fuzzy match');
+
+  // 2. Query typo auto-correction
+  assert.equal(detectTypo('apokalispa', ['apokalispa']), 'apokalipsa', 'corrects apokalispa -> apokalipsa');
+  assert.equal(detectTypo('mojabibla', ['mojabibla']), 'mojabiblia', 'corrects mojabibla -> mojabiblia');
+  assert.equal(detectTypo('nadzeja', ['nadzeja']), 'nadzieja', 'corrects nadzeja -> nadzieja');
+  assert.equal(detectTypo('bilbia', ['bilbia']), 'biblia', 'corrects bilbia -> biblia');
+  assert.equal(detectTypo('infolina', ['infolina']), 'infolinia', 'corrects infolina -> infolinia');
+  assert.equal(detectTypo('apokalipsa', ['apokalipsa']), null, 'exact match returns null (no correction needed)');
+
+  // 3. UI contracts
+  assert.ok(omniSearchCode.includes('.cc-omni-autocorrect-banner'), 'defines .cc-omni-autocorrect-banner');
+  assert.ok(omniSearchCode.includes('.cc-autocorrect-btn'), 'defines .cc-autocorrect-btn');
+  assert.ok(omniSearchCode.includes('Pokazuję wyniki dla:'), 'contains autocorrect user copy');
+  assert.ok(omniSearchCode.includes('.cc-scripture-fuzzy-hint'), 'defines .cc-scripture-fuzzy-hint');
+  assert.ok(omniSearchCode.includes('overscroll-behavior-y: contain'), 'defines mobile overscroll contain');
+  assert.ok(omniSearchCode.includes('safe-area-inset-bottom'), 'respects mobile notch and bottom safe area');
+});
+
 
 
 

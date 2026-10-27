@@ -547,8 +547,28 @@
     const m = norm.match(/^(?:(1|2|3)\s*)?([a-z]+)\s*(\d+)(?:[\s:,]+(\d+)(?:[-–—](\d+))?)?$/);
     if (!m) return null;
     const rawKey = (m[1] ? m[1] + m[2] : m[2]);
-    const code = BIBLE_BOOK_ALIASES[rawKey];
+    let code = BIBLE_BOOK_ALIASES[rawKey];
+    let matchedAlias = rawKey;
+    if (!code) {
+      let bestDist = 99;
+      let bestAlias = null;
+      for (const alias of Object.keys(BIBLE_BOOK_ALIASES)) {
+        if (alias.length >= 3 && Math.abs(rawKey.length - alias.length) <= 2) {
+          const dist = levenshteinDist(rawKey, alias);
+          const maxAllowed = rawKey.length <= 4 ? 1 : 2;
+          if (dist <= maxAllowed && dist < bestDist) {
+            bestDist = dist;
+            bestAlias = alias;
+          }
+        }
+      }
+      if (bestAlias) {
+        code = BIBLE_BOOK_ALIASES[bestAlias];
+        matchedAlias = bestAlias;
+      }
+    }
     if (!code) return null;
+    const isFuzzyMatch = matchedAlias !== rawKey;
     const chapter = parseInt(m[3], 10);
     const verse = m[4] ? parseInt(m[4], 10) : null;
     const verseEnd = m[5] ? parseInt(m[5], 10) : null;
@@ -565,7 +585,9 @@
       verseEnd,
       refTitle,
       verseText: cachedText || null,
-      isPending: !cachedText
+      isPending: !cachedText,
+      isFuzzyMatch: isFuzzyMatch,
+      correctedFrom: rawKey
     };
   }
 
@@ -736,7 +758,8 @@
             <span>Pismo Święte • UBG (Uwspółcześniona Biblia Gdańska)</span>
           </div>
           <span class="cc-scripture-ref">${escapeHtml(match.refTitle)}</span>
-        </div>
+        </div>${match.isFuzzyMatch ? `
+        <div class="cc-scripture-fuzzy-hint">✨ Rozpoznano werset: <b>${escapeHtml(match.refTitle)}</b> <small>(zamiast „${escapeHtml(match.correctedFrom)}”)</small></div>` : ''}
         <blockquote class="cc-scripture-quote" id="ccScriptureQuote">
           „${quoteText}”
         </blockquote>
@@ -797,6 +820,58 @@
         </div>
       </div>
     `;
+  }
+
+  // ── FAZA 3: SŁOWNIK KANONICZNY & AUTOKOREKTA LITERÓWEK (LEVENSHTEIN) ──
+  const CANONICAL_WORDS = [
+    'apokalipsa', 'rozważanie', 'rozwazanie', 'inspiracja', 'lekcja',
+    'kurs', 'akademia', 'mojabiblia', 'biblia', 'werset', 'modlitwa',
+    'nadzieja', 'worship', 'śpiewana', 'spiewana', 'karaoke', 'śpiewnik',
+    'spiewnik', 'uwielbienie', 'radio', 'audycja', 'podcast', 'film',
+    'kino', 'społeczność', 'spolecznosc', 'lumina', 'profil', 'tablica',
+    'czat', 'duszpasterz', 'infolinia', 'pomoc', 'święte', 'swiete',
+    'jezus', 'chrystus', 'bóg', 'bog', 'przebaczenie', 'zbawienie',
+    'pokój', 'pokoj', 'miłość', 'milosc', 'wiara', 'łaska', 'laska',
+    'świadectwo', 'swiadectwo', 'ewangelia', 'apostoł', 'apostol',
+    'stworzenie', 'sabat', 'szabat', 'proroctwo', 'palla', 'rogowski',
+    'rogowska', 'mariusz'
+  ];
+
+  function detectTypoCorrection(normQuery, queryWords) {
+    if (!queryWords || !queryWords.length) return null;
+    let hasCorrection = false;
+    const correctedWords = [];
+    const ignoredWords = new Set(['w','z','na','o','do','i','a','oraz','czyli','dla','ze','za','po','od','czy','the','and','of','is']);
+
+    for (const w of queryWords) {
+      if (ignoredWords.has(w) || /^\d+$/.test(w)) {
+        correctedWords.push(w);
+        continue;
+      }
+      if (CANONICAL_WORDS.includes(w)) {
+        correctedWords.push(w);
+        continue;
+      }
+      let bestMatch = null;
+      let minDistance = 99;
+      for (const target of CANONICAL_WORDS) {
+        if (Math.abs(w.length - target.length) > 2) continue;
+        const dist = levenshteinDist(w, target);
+        const maxDist = w.length <= 4 ? 1 : 2;
+        if (dist <= maxDist && dist < minDistance) {
+          minDistance = dist;
+          bestMatch = target;
+        }
+      }
+      if (bestMatch && bestMatch !== w) {
+        correctedWords.push(bestMatch);
+        hasCorrection = true;
+      } else {
+        correctedWords.push(w);
+      }
+    }
+    if (!hasCorrection) return null;
+    return correctedWords.join(' ');
   }
 
   // Rozszerzanie zapytania o synonimy i rozpoznawanie zapytań "na dziś"
@@ -934,8 +1009,15 @@
     }
     const ignoredWords = new Set(['w','z','na','o','do','i','a','oraz','czyli','dla','ze','za','po','od','czy','the','and','of','is']);
     const queryWords = normQuery.split(/\s+/).filter(w => w && !ignoredWords.has(w));
-    if (!queryWords.length) return { items: [], guide: null, isSuggestion: false, suggestionNote: null };
+    if (!queryWords.length) return { items: [], guide: null, isSuggestion: false, suggestionNote: null, autocorrect: null };
+    const typoCorrection = detectTypoCorrection(normQuery, queryWords);
     const { synonyms, isTodayQuery, todayDayNum } = expandQueryTerms(normQuery, queryWords);
+    if (typoCorrection) {
+      const correctedTokens = typoCorrection.split(/\s+/);
+      for (const ct of correctedTokens) {
+        if (!synonyms.includes(ct)) synonyms.push(ct);
+      }
+    }
     const numberTokens = queryWords.filter(w => /^\d+$/.test(w));
 
     // Sprawdzenie przewodnika tematycznego
@@ -1096,7 +1178,8 @@
         items: scored.slice(0, limit).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: s.primaryWordsMatched < queryWords.length })),
         guide: matchedGuide,
         isSuggestion: false,
-        suggestionNote: null
+        suggestionNote: null,
+        autocorrect: typoCorrection ? { original: query, corrected: typoCorrection } : null
       };
     }
 
@@ -1114,7 +1197,8 @@
       items: nearSuggestions,
       guide: matchedGuide,
       isSuggestion: true,
-      suggestionNote: note
+      suggestionNote: note,
+      autocorrect: typoCorrection ? { original: query, corrected: typoCorrection } : null
     };
   }
 
@@ -2725,6 +2809,104 @@
         .cc-omni-topnav .cc-omni-radio,
         .cc-omni-topnav .cc-omni-account { margin-left: 12px; }
       }
+      /* ── FAZA 3: AUTOKOREKTA LITERÓWEK & ERGONOMIA KCIUKA MOBILE ── */
+      .cc-omni-autocorrect-banner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        margin: 0 0 16px 0;
+        border-radius: 14px;
+        background: rgba(196, 163, 90, 0.12);
+        border: 1px solid rgba(196, 163, 90, 0.35);
+        font-size: 0.94rem;
+        color: #F3E5C8;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        animation: ccFadeIn 0.22s ease-out;
+      }
+      .cc-autocorrect-icon {
+        font-size: 1.25rem;
+        color: #C4A35A;
+        flex-shrink: 0;
+      }
+      .cc-autocorrect-text {
+        flex: 1;
+        min-width: 0;
+        line-height: 1.45;
+      }
+      .cc-autocorrect-btn {
+        background: transparent;
+        border: none;
+        padding: 0;
+        color: #FF7A00;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 0.15s;
+      }
+      .cc-autocorrect-btn:hover, .cc-autocorrect-btn:focus-visible {
+        color: #FF8C33;
+      }
+      .cc-autocorrect-instead {
+        margin-left: 10px;
+        color: rgba(243, 229, 200, 0.65);
+        font-size: 0.88rem;
+      }
+      .cc-autocorrect-btn-orig {
+        background: transparent;
+        border: none;
+        padding: 0;
+        color: rgba(243, 229, 200, 0.85);
+        font: inherit;
+        font-style: italic;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .cc-autocorrect-btn-orig:hover, .cc-autocorrect-btn-orig:focus-visible {
+        color: #ffffff;
+      }
+      .cc-scripture-fuzzy-hint {
+        font-size: 0.86rem;
+        color: #C4A35A;
+        background: rgba(196, 163, 90, 0.12);
+        padding: 4px 10px;
+        border-radius: 8px;
+        margin: 4px 0 10px 0;
+        display: inline-block;
+      }
+      .cc-scripture-fuzzy-hint small {
+        color: rgba(243, 229, 200, 0.7);
+        font-style: italic;
+      }
+
+      /* Optymalizacja kciuka i płynnego dotyku na smartfonach */
+      #ccOmniModal {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+        padding-bottom: max(28px, env(safe-area-inset-bottom, 28px));
+      }
+      .cc-omni-results-col {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .cc-omni-item:active {
+          background: rgba(196, 163, 90, 0.18);
+          transform: scale(0.992);
+        }
+        .cc-omni-filter-chip {
+          padding: 0 14px;
+        }
+        .cc-omni-field {
+          min-height: 52px;
+        }
+      }
+
       /* /wyszukiwarka — pełna gotowość do natychmiastowego wyszukiwania (Spotlight/Raycast) */
 `;
     document.head.appendChild(style);
@@ -3083,6 +3265,23 @@ ${isStandalonePage ? '' : `
 
     // Faza 2: Obsługa kopiowania linku / wersetu oraz hoveru na wynikach dla Split-View
     overlay.addEventListener('click', (e) => {
+      const autoBtn = e.target.closest('.cc-autocorrect-btn, .cc-autocorrect-btn-orig');
+      if (autoBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const q = autoBtn.getAttribute('data-query');
+        if (q) {
+          input.value = q;
+          clearBtn.style.display = 'inline-flex';
+          renderResults(q, activeFilter);
+          if (isStandalonePage) {
+            history.replaceState(null, '', '/wyszukiwarka?q=' + encodeURIComponent(q));
+          }
+          input.focus();
+        }
+        return;
+      }
+
       const copyBtn = e.target.closest('.cc-preview-btn-copy');
       if (copyBtn) {
         e.preventDefault();
@@ -3262,7 +3461,7 @@ ${isStandalonePage ? '' : `
       body.innerHTML = renderHome();
       return;
     }
-    const { items, guide, isSuggestion, suggestionNote } = performSearch(query, filter);
+    const { items, guide, isSuggestion, suggestionNote, autocorrect } = performSearch(query, filter);
     currentResults = items;
     activeIndex = (items && items.length > 0) ? 0 : -1;
 
@@ -3291,6 +3490,19 @@ ${isStandalonePage ? '' : `
     }
     if (hopeCardHtml) {
       leftColHtml += hopeCardHtml;
+    }
+
+    // Faza 3: Pasek autokorekty literówki (np. Pokazuję wyniki dla: Apokalipsa)
+    if (autocorrect && autocorrect.corrected.toLowerCase() !== query.trim().toLowerCase()) {
+      leftColHtml += `
+        <div class="cc-omni-autocorrect-banner" id="ccOmniAutoCorrect">
+          <span class="cc-autocorrect-icon">✨</span>
+          <div class="cc-autocorrect-text">
+            Pokazuję wyniki dla: <button type="button" class="cc-autocorrect-btn" data-query="${escapeHtml(autocorrect.corrected)}"><strong>${escapeHtml(autocorrect.corrected)}</strong></button>
+            <span class="cc-autocorrect-instead">Zamiast: <button type="button" class="cc-autocorrect-btn-orig" data-query="${escapeHtml(autocorrect.original)}"><i>${escapeHtml(autocorrect.original)}</i></button></span>
+          </div>
+        </div>
+      `;
     }
 
     // 1. Jeśli jest dopasowany przewodnik tematyczny
@@ -3840,7 +4052,9 @@ ${isStandalonePage ? '' : `
     TOP_UBG_VERSES: TOP_UBG_VERSES,
     PLACEHOLDERS: PLACEHOLDERS,
     startPlaceholderRotation: startPlaceholderRotation,
-    stopPlaceholderRotation: stopPlaceholderRotation
+    stopPlaceholderRotation: stopPlaceholderRotation,
+    detectTypoCorrection: detectTypoCorrection,
+    CANONICAL_WORDS: CANONICAL_WORDS
   };
 
   // Uruchomienie po załadowaniu DOM
