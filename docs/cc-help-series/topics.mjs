@@ -1,5 +1,7 @@
 // Public educational copy only. No applicants or outreach contact records.
+import {batch3Sources,batch3Topics} from './batch3.mjs';
 export const sources = {
+ ...batch3Sources,
  legal: ['https://www.gov.pl/web/gov/skorzystaj-z-darmowej-pomocy-prawnej','Nieodpłatna pomoc prawna — gov.pl','Free legal aid — gov.pl'],
  mental: ['https://pacjent.gov.pl/leczenie-ambulatoryjne-doroslych','Pomoc ambulatoryjna dla dorosłych — Pacjent.gov.pl','Adult outpatient care — Pacjent.gov.pl'],
  crisis: ['https://www.gov.pl/web/zdrowie/depresja-to-powazny-problem-zdrowotny-nie-boj-sie-szukac-pomocy','Depresja i źródła wsparcia — Ministerstwo Zdrowia','Depression and support — Ministry of Health'],
@@ -11,6 +13,7 @@ export const sources = {
  academy: ['https://polskieradio.cc/akademia','Akademia Christian Culture — studium i materiały','Christian Culture Academy — study resources']
 };
 export const topics = [
+ ...batch3Topics,
  {id:'pastor',route:'pastor',enRoute:'pastoral-support',ref:'1 Tes 5,21',resources:['bible','academy','mental'],
  pl:{name:'Pastor — rozmowa o wierze',title:'Miejsce na pytania. Rozmowa z szacunkiem.',lead:'Wiara, codzienne wybory i trudne pytania. Przygotuj się do rozmowy duszpasterskiej i poznaj granice takiego wsparcia.',alt:'Otwarta Biblia, notatnik i kubek na drewnianym stole',
  steps:[['Nazwij temat rozmowy','Zapisz pytanie lub sytuację, o której chcesz porozmawiać. Możesz wskazać fragment Biblii, którego nie rozumiesz, bez opisywania publicznie prywatnej historii.'],['Poznaj rozmówcę','Zapytaj o wspólnotę, rolę i doświadczenie osoby oferującej wsparcie. Sam tytuł duszpasterski nie oznacza uprawnień do terapii ani porad prawnych.'],['Uzgodnij zasady','Przed spotkaniem ustal zakres rozmowy, poufność, ewentualne opłaty i możliwość zakończenia kontaktu. Masz prawo odmówić odpowiedzi na pytanie.']],

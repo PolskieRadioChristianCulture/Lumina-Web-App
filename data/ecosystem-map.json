@@ -3362,6 +3362,72 @@
       "connections": []
     },
     {
+      "id": "cc-help-free-legal-aid",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Bezpłatna pomoc prawna",
+      "shortDesc": "Jak znaleźć punkt porad, przygotować dokumenty i ustalić, czy potrzebujesz prawnika, doradcy obywatelskiego czy innego wsparcia.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/pomoc-prawna",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Bezpłatna pomoc prawna",
+        "Free legal assistance",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-consumer-rights",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Prawa konsumenta",
+      "shortDesc": "Reklamacja, odstąpienie od umowy i pomoc rzecznika to różne ścieżki. Zacznij od rodzaju zakupu i faktów.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/prawa-konsumenta",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Prawa konsumenta",
+        "Consumer rights",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-household-budget",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Budżet domowy",
+      "shortDesc": "Prosty plan wpływów i wydatków pomaga zauważyć potrzeby domu. Bez narzuconych proporcji, oceniania i obietnic szybkiego wzbogacenia.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/budzet-domowy",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Budżet domowy",
+        "Household budgeting",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
       "id": "cc-help-pastor",
       "branchId": "misja-wspolpraca",
       "name": "CC Pomoc — Pastor — rozmowa o wierze",

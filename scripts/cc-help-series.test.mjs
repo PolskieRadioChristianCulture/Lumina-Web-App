@@ -6,8 +6,8 @@ import {fileURLToPath} from 'node:url';
 import {topics,sources} from '../docs/cc-help-series/topics.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-test('initial eight topics plus pastor and specialists, twenty unique routes, existing aliases preserved',()=>{
- assert.equal(topics.length,10);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,20);
+test('thirteen approved topics, twenty-six unique routes, existing aliases preserved',()=>{
+ assert.equal(topics.length,13);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,26);
  for(const r of ['rodzina','malzenstwo','wychowanie','pomoc','psychologia','dlugi'])assert(!routes.includes(r));
  const redirects=read('_redirects');for(const r of ['/rodzina /edukacja 301','/malzenstwo /seks 301','/wychowanie /edukacja 301'])assert(redirects.includes(r));
 });
@@ -20,7 +20,7 @@ for(const t of topics)for(const lang of ['pl','en'])test(`${t.id}/${lang}: stati
  assert.equal((h.match(/id="ccTopBarFavBtn"/g)||[]).length,1);assert(h.indexOf('id="ccTopBarFavBtn"')>h.indexOf('<dialog'));
  for(const [,p] of t[lang].steps)assert(p.length>55);
  for(const [,p] of t[lang].guides)assert(p.length>110);
- for(const key of t.resources){assert(sources[key]);assert(h.includes(sources[key][0]));}
+ for(const key of t.resources){assert(sources[key]);assert(h.includes((lang==='en'&&sources[key][3])||sources[key][0]));}
  for(const m of h.matchAll(/(?:src|href)="(\/[^"?#]+)(?:[?#][^"]*)?"/g)){
  const p=m[1];const file=path.join(root,p);assert(fs.existsSync(file)||fs.existsSync(file+'.html'),`missing local target ${p}`);
  }
