@@ -4,5 +4,5 @@
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 .hero-picture figcaption{display:block}
 .edge-panel #ccTopBarFavBtn{display:flex;width:100%;margin-top:16px;min-height:48px;background:var(--soft);color:var(--ink);border-color:var(--gold)}.edge-panel #ccTopBarFavBtn[aria-pressed=true]{background:#e2cc9a}.edge-panel #ccTopBarFavBtn:focus-visible{outline:3px solid var(--orange-ink);outline-offset:4px}
-.urgent-help a[href^="tel:"]{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;white-space:nowrap}
+.urgent-help a[href^="tel:"],.urgent-help a[href="https://czat.brpd.gov.pl/"]{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;white-space:nowrap}
 .urgent-help .urgent-call{display:inline-block;white-space:nowrap}

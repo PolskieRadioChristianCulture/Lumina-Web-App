@@ -6,8 +6,8 @@ import {fileURLToPath} from 'node:url';
 import {topics,sources} from '../docs/cc-help-series/topics.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-test('sixteen approved topics, thirty-two unique routes, existing aliases preserved',()=>{
- assert.equal(topics.length,16);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,32);
+test('twenty-two approved topics, forty-four unique routes, existing aliases preserved',()=>{
+ assert.equal(topics.length,22);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief','child-psychology','teenagers','school-difficulties','cyberbullying','child-behaviour','parenting-guide']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,44);
  for(const r of ['rodzina','malzenstwo','wychowanie','pomoc','psychologia','dlugi'])assert(!routes.includes(r));
  const redirects=read('_redirects');for(const r of ['/rodzina /edukacja 301','/malzenstwo /seks 301','/wychowanie /edukacja 301'])assert(redirects.includes(r));
 });
@@ -30,9 +30,13 @@ test('health pages contain crisis access; family pages protect from coercion',()
  for(const t of topics.filter(t=>t.mentalSupport||['psychology','depression','addiction'].includes(t.id)))assert(read(t.route+'/index.html').includes('tel:800702222'));
  for(const id of ['marriage','family']){const t=topics.find(t=>t.id===id);assert(read(t.route+'/index.html').includes('mediacji'));assert(read(t.route+'/index.html').includes('tel:800120002'));}
 });
+test('child and parent topics provide the child helpline and never collect case histories',()=>{
+ const relevant=topics.filter(t=>t.childSupport);assert.equal(relevant.length,6);
+ for(const t of relevant)for(const file of [t.route,'en/'+t.enRoute]){const h=read(file+'/index.html');assert(h.includes('tel:800121212'));assert(h.includes('https://czat.brpd.gov.pl/'));assert(!/<input|<textarea|<form/i.test(h));}
+});
 test('urgent help precedes the hero on both crisis pages and telephone targets have touch sizing',()=>{
  for(const route of ['kryzys','en/emotional-crisis']){const h=read(route+'/index.html');assert(h.indexOf('<aside class="urgent-help wrap"')<h.indexOf('<section class="hero wrap"'));assert.equal((h.match(/id="urgent-title"/g)||[]).length,1);assert(h.includes('tel:112'));assert(h.includes('tel:800702222'));}
- const rule=read('cc-pomoc/series.css').match(/\.urgent-help a\[href\^="tel:"\]\{([^}]+)\}/)?.[1];assert(rule);assert(rule.includes('min-height:44px'));assert(rule.includes('min-width:44px'));
+ const css=read('cc-pomoc/series.css');const block=css.split('}').find(r=>r.includes('.urgent-help a[href^="tel:"]'));assert(block);assert(block.includes('a[href="https://czat.brpd.gov.pl/"]'));const rule=block.split('{')[1];assert(rule.includes('min-height:44px'));assert(rule.includes('min-width:44px'));
 });
 test('search surfaces agree and every language route appears once in search and sitemap',()=>{
  assert.equal(read('szukaj/catalog.json'),read('data/cc-search-index.json'));const cat=JSON.parse(read('szukaj/catalog.json'));assert.equal(cat.totalItems,cat.items.length);
