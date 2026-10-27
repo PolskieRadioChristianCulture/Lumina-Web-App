@@ -3631,6 +3631,116 @@
       ]
     },
     {
+      "id": "cc-help-anxiety",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Lęk i niepokój — gdzie szukać wsparcia",
+      "shortDesc": "Przygotuj rozmowę o lęku i jego wpływie na codzienność. Ta strona nie rozpoznaje zaburzeń ani nie zastępuje oceny medycznej.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/lek",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Lęk i niepokój — gdzie szukać wsparcia",
+        "Anxiety — finding support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-stress",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Stres — przeciążenie i wsparcie",
+      "shortDesc": "Uporządkuj obowiązki i przygotuj rozmowę o przeciążeniu, bez obietnic szybkiego odzyskania równowagi.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/stres",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Stres — przeciążenie i wsparcie",
+        "Stress — overload and support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-burnout",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Wypalenie zawodowe i przeciążenie",
+      "shortDesc": "Przyjrzyj się obciążeniom związanym z pracą i przygotuj rozmowę o wsparciu. Sam opis wyczerpania nie wystarcza do ustalenia jego przyczyny.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/wypalenie",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Wypalenie zawodowe i przeciążenie",
+        "Occupational burnout and overload",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-self-worth",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Poczucie własnej wartości — wsparcie",
+      "shortDesc": "Przygotuj rozmowę o surowej samoocenie, granicach i potrzebnym wsparciu. Nie punktujemy atrakcyjności, duchowości ani wartości człowieka.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/poczucie-wartosci",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Poczucie własnej wartości — wsparcie",
+        "Self-worth — support and dignity",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-trauma",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Trauma i trudne doświadczenia — wsparcie",
+      "shortDesc": "Informacje pomagające znaleźć właściwe wsparcie po trudnym doświadczeniu. Nie musisz tutaj opisywać zdarzenia ani udowadniać, jak bardzo było trudne.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/trauma",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Trauma i trudne doświadczenia — wsparcie",
+        "Trauma and difficult experiences — support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
       "id": "cc-help-pastor",
       "branchId": "misja-wspolpraca",
       "name": "CC Pomoc — Pastor — rozmowa o wierze",
