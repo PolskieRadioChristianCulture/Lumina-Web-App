@@ -17,6 +17,7 @@ for(const t of topics)for(const lang of ['pl','en'])test(`${t.id}/${lang}: stati
  for(const s of [`hreflang="pl" href="https://polskieradio.cc/${t.route}"`,`hreflang="en" href="https://polskieradio.cc/en/${t.enRoute}"`,'tel:112','/wspieraj','id="zasady-pomocy"','<dialog','aria-modal','id="pierwszy-krok"'].filter(s=>s!=='aria-modal'))assert(h.includes(s),s);
  assert(!/<form|<input|<textarea|mailto:/i.test(h));assert(!h.includes('�'));assert(h.includes(lang==='pl'?'zaniechania':'omissions'));assert(h.includes(lang==='pl'?'Nie ogłaszamy jeszcze dyżurów':'No staffed sessions'));
  assert(h.includes(lang==='pl'?'wygenerowana przez AI':'AI-generated'));
+ assert.equal((h.match(/id="ccTopBarFavBtn"/g)||[]).length,1);assert(h.indexOf('id="ccTopBarFavBtn"')>h.indexOf('<dialog'));
  for(const [,p] of t[lang].steps)assert(p.length>55);
  for(const [,p] of t[lang].guides)assert(p.length>110);
  for(const key of t.resources){assert(sources[key]);assert(h.includes(sources[key][0]));}
