@@ -10,6 +10,7 @@
 
   gtag('config','G-Y4EFTVBPE3',(function(){try{var s=location.search,k='cc_team';if(/[?&]cc_team=1/.test(s))localStorage.setItem(k,'1');if(/[?&]cc_team=0/.test(s))localStorage.removeItem(k);if(localStorage.getItem(k)==='1'||/[?&]in_mcr=1/.test(s)||window.obsstudio)return{traffic_type:'internal'}}catch(e){}return{}})());
 </script><script src="/js/cc-analytics.js?v=20261026_1" defer></script>
+    <script src="/js/cc-ramowka.js?v=20261027_v1"></script>
     <!-- ==========================================
          1. PODSTAWOWE METADANE I SEO
          ========================================== -->
@@ -4198,6 +4199,23 @@
             // --- Real-time Header Schedule Updater ---
             function updateHeaderSchedule() {
                 const now = new Date();
+                if (window.CC_RAMOWKA && typeof window.CC_RAMOWKA.getScheduleState === 'function') {
+                    const state = window.CC_RAMOWKA.getScheduleState(now);
+                    const titleLink = document.getElementById("headerCurrentLiveTitle");
+                    if (titleLink) {
+                        titleLink.textContent = state.title;
+                        titleLink.href = state.url || "master";
+                    }
+                    const nextTime = document.getElementById("headerNextLiveTime");
+                    if (nextTime) nextTime.textContent = state.next.time;
+                    const nextTitle = document.getElementById("headerNextLiveTitle");
+                    if (nextTitle) nextTitle.textContent = state.next.title;
+                    const thirdTime = document.getElementById("headerThirdLiveTime");
+                    if (thirdTime) thirdTime.textContent = state.third.time;
+                    const thirdTitle = document.getElementById("headerThirdLiveTitle");
+                    if (thirdTitle) thirdTitle.textContent = state.third.title;
+                    return;
+                }
                 const hour = now.getHours();
                 const min = now.getMinutes();
                 const timeInMinutes = hour * 60 + min;

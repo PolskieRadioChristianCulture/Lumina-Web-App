@@ -44,6 +44,79 @@
   try { if (localStorage.getItem(ENGINE_KEY) === 'google') searchEngine = 'google'; } catch (_) {}
   const googleUrl = (q) => 'https://www.google.com/search?q=' + encodeURIComponent(q);
 
+  const RECENTS_KEY = 'cc_recent_searches';
+  function getRecentSearches() {
+    try {
+      const list = JSON.parse(localStorage.getItem(RECENTS_KEY) || '[]');
+      return (Array.isArray(list) ? list : []).filter(item => typeof item === 'string' && item.trim().length > 0).slice(0, 8);
+    } catch (_) {
+      return [];
+    }
+  }
+  function saveRecentSearch(query) {
+    const q = String(query || '').trim();
+    if (!q || q.length < 2) return;
+    try {
+      const current = getRecentSearches().filter(item => item.toLowerCase() !== q.toLowerCase());
+      current.unshift(q);
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(current.slice(0, 10)));
+    } catch (_) {}
+  }
+  function removeRecentSearch(query) {
+    const q = String(query || '').trim().toLowerCase();
+    try {
+      const current = getRecentSearches().filter(item => item.toLowerCase() !== q);
+      localStorage.setItem(RECENTS_KEY, JSON.stringify(current));
+    } catch (_) {}
+  }
+  function clearRecentSearches() {
+    try {
+      localStorage.removeItem(RECENTS_KEY);
+    } catch (_) {}
+  }
+
+  const PLACEHOLDERS = [
+    'Zapytaj Christian Culture…',
+    "Szukaj: 'Apokalipsa 14'",
+    "Szukaj: 'Jak pokonać lęk'",
+    "Szukaj: 'Lekcja 27'",
+    "Szukaj: 'Radio na żywo'",
+    "Szukaj: 'Werset o pokoju'",
+    "Szukaj: 'J 3:16'",
+    "Szukaj: 'Lekcja 28 na dziś'",
+    "Szukaj: 'Rozważanie Dobrze że jesteś'",
+    "Szukaj: 'Infolinia Nadziei'",
+    "Szukaj: 'LUMINA społeczność'"
+  ];
+  let placeholderInterval = null;
+  function stopPlaceholderRotation() {
+    if (placeholderInterval) {
+      clearInterval(placeholderInterval);
+      placeholderInterval = null;
+    }
+  }
+  function startPlaceholderRotation(input) {
+    if (!input) return;
+    stopPlaceholderRotation();
+    let idx = 0;
+    placeholderInterval = setInterval(() => {
+      if (!input || !document.body.contains(input)) {
+        stopPlaceholderRotation();
+        return;
+      }
+      if (searchEngine === 'google') return;
+      // Jeśli użytkownik wpisał własny tekst — nie zmieniamy podpowiedzi
+      if (input.value && input.value.trim().length > 0) return;
+      idx = (idx + 1) % PLACEHOLDERS.length;
+      input.setAttribute('placeholder', PLACEHOLDERS[idx]);
+      const fallbackInput = document.getElementById('ccw-q');
+      if (fallbackInput && (!fallbackInput.value || !fallbackInput.value.trim().length)) {
+        fallbackInput.setAttribute('placeholder', PLACEHOLDERS[idx]);
+      }
+    }, 2800);
+  }
+
+
   // Wyszukiwarka do ustawienia jako domyślna w przeglądarce (OpenSearch)
   if (typeof document !== 'undefined' && document.head && typeof document.querySelector === 'function'
     && !document.querySelector('link[rel="search"][type="application/opensearchdescription+xml"]')) {
@@ -291,6 +364,516 @@
     return levenshteinDist(word, targetWord) <= maxDist;
   }
 
+
+  // ── FAZA 2: BAZA WIEDZY BIBLIJNEJ UBG & INTENCJA DUSZPASTERSKA ──
+  const BIBLE_BOOK_ALIASES = {
+    'rdz': 'GEN', 'rodzaju': 'GEN', 'rodzaj': 'GEN', 'gen': 'GEN',
+    'wj': 'EXO', 'wyjscia': 'EXO', 'wyjscie': 'EXO', 'exo': 'EXO',
+    'kpl': 'LEV', 'kaplanska': 'LEV', 'lev': 'LEV',
+    'lb': 'NUM', 'liczb': 'NUM', 'num': 'NUM',
+    'pwt': 'DEU', 'powtorzonego': 'DEU', 'powtorzonegoprawa': 'DEU', 'deu': 'DEU',
+    'joz': 'JOS', 'jozuego': 'JOS', 'jos': 'JOS',
+    'sdz': 'JDG', 'sedziow': 'JDG', 'jdg': 'JDG',
+    'rut': 'RUT',
+    '1sm': '1SA', '1sam': '1SA', '1samuela': '1SA', '1sa': '1SA',
+    '2sm': '2SA', '2sam': '2SA', '2samuela': '2SA', '2sa': '2SA',
+    '1krl': '1KI', '1krolow': '1KI', '1ki': '1KI',
+    '2krl': '2KI', '2krolow': '2KI', '2ki': '2KI',
+    '1krn': '1CH', '1kronik': '1CH', '1ch': '1CH',
+    '2krn': '2CH', '2kronik': '2CH', '2ch': '2CH',
+    'ezd': 'EZR', 'ezdrasza': 'EZR', 'ezr': 'EZR',
+    'neh': 'NEH', 'nehemiasza': 'NEH',
+    'est': 'EST', 'estery': 'EST',
+    'hi': 'JOB', 'hioba': 'JOB', 'job': 'JOB',
+    'ps': 'PSA', 'psalm': 'PSA', 'psalmy': 'PSA', 'psa': 'PSA',
+    'prz': 'PRO', 'przyslow': 'PRO', 'przypowiesci': 'PRO', 'pro': 'PRO',
+    'kzn': 'ECC', 'kaznodziei': 'ECC', 'koheleta': 'ECC', 'koh': 'ECC', 'ecc': 'ECC',
+    'pnp': 'SNG', 'piesn': 'SNG', 'piesnnadpiesniami': 'SNG', 'sng': 'SNG',
+    'iz': 'ISA', 'izajasza': 'ISA', 'izajasz': 'ISA', 'isa': 'ISA',
+    'jr': 'JER', 'jeremiasza': 'JER', 'jeremiasz': 'JER', 'jer': 'JER',
+    'lm': 'LAM', 'treny': 'LAM', 'lam': 'LAM',
+    'ez': 'EZK', 'ezechiela': 'EZK', 'ezk': 'EZK',
+    'dn': 'DAN', 'daniela': 'DAN', 'dan': 'DAN',
+    'oz': 'HOS', 'ozeasza': 'HOS', 'hos': 'HOS',
+    'jl': 'JOL', 'joela': 'JOL', 'jol': 'JOL',
+    'am': 'AMO', 'amosa': 'AMO', 'amo': 'AMO',
+    'ab': 'OBA', 'abdiasza': 'OBA', 'oba': 'OBA',
+    'jon': 'JON', 'jonasza': 'JON',
+    'mi': 'MIC', 'micheasza': 'MIC', 'mic': 'MIC',
+    'na': 'NAH', 'nahuma': 'NAH', 'nah': 'NAH',
+    'ha': 'HAB', 'hab': 'HAB', 'habakuka': 'HAB',
+    'so': 'ZEP', 'sofoniasza': 'ZEP', 'zep': 'ZEP',
+    'ag': 'HAG', 'aggeusza': 'HAG', 'hag': 'HAG',
+    'za': 'ZEC', 'zachariasza': 'ZEC', 'zec': 'ZEC',
+    'ml': 'MAL', 'malachiasza': 'MAL', 'mal': 'MAL',
+    'mt': 'MAT', 'mateusza': 'MAT', 'mateusz': 'MAT', 'mat': 'MAT',
+    'mk': 'MRK', 'marka': 'MRK', 'marek': 'MRK', 'mrk': 'MRK',
+    'lk': 'LUK', 'lukasza': 'LUK', 'lukasz': 'LUK', 'luk': 'LUK',
+    'j': 'JHN', 'jana': 'JHN', 'jan': 'JHN', 'jhn': 'JHN',
+    'dz': 'ACT', 'dzieje': 'ACT', 'dziejeapostolskie': 'ACT', 'act': 'ACT',
+    'rz': 'ROM', 'rzymian': 'ROM', 'rom': 'ROM',
+    '1kor': '1CO', '1koryntian': '1CO', '1co': '1CO',
+    '2kor': '2CO', '2koryntian': '2CO', '2co': '2CO',
+    'ga': 'GAL', 'galacjan': 'GAL', 'gal': 'GAL',
+    'ef': 'EPH', 'efezjan': 'EPH', 'eph': 'EPH',
+    'flp': 'PHP', 'filipian': 'PHP', 'php': 'PHP',
+    'kol': 'COL', 'kolosan': 'COL', 'col': 'COL',
+    '1tes': '1TH', '1tesaloniczan': '1TH', '1th': '1TH',
+    '2tes': '2TH', '2tesaloniczan': '2TH', '2th': '2TH',
+    '1tm': '1TI', '1tymoteusza': '1TI', '1ti': '1TI',
+    '2tm': '2TI', '2tymoteusza': '2TI', '2ti': '2TI',
+    'tt': 'TIT', 'tytusa': 'TIT', 'tit': 'TIT',
+    'flm': 'PHM', 'filemona': 'PHM', 'phm': 'PHM',
+    'hbr': 'HEB', 'hebrajczykow': 'HEB', 'heb': 'HEB',
+    'jk': 'JAS', 'jakuba': 'JAS', 'jas': 'JAS',
+    '1p': '1PE', '1piotra': '1PE', '1pe': '1PE',
+    '2p': '2PE', '2piotra': '2PE', '2pe': '2PE',
+    '1j': '1JN', '1jana': '1JN', '1jn': '1JN',
+    '2j': '2JN', '2jana': '2JN', '2jn': '2JN',
+    '3j': '3JN', '3jana': '3JN', '3jn': '3JN',
+    'jud': 'JUD', 'judy': 'JUD',
+    'obj': 'REV', 'ap': 'REV', 'apokalipsa': 'REV', 'objawienie': 'REV', 'rev': 'REV'
+  };
+
+  const BIBLE_BOOK_NAMES = {
+    GEN: { name: 'Księga Rodzaju', short: 'Rdz' },
+    EXO: { name: 'Księga Wyjścia', short: 'Wj' },
+    LEV: { name: 'Księga Kapłańska', short: 'Kpł' },
+    NUM: { name: 'Księga Liczb', short: 'Lb' },
+    DEU: { name: 'Księga Powtórzonego Prawa', short: 'Pwt' },
+    JOS: { name: 'Księga Jozuego', short: 'Joz' },
+    JDG: { name: 'Księga Sędziów', short: 'Sdz' },
+    RUT: { name: 'Księga Rut', short: 'Rut' },
+    '1SA': { name: '1 Księga Samuela', short: '1Sm' },
+    '2SA': { name: '2 Księga Samuela', short: '2Sm' },
+    '1KI': { name: '1 Księga Królów', short: '1Krl' },
+    '2KI': { name: '2 Księga Królów', short: '2Krl' },
+    '1CH': { name: '1 Księga Kronik', short: '1Krn' },
+    '2CH': { name: '2 Księga Kronik', short: '2Krn' },
+    EZR: { name: 'Księga Ezdrasza', short: 'Ezd' },
+    NEH: { name: 'Księga Nehemiasza', short: 'Neh' },
+    EST: { name: 'Księga Estery', short: 'Est' },
+    JOB: { name: 'Księga Hioba', short: 'Hi' },
+    PSA: { name: 'Księga Psalmów', short: 'Ps' },
+    PRO: { name: 'Księga Przysłów', short: 'Prz' },
+    ECC: { name: 'Księga Kaznodziei', short: 'Kzn' },
+    SNG: { name: 'Pieśń nad Pieśniami', short: 'PnP' },
+    ISA: { name: 'Księga Izajasza', short: 'Iz' },
+    JER: { name: 'Księga Jeremiasza', short: 'Jr' },
+    LAM: { name: 'Lamentacje Jeremiasza', short: 'Lm' },
+    EZK: { name: 'Księga Ezechiela', short: 'Ez' },
+    DAN: { name: 'Księga Daniela', short: 'Dn' },
+    HOS: { name: 'Księga Ozeasza', short: 'Oz' },
+    JOL: { name: 'Księga Joela', short: 'Jl' },
+    AMO: { name: 'Księga Amosa', short: 'Am' },
+    OBA: { name: 'Księga Abdiasza', short: 'Ab' },
+    JON: { name: 'Księga Jonasza', short: 'Jon' },
+    MIC: { name: 'Księga Micheasza', short: 'Mi' },
+    NAH: { name: 'Księga Nahuma', short: 'Na' },
+    HAB: { name: 'Księga Habakuka', short: 'Ha' },
+    ZEP: { name: 'Księga Sofoniasza', short: 'So' },
+    HAG: { name: 'Księga Aggeusza', short: 'Ag' },
+    ZEC: { name: 'Księga Zachariasza', short: 'Za' },
+    MAL: { name: 'Księga Malachiasza', short: 'Ml' },
+    MAT: { name: 'Ewangelia Mateusza', short: 'Mt' },
+    MRK: { name: 'Ewangelia Marka', short: 'Mk' },
+    LUK: { name: 'Ewangelia Łukasza', short: 'Łk' },
+    JHN: { name: 'Ewangelia Jana', short: 'J' },
+    ACT: { name: 'Dzieje Apostolskie', short: 'Dz' },
+    ROM: { name: 'List do Rzymian', short: 'Rz' },
+    '1CO': { name: '1 List do Koryntian', short: '1Kor' },
+    '2CO': { name: '2 List do Koryntian', short: '2Kor' },
+    GAL: { name: 'List do Galacjan', short: 'Ga' },
+    EPH: { name: 'List do Efezjan', short: 'Ef' },
+    PHP: { name: 'List do Filipian', short: 'Flp' },
+    COL: { name: 'List do Kolosan', short: 'Kol' },
+    '1TH': { name: '1 List do Tesaloniczan', short: '1Tes' },
+    '2TH': { name: '2 List do Tesaloniczan', short: '2Tes' },
+    '1TI': { name: '1 List do Tymoteusza', short: '1Tm' },
+    '2TI': { name: '2 List do Tymoteusza', short: '2Tm' },
+    TIT: { name: 'List do Tytusa', short: 'Tt' },
+    PHM: { name: 'List do Filemona', short: 'Flm' },
+    HEB: { name: 'List do Hebrajczyków', short: 'Hbr' },
+    JAS: { name: 'List Jakuba', short: 'Jk' },
+    '1PE': { name: '1 List Piotra', short: '1P' },
+    '2PE': { name: '2 List Piotra', short: '2P' },
+    '1JN': { name: '1 List Jana', short: '1J' },
+    '2JN': { name: '2 List Jana', short: '2J' },
+    '3JN': { name: '3 List Jana', short: '3J' },
+    JUD: { name: 'List Judy', short: 'Jud' },
+    REV: { name: 'Objawienie Jana (Apokalipsa)', short: 'Obj' }
+  };
+
+  // Kanoniczny bufor najczęściej wyszukiwanych wersetów (dosłowne brzmienie UBG-2025)
+  const TOP_UBG_VERSES = {
+    "JHN:3:16": "Tak bowiem Bóg umiłował świat, że dał swego jednorodzonego Syna, aby każdy, kto w niego wierzy, nie zginął, ale miał życie wieczne.",
+    "ROM:8:28": "A wiemy, że wszystko współdziała dla dobra tych, którzy miłują Boga, to jest tych, którzy są powołani według postanowienia Boga.",
+    "PSA:23:1": "PAN jest moim pasterzem, niczego mi nie zabraknie.",
+    "PRO:3:5": "Ufaj PANU z całego swego serca i nie polegaj na swoim rozumie.",
+    "PRO:3:6": "Zważaj na niego we wszystkich swoich drogach, a on będzie prostować twoje ścieżki.",
+    "ISA:40:31": "Ale ci, którzy oczekują PANA, nabiorą nowych sił; wzbiją się na skrzydłach jak orły, będą biec, a się nie zmęczą, będą chodzić, a nie ustaną.",
+    "PHP:4:13": "Wszystko mogę w Chrystusie, który mnie umacnia.",
+    "MAT:6:33": "Ale szukajcie najpierw królestwa Bożego i jego sprawiedliwości, a to wszystko będzie wam dodane.",
+    "1CO:13:4": "Miłość jest cierpliwa, jest życzliwa. Miłość nie zazdrości, nie przechwala się, nie unosi się pychą;",
+    "1CO:13:13": "A teraz trwają wiara, nadzieja, miłość, te trzy. Z nich zaś największa jest miłość.",
+    "JOS:1:9": "Czyż ci nie nakazałem? Wzmocnij się i bądź mężny. Nie lękaj się i nie przerażaj, gdyż PAN, twój Bóg, jest z tobą, dokądkolwiek pójdziesz.",
+    "JER:29:11": "Gdyż ja znam myśli, które mam o was, mówi PAN: myśli o pokoju, a nie o utrapieniu, aby zapewnić wam koniec, jakiego oczekujecie.",
+    "GEN:1:1": "Na początku Bóg stworzył niebo i ziemię.",
+    "PSA:91:1": "Kto mieszka pod osłoną Najwyższego, w cieniu Wszechmocnego przebywać będzie.",
+    "PSA:91:2": "Będę mówił o PANU: Moja ucieczka i twierdza, mój Bóg, jemu będę ufał.",
+    "ROM:12:2": "A nie dostosowujcie się do tego świata, ale przemieńcie się przez odnowienie waszego umysłu, abyście mogli rozeznać, co jest dobrą, przyjemną i doskonałą wolą Boga.",
+    "EPH:2:8": "Łaską bowiem jesteście zbawieni przez wiarę, i to nie jest z was, jest to dar Boga.",
+    "EPH:2:9": "Nie z uczynków, aby nikt się nie chlubił.",
+    "2TI:3:16": "Całe Pismo jest natchnione przez Boga i pożyteczne do nauki, do strofowania, do poprawiania, do wychowywania w sprawiedliwości;",
+    "HEB:11:1": "A wiara jest podstawą tego, czego się spodziewamy, i dowodem tego, czego nie widzimy.",
+    "1JN:1:9": "Jeśli wyznajemy nasze grzechy, Bóg jest wierny i sprawiedliwy, aby nam przebaczyć grzechy i oczyścić nas z wszelkiej nieprawości.",
+    "REV:21:4": "I otrze Bóg wszelką łzę z ich oczu, i śmierci już nie będzie ani smutku, ani krzyku, ani bólu nie będzie, bo pierwsze rzeczy przeminęły.",
+    "REV:3:20": "Oto stoję u drzwi i pukam. Jeśli ktoś usłyszy mój głos i otworzy drzwi, wejdę do niego i spożyję z nim wieczerzę, a on ze mną.",
+    "MAT:11:28": "Przyjdźcie do mnie wszyscy, którzy jesteście spracowani i obciążeni, a ja wam dam odpoczynek.",
+    "JHN:14:6": "Jezus mu odpowiedział: Ja jestem drogą, prawdą i życiem. Nikt nie przychodzi do Ojca jak tylko przeze mnie.",
+    "ROM:6:23": "Zapłatą bowiem za grzech jest śmierć, ale darem łaski Boga jest życie wieczne w Jezusie Chrystusie, naszym Panu.",
+    "1PE:5:7": "Wszystkie wasze troski przerzućcie na niego, gdyż on troszczy się o was.",
+    "GAL:5:22": "Owocem zaś Ducha jest miłość, radość, pokój, cierpliwość, życzliwość, dobroć, wiara;",
+    "PSA:119:105": "Twoje słowo jest pochodnią dla moich nóg i światłością na mojej ścieżce."
+  };
+
+  // Rozpoznawanie referencji biblijnych w zapytaniu
+  function parseBibleRef(q) {
+    if (!q) return null;
+    const norm = q.toLowerCase()
+      .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
+      .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
+      .replace(/[ś]/g, 's').replace(/[źż]/g, 'z').trim();
+    const m = norm.match(/^(?:(1|2|3)\s*)?([a-z]+)\s*(\d+)(?:[\s:,]+(\d+)(?:[-–—](\d+))?)?$/);
+    if (!m) return null;
+    const rawKey = (m[1] ? m[1] + m[2] : m[2]);
+    let code = BIBLE_BOOK_ALIASES[rawKey];
+    let matchedAlias = rawKey;
+    if (!code) {
+      let bestDist = 99;
+      let bestAlias = null;
+      for (const alias of Object.keys(BIBLE_BOOK_ALIASES)) {
+        if (alias.length >= 3 && Math.abs(rawKey.length - alias.length) <= 2) {
+          const dist = levenshteinDist(rawKey, alias);
+          const maxAllowed = rawKey.length <= 4 ? 1 : 2;
+          if (dist <= maxAllowed && dist < bestDist) {
+            bestDist = dist;
+            bestAlias = alias;
+          }
+        }
+      }
+      if (bestAlias) {
+        code = BIBLE_BOOK_ALIASES[bestAlias];
+        matchedAlias = bestAlias;
+      }
+    }
+    if (!code) return null;
+    const isFuzzyMatch = matchedAlias !== rawKey;
+    const chapter = parseInt(m[3], 10);
+    const verse = m[4] ? parseInt(m[4], 10) : null;
+    const verseEnd = m[5] ? parseInt(m[5], 10) : null;
+    const bookInfo = BIBLE_BOOK_NAMES[code] || { name: code, short: code };
+    const refTitle = `${bookInfo.name} ${chapter}${verse ? ':' + verse : ''}${verseEnd ? '-' + verseEnd : ''}`;
+    const key = `${code}:${chapter}:${verse || 1}`;
+    const cachedText = TOP_UBG_VERSES[key];
+    return {
+      bookCode: code,
+      bookName: bookInfo.name,
+      shortName: bookInfo.short,
+      chapter,
+      verse,
+      verseEnd,
+      refTitle,
+      verseText: cachedText || null,
+      isPending: !cachedText,
+      isFuzzyMatch: isFuzzyMatch,
+      correctedFrom: rawKey
+    };
+  }
+
+  // Asynchroniczne dociąganie wersetu z plików UBG-2025
+  async function fetchBibleVerse(bookCode, chapter, verse) {
+    const chPad = String(chapter).padStart(3, '0');
+    const url = '/data/bible/ubg-2025/' + bookCode + '-' + chPad + '.json';
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (!data || !Array.isArray(data.verses)) return null;
+      if (verse) {
+        const vObj = data.verses.find(v => v.number === verse);
+        return vObj ? vObj.text : null;
+      }
+      const first = data.verses[0];
+      return first ? (first.text + ' ... (Werset 1 z ' + data.verses.length + ')') : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // Rozpoznawanie intencji pomocy życiowej i wsparcia duszpasterskiego
+  function detectHopeIntent(query) {
+    if (!query) return false;
+    const norm = query.toLowerCase()
+      .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
+      .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
+      .replace(/[ś]/g, 's').replace(/[źż]/g, 'z').trim();
+    const words = norm.split(/\s+/).filter(Boolean);
+    const HOPE_KEYWORDS = [
+      'lek', 'depresja', 'samotnosc', 'smutek', 'strach', 'pomoc', 'pomocy',
+      'modlitwa', 'modlitwy', 'pomodl', 'dlugi', 'kryzys', 'nadzieja',
+      'infolinia', 'duszpasterz', 'rozpacz', 'cierpienie', 'zalamanie',
+      'ratunek', 'trudnosci', 'problem', 'problemy', 'bezsilnosc'
+    ];
+    return words.some(w => HOPE_KEYWORDS.includes(w)) ||
+           norm.includes('chce porozmawiac') || norm.includes('potrzebuje pomocy') ||
+           norm.includes('zalamanie nerwowe') || norm.includes('kryzys wiary');
+  }
+
+  // Inteligentne dopasowanie obrazka podglądu dla elementu
+  function previewImageForItem(item) {
+    if (item && item.image && typeof item.image === 'string' && item.image.length > 3) return item.image;
+    const url = ((item && item.url) || '').toLowerCase();
+    const title = ((item && item.title) || '').toLowerCase();
+    if (url.includes('apokalipsa') || title.includes('apokalipsa')) {
+      return '/images/courses/apokalipsa/banner-promo.jpg';
+    }
+    if (url.includes('kurscodzienny') || url.includes('dzien-') || url.includes('akademia')) {
+      return '/images/ogloszenia-akademia.webp';
+    }
+    if (url.includes('mojabiblia') || url.includes('biblia') || title.includes('biblia') || title.includes('werset')) {
+      return '/images/ogloszenia-biblia-gdanska.webp';
+    }
+    if (url.includes('podcast') || url.includes('player') || url.includes('radio') || title.includes('radio')) {
+      return '/images/ogloszenia-widget-radio.webp';
+    }
+    if (url.includes('duszpasterz') || title.includes('duszpasterz') || title.includes('mariusz')) {
+      return '/images/ogloszenia-duszpasterz-mariusz.webp';
+    }
+    if (url.includes('infolinia') || url.includes('pomoc') || url.includes('uslugi')) {
+      return '/images/ogloszenia-infolinia-nadzieja.webp';
+    }
+    if (url.includes('lumina') || url.includes('spolecznosc')) {
+      return '/images/brand/lumina-brand.webp';
+    }
+    return '/images/tlo_menu_cc.webp';
+  }
+
+  function isAudioOrRadioItem(item) {
+    if (!item) return false;
+    const url = ((item && item.url) || '').toLowerCase();
+    const title = ((item && item.title) || '').toLowerCase();
+    const desc = ((item && (item.description || item.contentSnippet)) || '').toLowerCase();
+    return url.includes('podcast') || url.includes('player') || url.includes('radio') ||
+           url.includes('worship') || url.includes('spiewana') || url.includes('ambient') ||
+           title.includes('podcast') || title.includes('radio') || title.includes('słuchaj') ||
+           title.includes('worship') || title.includes('audio') || desc.includes('podcast') ||
+           desc.includes('odsłuch') || desc.includes('transmisja') || desc.includes('muzyka');
+  }
+
+  // Toast z potwierdzeniem skopiowania do schowka
+  function showCopyToast(message) {
+    let toast = document.getElementById('ccOmniToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'ccOmniToast';
+      toast.className = 'cc-omni-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('cc-show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => {
+      toast.classList.remove('cc-show');
+    }, 2200);
+  }
+
+  // Prezentacja karty podglądu błyskawicznego (Split-View Preview)
+  function getPreviewHtml(item) {
+    if (!item) {
+      return `
+        <div class="cc-preview-placeholder">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">✨</div>
+          <div style="font-weight: 700; color: #ffffff; font-size: 1.05rem;">Podgląd Błyskawiczny</div>
+          <p style="font-size: 0.86rem; color: var(--omni-muted); margin: 6px 0 0;">Użyj strzałek ↑ ↓ na klawiaturze lub najedź kursorem na wynik, aby zobaczyć szczegóły.</p>
+        </div>
+      `;
+    }
+    const meta = item._meta || categorizeItem(item);
+    const imgUrl = previewImageForItem(item);
+    const url = item.url || '#';
+    const title = escapeHtml(item.title || '');
+    const desc = escapeHtml(item.description || item.contentSnippet || '');
+    const group = escapeHtml(meta.name || '');
+    const icon = meta.icon || '✨';
+    const crumb = escapeHtml(breadcrumbOf(item.url || ''));
+    const isAudio = isAudioOrRadioItem(item);
+    const playLabel = isAudio ? '▶ Słuchaj teraz' : 'Otwórz materiał →';
+    const isExternal = url.startsWith('http') && !url.includes('polskieradio.cc') && !url.includes('cclite.pl');
+
+    return `
+      <div class="cc-preview-card">
+        <div class="cc-preview-media">
+          <img src="${imgUrl}" alt="${title}" class="cc-preview-img" onerror="this.style.display='none'" />
+          <span class="cc-preview-badge"><span aria-hidden="true">${icon}</span> ${group}</span>
+        </div>
+        <div class="cc-preview-meta">
+          <span class="cc-preview-crumb">${crumb}</span>
+        </div>
+        <h3 class="cc-preview-title">${title}</h3>
+        <p class="cc-preview-desc">${desc}</p>
+        <div class="cc-preview-actions">
+          <a href="${url}" class="cc-preview-btn-main" ${isExternal ? 'target="_blank" rel="noopener"' : ''}>
+            ${playLabel}
+          </a>
+          <button type="button" class="cc-preview-btn-copy" data-copy-url="${url}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span>Kopiuj link</span>
+          </button>
+          <a href="${url}" target="_blank" rel="noopener" class="cc-preview-btn-ext" title="Otwórz w nowej karcie" aria-label="Otwórz w nowej karcie">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderScriptureCard(match) {
+    if (!match) return '';
+    const quoteText = match.verseText ? escapeHtml(match.verseText) : 'Ładowanie wersetu z Uwspółcześnionej Biblii Gdańskiej (UBG)...';
+    const strongUrl = `/mojabiblia?book=${encodeURIComponent(match.bookCode)}&chapter=${match.chapter}${match.verse ? '&verse=' + match.verse : ''}`;
+    const audioUrl = `/player?q=${encodeURIComponent(match.bookName + ' ' + match.chapter)}`;
+    const copyPayload = escapeHtml(`„${match.verseText || ''}” — ${match.refTitle} (UBG)`);
+
+    return `
+      <div class="cc-scripture-card" id="ccScriptureCard">
+        <div class="cc-scripture-head">
+          <div class="cc-scripture-badge">
+            <span class="cc-scripture-icon" aria-hidden="true">📖</span>
+            <span>Pismo Święte • UBG (Uwspółcześniona Biblia Gdańska)</span>
+          </div>
+          <span class="cc-scripture-ref">${escapeHtml(match.refTitle)}</span>
+        </div>${match.isFuzzyMatch ? `
+        <div class="cc-scripture-fuzzy-hint">✨ Rozpoznano werset: <b>${escapeHtml(match.refTitle)}</b> <small>(zamiast „${escapeHtml(match.correctedFrom)}”)</small></div>` : ''}
+        <blockquote class="cc-scripture-quote" id="ccScriptureQuote">
+          „${quoteText}”
+        </blockquote>
+        <div class="cc-scripture-actions">
+          <a href="${strongUrl}" class="cc-btn-scripture-main">
+            Otwórz w MojaBiblia (Strong) →
+          </a>
+          <button type="button" class="cc-btn-scripture-copy" id="ccScriptureCopyBtn" data-quote="${copyPayload}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span>Kopiuj werset</span>
+          </button>
+          <a href="${audioUrl}" class="cc-btn-scripture-audio">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 5v14l11-7Z"/>
+            </svg>
+            <span>Biblia Audio CC</span>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderHopeCard(query) {
+    return `
+      <div class="cc-hope-card" id="ccHopeCard">
+        <div class="cc-hope-badge">💛 Wsparcie Duchowe & Modlitwa</div>
+        <h3 class="cc-hope-title">Potrzebujesz rozmowy lub modlitwy? Nie jesteś sam.</h3>
+        <p class="cc-hope-desc">W Christian Culture czeka na Ciebie bezpłatna pomoc duszpasterska, życzliwe wysłuchanie i wsparcie modlitewne:</p>
+        <blockquote class="cc-hope-verse">
+          „Wszystkie wasze troski przerzućcie na niego, gdyż on troszczy się o was.”
+          <cite>— 1 List Piotra 5:7 (UBG)</cite>
+        </blockquote>
+        <div class="cc-hope-actions">
+          <a href="tel:+48730958583" class="cc-hope-btn cc-hope-btn-call">
+            <span class="cc-hope-btn-icon" aria-hidden="true">📞</span>
+            <span class="cc-hope-btn-text">
+              <strong>Infolinia Nadziei</strong>
+              <small>+48 730 958 583 (całodobowa)</small>
+            </span>
+          </a>
+          <a href="tel:+48608337477" class="cc-hope-btn cc-hope-btn-call">
+            <span class="cc-hope-btn-icon" aria-hidden="true">👤</span>
+            <span class="cc-hope-btn-text">
+              <strong>Duszpasterz Mariusz</strong>
+              <small>+48 608 337 477 (rozmowa)</small>
+            </span>
+          </a>
+          <a href="/modlitwa" class="cc-hope-btn cc-hope-btn-pray">
+            <span class="cc-hope-btn-icon" aria-hidden="true">🙏</span>
+            <span class="cc-hope-btn-text">
+              <strong>Ściana Modlitwy</strong>
+              <small>Zgłoś intencję modlitewną →</small>
+            </span>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+  // ── FAZA 3: SŁOWNIK KANONICZNY & AUTOKOREKTA LITERÓWEK (LEVENSHTEIN) ──
+  const CANONICAL_WORDS = [
+    'apokalipsa', 'rozważanie', 'rozwazanie', 'inspiracja', 'lekcja',
+    'kurs', 'akademia', 'mojabiblia', 'biblia', 'werset', 'modlitwa',
+    'nadzieja', 'worship', 'śpiewana', 'spiewana', 'karaoke', 'śpiewnik',
+    'spiewnik', 'uwielbienie', 'radio', 'audycja', 'podcast', 'film',
+    'kino', 'społeczność', 'spolecznosc', 'lumina', 'profil', 'tablica',
+    'czat', 'duszpasterz', 'infolinia', 'pomoc', 'święte', 'swiete',
+    'jezus', 'chrystus', 'bóg', 'bog', 'przebaczenie', 'zbawienie',
+    'pokój', 'pokoj', 'miłość', 'milosc', 'wiara', 'łaska', 'laska',
+    'świadectwo', 'swiadectwo', 'ewangelia', 'apostoł', 'apostol',
+    'stworzenie', 'sabat', 'szabat', 'proroctwo', 'palla', 'rogowski',
+    'rogowska', 'mariusz'
+  ];
+
+  function detectTypoCorrection(normQuery, queryWords) {
+    if (!queryWords || !queryWords.length) return null;
+    let hasCorrection = false;
+    const correctedWords = [];
+    const ignoredWords = new Set(['w','z','na','o','do','i','a','oraz','czyli','dla','ze','za','po','od','czy','the','and','of','is']);
+
+    for (const w of queryWords) {
+      if (ignoredWords.has(w) || /^\d+$/.test(w)) {
+        correctedWords.push(w);
+        continue;
+      }
+      if (CANONICAL_WORDS.includes(w)) {
+        correctedWords.push(w);
+        continue;
+      }
+      let bestMatch = null;
+      let minDistance = 99;
+      for (const target of CANONICAL_WORDS) {
+        if (Math.abs(w.length - target.length) > 2) continue;
+        const dist = levenshteinDist(w, target);
+        const maxDist = w.length <= 4 ? 1 : 2;
+        if (dist <= maxDist && dist < minDistance) {
+          minDistance = dist;
+          bestMatch = target;
+        }
+      }
+      if (bestMatch && bestMatch !== w) {
+        correctedWords.push(bestMatch);
+        hasCorrection = true;
+      } else {
+        correctedWords.push(w);
+      }
+    }
+    if (!hasCorrection) return null;
+    return correctedWords.join(' ');
+  }
+
   // Rozszerzanie zapytania o synonimy i rozpoznawanie zapytań "na dziś"
   function expandQueryTerms(normQuery, queryWords) {
     const synonymsList = [];
@@ -426,8 +1009,15 @@
     }
     const ignoredWords = new Set(['w','z','na','o','do','i','a','oraz','czyli','dla','ze','za','po','od','czy','the','and','of','is']);
     const queryWords = normQuery.split(/\s+/).filter(w => w && !ignoredWords.has(w));
-    if (!queryWords.length) return { items: [], guide: null, isSuggestion: false, suggestionNote: null };
+    if (!queryWords.length) return { items: [], guide: null, isSuggestion: false, suggestionNote: null, autocorrect: null };
+    const typoCorrection = detectTypoCorrection(normQuery, queryWords);
     const { synonyms, isTodayQuery, todayDayNum } = expandQueryTerms(normQuery, queryWords);
+    if (typoCorrection) {
+      const correctedTokens = typoCorrection.split(/\s+/);
+      for (const ct of correctedTokens) {
+        if (!synonyms.includes(ct)) synonyms.push(ct);
+      }
+    }
     const numberTokens = queryWords.filter(w => /^\d+$/.test(w));
 
     // Sprawdzenie przewodnika tematycznego
@@ -588,7 +1178,8 @@
         items: scored.slice(0, limit).map(s => Object.assign({}, s.item, { _meta: s.meta, isNearMatch: s.primaryWordsMatched < queryWords.length })),
         guide: matchedGuide,
         isSuggestion: false,
-        suggestionNote: null
+        suggestionNote: null,
+        autocorrect: typoCorrection ? { original: query, corrected: typoCorrection } : null
       };
     }
 
@@ -606,7 +1197,8 @@
       items: nearSuggestions,
       guide: matchedGuide,
       isSuggestion: true,
-      suggestionNote: note
+      suggestionNote: note,
+      autocorrect: typoCorrection ? { original: query, corrected: typoCorrection } : null
     };
   }
 
@@ -685,64 +1277,77 @@
       .cc-omni-topnav {
         display: flex;
         align-items: center;
-        gap: 4px;
-      }
-      .cc-omni-toplink {
-        display: inline-flex;
-        align-items: center;
         gap: 8px;
-        min-height: 44px;
-        padding: 0 10px;
-        border-radius: 22px;
-        color: #fff;
-        text-decoration: none;
-        font-size: 0.95rem;
-        font-weight: 600;
-        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
       }
-      .cc-omni-toplink svg { color: var(--omni-gold); flex-shrink: 0; }
-      .cc-omni-toplink:hover, .cc-omni-toplink:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
-      .cc-omni-apps-btn {
+      .cc-omni-toplink,
+      .cc-omni-apps-btn,
+      .cc-omni-radio,
+      #ccOmniOverlay #ccTopBarFavBtn,
+      #ccOmniOverlay .cc-topbar-fav-btn {
         width: 44px;
         height: 44px;
         min-width: 44px;
         min-height: 44px;
         padding: 0;
+        margin: 0;
         border: 0;
-        background: transparent;
         border-radius: 50%;
+        background: transparent;
+        color: #FF7A00;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        text-decoration: none;
         flex-shrink: 0;
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+        box-shadow: none;
+        transition: background-color 0.15s, transform 0.15s, color 0.15s;
       }
-      .cc-omni-apps-btn .cc-i-apps {
-        /* koło siatki = 86/96 pliku, jak PLAY — 49 px daje widoczne koło 44 px, równe z PLAY i kontem (pomiar 26.10.2026) */
-        width: 49px;
-        height: 49px;
-        margin: -2.5px;
-        flex-shrink: 0;
-        border-radius: 50%;
-        display: block;
-        pointer-events: none;
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
-      }
-      .cc-omni-apps-btn:hover .cc-i-apps,
-      .cc-omni-apps-btn:focus-visible .cc-i-apps {
+      .cc-omni-toplink:hover, .cc-omni-toplink:focus-visible,
+      .cc-omni-apps-btn:hover, .cc-omni-apps-btn:focus-visible,
+      .cc-omni-radio:hover, .cc-omni-radio:focus-visible,
+      #ccOmniOverlay #ccTopBarFavBtn:hover, #ccOmniOverlay #ccTopBarFavBtn:focus-visible {
+        background: rgba(255, 255, 255, 0.12);
+        color: #FF8C33;
         transform: scale(1.08);
-        filter: drop-shadow(0 0 12px rgba(255, 175, 50, 0.85));
+        outline: none;
       }
-      .cc-omni-apps-btn:active .cc-i-apps {
+      .cc-omni-toplink:active,
+      .cc-omni-apps-btn:active,
+      .cc-omni-radio:active {
         transform: scale(0.95);
       }
-      /* Na dedykowanej stronie wyszukiwarki /wyszukiwarka przycisk zamykania jest ukryty */
+      .cc-omni-toplink svg,
+      .cc-omni-apps-btn svg,
+      .cc-omni-radio svg,
+      #ccOmniOverlay #ccTopBarFavBtn svg {
+        width: 22px;
+        height: 22px;
+        color: #FF7A00;
+        flex-shrink: 0;
+      }
+      .cc-omni-radio .cc-i-stop,
+      .cc-omni-radio[aria-pressed="true"] .cc-i-play {
+        display: none;
+      }
+      .cc-omni-radio[aria-pressed="true"] .cc-i-stop {
+        display: block;
+        color: #FF7A00;
+      }
+      .cc-omni-radio.cc-loading {
+        opacity: 0.6;
+      }
+      .cc-omni-apps-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 44px;
+        margin: 0;
+      }
       #ccOmniOverlay.cc-standalone #ccOmniClose,
       .ccw-fallback ~ #ccOmniOverlay #ccOmniClose {
         display: none !important;
       }
-      .cc-omni-apps-wrap { position: relative; display: flex; align-items: center; height: 44px; } /* blok 52 px podnosił siatkę o 3,8 px */
       /* Menu „Wszystko”: ciemne szkło jak cała wyszukiwarka, ikony w kolorze akcji #FF7A00 (L0 26.10.2026) */
       .cc-omni-apps {
         position: absolute;
@@ -885,12 +1490,12 @@
       }
       .cc-omni-hero {
         text-align: center;
-        padding: calc(9vh + 64px) 0 28px;
+        padding: calc(8vh + 54px) 0 16px;
       }
       .cc-omni-brand {
         position: relative;
-        width: min(600px, 100%);
-        aspect-ratio: 1774 / 440;
+        width: min(580px, 100%);
+        aspect-ratio: 1774 / 400;
         margin: 0 auto;
         overflow: hidden;
       }
@@ -911,21 +1516,29 @@
         gap: 8px;
         min-height: 56px;
         padding: 0 8px 0 20px;
-        background: var(--omni-paper);
-        color: var(--omni-paper-ink);
-        border: 2px solid var(--omni-gold);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        color: #ffffff;
+        border: 2px solid #FF7A00;
         border-radius: 30px;
-        box-shadow: 0 8px 30px rgba(255, 122, 0, 0.3);
-        transition: box-shadow 0.15s;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 122, 0, 0.3);
+        transition: box-shadow 0.18s, border-color 0.18s, background-color 0.18s;
         box-sizing: border-box;
       }
       .cc-omni-field:focus-within, .cc-omni-field:hover {
-        box-shadow: 0 12px 40px rgba(255, 140, 51, 0.5);
+        border-color: #FF8C33;
+        background: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 12px 42px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 140, 51, 0.45);
       }
       .cc-omni-search-icon {
-        color: var(--omni-gold-deep);
+        color: #FF7A00;
         display: flex;
         flex-shrink: 0;
+      }
+      .cc-omni-search-icon svg {
+        color: #FF7A00;
+        stroke: #FF7A00;
       }
       #ccOmniInput {
         flex: 1;
@@ -934,20 +1547,20 @@
         border: none;
         outline: none;
         font: 500 1.05rem/1.3 inherit;
-        color: var(--omni-paper-ink);
+        color: #ffffff;
         padding: 0;
         min-height: 44px;
       }
       #ccOmniInput::placeholder {
-        color: #8d877c;
+        color: rgba(255, 255, 255, 0.7);
         font-weight: 400;
       }
       .cc-omni-field .cc-omni-btn {
-        color: var(--omni-paper-muted);
+        color: rgba(255, 255, 255, 0.8);
       }
       .cc-omni-field .cc-omni-btn:hover, .cc-omni-field .cc-omni-btn:focus-visible {
-        color: var(--omni-gold-deep);
-        background: rgba(255, 122, 0, 0.12);
+        color: #FF7A00;
+        background: rgba(255, 255, 255, 0.12);
       }
       #ccOmniMic.cc-listening {
         color: #b3261e;
@@ -983,6 +1596,303 @@
         flex-shrink: 0;
       }
       .cc-omni-google-sub { margin: 6px 0 0; font-size: 0.78rem; color: var(--omni-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+      /* ── Nowe style: Historia, Tagi, Filary i Skróty (Spotlight / Raycast Standard) ── */
+      .cc-omni-recents-bar {
+        width: 100%;
+        max-width: 820px;
+        background: rgba(18, 22, 36, 0.75);
+        border: 1px solid rgba(196, 163, 90, 0.25);
+        border-radius: 14px;
+        padding: 10px 14px;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .cc-omni-recents-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.78rem;
+        color: var(--omni-gold);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .cc-omni-recents-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cc-omni-recents-clear {
+        background: transparent;
+        border: 0;
+        color: var(--omni-muted);
+        font: 500 0.74rem inherit;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: color 0.15s, background 0.15s;
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .cc-omni-recents-clear:hover {
+        color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.12);
+      }
+      .cc-omni-recents-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .cc-omni-recent-pill {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        padding: 0 4px 0 12px;
+        min-height: 36px;
+        transition: all 0.15s ease;
+      }
+      .cc-omni-recent-pill:hover {
+        background: rgba(196, 163, 90, 0.15);
+        border-color: rgba(196, 163, 90, 0.45);
+      }
+      .cc-omni-recent-query {
+        background: transparent;
+        border: 0;
+        color: var(--omni-ink);
+        font: 500 0.82rem inherit;
+        cursor: pointer;
+        padding: 6px 4px 6px 0;
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .cc-omni-recent-query:hover {
+        color: var(--omni-gold);
+      }
+      .cc-omni-recent-del {
+        background: transparent;
+        border: 0;
+        color: var(--omni-muted);
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 4px 6px;
+        border-radius: 50%;
+        line-height: 1;
+        min-height: 28px;
+        min-width: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.15s, background 0.15s;
+      }
+      .cc-omni-recent-del:hover {
+        color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.18);
+      }
+      .cc-omni-tags-bar {
+        width: 100%;
+        max-width: 820px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 10px;
+        justify-content: center;
+      }
+      .cc-omni-tags-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--omni-gold);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .cc-omni-tags-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+      .cc-omni-tag-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 14px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: var(--omni-ink);
+        font: 600 0.82rem inherit;
+        cursor: pointer;
+        transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+        text-decoration: none;
+        touch-action: manipulation;
+      }
+      .cc-omni-tag-chip:hover, .cc-omni-tag-chip:focus-visible {
+        background: rgba(196, 163, 90, 0.18);
+        border-color: var(--omni-gold);
+        color: var(--omni-gold);
+        transform: translateY(-1px);
+        outline: none;
+      }
+      .cc-omni-featured-section {
+        width: 100%;
+        max-width: 820px;
+      }
+      .cc-omni-featured-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding: 0 4px;
+      }
+      .cc-omni-featured-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--omni-gold);
+      }
+      .cc-omni-featured-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+      }
+      @media (min-width: 641px) {
+        .cc-omni-featured-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      .cc-omni-feat-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px 16px;
+        min-height: 84px;
+        background: rgba(14, 18, 30, 0.82);
+        border: 1px solid rgba(196, 163, 90, 0.25);
+        border-radius: 16px;
+        text-decoration: none;
+        color: var(--omni-ink);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+      }
+      .cc-omni-feat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(196, 163, 90, 0.08) 0%, transparent 60%);
+        pointer-events: none;
+      }
+      .cc-omni-feat-card:hover, .cc-omni-feat-card:focus-visible {
+        transform: translateY(-2px);
+        border-color: var(--omni-gold);
+        background: rgba(22, 28, 46, 0.92);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 16px rgba(196, 163, 90, 0.25);
+        outline: none;
+      }
+      .cc-omni-feat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.2), rgba(196, 163, 90, 0.3));
+        border: 1px solid rgba(255, 122, 0, 0.4);
+        color: #FF7A00;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      .cc-omni-feat-card:hover .cc-omni-feat-icon {
+        border-color: var(--omni-gold);
+        color: var(--omni-gold);
+        transform: scale(1.05);
+      }
+      .cc-omni-feat-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .cc-omni-feat-tag {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #FF7A00;
+        margin-bottom: 3px;
+      }
+      .cc-omni-feat-title {
+        display: block;
+        font-size: 0.98rem;
+        font-weight: 600;
+        line-height: 1.3;
+        color: #fff;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cc-omni-feat-card:hover .cc-omni-feat-title {
+        color: var(--omni-gold-light);
+      }
+      .cc-omni-feat-desc {
+        display: block;
+        font-size: 0.78rem;
+        color: var(--omni-muted);
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .cc-omni-feat-arrow {
+        color: var(--omni-muted);
+        font-size: 1rem;
+        align-self: center;
+        transition: transform 0.15s, color 0.15s;
+        flex-shrink: 0;
+      }
+      .cc-omni-feat-card:hover .cc-omni-feat-arrow {
+        transform: translateX(3px);
+        color: var(--omni-gold);
+      }
+      .cc-omni-pro-shortcuts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 18px;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.76rem;
+        color: rgba(243, 229, 200, 0.55);
+        margin-top: 6px;
+      }
+      .cc-omni-pro-shortcuts kbd {
+        display: inline-block;
+        padding: 2px 6px;
+        font-family: inherit;
+        font-size: 0.72rem;
+        font-weight: 600;
+        line-height: 1.2;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 4px;
+        color: var(--omni-gold);
+        margin-right: 4px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      }
+
       /* Strona startowa: karty, skróty, kontynuacja */
       .cc-omni-home {
         display: flex;
@@ -1260,7 +2170,384 @@
         border-color: var(--omni-gold);
         color: var(--omni-gold);
       }
-      .cc-omni-results-list {
+      
+        /* ── FAZA 2: SPLIT-VIEW (RAYCAST / SPOTLIGHT STYLE) ── */
+        .cc-omni-split-layout {
+          display: grid;
+          grid-template-columns: minmax(320px, 1.15fr) minmax(280px, 0.85fr);
+          gap: 20px;
+          align-items: start;
+          margin-top: 10px;
+        }
+        .cc-omni-results-col {
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .cc-omni-preview-pane {
+          position: sticky;
+          top: 12px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 18px;
+          padding: 18px;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          max-height: calc(82vh - 120px);
+          overflow-y: auto;
+        }
+        @media (max-width: 860px) {
+          .cc-omni-split-layout {
+            display: block;
+          }
+          .cc-omni-preview-pane {
+            display: none !important;
+          }
+        }
+
+        .cc-preview-card {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .cc-preview-placeholder {
+          text-align: center;
+          padding: 32px 16px;
+        }
+        .cc-preview-media {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          border-radius: 12px;
+          overflow: hidden;
+          background: rgba(0, 0, 0, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .cc-preview-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .cc-preview-badge {
+          position: absolute;
+          bottom: 8px;
+          left: 8px;
+          background: rgba(11, 15, 26, 0.88);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 20px;
+          padding: 4px 10px;
+          font-size: 0.76rem;
+          font-weight: 600;
+          color: var(--omni-gold);
+          backdrop-filter: blur(8px);
+        }
+        .cc-preview-meta {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.78rem;
+          color: var(--omni-muted);
+        }
+        .cc-preview-crumb {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .cc-preview-title {
+          margin: 0;
+          font-size: 1.18rem;
+          font-weight: 700;
+          line-height: 1.35;
+          color: #ffffff;
+        }
+        .cc-preview-desc {
+          margin: 0;
+          font-size: 0.88rem;
+          line-height: 1.55;
+          color: rgba(255, 255, 255, 0.82);
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .cc-preview-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 8px;
+          margin-top: 4px;
+          padding-top: 12px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .cc-preview-btn-main {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 44px;
+          padding: 0 18px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff !important;
+          font-size: 0.92rem;
+          font-weight: 700;
+          text-decoration: none;
+          border: 0;
+          cursor: pointer;
+          box-shadow: 0 4px 14px rgba(255, 122, 0, 0.4);
+          transition: background 0.15s, transform 0.15s;
+          flex: 1;
+          min-width: 140px;
+          text-align: center;
+        }
+        .cc-preview-btn-main:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+          color: #ffffff !important;
+        }
+        .cc-preview-btn-main:active {
+          background: #E66A00;
+          transform: translateY(0);
+        }
+        .cc-preview-btn-copy, .cc-preview-btn-ext {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #ffffff;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          text-decoration: none;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .cc-preview-btn-copy:hover, .cc-preview-btn-ext:hover {
+          background: rgba(255, 255, 255, 0.15);
+          border-color: #FF7A00;
+          color: #FF7A00;
+        }
+
+        /* Karta Pisma Świętego (Direct Scripture Snippet) */
+        .cc-scripture-card {
+          background: linear-gradient(135deg, rgba(196, 163, 90, 0.16) 0%, rgba(11, 15, 26, 0.75) 100%);
+          border: 1.5px solid rgba(196, 163, 90, 0.45);
+          border-radius: 16px;
+          padding: 18px 20px;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .cc-scripture-head {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+        }
+        .cc-scripture-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.78rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          color: var(--omni-gold);
+        }
+        .cc-scripture-ref {
+          font-size: 1.05rem;
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: -0.01em;
+        }
+        .cc-scripture-quote {
+          margin: 0;
+          font-size: 1.08rem;
+          line-height: 1.6;
+          font-style: italic;
+          color: #ffffff;
+          border-left: 3px solid #FF7A00;
+          padding-left: 14px;
+        }
+        .cc-scripture-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 8px;
+          margin-top: 4px;
+        }
+        .cc-btn-scripture-main {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 44px;
+          padding: 0 18px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff !important;
+          font-size: 0.88rem;
+          font-weight: 700;
+          text-decoration: none;
+          box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
+          transition: background 0.15s, transform 0.15s;
+        }
+        .cc-btn-scripture-main:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+          color: #ffffff !important;
+        }
+        .cc-btn-scripture-copy, .cc-btn-scripture-audio {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          color: #ffffff;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          text-decoration: none;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cc-btn-scripture-copy:hover, .cc-btn-scripture-audio:hover {
+          background: rgba(255, 255, 255, 0.16);
+          border-color: #FF7A00;
+        }
+
+        /* Karta Wsparcia & Pomocy Duszpasterskiej (Hope Intent Card) */
+        .cc-hope-card {
+          background: linear-gradient(135deg, rgba(255, 122, 0, 0.12) 0%, rgba(11, 15, 26, 0.8) 100%);
+          border: 1.5px solid rgba(255, 122, 0, 0.4);
+          border-radius: 16px;
+          padding: 18px 20px;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .cc-hope-badge {
+          font-size: 0.78rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: #FF8C33;
+        }
+        .cc-hope-title {
+          margin: 0;
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: #ffffff;
+        }
+        .cc-hope-desc {
+          margin: 0;
+          font-size: 0.88rem;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.85);
+        }
+        .cc-hope-verse {
+          margin: 2px 0 6px;
+          font-size: 0.94rem;
+          line-height: 1.5;
+          font-style: italic;
+          color: var(--omni-gold);
+          border-left: 2px solid var(--omni-gold);
+          padding-left: 10px;
+        }
+        .cc-hope-verse cite {
+          font-style: normal;
+          font-size: 0.82rem;
+          color: rgba(255, 255, 255, 0.7);
+          display: block;
+          margin-top: 2px;
+        }
+        .cc-hope-actions {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 10px;
+          margin-top: 4px;
+        }
+        .cc-hope-btn {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 14px;
+          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          color: #ffffff;
+          text-decoration: none;
+          min-height: 44px;
+          box-sizing: border-box;
+          transition: background 0.15s, border-color 0.15s, transform 0.15s;
+        }
+        .cc-hope-btn:hover {
+          background: rgba(255, 255, 255, 0.15);
+          border-color: #FF7A00;
+          transform: translateY(-1px);
+          color: #ffffff;
+        }
+        .cc-hope-btn-icon {
+          font-size: 1.35rem;
+          flex-shrink: 0;
+        }
+        .cc-hope-btn-text {
+          display: flex;
+          flex-direction: column;
+          line-height: 1.25;
+        }
+        .cc-hope-btn-text strong {
+          font-size: 0.88rem;
+          color: #ffffff;
+        }
+        .cc-hope-btn-text small {
+          font-size: 0.74rem;
+          color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* Floating Copy Toast */
+        .cc-omni-toast {
+          position: fixed;
+          bottom: 24px;
+          left: 50%;
+          transform: translateX(-50%) translateY(20px);
+          background: #111827;
+          color: #ffffff;
+          border: 1px solid #FF7A00;
+          padding: 10px 20px;
+          border-radius: 24px;
+          font-size: 0.88rem;
+          font-weight: 600;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.2s, transform 0.2s;
+          z-index: 100000;
+        }
+        .cc-omni-toast.cc-show {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+
+        .cc-omni-results-list {
         display: flex;
         flex-direction: column;
         gap: 6px;
@@ -1460,25 +2747,36 @@
       .cc-omni-radio {
         width: 44px;
         height: 44px;
+        min-width: 44px;
+        min-height: 44px;
         border: 0;
         border-radius: 50%;
         padding: 0;
         background: transparent;
-        color: #fff;
+        color: var(--omni-gold);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         flex-shrink: 0;
+        transition: background-color 0.15s, transform 0.15s, color 0.15s;
       }
-      /* grafika PLAY/STOP zajmuje 92% pliku — 48 px daje widoczne koło 44 px; bez dodatkowego tła i obwódki */
-      .cc-omni-radio img { width: 49px; height: 49px; margin: -2.5px; flex-shrink: 0; border-radius: 50%; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease; }
-      .cc-omni-radio:hover img, .cc-omni-radio:focus-visible img { transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(255, 175, 50, 0.85)); }
-      .cc-omni-radio:focus-visible { outline: none; }
-      .cc-omni-radio:active img { transform: scale(0.95); }
+      .cc-omni-radio:hover, .cc-omni-radio:focus-visible {
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--omni-gold-hover);
+        transform: scale(1.08);
+        outline: none;
+      }
+      .cc-omni-radio:active { transform: scale(0.95); }
+      .cc-omni-radio svg {
+        width: 22px;
+        height: 22px;
+        color: inherit;
+        flex-shrink: 0;
+      }
       .cc-omni-radio .cc-i-stop, .cc-omni-radio[aria-pressed="true"] .cc-i-play { display: none; }
-      .cc-omni-radio[aria-pressed="true"] .cc-i-stop { display: block; }
-      .cc-omni-radio.cc-loading { opacity: 0.7; }
+      .cc-omni-radio[aria-pressed="true"] .cc-i-stop { display: block; color: var(--omni-gold-hover); }
+      .cc-omni-radio.cc-loading { opacity: 0.6; }
       /* Gwiazdka ulubionych w belce wyszukiwarki: sama ikona, bez kwadratowej ramki (L0 26.10.2026) */
       #ccOmniOverlay .cc-topbar-fav-btn {
         border: 0;
@@ -1511,24 +2809,105 @@
         .cc-omni-topnav .cc-omni-radio,
         .cc-omni-topnav .cc-omni-account { margin-left: 12px; }
       }
-      /* /wyszukiwarka: na starcie tylko tapeta, logo i pole; karty, skróty i „Ostatnio odwiedzane”
-         odsłaniają się kaskadowo po kliknięciu w tapetę lub dotknięciu ekranu (L0 26.10.2026) */
-      #ccOmniOverlay.cc-veiled .cc-omni-cards,
-      #ccOmniOverlay.cc-veiled .cc-omni-shortcuts,
-      #ccOmniOverlay.cc-veiled .cc-omni-continue { visibility: hidden; opacity: 0; }
-      #ccOmniOverlay.cc-revealing .cc-omni-card,
-      #ccOmniOverlay.cc-revealing .cc-omni-shortcut,
-      #ccOmniOverlay.cc-revealing .cc-omni-continue {
-        animation: ccOmniRise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-        animation-delay: var(--cc-d, 0ms);
+      /* ── FAZA 3: AUTOKOREKTA LITERÓWEK & ERGONOMIA KCIUKA MOBILE ── */
+      .cc-omni-autocorrect-banner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        margin: 0 0 16px 0;
+        border-radius: 14px;
+        background: rgba(196, 163, 90, 0.12);
+        border: 1px solid rgba(196, 163, 90, 0.35);
+        font-size: 0.94rem;
+        color: #F3E5C8;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        animation: ccFadeIn 0.22s ease-out;
       }
-      @keyframes ccOmniRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-      @media (prefers-reduced-motion: reduce) {
-        #ccOmniOverlay, .cc-omni-shortcut span:first-child { transition: none; }
-        #ccOmniOverlay.cc-revealing .cc-omni-card,
-        #ccOmniOverlay.cc-revealing .cc-omni-shortcut,
-        #ccOmniOverlay.cc-revealing .cc-omni-continue { animation: none; }
+      .cc-autocorrect-icon {
+        font-size: 1.25rem;
+        color: #C4A35A;
+        flex-shrink: 0;
       }
+      .cc-autocorrect-text {
+        flex: 1;
+        min-width: 0;
+        line-height: 1.45;
+      }
+      .cc-autocorrect-btn {
+        background: transparent;
+        border: none;
+        padding: 0;
+        color: #FF7A00;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 0.15s;
+      }
+      .cc-autocorrect-btn:hover, .cc-autocorrect-btn:focus-visible {
+        color: #FF8C33;
+      }
+      .cc-autocorrect-instead {
+        margin-left: 10px;
+        color: rgba(243, 229, 200, 0.65);
+        font-size: 0.88rem;
+      }
+      .cc-autocorrect-btn-orig {
+        background: transparent;
+        border: none;
+        padding: 0;
+        color: rgba(243, 229, 200, 0.85);
+        font: inherit;
+        font-style: italic;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .cc-autocorrect-btn-orig:hover, .cc-autocorrect-btn-orig:focus-visible {
+        color: #ffffff;
+      }
+      .cc-scripture-fuzzy-hint {
+        font-size: 0.86rem;
+        color: #C4A35A;
+        background: rgba(196, 163, 90, 0.12);
+        padding: 4px 10px;
+        border-radius: 8px;
+        margin: 4px 0 10px 0;
+        display: inline-block;
+      }
+      .cc-scripture-fuzzy-hint small {
+        color: rgba(243, 229, 200, 0.7);
+        font-style: italic;
+      }
+
+      /* Optymalizacja kciuka i płynnego dotyku na smartfonach */
+      #ccOmniModal {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+        padding-bottom: max(28px, env(safe-area-inset-bottom, 28px));
+      }
+      .cc-omni-results-col {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .cc-omni-item:active {
+          background: rgba(196, 163, 90, 0.18);
+          transform: scale(0.992);
+        }
+        .cc-omni-filter-chip {
+          padding: 0 14px;
+        }
+        .cc-omni-field {
+          min-height: 52px;
+        }
+      }
+
+      /* /wyszukiwarka — pełna gotowość do natychmiastowego wyszukiwania (Spotlight/Raycast) */
 `;
     document.head.appendChild(style);
   }
@@ -1540,30 +2919,7 @@
     const overlay = document.createElement('div');
     overlay.id = 'ccOmniOverlay';
     if (isStandalonePage) {
-      overlay.classList.add('cc-standalone', 'cc-veiled');
-      // Mysz odsłania panele tylko kliknięciem w tapetę; dotyk i klawisz Tab — zawsze
-      const reveal = (e) => {
-        if (e.type === 'pointerdown' && e.pointerType === 'mouse' && e.target.closest('a, button, input, .cc-omni-apps')) return;
-        if (e.type === 'keydown' && e.key !== 'Tab') return;
-        overlay.removeEventListener('pointerdown', reveal);
-        overlay.removeEventListener('keydown', reveal);
-        let i = 0;
-        overlay.querySelectorAll('.cc-omni-card, .cc-omni-shortcut, .cc-omni-continue:not([hidden])')
-          .forEach(el => el.style.setProperty('--cc-d', (i++ * 60) + 'ms'));
-        // Klik kończący to samo dotknięcie nie może otworzyć skrótu, który właśnie wyłania się pod palcem
-        const revealedAt = Date.now();
-        const swallow = (ev) => {
-          if (Date.now() - revealedAt > 800) { overlay.removeEventListener('click', swallow, true); return; }
-          if (ev.target.closest('.cc-omni-home')) { ev.preventDefault(); ev.stopPropagation(); }
-          overlay.removeEventListener('click', swallow, true);
-        };
-        if (e.type === 'pointerdown') overlay.addEventListener('click', swallow, true);
-        overlay.classList.remove('cc-veiled');
-        overlay.classList.add('cc-revealing');
-        setTimeout(() => overlay.classList.remove('cc-revealing'), i * 60 + 700);
-      };
-      overlay.addEventListener('pointerdown', reveal);
-      overlay.addEventListener('keydown', reveal);
+      overlay.classList.add('cc-standalone');
     }
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
@@ -1573,28 +2929,40 @@
       <div id="ccOmniModal">
         <div class="cc-omni-top">
           <nav class="cc-omni-topnav" aria-label="Szybki dostęp">
-            <a class="cc-omni-toplink" href="/mess">
+            <a class="cc-omni-toplink" href="/mess" aria-label="Czat" title="Czat">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5A3.5 3.5 0 0 1 6.5 2h6A3.5 3.5 0 0 1 16 5.5v3A3.5 3.5 0 0 1 12.5 12H8l-3.5 3v-3.2A3.5 3.5 0 0 1 3 8.5Z"/><path d="M18 8.2a3.5 3.5 0 0 1 3 3.5v2.8a3.5 3.5 0 0 1-2 3.2V21l-3.4-2.8H12a3.5 3.5 0 0 1-3.2-2h3.7A5.5 5.5 0 0 0 18 10.7Z"/></svg>
-              <span>Czat</span>
             </a>
-            <a class="cc-omni-toplink" href="/news">
+            <a class="cc-omni-toplink" href="/news" aria-label="Nowości CCN" title="Nowości CCN">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h13v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8h3"/><path d="M7 4v14M11 8h5M11 12h5M11 16h5"/></svg>
-              <span>Nowości</span>
             </a>
             <div class="cc-omni-apps-wrap">
-              <button type="button" id="ccOmniApps" class="cc-omni-btn cc-omni-apps-btn" aria-label="Wszystko: aplikacje Christian Culture" title="Wszystko — aplikacje Christian Culture" aria-expanded="false" aria-controls="ccOmniAppsMenu">
-                <img class="cc-i-apps" src="/images/search/apps-grid-gold.webp?v=20261026" width="44" height="44" alt="" decoding="async">
+              <button type="button" id="ccOmniApps" class="cc-omni-toplink cc-omni-apps-btn" aria-label="Wszystko: aplikacje Christian Culture" title="Wszystko — aplikacje Christian Culture" aria-expanded="false" aria-controls="ccOmniAppsMenu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="3" y="3" width="4.5" height="4.5" rx="1"/>
+                  <rect x="9.75" y="3" width="4.5" height="4.5" rx="1"/>
+                  <rect x="16.5" y="3" width="4.5" height="4.5" rx="1"/>
+                  <rect x="3" y="9.75" width="4.5" height="4.5" rx="1"/>
+                  <rect x="9.75" y="9.75" width="4.5" height="4.5" rx="1"/>
+                  <rect x="16.5" y="9.75" width="4.5" height="4.5" rx="1"/>
+                  <rect x="3" y="16.5" width="4.5" height="4.5" rx="1"/>
+                  <rect x="9.75" y="16.5" width="4.5" height="4.5" rx="1"/>
+                  <rect x="16.5" y="16.5" width="4.5" height="4.5" rx="1"/>
+                </svg>
               </button>
               <div id="ccOmniAppsMenu" class="cc-omni-apps" hidden>
                 <p class="cc-omni-apps-title">Cały ekosystem Christian Culture</p>
                 ${renderAppsGrid()}
               </div>
             </div>
-            <button type="button" id="ccOmniRadio" class="cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
-              <img class="cc-i-play" src="/images/search/radio-play.webp" width="44" height="44" alt="" decoding="async">
-              <img class="cc-i-stop" src="/images/search/radio-stop.webp" width="44" height="44" alt="" decoding="async">
+            <button type="button" id="ccOmniRadio" class="cc-omni-toplink cc-omni-radio" aria-pressed="false" aria-label="Słuchaj Radia Christian Culture" title="Radio Christian Culture">
+              <svg class="cc-i-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z"/>
+              </svg>
+              <svg class="cc-i-stop" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <rect x="5.5" y="5.5" width="13" height="13" rx="2.5"/>
+              </svg>
             </button>
-            <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA">
+            <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA" title="Twoje konto LUMINA">
               <span class="cc-omni-account-face" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
             </a>
           </nav>
@@ -1690,6 +3058,7 @@ ${isStandalonePage ? '' : `
     // Zdarzenia wewnątrz modala
     const input = document.getElementById('ccOmniInput');
     const clearBtn = document.getElementById('ccOmniClear');
+    startPlaceholderRotation(input);
     const closeBtn = document.getElementById('ccOmniClose');
     const filterChips = overlay.querySelectorAll('.cc-omni-filter-chip');
 
@@ -1827,7 +3196,12 @@ ${isStandalonePage ? '' : `
       engineBtn.setAttribute('aria-pressed', String(g));
       engineBtn.setAttribute('aria-label', g ? 'Wróć do wyszukiwania w Christian Culture' : 'Szukaj w całym internecie przez Google');
       field.classList.toggle('cc-engine-google', g);
-      input.placeholder = g ? 'Szukaj w Google…' : 'Zapytaj Christian Culture…';
+      if (g) {
+        input.placeholder = 'Szukaj w Google…';
+      } else {
+        input.placeholder = PLACEHOLDERS[0];
+        startPlaceholderRotation(input);
+      }
     };
     applyEngine();
     engineBtn.addEventListener('click', () => {
@@ -1888,11 +3262,86 @@ ${isStandalonePage ? '' : `
       });
     }
 
+
+    // Faza 2: Obsługa kopiowania linku / wersetu oraz hoveru na wynikach dla Split-View
+    overlay.addEventListener('click', (e) => {
+      const autoBtn = e.target.closest('.cc-autocorrect-btn, .cc-autocorrect-btn-orig');
+      if (autoBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const q = autoBtn.getAttribute('data-query');
+        if (q) {
+          input.value = q;
+          clearBtn.style.display = 'inline-flex';
+          renderResults(q, activeFilter);
+          if (isStandalonePage) {
+            history.replaceState(null, '', '/wyszukiwarka?q=' + encodeURIComponent(q));
+          }
+          input.focus();
+        }
+        return;
+      }
+
+      const copyBtn = e.target.closest('.cc-preview-btn-copy');
+      if (copyBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const copyUrl = copyBtn.getAttribute('data-copy-url');
+        if (copyUrl) {
+          const fullUrl = copyUrl.startsWith('http') ? copyUrl : (location.origin + copyUrl);
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(fullUrl).then(() => {
+              showCopyToast('Skopiowano link do schowka!');
+            }).catch(() => {
+              showCopyToast('Skopiowano: ' + fullUrl);
+            });
+          } else {
+            showCopyToast('Skopiowano: ' + fullUrl);
+          }
+        }
+        return;
+      }
+
+      const scriptCopyBtn = e.target.closest('.cc-btn-scripture-copy');
+      if (scriptCopyBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const quote = scriptCopyBtn.getAttribute('data-quote') || '';
+        if (quote) {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(quote).then(() => {
+              showCopyToast('Werset skopiowany do schowka!');
+            }).catch(() => {
+              showCopyToast(quote);
+            });
+          } else {
+            showCopyToast(quote);
+          }
+        }
+        return;
+      }
+    });
+
+    overlay.addEventListener('mouseover', (e) => {
+      const it = e.target.closest('.cc-omni-item');
+      if (!it) return;
+      const allItems = Array.from(overlay.querySelectorAll('.cc-omni-item'));
+      const idx = allItems.indexOf(it);
+      if (idx >= 0 && idx !== activeIndex) {
+        activeIndex = idx;
+        allItems.forEach((el, i) => el.classList.toggle('cc-active', i === activeIndex));
+        if (currentResults && currentResults[activeIndex]) {
+          renderPreviewPane(currentResults[activeIndex]);
+        }
+      }
+    });
+
     clearBtn.addEventListener('click', () => {
       input.value = '';
       clearBtn.style.display = 'none';
       renderResults('', activeFilter);
       input.focus();
+      startPlaceholderRotation(input);
     });
 
     input.addEventListener('input', (e) => {
@@ -2012,20 +3461,48 @@ ${isStandalonePage ? '' : `
       body.innerHTML = renderHome();
       return;
     }
-    const { items, guide, isSuggestion, suggestionNote } = performSearch(query, filter);
+    const { items, guide, isSuggestion, suggestionNote, autocorrect } = performSearch(query, filter);
     currentResults = items;
-    activeIndex = -1;
+    activeIndex = (items && items.length > 0) ? 0 : -1;
 
-    let html = '';
+    // Faza 2: Detekcja wersetu biblijnego UBG
+    const bibleMatch = parseBibleRef(query);
+    const scriptureCardHtml = bibleMatch ? renderScriptureCard(bibleMatch) : '';
+
+    // Faza 2: Detekcja intencji duszpasterskiej / pomocy
+    const isHope = detectHopeIntent(query);
+    const hopeCardHtml = isHope ? renderHopeCard(query) : '';
+
+    let leftColHtml = '';
 
     // Tryb Google: pierwszy wynik prowadzi do wyszukiwania w całym internecie, poniżej materiały CC
     if (searchEngine === 'google') {
-      html += `
+      leftColHtml += `
         <a class="cc-omni-google-go" href="${escapeHtml(googleUrl(query))}">
           <span class="cc-omni-google-g" aria-hidden="true">G</span>
           <span><b>Szukaj „${escapeHtml(query)}” w Google</b><small>Naciśnij Enter, aby otworzyć wyniki z całego internetu</small></span>
         </a>
         <p class="cc-omni-google-sub">Z ekosystemu Christian Culture:</p>`;
+    }
+
+    if (scriptureCardHtml) {
+      leftColHtml += scriptureCardHtml;
+    }
+    if (hopeCardHtml) {
+      leftColHtml += hopeCardHtml;
+    }
+
+    // Faza 3: Pasek autokorekty literówki (np. Pokazuję wyniki dla: Apokalipsa)
+    if (autocorrect && autocorrect.corrected.toLowerCase() !== query.trim().toLowerCase()) {
+      leftColHtml += `
+        <div class="cc-omni-autocorrect-banner" id="ccOmniAutoCorrect">
+          <span class="cc-autocorrect-icon">✨</span>
+          <div class="cc-autocorrect-text">
+            Pokazuję wyniki dla: <button type="button" class="cc-autocorrect-btn" data-query="${escapeHtml(autocorrect.corrected)}"><strong>${escapeHtml(autocorrect.corrected)}</strong></button>
+            <span class="cc-autocorrect-instead">Zamiast: <button type="button" class="cc-autocorrect-btn-orig" data-query="${escapeHtml(autocorrect.original)}"><i>${escapeHtml(autocorrect.original)}</i></button></span>
+          </div>
+        </div>
+      `;
     }
 
     // 1. Jeśli jest dopasowany przewodnik tematyczny
@@ -2042,7 +3519,7 @@ ${isStandalonePage ? '' : `
         }).join('');
       }
 
-      html += `
+      leftColHtml += `
         <div class="cc-omni-guide">
           <div class="cc-omni-guide-badge">Przewodnik po ekosystemie</div>
           <h4 class="cc-omni-guide-topic">${topic}</h4>
@@ -2056,7 +3533,7 @@ ${isStandalonePage ? '' : `
 
     // 2. Nagłówek propozycji bliskoznacznych gdy brak bezpośrednich wyników
     if (isSuggestion && items && items.length) {
-      html += `
+      leftColHtml += `
         <div class="cc-omni-suggestion-header">
           <div class="cc-omni-suggestion-icon">💡</div>
           <div class="cc-omni-suggestion-text">
@@ -2069,17 +3546,20 @@ ${isStandalonePage ? '' : `
 
     // 3. Lista wyników
     if (!items.length) {
-      html += `
-        <div class="cc-omni-empty">
-          <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
-          <div style="font-weight:700;font-size:1.05rem;color:inherit;">Nie znaleziono bezpośrednich wyników dla "${escapeHtml(query)}"</div>
-          <p>Spróbuj wpisać inne słowo, np. <i>nadzieja</i>, <i>werset dnia</i>, <i>modlitwa</i>, <i>apokalipsa</i> lub przejdź do pełnego indeksu.</p>
-          <a href="/szukaj?q=${encodeURIComponent(query)}" class="cc-omni-guide-pill" style="display:inline-flex;">Przeszukaj pełne archiwum /szukaj &rarr;</a>
-        </div>
-      `;
+      if (!scriptureCardHtml && !hopeCardHtml) {
+        leftColHtml += `
+          <div class="cc-omni-empty">
+            <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
+            <div style="font-weight:700;font-size:1.05rem;color:inherit;">Nie znaleziono bezpośrednich wyników dla "${escapeHtml(query)}"</div>
+            <p>Spróbuj wpisać inne słowo, np. <i>nadzieja</i>, <i>werset dnia</i>, <i>modlitwa</i>, <i>apokalipsa</i> lub przejdź do pełnego indeksu.</p>
+            <a href="/szukaj?q=${encodeURIComponent(query)}" class="cc-omni-guide-pill" style="display:inline-flex;">Przeszukaj pełne archiwum /szukaj &rarr;</a>
+          </div>
+        `;
+      }
     } else {
-      html += '<div class="cc-omni-results-list">';
-      for (const item of items) {
+      leftColHtml += '<div class="cc-omni-results-list" id="ccOmniResultsList" role="feed">';
+      for (let idx = 0; idx < items.length; idx++) {
+        const item = items[idx];
         const titleHl = highlightMatches(item.title, query);
         const descHl = highlightMatches(item.description, query);
         const meta = item._meta || categorizeItem(item);
@@ -2088,9 +3568,10 @@ ${isStandalonePage ? '' : `
         const groupName = escapeHtml(meta.name || '');
         const suggestionBadge = (item.isNearMatch || isSuggestion) ? '<span class="cc-omni-item-badge cc-badge-suggestion">Temat pokrewny</span>' : '';
         const crumb = escapeHtml(breadcrumbOf(item.url || ''));
+        const isItemActive = (idx === activeIndex);
 
-        html += `
-          <a href="${url}" class="cc-omni-item" data-url="${url}">
+        leftColHtml += `
+          <a href="${url}" class="cc-omni-item${isItemActive ? ' cc-active' : ''}" data-url="${url}">
             <div class="cc-omni-item-source">
               <span class="cc-omni-item-icon" aria-hidden="true">${icon}</span>
               <span class="cc-omni-item-site"><span class="cc-omni-item-sitename">${groupName}</span><span class="cc-omni-item-crumb">${crumb}</span></span>
@@ -2103,10 +3584,34 @@ ${isStandalonePage ? '' : `
           </a>
         `;
       }
-      html += '</div>';
+      leftColHtml += '</div>';
     }
 
-    body.innerHTML = html;
+    // Faza 2: Całość wyników w luksusowym dwukolumnowym Split-View (Raycast / Spotlight style)
+    const previewContent = (items && items.length > 0) ? getPreviewHtml(items[0]) : '';
+    const finalHtml = `
+      <div class="cc-omni-split-layout">
+        <div class="cc-omni-results-col">
+          ${leftColHtml}
+        </div>
+        <aside class="cc-omni-preview-pane" id="ccOmniPreviewPane" aria-label="Podgląd błyskawiczny">
+          ${previewContent}
+        </aside>
+      </div>
+    `;
+
+    body.innerHTML = finalHtml;
+
+    // Asynchroniczne dociągnięcie tekstu wersetu UBG, jeśli nie był w kanonicznym buforze podręcznym
+    if (bibleMatch && bibleMatch.isPending) {
+      fetchBibleVerse(bibleMatch.bookCode, bibleMatch.chapter, bibleMatch.verse).then(text => {
+        if (!text) return;
+        const quoteEl = document.getElementById('ccScriptureQuote');
+        const copyBtn = document.getElementById('ccScriptureCopyBtn');
+        if (quoteEl) quoteEl.textContent = '„' + text + '”';
+        if (copyBtn) copyBtn.setAttribute('data-quote', '„' + text + '” — ' + bibleMatch.refTitle + ' (UBG)');
+      });
+    }
   }
 
   // Strona startowa: prawdziwe skróty ekosystemu i historia odwiedzin z tej przeglądarki (cc-favorites.js)
@@ -2231,15 +3736,96 @@ ${isStandalonePage ? '' : `
     return 'Odwiedzono ' + d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' });
   }
   function renderHome() {
-    const cards = `
-      <div class="cc-omni-cards">
-        <a class="cc-omni-card" href="/akademia#kurscodzienny"><span class="cc-omni-card-icon">${svgIcon('book', 16)}</span><span><b>Dzisiejsza lekcja</b><small>Kurs Codzienny · Z Biblią za Pan Brat</small></span></a>
-        <a class="cc-omni-card" href="/player"><span class="cc-omni-card-icon">${svgIcon('radio', 16)}</span><span><b>Radio i nagrania CC</b><small>Muzyka, Słowo Boże i audio</small></span></a>
+    // 1. Ostatnie wyszukiwania użytkownika
+    const recents = getRecentSearches();
+    const recentsHtml = recents.length ? `
+      <div class="cc-omni-recents-bar" role="region" aria-label="Ostatnie wyszukiwania">
+        <div class="cc-omni-recents-header">
+          <span class="cc-omni-recents-title">${svgIcon('clock', 14)} Ostatnie wyszukiwania</span>
+          <button type="button" class="cc-omni-recents-clear" data-omni-action="clear-recents" title="Wyczyść historię wyszukiwania">Wyczyść historię</button>
+        </div>
+        <div class="cc-omni-recents-pills">
+          ${recents.map(r => `
+            <span class="cc-omni-recent-pill">
+              <button type="button" class="cc-omni-recent-query" data-search-query="${escapeHtml(r)}">${escapeHtml(r)}</button>
+              <button type="button" class="cc-omni-recent-del" data-remove-query="${escapeHtml(r)}" aria-label="Usuń ${escapeHtml(r)} z historii">×</button>
+            </span>
+          `).join('')}
+        </div>
+      </div>` : '';
+
+    // 2. Popularne tematy / szybkie tagi
+    const tags = [
+      { label: '#Apokalipsa', query: 'Apokalipsa' },
+      { label: '#KursCodzienny', query: 'Kurs Codzienny' },
+      { label: '#WersetDnia', query: 'Werset Dnia' },
+      { label: '#DobrzeŻeJesteś', query: 'Dobrze, że jesteś' },
+      { label: '#Radio24/7', query: 'Radio CC' },
+      { label: '#Lumina', query: 'LUMINA' },
+      { label: '#Wizytówki', query: 'Wizytówki' },
+      { label: '#Modlitwa', query: 'Modlitwa' },
+      { label: '#Pomoc', query: 'Pomoc' }
+    ];
+    const tagsHtml = `
+      <div class="cc-omni-tags-bar" role="navigation" aria-label="Popularne tematy">
+        <span class="cc-omni-tags-label">${svgIcon('sparkle', 14)} Popularne tematy:</span>
+        <div class="cc-omni-tags-list">
+          ${tags.map(t => `<button type="button" class="cc-omni-tag-chip" data-search-query="${escapeHtml(t.query)}">${escapeHtml(t.label)}</button>`).join('')}
+        </div>
       </div>`;
+
+    // 3. 4 Kluczowe Filary Ekosystemu („Polecane Dziś”)
+    const featuredCards = `
+      <section class="cc-omni-featured-section" aria-label="Polecane dziś w Christian Culture">
+        <div class="cc-omni-featured-head">
+          <span class="cc-omni-featured-label">${svgIcon('star', 15)} Polecane Dziś w EkoCC</span>
+        </div>
+        <div class="cc-omni-featured-grid">
+          <a class="cc-omni-feat-card" href="/player">
+            <span class="cc-omni-feat-icon">${svgIcon('heart', 20)}</span>
+            <span class="cc-omni-feat-info">
+              <span class="cc-omni-feat-tag">Inspiracja na Dziś</span>
+              <strong class="cc-omni-feat-title">Rozważanie „Dobrze, że jesteś”</strong>
+              <span class="cc-omni-feat-desc">Codzienne słowo umocnienia, modlitwa i Boży pokój na każdy dzień.</span>
+            </span>
+            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="cc-omni-feat-card" href="/akademia#kurscodzienny">
+            <span class="cc-omni-feat-icon">${svgIcon('book', 20)}</span>
+            <span class="cc-omni-feat-info">
+              <span class="cc-omni-feat-tag">Akademia Biblijna</span>
+              <strong class="cc-omni-feat-title">Lekcja Dnia: Z Biblią za Pan Brat</strong>
+              <span class="cc-omni-feat-desc">Codzienne studium Pisma Świętego werset po wersecie z komentarzem.</span>
+            </span>
+            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="cc-omni-feat-card" href="/podcasty">
+            <span class="cc-omni-feat-icon">${svgIcon('mic', 20)}</span>
+            <span class="cc-omni-feat-info">
+              <span class="cc-omni-feat-tag">Podcast Spotify SDS</span>
+              <strong class="cc-omni-feat-title">APOKALIPSA — Księga Nadziei</strong>
+              <span class="cc-omni-feat-desc">Profetyczny cykl wykładów biblijnych Studia Dobrego Słowa.</span>
+            </span>
+            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="cc-omni-feat-card" href="/player">
+            <span class="cc-omni-feat-icon">${svgIcon('radio', 20)}</span>
+            <span class="cc-omni-feat-info">
+              <span class="cc-omni-feat-tag">Nadajemy 24/7</span>
+              <strong class="cc-omni-feat-title">Radio Christian Culture & Player</strong>
+              <span class="cc-omni-feat-desc">Muzyka uwielbienia, słuchowiska Biblia Audio i stacje tematyczne.</span>
+            </span>
+            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>`;
+
+    // 4. Skróty do aplikacji
     const shortcuts = '<nav class="cc-omni-shortcuts" aria-label="Skróty ekosystemu">' + HOME_SHORTCUTS.map(sc => sc.action
       ? `<button type="button" class="cc-omni-shortcut" data-omni-action="${sc.action}" aria-expanded="false" aria-controls="ccOmniFavs"><span>${svgIcon(sc.icon)}</span><span>${escapeHtml(sc.label)}</span></button>`
       : `<a class="cc-omni-shortcut" href="${sc.url}"${sc.external ? ' target="_blank" rel="noopener"' : ''}><span>${svgIcon(sc.icon)}</span><span>${escapeHtml(sc.label)}</span></a>`).join('') + '</nav>';
-    // Ulubione zapisane gwiazdką na stronach CC (cc-favorites.js, localStorage) — rozwijane skrótem „Ulubione”
+
+    // 5. Ulubione
     let favs = [];
     try { favs = JSON.parse(localStorage.getItem('cc_user_favorites') || '[]'); } catch (_) {}
     favs = (Array.isArray(favs) ? favs : []).filter(f => f && f.url && f.title).slice(0, 8);
@@ -2251,6 +3837,8 @@ ${isStandalonePage ? '' : `
         <div class="cc-omni-continue-head">${svgIcon('star', 16)}<span>Twoje ulubione</span></div>
         ${favList}
       </section>`;
+
+    // 6. Ostatnio odwiedzane
     let history = [];
     try { history = JSON.parse(localStorage.getItem('cc_user_visit_history') || '[]'); } catch (_) {}
     history = (Array.isArray(history) ? history : []).filter(h => h && h.url && h.title && h.url !== location.pathname).slice(0, 4);
@@ -2259,7 +3847,17 @@ ${isStandalonePage ? '' : `
         <div class="cc-omni-continue-head">${svgIcon('clock', 16)}<span>Ostatnio odwiedzane</span></div>
         <div class="cc-omni-continue-list">${history.map(h => `<a class="cc-omni-continue-item" href="${escapeHtml(h.url)}"><span>${escapeHtml(h.icon || '✨')}</span><span><b>${escapeHtml(h.title)}</b><small>${escapeHtml(visitedLabel(h.visitedAt))}</small></span></a>`).join('')}</div>
       </section>` : '';
-    return '<div class="cc-omni-home">' + cards + shortcuts + favSection + cont + '</div>';
+
+    // 7. Podpowiedzi klawiszowe (Raycast / Spotlight style)
+    const proHelper = `
+      <div class="cc-omni-pro-shortcuts" aria-hidden="true">
+        <span><kbd>↑</kbd><kbd>↓</kbd> Nawiguj</span>
+        <span><kbd>↵ Enter</kbd> Wybierz</span>
+        <span><kbd>Esc</kbd> Zamknij</span>
+        <span><kbd>Ctrl+K</kbd> / <kbd>/</kbd> Szukaj</span>
+      </div>`;
+
+    return '<div class="cc-omni-home">' + recentsHtml + tagsHtml + featuredCards + shortcuts + favSection + cont + proHelper + '</div>';
   }
 
   // 8. Otwieranie i zamykanie wyszukiwarki
@@ -2294,6 +3892,7 @@ ${isStandalonePage ? '' : `
         const clearBtn = document.getElementById('ccOmniClear');
         if (clearBtn) clearBtn.style.display = 'inline-flex';
       }
+      startPlaceholderRotation(input);
       setTimeout(() => {
         input.focus();
         input.select();
@@ -2302,6 +3901,7 @@ ${isStandalonePage ? '' : `
   }
 
   function closeSearch() {
+    stopPlaceholderRotation();
     const overlay = document.getElementById('ccOmniOverlay');
     if (!overlay) return;
     if (isStandalonePage) {
@@ -2441,7 +4041,20 @@ ${isStandalonePage ? '' : `
     toggle: toggleSearch,
     loadCatalog: loadCatalog,
     publicationTime: publicationTime,
-    performSearch: performSearch
+    performSearch: performSearch,
+    getRecentSearches: getRecentSearches,
+    saveRecentSearch: saveRecentSearch,
+    removeRecentSearch: removeRecentSearch,
+    clearRecentSearches: clearRecentSearches,
+    parseBibleRef: parseBibleRef,
+    detectHopeIntent: detectHopeIntent,
+    getPreviewHtml: getPreviewHtml,
+    TOP_UBG_VERSES: TOP_UBG_VERSES,
+    PLACEHOLDERS: PLACEHOLDERS,
+    startPlaceholderRotation: startPlaceholderRotation,
+    stopPlaceholderRotation: stopPlaceholderRotation,
+    detectTypoCorrection: detectTypoCorrection,
+    CANONICAL_WORDS: CANONICAL_WORDS
   };
 
   // Uruchomienie po załadowaniu DOM
