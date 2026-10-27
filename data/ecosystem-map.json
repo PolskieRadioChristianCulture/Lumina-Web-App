@@ -3360,6 +3360,182 @@
         "debt help"
       ],
       "connections": []
+    },
+    {
+      "id": "cc-help-legal",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Pomoc prawna",
+      "shortDesc": "Dokumenty, terminy i pytania do prawnika — uporządkuj to, co potrzebne przed rozmową.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/prawnik",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Pomoc prawna",
+        "Legal help",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-addiction",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Uzależnienia",
+      "shortDesc": "Znajdź fachową pomoc dla siebie lub bliskiej osoby. Pierwsza rozmowa może być początkiem zmiany.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/uzaleznienia",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Uzależnienia",
+        "Addiction support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-psychology",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Wsparcie psychologiczne",
+      "shortDesc": "Dowiedz się, jak przygotować pierwszą konsultację i gdzie szukać wsparcia w Polsce.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/psycholog",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Wsparcie psychologiczne",
+        "Psychological support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-marriage",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Małżeństwo",
+      "shortDesc": "Przygotuj spokojną rozmowę i poznaj możliwości wsparcia — z szacunkiem dla godności i bezpieczeństwa każdej osoby.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/wsparcie-malzenstwa",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Małżeństwo",
+        "Marriage support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-parenting",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Wychowanie",
+      "shortDesc": "Wsparcie dla rodziców i opiekunów szukających spokojniejszego kontaktu z dzieckiem.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/wsparcie-rodzicow",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Wychowanie",
+        "Parenting support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-family",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Rodzina",
+      "shortDesc": "Uporządkuj potrzeby rodziny i znajdź właściwe miejsce pomocy, bez przerzucania całego ciężaru na jedną osobę.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/wsparcie-rodziny",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Rodzina",
+        "Family support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-senior",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Wsparcie seniorów",
+      "shortDesc": "Praktyczne kroki dla osób starszych oraz ich bliskich: kontakt, codzienne sprawy i bezpieczne szukanie pomocy.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/senior",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Wsparcie seniorów",
+        "Support for older people",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-depression",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Depresja — szukanie pomocy",
+      "shortDesc": "Depresja jest problemem zdrowotnym. Zasługujesz na uważne wysłuchanie i dostęp do fachowej pomocy.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/depresja",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Depresja — szukanie pomocy",
+        "Depression — finding help",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
     }
   ],
   "lastUpdated": "2026-10-25"
