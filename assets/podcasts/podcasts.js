@@ -76,6 +76,7 @@
     // Toast & Share Elements
     el.toast = document.getElementById('cc-toast');
     el.spotifyShowShareBtn = document.getElementById('spotify-show-share-btn');
+    el.spotifyApokalipsaShareBtn = document.getElementById('spotify-apokalipsa-share-btn');
     el.gdriveShareBtn = document.getElementById('gdrive-share-btn');
     el.activeDeckShareBtn = document.getElementById('active-deck-share-btn');
   }
@@ -232,6 +233,18 @@
       });
     }
 
+    // Share: Spotify Apokalipsa Show
+    if (el.spotifyApokalipsaShareBtn) {
+      el.spotifyApokalipsaShareBtn.addEventListener('click', () => {
+        const url = `${window.location.origin}/podcasty#podcast-apokalipsa-section`;
+        shareItem(
+          'Podcast Spotify APOKALIPSA - Księga Nadziei • Christian Culture',
+          'Słuchaj oficjalnego podcastu Apokalipsa - Księga Nadziei w portalu audio Christian Culture:',
+          url
+        );
+      });
+    }
+
     // Share: Google Drive Master Audio
     if (el.gdriveShareBtn) {
       el.gdriveShareBtn.addEventListener('click', () => {
@@ -309,7 +322,7 @@
       }
 
       if (hash) {
-        if (hash === '#podcast-spotify-section' || hash === '#gdrive-audio-section' || hash === '#music-catalog-section') {
+        if (hash === '#podcast-spotify-section' || hash === '#podcast-apokalipsa-section' || hash === '#gdrive-audio-section' || hash === '#music-catalog-section') {
           const target = document.querySelector(hash);
           if (target) {
             setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
@@ -640,6 +653,13 @@
     if (!list.length && state.catalog) {
       list = [
         {
+          id: 'spotify-show-6rSWpk7dO4TSQM0KXlcMXg',
+          title: 'Apokalipsa Podcast',
+          author: 'Podcast Spotify (29 odc.)',
+          coverUrl: 'https://image-cdn-fa.spotifycdn.com/image/ab6765630000ba8a1a4d8fce7407bd6c623c3cf4',
+          jumpTarget: 'podcast-apokalipsa-section'
+        },
+        {
           id: 'spotify-show-4iMs8lyni0poJEiZNCfRsW',
           title: 'Osobowość Plus Podcast',
           author: 'Podcast Spotify',
@@ -691,6 +711,8 @@
                       state.catalog?.spotifyArtist?.find(a => a.id === cid);
         if (matched) {
           mountDeckItem(matched, true);
+        } else if (cid && (cid.includes('6rSWpk7dO4TSQM0KXlcMXg') || cid.includes('apokalipsa'))) {
+          document.getElementById('podcast-apokalipsa-section')?.scrollIntoView({ behavior: 'smooth' });
         } else if (cid && cid.includes('4iMs8lyni0poJEiZNCfRsW')) {
           document.getElementById('podcast-spotify-section')?.scrollIntoView({ behavior: 'smooth' });
         } else if (cid && cid.includes('14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0')) {

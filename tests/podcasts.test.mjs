@@ -23,7 +23,7 @@ test('Catalog data integrity (data/podcasts/catalog.json) - 100% Real Materials'
 
   // Spotify Show (1 verified item)
   assert.ok(Array.isArray(content.spotifyShow), 'spotifyShow must be array');
-  assert.equal(content.spotifyShow.length, 1);
+  assert.equal(content.spotifyShow.length, 2, '2 Spotify Shows: Osobowość Plus & Apokalipsa');
   assert.equal(content.spotifyShow[0].sourceId, '4iMs8lyni0poJEiZNCfRsW');
   assert.ok(content.spotifyShow[0].embedUrl.includes('open.spotify.com/embed/show/'));
 
@@ -39,7 +39,7 @@ test('Catalog data integrity (data/podcasts/catalog.json) - 100% Real Materials'
 
   // Total items = 1 + 1 + 1 + 15 = 18 real items
   const totalItems = content.googleDriveAudio.length + content.spotifyShow.length + content.spotifyArtist.length + content.spotifyAlbums.length;
-  assert.equal(totalItems, 18, 'Total 18 verified external registry items');
+  assert.equal(totalItems, 19, 'Total 19 verified external registry items');
 
   // Verify none of the albums have placeholder titles or missing covers
   content.spotifyAlbums.forEach(album => {
@@ -61,6 +61,8 @@ test('HTML structure and real live players (podcasty.html)', () => {
   // Real Live Stage Players (Spotify Show, Google Drive M4A, Music Deck)
   assert.ok(html.includes('id="live-spotify-show-frame"'), 'Live Spotify show frame exists');
   assert.ok(html.includes('src="https://open.spotify.com/embed/show/4iMs8lyni0poJEiZNCfRsW"'), 'Correct Spotify show src');
+  assert.ok(html.includes('id="live-spotify-apokalipsa-frame"'), 'Live Spotify Apokalipsa show frame exists');
+  assert.ok(html.includes('6rSWpk7dO4TSQM0KXlcMXg'), 'Correct Apokalipsa Spotify show src');
   assert.ok(html.includes('id="live-gdrive-m4a-frame"'), 'Live Google Drive frame exists');
   assert.ok(html.includes('src="https://drive.google.com/file/d/14gi3Xclsv8DUNJu58SNU24aGM2VOEbM0/preview"'), 'Correct Google Drive preview src');
   assert.ok(html.includes('id="live-music-deck-frame"'), 'Live Music deck frame exists');
@@ -185,4 +187,17 @@ test('Living Ecosystem Map (@m & data/ecosystem-map.json)', () => {
   const map = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
   assert.ok(map.updatesLog.some(u => u.topic && u.topic.includes('Podcasty Christian Culture')), 'Updates log contains podcast platform');
   assert.ok(map.nodes ? map.nodes.some(n => n.id === 'podcasty-platform') : true);
+});
+
+
+test('Apokalipsa Spotify Show in EkoCC Ecosystem (akademia.html & lumina.studiodobregoslowa.html)', () => {
+  const akademiaPath = path.join(ROOT, 'akademia.html');
+  const akademiaHtml = fs.readFileSync(akademiaPath, 'utf8');
+  assert.ok(akademiaHtml.includes('https://open.spotify.com/embed/show/6rSWpk7dO4TSQM0KXlcMXg'), 'akademia.html embeds Apokalipsa Spotify show');
+  assert.ok(akademiaHtml.includes('open.spotify.com/show/6rSWpk7dO4TSQM0KXlcMXg'), 'akademia.html links to Spotify show');
+
+  const sdsPath = path.join(ROOT, 'lumina.studiodobregoslowa.html');
+  const sdsHtml = fs.readFileSync(sdsPath, 'utf8');
+  assert.ok(sdsHtml.includes('https://open.spotify.com/embed/show/6rSWpk7dO4TSQM0KXlcMXg'), 'lumina SDS embeds Apokalipsa Spotify show');
+  assert.ok(sdsHtml.includes('id="post_spotify_sds_apokalipsa"'), 'lumina SDS has post_spotify_sds_apokalipsa card');
 });

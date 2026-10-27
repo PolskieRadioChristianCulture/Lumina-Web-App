@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "updatedAt": "2026-10-18T00:00:00Z",
+  "updatedAt": "2026-10-27T15:46:48.638Z",
   "description": "Oficjalny rejestr podcastów, albumów muzycznych i audycji Christian Culture Network. 100% rzeczywiste materiały Spotify i Dysk Google.",
   "featured": {
     "id": "spotify-show-4iMs8lyni0poJEiZNCfRsW",
@@ -48,6 +48,20 @@
       "embedUrl": "https://open.spotify.com/embed/show/4iMs8lyni0poJEiZNCfRsW",
       "externalUrl": "https://open.spotify.com/show/4iMs8lyni0poJEiZNCfRsW",
       "author": "Osobowość Plus / Christian Culture"
+    },
+    {
+      "id": "spotify-show-6rSWpk7dO4TSQM0KXlcMXg",
+      "source": "spotify",
+      "sourceType": "show",
+      "sourceId": "6rSWpk7dO4TSQM0KXlcMXg",
+      "title": "APOKALIPSA - Księga Nadziei | Oficjalny Podcast Studia Dobrego Słowa",
+      "shortTitle": "Apokalipsa - Księga Nadziei",
+      "summary": "Oficjalny podcast z kompletną serią 29 wykładów i studium biblijnego Księgi Apokalipsy pastora Wincentego Siei (Studio Dobrego Słowa) na platformie Spotify.",
+      "category": "podcast",
+      "coverUrl": "https://image-cdn-fa.spotifycdn.com/image/ab6765630000ba8a1a4d8fce7407bd6c623c3cf4",
+      "embedUrl": "https://open.spotify.com/embed/show/6rSWpk7dO4TSQM0KXlcMXg?utm_source=generator&si=94e79edddabd494d",
+      "externalUrl": "https://open.spotify.com/show/6rSWpk7dO4TSQM0KXlcMXg",
+      "author": "Studio Dobrego Słowa / Christian Culture"
     }
   ],
   "spotifyArtist": [
@@ -263,10 +277,35 @@
     }
   ],
   "topics": [
-    { "id": "topic-faith", "title": "Wiara i duchowość", "icon": "🙏", "coverUrl": "/images/biblijne-uwielbienie/player-thumb-cross.webp" },
-    { "id": "topic-bible", "title": "Biblia", "icon": "📖", "coverUrl": "/images/ogloszenia-biblia-gdanska.jpg" },
-    { "id": "topic-meaning", "title": "Sens życia", "icon": "🕊️", "coverUrl": "/images/news/art-wojna-ukraina-jezus-pokoj-znaki-czasow.jpg" },
-    { "id": "topic-family", "title": "Relacje i rodzina", "icon": "👨‍👩‍👧‍👦", "coverUrl": "/images/news/art-rodzina-chrzescijanski-dom-twierdza-pokoju.jpg" },
-    { "id": "topic-growth", "title": "Rozwój osobisty", "icon": "🌱", "coverUrl": "/images/ogloszenia-herbatka.webp" }
+    {
+      "id": "topic-faith",
+      "title": "Wiara i duchowość",
+      "icon": "🙏",
+      "coverUrl": "/images/biblijne-uwielbienie/player-thumb-cross.webp"
+    },
+    {
+      "id": "topic-bible",
+      "title": "Biblia",
+      "icon": "📖",
+      "coverUrl": "/images/ogloszenia-biblia-gdanska.jpg"
+    },
+    {
+      "id": "topic-meaning",
+      "title": "Sens życia",
+      "icon": "🕊️",
+      "coverUrl": "/images/news/art-wojna-ukraina-jezus-pokoj-znaki-czasow.jpg"
+    },
+    {
+      "id": "topic-family",
+      "title": "Relacje i rodzina",
+      "icon": "👨‍👩‍👧‍👦",
+      "coverUrl": "/images/news/art-rodzina-chrzescijanski-dom-twierdza-pokoju.jpg"
+    },
+    {
+      "id": "topic-growth",
+      "title": "Rozwój osobisty",
+      "icon": "🌱",
+      "coverUrl": "/images/ogloszenia-herbatka.webp"
+    }
   ]
 }
