@@ -1,5 +1,7 @@
 # CC Help series — local review package, 27 October 2026
 
+Owner subsequently approved publication and requested the complete 100-topic catalogue in every side panel, including `/dlugi` in PL/EN. `cc-pomoc/catalog.json` is a public topic plan, never a provider/contact database. The renderer generates 12 native expandable sections, links only the 11 published topics, and labels the remaining 89 as in preparation. `catalog.js` synchronises static bilingual labels with the debt pilot’s existing language selector without collecting or sending data. The obsolete pilot renderer must not be used. New catalogue tests verify all 22 documents and ensure the debt pilot changed only its panel and catalogue asset references.
+
 Owner confirmed eight topics in this conversation: legal, addiction, psychology, marriage, parenting, family, older people and depression. Sixteen static language pages are built from `topics.mjs` by `scripts/build-cc-help-series.mjs`. Flat HTML and directory versions must remain identical. Existing routes `/rodzina`, `/malzenstwo`, `/wychowanie`, `/pomoc` and `/psychologia` are preserved.
 
 Approved debt pilot is the visual reference: ivory, charcoal, warm orange and Champagne Gold. Existing official CC logo is reused without modification. No synthetic providers, testimonials, availability or counters. No new case forms, database, email delivery or tracking integration. Central recruitment links describe an email draft and do not promise submission. No private outreach database is included.

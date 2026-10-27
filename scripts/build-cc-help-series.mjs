@@ -2,6 +2,7 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {topics,sources} from '../docs/cc-help-series/topics.mjs';
+import {applyCatalog} from '../docs/cc-help-series/catalog-render.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const origin='https://polskieradio.cc';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
@@ -34,8 +35,12 @@ function render(t,en){
 }
 for(const t of topics)for(const en of [false,true]){
  const dir=route(t,en);await mkdir(path.join(root,dir),{recursive:true});
- const favorite=`<button type="button" class="button secondary" id="ccTopBarFavBtn" data-cc-favorite-toggle="true" aria-pressed="false" aria-label="${en?'Save this page to favourites':'Dodaj tę stronę do ulubionych'}"><span aria-hidden="true">☆</span> ${en?'Save this page':'Zapisz tę stronę'}</button>`;
- const html=render(t,en).replace('</dialog>',favorite+'</dialog>');await writeFile(path.join(root,dir,'index.html'),html);await writeFile(path.join(root,dir+'.html'),html);
+ const html=applyCatalog(render(t,en),en?'en':'pl',dir);await writeFile(path.join(root,dir,'index.html'),html);await writeFile(path.join(root,dir+'.html'),html);
+}
+// Patch only navigation in the current debt pilot; never rerun the obsolete pilot renderer.
+for(const [dir,lang] of [['dlugi','pl'],['en/debt-help','en']]){
+ const file=path.join(root,dir,'index.html');const html=applyCatalog(await readFile(file,'utf8'),lang,dir);
+ await writeFile(file,html);await writeFile(path.join(root,dir+'.html'),html);
 }
 // Both search surfaces must describe exactly the same pages.
 const catalog=JSON.parse(await readFile(path.join(root,'szukaj/catalog.json'),'utf8'));

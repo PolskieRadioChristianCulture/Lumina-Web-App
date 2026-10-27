@@ -3362,6 +3362,50 @@
       "connections": []
     },
     {
+      "id": "cc-help-pastor",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Pastor — rozmowa o wierze",
+      "shortDesc": "Wiara, codzienne wybory i trudne pytania. Przygotuj się do rozmowy duszpasterskiej i poznaj granice takiego wsparcia.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/pastor",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Pastor — rozmowa o wierze",
+        "Pastoral conversations",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-specialists",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Specjaliści Christian Culture",
+      "shortDesc": "Znajdź kierunek wsparcia albo zgłoś gotowość współpracy. Budujemy sieć pomocy opartą na kompetencjach, jasnych zasadach i trosce o człowieka.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/specjalisci",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Specjaliści Christian Culture",
+        "Christian Culture support directory",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
       "id": "cc-help-legal",
       "branchId": "misja-wspolpraca",
       "name": "CC Pomoc — Pomoc prawna",
