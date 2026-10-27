@@ -31,8 +31,8 @@ test('generator restores both missing debt pilot entries and preserves unrelated
   }
  }finally{fs.rmSync(temp,{recursive:true,force:true});}
 });
-test('thirty approved topics, sixty unique routes, existing aliases preserved',()=>{
- assert.equal(topics.length,30);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief','child-psychology','teenagers','school-difficulties','cyberbullying','child-behaviour','parenting-guide','anxiety','stress','burnout','self-worth','trauma','digital-balance','children-separation','children-faith']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,60);
+test('thirty-eight approved topics, seventy-six unique routes, existing aliases preserved',()=>{
+ assert.equal(topics.length,38);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief','child-psychology','teenagers','school-difficulties','cyberbullying','child-behaviour','parenting-guide','anxiety','stress','burnout','self-worth','trauma','digital-balance','children-separation','children-faith','marriage-crisis','separation','infidelity','marriage-communication','family-conflict','domestic-violence','single-parenting','engagement']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,76);
  for(const r of ['rodzina','malzenstwo','wychowanie','pomoc','psychologia','dlugi'])assert(!routes.includes(r));
  const redirects=read('_redirects');for(const r of ['/rodzina /edukacja 301','/malzenstwo /seks 301','/wychowanie /edukacja 301'])assert(redirects.includes(r));
 });
@@ -56,8 +56,13 @@ test('health pages contain crisis access; family pages protect from coercion',()
  for(const id of ['marriage','family']){const t=topics.find(t=>t.id===id);assert(read(t.route+'/index.html').includes('mediacji'));assert(read(t.route+'/index.html').includes('tel:800120002'));}
 });
 test('child and parent topics provide the child helpline and never collect case histories',()=>{
- const relevant=topics.filter(t=>t.childSupport);assert.equal(relevant.length,9);
+ const relevant=topics.filter(t=>t.childSupport);assert.equal(relevant.length,10);
  for(const t of relevant)for(const file of [t.route,'en/'+t.enRoute]){const h=read(file+'/index.html');assert(h.includes('tel:800121212'));assert(h.includes('https://czat.brpd.gov.pl/'));assert(!/<input|<textarea|<form/i.test(h));}
+});
+test('relationship topics provide independent safety support; violence access precedes imagery without privacy promises',()=>{
+ const relevant=topics.filter(t=>t.familySafety);assert.equal(relevant.length,8);
+ for(const t of relevant)for(const route of [t.route,'en/'+t.enRoute]){const h=read(route+'/index.html');assert(h.includes('tel:800120002'));assert(!/<form|<input|<textarea/i.test(h));assert(h.includes('https://niebieskalinia.info/')||t.id==='single-parenting');}
+ for(const route of ['przemoc-domowa','en/domestic-violence-support']){const h=read(route+'/index.html');assert(h.indexOf('<aside class="urgent-help wrap"')<h.indexOf('<section class="hero wrap"'));assert(h.includes('tel:112'));assert(h.includes('tel:800120002'));assert.equal((h.match(/id="urgent-title"/g)||[]).length,1);assert(/nie usuwa historii|does not erase browsing history/.test(h));}
 });
 test('urgent help precedes the hero on both crisis pages and telephone targets have touch sizing',()=>{
  for(const route of ['kryzys','en/emotional-crisis']){const h=read(route+'/index.html');assert(h.indexOf('<aside class="urgent-help wrap"')<h.indexOf('<section class="hero wrap"'));assert.equal((h.match(/id="urgent-title"/g)||[]).length,1);assert(h.includes('tel:112'));assert(h.includes('tel:800702222'));}

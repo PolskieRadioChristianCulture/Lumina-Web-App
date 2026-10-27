@@ -26,7 +26,7 @@ function urgentSupportLines(topic,en){
  let html='';
  if(topic.mentalSupport||['psychology','depression','addiction'].includes(topic.id))html+=`<p>${tx(en,'Dorośli w kryzysie psychicznym w Polsce:','Adults in a mental health crisis in Poland:')} <a href="tel:800702222">800 70 22 22</a> — ${tx(en,'bezpłatnie, całą dobę.','free, around the clock. Ask about language availability.')}</p>`;
  if(topic.childSupport)html+=`<p>${tx(en,'Dzieci i młodzież w Polsce:','Children and young people in Poland:')} <a href="tel:800121212">800 12 12 12</a> — ${tx(en,'bezpłatnie, całą dobę.','free, around the clock. Ask about language availability.')} <a href="https://czat.brpd.gov.pl/" target="_blank" rel="noopener noreferrer">${tx(en,'Czat RPD','RPD support chat')}</a>.</p>`;
- if(['marriage','family','parenting','senior'].includes(topic.id))html+=`<p>${tx(en,'Przemoc domowa — Niebieska Linia:','Domestic violence — Niebieska Linia in Poland:')} <a href="tel:800120002">800 120 002</a> — ${tx(en,'bezpłatnie, całą dobę.','free, around the clock. Ask about language availability.')}</p>`;
+ if(topic.familySafety||['marriage','family','parenting','senior'].includes(topic.id))html+=`<p>${tx(en,'Przemoc domowa — Niebieska Linia:','Domestic violence — Niebieska Linia in Poland:')} <a href="tel:800120002">800 120 002</a> — ${tx(en,'bezpłatnie, całą dobę.','free, around the clock. Ask about language availability.')}</p>`;
  return html;
 }
 function render(t,en){
