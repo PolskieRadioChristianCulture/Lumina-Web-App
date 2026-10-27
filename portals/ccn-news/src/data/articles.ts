@@ -73,6 +73,76 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    "id": "art-z-biblia-za-pan-brat-dzien-28",
+    "title": "Z Biblią za Pan Brat: Dzień 28 — „Ja jestem Józef”: Ofiarne poręczenie Judy, teologia opatrzności i pojednanie w Księdze Rodzaju 44–45",
+    "slug": "z-biblia-za-pan-brat-dzien-28-ja-jestem-jozef-przebaczenie-zamiast-zemsty",
+    "excerpt": "Księga Rodzaju 44–45: Próba srebrnego kielicha w worku Beniamina, przełomowa mowa obrończa i dobrowolne zastępstwo Judy, odkrycie tożsamości Józefa oraz chrystocentryczna perspektywa zastępczego okupu i służby pojednania.",
+    "content": [
+      "W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, dzisiejsze opracowanie leksykonu teologicznego na portalu CCN analizuje rozdziały czterdziesty czwarty i czterdziesty piąty Księgi Rodzaju. Stanowią one dramaturgiczny i teologiczny szczyt narracji o Józefie, łącząc w sobie weryfikację moralnej przemiany braci, akt dobrowolnego zastępstwa Judy oraz klasyczny wykład biblijnej nauki o Bożej opatrzności działającej ponad ludzkim grzechem.",
+      "1. PRÓBA KIELICHA I SOLIDARNOŚĆ BRACI (RDZ 44:1–17)",
+      "W celu ostatecznego zweryfikowania postawy braci wobec najmłodszego syna Racheli, Józef nakazuje ukryć swój srebrny kielich w worku Beniamina (Rdz 44:1–2). Gdy kielich zostaje odnaleziony u Beniamina, postawiony warunek stanowi lustrzane odbicie sytuacji sprzed lat: tylko posiadacz kielicha ma pozostać jako niewolnik, podczas gdy pozostali bracia mogą bezpiecznie wrócić do ojca (Rdz 44:10, 17). Reakcja synów Jakuba dowodzi głębokiej przemiany: rozdzierają szaty i solidarnie wracają do miasta, a Juda uznaje działanie budzącego się sumienia („Bóg odkrył winę twoich sług” — Rdz 44:16).",
+      "2. MOWA OBROŃCZA JUDY I AKT DOBROWOLNEGO ZASTĘPSTWA (RDZ 44:18–34)",
+      "Przemówienie Judy (Rdz 44:18–34) zaliczane jest do najwspanialszych tekstów retorycznych Starego Testamentu. Juda, który w Rdz 37:26–27 zainicjował sprzedaż Józefa w niewolę, staje teraz jako odpowiedzialny poręczyciel (por. Rdz 43:8–9) i składa deklarację całkowitego poświęcenia własnej wolności: „Niech więc twój sługa zostanie teraz zamiast chłopca niewolnikiem mojego pana, a chłopiec niech wróci ze swoimi braćmi” (Rdz 44:33).",
+      "3. ODKRYCIE TOŻSAMOŚCI JÓZEFA: PRAWDA, PRZEBACZENIE I OPATRZNOŚĆ (RDZ 45:1–28)",
+      "Wobec heroicznej postawy Judy Józef oddala egipską służbę, wybucha płaczem i ujawnia swoją tożsamość: „Ja jestem Józef! Czy ojciec mój jeszcze żyje?” (Rdz 45:1–3). Józef nie relatywizuje winy braci („Ja jestem Józef, wasz brat, którego sprzedaliście do Egiptu” — Rdz 45:4), a jednocześnie trzykrotnie wskazuje na wyższy cel Bożej opatrzności w obliczu siedmioletniego głodu: „Dla zachowania życia posłał mnie Bóg przed wami (…) A tak nie wy mnie tu posłaliście, lecz Bóg” (Rdz 45:5, 7–8; por. Rdz 50:20). Pojednanie zostaje przypieczętowane uściskiem oraz wysłaniem wozów po Jakuba, którego duch ożywa na wieść o żyjącym synu (Rdz 45:14–28).",
+      "4. PERSPEKTYWA CHRYSTOCENTRYCZNA: ZASTĘPCZY OKUP I SŁUŻBA POJEDNANIA",
+      "Podczas gdy Juda był gotów oddać swoją wolność za Beniamina, bezgrzeszny Syn Boży rzeczywiście oddał własne życie jako zastępczy okup za wielu (Mk 10:45). Podobnie jak Bóg posłużył się niesprawiedliwym czynem braci Józefa dla ocalenia życia, tak śmierć Jezusa — będąca rezultatem ludzkiej nieprawości — stała się w przedwiecznym planie Bożym źródłem zbawienia świata (Dz 2:23–24), przynosząc wierzącym przebaczenie, służbę pojednania (2 Kor 5:18–20; Kol 1:19–22) i nadzieję zmartwychwstania (J 11:25–26).",
+      "PODSUMOWANIE REDAKCYJNE CCN",
+      "Rozdziały 44–45 Księgi Rodzaju dowodzą, że prawdziwa przemiana serca weryfikuje się w gotowości do ofiarnej odpowiedzialności za drugiego człowieka, a dojrzałe przebaczenie rezygnuje z odwetu, powierzając historię Bogu, który w Jezusie Chrystusie otwiera drogę do pełnego pojednania."
+    ],
+    "category": "wiara",
+    "categoryLabel": "Wiara & Rozwój",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-28T06:00:00.000Z",
+    "dateFormatted": "28 października 2026",
+    "imageUrl": "/images/news/art-z-biblia-za-pan-brat-dzien-28-ja-jestem-jozef-przebaczenie-zamiast-zemsty.jpg",
+    "imageCaption": "Józef ujawniający tożsamość braciom i obejmujący Beniamina — ilustracja redakcyjna @A520 (Rdz 44:1–45:28). Z Biblią za Pan Brat Dzień 28",
+    "readTimeMinutes": 7,
+    "isHero": false,
+    "isPopular": true,
+    "popularRank": 2,
+    "tags": [
+      "Z Biblią za Pan Brat",
+      "Księga Rodzaju",
+      "Józef",
+      "Juda",
+      "Beniamin",
+      "przebaczenie",
+      "pojednanie",
+      "opatrzność",
+      "Rdz 44",
+      "Rdz 45",
+      "Mk 10:45"
+    ],
+    "scriptureReference": {
+      "verse": "Rdz 44:1–45:28; Mk 10:45; Dz 2:23–24; 2 Kor 5:18–20 (UBG)",
+      "text": ""
+    },
+    "sourceCitation": {
+      "sourceName": "Z Biblią za Pan Brat",
+      "sourceUrl": "https://polskieradio.cc/akademia#kurscodzienny"
+    },
+    "relatedCourse": {
+      "title": "Kurs Codzienny Pisma Świętego — Dzień 28",
+      "lesson": "Dzień 28",
+      "url": "/akademia/kurscodzienny/dzien-28"
+    },
+    "resourceLinks": [
+      {
+        "label": "Otwórz Lekcję Dnia 28 w Akademii Biblijnej",
+        "url": "/akademia/kurscodzienny/dzien-28"
+      },
+      {
+        "label": "Interlinearna MojaBiblia CC (Rdz 44–45)",
+        "url": "/mojabiblia"
+      },
+      {
+        "label": "Akademia Biblijna LUMINA",
+        "url": "/akademia"
+      }
+    ]
+  },
+  {
     "id": "art-z-biblia-za-pan-brat-dzien-27",
     "title": "Z Biblią za Pan Brat: Dzień 27 — Gdy przeszłość wraca: Przebudzenie sumienia braci Józefa i odpowiedzialność Judy w Księdze Rodzaju 42–43",
     "slug": "z-biblia-za-pan-brat-dzien-27-gdy-przeszlosc-wraca-bracia-jozefa",
