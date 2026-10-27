@@ -77,25 +77,43 @@
 
   const PLACEHOLDERS = [
     'Zapytaj Christian Culture…',
-    'Szukaj: np. Apokalipsa - Księga Nadziei',
-    'Szukaj: np. Rozważanie Dobrze że jesteś',
-    'Szukaj: np. Lekcja Kursu Codziennego',
-    'Szukaj: np. MojaBiblia Jan 3:16',
-    'Szukaj: np. Muzyka uwielbienia i radio',
-    'Szukaj: np. LUMINA społeczność',
-    'Szukaj: np. Modlitwa za Polskę',
-    'Szukaj: np. Wizytówki ekosystemu'
+    "Szukaj: 'Apokalipsa 14'",
+    "Szukaj: 'Jak pokonać lęk'",
+    "Szukaj: 'Lekcja 27'",
+    "Szukaj: 'Radio na żywo'",
+    "Szukaj: 'Werset o pokoju'",
+    "Szukaj: 'J 3:16'",
+    "Szukaj: 'Lekcja 28 na dziś'",
+    "Szukaj: 'Rozważanie Dobrze że jesteś'",
+    "Szukaj: 'Infolinia Nadziei'",
+    "Szukaj: 'LUMINA społeczność'"
   ];
   let placeholderInterval = null;
+  function stopPlaceholderRotation() {
+    if (placeholderInterval) {
+      clearInterval(placeholderInterval);
+      placeholderInterval = null;
+    }
+  }
   function startPlaceholderRotation(input) {
-    if (!input || placeholderInterval) return;
+    if (!input) return;
+    stopPlaceholderRotation();
     let idx = 0;
     placeholderInterval = setInterval(() => {
+      if (!input || !document.body.contains(input)) {
+        stopPlaceholderRotation();
+        return;
+      }
       if (searchEngine === 'google') return;
-      if (document.activeElement === input || (input.value && input.value.trim())) return;
+      // Jeśli użytkownik wpisał własny tekst — nie zmieniamy podpowiedzi
+      if (input.value && input.value.trim().length > 0) return;
       idx = (idx + 1) % PLACEHOLDERS.length;
-      input.placeholder = PLACEHOLDERS[idx];
-    }, 3500);
+      input.setAttribute('placeholder', PLACEHOLDERS[idx]);
+      const fallbackInput = document.getElementById('ccw-q');
+      if (fallbackInput && (!fallbackInput.value || !fallbackInput.value.trim().length)) {
+        fallbackInput.setAttribute('placeholder', PLACEHOLDERS[idx]);
+      }
+    }, 2800);
   }
 
 
@@ -2858,6 +2876,7 @@ ${isStandalonePage ? '' : `
     // Zdarzenia wewnątrz modala
     const input = document.getElementById('ccOmniInput');
     const clearBtn = document.getElementById('ccOmniClear');
+    startPlaceholderRotation(input);
     const closeBtn = document.getElementById('ccOmniClose');
     const filterChips = overlay.querySelectorAll('.cc-omni-filter-chip');
 
@@ -2995,7 +3014,12 @@ ${isStandalonePage ? '' : `
       engineBtn.setAttribute('aria-pressed', String(g));
       engineBtn.setAttribute('aria-label', g ? 'Wróć do wyszukiwania w Christian Culture' : 'Szukaj w całym internecie przez Google');
       field.classList.toggle('cc-engine-google', g);
-      input.placeholder = g ? 'Szukaj w Google…' : 'Zapytaj Christian Culture…';
+      if (g) {
+        input.placeholder = 'Szukaj w Google…';
+      } else {
+        input.placeholder = PLACEHOLDERS[0];
+        startPlaceholderRotation(input);
+      }
     };
     applyEngine();
     engineBtn.addEventListener('click', () => {
@@ -3118,6 +3142,7 @@ ${isStandalonePage ? '' : `
       clearBtn.style.display = 'none';
       renderResults('', activeFilter);
       input.focus();
+      startPlaceholderRotation(input);
     });
 
     input.addEventListener('input', (e) => {
@@ -3655,6 +3680,7 @@ ${isStandalonePage ? '' : `
         const clearBtn = document.getElementById('ccOmniClear');
         if (clearBtn) clearBtn.style.display = 'inline-flex';
       }
+      startPlaceholderRotation(input);
       setTimeout(() => {
         input.focus();
         input.select();
@@ -3663,6 +3689,7 @@ ${isStandalonePage ? '' : `
   }
 
   function closeSearch() {
+    stopPlaceholderRotation();
     const overlay = document.getElementById('ccOmniOverlay');
     if (!overlay) return;
     if (isStandalonePage) {
@@ -3810,7 +3837,10 @@ ${isStandalonePage ? '' : `
     parseBibleRef: parseBibleRef,
     detectHopeIntent: detectHopeIntent,
     getPreviewHtml: getPreviewHtml,
-    TOP_UBG_VERSES: TOP_UBG_VERSES
+    TOP_UBG_VERSES: TOP_UBG_VERSES,
+    PLACEHOLDERS: PLACEHOLDERS,
+    startPlaceholderRotation: startPlaceholderRotation,
+    stopPlaceholderRotation: stopPlaceholderRotation
   };
 
   // Uruchomienie po załadowaniu DOM

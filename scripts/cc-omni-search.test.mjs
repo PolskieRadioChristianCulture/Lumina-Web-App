@@ -183,6 +183,12 @@ test('cc-omni-search.js: Command Center World-Class UI contracts (recents, tags,
   assert.ok(omniSearchCode.includes('Radio Christian Culture & Player'), 'pillar 4: Radio CC & Player exists');
   assert.ok(omniSearchCode.includes('#Apokalipsa') && omniSearchCode.includes('#KursCodzienny'), 'popular topic tags exist');
   assert.ok(omniSearchCode.includes('startPlaceholderRotation'), 'rotating placeholder logic exists');
+  assert.ok(omniSearchCode.includes("Szukaj: 'Apokalipsa 14'"), 'placeholder Apokalipsa 14 exists');
+  assert.ok(omniSearchCode.includes("Szukaj: 'Jak pokonać lęk'"), 'placeholder Jak pokonać lęk exists');
+  assert.ok(omniSearchCode.includes("Szukaj: 'Lekcja 27'"), 'placeholder Lekcja 27 exists');
+  assert.ok(omniSearchCode.includes("Szukaj: 'Radio na żywo'"), 'placeholder Radio na żywo exists');
+  assert.ok(omniSearchCode.includes("Szukaj: 'Werset o pokoju'"), 'placeholder Werset o pokoju exists');
+  assert.ok(omniSearchCode.includes("Szukaj: 'J 3:16'"), 'placeholder J 3:16 exists');
   assert.ok(omniSearchCode.includes('rgba(255, 255, 255, 0.15)'), 'transparent frosted-glass search input');
   assert.ok(!omniSearchCode.includes('>Czat</span>'), 'no visible text description for Czat');
   assert.ok(!omniSearchCode.includes('>Nowości</span>'), 'no visible text description for Nowości');
