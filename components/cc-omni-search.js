@@ -3239,18 +3239,33 @@ ${isStandalonePage ? '' : `
     }
     const { items, guide, isSuggestion, suggestionNote } = performSearch(query, filter);
     currentResults = items;
-    activeIndex = -1;
+    activeIndex = (items && items.length > 0) ? 0 : -1;
 
-    let html = '';
+    // Faza 2: Detekcja wersetu biblijnego UBG
+    const bibleMatch = parseBibleRef(query);
+    const scriptureCardHtml = bibleMatch ? renderScriptureCard(bibleMatch) : '';
+
+    // Faza 2: Detekcja intencji duszpasterskiej / pomocy
+    const isHope = detectHopeIntent(query);
+    const hopeCardHtml = isHope ? renderHopeCard(query) : '';
+
+    let leftColHtml = '';
 
     // Tryb Google: pierwszy wynik prowadzi do wyszukiwania w całym internecie, poniżej materiały CC
     if (searchEngine === 'google') {
-      html += `
+      leftColHtml += `
         <a class="cc-omni-google-go" href="${escapeHtml(googleUrl(query))}">
           <span class="cc-omni-google-g" aria-hidden="true">G</span>
           <span><b>Szukaj „${escapeHtml(query)}” w Google</b><small>Naciśnij Enter, aby otworzyć wyniki z całego internetu</small></span>
         </a>
         <p class="cc-omni-google-sub">Z ekosystemu Christian Culture:</p>`;
+    }
+
+    if (scriptureCardHtml) {
+      leftColHtml += scriptureCardHtml;
+    }
+    if (hopeCardHtml) {
+      leftColHtml += hopeCardHtml;
     }
 
     // 1. Jeśli jest dopasowany przewodnik tematyczny
@@ -3267,7 +3282,7 @@ ${isStandalonePage ? '' : `
         }).join('');
       }
 
-      html += `
+      leftColHtml += `
         <div class="cc-omni-guide">
           <div class="cc-omni-guide-badge">Przewodnik po ekosystemie</div>
           <h4 class="cc-omni-guide-topic">${topic}</h4>
@@ -3281,7 +3296,7 @@ ${isStandalonePage ? '' : `
 
     // 2. Nagłówek propozycji bliskoznacznych gdy brak bezpośrednich wyników
     if (isSuggestion && items && items.length) {
-      html += `
+      leftColHtml += `
         <div class="cc-omni-suggestion-header">
           <div class="cc-omni-suggestion-icon">💡</div>
           <div class="cc-omni-suggestion-text">
@@ -3294,14 +3309,16 @@ ${isStandalonePage ? '' : `
 
     // 3. Lista wyników
     if (!items.length) {
-      html += `
-        <div class="cc-omni-empty">
-          <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
-          <div style="font-weight:700;font-size:1.05rem;color:inherit;">Nie znaleziono bezpośrednich wyników dla "${escapeHtml(query)}"</div>
-          <p>Spróbuj wpisać inne słowo, np. <i>nadzieja</i>, <i>werset dnia</i>, <i>modlitwa</i>, <i>apokalipsa</i> lub przejdź do pełnego indeksu.</p>
-          <a href="/szukaj?q=${encodeURIComponent(query)}" class="cc-omni-guide-pill" style="display:inline-flex;">Przeszukaj pełne archiwum /szukaj &rarr;</a>
-        </div>
-      `;
+      if (!scriptureCardHtml && !hopeCardHtml) {
+        leftColHtml += `
+          <div class="cc-omni-empty">
+            <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
+            <div style="font-weight:700;font-size:1.05rem;color:inherit;">Nie znaleziono bezpośrednich wyników dla "${escapeHtml(query)}"</div>
+            <p>Spróbuj wpisać inne słowo, np. <i>nadzieja</i>, <i>werset dnia</i>, <i>modlitwa</i>, <i>apokalipsa</i> lub przejdź do pełnego indeksu.</p>
+            <a href="/szukaj?q=${encodeURIComponent(query)}" class="cc-omni-guide-pill" style="display:inline-flex;">Przeszukaj pełne archiwum /szukaj &rarr;</a>
+          </div>
+        `;
+      }
     } else {
       leftColHtml += '<div class="cc-omni-results-list" id="ccOmniResultsList" role="feed">';
       for (let idx = 0; idx < items.length; idx++) {
@@ -3315,6 +3332,7 @@ ${isStandalonePage ? '' : `
         const suggestionBadge = (item.isNearMatch || isSuggestion) ? '<span class="cc-omni-item-badge cc-badge-suggestion">Temat pokrewny</span>' : '';
         const crumb = escapeHtml(breadcrumbOf(item.url || ''));
         const isItemActive = (idx === activeIndex);
+
         leftColHtml += `
           <a href="${url}" class="cc-omni-item${isItemActive ? ' cc-active' : ''}" data-url="${url}">
             <div class="cc-omni-item-source">
