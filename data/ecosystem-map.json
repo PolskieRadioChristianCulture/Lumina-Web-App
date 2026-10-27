@@ -4003,6 +4003,116 @@
       ]
     },
     {
+      "id": "cc-help-enforcement",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Komornik i egzekucja — przygotowanie do porady",
+      "shortDesc": "Uporządkuj korespondencję i pytania do prawnika. Nie oceniamy zasadności zajęcia ani nie zatrzymujemy postępowania na tej stronie.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/komornik",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Komornik i egzekucja — przygotowanie do porady",
+        "Bailiffs and enforcement — preparing for advice",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-debt-planning",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Oddłużanie — uporządkowanie zobowiązań",
+      "shortDesc": "Przygotuj się do rozmowy o zadłużeniu bez obietnic szybkiego umorzenia. Nie sprzedajemy usług oddłużania ani nowych pożyczek.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/oddluzanie",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Oddłużanie — uporządkowanie zobowiązań",
+        "Debt support — organising commitments",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-personal-insolvency",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Upadłość konsumencka — pytania przed decyzją",
+      "shortDesc": "Przygotowanie do indywidualnej porady o postępowaniu sądowym w Polsce. Nie kwalifikujemy do upadłości i nie obiecujemy umorzenia wszystkich zobowiązań.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/upadlosc-konsumencka",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Upadłość konsumencka — pytania przed decyzją",
+        "Personal insolvency — questions before deciding",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-collection-rights",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Windykacja — sprawdzanie informacji i praw",
+      "shortDesc": "Przygotuj się do wyjaśnienia żądania zapłaty. Nie uznajemy ani nie kwestionujemy Twojego długu na podstawie samego wezwania.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/windykacja",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Windykacja — sprawdzanie informacji i praw",
+        "Debt collection — checking information and rights",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-loan-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Kredyty i pożyczki — pytania i wsparcie",
+      "shortDesc": "Porządkuj dokumenty, koszty i pytania do właściwej instytucji. Nie porównujemy ofert ani nie rekomendujemy zaciągania kredytu.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/kredyty",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Kredyty i pożyczki — pytania i wsparcie",
+        "Loans and credit — questions and support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
       "id": "cc-help-pastor",
       "branchId": "misja-wspolpraca",
       "name": "CC Pomoc — Pastor — rozmowa o wierze",
