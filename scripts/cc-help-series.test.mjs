@@ -37,3 +37,8 @@ test('search surfaces agree and every language route appears once in search and 
 test('drawer is native modal; no browser storage or submission code',()=>{
  const js=read('cc-pomoc/series.js');assert(js.includes('.showModal()'));assert(js.includes("addEventListener('close'"));assert(!/fetch\(|localStorage|sessionStorage|sendBeacon|XMLHttpRequest/.test(js));assert(read('cc-pomoc/series.css').includes('prefers-reduced-motion'));
 });
+test('budget links reuse the correct language worksheet in the same tab',()=>{
+ for(const [file,url] of [['budzet-domowy/index.html','https://polskieradio.cc/dlugi#pierwszy-krok'],['en/household-budget/index.html','https://polskieradio.cc/en/debt-help#pierwszy-krok']]){
+  const h=read(file);const anchor=h.match(new RegExp('<a href="'+url+'"([^>]*)>'));assert(anchor);assert(!anchor[1].includes('target='));assert(!h.includes('id="budget-form"'));
+ }
+});
