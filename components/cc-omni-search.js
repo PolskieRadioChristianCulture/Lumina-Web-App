@@ -2654,24 +2654,51 @@
         color: var(--omni-muted);
       }
       .cc-omni-empty p { margin: 8px 0 16px; font-size: 0.92rem; }
+      /* Stopka w naturalnym przepływie na samym dole (L0: centralnie, na dole, bez nachodzenia na elementy) */
       .cc-omni-footer {
-        /* Dolna belka przypięta do krawędzi ekranu: lewa — tapeta, prawa — kontakt (L0 26.10.2026) */
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 3;
+        position: relative;
+        margin-top: auto;
+        width: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        gap: 8px 12px;
-        padding: 18px max(env(safe-area-inset-right), 20px) max(env(safe-area-inset-bottom), 8px) max(env(safe-area-inset-left), 16px);
-        background: linear-gradient(0deg, rgba(3, 4, 8, 0.9) 0%, rgba(3, 4, 8, 0) 100%);
-        font-size: 0.74rem;
+        gap: 12px;
+        padding: 36px 0 max(env(safe-area-inset-bottom, 24px), 24px);
+        font-size: 0.78rem;
         color: rgba(243, 229, 200, 0.65);
         box-sizing: border-box;
       }
-      #ccOmniModal { padding-bottom: 76px; }
+      #ccOmniModal { padding-bottom: 20px; }
+      .cc-omni-footer-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        font-size: 0.88rem;
+        color: rgba(243, 229, 200, 0.75);
+        padding: 6px 0;
+        line-height: 1.4;
+      }
+      .cc-omni-yis-link {
+        color: #C4A35A;
+        font-weight: 600;
+        text-decoration: none;
+        margin: 0 4px;
+        transition: color 0.15s, text-shadow 0.15s;
+      }
+      .cc-omni-yis-link:hover, .cc-omni-yis-link:focus-visible {
+        color: #FF7A00;
+        text-shadow: 0 0 10px rgba(255, 122, 0, 0.45);
+        outline: none;
+      }
+      .cc-omni-footer-sub {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 12px;
+      }
       .cc-omni-footer-left {
         display: flex;
         align-items: center;
@@ -2696,8 +2723,13 @@
       .cc-omni-footlink:hover, .cc-omni-footlink:focus-visible { background: rgba(255, 255, 255, 0.1); outline: none; }
       .cc-omni-footlink[hidden] { display: none; }
       .cc-omni-credit { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      @media (max-width: 480px) {
+      @media (max-width: 640px) {
         .cc-omni-credit { display: none; }
+        .cc-omni-footer-sub {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 8px 12px;
+        }
       }
       .cc-omni-footer-hints { display: none; }
       .cc-omni-kbd {
@@ -2705,49 +2737,6 @@
         border-radius: 5px;
         padding: 2px 6px;
         font: inherit;
-      }
-      .cc-omni-footer-center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-size: 0.8rem;
-        color: rgba(243, 229, 200, 0.7);
-        white-space: nowrap;
-        pointer-events: auto;
-      }
-      .cc-omni-yis-link {
-        color: #C4A35A;
-        font-weight: 600;
-        text-decoration: none;
-        margin: 0 4px;
-        transition: color 0.15s, text-shadow 0.15s;
-      }
-      .cc-omni-yis-link:hover, .cc-omni-yis-link:focus-visible {
-        color: #FF7A00;
-        text-shadow: 0 0 10px rgba(255, 122, 0, 0.45);
-        outline: none;
-      }
-      @media (max-width: 760px) {
-        .cc-omni-footer {
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 8px 14px;
-          padding-top: 10px;
-          padding-bottom: max(env(safe-area-inset-bottom), 12px);
-        }
-        .cc-omni-footer-center {
-          order: 2;
-          width: 100%;
-          font-size: 0.76rem;
-          white-space: normal;
-        }
-        .cc-omni-footer-left {
-          order: 1;
-        }
-        .cc-omni-footer-right {
-          order: 1;
-        }
       }
       .cc-omni-footer-right {
         display: flex;
@@ -3061,26 +3050,28 @@ ${isStandalonePage ? '' : `
         </div>
 
         <div class="cc-omni-footer">
-          <div class="cc-omni-footer-left">
-            <button type="button" id="ccOmniWallBtn" class="cc-omni-footlink">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
-              <span>Zmień tapetę</span>
-            </button>
-            <button type="button" id="ccOmniWallReset" class="cc-omni-footlink" hidden>Przywróć tło</button>
-            <input type="file" id="ccOmniWallFile" accept="image/*" hidden>
-            <span id="ccOmniCredit" class="cc-omni-credit">Tło: Galaktyka Andromedy · fot. Unsplash</span>
-          </div>
           <div class="cc-omni-footer-center">
             Powered by <a href="https://polskieradio.cc/yis" class="cc-omni-yis-link" target="_blank" rel="noopener noreferrer">Your Imagination Studio</a> dla Christian Culture
           </div>
-          <div class="cc-omni-footer-right">
-            <span id="ccOmniShareMsg" class="cc-omni-share-msg" role="status" aria-live="polite"></span>
-            <button type="button" id="ccOmniShare" class="cc-omni-iconbtn" aria-label="Udostępnij wyszukiwarkę Christian Culture" title="Udostępnij">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
-            </button>
-            <a href="/#contact-section" id="ccOmniContact" class="cc-omni-iconbtn" aria-label="Kontakt" title="Kontakt">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-            </a>
+          <div class="cc-omni-footer-sub">
+            <div class="cc-omni-footer-left">
+              <button type="button" id="ccOmniWallBtn" class="cc-omni-footlink">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
+                <span>Zmień tapetę</span>
+              </button>
+              <button type="button" id="ccOmniWallReset" class="cc-omni-footlink" hidden>Przywróć tło</button>
+              <input type="file" id="ccOmniWallFile" accept="image/*" hidden>
+              <span id="ccOmniCredit" class="cc-omni-credit">Tło: Galaktyka Andromedy · fot. Unsplash</span>
+            </div>
+            <div class="cc-omni-footer-right">
+              <span id="ccOmniShareMsg" class="cc-omni-share-msg" role="status" aria-live="polite"></span>
+              <button type="button" id="ccOmniShare" class="cc-omni-iconbtn" aria-label="Udostępnij wyszukiwarkę Christian Culture" title="Udostępnij">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
+              </button>
+              <a href="/#contact-section" id="ccOmniContact" class="cc-omni-iconbtn" aria-label="Kontakt" title="Kontakt">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              </a>
+            </div>
           </div>
         </div>
       </div>
