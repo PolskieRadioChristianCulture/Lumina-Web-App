@@ -73,6 +73,85 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    "id": "art-z-biblia-za-pan-brat-dzien-27",
+    "title": "Z Biblią za Pan Brat: Dzień 27 — Gdy przeszłość wraca: Przebudzenie sumienia braci Józefa i odpowiedzialność Judy w Księdze Rodzaju 42–43",
+    "slug": "z-biblia-za-pan-brat-dzien-27-gdy-przeszlosc-wraca-bracia-jozefa",
+    "excerpt": "Księga Rodzaju 42–43: Dwie wyprawy synów Jakuba po zboże do Egiptu, budzące się po dwudziestu latach sumienie braci, osobiste poręczenie Judy za Beniamina oraz Chrystus jako doskonały Poręczyciel nowego przymierza.",
+    "content": [
+      "W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, dzisiejsze opracowanie leksykonu teologicznego na portalu CCN analizuje rozdziały czterdziesty drugi i czterdziesty trzeci Księgi Rodzaju. Tekst ten dokumentuje dwie pierwsze wyprawy synów Jakuba po zboże do Egiptu, ukazując psychologiczną i duchową dynamikę budzącego się po dwudziestu latach sumienia, proces weryfikacji przemiany braci oraz dojrzewanie Judy do roli poręczyciela za Beniamina.",
+      "1. KONFRONTACJA W EGIPCIE I PRZEBUDZENIE SUMIENIA (RDZ 42:1–28)",
+      "Rozszerzający się na Kanaan kryzys głodowy skłania Jakuba do wysłania dziesięciu synów do Egiptu, przy jednoczesnym zatrzymaniu w domu Beniamina z obawy o jego życie (Rdz 42:1–4). Pokłon braci przed Józefem nawiązuje do dawnych snów z Rdz 37:5–11, jednak oś narracji skupia się na nierówności wiedzy: Józef rozpoznaje braci, podczas gdy dla nich pozostaje on nieznanym egipskim dostojnikiem (Rdz 42:6–8).",
+      "W obliczu oskarżenia o szpiegostwo, trzydniowego aresztu oraz żądania sprowadzenia Beniamina (przy zatrzymaniu Symeona jako zakładnika) bracia po raz pierwszy formułują wspólne wyznanie winy, odsłaniając przemilczany dotąd w Rdz 37 szczegół o błaganiach sprzedawanego Józefa:",
+      "„Prawdziwie zgrzeszyliśmy przeciwko naszemu bratu, gdyż widzieliśmy utrapienie jego duszy, gdy nas błagał o litość, a nie usłuchaliśmy go” (Rdz 42:21).",
+      "Egzegeza biblijna zwraca uwagę na kontrast emocjonalny: podczas gdy Józef na osobności płacze ze wzruszenia i każe zwrócić braciom pieniądze w workach ze zbożem, obciążone winą sumienie braci interpretuje ten nieoczekiwany dar jako groźny wyrok Boży („Cóż to Bóg nam uczynił?” — Rdz 42:28).",
+      "2. OD LEKKOMYŚLNOŚCI RUBENA DO PORĘCZENIA JUDY (RDZ 42:29–43:14)",
+      "Po powrocie do Kanaanu Jakub początkowo kategorycznie odmawia wysłania Beniamina. Tekst zestawia ze sobą dwie skrajnie różne postawy starszych synów:",
+      "Nierozważna oferta Rubena: Propozycja zabicia dwóch własnych synów w razie niepowodzenia misji (Rdz 42:37) stanowi przykład moralnie niedopuszczalnego szafowania życiem dzieci dla uwiarygodnienia własnych słów (por. Pwt 24:16).",
+      "Osobista odpowiedzialność Judy: Gdy głód przybiera na sile, Juda — niegdyś inicjator sprzedaży Józefa (Rdz 37:26–27), przełamany wcześniej przez konfrontację z Tamar (Rdz 38:26) — bierze ciężar gwarancji na samego siebie:",
+      "„Ja będę za niego odpowiadał; z mojej ręki będziesz go żądał” (Rdz 43:9).",
+      "3. DRUGA WYPRAWA I PRÓBA WYRÓŻNIENIA PODCZAS UCZTY (RDZ 43:15–34)",
+      "Przybycie braci z Beniaminem, darami i podwójną kwotą srebra ujawnia ich uczciwość w rozmowie z zarządcą domu Józefa (Rdz 43:18–23). Widok rodzonego brata Beniamina wywołuje u Józefa kolejną falę łez, które ukrywa w osobnej komnacie przed rozpoczęciem posiłku (Rdz 43:29–31).",
+      "Posadzenie braci dokładnie według starszeństwa oraz podanie Beniaminowi porcji pięciokrotnie większej niż pozostałym (Rdz 43:33–34) stawia synów Jakuba w sytuacji analogicznej do dawnego wyróżniania Józefa: stanowi to test, czy w ich sercach nadal panuje mordercza zazdrość wobec uprzywilejowanego syna Racheli.",
+      "4. CHRYSTUS W CENTRUM: WYZNANIE GRZECHU I DOSKONAŁY PORĘCZYCIEL",
+      "W perspektywie nowotestamentowej wydarzenia z Rdz 42–43 ukazują fundamentalne prawdy soteriologiczne i etyczne:",
+      "Prawda i oczyszczenie sumienia: Czas sam w sobie nie gładzi winy. Droga do duchowego uzdrowienia prowadzi przez bezwymówkowe nazwanie grzechu po imieniu i przyjęcie Bożego przebaczenia w Chrystusie (Łk 13:3; Rz 5:8–11; 1 J 1:9). Jednocześnie rzetelna teologia podkreśla, że odbudowa ludzkiego zaufania po zdradzie jest procesem wymagającym weryfikacji czynów oraz zachowania bezpiecznych granic.",
+      "Chrystus jako Pośrednik i Poręczyciel: Gotowość Judy do osobistego poręczenia za najmłodszego brata stanowi w historii zbawienia zapowiedź postawy samego Jezusa Chrystusa, który jako bezgrzeszny Syn z pokolenia Judy stał się doskonałym Poręczycielem i Pośrednikiem lepszego przymierza, oddając własne życie za braci i czyniąc wierzących nowym stworzeniem (Hbr 7:22; 9:15; 2 Kor 5:17).",
+      "PODSUMOWANIE REDAKCYJNE CCN",
+      "Rozdziały czterdziesty drugi i czterdziesty trzeci Księgi Rodzaju uczą, że tłumiona wina zatruwa relacje lękiem, dopóki nie zostanie skonfrontowana z prawdą. Prawdziwa przemiana serca wyraża się w przejściu od obojętności na krzywdę brata do gotowości wzięcia osobistej odpowiedzialności za słabszych na wzór Jezusa Chrystusa."
+    ],
+    "category": "wiara",
+    "categoryLabel": "Wiara & Rozwój",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-27T06:00:00.000Z",
+    "dateFormatted": "27 października 2026",
+    "imageUrl": "/images/news/art-z-biblia-za-pan-brat-dzien-27-gdy-przeszlosc-wraca-bracia-jozefa.jpg",
+    "imageCaption": "Bracia Józefa kłaniający się przed zarządcą Egiptu — ilustracja redakcyjna @A520 (Rdz 42:1–43:34). Z Biblią za Pan Brat Dzień 27",
+    "readTimeMinutes": 7,
+    "isHero": false,
+    "isPopular": true,
+    "popularRank": 2,
+    "tags": [
+      "Z Biblią za Pan Brat",
+      "Księga Rodzaju",
+      "Józef",
+      "Bracia Józefa",
+      "Juda",
+      "Beniamin",
+      "sumienie",
+      "pojednanie",
+      "Rdz 42",
+      "Rdz 43",
+      "1 J 1:9"
+    ],
+    "scriptureReference": {
+      "verse": "Rdz 42:1–43:34; 1 J 1:9; Hbr 7:22; Hbr 9:15; 2 Kor 5:17 (UBG)",
+      "text": ""
+    },
+    "sourceCitation": {
+      "sourceName": "Z Biblią za Pan Brat",
+      "sourceUrl": "https://polskieradio.cc/akademia#kurscodzienny"
+    },
+    "relatedCourse": {
+      "title": "Kurs Codzienny Pisma Świętego — Dzień 27",
+      "lesson": "Dzień 27",
+      "url": "/akademia/kurscodzienny/dzien-27"
+    },
+    "resourceLinks": [
+      {
+        "label": "Otwórz Lekcję Dnia 27 w Akademii Biblijnej",
+        "url": "/akademia/kurscodzienny/dzien-27"
+      },
+      {
+        "label": "Interlinearna MojaBiblia CC (Rdz 42–43)",
+        "url": "/mojabiblia"
+      },
+      {
+        "label": "Akademia Biblijna LUMINA",
+        "url": "/akademia"
+      }
+    ]
+  },
+  {
     "id": "art-z-biblia-za-pan-brat-dzien-26",
     "title": "Z Biblią za Pan Brat: Dzień 26 — Od więzienia do pałacu: Teologia oczekiwania, roztropności gospodarczej i opatrzności (Rdz 40–41)",
     "slug": "z-biblia-za-pan-brat-dzien-26-od-wiezienia-do-palacu",
