@@ -816,45 +816,249 @@
       transform: none;
     }
 
-    /* MOBILE DEDICATED LAYOUT */
+    /* MOBILE DEDICATED LAYOUT (WZÓR: wzor_mobile.jpg) */
     @media (max-width: 860px) {
       .viewport-stage {
+        display: block;
         height: auto;
         min-height: 100vh;
         min-height: 100dvh;
+        overflow-x: hidden;
         overflow-y: auto;
+        background: #05070a;
+        padding: 0;
       }
       .hero-canvas {
+        width: 100%;
+        max-width: 540px;
+        margin: 0 auto;
         aspect-ratio: auto;
         min-height: 100vh;
         min-height: 100dvh;
         max-height: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        position: relative;
+        background: #05070a;
       }
       .hero-canvas-art {
         position: relative;
+        width: 100%;
+        height: auto;
         aspect-ratio: 16 / 9;
-        max-height: 48vh;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .hero-canvas-art picture,
+      .hero-canvas-art img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
+        display: block;
+      }
+      .hero-canvas-art::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(5, 7, 10, 0) 55%, rgba(5, 7, 10, 0.6) 82%, #05070a 100%);
+        pointer-events: none;
       }
       .navbar {
         position: relative;
-        padding: 16px 20px;
+        padding: 12px 20px 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        z-index: 10;
+        background: transparent;
+      }
+      .brand-name {
+        font-size: 1.05rem;
+        letter-spacing: 0.18em;
+      }
+      .brand-sub {
+        font-size: 0.65rem;
+        letter-spacing: 0.22em;
       }
       .nav-center {
         display: none;
+      }
+      .btn-news {
+        padding: 6px 14px;
+        font-size: 0.72rem;
+        min-height: 44px;
+      }
+      .btn-burger {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1.25rem;
       }
       .cta-hotspot {
         display: none;
       }
       .mobile-hero-panel {
         display: block !important;
-        padding: 20px 24px 36px;
+        padding: 14px 20px 24px;
         text-align: center;
+        flex: 1 0 auto;
+      }
+      .mobile-kicker {
+        font-family: var(--font-sans);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.26em;
+        color: var(--rose-muted);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .mobile-title {
+        font-family: var(--font-serif);
+        font-size: clamp(2.4rem, 8vw, 3.2rem);
+        line-height: 1.08;
+        margin: 0 0 14px;
+        font-weight: 500;
+        color: #ffffff;
+      }
+      .mobile-title span {
+        color: var(--rose);
+        font-style: italic;
+      }
+      .mobile-subtitle {
+        font-family: var(--font-serif);
+        font-size: clamp(1.05rem, 3.5vw, 1.22rem);
+        font-style: italic;
+        color: var(--cream-muted);
+        line-height: 1.5;
+        margin: 0 auto 22px;
+        max-width: 340px;
+      }
+      .mobile-actions-row {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 22px;
+      }
+      .mobile-btn-czytaj {
+        flex: 1;
+        max-width: 155px;
+        min-height: 48px;
+        padding: 12px 20px;
+        border: 1.5px solid var(--gold);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--cream);
+        font-family: var(--font-cinzel);
+        font-size: 0.92rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .mobile-btn-czytaj:active {
+        background: var(--gold);
+        color: #05070a;
+      }
+      .mobile-btn-wspieram {
+        flex: 1;
+        max-width: 175px;
+        min-height: 48px;
+        padding: 12px 16px;
+        border: 1.5px solid rgba(229, 184, 194, 0.7);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--cream);
+        font-family: var(--font-cinzel);
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .mobile-btn-wspieram:active {
+        background: rgba(229, 184, 194, 0.25);
+        color: #ffffff;
+      }
+      .mobile-sublinks {
+        display: flex;
+        gap: clamp(14px, 4vw, 24px);
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: nowrap;
+      }
+      .mobile-sublink-btn {
+        background: none;
+        border: none;
+        color: var(--cream);
+        cursor: pointer;
+        font-family: var(--font-cinzel);
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 6px;
+        transition: color 0.2s;
+      }
+      .mobile-sublink-btn:active {
+        color: var(--gold-light);
       }
       .canvas-footer {
         position: relative;
-        padding: 16px 20px 24px;
+        padding: 14px 20px 28px;
+        display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
+        gap: 14px;
+        width: 100%;
+        background: transparent;
+      }
+      .footer-legal-text {
+        font-size: 0.74rem;
+        color: rgba(245, 242, 235, 0.55);
+        line-height: 1.5;
+        max-width: 320px;
+        margin: 0 auto;
+      }
+      .footer-legal-text span {
+        display: block;
+      }
+      .envelope-btn {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        min-height: 48px;
+        border-radius: 50%;
+        border: 1px solid rgba(196, 163, 90, 0.35);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--cream);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .envelope-btn:active {
+        background: var(--gold);
+        color: #05070a;
       }
     }
     .mobile-hero-panel {
@@ -913,43 +1117,43 @@
       <!-- DESKTOP INTERACTIVE CZYTAJ HOTSPOT -->
       <button class="cta-hotspot" type="button" data-modal="modalCzytaj" aria-label="Czytaj fragment powieści Pardon, Czy To Miłość?"></button>
 
-      <!-- MOBILE PANEL (CLEAN & READABLE ON SMARTPHONES) -->
+      <!-- MOBILE PANEL (DOPASOWANY DO WZORCA: wzor_mobile.jpg) -->
       <div class="mobile-hero-panel">
-        <div style="font-family:var(--font-sans);font-size:0.75rem;letter-spacing:0.22em;color:var(--rose-muted);text-transform:uppercase;margin-bottom:8px;">
+        <div class="mobile-kicker">
           MIŁOŚĆ, WYBACZENIE, WYBÓR.
         </div>
-        <h1 style="font-family:var(--font-serif);font-size:2.8rem;line-height:1;margin-bottom:12px;font-weight:500;">
-          Pardon,<br><span style="color:var(--rose);font-style:italic;">Czy To</span> Miłość?
+        <h1 class="mobile-title">
+          Pardon,<br><span>Czy To</span> Miłość?
         </h1>
-        <p style="font-family:var(--font-serif);font-size:1.15rem;font-style:italic;color:var(--cream-muted);line-height:1.45;margin-bottom:20px;">
+        <p class="mobile-subtitle">
           Paryż. Deszcz. List, który zmienia wszystko.<br>Czy miłość wystarczy, by wybaczono?
         </p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
-          <button class="btn-modal-action" type="button" data-modal="modalCzytaj" style="padding:12px 32px;font-size:0.9rem;">
+        <div class="mobile-actions-row">
+          <button class="mobile-btn-czytaj" type="button" data-modal="modalCzytaj" aria-label="Czytaj powieść online">
             CZYTAJ
           </button>
-          <button class="btn-modal-action" type="button" data-modal="modalWspieramTo" style="padding:12px 24px;border-color:var(--gold);color:var(--gold-light);font-size:0.9rem;cursor:pointer;">
+          <button class="mobile-btn-wspieram" type="button" data-modal="modalWspieramTo" aria-label="Wspieram to przez Revolut">
             WSPIERAM TO
           </button>
         </div>
-        <div style="display:flex;gap:16px;justify-content:center;font-size:0.8rem;letter-spacing:0.18em;">
-          <button type="button" data-modal="modalKsiazki" style="background:none;border:none;color:var(--cream-muted);cursor:pointer;font-family:var(--font-cinzel);min-height:44px;padding:8px;">KSIĄŻKI</button>
-          <button type="button" data-modal="modalOAutorce" style="background:none;border:none;color:var(--cream-muted);cursor:pointer;font-family:var(--font-cinzel);min-height:44px;padding:8px;">O AUTORCE</button>
-          <button type="button" data-modal="modalKontakt" style="background:none;border:none;color:var(--cream-muted);cursor:pointer;font-family:var(--font-cinzel);min-height:44px;padding:8px;">KONTAKT</button>
+        <div class="mobile-sublinks">
+          <button class="mobile-sublink-btn" type="button" data-modal="modalKsiazki">KSIĄŻKI</button>
+          <button class="mobile-sublink-btn" type="button" data-modal="modalOAutorce">O AUTORCE</button>
+          <button class="mobile-sublink-btn" type="button" data-modal="modalKontakt">KONTAKT</button>
         </div>
       </div>
 
       <!-- BOTTOM BAR: LEGAL & ENVELOPE CONTACT -->
       <footer class="canvas-footer">
-        <div>
+        <div class="footer-legal-text">
           <span>© 2026 Wioletta Rogowska · Wizytówka autorska (polskieradio.cc/Wioletta)</span>
-          <span style="display:block;margin-top:2px;font-size:0.72rem;opacity:0.8;">Powieść w przygotowaniu · Ekosystem Christian Culture nie jest powiązany z Polskim Radiem S.A.</span>
+          <span>Powieść w przygotowaniu · Ekosystem Christian Culture nie jest powiązany z Polskim Radiem S.A.</span>
         </div>
 
-        <div style="display:flex;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:center;">
           <span style="display:none;" id="envelopeHint">Kontakt: wiolettapardon@gmail.com</span>
           <a class="envelope-btn" id="footerContactEnvelope" href="mailto:wiolettapardon@gmail.com" data-modal="modalKontakt" aria-label="Kontakt e-mail: wiolettapardon@gmail.com" title="Napisz do autorki">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="2" y="4" width="20" height="16" rx="2"></rect>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
             </svg>
