@@ -11,7 +11,8 @@
  *  donate_click   klik w Wspieraj / Patronite / wpłatę                       — kluczowe
  *  contact_click  klik w telefon, e-mail, WhatsApp, Messenger                — kluczowe
  *  share          udostępnienie strony
- *  search         zapytanie w wyszukiwarce CC
+ *  search         zapytanie w wyszukiwarce CC (search_term; pauza 1,5 s, Enter lub wybór wyniku)
+ *  select_content klik w wynik wyszukiwarki (content_type=search_result, item_id=ścieżka)
  *
  * Ruch własny (traffic_type=internal) ustawia sam fragment GA — patrz scripts/apply-ga-internal-traffic.mjs.
  */
@@ -84,19 +85,33 @@
     }
   }, true);
 
-  // Wyszukiwarka CC: Enter w polu albo wybór wyniku (raz na zapytanie)
+  // Wyszukiwarka CC: pauza w pisaniu (1,5 s), Enter albo wybór wyniku — raz na zapytanie.
+  // Zapytań wyglądających na e-mail lub numer telefonu nie wysyłamy (zero danych osobowych w GA).
   let lastQuery = '';
+  let searchTimer = 0;
   function trackSearch() {
+    clearTimeout(searchTimer);
     const input = document.getElementById('ccOmniInput');
-    const q = input ? input.value.trim() : '';
-    if (q.length < 2 || q === lastQuery) return;
+    const q = input ? input.value.trim().replace(/\s+/g, ' ') : '';
+    if (q.length < 2 || q === lastQuery || /@|\d[\d\s-]{6,}\d/.test(q)) return;
     lastQuery = q;
     ccTrack('search', { search_term: q.slice(0, 100) });
   }
+  document.addEventListener('input', (e) => {
+    if (e.target && e.target.id === 'ccOmniInput') {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(trackSearch, 1500);
+    }
+  }, true);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && e.target && e.target.id === 'ccOmniInput') trackSearch();
   }, true);
   document.addEventListener('click', (e) => {
-    if (e.target.closest && e.target.closest('#ccOmniBody a')) trackSearch();
+    const a = e.target.closest && e.target.closest('#ccOmniBody a');
+    if (!a) return;
+    trackSearch();
+    let item = '';
+    try { const u = new URL(a.href, location.href); item = u.origin === location.origin ? u.pathname : u.hostname; } catch (_) {}
+    ccTrack('select_content', { content_type: 'search_result', item_id: item.slice(0, 100) });
   }, true);
 })();
