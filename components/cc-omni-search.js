@@ -559,7 +559,217 @@
   };
 
   // Rozpoznawanie referencji biblijnych w zapytaniu
-  function parseBibleRef(q) {
+
+  // =========================================================================
+  // PORÓWNYWARKA WIELOPRZEKŁADOWA & WERYFIKACJA CYTOWAŃ (P3)
+  // Standard @777: UBG (Wzorzec Kanoniczny), BW (1975), BT (Wyd. V), BG (1632)
+  // Protokół Weryfikacji Biblijnej — EkoCC @777 (Dyrektywa Dowódcy 2026-10-20)
+  // =========================================================================
+  const TOP_COMPARE_VERSES = {
+    "JHN:3:16": {
+      refTitle: "Ewangelia Jana 3:16",
+      UBG: "Tak bowiem Bóg umiłował świat, że dał swego jednorodzonego Syna, aby każdy, kto w niego wierzy, nie zginął, ale miał życie wieczne.",
+      BW: "Albowiem tak Bóg umiłował świat, że Syna swego jednorodzonego dał, aby każdy, kto weń wierzy, nie zginął, ale miał żywot wieczny.",
+      BT: "Tak bowiem Bóg umiłował świat, że Syna swego Jednorodzonego dał, aby każdy, kto w Niego wierzy, nie zginął, ale miał życie wieczne.",
+      BG: "Albowiem tak Bóg umiłował świat, że Syna swego jednorodzonego dał, aby każdy, kto weń wierzy, nie zginął, ale miał żywot wieczny."
+    },
+    "PSA:23:1": {
+      refTitle: "Psalm 23:1",
+      UBG: "PAN jest moim pasterzem, niczego mi nie zabraknie.",
+      BW: "Pan jest pasterzem moim, niczego mi nie braknie.",
+      BT: "Pan jest moim pasterzem, nie brak mi niczego.",
+      BG: "Pan jest pasterzem moim, na niczem mi nie zejdzie."
+    },
+    "ROM:8:28": {
+      refTitle: "List do Rzymian 8:28",
+      UBG: "A wiemy, że wszystko współdziała dla dobra tych, którzy miłują Boga, to jest tych, którzy są powołani według postanowienia Boga.",
+      BW: "A wiemy, że Bóg współdziała we wszystkim ku dobremu z tymi, którzy Boga miłują, to jest z tymi, którzy według postanowienia jego są powołani.",
+      BT: "Wiemy też, że Bóg z tymi, którzy Go miłują, współdziała we wszystkim dla ich dobra, z tymi, którzy są powołani według Jego zamiaru.",
+      BG: "A wiemy, iż tym, którzy miłują Boga, wszystkie rzeczy dopomagają ku dobremu, to jest tym, którzy według postanowienia powołani są."
+    },
+    "GEN:1:1": {
+      refTitle: "Księga Rodzaju 1:1",
+      UBG: "Na początku Bóg stworzył niebo i ziemię.",
+      BW: "Na początku stworzył Bóg niebo i ziemię.",
+      BT: "Na początku Bóg stworzył niebo i ziemię.",
+      BG: "Na początku stworzył Bóg niebo i ziemię."
+    },
+    "JHN:1:1": {
+      refTitle: "Ewangelia Jana 1:1",
+      UBG: "Na początku było Słowo, a Słowo było u Boga i Bogiem było Słowo.",
+      BW: "Na początku było Słowo, a Słowo było u Boga, a Bogiem było Słowo.",
+      BT: "Na początku było Słowo, a Słowo było u Boga, i Bogiem było Słowo.",
+      BG: "Na początku było Słowo, a ono Słowo było u Boga, a Bogiem było ono Słowo."
+    },
+    "PHP:4:13": {
+      refTitle: "List do Filipian 4:13",
+      UBG: "Wszystko mogę w Chrystusie, który mnie umacnia.",
+      BW: "Wszystko mogę w tym, który mnie wzmacnia, w Chrystusie.",
+      BT: "Wszystko mogę w Tym, który mnie umacnia.",
+      BG: "Wszystko mogę w Chrystusie, który mię posila."
+    },
+    "1TI:2:5": {
+      refTitle: "1 List do Tymoteusza 2:5",
+      UBG: "Jeden bowiem jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus;",
+      BW: "Albowiem jeden jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus,",
+      BT: "Albowiem jeden jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek, Chrystus Jezus,",
+      BG: "Albowiem jeden jest Bóg, jeden też pośrednik między Bogiem i ludźmi, człowiek Chrystus Jezus;"
+    },
+    "REV:14:7": {
+      refTitle: "Objawienie Jana (Apokalipsa) 14:7",
+      UBG: "Mówiącego donośnym głosem: Bójcie się Boga i oddajcie mu chwałę, gdyż przyszła godzina jego sądu. Pokłońcie się temu, który stworzył niebo i ziemię, morze i źródła wód.",
+      BW: "I mówił donośnym głosem: Bójcie się Boga i oddajcie mu chwałę, gdyż nadeszła godzina sądu jego, i oddajcie pokłon temu, który stworzył niebo i ziemię, i morze, i źródła wód.",
+      BT: "Mówił on głosem donośnym: «Ulęknijcie się Boga i dajcie Mu chwałę, bo przyszła godzina Jego sądu. Pokłońcie się Temu, co niebo uczynił i ziemię, i morze, i źródła wód!»",
+      BG: "Mówiący głosem wielkim: Bójcie się Boga, i dajcie mu chwałę, iż przyszła godzina sądu jego; i kłońcie się temu, który uczynił niebo i ziemię, i morze, i źródła wód."
+    },
+    "EXO:20:8": {
+      refTitle: "Księga Wyjścia 20:8",
+      UBG: "Pamiętaj o dniu szabatu, aby go święcić.",
+      BW: "Pamiętaj o dniu sabatu, aby go święcić.",
+      BT: "Pamiętaj o dniu szabatu, aby go uświęcić.",
+      BG: "Pamiętaj na dzień odpocznienia, abyś go święcił."
+    },
+    "EPH:2:8": {
+      refTitle: "List do Efezjan 2:8",
+      UBG: "Łaską bowiem jesteście zbawieni przez wiarę, i to nie jest z was, jest to dar Boga.",
+      BW: "Albowiem łaską zbawieni jesteście przez wiarę, i to nie z was: Boży to dar;",
+      BT: "Łaską bowiem jesteście zbawieni przez wiarę. A to pochodzi nie od was, lecz jest darem Boga:",
+      BG: "Albowiem łaską jesteście zbawieni przez wiarę, i to nie z was; dar to Boży jest;"
+    }
+  };
+
+  function normalizeTextForComparison(str) {
+    return String(str || '').toLowerCase()
+      .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
+      .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
+      .replace(/[ś]/g, 's').replace(/[źż]/g, 'z')
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function verifyBibleQuote(query) {
+    if (!query) return null;
+    const normQ = normalizeTextForComparison(query);
+    if (normQ.length < 12) return null;
+
+    let bestMatch = null;
+
+    for (const [key, vText] of Object.entries(TOP_UBG_VERSES)) {
+      const normUbg = normalizeTextForComparison(vText);
+      const comp = TOP_COMPARE_VERSES[key];
+      const normBw = comp ? normalizeTextForComparison(comp.BW) : '';
+      const normBt = comp ? normalizeTextForComparison(comp.BT) : '';
+      const normBg = comp ? normalizeTextForComparison(comp.BG) : '';
+
+      // 1. Zgodność dosłowna z UBG (całość lub podciąg)
+      if (normUbg.includes(normQ) || normQ.includes(normUbg)) {
+        return {
+          isQuote: true,
+          refKey: key,
+          refTitle: comp ? comp.refTitle : key,
+          status: 'VERIFIED_UBG',
+          statusLabel: '100% ZGODNOŚĆ DOSŁOWNA Z UBG',
+          badgeClass: 'cc-quote-badge-verified',
+          ubgText: vText,
+          inputQuery: query,
+          matchedEdition: 'UBG',
+          isExactUbg: true,
+          note: 'Tekst jest w 100% zgodny z kanonicznym przekładem Uwspółcześnionej Biblii Gdańskiej (Standard @777 / Zero-QA).'
+        };
+      }
+
+      // 2. Wykrycie innego tradycyjnego przekładu (BW / BT / BG)
+      if (normBw && normBw.includes(normQ)) {
+        return {
+          isQuote: true,
+          refKey: key,
+          refTitle: comp.refTitle,
+          status: 'DIFF_EDITION',
+          statusLabel: 'ROZBIEŻNOŚĆ BRZMIENIOWA — ROZPOZNANO PRZEKŁAD BW (WARSZAWSKA)',
+          badgeClass: 'cc-quote-badge-warning',
+          ubgText: vText,
+          detectedText: comp.BW,
+          inputQuery: query,
+          matchedEdition: 'BW',
+          isExactUbg: false,
+          note: 'Wpisany fragment odpowiada brzmieniu Biblii Warszawskiej (1975). Zgodnie z Protokołem @777 do publicznego cytowania zaleca się kanoniczne brzmienie UBG.'
+        };
+      }
+
+      if (normBt && normBt.includes(normQ)) {
+        return {
+          isQuote: true,
+          refKey: key,
+          refTitle: comp.refTitle,
+          status: 'DIFF_EDITION',
+          statusLabel: 'ROZBIEŻNOŚĆ BRZMIENIOWA — ROZPOZNANO PRZEKŁAD BT (TYSIĄCLECIA)',
+          badgeClass: 'cc-quote-badge-warning',
+          ubgText: vText,
+          detectedText: comp.BT,
+          inputQuery: query,
+          matchedEdition: 'BT',
+          isExactUbg: false,
+          note: 'Wpisany fragment odpowiada brzmieniu Biblii Tysiąclecia. Zgodnie z Protokołem @777 do publicznego cytowania zaleca się kanoniczne brzmienie UBG.'
+        };
+      }
+
+      if (normBg && normBg.includes(normQ)) {
+        return {
+          isQuote: true,
+          refKey: key,
+          refTitle: comp.refTitle,
+          status: 'DIFF_EDITION',
+          statusLabel: 'ROZBIEŻNOŚĆ BRZMIENIOWA — ROZPOZNANO PRZEKŁAD BG (GDAŃSKA 1632)',
+          badgeClass: 'cc-quote-badge-warning',
+          ubgText: vText,
+          detectedText: comp.BG,
+          inputQuery: query,
+          matchedEdition: 'BG',
+          isExactUbg: false,
+          note: 'Wpisany fragment odpowiada historycznemu brzmieniu Biblii Gdańskiej z 1632 roku. W ekosystemie CC zalecamy uwspółcześnione brzmienie UBG.'
+        };
+      }
+
+      // 3. Ocena tokenowa dla parafraz (z uwzględnieniem rdzeni polskich słów min 4 znaki)
+      const qTokens = normQ.split(' ').filter(t => t.length >= 3);
+      const ubgTokens = normUbg.split(' ').filter(t => t.length >= 3);
+      let matches = 0;
+      for (const t of qTokens) {
+        const hasMatch = ubgTokens.some(u => u === t || (t.length >= 4 && u.length >= 4 && (u.startsWith(t.slice(0, 4)) || t.startsWith(u.slice(0, 4)))));
+        if (hasMatch) matches++;
+      }
+      const ratio = matches / Math.max(qTokens.length, 1);
+      if (ratio >= 0.45 && (!bestMatch || ratio > bestMatch.ratio)) {
+        bestMatch = {
+          key,
+          ratio,
+          vText,
+          refTitle: comp ? comp.refTitle : key
+        };
+      }
+    }
+
+    if (bestMatch && bestMatch.ratio >= 0.45) {
+      return {
+        isQuote: true,
+        refKey: bestMatch.key,
+        refTitle: bestMatch.refTitle,
+        status: 'PARAPHRASE',
+        statusLabel: 'PARAFRAZA LUB NIEDOSŁOWNY CYTAT',
+        badgeClass: 'cc-quote-badge-paraphrase',
+        ubgText: bestMatch.vText,
+        inputQuery: query,
+        matchedEdition: 'PARAFRAZA',
+        isExactUbg: false,
+        note: 'Standard @777: Tekst różni się od kanonicznego brzmienia UBG. Cytując jako Słowo Boże, podawaj dosłowne brzmienie przekładu.'
+      };
+    }
+
+    return null;
+  }
+
+    function parseBibleRef(q) {
     if (!q) return null;
     const norm = q.toLowerCase()
       .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
@@ -1642,9 +1852,9 @@
           <a href="${contextUrl}" class="cc-btn-scripture-sub" title="Zobacz cały rozdział w kontekście (±5 wersetów)">
             Kontekst rozdziału
           </a>
-          <a href="${compareUrl}" class="cc-btn-scripture-sub" title="Porównaj przekłady UBG, BW, BT, BG">
-            Porównaj przekłady
-          </a>
+          <button type="button" class="cc-btn-scripture-sub cc-btn-compare-trigger" data-action="toggle-compare" data-ref="${escapeHtml(refKey)}" title="Porównaj 4 przekłady UBG, BW, BT, BG">
+            <span>⚖️ Porównaj 4 przekłady</span>
+          </button>
           <button type="button" class="cc-btn-scripture-copy" id="ccScriptureCopyBtn" data-quote="${copyPayload}">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -1662,6 +1872,7 @@
             <span>📜 Źródła (R01–R40)</span>
           </button>
         </div>
+        ${renderComparePanel(refKey, match)}
         <div class="cc-scripture-license-note">
           Kanoniczny tekst UBG • Standard ZERO COST • Dane językowe: STEPBible &amp; SBLGNT (CC BY 4.0) • Bez płatnych modeli AI
         </div>
@@ -1670,7 +1881,116 @@
   }
 
 
-  function renderLemmaCard(lemma) {
+
+  function renderComparePanel(refKey, match) {
+    const comp = TOP_COMPARE_VERSES[refKey] || {
+      refTitle: match ? match.refTitle : refKey,
+      UBG: (match && match.verseText) ? match.verseText : (TOP_UBG_VERSES[refKey] || 'Brak tekstu UBG'),
+      BW: (match && match.verseText) ? match.verseText : (TOP_UBG_VERSES[refKey] || 'Brak tekstu BW'),
+      BT: (match && match.verseText) ? match.verseText : (TOP_UBG_VERSES[refKey] || 'Brak tekstu BT'),
+      BG: (match && match.verseText) ? match.verseText : (TOP_UBG_VERSES[refKey] || 'Brak tekstu BG')
+    };
+
+    const title = comp.refTitle || (match ? match.refTitle : refKey);
+
+    return `
+      <div class="cc-scripture-compare-panel" id="ccComparePanel_${escapeHtml(refKey.replace(/[^a-zA-Z0-9]/g, '_'))}" style="display:none;">
+        <div class="cc-compare-head">
+          <div class="cc-compare-title">
+            <span class="cc-compare-icon" aria-hidden="true">⚖️</span>
+            <strong>Zestawienie 4 Przekładów Pisma Świętego: ${escapeHtml(title)}</strong>
+          </div>
+          <span class="cc-compare-sub">Standard Kanoniczny EkoCC: UBG (Textus Receptus)</span>
+        </div>
+        <div class="cc-compare-grid">
+          <div class="cc-compare-col cc-compare-ubg">
+            <div class="cc-compare-col-head">
+              <span class="cc-badge-trans cc-badge-ubg">UBG</span>
+              <span class="cc-compare-edition-name">Uwspółcześniona Gdańska</span>
+              <button type="button" class="cc-btn-copy-trans" data-copy="${escapeHtml(comp.UBG)}" title="Kopiuj przekład UBG">Kopiuj</button>
+            </div>
+            <p class="cc-compare-text">„${escapeHtml(comp.UBG)}”</p>
+          </div>
+          <div class="cc-compare-col cc-compare-bw">
+            <div class="cc-compare-col-head">
+              <span class="cc-badge-trans cc-badge-bw">BW</span>
+              <span class="cc-compare-edition-name">Biblia Warszawska (1975)</span>
+              <button type="button" class="cc-btn-copy-trans" data-copy="${escapeHtml(comp.BW)}" title="Kopiuj przekład BW">Kopiuj</button>
+            </div>
+            <p class="cc-compare-text">„${escapeHtml(comp.BW)}”</p>
+          </div>
+          <div class="cc-compare-col cc-compare-bt">
+            <div class="cc-compare-col-head">
+              <span class="cc-badge-trans cc-badge-bt">BT</span>
+              <span class="cc-compare-edition-name">Biblia Tysiąclecia (Wyd. V)</span>
+              <button type="button" class="cc-btn-copy-trans" data-copy="${escapeHtml(comp.BT)}" title="Kopiuj przekład BT">Kopiuj</button>
+            </div>
+            <p class="cc-compare-text">„${escapeHtml(comp.BT)}”</p>
+          </div>
+          <div class="cc-compare-col cc-compare-bg">
+            <div class="cc-compare-col-head">
+              <span class="cc-badge-trans cc-badge-bg">BG</span>
+              <span class="cc-compare-edition-name">Biblia Gdańska (1632)</span>
+              <button type="button" class="cc-btn-copy-trans" data-copy="${escapeHtml(comp.BG)}" title="Kopiuj przekład BG">Kopiuj</button>
+            </div>
+            <p class="cc-compare-text">„${escapeHtml(comp.BG)}”</p>
+          </div>
+        </div>
+        <div class="cc-compare-footer-note">
+          ℹ️ Zgodnie ze Standardem @777 Christian Culture, podstawowym zatwierdzonym tekstem do cytowania w całym ekosystemie jest <strong>UBG</strong>. Pozostałe przekłady służą celom badawczym, lingwistycznym i porównawczym.
+        </div>
+      </div>
+    `;
+  }
+
+  function renderQuoteVerificationCard(result) {
+    if (!result) return '';
+    const safeRef = escapeHtml(result.refTitle);
+    const ubgCopy = escapeHtml(`„${result.ubgText}” — ${result.refTitle} (UBG)`);
+    const compareUrl = `/mojabiblia?q=${encodeURIComponent(result.refKey)}&compare=1`;
+
+    return `
+      <div class="cc-quote-verification-card" id="ccQuoteVerificationCard">
+        <div class="cc-quote-verif-head">
+          <div class="cc-quote-verif-badge">
+            <span class="cc-quote-verif-icon" aria-hidden="true">🛡️</span>
+            <span class="cc-quote-verif-level">WERYFIKACJA CYTATU BIBLIJNEGO</span>
+            <span class="cc-quote-verif-standard">PROTOKÓŁ @777 • ZERO-QA</span>
+          </div>
+          <span class="cc-quote-status-badge ${result.badgeClass}">${escapeHtml(result.statusLabel)}</span>
+        </div>
+        <div class="cc-quote-detected-row">
+          <span class="cc-quote-ref-pill">📖 ${safeRef}</span>
+          <span class="cc-quote-edition-pill">Wzorzec Kanoniczny: UBG</span>
+        </div>
+        <blockquote class="cc-quote-canonical-text">
+          „${escapeHtml(result.ubgText)}”
+        </blockquote>
+        ${result.detectedText ? `
+        <div class="cc-quote-diff-box">
+          <span class="cc-quote-diff-label">Rozpoznany wariant (${escapeHtml(result.matchedEdition)}):</span>
+          <p class="cc-quote-diff-text">„${escapeHtml(result.detectedText)}”</p>
+        </div>` : ''}
+        <div class="cc-quote-verif-note">
+          ${escapeHtml(result.note)}
+        </div>
+        <div class="cc-quote-verif-actions">
+          <button type="button" class="cc-btn-scripture-main" style="background:#FF7A00;" id="ccQuoteCopyCanonicalBtn" data-quote="${ubgCopy}">
+            <span>Kopiuj Kanoniczny Cytat UBG</span>
+          </button>
+          <button type="button" class="cc-btn-scripture-sub" data-action="toggle-compare" data-ref="${escapeHtml(result.refKey)}">
+            <span>⚖️ Zobacz 4 Przekłady (UBG, BW, BT, BG)</span>
+          </button>
+          <a href="${compareUrl}" class="cc-btn-scripture-sub" title="Otwórz badanie w MojaBiblia">
+            <span>Badaj w MojaBiblia →</span>
+          </a>
+        </div>
+        ${renderComparePanel(result.refKey, { refTitle: result.refTitle, verseText: result.ubgText })}
+      </div>
+    `;
+  }
+
+    function renderLemmaCard(lemma) {
     if (!lemma) return '';
     const isHe = lemma.lang === 'he';
     const strongUrl = `/mojabiblia?strong=${encodeURIComponent(lemma.strong)}`;
@@ -4020,6 +4340,226 @@
           margin-bottom: 10px;
         }
 
+        
+        /* Biblia Intelligence CC (P3): Porównywarka Wieloprzekładowa i Weryfikacja Cytowań */
+        .cc-scripture-compare-panel {
+          margin: 14px 0;
+          padding: 16px;
+          border-radius: 12px;
+          background: rgba(8, 12, 20, 0.95);
+          border: 1px solid rgba(196, 163, 90, 0.35);
+          animation: ccFadeIn 0.2s ease-out;
+        }
+        .cc-compare-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-bottom: 12px;
+        }
+        .cc-compare-title {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: #C4A35A;
+          font-size: 0.92rem;
+        }
+        .cc-compare-sub {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.6);
+        }
+        .cc-compare-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+        .cc-compare-col {
+          padding: 12px 14px;
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          display: flex;
+          flex-direction: column;
+        }
+        .cc-compare-ubg {
+          border-color: rgba(196, 163, 90, 0.5);
+          background: rgba(196, 163, 90, 0.06);
+        }
+        .cc-compare-bw {
+          border-color: rgba(56, 189, 248, 0.4);
+          background: rgba(56, 189, 248, 0.05);
+        }
+        .cc-compare-bt {
+          border-color: rgba(168, 85, 247, 0.4);
+          background: rgba(168, 85, 247, 0.05);
+        }
+        .cc-compare-bg {
+          border-color: rgba(52, 211, 153, 0.4);
+          background: rgba(52, 211, 153, 0.05);
+        }
+        .cc-compare-col-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 6px;
+          margin-bottom: 8px;
+        }
+        .cc-badge-trans {
+          font-size: 0.68rem;
+          font-weight: 800;
+          padding: 2px 6px;
+          border-radius: 4px;
+          letter-spacing: 0.06em;
+        }
+        .cc-badge-ubg { background: #C4A35A; color: #000; }
+        .cc-badge-bw { background: #38bdf8; color: #000; }
+        .cc-badge-bt { background: #c084fc; color: #000; }
+        .cc-badge-bg { background: #34d399; color: #000; }
+        .cc-compare-edition-name {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.75);
+          flex: 1;
+          margin-left: 4px;
+        }
+        .cc-btn-copy-trans {
+          padding: 2px 8px;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.08);
+          color: #fff;
+          font-size: 0.68rem;
+          cursor: pointer;
+        }
+        .cc-btn-copy-trans:hover {
+          background: #FF7A00;
+          border-color: #FF7A00;
+        }
+        .cc-compare-text {
+          margin: 0;
+          font-size: 0.88rem;
+          line-height: 1.45;
+          color: rgba(255, 255, 255, 0.92);
+          font-style: italic;
+        }
+        .cc-compare-footer-note {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.6);
+          line-height: 1.4;
+        }
+
+        /* Weryfikator Cytowań */
+        .cc-quote-verification-card {
+          margin: 14px 0;
+          padding: 18px 20px;
+          border-radius: 14px;
+          background: rgba(14, 20, 32, 0.96);
+          border: 1.5px solid rgba(196, 163, 90, 0.5);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+          color: #F3E5C8;
+        }
+        .cc-quote-verif-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .cc-quote-verif-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .cc-quote-verif-level { color: #C4A35A; }
+        .cc-quote-verif-standard { color: rgba(243, 229, 200, 0.6); }
+        .cc-quote-status-badge {
+          font-size: 0.68rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 6px;
+          letter-spacing: 0.04em;
+        }
+        .cc-quote-badge-verified {
+          background: rgba(34, 197, 94, 0.2);
+          color: #4ade80;
+          border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+        .cc-quote-badge-warning {
+          background: rgba(245, 158, 11, 0.2);
+          color: #fbbf24;
+          border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+        .cc-quote-badge-paraphrase {
+          background: rgba(239, 68, 68, 0.2);
+          color: #f87171;
+          border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+        .cc-quote-detected-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .cc-quote-ref-pill {
+          font-size: 0.88rem;
+          font-weight: 700;
+          color: #FF8C33;
+          background: rgba(255, 122, 0, 0.12);
+          padding: 2px 10px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 122, 0, 0.3);
+        }
+        .cc-quote-edition-pill {
+          font-size: 0.74rem;
+          color: rgba(243, 229, 200, 0.75);
+        }
+        .cc-quote-canonical-text {
+          margin: 0 0 12px 0;
+          font-size: 1.05rem;
+          line-height: 1.5;
+          font-weight: 600;
+          color: #ffffff;
+          border-left: 3px solid #C4A35A;
+          padding-left: 14px;
+        }
+        .cc-quote-diff-box {
+          margin-bottom: 12px;
+          padding: 8px 12px;
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.35);
+          border-left: 3px solid #f59e0b;
+        }
+        .cc-quote-diff-label {
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: #fbbf24;
+          text-transform: uppercase;
+        }
+        .cc-quote-diff-text {
+          margin: 4px 0 0 0;
+          font-size: 0.88rem;
+          font-style: italic;
+          color: rgba(243, 229, 200, 0.85);
+        }
+        .cc-quote-verif-note {
+          font-size: 0.76rem;
+          color: rgba(243, 229, 200, 0.7);
+          line-height: 1.45;
+          margin-bottom: 14px;
+        }
+        .cc-quote-verif-actions {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
         /* Modal Źródeł i Licencji (R01–R40) */
         .cc-sources-modal-backdrop {
           position: fixed;
@@ -5135,6 +5675,55 @@ ${isStandalonePage ? '' : `
 
     // Faza 2: Obsługa kopiowania linku / wersetu oraz hoveru na wynikach dla Split-View
     overlay.addEventListener('click', (e) => {
+      const compareTrigger = e.target.closest('[data-action="toggle-compare"]');
+      if (compareTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        const refKey = compareTrigger.getAttribute('data-ref') || '';
+        const idSafe = 'ccComparePanel_' + refKey.replace(/[^a-zA-Z0-9]/g, '_');
+        const panel = document.getElementById(idSafe) || compareTrigger.closest('.cc-scripture-card, .cc-quote-verification-card')?.querySelector('.cc-scripture-compare-panel');
+        if (panel) {
+          const isOpen = panel.style.display !== 'none';
+          panel.style.display = isOpen ? 'none' : 'block';
+          compareTrigger.setAttribute('aria-expanded', String(!isOpen));
+          if (!isOpen) panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+        return;
+      }
+
+      const copyTransBtn = e.target.closest('.cc-btn-copy-trans');
+      if (copyTransBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const textToCopy = copyTransBtn.getAttribute('data-copy');
+        if (textToCopy && navigator.clipboard) {
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const orig = copyTransBtn.textContent;
+            copyTransBtn.textContent = 'Skopiowano!';
+            setTimeout(() => { copyTransBtn.textContent = orig; }, 1600);
+          }).catch(() => {});
+        }
+        return;
+      }
+
+      const quoteCopyBtn = e.target.closest('#ccQuoteCopyCanonicalBtn');
+      if (quoteCopyBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const qText = quoteCopyBtn.getAttribute('data-quote');
+        if (qText && navigator.clipboard) {
+          navigator.clipboard.writeText(qText).then(() => {
+            const span = quoteCopyBtn.querySelector('span');
+            if (span) {
+              const orig = span.textContent;
+              span.textContent = 'Skopiowano do schowka!';
+              setTimeout(() => { span.textContent = orig; }, 1800);
+            }
+          }).catch(() => {});
+        }
+        return;
+      }
+
       const tokenChip = e.target.closest('.cc-token-chip');
       if (tokenChip) {
         e.preventDefault();
@@ -5373,6 +5962,10 @@ ${isStandalonePage ? '' : `
     const placeMatch = (!bibleMatch && !lemmaMatch) ? detectBiblePlace(query) : null;
     const placeCardHtml = placeMatch ? renderPlaceCard(placeMatch) : '';
 
+    // Biblia Intelligence CC (P3): Weryfikacja cytowań Pisma Świętego (jeśli brak bezpośredniej sigli)
+    const quoteVerification = (!bibleMatch) ? verifyBibleQuote(query) : null;
+    const quoteVerificationCardHtml = quoteVerification ? renderQuoteVerificationCard(quoteVerification) : '';
+
     // Faza 2: Detekcja intencji duszpasterskiej / pomocy
     const isHope = detectHopeIntent(query);
     const hopeCardHtml = isHope ? renderHopeCard(query) : '';
@@ -5391,6 +5984,9 @@ ${isStandalonePage ? '' : `
 
     if (scriptureCardHtml) {
       leftColHtml += scriptureCardHtml;
+    }
+    if (quoteVerificationCardHtml) {
+      leftColHtml += quoteVerificationCardHtml;
     }
     if (lemmaCardHtml) {
       leftColHtml += lemmaCardHtml;
@@ -5970,6 +6566,10 @@ ${isStandalonePage ? '' : `
     BIBLE_PLACES: BIBLE_PLACES,
     detectBiblePlace: detectBiblePlace,
     renderPlaceCard: renderPlaceCard,
+    TOP_COMPARE_VERSES: TOP_COMPARE_VERSES,
+    verifyBibleQuote: verifyBibleQuote,
+    renderComparePanel: renderComparePanel,
+    renderQuoteVerificationCard: renderQuoteVerificationCard,
     getPreviewHtml: getPreviewHtml,
     TOP_UBG_VERSES: TOP_UBG_VERSES,
     PLACEHOLDERS: PLACEHOLDERS,

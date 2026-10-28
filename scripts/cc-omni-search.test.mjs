@@ -434,7 +434,7 @@ test('cc-omni-search.js: Biblia Intelligence CC — P0 contracts (topics, script
   assert.ok(omniSearchCode.includes('TEKST BIBLIJNY'), 'contains TEKST BIBLIJNY badge');
   assert.ok(omniSearchCode.includes('.cc-btn-scripture-sub'), 'defines .cc-btn-scripture-sub for context and compare');
   assert.ok(omniSearchCode.includes('Kontekst rozdziału'), 'contains Kontekst rozdziału action');
-  assert.ok(omniSearchCode.includes('Porównaj przekłady'), 'contains Porównaj przekłady action');
+  assert.ok(omniSearchCode.includes('Porównaj przekłady') || omniSearchCode.includes('Porównaj 4 przekłady'), 'contains Porównaj przekłady action');
   assert.ok(omniSearchCode.includes('.cc-bible-topic-card'), 'defines .cc-bible-topic-card');
   assert.ok(omniSearchCode.includes('.cc-sources-modal-backdrop'), 'defines .cc-sources-modal-backdrop');
   assert.ok(omniSearchCode.includes('STEPBible Data'), 'cites STEPBible Data');
@@ -606,4 +606,92 @@ test('cc-omni-search.js: Biblia Intelligence CC — P2 contracts (Atlas Geografi
   assert.ok(omniSearchCode.includes('OSM (R20)') || omniSearchCode.includes('OpenStreetMap'), 'cites OpenStreetMap');
   assert.ok(omniSearchCode.includes('openstreetmap.org'), 'links to OpenStreetMap coordinates');
   assert.ok(omniSearchCode.includes('wikidata.org'), 'links to Wikidata archaeological IDs');
+});
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P3 contracts (Porównywarka 4 Przekładów UBG/BW/BT/BG i Weryfikacja Cytowań @777)', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const compareVerses = sandbox.window.CCOmniSearch.TOP_COMPARE_VERSES;
+  const verifyQuote = sandbox.window.CCOmniSearch.verifyBibleQuote;
+  const renderCompare = sandbox.window.CCOmniSearch.renderComparePanel;
+  const renderQuoteCard = sandbox.window.CCOmniSearch.renderQuoteVerificationCard;
+
+  assert.ok(typeof compareVerses === 'object', 'TOP_COMPARE_VERSES is exported');
+  assert.ok(typeof verifyQuote === 'function', 'verifyBibleQuote is exported');
+  assert.ok(typeof renderCompare === 'function', 'renderComparePanel is exported');
+  assert.ok(typeof renderQuoteCard === 'function', 'renderQuoteVerificationCard is exported');
+
+  // 1. Parallel translations data contract (UBG, BW, BT, BG)
+  assert.ok(compareVerses['JHN:3:16'], 'contains 4-translation dataset for JHN:3:16');
+  assert.equal(typeof compareVerses['JHN:3:16'].UBG, 'string');
+  assert.equal(typeof compareVerses['JHN:3:16'].BW, 'string');
+  assert.equal(typeof compareVerses['JHN:3:16'].BT, 'string');
+  assert.equal(typeof compareVerses['JHN:3:16'].BG, 'string');
+  assert.ok(compareVerses['JHN:3:16'].UBG.includes('Tak bowiem Bóg umiłował świat'));
+  assert.ok(compareVerses['JHN:3:16'].BW.includes('Albowiem tak Bóg umiłował świat'));
+
+  assert.ok(compareVerses['PSA:23:1'], 'contains 4-translation dataset for PSA:23:1');
+  assert.ok(compareVerses['ROM:8:28'], 'contains 4-translation dataset for ROM:8:28');
+  assert.ok(compareVerses['EXO:20:8'], 'contains 4-translation dataset for EXO:20:8');
+
+  // 2. Canonical UBG exact quote verification
+  const ubgQuote = verifyQuote('Tak bowiem Bóg umiłował świat');
+  assert.ok(ubgQuote, 'verifies UBG quote');
+  assert.equal(ubgQuote.status, 'VERIFIED_UBG');
+  assert.equal(ubgQuote.isExactUbg, true);
+  assert.equal(ubgQuote.matchedEdition, 'UBG');
+  assert.ok(ubgQuote.statusLabel.includes('ZGODNOŚĆ DOSŁOWNA Z UBG'));
+
+  // 3. Detection of alternative traditional translations (BW, BT, BG)
+  const bwQuote = verifyQuote('Albowiem tak Bóg umiłował świat');
+  assert.ok(bwQuote, 'detects BW quote');
+  assert.equal(bwQuote.status, 'DIFF_EDITION');
+  assert.equal(bwQuote.matchedEdition, 'BW');
+  assert.equal(bwQuote.isExactUbg, false);
+  assert.ok(bwQuote.statusLabel.includes('ROZPOZNANO PRZEKŁAD BW'));
+
+  // 4. Paraphrase detection
+  const paraphraseQuote = verifyQuote('Bóg tak ukochał świat że dał jedynego Syna żeby wierzący mieli życie');
+  assert.ok(paraphraseQuote, 'detects paraphrase');
+  assert.equal(paraphraseQuote.status, 'PARAPHRASE');
+  assert.equal(paraphraseQuote.isExactUbg, false);
+
+  // 5. Compare panel and UI contracts
+  const compareHtml = renderCompare('JHN:3:16');
+  assert.ok(compareHtml.includes('cc-scripture-compare-panel'), 'renders compare panel container');
+  assert.ok(compareHtml.includes('cc-badge-ubg'), 'renders UBG badge');
+  assert.ok(compareHtml.includes('cc-badge-bw'), 'renders BW badge');
+  assert.ok(compareHtml.includes('cc-badge-bt'), 'renders BT badge');
+  assert.ok(compareHtml.includes('cc-badge-bg'), 'renders BG badge');
+  assert.ok(compareHtml.includes('cc-btn-copy-trans'), 'renders copy buttons for each translation');
+
+  const quoteCardHtml = renderQuoteCard(bwQuote);
+  assert.ok(quoteCardHtml.includes('cc-quote-verification-card'), 'renders quote verification card');
+  assert.ok(quoteCardHtml.includes('PROTOKÓŁ @777'), 'declares PROTOKÓŁ @777 compliance');
+  assert.ok(quoteCardHtml.includes('cc-quote-diff-box'), 'renders diff box for non-UBG quote');
+  assert.ok(quoteCardHtml.includes('ccQuoteCopyCanonicalBtn'), 'renders copy canonical UBG CTA');
 });
