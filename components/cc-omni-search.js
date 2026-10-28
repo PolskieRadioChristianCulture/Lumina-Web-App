@@ -4780,9 +4780,6 @@ ${isStandalonePage ? '' : `
         </div>
 
         <div class="cc-omni-footer">
-          <div class="cc-omni-footer-center">
-            Powered by <a href="https://polskieradio.cc/yis" class="cc-omni-yis-link" target="_blank" rel="noopener noreferrer">Your Imagination Studio</a> dla Christian Culture
-          </div>
           <div class="cc-omni-footer-sub">
             <div class="cc-omni-footer-left">
               <button type="button" id="ccOmniSourcesBtn" class="cc-omni-footlink" title="Rejestr źródeł i licencji Biblia Intelligence">
@@ -4806,6 +4803,9 @@ ${isStandalonePage ? '' : `
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
               </a>
             </div>
+          </div>
+          <div class="cc-omni-footer-center">
+            Powered by <a href="https://polskieradio.cc/yis" class="cc-omni-yis-link" target="_blank" rel="noopener noreferrer">Your Imagination Studio</a> dla Christian Culture
           </div>
         </div>
         <!-- Modal Rejestru Źródeł i Licencji (R01–R40) -->
