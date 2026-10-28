@@ -840,17 +840,36 @@
   const PRESET_WALLS = [
     {
       id: 'polska-radio',
-      name: 'Polska & Radio CC',
-      url: '/images/search/polska-radio-1600.webp',
+      name: 'Polska & Fale Radiowe CC',
+      tag: 'Oficjalny motyw CC',
+      desktop: '/images/search/polska-radio-1600.webp',
+      mobile: '/images/search/polska-radio-800.webp',
+      thumb: '/images/search/polska-radio-thumb.webp',
       credit: 'Tło: Polska & Fale Radiowe · Christian Culture'
+    },
+    {
+      id: 'global-radio',
+      name: 'Global Christian Culture',
+      tag: 'Złote Fale Misji',
+      desktop: '/images/search/global-radio-1600.webp',
+      mobile: '/images/search/global-radio-800.webp',
+      thumb: '/images/search/global-radio-thumb.webp',
+      credit: 'Tło: Global Christian Culture · Złote Fale Świata'
     },
     {
       id: 'andromeda',
       name: 'Galaktyka Andromedy',
-      url: '/images/search/andromeda-1600.webp',
+      tag: 'Kosmos & Stworzenie',
+      desktop: '/images/search/andromeda-1600.webp',
+      mobile: '/images/search/andromeda-800.webp',
+      thumb: '/images/search/andromeda-thumb.webp',
       credit: 'Tło: Galaktyka Andromedy · fot. Unsplash'
     }
   ];
+
+  let currentWallId = 'polska-radio';
+  let applyWallGlobal = null;
+  const WALL_KEY = 'cc_search_wallpaper';
 
   const BIBLE_RAG_REGISTRY = [
   {
@@ -2547,6 +2566,146 @@
     ctx.font = '500 20px "Outfit", system-ui, sans-serif';
     ctx.fillStyle = 'rgba(243, 229, 200, 0.7)';
     ctx.fillText('polskieradio.cc  •  Christian Culture', W / 2, H - 100);
+  }
+
+// =========================================================================
+  // MODAL GALERII TEŁ WYSZUKIWARKI (WALLPAPER PICKER)
+  // Wybór oficjalnych motywów CC + Własne zdjęcie z dysku • LocalStorage
+  // =========================================================================
+  function ensureWallpaperModal() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('ccWallpaperModalBackdrop')) return;
+    const modal = document.createElement('div');
+    modal.className = 'cc-wallpaper-modal-backdrop';
+    modal.id = 'ccWallpaperModalBackdrop';
+    modal.style.display = 'none';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'ccWallpaperModalTitle');
+    modal.innerHTML = `
+      <div class="cc-wallpaper-modal">
+        <div class="cc-wallpaper-modal-head">
+          <div class="cc-wallpaper-modal-title" id="ccWallpaperModalTitle">
+            <span aria-hidden="true">🎨</span>
+            <strong>Wybierz tło wyszukiwarki Christian Culture</strong>
+          </div>
+          <button type="button" class="cc-wallpaper-modal-close" id="ccWallpaperModalClose" aria-label="Zamknij okno">×</button>
+        </div>
+        <div class="cc-wallpaper-modal-body">
+          <p class="cc-wallpaper-modal-desc">
+            Wybierz jeden z 3 oficjalnych motywów misyjnych lub wgraj własne zdjęcie z dysku / aparatu:
+          </p>
+          <div class="cc-wallpaper-grid" id="ccWallpaperGrid"></div>
+        </div>
+        <div class="cc-wallpaper-modal-foot">
+          <button type="button" class="cc-btn-wall-reset-modal" id="ccBtnWallResetModal">
+            Przywróć domyślne tło
+          </button>
+          <button type="button" class="cc-btn-wall-close-modal" id="ccBtnWallCloseModal">
+            Gotowe
+          </button>
+        </div>
+      </div>
+    `;
+    const targetRoot = document.getElementById('ccOmniOverlay') || document.body;
+    targetRoot.appendChild(modal);
+
+    modal.querySelector('#ccWallpaperModalClose').addEventListener('click', closeWallpaperModal);
+    modal.querySelector('#ccBtnWallCloseModal').addEventListener('click', closeWallpaperModal);
+    modal.querySelector('#ccBtnWallResetModal').addEventListener('click', () => {
+      try { localStorage.removeItem(WALL_KEY); } catch (_) {}
+      if (typeof applyWallGlobal === 'function') applyWallGlobal('polska-radio');
+      renderWallpaperGrid();
+    });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeWallpaperModal();
+    });
+  }
+
+  function renderWallpaperGrid() {
+    const grid = document.getElementById('ccWallpaperGrid');
+    if (!grid) return;
+
+    let customUrl = null;
+    try {
+      const saved = localStorage.getItem(WALL_KEY);
+      if (saved && (saved.startsWith('data:image') || saved.startsWith('http'))) {
+        customUrl = saved;
+      }
+    } catch (_) {}
+
+    const presetsHtml = PRESET_WALLS.map(w => {
+      const isActive = (currentWallId === w.id);
+      return `
+        <div class="cc-wall-card ${isActive ? 'active' : ''}" data-wall-id="${w.id}">
+          <div class="cc-wall-thumb-wrap">
+            <img src="${w.thumb || w.desktop}" alt="${escapeHtml(w.name)}" class="cc-wall-thumb" loading="lazy">
+            ${isActive ? '<span class="cc-wall-active-pill">✓ Wybrane</span>' : ''}
+          </div>
+          <div class="cc-wall-info">
+            <strong class="cc-wall-title">${escapeHtml(w.name)}</strong>
+            <span class="cc-wall-tag">${escapeHtml(w.tag || 'Motyw CC')}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const customIsActive = (currentWallId === 'custom');
+    const customCardHtml = `
+      <div class="cc-wall-card cc-wall-custom-card ${customIsActive ? 'active' : ''}" id="ccWallCustomCard">
+        <div class="cc-wall-thumb-wrap cc-wall-custom-wrap">
+          ${customUrl ? `<img src="${customUrl}" alt="Własna tapeta" class="cc-wall-thumb">` : `
+            <div class="cc-wall-upload-placeholder">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Wgraj z pliku</span>
+            </div>
+          `}
+          ${customIsActive ? '<span class="cc-wall-active-pill">✓ Wybrane</span>' : ''}
+        </div>
+        <div class="cc-wall-info">
+          <strong class="cc-wall-title">Własna tapeta</strong>
+          <span class="cc-wall-tag">${customUrl ? 'Zmień plik 📁' : 'Wybierz zdjęcie 📁'}</span>
+        </div>
+      </div>
+    `;
+
+    grid.innerHTML = presetsHtml + customCardHtml;
+
+    // Obsługa kliknięć w karty
+    grid.querySelectorAll('.cc-wall-card[data-wall-id]').forEach(card => {
+      card.addEventListener('click', () => {
+        const wallId = card.getAttribute('data-wall-id');
+        try { localStorage.setItem(WALL_KEY, wallId); } catch (_) {}
+        if (typeof applyWallGlobal === 'function') applyWallGlobal(wallId);
+        renderWallpaperGrid();
+      });
+    });
+
+    const customBtn = grid.querySelector('#ccWallCustomCard');
+    if (customBtn) {
+      customBtn.addEventListener('click', () => {
+        const wallFile = document.getElementById('ccOmniWallFile');
+        if (wallFile) wallFile.click();
+      });
+    }
+  }
+
+  function openWallpaperModal() {
+    ensureWallpaperModal();
+    renderWallpaperGrid();
+    const modal = document.getElementById('ccWallpaperModalBackdrop');
+    if (modal) {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeWallpaperModal() {
+    const modal = document.getElementById('ccWallpaperModalBackdrop');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
   }
 
   function ensureShareModal() {
@@ -6965,6 +7124,7 @@
         text-decoration: none;
       }
       .cc-omni-iconbtn:hover, .cc-omni-iconbtn:focus-visible { background: rgba(255, 255, 255, 0.12); color: var(--omni-gold-hover); outline: none; }
+      .cc-omni-iconbtn[hidden] { display: none !important; }
       .cc-omni-share-msg { font-size: 0.8rem; color: #fff; white-space: nowrap; }
       .cc-omni-share-msg:empty { display: none; }
       .cc-omni-view-all {
@@ -7259,21 +7419,19 @@ ${isStandalonePage ? '' : `
         <div class="cc-omni-footer">
           <div class="cc-omni-footer-sub">
             <div class="cc-omni-footer-left">
-              <button type="button" id="ccOmniSourcesBtn" class="cc-omni-footlink" title="Rejestr źródeł i licencji Biblia Intelligence">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
-                <span>Źródła &amp; Licencje</span>
+              <button type="button" id="ccOmniSourcesBtn" class="cc-omni-iconbtn" aria-label="Rejestr źródeł i licencji Biblia Intelligence (R01–R40)" title="Źródła i licencje">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
               </button>
-              <button type="button" id="ccOmniWallBtn" class="cc-omni-footlink" title="Przełącz tapetę tła (Polska &amp; Radio CC / Galaktyka Andromedy)">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
-                <span id="ccOmniWallLabel">Tapeta: Polska &amp; Radio</span>
+              <button type="button" id="ccOmniWallBtn" class="cc-omni-iconbtn" aria-label="Wybierz tło wyszukiwarki (Galeria motywów CC)" title="Galeria teł (Polska &amp; Fale Radiowe, Global CC, Kosmos)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
               </button>
-              <button type="button" id="ccOmniWallUpload" class="cc-omni-footlink" title="Wgraj własną tapetę z dysku">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <span>Własna</span>
+              <button type="button" id="ccOmniWallUpload" class="cc-omni-iconbtn" aria-label="Wgraj własną tapetę z pliku" title="Wgraj własną tapetę">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               </button>
-              <button type="button" id="ccOmniWallReset" class="cc-omni-footlink" hidden>Domyślna</button>
+              <button type="button" id="ccOmniWallReset" class="cc-omni-iconbtn" aria-label="Przywróć domyślne tło CC" title="Przywróć domyślne tło CC" hidden>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
               <input type="file" id="ccOmniWallFile" accept="image/*" hidden>
-              <span id="ccOmniCredit" class="cc-omni-credit">Tło: Polska &amp; Fale Radiowe · Christian Culture</span>
             </div>
             <div class="cc-omni-footer-right">
               <span id="ccOmniShareMsg" class="cc-omni-share-msg" role="status" aria-live="polite"></span>
@@ -7418,7 +7576,6 @@ ${isStandalonePage ? '' : `
     });
 
     // Obsługa tapety: oficjalne motywy CC + własna tapeta użytkownika (localStorage)
-    const WALL_KEY = 'cc_search_wallpaper';
     const wallBtn = document.getElementById('ccOmniWallBtn');
     const wallLabel = document.getElementById('ccOmniWallLabel');
     const wallUpload = document.getElementById('ccOmniWallUpload');
@@ -7426,29 +7583,43 @@ ${isStandalonePage ? '' : `
     const wallFile = document.getElementById('ccOmniWallFile');
     const credit = document.getElementById('ccOmniCredit');
 
-    let currentWallId = 'polska-radio';
+    currentWallId = 'polska-radio';
 
     const applyWall = (wallVal) => {
-      if (!wallVal || wallVal === 'polska-radio') {
+      const preset = PRESET_WALLS.find(p => p.id === wallVal);
+      if (preset) {
+        currentWallId = preset.id;
+        overlay.style.backgroundImage = `url("${preset.desktop}")`;
+        if (credit) credit.textContent = preset.credit;
+        if (wallLabel) wallLabel.textContent = `Tło: ${preset.name}`;
+        if (wallBtn) {
+          wallBtn.title = `Galeria teł (aktualne: ${preset.name})`;
+          wallBtn.setAttribute('aria-label', `Wybierz tło wyszukiwarki (aktualne: ${preset.name})`);
+        }
+        if (wallReset) wallReset.hidden = (preset.id === 'polska-radio');
+      } else if (!wallVal) {
         currentWallId = 'polska-radio';
-        overlay.style.backgroundImage = 'url("/images/search/polska-radio-1600.webp")';
+        overlay.style.backgroundImage = `url("${PRESET_WALLS[0].desktop}")`;
         if (credit) credit.textContent = PRESET_WALLS[0].credit;
-        if (wallLabel) wallLabel.textContent = 'Tapeta: Polska & Radio';
+        if (wallLabel) wallLabel.textContent = `Tło: ${PRESET_WALLS[0].name}`;
+        if (wallBtn) {
+          wallBtn.title = `Galeria teł (aktualne: ${PRESET_WALLS[0].name})`;
+          wallBtn.setAttribute('aria-label', `Wybierz tło wyszukiwarki (aktualne: ${PRESET_WALLS[0].name})`);
+        }
         if (wallReset) wallReset.hidden = true;
-      } else if (wallVal === 'andromeda') {
-        currentWallId = 'andromeda';
-        overlay.style.backgroundImage = 'url("/images/search/andromeda-1600.webp")';
-        if (credit) credit.textContent = PRESET_WALLS[1].credit;
-        if (wallLabel) wallLabel.textContent = 'Tapeta: Galaktyka';
-        if (wallReset) wallReset.hidden = false;
       } else {
         currentWallId = 'custom';
         overlay.style.backgroundImage = `url("${wallVal}")`;
         if (credit) credit.textContent = 'Tło: Twoja tapeta';
-        if (wallLabel) wallLabel.textContent = 'Tapeta: Własna';
+        if (wallLabel) wallLabel.textContent = 'Tło: Własna';
+        if (wallBtn) {
+          wallBtn.title = 'Galeria teł (aktualne: Twoja tapeta)';
+          wallBtn.setAttribute('aria-label', 'Wybierz tło wyszukiwarki (aktualne: Twoja tapeta)');
+        }
         if (wallReset) wallReset.hidden = false;
       }
     };
+    applyWallGlobal = (v) => applyWall(v);
 
     try {
       const saved = localStorage.getItem(WALL_KEY);
@@ -7458,10 +7629,9 @@ ${isStandalonePage ? '' : `
     }
 
     if (wallBtn) {
-      wallBtn.addEventListener('click', () => {
-        const nextId = (currentWallId === 'polska-radio') ? 'andromeda' : 'polska-radio';
-        try { localStorage.setItem(WALL_KEY, nextId); } catch (_) {}
-        applyWall(nextId);
+      wallBtn.addEventListener('click', (e) => {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        openWallpaperModal();
       });
     }
 
@@ -7496,6 +7666,7 @@ ${isStandalonePage ? '' : `
           try {
             localStorage.setItem(WALL_KEY, dataUrl);
             applyWall(dataUrl);
+            renderWallpaperGrid();
             return;
           } catch (_) {}
         }
@@ -8660,6 +8831,9 @@ ${isStandalonePage ? '' : `
     renderBibleRagCard: renderBibleRagCard,
     BIBLE_RAG_REGISTRY: BIBLE_RAG_REGISTRY,
     PRESET_WALLS: PRESET_WALLS,
+    openWallpaperModal: openWallpaperModal,
+    closeWallpaperModal: closeWallpaperModal,
+    renderWallpaperGrid: renderWallpaperGrid,
     drawBibleShareCard: drawBibleShareCard,
     openShareModal: openShareModal,
     closeShareModal: closeShareModal,

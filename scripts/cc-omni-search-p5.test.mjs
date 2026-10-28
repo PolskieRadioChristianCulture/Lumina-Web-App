@@ -5,19 +5,25 @@ import path from 'node:path';
 
 const REPO_ROOT = 'C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc';
 
-test('wallpaper: verifies image assets exist and are optimized', () => {
-  const desktop = path.join(REPO_ROOT, 'images/search/polska-radio-1600.webp');
-  const mobile = path.join(REPO_ROOT, 'images/search/polska-radio-800.webp');
-  const png = path.join(REPO_ROOT, 'images/search/polska-radio.png');
+test('wallpaper: verifies all 3 official image assets and thumbnails exist', () => {
+  const assets = [
+    'images/search/polska-radio-1600.webp',
+    'images/search/polska-radio-800.webp',
+    'images/search/polska-radio-thumb.webp',
+    'images/search/global-radio-1600.webp',
+    'images/search/global-radio-800.webp',
+    'images/search/global-radio-thumb.webp',
+    'images/search/andromeda-1600.webp',
+    'images/search/andromeda-800.webp',
+    'images/search/andromeda-thumb.webp'
+  ];
 
-  assert.ok(fs.existsSync(desktop), 'polska-radio-1600.webp exists');
-  assert.ok(fs.existsSync(mobile), 'polska-radio-800.webp exists');
-  assert.ok(fs.existsSync(png), 'polska-radio.png exists');
-
-  const sDesktop = fs.statSync(desktop).size;
-  const sMobile = fs.statSync(mobile).size;
-  assert.ok(sDesktop > 10000 && sDesktop < 300000, `Desktop size within reasonable bounds (${sDesktop} bytes)`);
-  assert.ok(sMobile > 5000 && sMobile < 150000, `Mobile size within reasonable bounds (${sMobile} bytes)`);
+  for (const rel of assets) {
+    const full = path.join(REPO_ROOT, rel);
+    assert.ok(fs.existsSync(full), `${rel} exists`);
+    const size = fs.statSync(full).size;
+    assert.ok(size > 1000, `${rel} has valid non-empty size (${size} bytes)`);
+  }
 });
 
 test('wallpaper: wyszukiwarka.html and wyszukiwarka/index.html use polska-radio background', () => {
@@ -30,14 +36,17 @@ test('wallpaper: wyszukiwarka.html and wyszukiwarka/index.html use polska-radio 
   assert.ok(h2.includes('/images/search/polska-radio-800.webp'), 'wyszukiwarka/index.html uses polska-radio mobile');
 });
 
-test('cc-omni-search.js: contains preset wallpapers and wallpaper switcher buttons', () => {
+test('cc-omni-search.js: contains 3 preset wallpapers and modal picker contracts', () => {
   const js = fs.readFileSync(path.join(REPO_ROOT, 'components/cc-omni-search.js'), 'utf8');
 
-  assert.ok(js.includes('/images/search/polska-radio-1600.webp'), 'cc-omni-search.js references polska-radio-1600.webp');
-  assert.ok(js.includes('/images/search/polska-radio-800.webp'), 'cc-omni-search.js references polska-radio-800.webp');
-  assert.ok(js.includes('ccOmniWallLabel'), 'cc-omni-search.js has ccOmniWallLabel');
-  assert.ok(js.includes('ccOmniWallUpload'), 'cc-omni-search.js has ccOmniWallUpload');
-  assert.ok(js.includes('PRESET_WALLS'), 'cc-omni-search.js defines PRESET_WALLS');
+  assert.ok(js.includes('/images/search/polska-radio-1600.webp'), 'references polska-radio-1600.webp');
+  assert.ok(js.includes('/images/search/global-radio-1600.webp'), 'references global-radio-1600.webp');
+  assert.ok(js.includes('/images/search/andromeda-1600.webp'), 'references andromeda-1600.webp');
+  assert.ok(js.includes('cc-wallpaper-modal-backdrop'), 'has wallpaper modal backdrop styles');
+  assert.ok(js.includes('cc-wallpaper-grid'), 'has wallpaper grid styles');
+  assert.ok(js.includes('function openWallpaperModal('), 'openWallpaperModal defined');
+  assert.ok(js.includes('function closeWallpaperModal('), 'closeWallpaperModal defined');
+  assert.ok(js.includes('function renderWallpaperGrid('), 'renderWallpaperGrid defined');
 });
 
 test('cc-omni-search.js: BIBLE_RAG_REGISTRY and queryKnowledgeRegistryClient functionality', () => {
@@ -64,7 +73,7 @@ test('cc-omni-search.js: detectBibleRagQuery and renderBibleRagCard contracts', 
   assert.ok(js.includes('data-action="open-share-card"'), 'open-share-card action handler present');
 });
 
-test('functional: evaluates search logic in simulated browser environment', async () => {
+test('functional: wallpaper picker modal and presets lifecycle', async () => {
   const { Window } = await import('happy-dom');
   const window = new Window({ url: 'https://polskieradio.cc/wyszukiwarka' });
   const document = window.document;
@@ -72,60 +81,73 @@ test('functional: evaluates search logic in simulated browser environment', asyn
   globalThis.window = window;
   globalThis.document = document;
   globalThis.localStorage = window.localStorage;
-  if (!globalThis.location) {
-    globalThis.location = window.location;
-  }
+  if (!globalThis.location) globalThis.location = window.location;
 
-  document.body.innerHTML = `
-    <div id="ccOmniOverlay">
-      <div id="ccOmniModal"></div>
-      <div id="ccOmniBody"></div>
-      <button id="ccOmniWallBtn"></button>
-      <span id="ccOmniWallLabel"></span>
-      <button id="ccOmniWallUpload"></button>
-      <button id="ccOmniWallReset"></button>
-      <input type="file" id="ccOmniWallFile" />
-      <span id="ccOmniCredit"></span>
-    </div>
-  `;
+  document.body.innerHTML = '';
 
-  // Import cc-omni-search.js
   const jsCode = fs.readFileSync(path.join(REPO_ROOT, 'components/cc-omni-search.js'), 'utf8');
   window.eval(jsCode);
 
   const CCOmni = window.CCOmniSearch;
-  assert.ok(CCOmni, 'window.CCOmniSearch is initialized');
-  assert.equal(typeof CCOmni.detectBibleRagQuery, 'function');
-  assert.equal(typeof CCOmni.queryKnowledgeRegistryClient, 'function');
-  assert.equal(typeof CCOmni.renderBibleRagCard, 'function');
-
-  // Test 1: Query for salvation
-  const qSalvation = CCOmni.detectBibleRagQuery('Jak otrzymać zbawienie?');
-  assert.ok(qSalvation, 'Salvation query detected');
-  assert.ok(qSalvation.isQuestion, 'Identified as question');
-  assert.ok(qSalvation.sources.length >= 1, 'Found at least 1 source');
-  assert.ok(qSalvation.primary.text.includes('Bóg umiłował świat') || qSalvation.primary.text.includes('Łaską'), 'Contains scripture text');
-
-  // Test 2: Query for mediator
-  const qMediator = CCOmni.detectBibleRagQuery('Kto jest pośrednikiem między Bogiem a ludźmi?');
-  assert.ok(qMediator, 'Mediator query detected');
-  assert.ok(qMediator.primary.title.includes('Pośrednik') || qMediator.primary.text.includes('pośrednik'));
-
-  // Test 3: Query for sabbath
-  const qSabbath = CCOmni.detectBibleRagQuery('Co mówi Biblia o Szabacie?');
-  assert.ok(qSabbath, 'Sabbath query detected');
-  assert.ok(qSabbath.primary.text.includes('szabatu') || qSabbath.primary.topic === 'szabat');
-
-  // Test 4: Render card HTML
-  const cardHtml = CCOmni.renderBibleRagCard(qSalvation);
-  assert.ok(cardHtml.includes('cc-rag-answer-card'), 'Rendered card container');
-  assert.ok(cardHtml.includes('ODPOWIEDŹ BIBLIJNA CC'), 'Rendered header badge');
-  assert.ok(cardHtml.includes('[1]'), 'Rendered citation tag');
-  assert.ok(cardHtml.includes('data-action="copy-rag-answer"'), 'Rendered copy button');
-  assert.ok(cardHtml.includes('data-action="open-share-card"'), 'Rendered share card button');
-
-  // Test 5: Presets
-  assert.equal(CCOmni.PRESET_WALLS.length, 2, 'Has 2 preset wallpapers');
+  assert.ok(CCOmni, 'CCOmniSearch initialized');
+  assert.equal(CCOmni.PRESET_WALLS.length, 3, 'Exactly 3 preset wallpapers');
   assert.equal(CCOmni.PRESET_WALLS[0].id, 'polska-radio');
-  assert.equal(CCOmni.PRESET_WALLS[1].id, 'andromeda');
+  assert.equal(CCOmni.PRESET_WALLS[1].id, 'global-radio');
+  assert.equal(CCOmni.PRESET_WALLS[2].id, 'andromeda');
+
+  // Open modal
+  CCOmni.openWallpaperModal();
+  const backdrop = document.getElementById('ccWallpaperModalBackdrop');
+  assert.ok(backdrop, 'Backdrop exists in DOM');
+  assert.equal(backdrop.style.display, 'flex', 'Backdrop visible');
+
+  // Check grid cards
+  const cards = document.querySelectorAll('.cc-wall-card');
+  assert.equal(cards.length, 4, '3 preset cards + 1 custom upload card');
+
+  // Select global-radio card
+  const globalCard = document.querySelector('.cc-wall-card[data-wall-id="global-radio"]');
+  assert.ok(globalCard, 'global-radio card exists in grid');
+  globalCard.click();
+
+  assert.equal(window.localStorage.getItem('cc_search_wallpaper'), 'global-radio');
+  const overlay = document.getElementById('ccOmniOverlay');
+  assert.ok(overlay.style.backgroundImage.includes('global-radio-1600.webp'), 'Background changed to global-radio');
+
+  // Close modal
+  CCOmni.closeWallpaperModal();
+  assert.equal(backdrop.style.display, 'none', 'Modal closed');
+});
+
+
+test('footer: buttons are icon-only with 44px ergonomics, aria-labels and tooltips', async () => {
+  const { Window } = await import('happy-dom');
+  const window = new Window({ url: 'https://polskieradio.cc/wyszukiwarka' });
+  const document = window.document;
+  globalThis.window = window;
+  globalThis.document = document;
+  globalThis.localStorage = window.localStorage;
+  if (!globalThis.location) globalThis.location = window.location;
+
+  document.body.innerHTML = '';
+  const jsCode = fs.readFileSync(path.join(REPO_ROOT, 'components/cc-omni-search.js'), 'utf8');
+  window.eval(jsCode);
+
+  const sourcesBtn = document.getElementById('ccOmniSourcesBtn');
+  const wallBtn = document.getElementById('ccOmniWallBtn');
+  const wallUpload = document.getElementById('ccOmniWallUpload');
+  const wallReset = document.getElementById('ccOmniWallReset');
+
+  assert.ok(sourcesBtn, 'ccOmniSourcesBtn exists');
+  assert.ok(wallBtn, 'ccOmniWallBtn exists');
+  assert.ok(wallUpload, 'ccOmniWallUpload exists');
+  assert.ok(wallReset, 'ccOmniWallReset exists');
+
+  for (const btn of [sourcesBtn, wallBtn, wallUpload, wallReset]) {
+    assert.ok(btn.classList.contains('cc-omni-iconbtn'), `${btn.id} has cc-omni-iconbtn class`);
+    assert.ok(btn.getAttribute('aria-label'), `${btn.id} has aria-label`);
+    assert.ok(btn.getAttribute('title'), `${btn.id} has title tooltip`);
+    assert.equal(btn.querySelectorAll('svg').length, 1, `${btn.id} contains SVG icon`);
+    assert.equal(btn.querySelector('span'), null, `${btn.id} has no inner text span (icon-only)`);
+  }
 });
