@@ -360,19 +360,24 @@
       box-shadow: 0 8px 22px rgba(196, 163, 90, 0.35);
     }
 
-    /* MODAL OVERLAYS */
+    /* FULLSCREEN MODAL OVERLAYS (TRYB PEŁNOEKRANOWY) */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      z-index: 100;
-      background: rgba(4, 5, 8, 0.88);
-      backdrop-filter: blur(14px);
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      z-index: 9999;
+      background: rgba(4, 6, 11, 0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+      flex-direction: column;
+      padding: 0;
+      margin: 0;
       opacity: 0;
       pointer-events: none;
+      overflow: hidden;
       transition: opacity 0.25s ease;
     }
     .modal-backdrop.open {
@@ -381,21 +386,107 @@
     }
     .modal-dialog {
       position: relative;
+      width: 100vw;
       width: 100%;
-      max-width: 660px;
-      max-height: 90vh;
+      height: 100vh;
+      height: 100dvh;
+      max-width: none !important;
+      max-height: none !important;
       overflow-y: auto;
-      background: linear-gradient(165deg, #12141c 0%, #080a10 100%);
-      border: 1.5px solid var(--border-gold);
-      border-radius: 20px;
-      padding: clamp(28px, 4vw, 44px);
-      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.9), 0 0 50px rgba(196, 163, 90, 0.15);
+      -webkit-overflow-scrolling: touch;
+      background: radial-gradient(circle at 50% 0%, #151d2c 0%, #090e18 45%, #04060a 100%);
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      margin: 0;
+      box-shadow: none;
       transform: translateY(16px);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
       font-family: var(--font-sans);
+      display: flex;
+      flex-direction: column;
     }
     .modal-backdrop.open .modal-dialog {
       transform: translateY(0);
+    }
+
+    /* FULLSCREEN STICKY TOPBAR */
+    .modal-fs-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px clamp(16px, 3vw, 32px);
+      background: rgba(6, 9, 15, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(196, 163, 90, 0.22);
+    }
+    .modal-fs-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-cinzel);
+      font-size: clamp(0.74rem, 0.9vw, 0.84rem);
+      letter-spacing: 0.18em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+    }
+    .modal-fs-brand-dot {
+      color: var(--rose);
+      font-size: 0.95rem;
+    }
+    .modal-fs-brand-sub {
+      color: var(--cream-muted);
+      font-size: 0.72rem;
+      opacity: 0.8;
+      letter-spacing: 0.14em;
+    }
+    .modal-close-fs {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 999px;
+      color: var(--cream);
+      font-family: var(--font-cinzel);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      padding: 8px 20px;
+      min-height: 44px;
+      min-width: 44px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .modal-close-fs:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #04060a;
+      box-shadow: 0 0 16px rgba(196, 163, 90, 0.4);
+      transform: translateY(-1px);
+    }
+    .modal-close-fs:active {
+      transform: none;
+    }
+
+    /* FULLSCREEN SCROLLABLE INNER CONTAINER */
+    .modal-fs-scroll {
+      flex: 1 1 auto;
+      padding: clamp(32px, 5vw, 56px) clamp(18px, 4vw, 36px) 96px;
+      display: flex;
+      justify-content: center;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .modal-fs-container {
+      width: 100%;
+      max-width: 860px;
+      position: relative;
     }
     .modal-close {
       position: absolute;
@@ -419,6 +510,189 @@
     .modal-close:hover {
       background: var(--gold);
       color: #000000;
+    }
+
+    /* CONTACT HERO & TOPIC CARDS */
+    .contact-card-hero {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(196, 163, 90, 0.06) 100%);
+      border: 1.5px solid rgba(196, 163, 90, 0.35);
+      border-radius: 16px;
+      padding: clamp(20px, 3vw, 32px);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+    .contact-card-icon {
+      font-size: 2.2rem;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(196, 163, 90, 0.12);
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--gold-light);
+    }
+    .contact-card-info {
+      flex: 1;
+      min-width: 240px;
+    }
+    .contact-card-label {
+      display: block;
+      font-family: var(--font-cinzel);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .contact-card-email {
+      font-family: var(--font-serif);
+      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+      display: block;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+    .contact-card-email:hover {
+      color: var(--gold);
+    }
+    .contact-card-sub {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--cream-muted);
+      margin-top: 4px;
+    }
+    .contact-card-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-contact-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      min-height: 44px;
+      background: linear-gradient(135deg, #FF7A00 0%, #D45B00 100%);
+      color: #ffffff;
+      font-family: var(--font-cinzel);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255, 122, 0, 0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-contact-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 122, 0, 0.5);
+    }
+    .btn-contact-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      min-height: 44px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(196, 163, 90, 0.4);
+      color: var(--cream);
+      font-family: var(--font-cinzel);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-contact-secondary:hover {
+      background: rgba(196, 163, 90, 0.15);
+      border-color: var(--gold);
+      color: #ffffff;
+    }
+    .contact-topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .contact-topic-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(196, 163, 90, 0.2);
+      border-radius: 12px;
+      padding: 22px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-topic-box:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(196, 163, 90, 0.45);
+    }
+    .contact-topic-icon {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+    .contact-topic-title {
+      font-family: var(--font-cinzel);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin: 0 0 8px;
+      letter-spacing: 0.08em;
+    }
+    .contact-topic-desc {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--cream-muted);
+      margin: 0;
+    }
+
+    /* TOAST NOTIFICATION */
+    .cc-toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: linear-gradient(135deg, #182234 0%, #0c121e 100%);
+      border: 1px solid var(--gold);
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-family: var(--font-cinzel);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(196,163,90,0.3);
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cc-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .modal-fs-header {
+        padding: 12px 16px;
+      }
+      .modal-fs-brand-sub {
+        display: none;
+      }
+      .modal-fs-scroll {
+        padding: 24px 16px 64px;
+      }
     }
     .modal-kicker {
       font-size: 0.74rem;
@@ -621,7 +895,7 @@
             <li><button type="button" data-modal="modalKsiazki">KSIĄŻKI</button></li>
             <li><button type="button" data-modal="modalOAutorce">O AUTORCE</button></li>
             <li><button type="button" class="nav-wspieram" data-modal="modalWspieramTo" title="Wspieram to">WSPIERAM TO</button></li>
-            <li><a href="mailto:wiolettapardon@gmail.com" title="Napisz do autorki">KONTAKT</a></li>
+            <li><button type="button" data-modal="modalKontakt" title="Napisz do autorki">KONTAKT</button></li>
           </ul>
         </nav>
 
@@ -661,7 +935,7 @@
         <div style="display:flex;gap:16px;justify-content:center;font-size:0.8rem;letter-spacing:0.18em;">
           <button type="button" data-modal="modalKsiazki" style="background:none;border:none;color:var(--cream-muted);cursor:pointer;font-family:var(--font-cinzel);min-height:44px;padding:8px;">KSIĄŻKI</button>
           <button type="button" data-modal="modalOAutorce" style="background:none;border:none;color:var(--cream-muted);cursor:pointer;font-family:var(--font-cinzel);min-height:44px;padding:8px;">O AUTORCE</button>
-          <a href="mailto:wiolettapardon@gmail.com" style="color:var(--cream-muted);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:8px;">KONTAKT</a>
+          <button type="button" data-modal="modalKontakt" style="background:none;border:none;color:var(--cream-muted);cursor:pointer;font-family:var(--font-cinzel);min-height:44px;padding:8px;">KONTAKT</button>
         </div>
       </div>
 
@@ -674,7 +948,7 @@
 
         <div style="display:flex;align-items:center;gap:12px;">
           <span style="display:none;" id="envelopeHint">Kontakt: wiolettapardon@gmail.com</span>
-          <a class="envelope-btn" id="footerContactEnvelope" href="mailto:wiolettapardon@gmail.com" aria-label="Kontakt e-mail: wiolettapardon@gmail.com" title="Napisz: wiolettapardon@gmail.com">
+          <a class="envelope-btn" id="footerContactEnvelope" href="mailto:wiolettapardon@gmail.com" data-modal="modalKontakt" aria-label="Kontakt e-mail: wiolettapardon@gmail.com" title="Napisz do autorki">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="2" y="4" width="20" height="16" rx="2"></rect>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
@@ -685,199 +959,385 @@
     </div>
   </main>
 
-  <!-- MODAL 1: CZYTAJ / PROLOG -->
+  <!-- MODAL 1: CZYTAJ / PROLOG (TRYB PEŁNOEKRANOWY) -->
   <div class="modal-backdrop" id="modalCzytaj" role="dialog" aria-modal="true" aria-labelledby="modalCzytajTitle">
-    <div class="modal-dialog" id="pardon-czy-to-milosc">
-      <button class="modal-close" type="button" data-close-modal aria-label="Zamknij okno">✕</button>
-      <span class="modal-kicker">Cykl Powieści · Tom I</span>
-      <div class="modal-pill">Status: Powieść w przygotowaniu · Tom I dostępny online (25 rozdziałów)</div>
-      <h2 class="modal-title" id="modalCzytajTitle">Pardon, Czy To Miłość?</h2>
-      <div class="modal-body">
-        <p style="font-family:var(--font-serif);font-size:1.25rem;font-style:italic;color:var(--gold-light);margin-bottom:18px;">
-          „Niektóre spotkania nie są przypadkowe… Są odpowiedzią na modlitwę.”
-        </p>
-        <p>
-          <strong>Aleksandra Wysocka</strong> nauczyła się, że najbezpieczniej jest nikogo nie potrzebować. <strong>Adam Laurent</strong> wie natomiast, że nie wszystkie prawdy da się ukrywać na zawsze.
-        </p>
-        <p>
-          Kiedy ich drogi przecinają się w deszczowej Warszawie, żadne z nich nie podejrzewa, że niewinne „Pardon” stanie się początkiem historii, która odmieni ich życie. Od klimatycznych warszawskich kawiarni, przez pełne sekretów krakowskie kamienice, aż po nastrojowe bulwary Paryża — rodzi się uczucie, któremu coraz trudniej zaprzeczać.
-        </p>
-        <p>
-          Jednak czy można zbudować wspólną przyszłość, kiedy przeszłość domaga się prawdy? Odkryj opowieść o odwadze, przebaczeniu i miłości, która nie boi się światła.
-        </p>
-        <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-          <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/rozdzial-1" style="background:var(--orange,#FF7A00);border-color:var(--orange,#FF7A00);color:#ffffff;font-weight:600;">Czytaj Rozdział 1 →</a>
-          <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/">Spis 25 rozdziałów</a>
-          <button class="btn-modal-action" type="button" data-modal="modalWspieramTo" style="border-color:rgba(196,163,90,0.5);color:var(--gold-light);background:none;cursor:pointer;">Wspieram to →</button>
-          <a class="btn-modal-action" href="mailto:wiolettapardon@gmail.com?subject=Pytanie%20o%20powieść%20Pardon%20Czy%20To%20Miłość" style="border-color:var(--rose);color:var(--rose);">Napisz do autorki</a>
+    <div class="modal-dialog">
+      <header class="modal-fs-header">
+        <div class="modal-fs-brand">
+          <span class="modal-fs-brand-dot">✦</span>
+          <span>WIOLETTA ROGOWSKA</span>
+          <span class="modal-fs-brand-sep">·</span>
+          <span class="modal-fs-brand-sub">PARDON, CZY TO MIŁOŚĆ?</span>
+        </div>
+        <button class="modal-close-fs" type="button" data-close-modal aria-label="Zamknij okno pełnoekranowe">
+          <span aria-hidden="true" style="font-size:1.1rem;line-height:1;">✕</span>
+          <span>ZAMKNIJ</span>
+        </button>
+      </header>
+      <div class="modal-fs-scroll">
+        <div class="modal-fs-container" id="pardon-czy-to-milosc">
+          <span class="modal-kicker">Cykl Powieści · Tom I</span>
+          <div class="modal-pill">Status: Powieść w przygotowaniu · Tom I dostępny online (25 rozdziałów)</div>
+          <h2 class="modal-title" id="modalCzytajTitle">Pardon, Czy To Miłość?</h2>
+          <div class="modal-body">
+            <p style="font-family:var(--font-serif);font-size:1.25rem;font-style:italic;color:var(--gold-light);margin-bottom:18px;">
+              „Niektóre spotkania nie są przypadkowe… Są odpowiedzią na modlitwę.”
+            </p>
+            <p>
+              <strong>Aleksandra Wysocka</strong> nauczyła się, że najbezpieczniej jest nikogo nie potrzebować. <strong>Adam Laurent</strong> wie natomiast, że nie wszystkie prawdy da się ukrywać na zawsze.
+            </p>
+            <p>
+              Kiedy ich drogi przecinają się w deszczowej Warszawie, żadne z nich nie podejrzewa, że niewinne „Pardon” stanie się początkiem historii, która odmieni ich życie. Od klimatycznych warszawskich kawiarni, przez pełne sekretów krakowskie kamienice, aż po nastrojowe bulwary Paryża — rodzi się uczucie, któremu coraz trudniej zaprzeczać.
+            </p>
+            <p>
+              Jednak czy można zbudować wspólną przyszłość, kiedy przeszłość domaga się prawdy? Odkryj opowieść o odwadze, przebaczeniu i miłości, która nie boi się światła.
+            </p>
+            <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+              <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/rozdzial-1" style="background:var(--orange,#FF7A00);border-color:var(--orange,#FF7A00);color:#ffffff;font-weight:600;">Czytaj Rozdział 1 →</a>
+              <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/">Spis 25 rozdziałów</a>
+              <button class="btn-modal-action" type="button" data-modal="modalWspieramTo" style="border-color:rgba(196,163,90,0.5);color:var(--gold-light);background:none;cursor:pointer;">Wspieram to →</button>
+              <button class="btn-modal-action" type="button" data-modal="modalKontakt" style="border-color:var(--rose);color:var(--rose);background:none;cursor:pointer;">Napisz do autorki</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL 2: O AUTORCE -->
+  <!-- MODAL 2: O AUTORCE (TRYB PEŁNOEKRANOWY) -->
   <div class="modal-backdrop" id="modalOAutorce" role="dialog" aria-modal="true" aria-labelledby="modalOAutorceTitle">
-    <div class="modal-dialog" id="o-autorce">
-      <button class="modal-close" type="button" data-close-modal aria-label="Zamknij okno">✕</button>
-      <span class="modal-kicker">Sylwetka Twórcza</span>
-      <h2 class="modal-title" id="modalOAutorceTitle">Wioletta Rogowska</h2>
-      <div class="modal-body">
-        <div style="display:flex;gap:20px;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap;">
-          <picture style="flex-shrink:0;">
-            <source srcset="/images/wioletta/portret-o-autorce-zatwierdzony.webp" type="image/webp">
-            <img src="/images/wioletta/portret-o-autorce-zatwierdzony.jpg" alt="Portret autorki Wioletty Rogowskiej" width="130" height="130" style="width:130px;height:130px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);box-shadow:0 6px 18px rgba(0,0,0,0.4);" loading="lazy">
-          </picture>
-          <div style="flex:1;min-width:220px;">
-            <p style="font-family:var(--font-serif);font-size:1.2rem;font-style:italic;color:var(--gold-light);margin-top:0;">
-              Miłość. Wiara. Nadzieja. Historie, które zostają w sercu.
-            </p>
-            <p style="margin-top:10px;">
-              Wioletta Rogowska jest autorką współczesnych powieści romantyczno-obyczajowych z subtelnym przesłaniem biblijnym. W swoich utworach łączy kobiecą wrażliwość, psychologiczną prawdę o relacjach i głębokie przekonanie, że każdy człowiek zasługuje na drugą szansę.
-            </p>
-          </div>
+    <div class="modal-dialog">
+      <header class="modal-fs-header">
+        <div class="modal-fs-brand">
+          <span class="modal-fs-brand-dot">✦</span>
+          <span>WIOLETTA ROGOWSKA</span>
+          <span class="modal-fs-brand-sep">·</span>
+          <span class="modal-fs-brand-sub">O AUTORCE</span>
         </div>
-        <p>
-          Jej powieści to opowieści o dojrzałych wyborach, sile przebaczenia i odwadze do stanięcia w prawdzie. Prywatnie współtworzy ekosystem Christian Culture i portal społecznościowy LUMINA.
-        </p>
-        <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
-          <a class="btn-modal-action" href="/lumina.wiolettarogowska.html">Profil w społeczności LUMINA →</a>
-          <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/">Czytaj powieść online →</a>
+        <button class="modal-close-fs" type="button" data-close-modal aria-label="Zamknij okno pełnoekranowe">
+          <span aria-hidden="true" style="font-size:1.1rem;line-height:1;">✕</span>
+          <span>ZAMKNIJ</span>
+        </button>
+      </header>
+      <div class="modal-fs-scroll">
+        <div class="modal-fs-container" id="o-autorce">
+          <span class="modal-kicker">Sylwetka Twórcza</span>
+          <h2 class="modal-title" id="modalOAutorceTitle">Wioletta Rogowska</h2>
+          <div class="modal-body">
+            <div style="display:flex;gap:24px;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap;">
+              <picture style="flex-shrink:0;">
+                <source srcset="/images/wioletta/portret-o-autorce-zatwierdzony.webp" type="image/webp">
+                <img src="/images/wioletta/portret-o-autorce-zatwierdzony.jpg" alt="Portret autorki Wioletty Rogowskiej" width="140" height="140" style="width:140px;height:140px;border-radius:50%;object-fit:cover;border:2.5px solid var(--gold);box-shadow:0 8px 24px rgba(0,0,0,0.5);" loading="lazy">
+              </picture>
+              <div style="flex:1;min-width:240px;">
+                <p style="font-family:var(--font-serif);font-size:1.25rem;font-style:italic;color:var(--gold-light);margin-top:0;line-height:1.5;">
+                  Miłość. Wiara. Nadzieja. Historie, które zostają w sercu.
+                </p>
+                <p style="margin-top:12px;">
+                  Wioletta Rogowska jest autorką współczesnych powieści romantyczno-obyczajowych z subtelnym przesłaniem biblijnym. W swoich utworach łączy kobiecą wrażliwość, psychologiczną prawdę o relacjach i głębokie przekonanie, że każdy człowiek zasługuje na drugą szansę.
+                </p>
+              </div>
+            </div>
+            <p>
+              Jej powieści to opowieści o dojrzałych wyborach, sile przebaczenia i odwadze do stanięcia w prawdzie. Prywatnie współtworzy ekosystem Christian Culture i portal społecznościowy LUMINA.
+            </p>
+            <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
+              <a class="btn-modal-action" href="/lumina.wiolettarogowska.html">Profil w społeczności LUMINA →</a>
+              <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/">Czytaj powieść online →</a>
+              <button class="btn-modal-action" type="button" data-modal="modalKontakt" style="border-color:var(--rose);color:var(--rose);background:none;cursor:pointer;">Napisz do autorki</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL 3: KSIĄŻKI -->
+  <!-- MODAL 3: KSIĄŻKI (TRYB PEŁNOEKRANOWY) -->
   <div class="modal-backdrop" id="modalKsiazki" role="dialog" aria-modal="true" aria-labelledby="modalKsiazkiTitle">
-    <div class="modal-dialog" id="ksiazki-i-aktualnosci">
-      <button class="modal-close" type="button" data-close-modal aria-label="Zamknij okno">✕</button>
-      <span class="modal-kicker">Twórczość Literacka</span>
-      <h2 class="modal-title" id="modalKsiazkiTitle">Cykl „Pardon, Czy To Miłość?”</h2>
-      <div class="modal-body">
-        <p>
-          Siedmiotomowy cykl powieściowy ukazuje losy bohaterów w scenerii Warszawy, Krakowa i Paryża. Każdy tom zgłębia inne oblicze ludzkiego serca, mierząc się z tajemnicami przeszłości, zaufaniem i miłością zakorzenioną w prawdzie.
-        </p>
-        <ul style="list-style:none;padding:0;margin:16px 0;display:grid;gap:10px;">
-          <li style="padding:10px 14px;background:rgba(255,255,255,0.03);border-left:3px solid var(--gold);border-radius:6px;">
-            <strong style="color:var(--cream);">Tom I: Pardon, Czy To Miłość?</strong>
-            <div style="font-size:0.85rem;color:var(--rose);">Status: powieść w przygotowaniu · Warszawa · Kraków · Paryż</div>
-          </li>
-          <li style="padding:10px 14px;background:rgba(255,255,255,0.02);border-left:3px solid rgba(196,163,90,0.3);border-radius:6px;opacity:0.75;">
-            <strong style="color:var(--cream);">Tomy II – VII</strong>
-            <div style="font-size:0.85rem;color:var(--cream-muted);">Kolejne tomy cyklu w opracowaniu koncepcyjnym</div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: WSPIERAM TO / REVOLUT -->
-  <div class="modal-backdrop" id="modalWspieramTo" role="dialog" aria-modal="true" aria-labelledby="modalWspieramTitle">
-    <div class="modal-dialog" id="wspieram-to" style="max-width: 680px;">
-      <button class="modal-close" type="button" data-close-modal aria-label="Zamknij okno">✕</button>
-      <span class="modal-kicker">Wsparcie Twórczości Autorskiej</span>
-      <h2 class="modal-title" id="modalWspieramTitle">Twoje wsparcie ma znaczenie!</h2>
-      <div class="modal-body">
-        
-        <!-- BANER WIZUALNY AUTORKI -->
-        <div style="position:relative;border-radius:12px;overflow:hidden;margin-bottom:20px;border:1px solid rgba(196,163,90,0.3);box-shadow:0 8px 24px rgba(0,0,0,0.5);">
-          <picture>
-            <source srcset="/images/wioletta/wspieram-to-baner.webp" type="image/webp">
-            <img src="/images/wioletta/wspieram-to-baner.png" alt="Wspieram to — Wioletta Rogowska Romance Author" width="1024" height="384" style="width:100%;height:auto;display:block;">
-          </picture>
+    <div class="modal-dialog">
+      <header class="modal-fs-header">
+        <div class="modal-fs-brand">
+          <span class="modal-fs-brand-dot">✦</span>
+          <span>WIOLETTA ROGOWSKA</span>
+          <span class="modal-fs-brand-sep">·</span>
+          <span class="modal-fs-brand-sub">TWÓRCZOŚĆ LITERACKA</span>
         </div>
-
-        <p style="font-family:var(--font-serif);font-size:1.15rem;font-style:italic;color:var(--gold-light);text-align:center;margin-bottom:20px;line-height:1.55;">
-          „Dzięki niemu mogę pisać kolejne książki, nagrywać audiobooki i docierać z przesłaniem do większej liczby osób.”
-          <span style="display:block;font-size:0.9rem;color:var(--cream-muted);margin-top:6px;font-style:normal;font-family:var(--font-cinzel);">— Wioletta Rogowska</span>
-        </p>
-
-        <!-- KAFELKI KWOT (WYBÓR) -->
-        <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;margin-bottom:18px;">
-          <button type="button" class="support-amount-btn" data-amount="10">10 zł</button>
-          <button type="button" class="support-amount-btn active" data-amount="25">25 zł</button>
-          <button type="button" class="support-amount-btn" data-amount="50">50 zł</button>
-          <button type="button" class="support-amount-btn" data-amount="100">100 zł</button>
-        </div>
-
-        <!-- PRZYCISK GŁÓWNY REVOLUT -->
-        <div style="text-align:center;margin-bottom:24px;">
-          <a class="btn-support-revolut" id="revolutMainBtn" href="https://revolut.me/wioletj914" target="_blank" rel="noopener noreferrer">
-            <span>🤍</span>
-            <span id="revolutBtnLabel">Wesprzyj autorkę (25 zł) przez Revolut →</span>
-          </a>
-          <div style="margin-top:8px;font-size:0.82rem;color:var(--cream-muted);">
-            Bezpośredni link: <a href="https://revolut.me/wioletj914" target="_blank" rel="noopener noreferrer" style="color:var(--gold-light);text-decoration:underline;">revolut.me/wioletj914</a>
-          </div>
-        </div>
-
-        <!-- KOD QR ZE ZDJĘCIEM W ŚRODKU -->
-        <div style="display:flex;align-items:center;gap:20px;padding:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(196,163,90,0.2);border-radius:12px;margin-bottom:18px;flex-wrap:wrap;">
-          <div style="flex-shrink:0;margin:0 auto;">
-            <picture>
-              <source srcset="/images/wioletta/revolut-qr-wioletj914.webp" type="image/webp">
-              <img src="/images/wioletta/revolut-qr-wioletj914.jpg" alt="Kod QR Revolut do wpłat dla Wioletty Rogowskiej" width="140" height="140" style="width:140px;height:140px;border-radius:8px;border:1px solid rgba(196,163,90,0.4);display:block;box-shadow:0 4px 12px rgba(0,0,0,0.4);" loading="lazy">
-            </picture>
-          </div>
-          <div style="flex:1;min-width:200px;">
-            <strong style="color:var(--cream);font-size:0.95rem;display:block;margin-bottom:6px;">Szybka wpłata aparatem telefonu</strong>
-            <p style="font-size:0.85rem;color:var(--cream-muted);line-height:1.5;margin-bottom:8px;">
-              Otwórz aparat w smartfonie lub aplikację Revolut i skieruj obiektyw na kod QR, aby natychmiast przekazać darowiznę.
+        <button class="modal-close-fs" type="button" data-close-modal aria-label="Zamknij okno pełnoekranowe">
+          <span aria-hidden="true" style="font-size:1.1rem;line-height:1;">✕</span>
+          <span>ZAMKNIJ</span>
+        </button>
+      </header>
+      <div class="modal-fs-scroll">
+        <div class="modal-fs-container" id="ksiazki-i-aktualnosci">
+          <span class="modal-kicker">Twórczość Literacka</span>
+          <h2 class="modal-title" id="modalKsiazkiTitle">Cykl „Pardon, Czy To Miłość?”</h2>
+          <div class="modal-body">
+            <p style="font-size:1.05rem;line-height:1.75;">
+              Siedmiotomowy cykl powieściowy ukazuje losy bohaterów w scenerii Warszawy, Krakowa i Paryża. Każdy tom zgłębia inne oblicze ludzkiego serca, mierząc się z tajemnicami przeszłości, zaufaniem i miłością zakorzenioną w prawdzie.
             </p>
-            <span style="display:inline-block;font-size:0.75rem;padding:3px 10px;background:rgba(196,163,90,0.12);border:1px solid rgba(196,163,90,0.3);color:var(--gold-light);border-radius:20px;">
-              Revolut Pay · Karta · BLIK
-            </span>
+            <ul style="list-style:none;padding:0;margin:24px 0;display:grid;gap:14px;">
+              <li style="padding:16px 20px;background:rgba(255,255,255,0.03);border-left:3px solid var(--gold);border-radius:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <strong style="color:var(--cream);font-size:1.05rem;display:block;">Tom I: Pardon, Czy To Miłość?</strong>
+                  <div style="font-size:0.86rem;color:var(--rose);margin-top:2px;">Status: powieść w przygotowaniu · Warszawa · Kraków · Paryż · 25 rozdziałów online</div>
+                </div>
+                <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/rozdzial-1" style="background:var(--orange,#FF7A00);border-color:var(--orange,#FF7A00);color:#ffffff;padding:8px 18px;">Czytaj →</a>
+              </li>
+              <li style="padding:16px 20px;background:rgba(255,255,255,0.02);border-left:3px solid rgba(196,163,90,0.3);border-radius:8px;opacity:0.85;">
+                <strong style="color:var(--cream);font-size:1.02rem;display:block;">Tomy II – VII</strong>
+                <div style="font-size:0.86rem;color:var(--cream-muted);margin-top:2px;">Kolejne tomy cyklu w opracowaniu koncepcyjnym autorki</div>
+              </li>
+            </ul>
+            <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
+              <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/">Przejdź do czytnika online →</a>
+              <button class="btn-modal-action" type="button" data-modal="modalWspieramTo" style="border-color:var(--gold);color:var(--gold-light);background:none;cursor:pointer;">Wspieram powstanie kolejnych tomów →</button>
+            </div>
           </div>
         </div>
-
-        <!-- ALTERNATYWNE WSPARCIE MISJI -->
-        <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;text-align:center;font-size:0.82rem;color:var(--cream-muted);">
-          Chcesz wesprzeć tradycyjnym przelewem bankowym lub całą Misję CC?
-          <a href="/wspieraj" style="color:var(--gold-light);text-decoration:underline;margin-left:4px;">Centrum Wsparcia Misji CC →</a>
-        </div>
-
       </div>
     </div>
   </div>
 
-  <!-- MODAL 4: NEWSLETTER -->
+  <!-- MODAL 4: WSPIERAM TO / REVOLUT (TRYB PEŁNOEKRANOWY) -->
+  <div class="modal-backdrop" id="modalWspieramTo" role="dialog" aria-modal="true" aria-labelledby="modalWspieramTitle">
+    <div class="modal-dialog">
+      <header class="modal-fs-header">
+        <div class="modal-fs-brand">
+          <span class="modal-fs-brand-dot">✦</span>
+          <span>WIOLETTA ROGOWSKA</span>
+          <span class="modal-fs-brand-sep">·</span>
+          <span class="modal-fs-brand-sub">WSPIERAM TO</span>
+        </div>
+        <button class="modal-close-fs" type="button" data-close-modal aria-label="Zamknij okno pełnoekranowe">
+          <span aria-hidden="true" style="font-size:1.1rem;line-height:1;">✕</span>
+          <span>ZAMKNIJ</span>
+        </button>
+      </header>
+      <div class="modal-fs-scroll">
+        <div class="modal-fs-container" id="wspieram-to">
+          <span class="modal-kicker">Wsparcie Twórczości Autorskiej</span>
+          <h2 class="modal-title" id="modalWspieramTitle">Twoje wsparcie ma znaczenie!</h2>
+          <div class="modal-body">
+            
+            <!-- BANER WIZUALNY AUTORKI -->
+            <div style="position:relative;border-radius:14px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(196,163,90,0.35);box-shadow:0 12px 32px rgba(0,0,0,0.6);">
+              <picture>
+                <source srcset="/images/wioletta/wspieram-to-baner.webp" type="image/webp">
+                <img src="/images/wioletta/wspieram-to-baner.png" alt="Wspieram to — Wioletta Rogowska Romance Author" width="1024" height="384" style="width:100%;height:auto;display:block;">
+              </picture>
+            </div>
+
+            <p style="font-family:var(--font-serif);font-size:1.25rem;font-style:italic;color:var(--gold-light);text-align:center;margin-bottom:24px;line-height:1.55;">
+              „Dzięki niemu mogę pisać kolejne książki, nagrywać audiobooki i docierać z przesłaniem do większej liczby osób.”
+              <span style="display:block;font-size:0.92rem;color:var(--cream-muted);margin-top:8px;font-style:normal;font-family:var(--font-cinzel);">— Wioletta Rogowska</span>
+            </p>
+
+            <!-- KAFELKI KWOT (WYBÓR) -->
+            <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:12px;margin-bottom:22px;">
+              <button type="button" class="support-amount-btn" data-amount="10">10 zł</button>
+              <button type="button" class="support-amount-btn active" data-amount="25">25 zł</button>
+              <button type="button" class="support-amount-btn" data-amount="50">50 zł</button>
+              <button type="button" class="support-amount-btn" data-amount="100">100 zł</button>
+            </div>
+
+            <!-- PRZYCISK GŁÓWNY REVOLUT -->
+            <div style="text-align:center;margin-bottom:28px;">
+              <a class="btn-support-revolut" id="revolutMainBtn" href="https://revolut.me/wioletj914" target="_blank" rel="noopener noreferrer">
+                <span>🤍</span>
+                <span id="revolutBtnLabel">Wesprzyj autorkę (25 zł) przez Revolut →</span>
+              </a>
+              <div style="margin-top:10px;font-size:0.86rem;color:var(--cream-muted);">
+                Oficjalny kanał wpłat: <a href="https://revolut.me/wioletj914" target="_blank" rel="noopener noreferrer" style="color:var(--gold-light);text-decoration:underline;font-weight:600;">revolut.me/wioletj914</a>
+              </div>
+            </div>
+
+            <!-- KOD QR ZE ZDJĘCIEM W ŚRODKU -->
+            <div style="display:flex;align-items:center;gap:24px;padding:20px;background:rgba(255,255,255,0.03);border:1px solid rgba(196,163,90,0.25);border-radius:14px;margin-bottom:24px;flex-wrap:wrap;">
+              <div style="flex-shrink:0;margin:0 auto;">
+                <picture>
+                  <source srcset="/images/wioletta/revolut-qr-wioletj914.webp" type="image/webp">
+                  <img src="/images/wioletta/revolut-qr-wioletj914.jpg" alt="Kod QR Revolut do wpłat dla Wioletty Rogowskiej" width="150" height="150" style="width:150px;height:150px;border-radius:10px;border:1px solid rgba(196,163,90,0.45);display:block;box-shadow:0 6px 18px rgba(0,0,0,0.4);" loading="lazy">
+                </picture>
+              </div>
+              <div style="flex:1;min-width:220px;">
+                <strong style="color:var(--cream);font-size:1.02rem;display:block;margin-bottom:6px;">Szybka wpłata aparatem telefonu</strong>
+                <p style="font-size:0.9rem;color:var(--cream-muted);line-height:1.55;margin-bottom:10px;">
+                  Otwórz aparat w smartfonie lub aplikację Revolut i skieruj obiektyw na kod QR, aby natychmiast przekazać darowiznę na rzecz autorki.
+                </p>
+                <span style="display:inline-block;font-size:0.78rem;padding:4px 12px;background:rgba(196,163,90,0.12);border:1px solid rgba(196,163,90,0.3);color:var(--gold-light);border-radius:20px;">
+                  Revolut Pay · Karta Płatnicza · BLIK
+                </span>
+              </div>
+            </div>
+
+            <!-- ALTERNATYWNE WSPARCIE MISJI -->
+            <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:16px;text-align:center;font-size:0.86rem;color:var(--cream-muted);">
+              Chcesz wesprzeć tradycyjnym przelewem bankowym lub całą Misję CC?
+              <a href="/wspieraj" style="color:var(--gold-light);text-decoration:underline;margin-left:4px;">Centrum Wsparcia Misji CC →</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: KONTAKT (TRYB PEŁNOEKRANOWY) -->
+  <div class="modal-backdrop" id="modalKontakt" role="dialog" aria-modal="true" aria-labelledby="modalKontaktTitle">
+    <div class="modal-dialog">
+      <header class="modal-fs-header">
+        <div class="modal-fs-brand">
+          <span class="modal-fs-brand-dot">✦</span>
+          <span>WIOLETTA ROGOWSKA</span>
+          <span class="modal-fs-brand-sep">·</span>
+          <span class="modal-fs-brand-sub">KONTAKT Z AUTORKĄ</span>
+        </div>
+        <button class="modal-close-fs" type="button" data-close-modal aria-label="Zamknij okno pełnoekranowe">
+          <span aria-hidden="true" style="font-size:1.1rem;line-height:1;">✕</span>
+          <span>ZAMKNIJ</span>
+        </button>
+      </header>
+      <div class="modal-fs-scroll">
+        <div class="modal-fs-container" id="kontakt">
+          <span class="modal-kicker">Kontakt Bezpośredni</span>
+          <div class="modal-pill">Autorka Powieści „Pardon, Czy To Miłość?”</div>
+          <h2 class="modal-title" id="modalKontaktTitle">Napisz do Autorki</h2>
+          
+          <p style="font-family:var(--font-serif);font-size:1.25rem;font-style:italic;color:var(--gold-light);line-height:1.55;margin-bottom:28px;">
+            „Każdy list od czytelnika to dla mnie cenny dar, inspiracja i motywacja do dalszego pisania.”
+            <span style="display:block;font-size:0.92rem;color:var(--cream-muted);margin-top:8px;font-style:normal;font-family:var(--font-cinzel);">— Wioletta Rogowska</span>
+          </p>
+
+          <!-- GŁÓWNA KARTA KONTAKTOWA -->
+          <div class="contact-card-hero">
+            <div class="contact-card-icon">✉</div>
+            <div class="contact-card-info">
+              <span class="contact-card-label">Oficjalny adres e-mail autorki</span>
+              <a class="contact-card-email" href="mailto:wiolettapardon@gmail.com">wiolettapardon@gmail.com</a>
+              <span class="contact-card-sub">Wiadomości trafiają bezpośrednio do skrzynki Wioletty Rogowskiej</span>
+            </div>
+            <div class="contact-card-actions">
+              <a class="btn-contact-primary" href="mailto:wiolettapardon@gmail.com">
+                <span>Napisz wiadomość →</span>
+              </a>
+              <button class="btn-contact-secondary" type="button" data-copy-email="wiolettapardon@gmail.com">
+                <span>Kopiuj adres</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- OBSZARY KONTAKTU (3 KAFELKI) -->
+          <div class="contact-topics-grid">
+            <div class="contact-topic-box">
+              <div class="contact-topic-icon">📖</div>
+              <h3 class="contact-topic-title">Czytelnicy &amp; Dyskusja</h3>
+              <p class="contact-topic-desc">
+                Podziel się swoimi odczuciami po przeczytaniu Tomu I powieści, przekaż swoje refleksje o bohaterach lub zapytaj o kontynuację losów Aleksandry i Adama.
+              </p>
+            </div>
+            <div class="contact-topic-box">
+              <div class="contact-topic-icon">🎙️</div>
+              <h3 class="contact-topic-title">Wydawnictwa &amp; Media</h3>
+              <p class="contact-topic-desc">
+                Propozycje wywiadów, spotkań autorskich, recenzji książkowych, patronatów medialnych oraz kwestii wydawniczych cyklu literackiego.
+              </p>
+            </div>
+            <div class="contact-topic-box">
+              <div class="contact-topic-icon">🤍</div>
+              <h3 class="contact-topic-title">Słowo Wsparcia &amp; Modlitwa</h3>
+              <p class="contact-topic-desc">
+                Wszelkie słowa otuchy i wsparcia duchowego, które dodają skrzydeł w codziennej pracy nad kolejnymi tomami w Bożej obecności.
+              </p>
+            </div>
+          </div>
+
+          <!-- INTEGRACJA Z PROFILEM LUMINA I CZYTNIKIEM -->
+          <div style="margin-top:36px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center;">
+            <a class="btn-modal-action" href="/lumina.wiolettarogowska.html">Profil w społeczności LUMINA →</a>
+            <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/">Czytaj powieść online →</a>
+            <button class="btn-modal-action" type="button" data-modal="modalWspieramTo" style="border-color:var(--orange,#FF7A00);color:var(--orange,#FF7A00);background:none;cursor:pointer;">Wspieram to (Revolut) →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 6: NEWSLETTER (TRYB PEŁNOEKRANOWY) -->
   <div class="modal-backdrop" id="modalNewsletter" role="dialog" aria-modal="true" aria-labelledby="modalNewsTitle">
     <div class="modal-dialog">
-      <button class="modal-close" type="button" data-close-modal aria-label="Zamknij okno">✕</button>
-      <span class="modal-kicker">Społeczność Czytelników</span>
-      <h2 class="modal-title" id="modalNewsTitle">🌹 Klub Czytelniczek &amp; Newsletter</h2>
-      <div class="modal-body">
-        <p>
-          Bądź pierwszą osobą, która dowie się o dacie premiery pierwszego tomu, fragmentach przedpremierowych oraz spotkaniach autorskich z Wiolettą Rogowską.
-        </p>
-        <p>
-          Napisz bezpośrednio na adres: <a href="mailto:wiolettapardon@gmail.com?subject=Zapis%20do%20Newslettera%20Pardon" style="color:var(--gold-light);text-decoration:underline;">wiolettapardon@gmail.com</a> wpisując w tytule „Newsletter Pardon”.
-        </p>
+      <header class="modal-fs-header">
+        <div class="modal-fs-brand">
+          <span class="modal-fs-brand-dot">✦</span>
+          <span>WIOLETTA ROGOWSKA</span>
+          <span class="modal-fs-brand-sep">·</span>
+          <span class="modal-fs-brand-sub">SPOŁECZNOŚĆ</span>
+        </div>
+        <button class="modal-close-fs" type="button" data-close-modal aria-label="Zamknij okno pełnoekranowe">
+          <span aria-hidden="true" style="font-size:1.1rem;line-height:1;">✕</span>
+          <span>ZAMKNIJ</span>
+        </button>
+      </header>
+      <div class="modal-fs-scroll">
+        <div class="modal-fs-container">
+          <span class="modal-kicker">Społeczność Czytelników</span>
+          <h2 class="modal-title" id="modalNewsTitle">🌹 Klub Czytelniczek &amp; Newsletter</h2>
+          <div class="modal-body">
+            <p style="font-size:1.05rem;line-height:1.75;">
+              Bądź pierwszą osobą, która dowie się o dacie premiery pierwszego tomu, fragmentach przedpremierowych oraz spotkaniach autorskich z Wiolettą Rogowską.
+            </p>
+            <p style="font-size:1.05rem;line-height:1.75;">
+              Napisz bezpośrednio na adres: <a href="mailto:wiolettapardon@gmail.com?subject=Zapis%20do%20Newslettera%20Pardon" style="color:var(--gold-light);text-decoration:underline;font-weight:600;">wiolettapardon@gmail.com</a> wpisując w tytule „Newsletter Pardon”.
+            </p>
+            <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;">
+              <a class="btn-contact-primary" href="mailto:wiolettapardon@gmail.com?subject=Zapis%20do%20Newslettera%20Pardon">Zapisz się przez e-mail →</a>
+              <button class="btn-modal-action" type="button" data-modal="modalKontakt" style="background:none;cursor:pointer;">Formularz kontaktu →</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL 5: MENU EKOSYSTEMU -->
+  <!-- MODAL 7: MENU EKOSYSTEMU (TRYB PEŁNOEKRANOWY) -->
   <div class="modal-backdrop" id="modalMenu" role="dialog" aria-modal="true" aria-labelledby="modalMenuTitle">
     <div class="modal-dialog">
-      <button class="modal-close" type="button" data-close-modal aria-label="Zamknij okno">✕</button>
-      <span class="modal-kicker">Nawigacja</span>
-      <h2 class="modal-title" id="modalMenuTitle">Wioletta Rogowska · EkoCC</h2>
-      <div class="modal-body">
-        <ul style="list-style:none;padding:0;display:grid;gap:12px;margin-top:12px;">
-          <li><button type="button" data-modal="modalKsiazki" style="background:none;border:none;color:var(--cream);font-size:1.05rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;">✦ Cykl „Pardon, Czy To Miłość?”</button></li>
-          <li><button type="button" data-modal="modalOAutorce" style="background:none;border:none;color:var(--cream);font-size:1.05rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;">✦ O autorce</button></li>
-          <li><button type="button" data-modal="modalWspieramTo" style="background:none;border:none;color:var(--gold-light);font-size:1.05rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;">✦ Wspieram to (Revolut)</button></li>
-          <li><a href="/wspieraj" style="color:var(--cream-muted);text-decoration:none;font-size:0.92rem;font-family:var(--font-cinzel);display:block;padding-left:14px;">↳ Centrum Wsparcia Misji CC</a></li>
-          <li><a href="mailto:wiolettapardon@gmail.com" style="color:var(--cream);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Kontakt: wiolettapardon@gmail.com</a></li>
-          <li><a href="/lumina.wiolettarogowska.html" style="color:var(--cream);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Profil LUMINA</a></li>
-          <li><a href="/wizytowki" style="color:var(--cream);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Katalog Wizytówek EkoCC</a></li>
-          <li><a href="/wyszukiwarka" style="color:var(--cream);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Wyszukiwarka Christian Culture</a></li>
-          <li><a href="/" style="color:var(--cream);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Strona Główna Christian Culture</a></li>
-        </ul>
+      <header class="modal-fs-header">
+        <div class="modal-fs-brand">
+          <span class="modal-fs-brand-dot">✦</span>
+          <span>WIOLETTA ROGOWSKA</span>
+          <span class="modal-fs-brand-sep">·</span>
+          <span class="modal-fs-brand-sub">MENU EKOSYSTEMU</span>
+        </div>
+        <button class="modal-close-fs" type="button" data-close-modal aria-label="Zamknij okno pełnoekranowe">
+          <span aria-hidden="true" style="font-size:1.1rem;line-height:1;">✕</span>
+          <span>ZAMKNIJ</span>
+        </button>
+      </header>
+      <div class="modal-fs-scroll">
+        <div class="modal-fs-container">
+          <span class="modal-kicker">Nawigacja Ekosystemu</span>
+          <h2 class="modal-title" id="modalMenuTitle">Wioletta Rogowska · EkoCC</h2>
+          <div class="modal-body">
+            <ul style="list-style:none;padding:0;display:grid;gap:14px;margin-top:20px;">
+              <li><button type="button" data-modal="modalKsiazki" style="background:none;border:none;color:var(--cream);font-size:1.1rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;padding:8px 0;">✦ Cykl „Pardon, Czy To Miłość?”</button></li>
+              <li><button type="button" data-modal="modalOAutorce" style="background:none;border:none;color:var(--cream);font-size:1.1rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;padding:8px 0;">✦ O autorce</button></li>
+              <li><button type="button" data-modal="modalWspieramTo" style="background:none;border:none;color:var(--gold-light);font-size:1.1rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;padding:8px 0;">✦ Wspieram to (Revolut)</button></li>
+              <li><button type="button" data-modal="modalKontakt" style="background:none;border:none;color:var(--cream);font-size:1.1rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;padding:8px 0;">✦ Kontakt: wiolettapardon@gmail.com</button></li>
+              <li><a href="/Wioletta/pardon-czy-to-milosc/" style="color:var(--cream-muted);text-decoration:none;font-size:1rem;font-family:var(--font-cinzel);display:block;padding:8px 0 8px 16px;">↳ Czytnik Powieści Online (25 rozdziałów)</a></li>
+              <li><a href="/wspieraj" style="color:var(--cream-muted);text-decoration:none;font-size:1rem;font-family:var(--font-cinzel);display:block;padding:8px 0 8px 16px;">↳ Centrum Wsparcia Misji CC</a></li>
+              <li><a href="/lumina.wiolettarogowska.html" style="color:var(--cream);text-decoration:none;font-size:1.1rem;font-family:var(--font-cinzel);display:block;padding:8px 0;">✦ Profil w społeczności LUMINA</a></li>
+              <li><a href="/wizytowki" style="color:var(--cream);text-decoration:none;font-size:1.1rem;font-family:var(--font-cinzel);display:block;padding:8px 0;">✦ Katalog Wizytówek EkoCC</a></li>
+              <li><a href="/wyszukiwarka" style="color:var(--cream);text-decoration:none;font-size:1.1rem;font-family:var(--font-cinzel);display:block;padding:8px 0;">✦ Wyszukiwarka Christian Culture</a></li>
+              <li><a href="/" style="color:var(--cream);text-decoration:none;font-size:1.1rem;font-family:var(--font-cinzel);display:block;padding:8px 0;">✦ Strona Główna Christian Culture</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- CC TOAST CONTAINER -->
+  <div id="ccToast" class="cc-toast" role="status" aria-live="polite"></div>
 
   <script>
     (function() {
@@ -890,6 +1350,7 @@
         var m = document.getElementById(id);
         if (m) {
           m.classList.add('open');
+          document.body.style.overflow = 'hidden';
           var firstBtn = m.querySelector('button, a');
           if (firstBtn) firstBtn.focus();
         }
@@ -899,6 +1360,7 @@
         backdrops.forEach(function(b) {
           b.classList.remove('open');
         });
+        document.body.style.overflow = '';
       }
 
       openers.forEach(function(btn) {
@@ -918,8 +1380,37 @@
 
       backdrops.forEach(function(backdrop) {
         backdrop.addEventListener('click', function(e) {
-          if (e.target === backdrop) {
+          if (e.target === backdrop || e.target.classList.contains('modal-fs-scroll')) {
             closeAllModals();
+          }
+        });
+      });
+
+      // Toast notification helper
+      function showToast(msg) {
+        var t = document.getElementById('ccToast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function() {
+          t.classList.remove('show');
+        }, 2800);
+      }
+
+      // Copy email action
+      var copyEmailBtns = document.querySelectorAll('[data-copy-email]');
+      copyEmailBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var email = btn.getAttribute('data-copy-email') || 'wiolettapardon@gmail.com';
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email).then(function() {
+              showToast('✓ Skopiowano adres: ' + email);
+            }).catch(function() {
+              showToast('Adres e-mail: ' + email);
+            });
+          } else {
+            showToast('Adres e-mail: ' + email);
           }
         });
       });
@@ -952,6 +1443,8 @@
         else if (h === '#ksiazki-i-aktualnosci' || h === '#ksiazki') openModal('modalKsiazki');
         else if (h === '#newsletter') openModal('modalNewsletter');
         else if (h === '#wspieram' || h === '#wspieram-to') openModal('modalWspieramTo');
+        else if (h === '#kontakt' || h === '#contact') openModal('modalKontakt');
+        else if (h === '#menu') openModal('modalMenu');
       }
       window.addEventListener('hashchange', checkHash);
       if (window.location.hash) checkHash();

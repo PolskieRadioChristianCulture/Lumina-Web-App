@@ -53,6 +53,10 @@ test('Wioletta author showcase has exact SEO metadata, motto, and 3 required sec
   assert.match(html, /id="pardon-czy-to-milosc"/, 'Must have section #pardon-czy-to-milosc');
   assert.match(html, /id="ksiazki-i-aktualnosci"/, 'Must have section #ksiazki-i-aktualnosci');
   assert.match(html, /id="wspieram-to"/, 'Must have section #wspieram-to');
+  assert.match(html, /id="modalKontakt"/, 'Must have fullscreen contact modal #modalKontakt');
+  assert.match(html, /data-modal="modalKontakt"/, 'Must have opener for modalKontakt in navbar');
+  assert.match(html, /modal-fs-header/, 'Modals must use fullscreen header');
+  assert.match(html, /modal-close-fs/, 'Modals must provide fullscreen close button');
   assert.ok(html.includes('revolut.me/wioletj914'), 'Must include link to revolut.me/wioletj914');
 
   // Key literary elements
