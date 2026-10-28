@@ -20,7 +20,9 @@ test('Wioletta.html and Wioletta/index.html exist, match, and include all 5 imag
     'images/wioletta/wioletta-portrait.webp',
     'images/wioletta/pardon-czy-to-milosc-3d.jpg',
     'images/wioletta/pardon-czy-to-milosc-3d.webp',
-    'images/wioletta/wioletta-og.jpg'
+    'images/wioletta/wioletta-og.jpg',
+    'images/wioletta/wspieram-to-baner.webp',
+    'images/wioletta/revolut-qr-wioletj914.webp'
   ];
   for (const rel of requiredAssets) {
     const p = path.join(ROOT, rel);
@@ -50,6 +52,8 @@ test('Wioletta author showcase has exact SEO metadata, motto, and 3 required sec
   assert.match(html, /id="o-autorce"/, 'Must have section #o-autorce');
   assert.match(html, /id="pardon-czy-to-milosc"/, 'Must have section #pardon-czy-to-milosc');
   assert.match(html, /id="ksiazki-i-aktualnosci"/, 'Must have section #ksiazki-i-aktualnosci');
+  assert.match(html, /id="wspieram-to"/, 'Must have section #wspieram-to');
+  assert.ok(html.includes('revolut.me/wioletj914'), 'Must include link to revolut.me/wioletj914');
 
   // Key literary elements
   assert.ok(html.includes('Aleksandra Wysocka'), 'Must mention protagonist Aleksandra Wysocka');

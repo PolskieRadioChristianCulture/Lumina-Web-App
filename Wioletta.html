@@ -484,6 +484,64 @@
       color: #05070a;
     }
 
+    /* SUPPORT MODULE (REVOLUT & AMOUNTS) */
+    .support-amount-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(196, 163, 90, 0.3);
+      color: var(--cream);
+      font-family: var(--font-cinzel);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 12px 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .support-amount-btn:hover {
+      background: rgba(196, 163, 90, 0.15);
+      border-color: var(--gold-light);
+      color: #ffffff;
+    }
+    .support-amount-btn.active {
+      background: linear-gradient(135deg, rgba(255,122,0,0.3) 0%, rgba(212,91,0,0.4) 100%);
+      border: 1.5px solid var(--orange, #FF7A00);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(255, 122, 0, 0.35);
+    }
+    .btn-support-revolut {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #FF7A00 0%, #D45B00 100%);
+      color: #ffffff;
+      text-decoration: none;
+      font-family: var(--font-cinzel);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 6px 20px rgba(255,122,0,0.35);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+    }
+    .btn-support-revolut:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(255, 122, 0, 0.5);
+      filter: brightness(1.06);
+    }
+    .btn-support-revolut:active {
+      transform: none;
+    }
+
     /* MOBILE DEDICATED LAYOUT */
     @media (max-width: 860px) {
       .viewport-stage {
@@ -562,7 +620,7 @@
           <ul class="nav-center">
             <li><button type="button" data-modal="modalKsiazki">KSIĄŻKI</button></li>
             <li><button type="button" data-modal="modalOAutorce">O AUTORCE</button></li>
-            <li><a href="/wspieraj" class="nav-wspieram" title="Wspieram to">WSPIERAM TO</a></li>
+            <li><button type="button" class="nav-wspieram" data-modal="modalWspieramTo" title="Wspieram to">WSPIERAM TO</button></li>
             <li><a href="mailto:wiolettapardon@gmail.com" title="Napisz do autorki">KONTAKT</a></li>
           </ul>
         </nav>
@@ -596,9 +654,9 @@
           <button class="btn-modal-action" type="button" data-modal="modalCzytaj" style="padding:12px 32px;font-size:0.9rem;">
             CZYTAJ
           </button>
-          <a class="btn-modal-action" href="/wspieraj" style="padding:12px 24px;border-color:var(--rose);color:var(--rose);font-size:0.9rem;">
+          <button class="btn-modal-action" type="button" data-modal="modalWspieramTo" style="padding:12px 24px;border-color:var(--gold);color:var(--gold-light);font-size:0.9rem;cursor:pointer;">
             WSPIERAM TO
-          </a>
+          </button>
         </div>
         <div style="display:flex;gap:16px;justify-content:center;font-size:0.8rem;letter-spacing:0.18em;">
           <button type="button" data-modal="modalKsiazki" style="background:none;border:none;color:var(--cream-muted);cursor:pointer;font-family:var(--font-cinzel);min-height:44px;padding:8px;">KSIĄŻKI</button>
@@ -650,7 +708,7 @@
         <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
           <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/rozdzial-1" style="background:var(--orange,#FF7A00);border-color:var(--orange,#FF7A00);color:#ffffff;font-weight:600;">Czytaj Rozdział 1 →</a>
           <a class="btn-modal-action" href="/Wioletta/pardon-czy-to-milosc/">Spis 25 rozdziałów</a>
-          <a class="btn-modal-action" href="/wspieraj" style="border-color:rgba(196,163,90,0.5);color:var(--gold-light);">Wspieram to →</a>
+          <button class="btn-modal-action" type="button" data-modal="modalWspieramTo" style="border-color:rgba(196,163,90,0.5);color:var(--gold-light);background:none;cursor:pointer;">Wspieram to →</button>
           <a class="btn-modal-action" href="mailto:wiolettapardon@gmail.com?subject=Pytanie%20o%20powieść%20Pardon%20Czy%20To%20Miłość" style="border-color:var(--rose);color:var(--rose);">Napisz do autorki</a>
         </div>
       </div>
@@ -713,6 +771,75 @@
     </div>
   </div>
 
+  <!-- MODAL: WSPIERAM TO / REVOLUT -->
+  <div class="modal-backdrop" id="modalWspieramTo" role="dialog" aria-modal="true" aria-labelledby="modalWspieramTitle">
+    <div class="modal-dialog" id="wspieram-to" style="max-width: 680px;">
+      <button class="modal-close" type="button" data-close-modal aria-label="Zamknij okno">✕</button>
+      <span class="modal-kicker">Wsparcie Twórczości Autorskiej</span>
+      <h2 class="modal-title" id="modalWspieramTitle">Twoje wsparcie ma znaczenie!</h2>
+      <div class="modal-body">
+        
+        <!-- BANER WIZUALNY AUTORKI -->
+        <div style="position:relative;border-radius:12px;overflow:hidden;margin-bottom:20px;border:1px solid rgba(196,163,90,0.3);box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+          <picture>
+            <source srcset="/images/wioletta/wspieram-to-baner.webp" type="image/webp">
+            <img src="/images/wioletta/wspieram-to-baner.png" alt="Wspieram to — Wioletta Rogowska Romance Author" width="1024" height="384" style="width:100%;height:auto;display:block;">
+          </picture>
+        </div>
+
+        <p style="font-family:var(--font-serif);font-size:1.15rem;font-style:italic;color:var(--gold-light);text-align:center;margin-bottom:20px;line-height:1.55;">
+          „Dzięki niemu mogę pisać kolejne książki, nagrywać audiobooki i docierać z przesłaniem do większej liczby osób.”
+          <span style="display:block;font-size:0.9rem;color:var(--cream-muted);margin-top:6px;font-style:normal;font-family:var(--font-cinzel);">— Wioletta Rogowska</span>
+        </p>
+
+        <!-- KAFELKI KWOT (WYBÓR) -->
+        <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;margin-bottom:18px;">
+          <button type="button" class="support-amount-btn" data-amount="10">10 zł</button>
+          <button type="button" class="support-amount-btn active" data-amount="25">25 zł</button>
+          <button type="button" class="support-amount-btn" data-amount="50">50 zł</button>
+          <button type="button" class="support-amount-btn" data-amount="100">100 zł</button>
+        </div>
+
+        <!-- PRZYCISK GŁÓWNY REVOLUT -->
+        <div style="text-align:center;margin-bottom:24px;">
+          <a class="btn-support-revolut" id="revolutMainBtn" href="https://revolut.me/wioletj914" target="_blank" rel="noopener noreferrer">
+            <span>🤍</span>
+            <span id="revolutBtnLabel">Wesprzyj autorkę (25 zł) przez Revolut →</span>
+          </a>
+          <div style="margin-top:8px;font-size:0.82rem;color:var(--cream-muted);">
+            Bezpośredni link: <a href="https://revolut.me/wioletj914" target="_blank" rel="noopener noreferrer" style="color:var(--gold-light);text-decoration:underline;">revolut.me/wioletj914</a>
+          </div>
+        </div>
+
+        <!-- KOD QR ZE ZDJĘCIEM W ŚRODKU -->
+        <div style="display:flex;align-items:center;gap:20px;padding:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(196,163,90,0.2);border-radius:12px;margin-bottom:18px;flex-wrap:wrap;">
+          <div style="flex-shrink:0;margin:0 auto;">
+            <picture>
+              <source srcset="/images/wioletta/revolut-qr-wioletj914.webp" type="image/webp">
+              <img src="/images/wioletta/revolut-qr-wioletj914.jpg" alt="Kod QR Revolut do wpłat dla Wioletty Rogowskiej" width="140" height="140" style="width:140px;height:140px;border-radius:8px;border:1px solid rgba(196,163,90,0.4);display:block;box-shadow:0 4px 12px rgba(0,0,0,0.4);" loading="lazy">
+            </picture>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <strong style="color:var(--cream);font-size:0.95rem;display:block;margin-bottom:6px;">Szybka wpłata aparatem telefonu</strong>
+            <p style="font-size:0.85rem;color:var(--cream-muted);line-height:1.5;margin-bottom:8px;">
+              Otwórz aparat w smartfonie lub aplikację Revolut i skieruj obiektyw na kod QR, aby natychmiast przekazać darowiznę.
+            </p>
+            <span style="display:inline-block;font-size:0.75rem;padding:3px 10px;background:rgba(196,163,90,0.12);border:1px solid rgba(196,163,90,0.3);color:var(--gold-light);border-radius:20px;">
+              Revolut Pay · Karta · BLIK
+            </span>
+          </div>
+        </div>
+
+        <!-- ALTERNATYWNE WSPARCIE MISJI -->
+        <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;text-align:center;font-size:0.82rem;color:var(--cream-muted);">
+          Chcesz wesprzeć tradycyjnym przelewem bankowym lub całą Misję CC?
+          <a href="/wspieraj" style="color:var(--gold-light);text-decoration:underline;margin-left:4px;">Centrum Wsparcia Misji CC →</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL 4: NEWSLETTER -->
   <div class="modal-backdrop" id="modalNewsletter" role="dialog" aria-modal="true" aria-labelledby="modalNewsTitle">
     <div class="modal-dialog">
@@ -740,7 +867,8 @@
         <ul style="list-style:none;padding:0;display:grid;gap:12px;margin-top:12px;">
           <li><button type="button" data-modal="modalKsiazki" style="background:none;border:none;color:var(--cream);font-size:1.05rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;">✦ Cykl „Pardon, Czy To Miłość?”</button></li>
           <li><button type="button" data-modal="modalOAutorce" style="background:none;border:none;color:var(--cream);font-size:1.05rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;">✦ O autorce</button></li>
-          <li><a href="/wspieraj" style="color:var(--gold-light);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Wspieram to (Centrum Wsparcia Misji)</a></li>
+          <li><button type="button" data-modal="modalWspieramTo" style="background:none;border:none;color:var(--gold-light);font-size:1.05rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;">✦ Wspieram to (Revolut)</button></li>
+          <li><a href="/wspieraj" style="color:var(--cream-muted);text-decoration:none;font-size:0.92rem;font-family:var(--font-cinzel);display:block;padding-left:14px;">↳ Centrum Wsparcia Misji CC</a></li>
           <li><a href="mailto:wiolettapardon@gmail.com" style="color:var(--cream);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Kontakt: wiolettapardon@gmail.com</a></li>
           <li><a href="/lumina.wiolettarogowska.html" style="color:var(--cream);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Profil LUMINA</a></li>
           <li><a href="/wizytowki" style="color:var(--cream);text-decoration:none;font-size:1.05rem;font-family:var(--font-cinzel);display:block;">✦ Katalog Wizytówek EkoCC</a></li>
@@ -802,6 +930,20 @@
         }
       });
 
+      // Support amount buttons logic
+      var amountBtns = document.querySelectorAll('.support-amount-btn');
+      var revolutLabel = document.getElementById('revolutBtnLabel');
+      amountBtns.forEach(function(b) {
+        b.addEventListener('click', function() {
+          amountBtns.forEach(function(x) { x.classList.remove('active'); });
+          b.classList.add('active');
+          var amt = b.getAttribute('data-amount');
+          if (revolutLabel) {
+            revolutLabel.textContent = 'Wesprzyj autorkę (' + amt + ' zł) przez Revolut →';
+          }
+        });
+      });
+
       // Hash deep-linking support
       function checkHash() {
         var h = window.location.hash;
@@ -809,6 +951,7 @@
         else if (h === '#pardon-czy-to-milosc' || h === '#czytaj') openModal('modalCzytaj');
         else if (h === '#ksiazki-i-aktualnosci' || h === '#ksiazki') openModal('modalKsiazki');
         else if (h === '#newsletter') openModal('modalNewsletter');
+        else if (h === '#wspieram' || h === '#wspieram-to') openModal('modalWspieramTo');
       }
       window.addEventListener('hashchange', checkHash);
       if (window.location.hash) checkHash();
