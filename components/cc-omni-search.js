@@ -1032,7 +1032,386 @@
     return null;
   }
 
-  async function fetchBibleVerse(bookCode, chapter, verse) {
+
+  // =========================================================================
+  // ATLAS BIBLIJNY & GEOGRAFIA SACRA (Biblia Intelligence CC — P2)
+  // Źródła: OpenBible Geocoding Data (CC BY 4.0 - R13), Wikidata (CC0 - R18),
+  // OpenStreetMap (ODbL - R20). Standard ZERO COST FIRST.
+  // =========================================================================
+  const BIBLE_PLACES = {
+    jerusalem: {
+      id: 'jerusalem',
+      name: 'Jerozolima (Syjon / Miasto Dawida)',
+      origName: 'יְרוּשָׁלַםִ / Ierousalēm',
+      lang: 'he',
+      region: 'Judea / Góry Judzkie',
+      coords: { lat: 31.7767, lon: 35.2345 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q1218',
+      summary: 'Centralne miasto historii biblijnej: stolica Królestwa Dawida i Salomona, miejsce Świątyni Pańskiej, ukrzyżowania i zmartwychwstania Jezusa Chrystusa, zesłania Ducha Świętego oraz zapowiedź Nowego Jeruzalem.',
+      verses: [
+        { ref: 'Ps 122:6', text: 'Proście o pokój dla Jeruzalem: Niech zażywają pokoju ci, którzy cię miłują!' },
+        { ref: 'Łk 24:47', text: 'I aby w jego imieniu głoszono pokutę i przebaczenie grzechów wszystkim narodom, począwszy od Jerozolimy.' },
+        { ref: 'Ap 21:2', text: 'A ja, Jan, widziałem święte miasto, Nowe Jeruzalem, zstępujące z nieba od Boga, przygotowane jak oblubienica ozdobiona dla swego męża.' }
+      ],
+      studyUrl: '/mojabiblia?q=Jerozolima',
+      aliases: ['jerozolima', 'jeruzalem', 'syjon', 'miasto dawida', 'morijja', 'jerusalem']
+    },
+    bethlehem: {
+      id: 'bethlehem',
+      name: 'Betlejem (Efrata)',
+      origName: 'בֵּית לֶחֶם / Bēth Leḥem',
+      lang: 'he',
+      region: 'Judea (ok. 8 km na południe od Jerozolimy)',
+      coords: { lat: 31.7054, lon: 35.2024 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q5662',
+      summary: 'Dosłownie „Dom Chleba”. Miasto narodzin króla Dawida oraz prorocze miejsce narodzenia Mesjasza — Jezusa Chrystusa (Mi 5:2), który jest Prawdziwym Chlebem Żywota.',
+      verses: [
+        { ref: 'Mi 5:2', text: 'Ale ty, Betlejem Efrata, choć jesteś najmniejsze wśród tysięcy w Judzie, z ciebie wyjdzie mi ten, który ma być władcą w Izraelu...' },
+        { ref: 'Mt 2:1', text: 'Gdy zaś Jezus urodził się w Betlejem w Judei za dni króla Heroda, oto mędrcy ze Wschodu przybyli do Jerozolimy;' },
+        { ref: 'Łk 2:4', text: 'Poszedł też Józef z Galilei, z miasta Nazaret, do Judei, do miasta Dawida, zwanego Betlejem...' }
+      ],
+      studyUrl: '/mojabiblia?q=Betlejem',
+      aliases: ['betlejem', 'efrata', 'bethlehem']
+    },
+    nazareth: {
+      id: 'nazareth',
+      name: 'Nazaret',
+      origName: 'Ναζαρέτ / Nazaret',
+      lang: 'grc',
+      region: 'Dolna Galilea',
+      coords: { lat: 32.7019, lon: 35.3035 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q430776',
+      summary: 'Miejscowość dzieciństwa i młodości Jezusa Chrystusa, skąd wziął się Jego tytuł „Jezus z Nazaretu” (Nazarejczyk). Miejsce zwiastowania Maryi przez archanioła Gabriela.',
+      verses: [
+        { ref: 'Łk 1:26', text: 'A w szóstym miesiącu Bóg posłał anioła Gabriela do miasta w Galilei, zwanego Nazaret;' },
+        { ref: 'Mt 2:23', text: 'A przyszedłszy, zamieszkał w mieście zwanym Nazaret, aby się spełniło, co zostało powiedziane przez proroków: Będzie nazwany Nazarejczykiem.' },
+        { ref: 'J 1:46', text: 'I powiedział mu Natanael: Czy z Nazaretu może być coś dobrego? Filip mu odpowiedział: Chodź i zobacz!' }
+      ],
+      studyUrl: '/mojabiblia?q=Nazaret',
+      aliases: ['nazaret', 'nazareth', 'nazarejczyk']
+    },
+    capernaum: {
+      id: 'capernaum',
+      name: 'Kafarnaum (Kfar Nahum)',
+      origName: 'כְּפַר נַחוּם / Kapharnaoum',
+      lang: 'he',
+      region: 'Północny brzeg Jeziora Galilejskiego (Tal Hum)',
+      coords: { lat: 32.8805, lon: 35.5750 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q193139',
+      summary: 'Główna baza galilejskiej służby Jezusa, nazwana w Ewangelii „Jego miastem” (Mt 9:1). Miejsce powołania celnika Mateusza, uzdrowienia sługi setnika i wygłoszenia mowy o Chlebie Życia w tamtejszej synagodze.',
+      verses: [
+        { ref: 'Mt 4:13', text: 'I opuściwszy Nazaret, przyszedł i zamieszkał w Kafarnaum, nad morzem, w granicach Zabulona i Neftalego;' },
+        { ref: 'Mk 2:1', text: 'Po kilku dniach znowu wszedł do Kafarnaum i usłyszano, że jest w domu.' },
+        { ref: 'J 6:59', text: 'To mówił w synagodze, nauczając w Kafarnaum.' }
+      ],
+      studyUrl: '/mojabiblia?q=Kafarnaum',
+      aliases: ['kafarnaum', 'capernaum', 'kfar nahum']
+    },
+    sinai: {
+      id: 'sinai',
+      name: 'Góra Synaj (Horeb / Dżabal Musa)',
+      origName: 'סִינַי / Har Sīnay',
+      lang: 'he',
+      region: 'Półwysep Synaj',
+      coords: { lat: 28.5397, lon: 33.9750 },
+      certainty: 'PRAWDOPODOBNA / TRADYCYJNA',
+      wikidataId: 'Q377485',
+      summary: 'Święta góra Bożego Przymierza: miejsce objawienia się Boga w krzewie gorejącym, ogłoszenia Dekalogu (Dziesięciu Przykazań) Mojżeszowi, zawarcia przymierza z Izraelem oraz ucieczki i odnowienia proroka Eliasza.',
+      verses: [
+        { ref: 'Wj 19:18', text: 'A cała góra Synaj dymiła, gdyż PAN zstąpił na nią w ogniu; i unosił się dym z niej jak dym z pieca, a cała góra bardzo się trzęsła.' },
+        { ref: 'Wj 20:1-2', text: 'Wtedy Bóg mówił wszystkie te słowa: Ja jestem PAN, twój Bóg, który cię wyprowadził z ziemi Egiptu, z domu niewoli.' },
+        { ref: '1 Krl 19:8', text: 'Wstał więc, pojadł i popił, a posiliwszy się tym pokarmem, szedł czterdzieści dni i czterdzieści nocy aż do Bożej góry Horeb.' }
+      ],
+      studyUrl: '/mojabiblia?q=Synaj',
+      aliases: ['synaj', 'horeb', 'gora synaj', 'gora horeb', 'mount sinai', 'sinai']
+    },
+    jericho: {
+      id: 'jericho',
+      name: 'Jerycho (Miasto Palm / Tell es-Sultan)',
+      origName: 'יְרִיחוֹ / Yərīḥō',
+      lang: 'he',
+      region: 'Dolina Dolnego Jordanu (Depresja Morza Martwego)',
+      coords: { lat: 31.8706, lon: 35.4444 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q5788',
+      summary: 'Jedno z najstarszych stale zamieszkanych miast świata (ok. 250 m p.p.m.). Miejsce cudownego upadku murów za czasów Jozuego, ocalenia Rachab oraz spotkania Jezusa z Zacheuszem i uzdrowienia ślepego Bartymeusza.',
+      verses: [
+        { ref: 'Joz 6:20', text: 'Wtedy lud krzyknął i zadęli w trąby. A gdy lud usłyszał dźwięk trąb i wzniósł wielki okrzyk, mur runął na swoje miejsce...' },
+        { ref: 'Łk 19:1-2', text: 'Potem wszedł do Jerycha i przechodził przez nie. A był tam pewien człowiek, imieniem Zacheusz, który był przełożonym celników i był bogaty.' },
+        { ref: 'Hbr 11:30', text: 'Przez wiarę runęły mury Jerycha, gdy je obchodzono dokoła przez siedem dni.' }
+      ],
+      studyUrl: '/mojabiblia?q=Jerycho',
+      aliases: ['jerycho', 'jericho', 'tell es-sultan', 'miasto palm']
+    },
+    hebron: {
+      id: 'hebron',
+      name: 'Hebron (Kiriat-Arba / Grobowiec Patriarchów)',
+      origName: 'חֶבְרוֹן / Ḥevrōn',
+      lang: 'he',
+      region: 'Góry Judzkie (Judea)',
+      coords: { lat: 31.5297, lon: 35.0938 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q16869',
+      summary: 'Jedno z najstarszych miast Judy: miejsce pobytu Abrahama, Izaaka i Jakuba, pieczary Makpela (miejsca pochówku patriarchów) oraz pierwsza stolica króla Dawida, gdzie panował przez 7 lat i 6 miesięcy.',
+      verses: [
+        { ref: 'Rdz 23:19', text: 'I potem Abraham pochował Sarę, swoją żonę, w jaskini na polu Makpela naprzeciw Mamre, czyli Hebronu, w ziemi Kanaan.' },
+        { ref: '2 Sm 2:1-4', text: 'I zapytał Dawid PANA: Czy mam iść do któregoś z miast Judy?... Do Hebronu... I namaścili tam Dawida na króla nad domem Judy.' }
+      ],
+      studyUrl: '/mojabiblia?q=Hebron',
+      aliases: ['hebron', 'makpela', 'kiriat-arba', 'kiriat arba', 'mamre']
+    },
+    babylon: {
+      id: 'babylon',
+      name: 'Babilon (Babel / Mezopotamia)',
+      origName: 'בָּבֶל / Babylōn',
+      lang: 'he',
+      region: 'Mezopotamia (współczesny Irak nad Eufratem)',
+      coords: { lat: 32.5364, lon: 44.4208 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q5684',
+      summary: 'Symbol buntu człowieka przeciw Bogu od wieży Babel (Rdz 11), imperium Nabuchodonozora niszczące Świątynię Jerozolimską w 586 r. p.n.e. oraz w Apokalipsie wielki symbol odstępczego systemu religijno-politycznego czasów końca.',
+      verses: [
+        { ref: 'Ps 137:1', text: 'Nad rzekami Babilonu — tam siedzieliśmy i płakaliśmy na wspomnienie Syjonu.' },
+        { ref: 'Dan 4:30', text: 'Czyż to nie jest ten wielki Babilon, który ja zbudowałem na stolicę królestwa potęgą mojej władzy i ku chwale mojego majestatu?' },
+        { ref: 'Ap 18:2', text: 'I zawołał donośnie silnym głosem: Upadł, upadł wielki Babilon i stał się siedliskiem demonów i schronieniem wszelkiego ducha nieczystego...' }
+      ],
+      studyUrl: '/mojabiblia?q=Babilon',
+      aliases: ['babilon', 'babel', 'babylon', 'wieza babel']
+    },
+    patmos: {
+      id: 'patmos',
+      name: 'Wyspa Patmos',
+      origName: 'Πάτμος / Patmos',
+      lang: 'grc',
+      region: 'Morze Egejskie (archipelag Dodekanez, Grecja)',
+      coords: { lat: 37.5147, lon: 26.5458 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q178703',
+      summary: 'Górzysta wyspa na Morzu Egejskim, miejsce zesłania apostoła Jana za panowania cesarza Domicjana, gdzie otrzymał on od zmartwychwstałego Chrystusa wizję Księgi Objawienia (Apokalipsy).',
+      verses: [
+        { ref: 'Ap 1:9', text: 'Ja, Jan, wasz brat i współuczestnik w ucisku, w królestwie i w cierpliwości Jezusa Chrystusa, byłem na wyspie zwanej Patmos z powodu słowa Bożego i świadectwa Jezusa Chrystusa.' },
+        { ref: 'Ap 1:10', text: 'W dzień Pański byłem w zachwyceniu i usłyszałem za sobą donośny głos jakby trąby;' }
+      ],
+      studyUrl: '/mojabiblia?q=Patmos',
+      aliases: ['patmos', 'wyspa patmos']
+    },
+    antioch: {
+      id: 'antioch',
+      name: 'Antiochia Syryjska (Antakya)',
+      origName: 'Ἀντιόχεια / Antiocheia',
+      lang: 'grc',
+      region: 'Syria / Rzymska prowincja Syrii (dziś płd. Turcja)',
+      coords: { lat: 36.2021, lon: 36.1606 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q200441',
+      summary: 'Kolebka misji pogańskiej w pierwotnym Kościele: miasto, w którym po raz pierwszy nazwano uczniów „chrześcijanami” (Dz 11:26), oraz baza wypadowa podróży misyjnych apostoła Pawła i Barnaby.',
+      verses: [
+        { ref: 'Dz 11:26', text: 'I przez cały rok zbierali się w tym kościele i nauczali wielu ludzi. W Antiochii też po raz pierwszy nazwano uczniów chrześcijanami.' },
+        { ref: 'Dz 13:1-3', text: 'A w kościele w Antiochii byli prorocy i nauczyciele... Wtedy po poście i modlitwie włożyli na nich ręce i wyprawili ich.' },
+        { ref: 'Ga 2:11', text: 'A gdy Piotr przyszedł do Antiochii, sprzeciwiłem mu się w twarz, bo zasłużył na naganę.' }
+      ],
+      studyUrl: '/mojabiblia?q=Antiochia',
+      aliases: ['antiochia', 'antioch', 'antakya', 'antiochia syryjska']
+    },
+    carmel: {
+      id: 'carmel',
+      name: 'Góra Karmel (Karem El)',
+      origName: 'כַּרְמֶל / Har haKarmel',
+      lang: 'he',
+      region: 'Wybrzeże Morza Śródziemnego / Północny Izrael',
+      coords: { lat: 32.7333, lon: 35.0500 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q185526',
+      summary: 'Dosłownie „Ogród Boży”. Pasmo górskie, na którym prorok Eliasz stawił czoła 450 prorokom Baala, a Bóg odpowiedział ogniem z nieba trawiącym całopalenie i potwierdzającym, że PAN jest jedynym prawdziwym Bogiem.',
+      verses: [
+        { ref: '1 Krl 18:21', text: 'Wtedy Eliasz podszedł do całego ludu i powiedział: Jak długo będziecie chwiać się między dwiema stronami? Jeśli PAN jest Bogiem, idźcie za nim, a jeśli Baal, idźcie za nim!' },
+        { ref: '1 Krl 18:38', text: 'Wtedy spadł ogień PANA i strawił całopalenie, drwa, kamienie i proch, a wodę, która była w rowie, wysuszył.' }
+      ],
+      studyUrl: '/mojabiblia?q=Karmel',
+      aliases: ['karmel', 'gora karmel', 'carmel', 'mount carmel']
+    },
+    galilee: {
+      id: 'galilee',
+      name: 'Jezioro Galilejskie (Genezaret / Tyberiadzkie)',
+      origName: 'יָם כִּנֶּרֶת / Limnē Gennēzaret',
+      lang: 'he',
+      region: 'Galilea / Rów Jordanu (ok. 210 m p.p.m.)',
+      coords: { lat: 32.8333, lon: 35.5833 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q126982',
+      summary: 'Słodkowodne jezioro, nad brzegami którego Jezus powołał rybaków Piotra, Andrzeja, Jakuba i Jana; miejsce uciszenia burzy, chodzenia Jezusa po wodzie oraz cudownego połowu ryb po zmartwychwstaniu.',
+      verses: [
+        { ref: 'Mt 4:18-19', text: 'A Jezus, przechodząc koło Morza Galilejskiego, ujrzał dwóch braci... I powiedział im: Pójdźcie za mną, a uczynię was rybakami ludzi.' },
+        { ref: 'Mk 4:39', text: 'Wtedy wstał, zgromił wiatr i powiedział do morza: Milcz, ucisz się! I ustał wiatr, i nastała wielka cisza.' },
+        { ref: 'J 21:1', text: 'Potem Jezus znowu objawił się uczniom nad Morzem Tyberiadzkim...' }
+      ],
+      studyUrl: '/mojabiblia?q=Galilejskie',
+      aliases: ['jezioro galilejskie', 'morze galilejskie', 'genezaret', 'tyberiadzkie', 'kinneret']
+    },
+    jordan: {
+      id: 'jordan',
+      name: 'Rzeka Jordan (Jarden)',
+      origName: 'יַרְדֵּן / Yardēn',
+      lang: 'he',
+      region: 'Rów Tektoniczny Jordanu (od Hermonu do Morza Martwego)',
+      coords: { lat: 31.8986, lon: 35.5564 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q40059',
+      summary: 'Główna rzeka Ziemi Obiecanej: miejsce cudownego przejścia Izraelitów pod wodzą Jozuego, uzdrowienia syryjskiego wodza Naamana z trądu oraz chrztu Jezusa Chrystusa przez Jana Chrzciciela i zstąpienia Ducha Świętego.',
+      verses: [
+        { ref: 'Joz 3:17', text: 'A kapłani niosący Arkę Przymierza PANA stali mocno na suchym dnie pośrodku Jordanu, a cały Izrael przechodził po suchym...' },
+        { ref: 'Mt 3:13-16', text: 'Wtedy przyszedł Jezus z Galilei nad Jordan do Jana, aby być ochrzczonym przez niego... I oto otworzyły mu się niebiosa, i ujrzał Ducha Bożego zstępującego jak gołębica...' }
+      ],
+      studyUrl: '/mojabiblia?q=Jordan',
+      aliases: ['jordan', 'rzeka jordan', 'jarden']
+    },
+    olives: {
+      id: 'olives',
+      name: 'Góra Oliwna (Oliwki / Getsemani)',
+      origName: 'הַר הַזֵּיתִים / To Oros tōn Elaiōn',
+      lang: 'he',
+      region: 'Na wschód od Jerozolimy (Dolina Cedronu)',
+      coords: { lat: 31.7781, lon: 35.2444 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q206161',
+      summary: 'Wzgórze górujące nad Jerozolimą: miejsce modlitwy i krwawego potu Jezusa w ogrodzie Getsemani, mowy eschatologicznej o znakach końca świata (Mt 24), wniebowstąpienia Chrystusa oraz proroczej zapowiedzi Jego triumfalnego powrotu (Zach 14:4).',
+      verses: [
+        { ref: 'Zach 14:4', text: 'W tym dniu jego stopy staną na Górze Oliwnej, która jest naprzeciw Jerozolimy od wschodu, a Góra Oliwna rozstąpi się pośrodku...' },
+        { ref: 'Łk 22:39', text: 'A wyszedłszy, udał się według zwyczaju na Górę Oliwną; i szli za nim także jego uczniowie.' },
+        { ref: 'Dz 1:11-12', text: 'Ten Jezus, który został wzięty od was do nieba, przyjdzie tak samo... Wtedy wrócili do Jerozolimy z góry zwanej Oliwną...' }
+      ],
+      studyUrl: '/mojabiblia?q=Oliwna',
+      aliases: ['gora oliwna', 'oliwna', 'getsemani', 'oliwki', 'mount of olives']
+    },
+    ephesus: {
+      id: 'ephesus',
+      name: 'Efez',
+      origName: 'Ἔφεσος / Ephesos',
+      lang: 'grc',
+      region: 'Ionia / Azja Mniejsza (dziś zachodnia Turcja)',
+      coords: { lat: 37.9497, lon: 27.3639 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q47611',
+      summary: 'Metropolia rzymskiej prowincji Azji: ośrodek wieloletniej posługi apostoła Pawła (ponad 2 lata w szkole Tyrannosa), adresat Listu do Efezjan oraz pierwszy z siedmiu kościołów w Księdze Objawienia (Ap 2:1-7).',
+      verses: [
+        { ref: 'Dz 19:10', text: 'A działo się to przez dwa lata, tak że wszyscy, którzy mieszkali w Azji, zarówno Żydzi, jak i Grecy, słyszeli słowo Pana Jezusa.' },
+        { ref: 'Ap 2:1', text: 'Aniołowi kościoła w Efezie napisz: To mówi ten, który trzyma siedem gwiazd w swojej prawej ręce, który chodzi pośród siedmiu złotych świeczników...' }
+      ],
+      studyUrl: '/mojabiblia?q=Efez',
+      aliases: ['efez', 'ephesus', 'efezjan']
+    },
+    rome: {
+      id: 'rome',
+      name: 'Rzym',
+      origName: 'Ῥώμη / Rōmē',
+      lang: 'grc',
+      region: 'Półwysep Apeniński (stolica Imperium Rzymskiego)',
+      coords: { lat: 41.9028, lon: 12.4964 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q220',
+      summary: 'Stolica Imperium Rzymskiego: cel ostatniej drogi uwięzionego apostoła Pawła, gdzie głosił Ewangelię w areszcie domowym „z całą odwagą, bez przeszkód” (Dz 28:31) oraz adresat fundamentalnego Listu do Rzymian.',
+      verses: [
+        { ref: 'Dz 28:16', text: 'A gdy przybyliśmy do Rzymu, setnik przekazał więźniów dowódcy straży, lecz Pawłowi pozwolono mieszkać osobno z żołnierzem, który go pilnował.' },
+        { ref: 'Rz 1:7', text: 'Wszystkim, którzy jesteście w Rzymie, umiłowanym Boga, powołanym świętym: Łaska wam i pokój od Boga, naszego Ojca, i Pana Jezusa Chrystusa.' }
+      ],
+      studyUrl: '/mojabiblia?q=Rzym',
+      aliases: ['rzym', 'rome', 'rzymian']
+    },
+    damascus: {
+      id: 'damascus',
+      name: 'Damaszek',
+      origName: 'דַּמֶּשֶׂק / Damaskos',
+      lang: 'he',
+      region: 'Syria (jedno z najstarszych miast świata)',
+      coords: { lat: 33.5138, lon: 36.2765 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q3616',
+      summary: 'Starożytna stolica Syrii: miejsce dramatycznego nawrócenia Szawła z Tarsu w drodze do Damaszku po ujrzeniu zmartwychwstałego Chrystusa w oślepiającym świetle, ulica Prosta i chrzest przez Ananiasza.',
+      verses: [
+        { ref: 'Dz 9:3-5', text: 'A gdy jechał i zbliżał się do Damaszku, nagle olśniła go światłość z nieba. A gdy upadł na ziemię, usłyszał głos: Szawle, Szawle, dlaczego mnie prześladujesz? A on zapytał: Kim jesteś, Panie? A Pan odpowiedział: Ja jestem Jezus, którego ty prześladujesz...' },
+        { ref: 'Ga 1:17', text: 'Lecz odszedłem do Arabii, a potem znowu wróciłem do Damaszku.' }
+      ],
+      studyUrl: '/mojabiblia?q=Damaszek',
+      aliases: ['damaszek', 'damascus']
+    },
+    tarsus: {
+      id: 'tarsus',
+      name: 'Tars w Cylicji',
+      origName: 'Ταρσός / Tarsos',
+      lang: 'grc',
+      region: 'Cylicja (południowa Azja Mniejsza, dzisiejsza Turcja)',
+      coords: { lat: 36.9167, lon: 34.9000 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q172370',
+      summary: 'Miasto rodzinne apostoła Pawła (Szawła): znany starożytny ośrodek uniwersytecki i filozoficzny, nadający Pawłowi prestiżowe rzymskie obywatelstwo z urodzenia (Dz 22:28).',
+      verses: [
+        { ref: 'Dz 21:39', text: 'Lecz Paweł powiedział: Ja jestem Żydem z Tarsu w Cylicji, obywatelem niepośledniego miasta...' },
+        { ref: 'Dz 22:3', text: 'Ja jestem Żydem urodzonym w Tarsie w Cylicji, lecz wychowanym w tym mieście u stóp Gamaliela...' }
+      ],
+      studyUrl: '/mojabiblia?q=Tars',
+      aliases: ['tars', 'tarsus', 'tars w cylicji']
+    },
+    nebo: {
+      id: 'nebo',
+      name: 'Góra Nebo (Pisga)',
+      origName: 'הַר נְבוֹ / Har Nəvō',
+      lang: 'he',
+      region: 'Płaskowyż Moabu (dzisiejsza Jordania, na wschód od Jordanu)',
+      coords: { lat: 31.7683, lon: 35.7253 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q831862',
+      summary: 'Szczyt pasma Pisga, na który Bóg wprowadził 120-letniego Mojżesza, by ukazać mu całą Ziemię Obiecaną przed śmiercią; miejsce spoczynku i pochówku Mojżesza ręką samego Boga (Pwt 34:5-6).',
+      verses: [
+        { ref: 'Pwt 34:1', text: 'I wstąpił Mojżesz z równin Moabu na górę Nebo, na wierzchołek Pisga, który jest naprzeciw Jerycha. A PAN pokazał mu całą ziemię...' },
+        { ref: 'Pwt 34:5', text: 'I umarł tam Mojżesz, sługa PANA, w ziemi Moabu, według słowa PANA.' }
+      ],
+      studyUrl: '/mojabiblia?q=Nebo',
+      aliases: ['nebo', 'gora nebo', 'pisga', 'mount nebo']
+    },
+    moriah: {
+      id: 'moriah',
+      name: 'Góra Moria (Wzgórze Świątynne)',
+      origName: 'הַר הַמּוֹרִיָּה / Har haMōrīyyā',
+      lang: 'he',
+      region: 'Jerozolima (Wzgórze Świątynne)',
+      coords: { lat: 31.7781, lon: 35.2353 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q1131114',
+      summary: 'Święte wzgórze ofiary: miejsce, gdzie Abraham z wiarą przyprowadził syna Izaaka na całopalenie (Bóg zaopatrzył baranka na ofiarę zastępczą) oraz gdzie król Salomon zbudował wspaniałą Świątynię Pańską na klepisku Ornana Jebuzejczyka.',
+      verses: [
+        { ref: 'Rdz 22:2', text: 'I rzekł: Weź teraz twego syna, twego jedynego, którego miłujesz, Izaaka, i idź do ziemi Moria, i złóż go tam na całopalenie...' },
+        { ref: '2 Krn 3:1', text: 'I zaczął Salomon budować dom PANA w Jerozolimie na górze Moria, która została wskazana Dawidowi, jego ojcu...' }
+      ],
+      studyUrl: '/mojabiblia?q=Moria',
+      aliases: ['moria', 'gora moria', 'moriah', 'mount moriah', 'wzgorze swiatynne']
+    }
+  };
+
+  function detectBiblePlace(query) {
+    if (!query) return null;
+    const raw = String(query).trim();
+    const norm = raw.toLowerCase()
+      .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
+      .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
+      .replace(/[ś]/g, 's').replace(/[źż]/g, 'z').trim();
+    if (norm.length < 3) return null;
+
+    for (const key of Object.keys(BIBLE_PLACES)) {
+      const p = BIBLE_PLACES[key];
+      if (norm === p.id || norm === p.name.toLowerCase()) return p;
+      for (const a of p.aliases) {
+        if (norm === a || norm === a.replace(/\s+/g, '')) return p;
+        if (norm.length >= 4 && (norm.startsWith(a) || a.startsWith(norm))) return p;
+      }
+    }
+    return null;
+  }
+
+    async function fetchBibleVerse(bookCode, chapter, verse) {
     const chPad = String(chapter).padStart(3, '0');
     const url = '/data/bible/ubg-2025/' + bookCode + '-' + chPad + '.json';
     try {
@@ -1393,7 +1772,66 @@
     `;
   }
 
-  function renderHopeCard(query) {
+
+  function renderPlaceCard(place) {
+    if (!place) return '';
+    const osmUrl = `https://www.openstreetmap.org/?mlat=${place.coords.lat}&mlon=${place.coords.lon}#map=13/${place.coords.lat}/${place.coords.lon}`;
+    const wikidataUrl = `https://www.wikidata.org/wiki/${place.wikidataId}`;
+    const versesHtml = place.verses.map(v => `
+      <div class="cc-bible-place-verse-item">
+        <strong class="cc-bible-place-ref">${escapeHtml(v.ref)}:</strong>
+        <span class="cc-bible-place-text">„${escapeHtml(v.text)}”</span>
+      </div>
+    `).join('');
+
+    return `
+      <div class="cc-bible-place-card" id="ccBiblePlaceCard">
+        <div class="cc-bible-place-head">
+          <div class="cc-bible-place-badge">
+            <span class="cc-bible-place-icon" aria-hidden="true">🗺️</span>
+            <span class="cc-bible-place-level">ATLAS BIBLIJNY &amp; GEOGRAFIA SACRA</span>
+            <span class="cc-bible-place-sub">OPENBIBLE (R13) • OSM (R20)</span>
+          </div>
+          <span class="cc-bible-place-certainty" title="Stopień weryfikacji archeologiczno-historycznej">${escapeHtml(place.certainty)}</span>
+        </div>
+        <div class="cc-bible-place-title-row">
+          <h3 class="cc-bible-place-title">${escapeHtml(place.name)}</h3>
+          <span class="cc-bible-place-orig" ${place.lang === 'he' ? 'dir="rtl"' : ''}>${escapeHtml(place.origName)}</span>
+        </div>
+        <div class="cc-bible-place-meta-bar">
+          <span class="cc-bible-place-region">📍 Region: <b>${escapeHtml(place.region)}</b></span>
+          <a href="${osmUrl}" target="_blank" rel="noopener noreferrer" class="cc-bible-place-coords" title="Otwórz współrzędne w OpenStreetMap">
+            🌐 ${place.coords.lat.toFixed(4)}° N, ${place.coords.lon.toFixed(4)}° E ↗
+          </a>
+          <span class="cc-bible-place-qid" title="Identyfikator otwartych danych Wikidata">ID: ${escapeHtml(place.wikidataId)}</span>
+        </div>
+        <p class="cc-bible-place-summary">${escapeHtml(place.summary)}</p>
+        <div class="cc-bible-place-verses">
+          <div class="cc-bible-place-verses-label">Kluczowe Miejsca w Piśmie Świętym (UBG):</div>
+          ${versesHtml}
+        </div>
+        <div class="cc-bible-place-actions">
+          <a href="${osmUrl}" target="_blank" rel="noopener noreferrer" class="cc-btn-scripture-main" style="background:#FF7A00;" title="Otwórz interaktywną mapę satelitarno-topograficzną OpenStreetMap">
+            <span>Otwórz na Mapie (OpenStreetMap) ↗</span>
+          </a>
+          <a href="${escapeHtml(place.studyUrl)}" class="cc-btn-scripture-sub" title="Szukaj wszystkich wystąpień w MojaBiblia">
+            Konkordancja w MojaBiblia →
+          </a>
+          <a href="${wikidataUrl}" target="_blank" rel="noopener noreferrer" class="cc-btn-scripture-sub" title="Dane historyczno-archeologiczne Wikidata">
+            Wikidata (${escapeHtml(place.wikidataId)}) ↗
+          </a>
+          <button type="button" class="cc-btn-scripture-sources" data-open-sources="true" title="Zobacz rejestr licencji i źródeł Biblia Intelligence CC">
+            <span>📜 Źródła (R01–R40)</span>
+          </button>
+        </div>
+        <div class="cc-scripture-license-note">
+          OpenBible Geocoding Data (CC BY 4.0) • OpenStreetMap (ODbL) • Wikidata (CC0) • Standard ZERO COST • Bez opłat i modeli AI
+        </div>
+      </div>
+    `;
+  }
+
+    function renderHopeCard(query) {
     return `
       <div class="cc-hope-card" id="ccHopeCard">
         <div class="cc-hope-badge">💛 Wsparcie Duchowe & Modlitwa</div>
@@ -3444,6 +3882,144 @@
           color: rgba(255, 255, 255, 0.75);
         }
 
+        
+        /* Biblia Intelligence CC (P2): Atlas Geograficzny & Miejsca Biblijne */
+        .cc-bible-place-card {
+          margin: 14px 0;
+          padding: 18px 20px;
+          border-radius: 14px;
+          background: rgba(16, 22, 34, 0.95);
+          border: 1px solid rgba(196, 163, 90, 0.4);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(196, 163, 90, 0.2);
+          color: #F3E5C8;
+          font-family: inherit;
+        }
+        .cc-bible-place-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .cc-bible-place-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .cc-bible-place-level {
+          color: #FF7A00;
+        }
+        .cc-bible-place-sub {
+          color: rgba(243, 229, 200, 0.6);
+          font-weight: 500;
+        }
+        .cc-bible-place-certainty {
+          font-size: 0.68rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 6px;
+          background: rgba(34, 197, 94, 0.15);
+          color: #4ade80;
+          border: 1px solid rgba(34, 197, 94, 0.35);
+          letter-spacing: 0.04em;
+        }
+        .cc-bible-place-title-row {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 6px;
+        }
+        .cc-bible-place-title {
+          margin: 0;
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #C4A35A;
+        }
+        .cc-bible-place-orig {
+          font-family: "SBL Greek", "SBL Hebrew", "Ezra SIL", Georgia, serif;
+          font-size: 1.1rem;
+          color: #E2CC9A;
+        }
+        .cc-bible-place-meta-bar {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-bottom: 12px;
+          font-size: 0.82rem;
+          color: rgba(243, 229, 200, 0.8);
+        }
+        .cc-bible-place-coords {
+          color: #C4A35A;
+          text-decoration: none;
+          padding: 2px 8px;
+          background: rgba(196, 163, 90, 0.1);
+          border-radius: 6px;
+          border: 1px solid rgba(196, 163, 90, 0.25);
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cc-bible-place-coords:hover {
+          background: rgba(255, 122, 0, 0.15);
+          border-color: #FF7A00;
+          color: #FF8C33;
+        }
+        .cc-bible-place-qid {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.5);
+          font-family: monospace;
+        }
+        .cc-bible-place-summary {
+          margin: 0 0 14px 0;
+          font-size: 0.95rem;
+          line-height: 1.55;
+          color: rgba(243, 229, 200, 0.92);
+        }
+        .cc-bible-place-verses {
+          margin-bottom: 14px;
+          padding: 10px 14px;
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.35);
+          border-left: 3px solid #C4A35A;
+        }
+        .cc-bible-place-verses-label {
+          font-size: 0.76rem;
+          font-weight: 700;
+          color: #C4A35A;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 6px;
+        }
+        .cc-bible-place-verse-item {
+          font-size: 0.86rem;
+          line-height: 1.45;
+          margin-bottom: 4px;
+        }
+        .cc-bible-place-verse-item:last-child {
+          margin-bottom: 0;
+        }
+        .cc-bible-place-ref {
+          color: #FF8C33;
+          margin-right: 4px;
+        }
+        .cc-bible-place-text {
+          font-style: italic;
+          color: rgba(243, 229, 200, 0.9);
+        }
+        .cc-bible-place-actions {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+
         /* Modal Źródeł i Licencji (R01–R40) */
         .cc-sources-modal-backdrop {
           position: fixed;
@@ -4793,6 +5369,10 @@ ${isStandalonePage ? '' : `
     const bibleTopic = (!bibleMatch && !lemmaMatch) ? detectBibleTopic(query) : null;
     const bibleTopicCardHtml = bibleTopic ? renderBibleTopicCard(bibleTopic) : '';
 
+    // Biblia Intelligence CC (P2): Detekcja miejsca biblijnego i atlasu (OpenBible / OSM)
+    const placeMatch = (!bibleMatch && !lemmaMatch) ? detectBiblePlace(query) : null;
+    const placeCardHtml = placeMatch ? renderPlaceCard(placeMatch) : '';
+
     // Faza 2: Detekcja intencji duszpasterskiej / pomocy
     const isHope = detectHopeIntent(query);
     const hopeCardHtml = isHope ? renderHopeCard(query) : '';
@@ -4814,6 +5394,9 @@ ${isStandalonePage ? '' : `
     }
     if (lemmaCardHtml) {
       leftColHtml += lemmaCardHtml;
+    }
+    if (placeCardHtml) {
+      leftColHtml += placeCardHtml;
     }
     if (bibleTopicCardHtml) {
       leftColHtml += bibleTopicCardHtml;
@@ -5384,6 +5967,9 @@ ${isStandalonePage ? '' : `
     detectStrongOrLemma: detectStrongOrLemma,
     TOP_CROSS_REFS: TOP_CROSS_REFS,
     TOP_INTERLINEAR_TOKENS: TOP_INTERLINEAR_TOKENS,
+    BIBLE_PLACES: BIBLE_PLACES,
+    detectBiblePlace: detectBiblePlace,
+    renderPlaceCard: renderPlaceCard,
     getPreviewHtml: getPreviewHtml,
     TOP_UBG_VERSES: TOP_UBG_VERSES,
     PLACEHOLDERS: PLACEHOLDERS,

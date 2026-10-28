@@ -524,3 +524,86 @@ test('cc-omni-search.js: Biblia Intelligence CC — P1 contracts (Greek/Hebrew l
   assert.ok(omniSearchCode.includes('STEPBible Data'), 'declares STEPBible Data provenance');
   assert.ok(omniSearchCode.includes('SBL Greek New Testament'), 'declares SBLGNT provenance');
 });
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P2 contracts (Atlas Geograficzny, Miejsca Biblijne, OpenBible, OSM, Wikidata)', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const detectPlace = sandbox.window.CCOmniSearch.detectBiblePlace;
+  const places = sandbox.window.CCOmniSearch.BIBLE_PLACES;
+
+  assert.ok(typeof detectPlace === 'function', 'detectBiblePlace is exported');
+  assert.ok(typeof places === 'object', 'BIBLE_PLACES is exported');
+  assert.ok(places.jerusalem, 'BIBLE_PLACES has Jerusalem');
+  assert.ok(places.sinai, 'BIBLE_PLACES has Mount Sinai');
+  assert.ok(places.patmos, 'BIBLE_PLACES has Patmos Island');
+
+  // 1. Detection of Jerusalem by canonical Polish name, ID, and aliases
+  const jerusalemMatch = detectPlace('Jerozolima');
+  assert.ok(jerusalemMatch, 'detects Jerozolima');
+  assert.equal(jerusalemMatch.id, 'jerusalem');
+  assert.equal(jerusalemMatch.coords.lat, 31.7767);
+  assert.equal(jerusalemMatch.coords.lon, 35.2345);
+  assert.equal(jerusalemMatch.wikidataId, 'Q1218');
+  assert.equal(jerusalemMatch.certainty, 'POTWIERDZONA ARCHEOLOGICZNIE');
+
+  const syjonMatch = detectPlace('syjon');
+  assert.ok(syjonMatch, 'detects Syjon alias for Jerusalem');
+  assert.equal(syjonMatch.id, 'jerusalem');
+
+  // 2. Detection of Mount Sinai (Horeb)
+  const sinaiMatch = detectPlace('Góra Synaj');
+  assert.ok(sinaiMatch, 'detects Góra Synaj');
+  assert.equal(sinaiMatch.id, 'sinai');
+  assert.equal(sinaiMatch.coords.lat, 28.5397);
+  assert.equal(sinaiMatch.coords.lon, 33.9750);
+  assert.equal(sinaiMatch.certainty, 'PRAWDOPODOBNA / TRADYCYJNA');
+
+  const horebMatch = detectPlace('horeb');
+  assert.ok(horebMatch, 'detects Horeb alias for Sinai');
+  assert.equal(horebMatch.id, 'sinai');
+
+  // 3. Detection of Patmos Island (Apocalypse)
+  const patmosMatch = detectPlace('patmos');
+  assert.ok(patmosMatch, 'detects Patmos');
+  assert.equal(patmosMatch.id, 'patmos');
+  assert.equal(patmosMatch.coords.lat, 37.5147);
+  assert.equal(patmosMatch.coords.lon, 26.5458);
+
+  // 4. Detection of Capernaum
+  const capernaumMatch = detectPlace('kafarnaum');
+  assert.ok(capernaumMatch, 'detects Kafarnaum');
+  assert.equal(capernaumMatch.id, 'capernaum');
+
+  // 5. UI contracts for Bible Places Card
+  assert.ok(omniSearchCode.includes('.cc-bible-place-card'), 'defines .cc-bible-place-card');
+  assert.ok(omniSearchCode.includes('ATLAS BIBLIJNY &amp; GEOGRAFIA SACRA'), 'declares ATLAS BIBLIJNY header');
+  assert.ok(omniSearchCode.includes('.cc-bible-place-coords'), 'defines .cc-bible-place-coords');
+  assert.ok(omniSearchCode.includes('OPENBIBLE (R13)') || omniSearchCode.includes('OpenBible Geocoding Data'), 'cites OpenBible Geocoding');
+  assert.ok(omniSearchCode.includes('OSM (R20)') || omniSearchCode.includes('OpenStreetMap'), 'cites OpenStreetMap');
+  assert.ok(omniSearchCode.includes('openstreetmap.org'), 'links to OpenStreetMap coordinates');
+  assert.ok(omniSearchCode.includes('wikidata.org'), 'links to Wikidata archaeological IDs');
+});
