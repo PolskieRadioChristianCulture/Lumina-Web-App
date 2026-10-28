@@ -185,6 +185,10 @@
       color: var(--cream);
       line-height: 1.15;
     }
+    .brand-first,
+    .brand-last {
+      display: inline;
+    }
     .brand-sub {
       font-family: var(--font-sans);
       font-size: clamp(0.55rem, 0.75vw, 0.65rem);
@@ -859,11 +863,18 @@
         flex: 1 1 auto;
         min-width: 0;
       }
+      .brand-first,
+      .brand-last {
+        display: block;
+      }
       .brand-name {
-        font-size: clamp(0.74rem, 3.2vw, 0.88rem);
-        letter-spacing: 0.12em;
+        font-size: clamp(0.76rem, 3.4vw, 0.90rem);
+        letter-spacing: 0.16em;
         white-space: nowrap;
-        line-height: 1.2;
+        line-height: 1.15;
+      }
+      .brand-last {
+        margin-top: 1px;
       }
       .brand-sub {
         font-size: clamp(0.48rem, 2vw, 0.58rem);
@@ -1156,7 +1167,7 @@
       <!-- DESKTOP / UNIVERSAL NAVBAR -->
       <header class="navbar">
         <a class="brand" href="/Wioletta" aria-label="Wioletta Rogowska — Strona Główna">
-          <span class="brand-name">WIOLETTA ROGOWSKA</span>
+          <span class="brand-name"><span class="brand-first">WIOLETTA</span> <span class="brand-last">ROGOWSKA</span></span>
           <span class="brand-sub">ROMANCE AUTHOR</span>
         </a>
 

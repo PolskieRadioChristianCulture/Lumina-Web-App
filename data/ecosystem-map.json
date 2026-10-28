@@ -4,6 +4,11 @@
   "name": "Mapa Ekosystemu Christian Culture",
   "updatesLog": [
     {
+      "topic": "Wizytówka Autorska Wioletty Rogowskiej: Zunifikowany responsywny układ mobile bez duplikacji hero (DESIGN FREEZE), pełnoekranowe okna dialogowe (Revolut, Kontakt, Czytnik) i nawigacja 320-1440px",
+      "date": "2026-10-28",
+      "agent": "A"
+    },
+    {
       "topic": "Czytnik powieści online Wioletty Rogowskiej (polskieradio.cc/Wioletta/pardon-czy-to-milosc): 25 rozdziałów Tomu I, 3 motywy czytania, zakładki, postęp w pamięci podręcznej i integracja @w",
       "date": "2026-10-28",
       "agent": "A"
@@ -4559,6 +4564,35 @@
       ],
       "connections": [
         "cc-help-debt"
+      ]
+    },
+    {
+      "id": "wioletta-rogowska-author",
+      "branchId": "spolecznosc",
+      "name": "Wioletta Rogowska — Autorka & Czytnik Powieści",
+      "shortDesc": "Oficjalna wizytówka autorska Wioletty Rogowskiej, cykl „Pardon, Czy To Miłość?” oraz czytnik online 25 rozdziałów.",
+      "fullDesc": "Platforma autorska Wioletty Rogowskiej (polskieradio.cc/Wioletta) prezentująca cykl 7 powieści romantyczno-obyczajowych „Pardon, Czy To Miłość?”, pełnoekranowe moduły wsparcia Revolut (revolut.me/wioletj914), kontakt z autorką, sylwetkę twórczą oraz czytnik internetowy 25 rozdziałów Tomu I z zapamiętywaniem postępu i motywami czytania.",
+      "type": "content",
+      "url": "https://polskieradio.cc/Wioletta",
+      "status": "active",
+      "lang": "pl",
+      "icon": "📖",
+      "category": "Społeczność & Literatura",
+      "verifiedDate": "2026-10-28",
+      "keywords": [
+        "wioletta rogowska",
+        "pardon czy to miłość",
+        "autorka",
+        "powieść",
+        "czytnik",
+        "romance author",
+        "książki",
+        "revolut"
+      ],
+      "connections": [
+        "lumina-profile",
+        "lumina-main",
+        "revolut-cc"
       ]
     }
   ],
