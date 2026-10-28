@@ -1546,6 +1546,13 @@ async function handlePodcastsRoute(request, env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    // 1. Kanonizacja domeny www -> apex (SEO / P0 / Etap 3)
+    if (url.hostname === 'www.polskieradio.cc') {
+      const canonicalTarget = new URL(request.url);
+      canonicalTarget.hostname = 'polskieradio.cc';
+      return Response.redirect(canonicalTarget.toString(), 301);
+    }
     // Owner-authorized withdrawal of this public profile (2026-10-14).
     const removedProfilePaths = new Set(['/lumina.zbyszekgieron', '/lumina.zbyszekgieron.html', '/lumina/zbyszekgieron', '/lumina/zbyszek-gieron', '/lumina/gieron', '/zbyszekgieron', '/zbyszek-gieron', '/gieron']);
     const profileSlug = (url.searchParams.get('u') || '').toLowerCase().replace(/^u_/, '');
@@ -1772,7 +1779,14 @@ export default {
     if (/^\/wyszukiwarka\/?$/i.test(decodedP)) {
       const targetUrl = new URL(request.url);
       targetUrl.pathname = '/wyszukiwarka/';
-      return env.ASSETS.fetch(new Request(targetUrl, request));
+      const assetRes = await env.ASSETS.fetch(new Request(targetUrl, request));
+      const res = new Response(assetRes.body, assetRes);
+      if (url.searchParams.has('q') || url.searchParams.has('query')) {
+        res.headers.set('X-Robots-Tag', 'noindex, follow, noarchive');
+      } else {
+        res.headers.set('X-Robots-Tag', 'index, follow, max-image-preview:large');
+      }
+      return res;
     }
     if (decodedP === '/wizytówka' || decodedP === '/wizytowka') {
       const targetUrl = new URL(request.url);
@@ -2317,6 +2331,12 @@ export default {
       }
     }
 
-    return assetResp;
+    const finalResp = assetResp;
+    if (url.searchParams.has('q') || url.searchParams.has('query')) {
+      const respWithHeader = new Response(finalResp.body, finalResp);
+      respWithHeader.headers.set('X-Robots-Tag', 'noindex, follow, noarchive');
+      return respWithHeader;
+    }
+    return finalResp;
   },
 };
