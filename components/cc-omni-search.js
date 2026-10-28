@@ -2586,20 +2586,20 @@
       <div class="cc-wallpaper-modal">
         <div class="cc-wallpaper-modal-head">
           <div class="cc-wallpaper-modal-title" id="ccWallpaperModalTitle">
-            <span aria-hidden="true">🎨</span>
-            <strong>Wybierz tło wyszukiwarki Christian Culture</strong>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
+            <span>Zmień tło wyszukiwarki</span>
           </div>
           <button type="button" class="cc-wallpaper-modal-close" id="ccWallpaperModalClose" aria-label="Zamknij okno">×</button>
         </div>
         <div class="cc-wallpaper-modal-body">
           <p class="cc-wallpaper-modal-desc">
-            Wybierz jeden z 3 oficjalnych motywów misyjnych lub wgraj własne zdjęcie z dysku / aparatu:
+            Wybierz oficjalne tło Christian Culture lub wgraj własne zdjęcie z dysku / aparatu:
           </p>
           <div class="cc-wallpaper-grid" id="ccWallpaperGrid"></div>
         </div>
         <div class="cc-wallpaper-modal-foot">
           <button type="button" class="cc-btn-wall-reset-modal" id="ccBtnWallResetModal">
-            Przywróć domyślne tło
+            Przywróć domyślne tło CC
           </button>
           <button type="button" class="cc-btn-wall-close-modal" id="ccBtnWallCloseModal">
             Gotowe
@@ -6796,6 +6796,236 @@
           color: #FF7A00;
         }
 
+        /* =========================================================================
+           Dedykowane Okno Zmiany Tła Wyszukiwarki (Wallpaper Modal)
+           Wybór oficjalnych motywów CC + Własne zdjęcie z dysku / aparatu
+           ========================================================================= */
+        .cc-wallpaper-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 1000000;
+          background: rgba(0, 0, 0, 0.82);
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+          box-sizing: border-box;
+          animation: ccWallFadeIn 0.2s ease-out;
+        }
+        @keyframes ccWallFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .cc-wallpaper-modal {
+          background: #0B0F1A;
+          border: 1.5px solid rgba(196, 163, 90, 0.45);
+          border-radius: 20px;
+          max-width: 680px;
+          width: 100%;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(196, 163, 90, 0.25);
+          color: #ffffff;
+          overflow: hidden;
+          animation: ccWallSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes ccWallSlideUp {
+          from { transform: translateY(16px) scale(0.98); opacity: 0; }
+          to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .cc-wallpaper-modal-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 18px 24px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.03);
+        }
+        .cc-wallpaper-modal-title {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 1.15rem;
+          font-weight: 800;
+          color: #ffffff;
+        }
+        .cc-wallpaper-modal-title svg {
+          color: var(--omni-gold);
+          flex-shrink: 0;
+        }
+        .cc-wallpaper-modal-close {
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #ffffff;
+          font-size: 1.25rem;
+          line-height: 1;
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cc-wallpaper-modal-close:hover {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: #FF7A00;
+        }
+        .cc-wallpaper-modal-body {
+          padding: 22px 24px;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .cc-wallpaper-modal-desc {
+          margin: 0;
+          font-size: 0.9rem;
+          line-height: 1.45;
+          color: rgba(243, 229, 200, 0.85);
+        }
+        .cc-wallpaper-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 14px;
+        }
+        @media (max-width: 580px) {
+          .cc-wallpaper-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+        .cc-wall-card {
+          background: rgba(255, 255, 255, 0.04);
+          border: 1.5px solid rgba(255, 255, 255, 0.12);
+          border-radius: 14px;
+          overflow: hidden;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+          position: relative;
+        }
+        .cc-wall-card:hover {
+          transform: translateY(-2px);
+          border-color: rgba(196, 163, 90, 0.7);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+        .cc-wall-card.active {
+          border-color: #FF7A00;
+          box-shadow: 0 0 0 1.5px #FF7A00, 0 10px 28px rgba(255, 122, 0, 0.25);
+          background: rgba(255, 122, 0, 0.06);
+        }
+        .cc-wall-thumb-wrap {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          background: #000;
+          overflow: hidden;
+        }
+        .cc-wall-thumb {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.2s ease;
+        }
+        .cc-wall-card:hover .cc-wall-thumb {
+          transform: scale(1.03);
+        }
+        .cc-wall-active-pill {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: #FF7A00;
+          color: #ffffff;
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+        .cc-wall-info {
+          padding: 10px 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .cc-wall-title {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: #ffffff;
+        }
+        .cc-wall-tag {
+          font-size: 0.76rem;
+          color: var(--omni-gold);
+        }
+        .cc-wall-custom-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.02);
+          border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+        .cc-wall-upload-placeholder {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          color: var(--omni-gold);
+          font-size: 0.84rem;
+          font-weight: 600;
+          padding: 16px;
+        }
+        .cc-wallpaper-modal-foot {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 16px 24px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.02);
+          gap: 12px;
+        }
+        .cc-btn-wall-reset-modal {
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: rgba(243, 229, 200, 0.8);
+          font-size: 0.84rem;
+          font-weight: 600;
+          padding: 10px 16px;
+          border-radius: 20px;
+          cursor: pointer;
+          min-height: 44px;
+          transition: background 0.15s, color 0.15s;
+        }
+        .cc-btn-wall-reset-modal:hover {
+          background: rgba(255, 255, 255, 0.08);
+          color: #ffffff;
+        }
+        .cc-btn-wall-close-modal {
+          background: #FF7A00;
+          border: 0;
+          color: #ffffff;
+          font-size: 0.88rem;
+          font-weight: 700;
+          padding: 10px 24px;
+          border-radius: 22px;
+          cursor: pointer;
+          min-height: 44px;
+          transition: background 0.15s, transform 0.15s;
+        }
+        .cc-btn-wall-close-modal:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+        }
+        .cc-btn-wall-close-modal:active {
+          background: #E66A00;
+        }
+
 
         /* Karta Wsparcia & Pomocy Duszpasterskiej (Hope Intent Card) */
         .cc-hope-card {
@@ -7422,14 +7652,8 @@ ${isStandalonePage ? '' : `
               <button type="button" id="ccOmniSourcesBtn" class="cc-omni-iconbtn" aria-label="Rejestr źródeł i licencji Biblia Intelligence (R01–R40)" title="Źródła i licencje">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
               </button>
-              <button type="button" id="ccOmniWallBtn" class="cc-omni-iconbtn" aria-label="Wybierz tło wyszukiwarki (Galeria motywów CC)" title="Galeria teł (Polska &amp; Fale Radiowe, Global CC, Kosmos)">
+              <button type="button" id="ccOmniWallBtn" class="cc-omni-iconbtn" aria-label="Zmień tło wyszukiwarki" title="Zmień tło wyszukiwarki (wybierz motyw lub wgraj własne zdjęcie)">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
-              </button>
-              <button type="button" id="ccOmniWallUpload" class="cc-omni-iconbtn" aria-label="Wgraj własną tapetę z pliku" title="Wgraj własną tapetę">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              </button>
-              <button type="button" id="ccOmniWallReset" class="cc-omni-iconbtn" aria-label="Przywróć domyślne tło CC" title="Przywróć domyślne tło CC" hidden>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               </button>
               <input type="file" id="ccOmniWallFile" accept="image/*" hidden>
             </div>
@@ -7593,8 +7817,8 @@ ${isStandalonePage ? '' : `
         if (credit) credit.textContent = preset.credit;
         if (wallLabel) wallLabel.textContent = `Tło: ${preset.name}`;
         if (wallBtn) {
-          wallBtn.title = `Galeria teł (aktualne: ${preset.name})`;
-          wallBtn.setAttribute('aria-label', `Wybierz tło wyszukiwarki (aktualne: ${preset.name})`);
+          wallBtn.title = `Zmień tło wyszukiwarki (aktualne: ${preset.name})`;
+          wallBtn.setAttribute('aria-label', `Zmień tło wyszukiwarki (aktualne: ${preset.name})`);
         }
         if (wallReset) wallReset.hidden = (preset.id === 'polska-radio');
       } else if (!wallVal) {

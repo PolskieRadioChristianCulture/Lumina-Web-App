@@ -117,10 +117,11 @@ test('functional: wallpaper picker modal and presets lifecycle', async () => {
   // Close modal
   CCOmni.closeWallpaperModal();
   assert.equal(backdrop.style.display, 'none', 'Modal closed');
+  await window.happyDOM?.close?.();
 });
 
 
-test('footer: buttons are icon-only with 44px ergonomics, aria-labels and tooltips', async () => {
+test('footer: photo button opens dedicated window with all wallpaper options', async () => {
   const { Window } = await import('happy-dom');
   const window = new Window({ url: 'https://polskieradio.cc/wyszukiwarka' });
   const document = window.document;
@@ -135,19 +136,29 @@ test('footer: buttons are icon-only with 44px ergonomics, aria-labels and toolti
 
   const sourcesBtn = document.getElementById('ccOmniSourcesBtn');
   const wallBtn = document.getElementById('ccOmniWallBtn');
-  const wallUpload = document.getElementById('ccOmniWallUpload');
-  const wallReset = document.getElementById('ccOmniWallReset');
 
   assert.ok(sourcesBtn, 'ccOmniSourcesBtn exists');
   assert.ok(wallBtn, 'ccOmniWallBtn exists');
-  assert.ok(wallUpload, 'ccOmniWallUpload exists');
-  assert.ok(wallReset, 'ccOmniWallReset exists');
 
-  for (const btn of [sourcesBtn, wallBtn, wallUpload, wallReset]) {
+  for (const btn of [sourcesBtn, wallBtn]) {
     assert.ok(btn.classList.contains('cc-omni-iconbtn'), `${btn.id} has cc-omni-iconbtn class`);
     assert.ok(btn.getAttribute('aria-label'), `${btn.id} has aria-label`);
     assert.ok(btn.getAttribute('title'), `${btn.id} has title tooltip`);
     assert.equal(btn.querySelectorAll('svg').length, 1, `${btn.id} contains SVG icon`);
     assert.equal(btn.querySelector('span'), null, `${btn.id} has no inner text span (icon-only)`);
   }
+
+  // Click photo button: opens dedicated modal
+  wallBtn.click();
+  const modal = document.getElementById('ccWallpaperModalBackdrop');
+  assert.ok(modal, 'Dedicated wallpaper window opened');
+  assert.equal(modal.style.display, 'flex');
+
+  // Verify modal proposes official themes, upload, and reset
+  const grid = document.getElementById('ccWallpaperGrid');
+  assert.ok(grid, 'Grid exists in dedicated window');
+  assert.equal(grid.querySelectorAll('.cc-wall-card').length, 4, 'Proposes 3 official themes + custom upload');
+  assert.ok(document.getElementById('ccBtnWallResetModal'), 'Reset option proposed in dedicated window');
+  assert.ok(document.getElementById('ccBtnWallCloseModal'), 'Close button present');
+  await window.happyDOM?.close?.();
 });
