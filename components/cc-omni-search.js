@@ -2091,6 +2091,261 @@
     `;
   }
 
+  
+  // =========================================================================
+  // WIZUALIZACJE & KARTY DZIELENIA SOCIAL MEDIA (P6)
+  // Standard ZERO COST FIRST • HTML5 Canvas 1080x1080 • Direct Social Share
+  // =========================================================================
+
+  function drawBibleShareCard(canvas, verseText, refTitle) {
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const W = 1080;
+    const H = 1080;
+    canvas.width = W;
+    canvas.height = H;
+
+    // 1. Tło: głęboki kosmiczny gradient (EkoCC Dark Obsidian)
+    const bgGrad = ctx.createRadialGradient(W / 2, H / 2, 50, W / 2, H / 2, 650);
+    bgGrad.addColorStop(0, '#131c2e');
+    bgGrad.addColorStop(0.55, '#090e17');
+    bgGrad.addColorStop(1, '#04060a');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // 2. Złote ozdobne linie i podwójna ramka
+    ctx.strokeStyle = 'rgba(196, 163, 90, 0.45)';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(50, 50, W - 100, H - 100);
+
+    ctx.strokeStyle = 'rgba(255, 122, 0, 0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(62, 62, W - 124, H - 124);
+
+    // Narożniki ozdobne
+    const cornerSize = 24;
+    ctx.strokeStyle = '#FF7A00';
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(42, 42 + cornerSize); ctx.lineTo(42, 42); ctx.lineTo(42 + cornerSize, 42); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W - 42 - cornerSize, 42); ctx.lineTo(W - 42, 42); ctx.lineTo(W - 42, 42 + cornerSize); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(42, H - 42 - cornerSize); ctx.lineTo(42, H - 42); ctx.lineTo(42 + cornerSize, H - 42); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W - 42 - cornerSize, H - 42); ctx.lineTo(W - 42, H - 42); ctx.lineTo(W - 42, H - 42 - cornerSize); ctx.stroke();
+
+    // 3. Nagłówek: krzyż / emblemat i plakietka
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    ctx.fillStyle = '#FF7A00';
+    ctx.font = 'bold 36px "Outfit", system-ui, sans-serif';
+    ctx.fillText('✝', W / 2, 130);
+
+    ctx.fillStyle = '#C4A35A';
+    ctx.font = 'bold 22px "Outfit", system-ui, sans-serif';
+    ctx.fillText('S Ł O W O   B O Ż E   •   U B G', W / 2, 185);
+
+    // Linia podziału ze złotym rombem
+    ctx.strokeStyle = 'rgba(196, 163, 90, 0.35)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - 160, 220); ctx.lineTo(W / 2 - 25, 220);
+    ctx.moveTo(W / 2 + 25, 220); ctx.lineTo(W / 2 + 160, 220);
+    ctx.stroke();
+
+    ctx.fillStyle = '#FF7A00';
+    ctx.beginPath();
+    ctx.arc(W / 2, 220, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 4. Tekst wersetu: łamanie wierszy i wyśrodkowanie
+    const cleanQuote = String(verseText || '')
+      .replace(/\[\d+\]/g, '')
+      .replace(/G\d+|H\d+/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const formattedQuote = `„${cleanQuote}”`;
+    
+    let fontSize = 42;
+    if (formattedQuote.length > 250) fontSize = 30;
+    else if (formattedQuote.length > 160) fontSize = 35;
+    else if (formattedQuote.length < 80) fontSize = 48;
+
+    ctx.font = `italic 600 ${fontSize}px "Outfit", Georgia, serif`;
+    ctx.fillStyle = '#ffffff';
+
+    const maxTextWidth = W - 220;
+    const words = formattedQuote.split(' ');
+    let lines = [];
+    let currentLine = '';
+
+    for (let i = 0; i < words.length; i++) {
+      const testLine = currentLine ? currentLine + ' ' + words[i] : words[i];
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxTextWidth && i > 0) {
+        lines.push(currentLine);
+        currentLine = words[i];
+      } else {
+        currentLine = testLine;
+      }
+    }
+    if (currentLine) lines.push(currentLine);
+
+    const lineHeight = fontSize * 1.5;
+    const totalTextHeight = lines.length * lineHeight;
+    let startY = (H / 2) - (totalTextHeight / 2) + 20;
+
+    for (let i = 0; i < lines.length; i++) {
+      ctx.fillText(lines[i], W / 2, startY + (i * lineHeight));
+    }
+
+    // 5. Sigla referencyjna w kolorze akcji #FF7A00
+    const refY = startY + (lines.length * lineHeight) + 60;
+    ctx.font = 'bold 30px "Outfit", system-ui, sans-serif';
+    ctx.fillStyle = '#FF7A00';
+    ctx.fillText(`— ${refTitle} (UBG)`, W / 2, Math.min(refY, H - 180));
+
+    // 6. Stopka: logo / watermark Christian Culture
+    ctx.font = '500 20px "Outfit", system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(243, 229, 200, 0.7)';
+    ctx.fillText('polskieradio.cc  •  Christian Culture', W / 2, H - 100);
+  }
+
+  function ensureShareModal() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('ccShareCardModalBackdrop')) return;
+    const modal = document.createElement('div');
+    modal.className = 'cc-share-card-modal-backdrop';
+    modal.id = 'ccShareCardModalBackdrop';
+    modal.style.display = 'none';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'ccShareModalTitle');
+    modal.innerHTML = `
+      <div class="cc-share-card-modal">
+        <div class="cc-share-modal-head">
+          <div class="cc-share-modal-title" id="ccShareModalTitle">
+            <span aria-hidden="true">🖼️</span>
+            <strong id="ccShareCardRefTitle">Karta Słowa Bożego &amp; Dzielenie</strong>
+          </div>
+          <button type="button" class="cc-share-modal-close" id="ccShareModalClose" aria-label="Zamknij okno">×</button>
+        </div>
+        <div class="cc-share-modal-body">
+          <div class="cc-share-canvas-wrap">
+            <canvas id="ccShareVerseCanvas" class="cc-share-verse-canvas" width="1080" height="1080"></canvas>
+          </div>
+          <div class="cc-share-card-actions">
+            <button type="button" class="cc-btn-share-main" id="ccBtnDownloadCardPng">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Pobierz grafikę PNG</span>
+            </button>
+            <button type="button" class="cc-btn-share-sub" id="ccBtnCopyCardText">
+              <span>Kopiuj tekst i link</span>
+            </button>
+          </div>
+          <div class="cc-share-social-grid">
+            <a href="#" target="_blank" rel="noopener" class="cc-social-share-btn cc-share-wa" id="ccShareLinkWa" title="Udostępnij na WhatsApp">
+              <span>WhatsApp</span>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="cc-social-share-btn cc-share-tg" id="ccShareLinkTg" title="Udostępnij na Telegram">
+              <span>Telegram</span>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="cc-social-share-btn cc-share-fb" id="ccShareLinkFb" title="Udostępnij na Facebook">
+              <span>Facebook</span>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="cc-social-share-btn cc-share-x" id="ccShareLinkX" title="Udostępnij na X">
+              <span>X (Twitter)</span>
+            </a>
+            <a href="/lumina-tablica" class="cc-social-share-btn cc-share-lumina" id="ccShareLinkLumina" title="Opublikuj w Społeczności LUMINA">
+              <span>LUMINA</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    modal.querySelector('#ccShareModalClose').addEventListener('click', closeShareModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeShareModal();
+    });
+
+    modal.querySelector('#ccBtnDownloadCardPng').addEventListener('click', () => {
+      const canvas = document.getElementById('ccShareVerseCanvas');
+      if (!canvas) return;
+      const refTitle = modal.getAttribute('data-ref') || 'werset-ubg';
+      const safeFilename = 'Biblia-CC-' + refTitle.replace(/[^a-zA-Z0-9]/g, '_') + '.png';
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = safeFilename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    modal.querySelector('#ccBtnCopyCardText').addEventListener('click', () => {
+      const text = modal.getAttribute('data-full-text') || '';
+      if (text && navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = modal.querySelector('#ccBtnCopyCardText span');
+          if (btn) {
+            const orig = btn.textContent;
+            btn.textContent = 'Skopiowano!';
+            setTimeout(() => { btn.textContent = orig; }, 1600);
+          }
+        }).catch(() => {});
+      }
+    });
+  }
+
+  function openShareModal(verseText, refTitle) {
+    ensureShareModal();
+    const modal = document.getElementById('ccShareCardModalBackdrop');
+    if (!modal) return;
+
+    modal.setAttribute('data-verse', verseText);
+    modal.setAttribute('data-ref', refTitle);
+
+    const titleEl = modal.querySelector('#ccShareCardRefTitle');
+    if (titleEl) titleEl.textContent = refTitle || 'Karta Słowa Bożego';
+
+    const fullShareText = `„${verseText}” — ${refTitle} (UBG)\nhttps://polskieradio.cc/wyszukiwarka?q=${encodeURIComponent(refTitle)}`;
+    modal.setAttribute('data-full-text', fullShareText);
+
+    const shareUrl = `https://polskieradio.cc/wyszukiwarka?q=${encodeURIComponent(refTitle)}`;
+    const encText = encodeURIComponent(fullShareText);
+    const encUrl = encodeURIComponent(shareUrl);
+
+    const linkWa = modal.querySelector('#ccShareLinkWa');
+    if (linkWa) linkWa.href = `https://api.whatsapp.com/send?text=${encText}`;
+
+    const linkTg = modal.querySelector('#ccShareLinkTg');
+    if (linkTg) linkTg.href = `https://t.me/share/url?url=${encUrl}&text=${encodeURIComponent('„' + verseText + '” — ' + refTitle + ' (UBG)')}`;
+
+    const linkFb = modal.querySelector('#ccShareLinkFb');
+    if (linkFb) linkFb.href = `https://www.facebook.com/sharer/sharer.php?u=${encUrl}`;
+
+    const linkX = modal.querySelector('#ccShareLinkX');
+    if (linkX) linkX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent('„' + verseText + '” — ' + refTitle + ' (UBG)')}&url=${encUrl}`;
+
+    const linkLumina = modal.querySelector('#ccShareLinkLumina');
+    if (linkLumina) linkLumina.href = `/lumina-tablica?draft=${encText}`;
+
+    const canvas = modal.querySelector('#ccShareVerseCanvas');
+    if (canvas) {
+      drawBibleShareCard(canvas, verseText, refTitle);
+    }
+
+    modal.style.display = 'flex';
+  }
+
+  function closeShareModal() {
+    const modal = document.getElementById('ccShareCardModalBackdrop');
+    if (modal) modal.style.display = 'none';
+  }
+
     function renderScriptureCard(match) {
     if (!match) return '';
     const quoteText = match.verseText ? escapeHtml(match.verseText) : 'Ładowanie wersetu z Uwspółcześnionej Biblii Gdańskiej (UBG)...';
@@ -2188,6 +2443,10 @@
             </svg>
             <span>Biblia Audio CC</span>
           </a>
+          <button type="button" class="cc-btn-scripture-share" data-action="open-share-card" data-verse="${quoteText}" data-ref="${escapeHtml(match.refTitle)}" title="Udostępnij werset lub pobierz kartę graficzną">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span>Karta &amp; Udostępnij</span>
+          </button>
           <button type="button" class="cc-btn-scripture-sources" data-open-sources="true" title="Zobacz rejestr licencji i źródeł Biblia Intelligence CC">
             <span>📜 Źródła (R01–R40)</span>
           </button>
@@ -2301,6 +2560,9 @@
           <button type="button" class="cc-btn-scripture-sub" data-action="toggle-audio" data-verse="${escapeHtml(result.ubgText)}" data-ref="${safeRef}" title="Słuchaj kanonicznego wersetu UBG">
             <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
             <span class="cc-audio-play-label">Słuchaj (Lektor UBG)</span>
+          </button>
+          <button type="button" class="cc-btn-scripture-sub" data-action="open-share-card" data-verse="${escapeHtml(result.ubgText)}" data-ref="${safeRef}" title="Udostępnij cytat lub pobierz kartę graficzną">
+            <span>🖼️ Karta &amp; Udostępnij</span>
           </button>
           <button type="button" class="cc-btn-scripture-sub" data-action="toggle-compare" data-ref="${escapeHtml(result.refKey)}">
             <span>⚖️ Zobacz 4 Przekłady (UBG, BW, BT, BG)</span>
@@ -4745,7 +5007,178 @@
         
 
 
-        /* ── BIBLIA INTELLIGENCE CC (P5): KATALOG TEMATYCZNY & MODLITEWNIK ── */
+
+        /* ── BIBLIA INTELLIGENCE CC (P6): KARTY DZIELENIA SOCIAL MEDIA ── */
+        .cc-btn-scripture-share {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(255, 122, 0, 0.14);
+          border: 1px solid rgba(255, 122, 0, 0.4);
+          color: #FF8C33;
+          font-size: 0.85rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .cc-btn-scripture-share:hover {
+          background: #FF7A00;
+          border-color: #FF7A00;
+          color: #ffffff !important;
+        }
+        .cc-share-card-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 1000000;
+          background: rgba(0, 0, 0, 0.82);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+          animation: ccFadeIn 0.2s ease-out;
+        }
+        .cc-share-card-modal {
+          width: 100%;
+          max-width: 480px;
+          background: rgba(14, 20, 32, 0.98);
+          border: 1px solid rgba(196, 163, 90, 0.4);
+          border-radius: 18px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+          overflow: hidden;
+          color: #F3E5C8;
+          display: flex;
+          flex-direction: column;
+        }
+        .cc-share-modal-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 14px 18px;
+          border-bottom: 1px solid rgba(196, 163, 90, 0.25);
+          background: rgba(196, 163, 90, 0.05);
+        }
+        .cc-share-modal-title {
+          font-size: 0.92rem;
+          color: #FF8C33;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .cc-share-modal-close {
+          background: transparent;
+          border: 0;
+          color: rgba(243, 229, 200, 0.7);
+          font-size: 1.5rem;
+          cursor: pointer;
+          width: 36px;
+          height: 36px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+        }
+        .cc-share-modal-close:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #fff;
+        }
+        .cc-share-modal-body {
+          padding: 18px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          max-height: calc(88vh - 60px);
+          overflow-y: auto;
+          scrollbar-width: none;
+        }
+        .cc-share-modal-body::-webkit-scrollbar { display: none; }
+        .cc-share-canvas-wrap {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+        .cc-share-verse-canvas {
+          max-width: 100%;
+          width: 320px;
+          height: 320px;
+          border-radius: 14px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+        .cc-share-card-actions {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .cc-btn-share-main {
+          flex: 1;
+          min-width: 180px;
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff;
+          font-size: 0.88rem;
+          font-weight: 700;
+          border: 0;
+          cursor: pointer;
+          box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+        }
+        .cc-btn-share-main:hover {
+          background: #FF8C33;
+        }
+        .cc-btn-share-sub {
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #fff;
+          font-size: 0.82rem;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .cc-btn-share-sub:hover {
+          background: rgba(255, 255, 255, 0.16);
+        }
+        .cc-share-social-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+          gap: 8px;
+          padding-top: 10px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .cc-social-share-btn {
+          min-height: 40px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          font-size: 0.76rem;
+          font-weight: 700;
+          text-decoration: none;
+          color: #fff;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          transition: background 0.15s, transform 0.15s;
+        }
+        .cc-social-share-btn:hover {
+          transform: translateY(-1px);
+        }
+        .cc-share-wa:hover { background: #25D366; border-color: #25D366; color: #fff; }
+        .cc-share-tg:hover { background: #229ED9; border-color: #229ED9; color: #fff; }
+        .cc-share-fb:hover { background: #1877F2; border-color: #1877F2; color: #fff; }
+        .cc-share-x:hover { background: #000000; border-color: #ffffff; color: #fff; }
+        .cc-share-lumina:hover { background: #FF7A00; border-color: #FF7A00; color: #fff; }
+
+                /* ── BIBLIA INTELLIGENCE CC (P5): KATALOG TEMATYCZNY & MODLITEWNIK ── */
         .cc-topic-verse-row {
           flex: 1;
         }
@@ -6390,6 +6823,17 @@ ${isStandalonePage ? '' : `
 
     // Faza 2: Obsługa kopiowania linku / wersetu oraz hoveru na wynikach dla Split-View
     overlay.addEventListener('click', (e) => {
+      // Obsługa otwierania generatora kart / udostępniania (P6)
+      const shareCardBtn = e.target.closest('[data-action="open-share-card"]');
+      if (shareCardBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const verseText = shareCardBtn.getAttribute('data-verse') || '';
+        const refTitle = shareCardBtn.getAttribute('data-ref') || '';
+        openShareModal(verseText, refTitle);
+        return;
+      }
+
       // Obsługa otwierania modlitewnika tematycznego (P5)
       const prayerTrigger = e.target.closest('[data-action="toggle-prayer"]');
       if (prayerTrigger) {
@@ -7187,6 +7631,7 @@ ${isStandalonePage ? '' : `
   }
 
   function closeSearch() {
+    closeShareModal();
     stopBibleAudio();
     stopPlaceholderRotation();
     const overlay = document.getElementById('ccOmniOverlay');
@@ -7349,6 +7794,9 @@ ${isStandalonePage ? '' : `
     renderComparePanel: renderComparePanel,
     renderQuoteVerificationCard: renderQuoteVerificationCard,
     renderBibleTopicCard: renderBibleTopicCard,
+    drawBibleShareCard: drawBibleShareCard,
+    openShareModal: openShareModal,
+    closeShareModal: closeShareModal,
     playBibleAudio: playBibleAudio,
     stopBibleAudio: stopBibleAudio,
     toggleBibleAudio: toggleBibleAudio,

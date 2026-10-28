@@ -880,3 +880,106 @@ test('cc-omni-search.js: Biblia Intelligence CC — P5 contracts (Katalog 12 Tem
   assert.ok(omniSearchCode.includes('.cc-btn-prayer-trigger'), 'defines .cc-btn-prayer-trigger');
   assert.ok(omniSearchCode.includes('.cc-btn-prayer-audio'), 'defines .cc-btn-prayer-audio');
 });
+
+test('cc-omni-search.js: Biblia Intelligence CC — P6 contracts (Karty Dzielenia Social Media, Canvas 1080x1080, Social Deep Links)', async () => {
+  const vm = await import('node:vm');
+  let filledTextCalls = [];
+  const mockCtx = {
+    fillStyle: '',
+    strokeStyle: '',
+    lineWidth: 1,
+    font: '',
+    textAlign: '',
+    textBaseline: '',
+    fillRect: () => {},
+    strokeRect: () => {},
+    beginPath: () => {},
+    moveTo: () => {},
+    lineTo: () => {},
+    stroke: () => {},
+    arc: () => {},
+    fill: () => {},
+    measureText: (text) => ({ width: text.length * 15 }),
+    fillText: (text, x, y) => { filledTextCalls.push({ text, x, y }); },
+    createRadialGradient: () => ({ addColorStop: () => {} })
+  };
+
+  const mockCanvas = {
+    width: 0,
+    height: 0,
+    getContext: (type) => (type === '2d' ? mockCtx : null),
+    toDataURL: () => 'data:image/png;base64,MOCK'
+  };
+
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: (tag) => {
+        if (tag === 'canvas') return mockCanvas;
+        return {
+          setAttribute: () => {},
+          appendChild: () => {},
+          style: {},
+          querySelector: () => null,
+          addEventListener: () => {}
+        };
+      },
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const drawCard = sandbox.window.CCOmniSearch.drawBibleShareCard;
+  const openModal = sandbox.window.CCOmniSearch.openShareModal;
+  const closeModal = sandbox.window.CCOmniSearch.closeShareModal;
+
+  assert.ok(typeof drawCard === 'function', 'drawBibleShareCard is exported');
+  assert.ok(typeof openModal === 'function', 'openShareModal is exported');
+  assert.ok(typeof closeModal === 'function', 'closeShareModal is exported');
+
+  // 1. Draw card execution and dimensions 1080x1080
+  drawCard(mockCanvas, 'Tak bowiem Bóg umiłował świat, że dał swego Jednorodzonego Syna...', 'J 3:16');
+  assert.equal(mockCanvas.width, 1080, 'canvas width is 1080');
+  assert.equal(mockCanvas.height, 1080, 'canvas height is 1080');
+  assert.ok(filledTextCalls.some(c => c.text.includes('S Ł O W O   B O Ż E   •   U B G')), 'renders UBG header');
+  assert.ok(filledTextCalls.some(c => c.text.includes('J 3:16 (UBG)')), 'renders reference siglum in UBG');
+  assert.ok(filledTextCalls.some(c => c.text.includes('polskieradio.cc')), 'renders brand watermark');
+
+  // 2. HTML & UI action contracts
+  assert.ok(omniSearchCode.includes('data-action="open-share-card"'), 'has data-action open-share-card');
+  assert.ok(omniSearchCode.includes('cc-btn-scripture-share'), 'has cc-btn-scripture-share class');
+  assert.ok(omniSearchCode.includes('cc-share-card-modal-backdrop'), 'defines modal backdrop');
+  assert.ok(omniSearchCode.includes('cc-share-verse-canvas'), 'defines share verse canvas');
+  assert.ok(omniSearchCode.includes('cc-btn-share-main'), 'defines download PNG button');
+  assert.ok(omniSearchCode.includes('Pobierz grafikę PNG'), 'contains Pobierz grafikę PNG text');
+  assert.ok(omniSearchCode.includes('Kopiuj tekst i link'), 'contains Kopiuj tekst i link text');
+
+  // 3. Social deep links contracts
+  assert.ok(omniSearchCode.includes('api.whatsapp.com/send?text='), 'integrates WhatsApp deep link');
+  assert.ok(omniSearchCode.includes('t.me/share/url?'), 'integrates Telegram deep link');
+  assert.ok(omniSearchCode.includes('facebook.com/sharer/sharer.php?'), 'integrates Facebook deep link');
+  assert.ok(omniSearchCode.includes('twitter.com/intent/tweet?'), 'integrates X deep link');
+  assert.ok(omniSearchCode.includes('/lumina-tablica?draft='), 'integrates LUMINA deep link');
+
+  // 4. CSS styling contracts
+  assert.ok(omniSearchCode.includes('.cc-btn-scripture-share'), 'defines .cc-btn-scripture-share style');
+  assert.ok(omniSearchCode.includes('.cc-share-social-grid'), 'defines .cc-share-social-grid style');
+  assert.ok(omniSearchCode.includes('.cc-share-wa:hover'), 'defines .cc-share-wa WhatsApp color');
+  assert.ok(omniSearchCode.includes('.cc-share-tg:hover'), 'defines .cc-share-tg Telegram color');
+});
+
