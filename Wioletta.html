@@ -133,13 +133,13 @@
     /* 16:9 FRAME WRAPPER (MATCHING MOCKUP RATIO ON DESKTOP) */
     .hero-canvas {
       position: relative;
-      width: 100%;
-      max-width: 1536px;
+      width: min(100vw, calc(100vh * 16 / 9), 1536px);
+      height: min(100vh, calc(100vw * 9 / 16), 864px);
       aspect-ratio: 16 / 9;
-      max-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      flex-shrink: 0;
     }
 
     .hero-canvas-art {
@@ -154,7 +154,7 @@
     .hero-canvas-art img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       display: block;
     }
 
@@ -285,12 +285,10 @@
     /* INTERACTIVE CZYTAJ HOTSPOT (EXACT BUTTON POSITION) */
     .cta-hotspot {
       position: absolute;
-      left: 12.3%;
-      top: 75.8%;
-      width: 8.6%;
-      height: 6.4%;
-      min-width: 100px;
-      min-height: 44px;
+      left: 12.50%;
+      top: 75.87%;
+      width: 8.30%;
+      height: 6.08%;
       z-index: 10;
       cursor: pointer;
       border: 1.5px solid transparent;
@@ -299,13 +297,20 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+      transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .cta-hotspot::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      min-width: 44px;
+      min-height: 44px;
     }
     .cta-hotspot:hover,
     .cta-hotspot:focus-visible {
-      border-color: var(--gold-light);
-      background: rgba(196, 163, 90, 0.15);
-      box-shadow: 0 0 24px rgba(196, 163, 90, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 16px rgba(196, 163, 90, 0.35);
+      border-color: rgba(196, 163, 90, 0.4);
       outline: none;
     }
 
@@ -574,7 +579,7 @@
       </header>
 
       <!-- DESKTOP INTERACTIVE CZYTAJ HOTSPOT -->
-      <button class="cta-hotspot" type="button" data-modal="modalCzytaj" aria-label="Czytaj fragment powieści Pardon, Czy To Miłość?" title="Czytaj fragment"></button>
+      <button class="cta-hotspot" type="button" data-modal="modalCzytaj" aria-label="Czytaj fragment powieści Pardon, Czy To Miłość?"></button>
 
       <!-- MOBILE PANEL (CLEAN & READABLE ON SMARTPHONES) -->
       <div class="mobile-hero-panel">
