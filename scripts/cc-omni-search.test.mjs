@@ -695,3 +695,101 @@ test('cc-omni-search.js: Biblia Intelligence CC — P3 contracts (Porównywarka 
   assert.ok(quoteCardHtml.includes('cc-quote-diff-box'), 'renders diff box for non-UBG quote');
   assert.ok(quoteCardHtml.includes('ccQuoteCopyCanonicalBtn'), 'renders copy canonical UBG CTA');
 });
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P4 contracts (Audio Player, Biblia Słuchana, Waveform Visualizer, Web Speech Engine)', async () => {
+  const vm = await import('node:vm');
+  let spokenText = null;
+  let synthCanceled = false;
+
+  class MockUtterance {
+    constructor(text) {
+      this.text = text;
+      this.lang = 'pl-PL';
+      this.rate = 1.0;
+    }
+  }
+
+  const mockSpeechSynthesis = {
+    speak: (utt) => { spokenText = utt.text; },
+    cancel: () => { synthCanceled = true; },
+    pause: () => {},
+    resume: () => {},
+    getVoices: () => [{ lang: 'pl-PL', name: 'Paulina PL' }]
+  };
+
+  const sandbox = {
+    window: {
+      location: { pathname: '/' },
+      speechSynthesis: mockSpeechSynthesis,
+      SpeechSynthesisUtterance: MockUtterance
+    },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const playAudio = sandbox.window.CCOmniSearch.playBibleAudio;
+  const stopAudio = sandbox.window.CCOmniSearch.stopBibleAudio;
+  const toggleAudio = sandbox.window.CCOmniSearch.toggleBibleAudio;
+  const renderAudioBar = sandbox.window.CCOmniSearch.renderScriptureAudioBar;
+  const getAudioState = sandbox.window.CCOmniSearch.getAudioState;
+
+  assert.ok(typeof playAudio === 'function', 'playBibleAudio is exported');
+  assert.ok(typeof stopAudio === 'function', 'stopBibleAudio is exported');
+  assert.ok(typeof toggleAudio === 'function', 'toggleBibleAudio is exported');
+  assert.ok(typeof renderAudioBar === 'function', 'renderScriptureAudioBar is exported');
+
+  // 1. Play audio utterance
+  const playResult = playAudio('Na początku Bóg stworzył niebo i ziemię.', 'Księga Rodzaju 1:1', 1.0);
+  assert.equal(playResult, true, 'playAudio returns true');
+  assert.ok(spokenText && spokenText.includes('Na początku Bóg stworzył'), 'speechSynthesis spoke the verse');
+  assert.ok(spokenText.includes('Księga Rodzaju 1:1'), 'speechSynthesis included ref title');
+
+  // 2. Stop audio
+  stopAudio();
+  assert.equal(synthCanceled, true, 'speechSynthesis cancelled');
+  assert.equal(getAudioState(), 'idle', 'state is idle after stop');
+
+  // 3. Render audio bar HTML contracts
+  const match = {
+    bookCode: 'JHN',
+    bookName: 'Ewangelia Jana',
+    chapter: 3,
+    verse: 16,
+    refTitle: 'Ewangelia Jana 3:16',
+    verseText: 'Tak bowiem Bóg umiłował świat...'
+  };
+  const audioBarHtml = renderAudioBar(match);
+  assert.ok(audioBarHtml.includes('cc-scripture-audio-bar'), 'renders audio bar container');
+  assert.ok(audioBarHtml.includes('cc-btn-play-verse'), 'renders play button');
+  assert.ok(audioBarHtml.includes('cc-waveform-visualizer'), 'renders radio waveform visualizer');
+  assert.ok(audioBarHtml.includes('cc-wave-bar'), 'renders wave bars');
+  assert.ok(audioBarHtml.includes('cc-audio-status-tag'), 'renders audio status tag');
+  assert.ok(audioBarHtml.includes('cc-audio-speed-selector'), 'renders speed selector');
+  assert.ok(audioBarHtml.includes('cc-btn-open-player'), 'renders CC Player link');
+
+  // 4. CSS contracts for Audio Bar & Waveform
+  assert.ok(omniSearchCode.includes('.cc-scripture-audio-bar'), 'defines .cc-scripture-audio-bar');
+  assert.ok(omniSearchCode.includes('.cc-btn-play-verse'), 'defines .cc-btn-play-verse');
+  assert.ok(omniSearchCode.includes('.cc-waveform-active'), 'defines .cc-waveform-active');
+  assert.ok(omniSearchCode.includes('@keyframes ccWavePulse'), 'defines @keyframes ccWavePulse');
+  assert.ok(omniSearchCode.includes('prefers-reduced-motion'), 'supports prefers-reduced-motion');
+});

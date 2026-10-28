@@ -1772,7 +1772,190 @@
     `;
   }
 
-  function renderScriptureCard(match) {
+
+  // =========================================================================
+  // AUDIO PLAYER & BIBLIA SŁUCHANA CC (P4)
+  // Standard ZERO COST FIRST • Web Speech API • Radio Waveform Visualizer
+  // =========================================================================
+  let currentAudioUtterance = null;
+  let currentAudioState = 'idle'; // 'idle' | 'playing' | 'paused'
+  let currentAudioSpeed = 1.0;
+
+  function stopBibleAudio() {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    currentAudioState = 'idle';
+    currentAudioUtterance = null;
+    updateAudioUI('idle');
+  }
+
+  function playBibleAudio(text, refTitle, speed = currentAudioSpeed) {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      console.warn('SpeechSynthesis API not supported in this browser.');
+      return false;
+    }
+
+    if (currentAudioState === 'paused' && currentAudioUtterance) {
+      window.speechSynthesis.resume();
+      currentAudioState = 'playing';
+      updateAudioUI('playing');
+      return true;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const cleanText = String(text || '')
+      .replace(/\[\d+\]/g, '')
+      .replace(/G\d+|H\d+/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!cleanText) return false;
+
+    const fullUtteranceText = refTitle ? `${refTitle}. ${cleanText}` : cleanText;
+    const UtteranceClass = (typeof window !== 'undefined' && window.SpeechSynthesisUtterance) || (typeof SpeechSynthesisUtterance !== 'undefined' ? SpeechSynthesisUtterance : null);
+    if (!UtteranceClass) return false;
+    const utterance = new UtteranceClass(fullUtteranceText);
+    utterance.lang = 'pl-PL';
+    utterance.rate = Number(speed) || 1.0;
+    utterance.pitch = 1.0;
+
+    const voices = window.speechSynthesis.getVoices() || [];
+    const plVoice = voices.find(v => v.lang && (v.lang === 'pl-PL' || v.lang.startsWith('pl')));
+    if (plVoice) utterance.voice = plVoice;
+
+    utterance.onstart = () => {
+      currentAudioState = 'playing';
+      updateAudioUI('playing');
+    };
+
+    utterance.onend = () => {
+      currentAudioState = 'idle';
+      currentAudioUtterance = null;
+      updateAudioUI('idle');
+    };
+
+    utterance.onerror = (e) => {
+      if (e.error !== 'canceled' && e.error !== 'interrupted') {
+        console.warn('Speech synthesis error:', e);
+      }
+      currentAudioState = 'idle';
+      currentAudioUtterance = null;
+      updateAudioUI('idle');
+    };
+
+    currentAudioUtterance = utterance;
+    currentAudioState = 'playing';
+    updateAudioUI('playing');
+    window.speechSynthesis.speak(utterance);
+    return true;
+  }
+
+  function toggleBibleAudio(text, refTitle) {
+    if (currentAudioState === 'playing') {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.pause();
+      }
+      currentAudioState = 'paused';
+      updateAudioUI('paused');
+    } else if (currentAudioState === 'paused') {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.resume();
+      }
+      currentAudioState = 'playing';
+      updateAudioUI('playing');
+    } else {
+      playBibleAudio(text, refTitle, currentAudioSpeed);
+    }
+  }
+
+  function updateAudioUI(state) {
+    if (typeof document === 'undefined') return;
+    const playBtns = document.querySelectorAll('[data-action="toggle-audio"]');
+    playBtns.forEach(btn => {
+      const icon = btn.querySelector('.cc-audio-play-icon');
+      const label = btn.querySelector('.cc-audio-play-label');
+      if (state === 'playing') {
+        btn.setAttribute('aria-pressed', 'true');
+        btn.classList.add('cc-playing');
+        if (icon) icon.textContent = '⏸';
+        if (label) label.textContent = 'Pauza';
+      } else if (state === 'paused') {
+        btn.setAttribute('aria-pressed', 'false');
+        btn.classList.remove('cc-playing');
+        if (icon) icon.textContent = '▶';
+        if (label) label.textContent = 'Wznów';
+      } else {
+        btn.setAttribute('aria-pressed', 'false');
+        btn.classList.remove('cc-playing');
+        if (icon) icon.textContent = '▶';
+        if (label) label.textContent = 'Słuchaj wersetu';
+      }
+    });
+
+    const waveforms = document.querySelectorAll('.cc-waveform-visualizer');
+    waveforms.forEach(wf => {
+      if (state === 'playing') {
+        wf.classList.add('cc-waveform-active');
+      } else {
+        wf.classList.remove('cc-waveform-active');
+      }
+    });
+
+    const statusTags = document.querySelectorAll('.cc-audio-status-tag');
+    statusTags.forEach(tag => {
+      if (state === 'playing') {
+        tag.textContent = '🔊 Odtwarzanie...';
+        tag.classList.add('cc-tag-playing');
+      } else if (state === 'paused') {
+        tag.textContent = '⏸ Wstrzymano';
+        tag.classList.remove('cc-tag-playing');
+      } else {
+        tag.textContent = '🎙️ Lektor UBG';
+        tag.classList.remove('cc-tag-playing');
+      }
+    });
+  }
+
+  function renderScriptureAudioBar(match) {
+    if (!match) return '';
+    const rawText = match.verseText || '';
+    const audioUrl = `/player?q=${encodeURIComponent(match.bookName + ' ' + match.chapter)}`;
+    const safeRef = escapeHtml(match.refTitle || '');
+    const safeText = escapeHtml(rawText);
+
+    return `
+      <div class="cc-scripture-audio-bar" id="ccScriptureAudioBar">
+        <div class="cc-audio-bar-left">
+          <button type="button" class="cc-btn-play-verse" id="ccBtnPlayVerse" data-action="toggle-audio" data-verse="${safeText}" data-ref="${safeRef}" aria-pressed="false" title="Słuchaj wersetu (Lektor UBG / Mowa)">
+            <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
+            <span class="cc-audio-play-label">Słuchaj wersetu</span>
+          </button>
+          <div class="cc-waveform-visualizer" id="ccAudioWaveform" aria-hidden="true" title="Wskaźnik fali radiowej CC">
+            <span class="cc-wave-bar cc-wave-1"></span>
+            <span class="cc-wave-bar cc-wave-2"></span>
+            <span class="cc-wave-bar cc-wave-3"></span>
+            <span class="cc-wave-bar cc-wave-4"></span>
+            <span class="cc-wave-bar cc-wave-5"></span>
+          </div>
+          <span class="cc-audio-status-tag" id="ccAudioStatusTag">🎙️ Lektor UBG</span>
+        </div>
+        <div class="cc-audio-bar-right">
+          <div class="cc-audio-speed-selector" title="Prędkość lektora">
+            <button type="button" class="cc-speed-btn active" data-speed="1.0">1.0x</button>
+            <button type="button" class="cc-speed-btn" data-speed="1.25">1.25x</button>
+            <button type="button" class="cc-speed-btn" data-speed="1.5">1.5x</button>
+          </div>
+          <a href="${audioUrl}" class="cc-btn-open-player" title="Otwórz pełny rozdział w odtwarzaczu CC Player">
+            <span>CC Player →</span>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+    function renderScriptureCard(match) {
     if (!match) return '';
     const quoteText = match.verseText ? escapeHtml(match.verseText) : 'Ładowanie wersetu z Uwspółcześnionej Biblii Gdańskiej (UBG)...';
     const strongUrl = `/mojabiblia?book=${encodeURIComponent(match.bookCode)}&chapter=${match.chapter}${match.verse ? '&verse=' + match.verse : ''}`;
@@ -1843,6 +2026,7 @@
         <blockquote class="cc-scripture-quote" id="ccScriptureQuote">
           „${quoteText}”
         </blockquote>
+        ${renderScriptureAudioBar(match)}
         ${tokensHtml}
         ${crossRefsHtml}
         <div class="cc-scripture-actions">
@@ -1977,6 +2161,10 @@
         <div class="cc-quote-verif-actions">
           <button type="button" class="cc-btn-scripture-main" style="background:#FF7A00;" id="ccQuoteCopyCanonicalBtn" data-quote="${ubgCopy}">
             <span>Kopiuj Kanoniczny Cytat UBG</span>
+          </button>
+          <button type="button" class="cc-btn-scripture-sub" data-action="toggle-audio" data-verse="${escapeHtml(result.ubgText)}" data-ref="${safeRef}" title="Słuchaj kanonicznego wersetu UBG">
+            <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
+            <span class="cc-audio-play-label">Słuchaj (Lektor UBG)</span>
           </button>
           <button type="button" class="cc-btn-scripture-sub" data-action="toggle-compare" data-ref="${escapeHtml(result.refKey)}">
             <span>⚖️ Zobacz 4 Przekłady (UBG, BW, BT, BG)</span>
@@ -4380,7 +4568,162 @@
         }
 
         
-        /* Biblia Intelligence CC (P3): Porównywarka Wieloprzekładowa i Weryfikacja Cytowań */
+
+        /* ── BIBLIA INTELLIGENCE CC (P4): AUDIO PLAYER & BIBLIA SŁUCHANA ── */
+        .cc-scripture-audio-bar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin: 12px 0 10px 0;
+          padding: 10px 14px;
+          border-radius: 12px;
+          background: rgba(15, 23, 42, 0.75);
+          border: 1px solid rgba(196, 163, 90, 0.3);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+        .cc-audio-bar-left, .cc-audio-bar-right {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .cc-btn-play-verse {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          min-height: 44px;
+          padding: 0 18px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff !important;
+          border: 0;
+          font-size: 0.88rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+          box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
+        }
+        .cc-btn-play-verse:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(255, 122, 0, 0.5);
+        }
+        .cc-btn-play-verse:active {
+          background: #E66A00;
+          transform: translateY(0);
+        }
+        .cc-btn-play-verse.cc-playing {
+          background: #22c55e;
+          box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+        }
+        .cc-btn-play-verse.cc-playing:hover {
+          background: #16a34a;
+        }
+        .cc-audio-play-icon {
+          font-size: 0.95rem;
+          line-height: 1;
+        }
+        .cc-waveform-visualizer {
+          display: inline-flex;
+          align-items: center;
+          gap: 3px;
+          height: 22px;
+          padding: 0 4px;
+        }
+        .cc-wave-bar {
+          display: inline-block;
+          width: 3.5px;
+          height: 6px;
+          background: rgba(196, 163, 90, 0.45);
+          border-radius: 2px;
+          transition: height 0.15s ease, background-color 0.15s;
+        }
+        .cc-waveform-active .cc-wave-bar {
+          background: #FF7A00;
+          animation: ccWavePulse 0.9s ease-in-out infinite alternate;
+        }
+        .cc-waveform-active .cc-wave-1 { animation-delay: 0.0s; height: 16px; }
+        .cc-waveform-active .cc-wave-2 { animation-delay: 0.2s; height: 22px; }
+        .cc-waveform-active .cc-wave-3 { animation-delay: 0.4s; height: 12px; }
+        .cc-waveform-active .cc-wave-4 { animation-delay: 0.1s; height: 18px; }
+        .cc-waveform-active .cc-wave-5 { animation-delay: 0.3s; height: 14px; }
+
+        @keyframes ccWavePulse {
+          0% { height: 5px; }
+          50% { height: 22px; }
+          100% { height: 8px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cc-waveform-active .cc-wave-bar {
+            animation: none !important;
+            height: 14px !important;
+          }
+        }
+        .cc-audio-status-tag {
+          font-size: 0.74rem;
+          font-weight: 700;
+          color: rgba(243, 229, 200, 0.75);
+          letter-spacing: 0.04em;
+        }
+        .cc-audio-status-tag.cc-tag-playing {
+          color: #4ade80;
+        }
+        .cc-audio-speed-selector {
+          display: inline-flex;
+          align-items: center;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 16px;
+          padding: 2px;
+          gap: 2px;
+        }
+        .cc-speed-btn {
+          background: transparent;
+          border: 0;
+          color: rgba(243, 229, 200, 0.7);
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 12px;
+          cursor: pointer;
+          min-height: 28px;
+          min-width: 32px;
+          transition: background 0.15s, color 0.15s;
+        }
+        .cc-speed-btn:hover {
+          color: #ffffff;
+        }
+        .cc-speed-btn.active {
+          background: rgba(196, 163, 90, 0.25);
+          color: #FF8C33;
+          border: 1px solid rgba(196, 163, 90, 0.4);
+        }
+        .cc-btn-open-player {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          min-height: 36px;
+          padding: 0 12px;
+          border-radius: 18px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          color: #F3E5C8;
+          font-size: 0.76rem;
+          font-weight: 700;
+          text-decoration: none;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .cc-btn-open-player:hover {
+          background: rgba(255, 255, 255, 0.14);
+          border-color: #FF7A00;
+          color: #ffffff;
+        }
+
+                /* Biblia Intelligence CC (P3): Porównywarka Wieloprzekładowa i Weryfikacja Cytowań */
         .cc-scripture-compare-panel {
           margin: 14px 0;
           padding: 16px;
@@ -5714,6 +6057,33 @@ ${isStandalonePage ? '' : `
 
     // Faza 2: Obsługa kopiowania linku / wersetu oraz hoveru na wynikach dla Split-View
     overlay.addEventListener('click', (e) => {
+      // Obsługa odtwarzania audio wersetu / cytatu (P4)
+      const playVerseBtn = e.target.closest('[data-action="toggle-audio"]');
+      if (playVerseBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const verseText = playVerseBtn.getAttribute('data-verse') || '';
+        const refTitle = playVerseBtn.getAttribute('data-ref') || '';
+        toggleBibleAudio(verseText, refTitle);
+        return;
+      }
+
+      // Wybór prędkości lektora (P4)
+      const speedBtn = e.target.closest('.cc-speed-btn');
+      if (speedBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const speed = parseFloat(speedBtn.getAttribute('data-speed')) || 1.0;
+        currentAudioSpeed = speed;
+        document.querySelectorAll('.cc-speed-btn').forEach(b => b.classList.remove('active'));
+        speedBtn.classList.add('active');
+        if (currentAudioState === 'playing' && currentAudioUtterance) {
+          const vText = currentAudioUtterance.text;
+          playBibleAudio(vText, '', speed);
+        }
+        return;
+      }
+
       const compareTrigger = e.target.closest('[data-action="toggle-compare"]');
       if (compareTrigger) {
         e.preventDefault();
@@ -6449,6 +6819,7 @@ ${isStandalonePage ? '' : `
   }
 
   function closeSearch() {
+    stopBibleAudio();
     stopPlaceholderRotation();
     const overlay = document.getElementById('ccOmniOverlay');
     if (!overlay) return;
@@ -6609,6 +6980,11 @@ ${isStandalonePage ? '' : `
     verifyBibleQuote: verifyBibleQuote,
     renderComparePanel: renderComparePanel,
     renderQuoteVerificationCard: renderQuoteVerificationCard,
+    playBibleAudio: playBibleAudio,
+    stopBibleAudio: stopBibleAudio,
+    toggleBibleAudio: toggleBibleAudio,
+    renderScriptureAudioBar: renderScriptureAudioBar,
+    getAudioState: () => currentAudioState,
     getPreviewHtml: getPreviewHtml,
     TOP_UBG_VERSES: TOP_UBG_VERSES,
     PLACEHOLDERS: PLACEHOLDERS,
