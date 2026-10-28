@@ -442,3 +442,85 @@ test('cc-omni-search.js: Biblia Intelligence CC — P0 contracts (topics, script
   assert.ok(omniSearchCode.includes('Crossreferences.org'), 'cites Crossreferences.org');
   assert.ok(omniSearchCode.includes('ZERO COST FIRST'), 'declares ZERO COST FIRST architecture');
 });
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P1 contracts (Greek/Hebrew lemmas, Strong, cross-refs, interlinear)', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => 1,
+    clearInterval: () => {},
+    Date: Date
+  };
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const detectLemma = sandbox.window.CCOmniSearch.detectStrongOrLemma;
+  const lemmas = sandbox.window.CCOmniSearch.TOP_LEMMAS;
+  const crossRefs = sandbox.window.CCOmniSearch.TOP_CROSS_REFS;
+  const tokens = sandbox.window.CCOmniSearch.TOP_INTERLINEAR_TOKENS;
+
+  assert.ok(typeof detectLemma === 'function', 'detectStrongOrLemma is exported');
+  assert.ok(typeof lemmas === 'object' && lemmas.G3056, 'TOP_LEMMAS has G3056 (logos)');
+  assert.ok(typeof lemmas.H7676 === 'object', 'TOP_LEMMAS has H7676 (shabbat)');
+
+  // 1. Direct Strong code lookup
+  const logosMatch = detectLemma('G3056');
+  assert.ok(logosMatch, 'detects G3056');
+  assert.equal(logosMatch.translit, 'logos');
+  assert.equal(logosMatch.lang, 'grc');
+  assert.equal(logosMatch.occurrences, 330);
+
+  const shabbatMatch = detectLemma('H7676');
+  assert.ok(shabbatMatch, 'detects H7676');
+  assert.equal(shabbatMatch.lang, 'he');
+  assert.equal(shabbatMatch.translit, 'shabbāt');
+
+  // 2. Transliteration alias lookup
+  const agapeMatch = detectLemma('agape');
+  assert.ok(agapeMatch, 'detects agape');
+  assert.equal(agapeMatch.strong, 'G0026');
+
+  const charisMatch = detectLemma('charis');
+  assert.ok(charisMatch, 'detects charis');
+  assert.equal(charisMatch.strong, 'G5485');
+
+  // 3. Dynamic unbuffered Strong code fallback
+  const fallbackMatch = detectLemma('G9999');
+  assert.ok(fallbackMatch, 'detects unbuffered Strong G9999');
+  assert.equal(fallbackMatch.strong, 'G9999');
+  assert.equal(fallbackMatch.lang, 'grc');
+
+  // 4. Cross-references contract
+  assert.ok(Array.isArray(crossRefs['JHN:3:16']), 'cross-refs defined for JHN:3:16');
+  assert.ok(crossRefs['JHN:3:16'].some(cr => cr.ref === 'Rz 5:8'), 'includes Rz 5:8 as parallel');
+  assert.ok(crossRefs['EXO:20:8'].some(cr => cr.ref === 'Rdz 2:3'), 'includes Rdz 2:3 for EXO:20:8');
+
+  // 5. Interlinear tokens contract
+  assert.ok(Array.isArray(tokens['JHN:3:16']), 'interlinear tokens defined for JHN:3:16');
+  assert.ok(tokens['JHN:3:16'].some(t => t.strong === 'G0025'), 'tokens include G0025 (agapaō)');
+  assert.ok(tokens['GEN:1:1'].some(t => t.strong === 'H7225' && t.isRtl), 'tokens include H7225 (Bereszit) in RTL');
+
+  // 6. UI contracts
+  assert.ok(omniSearchCode.includes('.cc-lemma-card'), 'defines .cc-lemma-card');
+  assert.ok(omniSearchCode.includes('.cc-lemma-orig'), 'defines .cc-lemma-orig');
+  assert.ok(omniSearchCode.includes('.cc-lemma-disclaimer'), 'defines Strong disclaimer');
+  assert.ok(omniSearchCode.includes('.cc-scripture-crossrefs'), 'defines .cc-scripture-crossrefs');
+  assert.ok(omniSearchCode.includes('.cc-scripture-tokens-section'), 'defines .cc-scripture-tokens-section');
+  assert.ok(omniSearchCode.includes('.cc-token-chip'), 'defines .cc-token-chip');
+  assert.ok(omniSearchCode.includes('STEPBible Data'), 'declares STEPBible Data provenance');
+  assert.ok(omniSearchCode.includes('SBL Greek New Testament'), 'declares SBLGNT provenance');
+});

@@ -675,7 +675,351 @@
     }
   };
 
-  function detectBibleTopic(query) {
+
+  // =========================================================================
+  // BIBLIA INTELLIGENCE CC — ETAP P1: LINGWISTYKA, LEKSYKON, CROSS-REFS
+  // Standard ZERO COST FIRST • STEPBible Data & SBLGNT (CC BY 4.0)
+  // =========================================================================
+
+  const TOP_LEMMAS = {
+    G3056: {
+      strong: 'G3056',
+      lang: 'grc',
+      original: 'λόγος',
+      translit: 'logos',
+      pronunciation: "lo'-gos",
+      partOfSpeech: 'Rzeczownik męski (Noun Masculine)',
+      definitionPl: 'Słowo, mowa, wypowiedź; boski Logos (odwieczne Słowo Boże, uosobiona Mądrość i Syn Boży Jezus Chrystus); sens, zamysł, sprawa.',
+      kjvDef: 'word, saying, speech, treatise, utterance',
+      origin: 'Od G3004 (legō - mówić, zbierać, zestawiać)',
+      occurrences: 330,
+      keyVerses: ['J 1:1', 'J 1:14', '1 J 1:1', 'Łk 1:2', 'Ap 19:13']
+    },
+    G0025: {
+      strong: 'G0025',
+      lang: 'grc',
+      original: 'ἀγαπάω',
+      translit: 'agapaō',
+      pronunciation: "ag-ap-ah'-o",
+      partOfSpeech: 'Czasownik (Verb)',
+      definitionPl: 'Miłować, darzyć bezwarunkową, ofiarną miłością Bożą; cenić najwyżej, przedkładać dobro drugiego ponad własne.',
+      kjvDef: 'to love',
+      origin: 'Od G0026 (agapē - miłość Boża)',
+      occurrences: 143,
+      keyVerses: ['J 3:16', 'J 13:34', '1 J 4:19', 'Rz 8:37']
+    },
+    G0026: {
+      strong: 'G0026',
+      lang: 'grc',
+      original: 'ἀγάπη',
+      translit: 'agapē',
+      pronunciation: "ag-ah'-pay",
+      partOfSpeech: 'Rzeczownik żeński (Noun Feminine)',
+      definitionPl: 'Miłość bezwarunkowa, ofiarna i doskonała; Boża miłość wylewana w serca wierzących przez Ducha Świętego.',
+      kjvDef: 'love, charity',
+      origin: 'Od G0025 (agapaō)',
+      occurrences: 116,
+      keyVerses: ['1 Kor 13:4', '1 Kor 13:13', '1 J 4:8', 'Rz 5:5']
+    },
+    G2316: {
+      strong: 'G2316',
+      lang: 'grc',
+      original: 'θεός',
+      translit: 'theos',
+      pronunciation: "theh'-os",
+      partOfSpeech: 'Rzeczownik męski (Noun Masculine)',
+      definitionPl: 'Bóg, Najwyższy Stwórca, Bóstwo; Jedyny prawdziwy Bóg Ojciec, Syn i Duch Święty.',
+      kjvDef: 'God',
+      origin: 'Pierwotne określenie Boga w grece biblijnej',
+      occurrences: 1317,
+      keyVerses: ['J 1:1', 'J 3:16', '1 Tm 2:5', '1 J 4:8']
+    },
+    G5485: {
+      strong: 'G5485',
+      lang: 'grc',
+      original: 'χάρις',
+      translit: 'charis',
+      pronunciation: "khar'-ece",
+      partOfSpeech: 'Rzeczownik żeński (Noun Feminine)',
+      definitionPl: 'Łaska, niezasłużona Boża przychylność i życzliwość niosąca zbawienie; dar darmowy dla wierzącego.',
+      kjvDef: 'grace, favour, acceptable, benefit, gift, grace, gracious',
+      origin: 'Od G5463 (chairō - radować się)',
+      occurrences: 155,
+      keyVerses: ['Ef 2:8', 'Rz 3:24', 'Tyt 2:11', '2 Kor 12:9']
+    },
+    G4102: {
+      strong: 'G4102',
+      lang: 'grc',
+      original: 'πίστις',
+      translit: 'pistis',
+      pronunciation: "pis'-tis",
+      partOfSpeech: 'Rzeczownik żeński (Noun Feminine)',
+      definitionPl: 'Wiara, zaufanie, wierność, pewność obietnic Bożych; podstawa usprawiedliwienia chrześcijanina.',
+      kjvDef: 'faith, fidelity, belief',
+      origin: 'Od G3982 (peithō - przekonać, zaufać)',
+      occurrences: 243,
+      keyVerses: ['Hbr 11:1', 'Rz 1:17', 'Ef 2:8', 'Rz 5:1']
+    },
+    G4151: {
+      strong: 'G4151',
+      lang: 'grc',
+      original: 'πνεῦμα',
+      translit: 'pneuma',
+      pronunciation: "pnyoo'-mah",
+      partOfSpeech: 'Rzeczownik nijaki (Noun Neuter)',
+      definitionPl: 'Duch, Duch Święty, tchnienie życia, wiatr; niematerialna Boża obecność i trzecia Osoba Bóstwa.',
+      kjvDef: 'Spirit, Holy Ghost, breath, wind',
+      origin: 'Od G4154 (pneō - oddychać, wiać)',
+      occurrences: 379,
+      keyVerses: ['J 3:8', 'J 14:26', 'Dz 1:8', 'Rz 8:16', 'Gal 5:22']
+    },
+    G2222: {
+      strong: 'G2222',
+      lang: 'grc',
+      original: 'ζωή',
+      translit: 'zōē',
+      pronunciation: "dzo-ay'",
+      partOfSpeech: 'Rzeczownik żeński (Noun Feminine)',
+      definitionPl: 'Życie — w wymiarze duchowym i wiecznym; życie w obfitości z Boga przeciwstawione śmierci grzechu.',
+      kjvDef: 'life',
+      origin: 'Od G2198 (zaō - żyć)',
+      occurrences: 135,
+      keyVerses: ['J 3:16', 'J 14:6', '1 J 5:12', 'Rz 6:23']
+    },
+    H7225: {
+      strong: 'H7225',
+      lang: 'he',
+      original: 'רֵאשִׁית',
+      translit: 'rē’šît',
+      pronunciation: "ray-sheet'",
+      partOfSpeech: 'Rzeczownik żeński (Noun Feminine)',
+      definitionPl: 'Początek, pierwocina, zarzewie czasu, najlepsza część; słowo otwierające Biblię w Rdz 1:1 (Bereszit).',
+      kjvDef: 'beginning, chief, firstfruits, part, principal',
+      origin: 'Od H7218 (rō’š - głowa, wierzchołek)',
+      occurrences: 51,
+      keyVerses: ['Rdz 1:1', 'Prz 1:7', 'Prz 8:22', 'Pwt 11:12']
+    },
+    H7676: {
+      strong: 'H7676',
+      lang: 'he',
+      original: 'שַׁבָּת',
+      translit: 'shabbāt',
+      pronunciation: "shab-bawth'",
+      partOfSpeech: 'Rzeczownik żeński (Noun Feminine)',
+      definitionPl: 'Szabat, odpoczynek, siódmy dzień tygodnia uświęcony przez Boga przy stworzeniu (Rdz 2:2-3) i wpisany w Dekalog (Wj 20:8-11).',
+      kjvDef: 'Sabbath',
+      origin: 'Od H7673 (shābat - ustać, odpocząć, zaprzestać pracy)',
+      occurrences: 111,
+      keyVerses: ['Wj 20:8', 'Wj 31:13', 'Iz 58:13', 'Kpł 23:3']
+    },
+    H1254: {
+      strong: 'H1254',
+      lang: 'he',
+      original: 'בָּרָא',
+      translit: 'bārā’',
+      pronunciation: "baw-raw'",
+      partOfSpeech: 'Czasownik (Verb)',
+      definitionPl: 'Stworzyć, ukształtować z niczego; czasownik w Biblii używany WYŁĄCZNIE o suwerennym działaniu samego Boga.',
+      kjvDef: 'create, creator, make',
+      origin: 'Rdzeń semicki oznaczający akt stwórczy Boga',
+      occurrences: 54,
+      keyVerses: ['Rdz 1:1', 'Rdz 1:27', 'Iz 40:28', 'Ps 51:10']
+    },
+    H0430: {
+      strong: 'H0430',
+      lang: 'he',
+      original: 'אֱלֹהִים',
+      translit: '’ĕlōhîm',
+      pronunciation: "el-o-heem'",
+      partOfSpeech: 'Rzeczownik męski w liczbie mnogiej majestatycznej (Plural of Majesty)',
+      definitionPl: 'Bóg Najwyższy, Stwórca; forma gramatyczna wyrażająca pełnię majestatu, mocy i potęgi jedynego Boga.',
+      kjvDef: 'God, gods, judge',
+      origin: 'Od H0433 (’ĕlôah - bóstwo, moc)',
+      occurrences: 2606,
+      keyVerses: ['Rdz 1:1', 'Pwt 6:4', 'Ps 19:1', 'Iz 45:18']
+    },
+    H3068: {
+      strong: 'H3068',
+      lang: 'he',
+      original: 'יְהוָה',
+      translit: 'YHWH / Yahweh',
+      pronunciation: 'yah-weh',
+      partOfSpeech: 'Imię własne Boga (Tetragramaton)',
+      definitionPl: 'PAN (JHWH) — wieczne, osobiste i przymierzowe Imię Boga: „JESTEM, KTÓRY JESTEM”; Ten, który trwa wiecznie i dochowuje przymierza.',
+      kjvDef: 'LORD, GOD, Jehovah',
+      origin: 'Od H1961 (hāyāh - być, istnieć, stawać się)',
+      occurrences: 6828,
+      keyVerses: ['Wj 3:14', 'Wj 20:2', 'Pwt 6:4', 'Ps 23:1', 'Iz 42:8']
+    },
+    H7965: {
+      strong: 'H7965',
+      lang: 'he',
+      original: 'שָׁלוֹם',
+      translit: 'shālôm',
+      pronunciation: "shaw-lome'",
+      partOfSpeech: 'Rzeczownik męski (Noun Masculine)',
+      definitionPl: 'Pokój, pełnia, pomyślność, zdrowie, bezpieczeństwo; stan harmonii i pojednania człowieka z Bogiem.',
+      kjvDef: 'peace, well, welfare, prosperity',
+      origin: 'Od H7999 (shālam - być całym, pojednać się)',
+      occurrences: 237,
+      keyVerses: ['Lb 6:26', 'Iz 9:6', 'Ps 122:6', 'Jer 29:11']
+    },
+    H7307: {
+      strong: 'H7307',
+      lang: 'he',
+      original: 'רוּחַ',
+      translit: 'rûaḥ',
+      pronunciation: "roo'-akh",
+      partOfSpeech: 'Rzeczownik żeński/męski',
+      definitionPl: 'Duch, tchnienie, wiatr; Duch Boży unoszący się nad wodami (Rdz 1:2), dający życie i natchnienie prorokom.',
+      kjvDef: 'Spirit, wind, breath',
+      origin: 'Rdzeń oznaczający powiew, tchnienie życia',
+      occurrences: 378,
+      keyVerses: ['Rdz 1:2', 'Ez 37:9', 'Za 4:6', 'Ps 104:30']
+    },
+    H2617: {
+      strong: 'H2617',
+      lang: 'he',
+      original: 'חֶסֶד',
+      translit: 'ḥesed',
+      pronunciation: "kheh'-sed",
+      partOfSpeech: 'Rzeczownik męski (Noun Masculine)',
+      definitionPl: 'Miłosierdzie, łaska, niezłomna miłość przymierzowa; lojalność i dobroć Boga trwająca na wieki.',
+      kjvDef: 'mercy, kindness, lovingkindness, goodness',
+      origin: 'Od H2616 (ḥāsad - okazać dobroć, być łaskawym)',
+      occurrences: 248,
+      keyVerses: ['Ps 136:1', 'Ps 23:6', 'Wj 34:6', 'Oz 6:6']
+    }
+  };
+
+  const LEMMA_ALIASES = {
+    logos: 'G3056',
+    agape: 'G0026',
+    agapao: 'G0025',
+    theos: 'G2316',
+    charis: 'G5485',
+    pistis: 'G4102',
+    pneuma: 'G4151',
+    zoe: 'G2222',
+    reszit: 'H7225',
+    bereszit: 'H7225',
+    reshit: 'H7225',
+    szabat: 'H7676',
+    shabbat: 'H7676',
+    sabat: 'H7676',
+    bara: 'H1254',
+    elohim: 'H0430',
+    jahwe: 'H3068',
+    yahweh: 'H3068',
+    jhwh: 'H3068',
+    shalom: 'H7965',
+    szalom: 'H7965',
+    ruach: 'H7307',
+    chesed: 'H2617'
+  };
+
+  function detectStrongOrLemma(query) {
+    if (!query) return null;
+    const raw = query.trim();
+    const strongM = raw.match(/^([GHgh])\s*(\d{1,5})$/);
+    if (strongM) {
+      const prefix = strongM[1].toUpperCase();
+      const num = parseInt(strongM[2], 10);
+      const pad4 = prefix + String(num).padStart(4, '0');
+      const padDirect = prefix + num;
+      if (TOP_LEMMAS[pad4]) return TOP_LEMMAS[pad4];
+      if (TOP_LEMMAS[padDirect]) return TOP_LEMMAS[padDirect];
+      return {
+        strong: pad4,
+        lang: prefix === 'G' ? 'grc' : 'he',
+        original: prefix === 'G' ? 'Tekst Grecki (SBLGNT)' : 'Tekst Hebrajski (Masorecki)',
+        translit: pad4,
+        pronunciation: pad4,
+        partOfSpeech: prefix === 'G' ? 'Greka Koine NT' : 'Hebrajski biblijny ST',
+        definitionPl: 'Hasło leksykonu Stronga ' + pad4 + '. Zbadaj morfologię, etymologię i wszystkie wystąpienia w MojaBiblia.',
+        origin: 'STEPBible-Data / Tyndale House Cambridge (CC BY 4.0)',
+        occurrences: 0,
+        keyVerses: []
+      };
+    }
+    const norm = raw.toLowerCase()
+      .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
+      .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
+      .replace(/[ś]/g, 's').replace(/[źż]/g, 'z').trim();
+    const mapped = LEMMA_ALIASES[norm];
+    if (mapped && TOP_LEMMAS[mapped]) return TOP_LEMMAS[mapped];
+    return null;
+  }
+
+  const TOP_CROSS_REFS = {
+    "JHN:3:16": [
+      { ref: "Rz 5:8", relation: "PARALELA", text: "Lecz Bóg okazuje swoją miłość do nas przez to, że gdy jeszcze byliśmy grzesznikami, Chrystus za nas umarł." },
+      { ref: "1 J 4:9", relation: "PARALELA", text: "W tym objawiła się miłość Boga ku nam, że Bóg posłał swego jednorodzonego Syna na świat, abyśmy żyli przez niego." },
+      { ref: "Ef 2:4-5", relation: "WSPÓLNY MOTYW", text: "Lecz Bóg, który jest bogaty w miłosierdzie, z powodu swojej wielkiej miłości... ożywił nas razem z Chrystusem." }
+    ],
+    "ROM:8:28": [
+      { ref: "Jer 29:11", relation: "PARALELA", text: "Gdyż ja znam myśli, które mam o was, mówi PAN: myśli o pokoju, a nie o utrapieniu, aby zapewnić wam koniec, jakiego oczekujecie." },
+      { ref: "Ef 1:11", relation: "WSPÓLNY MOTYW", text: "W nim, mówię, w którym też otrzymaliśmy dziedzictwo, przeznaczeni według postanowienia tego, który dokonuje wszystkiego..." }
+    ],
+    "PSA:23:1": [
+      { ref: "J 10:11", relation: "SPEŁNIENIE PROROCZE", text: "Ja jestem dobrym pasterzem. Dobry pasterz oddaje swoje życie za owce." },
+      { ref: "Flp 4:19", relation: "PARALELA", text: "A mój Bóg zaspokoi wszelką waszą potrzebę według swego bogactwa w chwale, w Chrystusie Jezusie." }
+    ],
+    "GEN:2:2": [
+      { ref: "Wj 20:11", relation: "CYTAT BEZPOŚREDNI", text: "Gdyż w sześciu dniach PAN stworzył niebo i ziemię, morze i wszystko, co w nich jest, a w siódmym dniu odpoczął." },
+      { ref: "Hbr 4:4", relation: "CYTAT BEZPOŚREDNI", text: "Powiedział bowiem na jednym miejscu o siódmym dniu tak: I odpoczął Bóg w siódmym dniu od wszystkich swych dzieł." }
+    ],
+    "EXO:20:8": [
+      { ref: "Rdz 2:3", relation: "WSPÓLNY MOTYW", text: "I pobłogosławił Bóg dzień siódmy, i uświęcił go, bo w nim odpoczął od wszelkiego swego dzieła." },
+      { ref: "Mk 2:27-28", relation: "NAUCZANIE CHRYSTUSA", text: "Szabat został ustanowiony dla człowieka, a nie człowiek dla szabatu. Dlatego Syn Człowieczy jest Panem także szabatu." }
+    ],
+    "1TI:2:5": [
+      { ref: "Hbr 8:6", relation: "PARALELA", text: "Teraz zaś otrzymał tym znakomitszą służbę, im lepszego przymierza jest pośrednikiem, które zostało ustanowione na lepszych obietnicach." },
+      { ref: "J 14:6", relation: "PARALELA", text: "Jezus mu odpowiedział: Ja jestem drogą, prawdą i życiem. Nikt nie przychodzi do Ojca jak tylko przeze mnie." }
+    ],
+    "DAN:7:13": [
+      { ref: "Mt 24:30", relation: "SPEŁNIENIE PROROCZE", text: "I wówczas ukaże się na niebie znak Syna Człowieczego... i ujrzą Syna Człowieczego przychodzącego na obłokach nieba z mocą i wielką chwałą." },
+      { ref: "Ap 1:7", relation: "SPEŁNIENIE PROROCZE", text: "Oto przychodzi z obłokami i ujrzy go wszelkie oko, także ci, którzy go przebili." }
+    ],
+    "REV:14:6": [
+      { ref: "Ap 14:12", relation: "KONTEKST PERYKOPY", text: "Tu jest cierpliwość świętych, tu są ci, którzy strzegą przykazań Boga i wiary Jezusa." },
+      { ref: "Wj 20:11", relation: "ALUZJA DO DEKALOGU", text: "Pokłońcie się temu, który stworzył niebo i ziemię, morze i źródła wód." }
+    ]
+  };
+
+  const TOP_INTERLINEAR_TOKENS = {
+    "JHN:3:16": [
+      { orig: "οὕτως", translit: "houtōs", strong: "G3779", gloss: "tak" },
+      { orig: "γὰρ", translit: "gar", strong: "G1063", gloss: "bowiem" },
+      { orig: "ἠγάπησεν", translit: "ēgapēsen", strong: "G0025", gloss: "umiłował" },
+      { orig: "ὁ θεὸς", translit: "ho theos", strong: "G2316", gloss: "Bóg" },
+      { orig: "τὸν κόσμον", translit: "ton kosmon", strong: "G2889", gloss: "świat" },
+      { orig: "υἱὸν", translit: "huion", strong: "G5207", gloss: "Syna" },
+      { orig: "μονογενῆ", translit: "monogenē", strong: "G3439", gloss: "jednorodzonego" },
+      { orig: "πιστεύων", translit: "pisteuōn", strong: "G4100", gloss: "wierzący" },
+      { orig: "ζωὴν αἰώνιον", translit: "zōēn aiōnion", strong: "G2222", gloss: "życie wieczne" }
+    ],
+    "GEN:1:1": [
+      { orig: "בְּרֵאשִׁית", translit: "bərē’šît", strong: "H7225", gloss: "na początku", isRtl: true },
+      { orig: "בָּרָא", translit: "bārā’", strong: "H1254", gloss: "stworzył", isRtl: true },
+      { orig: "אֱלֹהִים", translit: "’ĕlōhîm", strong: "H0430", gloss: "Bóg", isRtl: true },
+      { orig: "הַשָּׁמַיִם", translit: "haššāmayim", strong: "H8064", gloss: "niebo", isRtl: true },
+      { orig: "הָאָרֶץ", translit: "hā’āreṣ", strong: "H0776", gloss: "ziemię", isRtl: true }
+    ],
+    "PSA:23:1": [
+      { orig: "יְהוָה", translit: "YHWH", strong: "H3068", gloss: "PAN", isRtl: true },
+      { orig: "רֹעִי", translit: "rō‘î", strong: "H7462", gloss: "pasterzem moim", isRtl: true },
+      { orig: "לֹא אֶחְסָר", translit: "lō’ ’eḥsār", strong: "H2637", gloss: "nie zabraknie mi", isRtl: true }
+    ],
+    "EXO:20:8": [
+      { orig: "זָכוֹר", translit: "zāḵôr", strong: "H2142", gloss: "pamiętaj", isRtl: true },
+      { orig: "אֶת־יוֹם", translit: "’eṯ-yôm", strong: "H3117", gloss: "dzień", isRtl: true },
+      { orig: "הַשַּׁבָּת", translit: "haššabbāṯ", strong: "H7676", gloss: "szabatu", isRtl: true },
+      { orig: "לְקַדְּשׁוֹ", translit: "ləqaddəšô", strong: "H6942", gloss: "aby go święcić", isRtl: true }
+    ]
+  };
+
+    function detectBibleTopic(query) {
     if (!query) return null;
     const norm = query.toLowerCase()
       .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
@@ -848,6 +1192,54 @@
     const audioUrl = `/player?q=${encodeURIComponent(match.bookName + ' ' + match.chapter)}`;
     const copyPayload = escapeHtml(`„${match.verseText || ''}” — ${match.refTitle} (UBG)`);
 
+    const refKey = `${match.bookCode}:${match.chapter}:${match.verse || 1}`;
+    const tokens = TOP_INTERLINEAR_TOKENS[refKey] || null;
+    let tokensHtml = '';
+    if (tokens && tokens.length > 0) {
+      const isOT = ['GEN','EXO','LEV','NUM','DEU','JOS','JDG','RUT','1SA','2SA','1KI','2KI','1CH','2CH','EZR','NEH','EST','JOB','PSA','PRO','ECC','SNG','ISA','JER','LAM','EZK','DAN','HOS','JOL','AMO','OBA','JON','MIC','NAM','HAB','ZEP','HAG','ZEC','MAL'].includes(match.bookCode);
+      const chips = tokens.map(t => {
+        const isHe = isOT || (t.strong && t.strong.startsWith('H'));
+        return '<button type="button" class="cc-token-chip" data-strong="' + escapeHtml(t.strong) + '" title="Kliknij, aby zbadać lemat ' + escapeHtml(t.strong) + '">' +
+          '<span class="cc-token-orig ' + (isHe ? 'cc-hebrew' : '') + '" ' + (isHe ? 'dir="rtl"' : '') + '>' + escapeHtml(t.orig) + '</span>' +
+          '<span class="cc-token-translit">' + escapeHtml(t.translit) + '</span>' +
+          '<span class="cc-token-strong">' + escapeHtml(t.strong) + '</span>' +
+          '<span class="cc-token-gloss">' + escapeHtml(t.gloss) + '</span>' +
+        '</button>';
+      }).join('');
+
+      tokensHtml = '<div class="cc-scripture-tokens-section">' +
+        '<div class="cc-scripture-tokens-label">' +
+          '<span>🔬 Podgląd interlinearny (kliknij słowo, aby zbadać lemat):</span>' +
+          '<small>Tekst oryginalny • Kody Stronga</small>' +
+        '</div>' +
+        '<div class="cc-scripture-tokens-list">' +
+          chips +
+        '</div>' +
+      '</div>';
+    }
+
+    const crossRefs = TOP_CROSS_REFS[refKey] || null;
+    let crossRefsHtml = '';
+    if (crossRefs && crossRefs.length > 0) {
+      const crossChips = crossRefs.map(cr => {
+        return '<a href="/mojabiblia?ref=' + encodeURIComponent(cr.ref) + '" class="cc-crossref-chip" title="' + escapeHtml(cr.text || '') + '">' +
+          '<span class="cc-crossref-rel">[' + escapeHtml(cr.relation) + ']</span>' +
+          '<span class="cc-crossref-ref">' + escapeHtml(cr.ref) + '</span>' +
+          '<span class="cc-crossref-desc">' + escapeHtml(cr.text || '') + '</span>' +
+        '</a>';
+      }).join('');
+
+      crossRefsHtml = '<div class="cc-scripture-crossrefs">' +
+        '<div class="cc-scripture-crossrefs-label">' +
+          '<span>🔗 Odsyłacze wersetowe (Cross-References):</span>' +
+          '<small>Źródło: OpenBible / Crossreferences.org (CC BY 4.0)</small>' +
+        '</div>' +
+        '<div class="cc-scripture-crossrefs-list">' +
+          crossChips +
+        '</div>' +
+      '</div>';
+    }
+
     return `
       <div class="cc-scripture-card" id="ccScriptureCard">
         <div class="cc-scripture-head">
@@ -862,6 +1254,8 @@
         <blockquote class="cc-scripture-quote" id="ccScriptureQuote">
           „${quoteText}”
         </blockquote>
+        ${tokensHtml}
+        ${crossRefsHtml}
         <div class="cc-scripture-actions">
           <a href="${strongUrl}" class="cc-btn-scripture-main">
             Otwórz w MojaBiblia (Strong) →
@@ -896,7 +1290,68 @@
     `;
   }
 
-  function renderBibleTopicCard(topicData) {
+
+  function renderLemmaCard(lemma) {
+    if (!lemma) return '';
+    const isHe = lemma.lang === 'he';
+    const strongUrl = `/mojabiblia?strong=${encodeURIComponent(lemma.strong)}`;
+    const concordUrl = `/szukaj?q=${encodeURIComponent(lemma.strong)}`;
+
+    return `
+      <div class="cc-lemma-card" id="ccLemmaCard">
+        <div class="cc-lemma-head">
+          <div class="cc-lemma-badge">
+            <span class="cc-lemma-icon" aria-hidden="true">🏛️</span>
+            <span class="cc-lemma-level">LINGWISTYKA &amp; TEKST ORYGINALNY</span>
+            <span class="cc-lemma-lang">${isHe ? 'Hebrajski biblijny (Stary Testament)' : 'Greka Koine (Nowy Testament)'}</span>
+          </div>
+          <span class="cc-lemma-status">ZERO COST • SBLGNT / STEPBIBLE</span>
+        </div>
+
+        <div class="cc-lemma-word-row">
+          <div class="cc-lemma-orig${isHe ? ' cc-rtl' : ''}" dir="${isHe ? 'rtl' : 'ltr'}">${escapeHtml(lemma.original)}</div>
+          <div class="cc-lemma-meta">
+            <div class="cc-lemma-translit">${escapeHtml(lemma.translit)} <small class="cc-lemma-pron">(${escapeHtml(lemma.pronunciation)})</small></div>
+            <div class="cc-lemma-strong-badge" title="Numer Leksykonu Stronga">${escapeHtml(lemma.strong)}</div>
+          </div>
+        </div>
+
+        <div class="cc-lemma-disclaimer">
+          ⚠️ <em>Zasada egzegetyczna:</em> Numeracja Stronga służy jako pomocniczy indeks morfologiczny, a nie samoistny dowód teologiczny. Rzeczywiste znaczenie słowa wynika z kontekstu perykopy.
+        </div>
+
+        <div class="cc-lemma-morph">
+          <strong>Część mowy:</strong> ${escapeHtml(lemma.partOfSpeech || 'Forma leksykalna')}
+          ${lemma.origin ? ` • <span class="cc-lemma-origin"><strong>Etymologia:</strong> ${escapeHtml(lemma.origin)}</span>` : ''}
+        </div>
+
+        <div class="cc-lemma-def">
+          <div class="cc-lemma-def-label">Definicja Leksykonowa (STEPBible CC BY 4.0):</div>
+          <p class="cc-lemma-def-text">${escapeHtml(lemma.definitionPl)}</p>
+        </div>
+
+        ${lemma.occurrences > 0 ? `
+        <div class="cc-lemma-occurrences">
+          📊 <strong>Wystąpienia w Piśmie:</strong> ok. ${lemma.occurrences} razy
+          ${lemma.keyVerses && lemma.keyVerses.length ? ` (Kluczowe: ${lemma.keyVerses.map(kv => `<a href="/mojabiblia?q=${encodeURIComponent(kv)}" class="cc-lemma-verse-link">${escapeHtml(kv)}</a>`).join(', ')})` : ''}
+        </div>` : ''}
+
+        <div class="cc-lemma-actions">
+          <a href="${strongUrl}" class="cc-btn-scripture-main">
+            Otwórz hasło w MojaBiblia (Strong) →
+          </a>
+          <a href="${concordUrl}" class="cc-btn-scripture-sub" title="Przeszukaj wszystkie wystąpienia">
+            Konkordancja w UBG
+          </a>
+          <button type="button" class="cc-btn-scripture-sources" data-open-sources="true" title="Zobacz licencje korpusów językowych">
+            <span>📜 Źródła (R01–R40)</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+    function renderBibleTopicCard(topicData) {
     if (!topicData) return '';
     const versesHtml = topicData.verses.map(v => `
       <div class="cc-bible-topic-verse-item">
@@ -2738,6 +3193,257 @@
           margin-top: 4px;
         }
 
+        /* Karta Lematy i Języka Oryginalnego (Biblia Intelligence CC — P1) */
+        .cc-lemma-card {
+          background: linear-gradient(135deg, rgba(196, 163, 90, 0.18) 0%, rgba(11, 15, 26, 0.85) 100%);
+          border: 1.5px solid rgba(196, 163, 90, 0.55);
+          border-radius: 16px;
+          padding: 20px;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .cc-lemma-head {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 8px;
+        }
+        .cc-lemma-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .cc-lemma-level {
+          font-size: 0.72rem;
+          font-weight: 800;
+          color: #F3E5C8;
+          letter-spacing: 0.05em;
+          background: rgba(196, 163, 90, 0.28);
+          border: 1px solid rgba(196, 163, 90, 0.6);
+          padding: 2px 8px;
+          border-radius: 6px;
+        }
+        .cc-lemma-lang {
+          font-size: 0.78rem;
+          color: var(--omni-gold);
+          font-weight: 700;
+        }
+        .cc-lemma-status {
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: #FF7A00;
+          background: rgba(255, 122, 0, 0.12);
+          border: 1px solid rgba(255, 122, 0, 0.35);
+          padding: 2px 8px;
+          border-radius: 12px;
+        }
+        .cc-lemma-word-row {
+          display: flex;
+          align-items: baseline;
+          gap: 16px;
+          padding: 6px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .cc-lemma-orig {
+          font-size: 2.2rem;
+          font-weight: 700;
+          color: #ffffff;
+          line-height: 1.1;
+          letter-spacing: 0.02em;
+        }
+        .cc-lemma-orig.cc-rtl, .cc-token-orig.cc-rtl {
+          font-family: 'SBL Hebrew', 'Ezra SIL', 'Times New Roman', serif;
+          direction: rtl;
+          unicode-bidi: isolate;
+        }
+        .cc-lemma-meta {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .cc-lemma-translit {
+          font-size: 1.15rem;
+          font-weight: 600;
+          color: var(--omni-gold);
+        }
+        .cc-lemma-pron {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.65);
+        }
+        .cc-lemma-strong-badge {
+          background: #FF7A00;
+          color: #ffffff;
+          font-size: 0.76rem;
+          font-weight: 800;
+          padding: 2px 8px;
+          border-radius: 10px;
+          box-shadow: 0 2px 8px rgba(255, 122, 0, 0.3);
+        }
+        .cc-lemma-disclaimer {
+          font-size: 0.76rem;
+          line-height: 1.45;
+          color: rgba(243, 229, 200, 0.8);
+          background: rgba(0, 0, 0, 0.25);
+          border-left: 3px solid var(--omni-gold);
+          padding: 6px 10px;
+          border-radius: 0 6px 6px 0;
+        }
+        .cc-lemma-morph {
+          font-size: 0.88rem;
+          color: rgba(255, 255, 255, 0.9);
+        }
+        .cc-lemma-def {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .cc-lemma-def-label {
+          font-size: 0.74rem;
+          font-weight: 700;
+          color: var(--omni-gold);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .cc-lemma-def-text {
+          margin: 0;
+          font-size: 1rem;
+          line-height: 1.55;
+          color: #ffffff;
+        }
+        .cc-lemma-occurrences {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.85);
+        }
+        .cc-lemma-verse-link {
+          color: #FF8C33;
+          text-decoration: underline;
+          margin: 0 3px;
+        }
+        .cc-lemma-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 8px;
+          margin-top: 4px;
+        }
+
+        /* Odsyłacze Wersetowe (Cross-References) */
+        .cc-scripture-crossrefs {
+          background: rgba(0, 0, 0, 0.26);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 12px;
+          padding: 12px 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-top: 4px;
+        }
+        .cc-scripture-crossrefs-label {
+          font-size: 0.74rem;
+          font-weight: 700;
+          color: var(--omni-gold);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .cc-scripture-crossrefs-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .cc-crossref-item {
+          font-size: 0.88rem;
+          line-height: 1.45;
+          color: rgba(255, 255, 255, 0.92);
+        }
+        .cc-crossref-tag {
+          font-size: 0.68rem;
+          font-weight: 800;
+          color: #FF7A00;
+          background: rgba(255, 122, 0, 0.12);
+          border: 1px solid rgba(255, 122, 0, 0.3);
+          padding: 1px 6px;
+          border-radius: 4px;
+          margin-right: 6px;
+        }
+        .cc-crossref-ref {
+          color: var(--omni-gold);
+          font-weight: 700;
+          text-decoration: underline;
+          margin-right: 4px;
+        }
+        .cc-crossref-ref:hover {
+          color: #FF8C33;
+        }
+
+        /* Pasek Tokenów Języka Oryginalnego (Interlinear) */
+        .cc-scripture-tokens-section {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          margin-top: 4px;
+        }
+        .cc-scripture-tokens-label {
+          font-size: 0.74rem;
+          font-weight: 700;
+          color: var(--omni-gold);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .cc-scripture-tokens-scroll {
+          display: flex;
+          gap: 8px;
+          overflow-x: auto;
+          padding-bottom: 4px;
+          scrollbar-width: thin;
+        }
+        .cc-token-chip {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          border-radius: 10px;
+          padding: 6px 10px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2px;
+          cursor: pointer;
+          min-width: 72px;
+          flex-shrink: 0;
+          color: #ffffff;
+          transition: background 0.15s, border-color 0.15s, transform 0.15s;
+        }
+        .cc-token-chip:hover {
+          background: rgba(255, 255, 255, 0.14);
+          border-color: #FF7A00;
+          transform: translateY(-1px);
+        }
+        .cc-token-orig {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: #ffffff;
+        }
+        .cc-token-translit {
+          font-size: 0.74rem;
+          color: var(--omni-gold);
+        }
+        .cc-token-badge {
+          font-size: 0.68rem;
+          font-weight: 800;
+          color: #FF8C33;
+          background: rgba(255, 122, 0, 0.15);
+          padding: 1px 5px;
+          border-radius: 6px;
+        }
+        .cc-token-gloss {
+          font-size: 0.72rem;
+          color: rgba(255, 255, 255, 0.75);
+        }
+
         /* Modal Źródeł i Licencji (R01–R40) */
         .cc-sources-modal-backdrop {
           position: fixed;
@@ -3853,7 +4559,24 @@ ${isStandalonePage ? '' : `
 
     // Faza 2: Obsługa kopiowania linku / wersetu oraz hoveru na wynikach dla Split-View
     overlay.addEventListener('click', (e) => {
-      const autoBtn = e.target.closest('.cc-autocorrect-btn, .cc-autocorrect-btn-orig');
+      const tokenChip = e.target.closest('.cc-token-chip');
+      if (tokenChip) {
+        e.preventDefault();
+        e.stopPropagation();
+        const strong = tokenChip.getAttribute('data-strong');
+        if (strong) {
+          input.value = strong;
+          clearBtn.style.display = 'inline-flex';
+          renderResults(strong, activeFilter);
+          if (isStandalonePage) {
+            history.replaceState(null, '', '/wyszukiwarka?q=' + encodeURIComponent(strong));
+          }
+          input.focus();
+        }
+        return;
+      }
+
+            const autoBtn = e.target.closest('.cc-autocorrect-btn, .cc-autocorrect-btn-orig');
       if (autoBtn) {
         e.preventDefault();
         e.stopPropagation();
@@ -4062,8 +4785,12 @@ ${isStandalonePage ? '' : `
     const bibleMatch = parseBibleRef(query);
     const scriptureCardHtml = bibleMatch ? renderScriptureCard(bibleMatch) : '';
 
-    // Biblia Intelligence: Detekcja tematu biblijnego (jeśli brak bezpośredniego wersetu)
-    const bibleTopic = !bibleMatch ? detectBibleTopic(query) : null;
+    // Biblia Intelligence CC (P1): Detekcja lematu greckiego/hebrajskiego lub kodu Stronga
+    const lemmaMatch = detectStrongOrLemma(query);
+    const lemmaCardHtml = lemmaMatch ? renderLemmaCard(lemmaMatch) : '';
+
+    // Biblia Intelligence: Detekcja tematu biblijnego (jeśli brak bezpośredniego wersetu i lematu)
+    const bibleTopic = (!bibleMatch && !lemmaMatch) ? detectBibleTopic(query) : null;
     const bibleTopicCardHtml = bibleTopic ? renderBibleTopicCard(bibleTopic) : '';
 
     // Faza 2: Detekcja intencji duszpasterskiej / pomocy
@@ -4084,6 +4811,9 @@ ${isStandalonePage ? '' : `
 
     if (scriptureCardHtml) {
       leftColHtml += scriptureCardHtml;
+    }
+    if (lemmaCardHtml) {
+      leftColHtml += lemmaCardHtml;
     }
     if (bibleTopicCardHtml) {
       leftColHtml += bibleTopicCardHtml;
@@ -4146,7 +4876,7 @@ ${isStandalonePage ? '' : `
 
     // 3. Lista wyników
     if (!items.length) {
-      if (!scriptureCardHtml && !bibleTopicCardHtml && !hopeCardHtml) {
+      if (!scriptureCardHtml && !lemmaCardHtml && !bibleTopicCardHtml && !hopeCardHtml) {
         leftColHtml += `
           <div class="cc-omni-empty">
             <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
@@ -4650,6 +5380,10 @@ ${isStandalonePage ? '' : `
     detectHopeIntent: detectHopeIntent,
     detectBibleTopic: detectBibleTopic,
     BIBLE_TOPICS: BIBLE_TOPICS,
+    TOP_LEMMAS: TOP_LEMMAS,
+    detectStrongOrLemma: detectStrongOrLemma,
+    TOP_CROSS_REFS: TOP_CROSS_REFS,
+    TOP_INTERLINEAR_TOKENS: TOP_INTERLINEAR_TOKENS,
     getPreviewHtml: getPreviewHtml,
     TOP_UBG_VERSES: TOP_UBG_VERSES,
     PLACEHOLDERS: PLACEHOLDERS,
