@@ -2311,6 +2311,17 @@ export default {
       return env.ASSETS.fetch(new Request(targetUrl, request));
     }
 
+    if (
+      lowerPath === '/wioletta' ||
+      lowerPath === '/violetta' ||
+      lowerPath === '/pardon' ||
+      lowerPath === '/pardon-czy-to-milosc'
+    ) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/Wioletta/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && !url.pathname.includes('.')) {
       const dirUrl = new URL(request.url);

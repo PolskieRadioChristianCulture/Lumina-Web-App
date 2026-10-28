@@ -22,10 +22,10 @@ test('wizytowki/index.html and wizytowki.html exist, match, and follow EkoCC v2 
   assert.ok(!/zbyszekgieron/i.test(indexHtml), 'Must never include withdrawn profile zbyszekgieron');
 });
 
-test('wizytowki/index.html renders all 23 verified calling cards and existing local image assets', () => {
+test('wizytowki/index.html renders all 24 verified calling cards and existing local image assets', () => {
   const html = fs.readFileSync(path.join(ROOT, 'wizytowki', 'index.html'), 'utf8');
   const cardMatches = [...html.matchAll(/<a class="kacik-card[^"]*"\s+href="([^"]+)"\s+data-card\s+data-cat="([^"]+)"[\s\S]*?<img src="([^"]+)"/g)];
-  assert.equal(cardMatches.length, 23, 'Must render 23 calling cards');
+  assert.equal(cardMatches.length, 24, 'Must render 24 calling cards');
 
   const counts = { kacik: 0, sluzby: 0, lumina: 0 };
   for (const [, href, cat, imgSrc] of cardMatches) {
@@ -37,7 +37,7 @@ test('wizytowki/index.html renders all 23 verified calling cards and existing lo
     assert.ok(fs.existsSync(diskPath), `Card image must exist on disk: ${imgSrc}`);
   }
 
-  assert.deepEqual(counts, { kacik: 6, sluzby: 6, lumina: 11 });
+  assert.deepEqual(counts, { kacik: 7, sluzby: 6, lumina: 11 });
 });
 
 test('_worker.js and _redirects route /wizytówki and /wizytowki cleanly', () => {
