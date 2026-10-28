@@ -46,6 +46,7 @@
         "url": "https://polskieradio.cc/Wioletta",
         "image": "https://polskieradio.cc/images/wioletta/wioletta-portrait.jpg",
         "jobTitle": "Autorka powieści",
+        "email": "mailto:wiolettapardon@gmail.com",
         "description": "Autorka współczesnych powieści romantyczno-obyczajowych z subtelnym przesłaniem biblijnym. Tworzy historie o dojrzałej miłości, kobiecej sile, nadziei i drugich szansach.",
         "sameAs": [
           "https://polskieradio.cc/lumina.wiolettarogowska.html"
@@ -910,6 +911,28 @@
     .footer-links a:hover {
       color: var(--gold-light);
     }
+    .footer-contact-envelope {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--border-gold-strong);
+      background: rgba(196, 163, 90, 0.1);
+      color: var(--gold-light) !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .footer-contact-envelope:hover {
+      background: rgba(196, 163, 90, 0.22);
+      border-color: var(--gold-light);
+      color: #ffffff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(196, 163, 90, 0.25);
+    }
     .footer-note {
       margin-top: 20px;
       font-size: 0.8rem;
@@ -1222,6 +1245,12 @@
           <a href="/wizytowki">Katalog Wizytówek</a>
           <a href="/wyszukiwarka">Wyszukiwarka</a>
           <a href="/">Christian Culture</a>
+          <a class="footer-contact-envelope" id="footerContactEnvelope" href="mailto:wiolettapardon@gmail.com" aria-label="Kontakt e-mail: wiolettapardon@gmail.com" title="Kontakt: wiolettapardon@gmail.com">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+          </a>
         </nav>
       </div>
       <div class="footer-note">

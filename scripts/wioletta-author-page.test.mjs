@@ -55,6 +55,8 @@ test('Wioletta author showcase has exact SEO metadata, motto, and 3 required sec
   assert.ok(html.includes('Aleksandra Wysocka'), 'Must mention protagonist Aleksandra Wysocka');
   assert.ok(html.includes('Adam Laurent'), 'Must mention protagonist Adam Laurent');
   assert.ok(html.includes('Siedmiotomowy cykl'), 'Must describe 7-volume cycle');
+  assert.match(html, /href="mailto:wiolettapardon@gmail\.com"/, 'Footer must include envelope contact link to wiolettapardon@gmail.com');
+  assert.match(html, /id="footerContactEnvelope"/, 'Footer must include #footerContactEnvelope icon button');
 });
 
 test('Wioletta showcase strictly follows editorial integrity rules (in preparation, no fake ISBN, no PR S.A. claim)', () => {
