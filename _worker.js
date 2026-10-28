@@ -1,5 +1,6 @@
 import ccnArticleRoutes from './data/ccn-article-routes.js';
 import { handleBUApi } from './lib/bu-voting-worker.js';
+import { handleSearchRagApi } from './data/cc-search-rag-service.js';
 
 const BLOCKED_PREFIXES = [
   '/.agents/', '/.github/', '/.firebase/', '/.gemini/', '/.vscode/', '/.wrangler/',
@@ -1568,6 +1569,9 @@ export default {
     }
     if (url.pathname.startsWith('/api/bu/v1/')) {
       return handleBUApi(request, env);
+    }
+    if (url.pathname === '/api/answer' || url.pathname.startsWith('/api/search-rag')) {
+      return handleSearchRagApi(request, env);
     }
     if (isBlocked(url.pathname)) {
       return new Response('Not Found', {
