@@ -32,7 +32,7 @@ const TOPIC_STEMS = {
   usprawiedliwienie: 'usprawiedliwien',
   posrednik: 'posredni',
   zmartwychwstanie: 'zmartwychwstan',
-  szabat: 'szabat',
+  szabat: 'szaba',
   pokoj: 'pokoj',
   laska: 'lask',
   nadzieja: 'nadziej',
