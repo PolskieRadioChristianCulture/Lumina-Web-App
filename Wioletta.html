@@ -131,12 +131,6 @@
     }
 
     /* 16:9 FRAME WRAPPER (MATCHING MOCKUP RATIO ON DESKTOP) */
-    .hero-screen-9-16 {
-      display: contents;
-    }
-    .btn-star {
-      display: none;
-    }
     .hero-canvas {
       position: relative;
       width: min(100vw, calc(100vh * 16 / 9), 1536px);
@@ -829,83 +823,40 @@
 
     /* MOBILE DEDICATED LAYOUT (WZÓR: wzor_mobile.jpg) */
     @media (max-width: 860px) {
-      html, body {
-        height: auto !important;
-        min-height: 100% !important;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch;
-      }
       .viewport-stage {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        height: auto !important;
+        display: block;
+        height: auto;
         min-height: 100vh;
         min-height: 100dvh;
         overflow-x: hidden;
-        overflow-y: visible !important;
+        overflow-y: auto;
         background: #05070a;
         padding: 0;
       }
       .hero-canvas {
         width: 100%;
-        max-width: min(100vw, calc(100dvh * 9 / 16));
-        height: auto !important;
-        min-height: 100dvh;
-        aspect-ratio: auto !important;
+        max-width: 520px;
         margin: 0 auto;
+        aspect-ratio: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        max-height: none;
         display: flex;
         flex-direction: column;
+        justify-content: flex-start;
         position: relative;
-        overflow: visible !important;
         background: #05070a;
-        flex-shrink: 0;
-      }
-      /* 9:16 FULL VIEWPORT HERO SCREEN */
-      .hero-screen-9-16 {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        height: 100dvh;
-        aspect-ratio: 9 / 16;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        overflow: hidden;
-        flex-shrink: 0;
-        background: #05070a;
-      }
-      .hero-canvas-art {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100% !important;
-        z-index: 1;
-        pointer-events: none;
-        overflow: hidden;
-      }
-      .hero-canvas-art picture,
-      .hero-canvas-art img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top;
-        display: block;
-      }
-      .hero-canvas-art::after {
-        display: none;
       }
       .navbar {
+        order: 1;
         position: relative;
-        z-index: 10;
-        padding: 14px clamp(10px, 3vw, 16px) 6px;
+        padding: 12px clamp(10px, 3vw, 16px) 6px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 8px;
         width: 100%;
+        z-index: 10;
         background: transparent;
       }
       .brand {
@@ -927,9 +878,9 @@
       }
       .brand-sub {
         font-size: clamp(0.48rem, 2vw, 0.58rem);
-        letter-spacing: 0.2em;
+        letter-spacing: 0.18em;
         white-space: nowrap;
-        margin-top: 3px;
+        margin-top: 2px;
       }
       .nav-center {
         display: none;
@@ -941,14 +892,12 @@
         gap: 6px;
       }
       .btn-news {
-        padding: 6px 12px;
-        font-size: 0.68rem;
+        padding: 6px 10px;
+        font-size: 0.66rem;
         letter-spacing: 0.1em;
-        gap: 6px;
+        gap: 5px;
         min-height: 44px;
         white-space: nowrap;
-        background: rgba(10, 12, 18, 0.6);
-        border: 1px solid rgba(229, 184, 194, 0.4);
       }
       .btn-burger {
         width: 44px;
@@ -956,223 +905,189 @@
         min-width: 44px;
         min-height: 44px;
         font-size: 1.25rem;
-        background: rgba(10, 12, 18, 0.6);
-        border: 1px solid rgba(196, 163, 90, 0.4);
       }
-      .btn-star {
-        width: 44px;
-        height: 44px;
-        min-width: 44px;
-        min-height: 44px;
-        background: rgba(10, 12, 18, 0.6);
-        border: 1px solid rgba(196, 163, 90, 0.4);
-        border-radius: 8px;
-        color: var(--gold-light);
-        font-size: 1.15rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background 0.2s, box-shadow 0.2s;
-        box-shadow: 0 0 10px rgba(196, 163, 90, 0.2);
+      .hero-canvas-art {
+        order: 2;
+        position: relative;
+        width: 100%;
+        max-width: 440px;
+        margin: 0 auto;
+        height: auto !important;
+        flex: 0 0 auto;
+        aspect-ratio: 800 / 650;
+        overflow: hidden;
       }
-      .btn-star:hover {
-        background: rgba(196, 163, 90, 0.2);
+      .hero-canvas-art picture,
+      .hero-canvas-art img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 800 / 658;
+        object-fit: cover;
+        display: block;
+      }
+      .hero-canvas-art::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(5, 7, 10, 0) 65%, rgba(5, 7, 10, 0.75) 88%, #05070a 100%);
+        pointer-events: none;
       }
       .cta-hotspot {
         display: none;
       }
-      /* MOBILE 9:16 HERO PANEL OVERLAY */
       .mobile-hero-panel {
+        order: 3;
+        display: block !important;
         position: relative;
-        z-index: 10;
-        margin-top: auto;
-        padding: 0 16px 16px;
+        z-index: 5;
+        margin-top: -24px;
+        padding: 0 clamp(16px, 4vw, 24px) 24px;
         text-align: center;
-        display: flex !important;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
+        flex: 1 0 auto;
       }
       .mobile-kicker {
         font-family: var(--font-sans);
-        font-size: clamp(0.68rem, 2.6vw, 0.76rem);
+        font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.26em;
-        color: var(--rose);
+        color: var(--rose-muted);
         text-transform: uppercase;
-        margin-bottom: 2px;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        margin-bottom: 8px;
       }
-      /* Spacer reserved for title & subtitle baked in background */
-      .mobile-title-stage {
-        height: clamp(140px, 20.5vh, 185px);
-        width: 100%;
+      .mobile-title {
+        font-family: var(--font-serif);
+        font-size: clamp(2.3rem, 7.8vw, 3rem);
+        line-height: 1.06;
+        margin: 0 0 10px;
+        font-weight: 500;
+        color: #ffffff;
+      }
+      .mobile-title span {
+        color: var(--rose);
+        font-style: italic;
+      }
+      .mobile-divider {
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 12px;
+        max-width: 180px;
+        margin: 0 auto 14px;
+        opacity: 0.6;
+      }
+      .mobile-divider-line {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--rose-muted), transparent);
+      }
+      .mobile-divider-heart {
+        color: var(--rose-muted);
+        font-size: 0.8rem;
+      }
+      .mobile-subtitle {
+        font-family: var(--font-serif);
+        font-size: clamp(1.02rem, 3.4vw, 1.18rem);
+        font-style: italic;
+        color: var(--cream-muted);
+        line-height: 1.5;
+        margin: 0 auto 20px;
+        max-width: 330px;
       }
       .mobile-actions-row {
         display: flex;
         gap: 12px;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        max-width: 380px;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
       }
       .mobile-btn-czytaj {
         flex: 1;
+        max-width: 155px;
         min-height: 48px;
-        padding: 10px 14px;
-        border: 1.5px solid #d4af37;
-        border-radius: 8px;
-        background: rgba(8, 10, 16, 0.72);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        color: #f7f1e5;
+        padding: 12px 20px;
+        border: 1.5px solid var(--gold);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--cream);
         font-family: var(--font-cinzel);
-        font-size: clamp(0.78rem, 3.2vw, 0.88rem);
+        font-size: 0.92rem;
         font-weight: 700;
-        letter-spacing: 0.16em;
+        letter-spacing: 0.22em;
         text-transform: uppercase;
         cursor: pointer;
+        transition: all 0.2s;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        box-shadow: 0 0 16px rgba(212, 175, 55, 0.42), inset 0 0 10px rgba(212, 175, 55, 0.12);
-        transition: all 0.2s ease;
       }
       .mobile-btn-czytaj:active {
-        background: #d4af37;
+        background: var(--gold);
         color: #05070a;
       }
       .mobile-btn-wspieram {
         flex: 1;
+        max-width: 175px;
         min-height: 48px;
-        padding: 10px 14px;
-        border: 1.5px solid #e5b8c2;
-        border-radius: 8px;
-        background: rgba(8, 10, 16, 0.72);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        color: #f7f1e5;
+        padding: 12px 16px;
+        border: 1.5px solid rgba(229, 184, 194, 0.7);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--cream);
         font-family: var(--font-cinzel);
-        font-size: clamp(0.75rem, 3.1vw, 0.84rem);
+        font-size: 0.88rem;
         font-weight: 700;
-        letter-spacing: 0.14em;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
         cursor: pointer;
+        transition: all 0.2s;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        box-shadow: 0 0 16px rgba(229, 184, 194, 0.42), inset 0 0 10px rgba(229, 184, 194, 0.12);
-        transition: all 0.2s ease;
       }
       .mobile-btn-wspieram:active {
-        background: #e5b8c2;
-        color: #05070a;
+        background: rgba(229, 184, 194, 0.25);
+        color: #ffffff;
       }
-      /* 3 SUBLINKS WITH VERTICAL DIVIDERS */
-      .mobile-sublinks-grid {
+      .mobile-sublinks {
         display: flex;
+        gap: clamp(12px, 3.5vw, 22px);
+        justify-content: center;
         align-items: center;
-        justify-content: space-around;
-        width: 100%;
-        max-width: 360px;
-        margin-bottom: 14px;
+        margin-bottom: 20px;
+        flex-wrap: nowrap;
       }
-      .mobile-sublink-col {
+      .mobile-sublink-btn {
         background: none;
         border: none;
         color: var(--cream);
         cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        padding: 6px 10px;
-        min-height: 44px;
-        min-width: 72px;
-        transition: color 0.2s, transform 0.2s;
-      }
-      .mobile-sublink-col:active {
-        color: var(--gold-light);
-        transform: scale(0.96);
-      }
-      .sublink-icon {
-        color: var(--rose);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .sublink-label {
         font-family: var(--font-cinzel);
-        font-size: 0.74rem;
+        font-size: 0.82rem;
         font-weight: 600;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
         white-space: nowrap;
-      }
-      .sublink-divider {
-        width: 1px;
-        height: 28px;
-        background: rgba(196, 163, 90, 0.3);
-      }
-      /* SCROLL DOWN INDICATOR */
-      .mobile-scroll-indicator {
-        background: none;
-        border: none;
-        color: var(--gold-light);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
-        cursor: pointer;
-        padding: 4px 12px;
         min-height: 44px;
-        transition: opacity 0.2s;
+        display: inline-flex;
+        align-items: center;
+        padding: 6px;
+        transition: color 0.2s;
       }
-      .mobile-scroll-indicator:hover {
-        opacity: 0.85;
-      }
-      .scroll-chevrons {
+      .mobile-sublink-btn:active {
         color: var(--gold-light);
-        display: flex;
-        animation: chevronBounce 1.8s infinite ease-in-out;
       }
-      .scroll-text {
-        font-family: var(--font-cinzel);
-        font-size: 0.65rem;
-        font-weight: 700;
-        letter-spacing: 0.24em;
-        color: var(--gold-light);
-        text-transform: uppercase;
-      }
-      @keyframes chevronBounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(4px); }
-      }
-      /* FOOTER PLACED BELOW THE 100DVH FOLD */
       .canvas-footer {
+        order: 4;
         position: relative;
-        z-index: 10;
-        width: 100%;
-        max-width: 500px;
-        padding: 24px 20px 48px;
-        margin: 0 auto;
-        background: #05070a;
-        border-top: 1px solid rgba(196, 163, 90, 0.18);
+        padding: 14px 20px 28px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
         gap: 14px;
-        flex-shrink: 0;
+        width: 100%;
+        background: transparent;
       }
       .footer-legal-text {
         font-size: 0.74rem;
@@ -1232,12 +1147,11 @@
 
   <main class="viewport-stage" id="mainStage">
     <div class="hero-canvas">
-      <div class="hero-screen-9-16">
       <!-- 16:9 SEAMLESS ARTWORK -->
       <div class="hero-canvas-art">
         <picture>
-          <source media="(max-width: 860px)" srcset="/images/wioletta/wioletta-hero-mobile-9-16.webp" type="image/webp">
-          <source media="(max-width: 860px)" srcset="/images/wioletta/wioletta-hero-mobile-9-16.jpg" type="image/jpeg">
+          <source media="(max-width: 860px)" srcset="/images/wioletta/wioletta-hero-mobile.webp" type="image/webp">
+          <source media="(max-width: 860px)" srcset="/images/wioletta/wioletta-hero-mobile.jpg" type="image/jpeg">
           <source srcset="/images/wioletta/wioletta-hero-stage.webp" type="image/webp">
           <img
             src="/images/wioletta/wioletta-hero-stage.jpg"
@@ -1274,79 +1188,41 @@
           <button class="btn-burger" type="button" data-modal="modalMenu" aria-label="Menu ekosystemu" title="Menu">
             ☰
           </button>
-          <button class="btn-star" type="button" data-modal="modalKsiazki" aria-label="Kolekcja książek" title="Kolekcja">⭐</button>
         </div>
       </header>
 
       <!-- DESKTOP INTERACTIVE CZYTAJ HOTSPOT -->
       <button class="cta-hotspot" type="button" data-modal="modalCzytaj" aria-label="Czytaj fragment powieści Pardon, Czy To Miłość?"></button>
 
-      <!-- MOBILE PANEL (9:16 DEDICATED LAYOUT) -->
+      <!-- MOBILE PANEL (DOPASOWANY DO WZORCA: wzor_mobile.jpg) -->
       <div class="mobile-hero-panel">
         <div class="mobile-kicker">
-          MIŁOŚĆ · WYBACZENIE · WYBÓR
+          MIŁOŚĆ, WYBACZENIE, WYBÓR.
         </div>
-
-        <!-- Semantic Accessible Heading matching background artwork -->
-        <div class="mobile-title-stage">
-          <h1 class="sr-only">Pardon, Czy To Miłość?</h1>
-          <p class="sr-only">Paryż. Deszcz. List, który zmienia wszystko. Czy miłość wystarczy, by wybaczono?</p>
+        <h1 class="mobile-title">
+          Pardon,<br><span>Czy To</span> Miłość?
+        </h1>
+        <div class="mobile-divider" aria-hidden="true">
+          <span class="mobile-divider-line"></span>
+          <span class="mobile-divider-heart">♥</span>
+          <span class="mobile-divider-line"></span>
         </div>
-
+        <p class="mobile-subtitle">
+          Paryż. Deszcz. List, który zmienia wszystko.<br>Czy miłość wystarczy, by wybaczono?
+        </p>
         <div class="mobile-actions-row">
           <button class="mobile-btn-czytaj" type="button" data-modal="modalCzytaj" aria-label="Czytaj powieść online">
-            <span class="btn-icon" aria-hidden="true">📖</span>
-            <span>CZYTAJ →</span>
+            CZYTAJ
           </button>
           <button class="mobile-btn-wspieram" type="button" data-modal="modalWspieramTo" aria-label="Wspieram to przez Revolut">
-            <span class="btn-icon" aria-hidden="true">🩷</span>
-            <span>WSPIERAM TO ></span>
+            WSPIERAM TO
           </button>
         </div>
-
-        <div class="mobile-sublinks-grid">
-          <button type="button" class="mobile-sublink-col" data-modal="modalKsiazki">
-            <span class="sublink-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
-                <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H20"></path>
-              </svg>
-            </span>
-            <span class="sublink-label">KSIĄŻKI</span>
-          </button>
-          <div class="sublink-divider" aria-hidden="true"></div>
-          <button type="button" class="mobile-sublink-col" data-modal="modalOAutorce">
-            <span class="sublink-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </span>
-            <span class="sublink-label">O AUTORCE</span>
-          </button>
-          <div class="sublink-divider" aria-hidden="true"></div>
-          <button type="button" class="mobile-sublink-col" data-modal="modalKontakt">
-            <span class="sublink-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-              </svg>
-            </span>
-            <span class="sublink-label">KONTAKT</span>
-          </button>
+        <div class="mobile-sublinks">
+          <button class="mobile-sublink-btn" type="button" data-modal="modalKsiazki">KSIĄŻKI</button>
+          <button class="mobile-sublink-btn" type="button" data-modal="modalOAutorce">O AUTORCE</button>
+          <button class="mobile-sublink-btn" type="button" data-modal="modalKontakt">KONTAKT</button>
         </div>
-
-        <button class="mobile-scroll-indicator" type="button" id="btnDiscoverMore" aria-label="Odkryj więcej — przewiń do stopki">
-          <span class="scroll-chevrons" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="7 9 12 14 17 9"></polyline>
-              <polyline points="7 13 12 18 17 13"></polyline>
-            </svg>
-          </span>
-          <span class="scroll-text">ODKRYJ WIĘCEJ</span>
-        </button>
-      </div>
-
       </div>
 
       <!-- BOTTOM BAR: LEGAL & ENVELOPE CONTACT -->
@@ -1855,14 +1731,6 @@
         else if (h === '#wspieram' || h === '#wspieram-to') openModal('modalWspieramTo');
         else if (h === '#kontakt' || h === '#contact') openModal('modalKontakt');
         else if (h === '#menu') openModal('modalMenu');
-      }
-      var btnDiscover = document.getElementById('btnDiscoverMore');
-      if (btnDiscover) {
-        btnDiscover.addEventListener('click', function(e) {
-          e.preventDefault();
-          var footer = document.querySelector('.canvas-footer');
-          if (footer) footer.scrollIntoView({ behavior: 'smooth' });
-        });
       }
       window.addEventListener('hashchange', checkHash);
       if (window.location.hash) checkHash();
