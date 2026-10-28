@@ -4113,6 +4113,160 @@
       ]
     },
     {
+      "id": "cc-help-alcohol-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Problemy z alkoholem — leczenie i wsparcie",
+      "shortDesc": "Nie musisz sam rozstrzygać, jak nazwać problem. Przygotuj kontakt z placówką leczenia i zadbaj o bezpieczeństwo.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/alkoholizm",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Problemy z alkoholem — leczenie i wsparcie",
+        "Alcohol difficulties — treatment and support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-drug-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Problemy z narkotykami — kontakt z pomocą",
+      "shortDesc": "Informacje dla osoby używającej substancji i jej bliskich. Strona nie identyfikuje substancji ani nie ocenia bezpiecznej dawki.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/narkomania",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Problemy z narkotykami — kontakt z pomocą",
+        "Drug-related difficulties — finding help",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-gambling-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Hazard — pomoc przy utracie kontroli",
+      "shortDesc": "Przygotuj rozmowę o graniu, finansach i konsekwencjach dla bliskich. Nie podajemy strategii gry ani sposobów odzyskania pieniędzy przez zakłady.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/hazard",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Hazard — pomoc przy utracie kontroli",
+        "Gambling — support when control is slipping",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-pornography-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Pornografia — trudności z kontrolą i wsparcie",
+      "shortDesc": "Jeśli korzystanie z pornografii powoduje cierpienie lub trudności w codzienności, możesz porozmawiać ze specjalistą. Ta strona nie stawia diagnozy.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/uzaleznienie-od-pornografii",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Pornografia — trudności z kontrolą i wsparcie",
+        "Pornography — control difficulties and support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-stop-smoking",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Rzucanie palenia — przygotowanie do pomocy",
+      "shortDesc": "Przygotuj rozmowę o rzuceniu palenia i dostępnych formach pomocy. Nie dobieramy leków ani nie obiecujemy skuteczności konkretnej metody.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/rzucanie-palenia",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Rzucanie palenia — przygotowanie do pomocy",
+        "Stopping smoking — preparing for support",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-family-addiction-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Uzależnienie bliskiej osoby — wsparcie dla Ciebie",
+      "shortDesc": "Twoje zdrowie, bezpieczeństwo i granice także mają znaczenie. Nie rozpoznajemy współuzależnienia na podstawie roli w rodzinie.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/wspoluzaleznienie",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Uzależnienie bliskiej osoby — wsparcie dla Ciebie",
+        "A loved one’s addiction — support for you",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-addiction-treatment",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Terapia uzależnień — przygotowanie do kontaktu",
+      "shortDesc": "Różne trudności mogą wymagać różnych form wsparcia. Pomagamy przygotować pytania, nie dobieramy terapii ani nie gwarantujemy miejsca w placówce.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/terapia-uzaleznien",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Terapia uzależnień — przygotowanie do kontaktu",
+        "Addiction treatment — preparing for contact",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
       "id": "cc-help-pastor",
       "branchId": "misja-wspolpraca",
       "name": "CC Pomoc — Pastor — rozmowa o wierze",

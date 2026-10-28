@@ -31,8 +31,8 @@ test('generator restores both missing debt pilot entries and preserves unrelated
   }
  }finally{fs.rmSync(temp,{recursive:true,force:true});}
 });
-test('forty-three approved topics, eighty-six unique routes, existing aliases preserved',()=>{
- assert.equal(topics.length,43);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief','child-psychology','teenagers','school-difficulties','cyberbullying','child-behaviour','parenting-guide','anxiety','stress','burnout','self-worth','trauma','digital-balance','children-separation','children-faith','marriage-crisis','separation','infidelity','marriage-communication','family-conflict','domestic-violence','single-parenting','engagement','enforcement','debt-planning','personal-insolvency','collection-rights','loan-support']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,86);
+test('fifty approved topics, one hundred unique routes, existing aliases preserved',()=>{
+ assert.equal(topics.length,50);assert.deepEqual(new Set(topics.map(t=>t.id)),new Set(['legal','addiction','psychology','marriage','parenting','family','senior','depression','pastor','specialists','free-legal-aid','consumer-rights','household-budget','emotional-crisis','loneliness','grief','child-psychology','teenagers','school-difficulties','cyberbullying','child-behaviour','parenting-guide','anxiety','stress','burnout','self-worth','trauma','digital-balance','children-separation','children-faith','marriage-crisis','separation','infidelity','marriage-communication','family-conflict','domestic-violence','single-parenting','engagement','enforcement','debt-planning','personal-insolvency','collection-rights','loan-support','alcohol-support','drug-support','gambling-support','pornography-support','stop-smoking','family-addiction-support','addiction-treatment']));const routes=topics.flatMap(x=>[x.route,'en/'+x.enRoute]);assert.equal(new Set(routes).size,100);
  for(const r of ['rodzina','malzenstwo','wychowanie','pomoc','psychologia','dlugi'])assert(!routes.includes(r));
  const redirects=read('_redirects');for(const r of ['/rodzina /edukacja 301','/malzenstwo /seks 301','/wychowanie /edukacja 301'])assert(redirects.includes(r));
 });
@@ -79,4 +79,11 @@ test('budget links reuse the correct language worksheet in the same tab',()=>{
  for(const [file,url] of [['budzet-domowy/index.html','https://polskieradio.cc/dlugi#pierwszy-krok'],['en/household-budget/index.html','https://polskieradio.cc/en/debt-help#pierwszy-krok']]){
   const h=read(file);const anchor=h.match(new RegExp('<a href="'+url+'"([^>]*)>'));assert(anchor);assert(!anchor[1].includes('target='));assert(!h.includes('id="budget-form"'));
  }
+});
+
+test('addiction pages distinguish charged behavioural support, emergency access and medical withdrawal safety',()=>{
+ for(const route of ['alkoholizm','narkomania'])for(const r of [route, 'en/'+(route==='alkoholizm'?'alcohol-support':'drug-use-support')]){const h=read(r+'/index.html');assert(h.indexOf('<aside class="urgent-help wrap"')<h.indexOf('<section class="hero wrap"'));assert(h.includes('tel:112'));assert(h.includes('tel:800199990'));}
+ for(const route of ['hazard','uzaleznienie-od-pornografii']){const h=read(route+'/index.html');assert(h.includes('tel:801889880'));assert(h.includes('opłata według taryfy operatora'));assert(!h.includes('tel:800199990'));}
+ for(const route of ['alkoholizm','en/alcohol-support']){const h=read(route+'/index.html');assert(/nagłe odstawienie może być niebezpieczne|Suddenly stopping alcohol can be dangerous/.test(h));assert(h.includes('https://www.nhs.uk/conditions/alcohol-use-disorder/'));}
+ for(const t of topics.filter(t=>t.checkedDate==='28.10.2026')){assert(read(t.route+'/index.html').includes('Informacje sprawdzone 28.10.2026'));assert(read('en/'+t.enRoute+'/index.html').includes('Information checked on 28 October 2026'));}
 });
