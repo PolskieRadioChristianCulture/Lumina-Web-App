@@ -2592,6 +2592,8 @@
         background: #05070c url('/images/search/andromeda-1600.webp') center / cover no-repeat fixed;
         overflow-y: auto;
         overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(196, 163, 90, 0.35) transparent;
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.2s ease-out, visibility 0.2s;
@@ -2608,7 +2610,36 @@
       @media (max-width: 640px) {
         #ccOmniOverlay { background-image: url('/images/search/andromeda-800.webp'); }
       }
-      #ccOmniOverlay.cc-open {
+
+      /* Elegancki ciemny pasek przewijania (eliminacja białych pasków Windows) */
+      #ccOmniOverlay::-webkit-scrollbar,
+      .cc-omni-results-col::-webkit-scrollbar,
+      .cc-sources-modal-body::-webkit-scrollbar,
+      .cc-omni-apps::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      #ccOmniOverlay::-webkit-scrollbar-track,
+      .cc-omni-results-col::-webkit-scrollbar-track,
+      .cc-sources-modal-body::-webkit-scrollbar-track,
+      .cc-omni-apps::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      #ccOmniOverlay::-webkit-scrollbar-thumb,
+      .cc-omni-results-col::-webkit-scrollbar-thumb,
+      .cc-sources-modal-body::-webkit-scrollbar-thumb,
+      .cc-omni-apps::-webkit-scrollbar-thumb {
+        background: rgba(196, 163, 90, 0.35);
+        border-radius: 6px;
+      }
+      #ccOmniOverlay::-webkit-scrollbar-thumb:hover,
+      .cc-omni-results-col::-webkit-scrollbar-thumb:hover,
+      .cc-sources-modal-body::-webkit-scrollbar-thumb:hover,
+      .cc-omni-apps::-webkit-scrollbar-thumb:hover {
+        background: #FF7A00;
+      }
+
+            #ccOmniOverlay.cc-open {
         opacity: 1;
         visibility: visible;
       }
@@ -3557,15 +3588,22 @@
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: 18px;
-          padding: 18px;
+          padding: 16px;
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
           box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
           display: flex;
           flex-direction: column;
-          gap: 12px;
-          max-height: calc(82vh - 120px);
+          gap: 10px;
+          max-height: calc(100vh - 60px);
           overflow-y: auto;
+          scrollbar-width: none !important; /* Firefox: brak paska przewijania */
+          -ms-overflow-style: none !important; /* IE / Edge */
+        }
+        .cc-omni-preview-pane::-webkit-scrollbar {
+          display: none !important; /* Chrome, Safari, Edge: całkowite ukrycie paska */
+          width: 0 !important;
+          height: 0 !important;
         }
         @media (max-width: 860px) {
           .cc-omni-split-layout {
@@ -3579,7 +3617,7 @@
         .cc-preview-card {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 10px;
         }
         .cc-preview-placeholder {
           text-align: center;
@@ -3589,6 +3627,7 @@
           position: relative;
           width: 100%;
           aspect-ratio: 16 / 9;
+          max-height: 190px;
           border-radius: 12px;
           overflow: hidden;
           background: rgba(0, 0, 0, 0.4);
@@ -3627,18 +3666,18 @@
         }
         .cc-preview-title {
           margin: 0;
-          font-size: 1.18rem;
+          font-size: 1.12rem;
           font-weight: 700;
           line-height: 1.35;
           color: #ffffff;
         }
         .cc-preview-desc {
           margin: 0;
-          font-size: 0.88rem;
-          line-height: 1.55;
+          font-size: 0.86rem;
+          line-height: 1.5;
           color: rgba(255, 255, 255, 0.82);
           display: -webkit-box;
-          -webkit-line-clamp: 4;
+          -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
@@ -3647,8 +3686,8 @@
           flex-wrap: wrap;
           align-items: center;
           gap: 8px;
-          margin-top: 4px;
-          padding-top: 12px;
+          margin-top: 2px;
+          padding-top: 10px;
           border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .cc-preview-btn-main {
