@@ -832,20 +832,25 @@
 
   // Asynchroniczne dociąganie wersetu z plików UBG-2025
   
-  // Tematy Biblijne i Zagadnienia Teologiczne (Biblia Intelligence CC — P0)
+  // =========================================================================
+  // KATALOG TEMATYCZNY PISMA ŚWIĘTEGO & MODLITEWNIK CC (P5)
+  // 12 Kanonicznych Wątków Wiary • UBG Canonical Text • Zero Cost First
+  // =========================================================================
   const BIBLE_TOPICS = {
-    szabat: {
-      title: 'Szabat — Dzień Pański i Pamiątka Stworzenia',
-      slug: 'szabat',
-      summary: 'Siódmy dzień tygodnia ustanowiony przez Boga przy stworzeniu (Rdz 2:2-3), włączony do Dekalogu (Wj 20:8-11) i potwierdzony przez Jezusa Chrystusa (Mk 2:27-28) jako święty dar odpoczynku i komunii ze Stwórcą.',
+    wiara: {
+      title: 'Wiara i Zaufanie Bogu — Pewność Rzeczy Niewidzialnych',
+      slug: 'wiara',
+      summary: 'Wiara biblijna to niezłomne zaufanie Bogu, Jego charakterowi i Jego obietnicom wbrew widzialnym okolicznościom. Rodzi się ze słuchania Słowa Bożego i przynosi owoc w posłuszeństwie miłości.',
       verses: [
-        { ref: 'Rdz 2:2-3', text: 'I ukończył Bóg w siódmym dniu swoje dzieło... I pobłogosławił Bóg dzień siódmy, i uświęcił go.' },
-        { ref: 'Wj 20:8-11', text: 'Pamiętaj o dniu szabatu, aby go święcić. Sześć dni będziesz pracować... Ale siódmy dzień jest szabatem PANA, twego Boga.' },
-        { ref: 'Mk 2:27-28', text: 'Szabat został ustanowiony dla człowieka, a nie człowiek dla szabatu. Dlatego Syn Człowieczy jest Panem także szabatu.' },
-        { ref: 'Hbr 4:9', text: 'Pozostaje więc jeszcze odpoczynek dla ludu Bożego.' }
+        { ref: 'Hbr 11:1', text: 'A wiara jest pewnością tego, czego się spodziewamy, i dowodem tego, czego nie widzimy.' },
+        { ref: 'Rz 10:17', text: 'Wiara więc jest ze słuchania, a słuchanie przez słowo Boże.' },
+        { ref: 'Mk 11:24', text: 'Wszystko, o co w modlitwie prosicie, wierzcie, że otrzymacie, a stanie się wam.' },
+        { ref: 'Prz 3:5-6', text: 'Ufaj PANU z całego swego serca i nie polegaj na swoim rozumie. Zważaj na niego na wszystkich swoich drogach, a on wyrówna twoje ścieżki.' }
       ],
-      studyUrl: '/mojabiblia?book=EXO&chapter=20',
-      mediaUrl: '/player?q=szabat'
+      prayerTitle: 'Modlitwa o Pomnożenie Wiary i Niezłomne Zaufanie',
+      prayerText: 'Panie Jezu Chryste, Ty jesteś Dawcą i Dokończycielem naszej wiary. Odrzucam wszelkie zwątpienie i opieram moje życie na Twojej niezmiennej obietnicy. Wierzę, że Twoje Słowo jest prawdą i że Ty prowadzisz moje drogi. Przymnóż mi wiary, abym nie zachwiał się w próbie, lecz oddawał Tobie chwałę każdego dnia. Amen.',
+      studyUrl: '/mojabiblia?book=HEB&chapter=11',
+      mediaUrl: '/player?q=wiara'
     },
     usprawiedliwienie: {
       title: 'Usprawiedliwienie z Wiary i Boża Łaska',
@@ -856,8 +861,67 @@
         { ref: 'Ef 2:8-9', text: 'Łaską bowiem jesteście zbawieni przez wiarę, i to nie jest z was, jest to dar Boga. Nie z uczynków, aby nikt się nie chlubił.' },
         { ref: 'Rz 5:1', text: 'Będąc więc usprawiedliwieni z wiary, mamy pokój z Bogiem przez naszego Pana Jezusa Chrystusa;' }
       ],
+      prayerTitle: 'Modlitwa Dziękczynna za Dar Zbawienia i Łaskę',
+      prayerText: 'Boże i Ojcze Niebiański, dziękuję Ci z całego serca, że z darmowej łaski, przez wiarę w Twojego Syna Jezusa Chrystusa, darowałeś mi wszystkie grzechy i dałeś życie wieczne. Wyznaję, że Jezus jest jedyną Drogą, Prawdą i Życiem. Moje zbawienie jest w Twojej darmowej łasce, a nie w moich zasługach. Bądź uwielbiony na wieki. Amen.',
       studyUrl: '/mojabiblia?book=ROM&chapter=3',
       mediaUrl: '/player?q=laska'
+    },
+    pokoj: {
+      title: 'Boży Pokój i Ukojenie Lęku — Pokój Przewyższający Rozum',
+      slug: 'pokoj',
+      summary: 'Boży pokój (Szalom) nie jest brakiem burzy, lecz obecnością Chrystusa w sercu. Uwalnia od paraliżującego lęku i rozpaczy, chroniąc myśli i dając głębokie ukojenie.',
+      verses: [
+        { ref: 'Flp 4:6-7', text: 'O nic się zbytnio nie troszczcie, ale we wszystkim przez modlitwę i błaganie z dziękczynieniem niech wasze prośby będą przedstawiane Bogu. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie.' },
+        { ref: 'J 14:27', text: 'Pokój zostawiam wam, mój pokój daję wam; nie daję wam tak, jak daje świat. Niech się nie trwoży wasze serce ani się nie lęka.' },
+        { ref: 'Ps 4:8', text: 'W pokoju się położę i zasnę, bo ty sam, PANIE, sprawiasz, że mieszkam bezpiecznie.' }
+      ],
+      prayerTitle: 'Modlitwa o Wewnętrzny Pokój i Uwolnienie od Lęku',
+      prayerText: 'Panie mój, w Twoje ręce składam wszelki niepokój, strach i troskę o jutro. Przyjmuję Twój pokój, który przewyższa wszelki ludzki rozum i który strzeże mego serca i myśli w Chrystusie Jezusie. Ty powiedziałeś: Niech się nie trwoży wasze serce ani się nie lęka. W Twoim pokoju kładę się i zasypiam, bo Ty sam, Panie, sprawiasz, że mieszkam bezpiecznie. Amen.',
+      studyUrl: '/mojabiblia?book=PHP&chapter=4',
+      mediaUrl: '/player?q=pokoj'
+    },
+    modlitwa: {
+      title: 'Moc Modlitwy i Żywa Komunia z Ojcem',
+      slug: 'modlitwa',
+      summary: 'Modlitwa to oddech odrodzonej duszy — szczera, ufna rozmowa z Ojcem Niebiańskim w imieniu Jezusa Chrystusa, niosąca Bożą interwencję i przemianę ludzkiego serca.',
+      verses: [
+        { ref: 'Mt 6:6', text: 'Ale ty, gdy się modlisz, wejdź do swego pokoju, zamknij drzwi i módl się do twego Ojca, który jest w ukryciu, a twój Ojciec, który widzi w ukryciu, nagrodzi cię jawnie.' },
+        { ref: '1 Tes 5:17', text: 'Nieustannie się módlcie.' },
+        { ref: 'Jk 5:16', text: 'Wiele może usilna modlitwa sprawiedliwego.' }
+      ],
+      prayerTitle: 'Modlitwa o Ducha Modlitwy i Bliskość z Bogiem',
+      prayerText: 'Ojcze nasz, który jesteś w niebie, dziękuję Ci, że Twoje ucho jest otwarte na wołanie Twoich dzieci. Napełnij mnie Duchem Świętym, naucz mnie modlić się nieustannie i trwać w Twojej obecności. Niech moja modlitwa będzie wonnym kadzidłem przed Twoim tronem, a moje serce niech zawsze szuka Twojej woli. Amen.',
+      studyUrl: '/mojabiblia?book=MAT&chapter=6',
+      mediaUrl: '/modlitwa'
+    },
+    nadzieja: {
+      title: 'Żywa Nadzieja i Zmartwychwstanie w Chrystusie',
+      slug: 'nadzieja',
+      summary: 'Nadzieja chrześcijańska to nie życzeniowe myślenie, lecz pewna kotwica duszy oparta na fakcie historycznego zmartwychwstania Jezusa Chrystusa i obietnicy wiecznego życia.',
+      verses: [
+        { ref: '1 P 1:3', text: 'Błogosławiony niech będzie Bóg i Ojciec naszego Pana Jezusa Chrystusa, który według swego wielkiego miłosierdzia zrodził nas na nowo do żywej nadziei przez zmartwychwstanie Jezusa Chrystusa;' },
+        { ref: 'Rz 15:13', text: 'A Bóg nadziei niech was napełni wszelką radością i pokojem w wierze, abyście obfitowali w nadzieję przez moc Ducha Świętego.' },
+        { ref: 'Tyt 2:13', text: 'Oczekując błogosławionej nadziei i chwalebnego objawienia się wielkiego Boga i Zbawiciela naszego, Jezusa Chrystusa;' }
+      ],
+      prayerTitle: 'Modlitwa o Odnowienie Żywej Nadziei',
+      prayerText: 'Boże wszelkiej nadziei, napełnij mnie wszelką radością i pokojem w wierze, abym obfitował w nadzieję przez moc Ducha Świętego. Choćbym przechodził przez ciemną dolinę, wiem, że mój Odkupiciel żyje i że przyjdzie dzień Jego chwały. Kotwico mojej duszy, w Tobie pokładam całą moją ufność. Amen.',
+      studyUrl: '/mojabiblia?book=1PE&chapter=1',
+      mediaUrl: '/player?q=nadzieja'
+    },
+    szabat: {
+      title: 'Szabat — Dzień Pański i Pamiątka Stworzenia',
+      slug: 'szabat',
+      summary: 'Siódmy dzień tygodnia ustanowiony przez Boga przy stworzeniu (Rdz 2:2-3), włączony do Dekalogu (Wj 20:8-11) i potwierdzony przez Jezusa Chrystusa (Mk 2:27-28) jako święty dar odpoczynku i komunii ze Stwórcą.',
+      verses: [
+        { ref: 'Rdz 2:2-3', text: 'I ukończył Bóg w siódmym dniu swoje dzieło... I pobłogosławił Bóg dzień siódmy, i uświęcił go.' },
+        { ref: 'Wj 20:8-11', text: 'Pamiętaj o dniu szabatu, aby go święcić. Sześć dni będziesz pracować... Ale siódmy dzień jest szabatem PANA, twego Boga.' },
+        { ref: 'Mk 2:27-28', text: 'Szabat został ustanowiony dla człowieka, a nie człowiek dla szabatu. Dlatego Syn Człowieczy jest Panem także szabatu.' },
+        { ref: 'Hbr 4:9', text: 'Pozostaje więc jeszcze odpoczynek dla ludu Bożego.' }
+      ],
+      prayerTitle: 'Modlitwa Szabatowa o Święty Boży Odpoczynek',
+      prayerText: 'Święty Boże i Stwórco Wszechświata, dziękuję Ci za dar świętego dnia szabatu — pamiątkę Twojego wspaniałego stworzenia i odkupienia w Chrystusie. Wyciszam moje serce z codziennego znoju i oddaję ten czas na uwielbienie Ciebie, studiowanie Twojego Słowa i braterską miłość. Uświęć mnie w Twojej prawdzie. Amen.',
+      studyUrl: '/mojabiblia?book=EXO&chapter=20',
+      mediaUrl: '/player?q=szabat'
     },
     posrednik: {
       title: 'Jeden Jedyny Pośrednik — Jezus Chrystus',
@@ -865,8 +929,11 @@
       summary: 'Nowy Testament jednoznacznie naucza o jedynym arcykapłanie i pośredniku pomiędzy Bogiem Ojcem a ludzkością — zmartwychwstałym Chrystusie, który wstawia się za nami w niebiańskiej świątyni.',
       verses: [
         { ref: '1 Tm 2:5', text: 'Jeden bowiem jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus;' },
+        { ref: 'Hbr 7:25', text: 'Dlatego też całkowicie może zbawić tych, którzy przez niego przychodzą do Boga, bo zawsze żyje, aby wstawiać się za nimi.' },
         { ref: 'J 14:6', text: 'Ja jestem drogą, prawdą i życiem. Nikt nie przychodzi do Ojca jak tylko przeze mnie.' }
       ],
+      prayerTitle: 'Modlitwa przez Jedynego Pośrednika Jezusa Chrystusa',
+      prayerText: 'Panie Jezu Chryste, człowieku i Synu Boży, Ty jesteś moim jedynym i doskonałym Arcykapłanem. Z ufnością przystępuję do tronu łaski, bo wiem, że Ty orędujesz za mną przed obliczem Ojca. Dziękuję Ci za przelaną krew na krzyżu Golgoty, która otworzyła mi drogę do samego serca Boga. Amen.',
       studyUrl: '/mojabiblia?book=1TI&chapter=2',
       mediaUrl: '/player?q=jezus'
     },
@@ -880,8 +947,67 @@
         { ref: 'Ap 14:12', text: 'Tu jest cierpliwość świętych, tu są ci, którzy strzegą przykazań Boga i wiary Jezusa.' },
         { ref: '2 P 1:19', text: 'Mamy też mocniejsze słowo prorockie, a wy dobrze robicie, trzymając się go jak lampy świecącej w ciemnym miejscu...' }
       ],
+      prayerTitle: 'Modlitwa o Czuwanie i Gotowość na Przyjście Pana',
+      prayerText: 'Wszechmogący Panie, Twoje słowo prorockie jest pochodnią świecącą w ciemności tego świata. Daj mi czujne serce, mądrość Ducha i wierność Twoim przykazaniom w tych ostatecznych czasach. Spraw, abym głosił wieczną ewangelię z odwagą i radością, wołając wraz z całym Kościołem: Przyjdź, Panie Jezu! Amen.',
       studyUrl: '/mojabiblia?book=REV&chapter=14',
       mediaUrl: '/vod?q=apokalipsa'
+    },
+    przebaczenie: {
+      title: 'Boże Przebaczenie, Oczyszczenie z Grzechu i Pojednanie',
+      slug: 'przebaczenie',
+      summary: 'Bóg jest gotowy przebaczyć każdy wyznany grzech dzięki krwi Chrystusa. Przebaczenie Boże uzdrawia z poczucia winy i uzdalnia nas do darowania win naszym winowajcom.',
+      verses: [
+        { ref: '1 J 1:9', text: 'Jeśli wyznajemy nasze grzechy, Bóg jest wierny i sprawiedliwy, aby nam przebaczyć grzechy i oczyścić nas z wszelkiej nieprawości.' },
+        { ref: 'Ps 103:12', text: 'Jak daleko jest wschód od zachodu, tak daleko oddalił od nas nasze występki.' },
+        { ref: 'Ef 4:32', text: 'Bądźcie raczej dla siebie nawzajem życzliwi, miłosierni, przebaczając sobie, jak i wam Bóg przebaczył w Chrystusie.' }
+      ],
+      prayerTitle: 'Modlitwa o Przebaczenie i Czystość Serca',
+      prayerText: 'Miłosierny Ojcze, wyznaję przed Tobą moje winy i słabości. Ty jesteś wierny i sprawiedliwy, aby odpuścić mi grzechy i oczyścić mnie z wszelkiej nieprawości. Usuwasz moje przewinienia tak daleko, jak wschód jest od zachodu. Ulecz moje serce i uzdolnij mnie, bym tak jak Ty przebaczył mi w Chrystusie, przebaczał wszystkim, którzy mnie zranili. Amen.',
+      studyUrl: '/mojabiblia?book=1JN&chapter=1',
+      mediaUrl: '/player?q=przebaczenie'
+    },
+    milosc: {
+      title: 'Boża Miłość (Agape) i Największe Przykazanie',
+      slug: 'milosc',
+      summary: 'Bóg sam jest miłością. Miłość Boża objawiła się najpełniej w posłaniu Syna Bożego jako ofiary za nasze grzechy. Jest fundamentem i spoiwem wszelkiej doskonałości.',
+      verses: [
+        { ref: 'J 3:16', text: 'Tak bowiem Bóg umiłował świat, że dał swego jednorodzonego Syna, aby każdy, kto w niego wierzy, nie zginął, ale miał życie wieczne.' },
+        { ref: '1 J 4:8', text: 'Kto nie miłuje, nie zna Boga, gdyż Bóg jest miłością.' },
+        { ref: '1 Kor 13:4-8', text: 'Miłość jest cierpliwa, jest życzliwa... Miłość nigdy nie ustaje.' },
+        { ref: 'Rz 5:5', text: 'A nadzieja nie zawodzi, bo miłość Boża jest rozlana w naszych sercach przez Ducha Świętego, który został nam dany.' }
+      ],
+      prayerTitle: 'Modlitwa o Wypełnienie Bożą Miłością',
+      prayerText: 'Ojcze Niebiański, Ty tak umiłowałeś świat, że dałeś swego jednorodzonego Syna. Wlej Twoją miłość w moje serce przez Ducha Świętego, który został mi dany. Naucz mnie kochać prawdziwie — cierpliwie, łaskawie, bez zazdrości i bez szukania swego. Niech Twoja miłość we mnie będzie świadectwem dla wszystkich ludzi. Amen.',
+      studyUrl: '/mojabiblia?book=1CO&chapter=13',
+      mediaUrl: '/player?q=milosc'
+    },
+    uzdrowienie: {
+      title: 'Boże Uzdrowienie — Pocieszenie, Siła i Ratunek w Chorobie',
+      slug: 'uzdrowienie',
+      summary: 'Bóg jest Lekarzem dusz i ciał. W cierpieniu i słabości ofiarowuje Swoją łaskę, pocieszenie, odnowienie sił i wierność, a ostatecznie uwolnienie od wszelkiego bólu i łez.',
+      verses: [
+        { ref: 'Iz 53:5', text: 'Lecz on był zraniony za nasze występki, starty za nasze nieprawości. Kara dla naszego pokoju była na nim, a jego ranami zostaliśmy uzdrowieni.' },
+        { ref: 'Ps 103:3', text: 'On przebacza wszystkie twoje nieprawości, on uzdrawia wszystkie twoje choroby;' },
+        { ref: 'Jk 5:14-15', text: 'Choruje ktoś wśród was? Niech zawoła starszych zboru i niech się modlą nad nim... A modlitwa wiary uzdrowi chorego i Pan go podźwignie;' }
+      ],
+      prayerTitle: 'Modlitwa o Boże Uzdrowienie i Siłę w Cierpieniu',
+      prayerText: 'Panie Jezu, Ty wziąłeś na siebie nasze niemoc i nosiłeś nasze choroby, a w Twoich ranach jest nasze uzdrowienie. Wołam do Ciebie o zdrowie dla mojego ciała, ukojenie w bólu i pokój dla mojej duszy. Oddaję Ci moje życie i ufam Twojej wszechmocy i miłości. Bądź moją siłą i moim lekarzem. Amen.',
+      studyUrl: '/mojabiblia?book=PSA&chapter=103',
+      mediaUrl: '/player?q=uzdrowienie'
+    },
+    madrosc: {
+      title: 'Boża Mądrość i Przewodnictwo Ducha Świętego',
+      slug: 'madrosc',
+      summary: 'Początkiem mądrości jest bojaźń Pańska. Bóg obiecuje udzielić obficie mądrości każdemu, kto prosi z wiarą, prowadząc przez labirynty życia światłem Swojego Słowa.',
+      verses: [
+        { ref: 'Prz 3:5-6', text: 'Ufaj PANU z całego swego serca i nie polegaj na swoim rozumie. Zważaj na niego na wszystkich swoich drogach, a on wyrówna twoje ścieżki.' },
+        { ref: 'Jk 1:5', text: 'A jeśli komuś z was brakuje mądrości, niech prosi Boga, który daje wszystkim obficie i nie wymawia, a będzie mu dana.' },
+        { ref: 'Ps 119:105', text: 'Twoje słowo jest pochodnią dla moich nóg i światłem na mojej ścieżce.' }
+      ],
+      prayerTitle: 'Modlitwa o Mądrość i Boże Prowadzenie',
+      prayerText: 'Panie, Twoje Słowo jest lampą dla moich stóp i światłem na mojej ścieżce. Proszę Cię o dar Bożej mądrości z góry — czystej, miłującej pokój i pełnej dobrych owoców. Nie pozwól mi polegać na własnym rozumie, lecz daj mi w każdym kroku rozpoznawać Twoją wolę i podążać za głosem Twojego Ducha. Amen.',
+      studyUrl: '/mojabiblia?book=PRO&chapter=3',
+      mediaUrl: '/player?q=madrosc'
     }
   };
 
@@ -1235,10 +1361,20 @@
       .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
       .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
       .replace(/[ś]/g, 's').replace(/[źż]/g, 'z').trim();
-    if (norm.includes('szabat') || norm.includes('sabat') || norm.includes('dzien siodmy') || norm.includes('dzien panski')) return BIBLE_TOPICS.szabat;
-    if (norm.includes('usprawiedliwien') || norm.includes('laska boza') || norm.includes('zbawien') || norm.includes('z laski')) return BIBLE_TOPICS.usprawiedliwienie;
-    if (norm.includes('posrednik') || norm.includes('arcykaplan') || norm.includes('jedyny posrednik')) return BIBLE_TOPICS.posrednik;
-    if (norm.includes('proroctw') || norm.includes('apokalips') || norm.includes('daniel') || norm.includes('trzy poselstwa')) return BIBLE_TOPICS.proroctwa;
+
+    if (norm.includes('usprawiedliwien') || norm.includes('laska boza') || norm.includes('zbawien') || norm.includes('z laski') || norm.includes('darmo')) return BIBLE_TOPICS.usprawiedliwienie;
+    if (norm.includes('wiar') || norm.includes('wierz') || norm.includes('zaufan') || norm.includes('niewidzialn')) return BIBLE_TOPICS.wiara;
+    if (norm.includes('pokoj') || norm.includes('spokoj') || norm.includes('lek') || norm.includes('strach') || norm.includes('niepokoj') || norm.includes('ukojenie')) return BIBLE_TOPICS.pokoj;
+    if (norm.includes('modlitw') || norm.includes('modlic') || norm.includes('wstawiennictw') || norm.includes('ojcze nasz')) return BIBLE_TOPICS.modlitwa;
+    if (norm.includes('nadziej') || norm.includes('zmartwychwstan') || norm.includes('otucha')) return BIBLE_TOPICS.nadzieja;
+    if (norm.includes('szabat') || norm.includes('sabat') || norm.includes('dzien siodmy') || norm.includes('dzien panski') || norm.includes('odpocznien')) return BIBLE_TOPICS.szabat;
+    if (norm.includes('posrednik') || norm.includes('arcykaplan') || norm.includes('jedyny posrednik') || norm.includes('oredownik')) return BIBLE_TOPICS.posrednik;
+    if (norm.includes('proroctw') || norm.includes('apokalips') || norm.includes('daniel') || norm.includes('trzy poselstwa') || norm.includes('paruzj') || norm.includes('powtorne przyjscie')) return BIBLE_TOPICS.proroctwa;
+    if (norm.includes('przebaczen') || norm.includes('odpuszczen') || norm.includes('pojednan') || norm.includes('oczyszczen z grzech')) return BIBLE_TOPICS.przebaczenie;
+    if (norm.includes('milosc') || norm.includes('agape') || norm.includes('milowac') || norm.includes('przykazanie milosci')) return BIBLE_TOPICS.milosc;
+    if (norm.includes('uzdrowien') || norm.includes('chorob') || norm.includes('uleczen') || norm.includes('cierpien') || norm.includes('lekarz')) return BIBLE_TOPICS.uzdrowienie;
+    if (norm.includes('madrosc') || norm.includes('przewodnictw') || norm.includes('rozeznan')) return BIBLE_TOPICS.madrosc;
+
     return null;
   }
 
@@ -2242,10 +2378,44 @@
     if (!topicData) return '';
     const versesHtml = topicData.verses.map(v => `
       <div class="cc-bible-topic-verse-item">
-        <strong class="cc-bible-topic-ref">${escapeHtml(v.ref)}:</strong>
-        <span class="cc-bible-topic-text">„${escapeHtml(v.text)}”</span>
+        <div class="cc-topic-verse-row">
+          <strong class="cc-bible-topic-ref">${escapeHtml(v.ref)}:</strong>
+          <span class="cc-bible-topic-text">„${escapeHtml(v.text)}”</span>
+        </div>
+        <button type="button" class="cc-btn-topic-verse-audio" data-action="toggle-audio" data-verse="${escapeHtml(v.text)}" data-ref="${escapeHtml(v.ref)}" title="Słuchaj wersetu (Lektor UBG)">
+          <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
+          <span>Słuchaj</span>
+        </button>
       </div>
     `).join('');
+
+    const prayerBoxId = 'ccPrayerBox_' + escapeHtml(topicData.slug);
+    const prayerHtml = topicData.prayerText ? `
+      <div class="cc-thematic-prayer-box" id="${prayerBoxId}" style="display:none;">
+        <div class="cc-prayer-box-head">
+          <div class="cc-prayer-box-title">
+            <span aria-hidden="true">🙏</span>
+            <span>${escapeHtml(topicData.prayerTitle || 'Modlitwa Biblijna')}</span>
+          </div>
+          <span class="cc-prayer-box-sub">Modlitewnik Christian Culture • Oparty na UBG</span>
+        </div>
+        <blockquote class="cc-prayer-text">
+          „${escapeHtml(topicData.prayerText)}”
+        </blockquote>
+        <div class="cc-prayer-actions">
+          <button type="button" class="cc-btn-prayer-audio" data-action="toggle-audio" data-verse="${escapeHtml(topicData.prayerText)}" data-ref="${escapeHtml(topicData.prayerTitle || topicData.title)}" title="Módl się z lektorem">
+            <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
+            <span class="cc-audio-play-label">Módl się z lektorem</span>
+          </button>
+          <button type="button" class="cc-btn-prayer-copy" data-action="copy-prayer" data-prayer="${escapeHtml(topicData.prayerText)}" title="Kopiuj treść modlitwy">
+            <span>Kopiuj modlitwę</span>
+          </button>
+          <a href="/modlitwa" class="cc-btn-prayer-intercede" title="Przejdź do Zjednoczeni za Polskę / Tablica Modlitwy">
+            <span>Zanieś intencję do Społeczności →</span>
+          </a>
+        </div>
+      </div>
+    ` : '';
 
     return `
       <div class="cc-bible-topic-card" id="ccBibleTopicCard">
@@ -2264,6 +2434,10 @@
           ${versesHtml}
         </div>
         <div class="cc-bible-topic-actions">
+          ${topicData.prayerText ? `
+          <button type="button" class="cc-btn-prayer-trigger" data-action="toggle-prayer" data-target="${prayerBoxId}" aria-expanded="false" title="Otwórz modlitwę opartą na tym Słowie">
+            <span>🙏 Pomódl się tym Słowem</span>
+          </button>` : ''}
           <a href="${escapeHtml(topicData.studyUrl)}" class="cc-btn-scripture-main">Studiuj w MojaBiblia (Strong) →</a>
           <a href="${escapeHtml(topicData.mediaUrl)}" class="cc-btn-scripture-audio">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
@@ -2273,6 +2447,7 @@
             <span>📜 Rejestr Źródeł (R01–R40)</span>
           </button>
         </div>
+        ${prayerHtml}
         <div class="cc-scripture-license-note">
           Biblia w centrum • Oddzielenie tekstu Pisma od opracowań i komentarzy redakcyjnych Christian Culture
         </div>
@@ -4569,7 +4744,165 @@
 
         
 
-        /* ── BIBLIA INTELLIGENCE CC (P4): AUDIO PLAYER & BIBLIA SŁUCHANA ── */
+
+        /* ── BIBLIA INTELLIGENCE CC (P5): KATALOG TEMATYCZNY & MODLITEWNIK ── */
+        .cc-topic-verse-row {
+          flex: 1;
+        }
+        .cc-bible-topic-verse-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          padding: 8px 12px;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          margin-bottom: 6px;
+        }
+        .cc-btn-topic-verse-audio {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 10px;
+          border-radius: 14px;
+          background: rgba(255, 122, 0, 0.12);
+          border: 1px solid rgba(255, 122, 0, 0.35);
+          color: #FF8C33;
+          font-size: 0.72rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s, color 0.15s;
+        }
+        .cc-btn-topic-verse-audio:hover {
+          background: #FF7A00;
+          color: #ffffff;
+        }
+        .cc-btn-prayer-trigger {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 16px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff !important;
+          border: 0;
+          font-size: 0.86rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+          box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+        }
+        .cc-btn-prayer-trigger:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(255, 122, 0, 0.5);
+        }
+        .cc-btn-prayer-trigger:active {
+          background: #E66A00;
+          transform: translateY(0);
+        }
+        .cc-thematic-prayer-box {
+          margin-top: 14px;
+          padding: 16px 18px;
+          border-radius: 14px;
+          background: rgba(10, 16, 28, 0.95);
+          border: 1.5px solid rgba(196, 163, 90, 0.4);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+          animation: ccFadeIn 0.25s ease-out;
+        }
+        .cc-prayer-box-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .cc-prayer-box-title {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: #FF8C33;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .cc-prayer-box-sub {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.6);
+        }
+        .cc-prayer-text {
+          margin: 0 0 14px 0;
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: #ffffff;
+          font-style: italic;
+          border-left: 3px solid #FF7A00;
+          padding-left: 14px;
+        }
+        .cc-prayer-actions {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .cc-btn-prayer-audio {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          min-height: 40px;
+          padding: 0 14px;
+          border-radius: 20px;
+          background: rgba(255, 122, 0, 0.15);
+          border: 1px solid rgba(255, 122, 0, 0.4);
+          color: #FF8C33;
+          font-size: 0.8rem;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        .cc-btn-prayer-audio:hover {
+          background: #FF7A00;
+          color: #ffffff;
+        }
+        .cc-btn-prayer-copy {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          min-height: 40px;
+          padding: 0 12px;
+          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #F3E5C8;
+          font-size: 0.78rem;
+          cursor: pointer;
+        }
+        .cc-btn-prayer-copy:hover {
+          background: rgba(255, 255, 255, 0.16);
+          color: #ffffff;
+        }
+        .cc-btn-prayer-intercede {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          min-height: 40px;
+          padding: 0 12px;
+          border-radius: 20px;
+          background: transparent;
+          border: 1px solid rgba(196, 163, 90, 0.35);
+          color: #C4A35A;
+          font-size: 0.78rem;
+          text-decoration: none;
+        }
+        .cc-btn-prayer-intercede:hover {
+          background: rgba(196, 163, 90, 0.15);
+          color: #ffffff;
+        }
+
+                /* ── BIBLIA INTELLIGENCE CC (P4): AUDIO PLAYER & BIBLIA SŁUCHANA ── */
         .cc-scripture-audio-bar {
           display: flex;
           align-items: center;
@@ -6057,6 +6390,41 @@ ${isStandalonePage ? '' : `
 
     // Faza 2: Obsługa kopiowania linku / wersetu oraz hoveru na wynikach dla Split-View
     overlay.addEventListener('click', (e) => {
+      // Obsługa otwierania modlitewnika tematycznego (P5)
+      const prayerTrigger = e.target.closest('[data-action="toggle-prayer"]');
+      if (prayerTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        const targetId = prayerTrigger.getAttribute('data-target');
+        const box = document.getElementById(targetId);
+        if (box) {
+          const isOpen = box.style.display !== 'none';
+          box.style.display = isOpen ? 'none' : 'block';
+          prayerTrigger.setAttribute('aria-expanded', String(!isOpen));
+          if (!isOpen) box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+        return;
+      }
+
+      // Kopiowanie modlitwy (P5)
+      const copyPrayerBtn = e.target.closest('[data-action="copy-prayer"]');
+      if (copyPrayerBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const prayerToCopy = copyPrayerBtn.getAttribute('data-prayer');
+        if (prayerToCopy && navigator.clipboard) {
+          navigator.clipboard.writeText(prayerToCopy).then(() => {
+            const span = copyPrayerBtn.querySelector('span');
+            if (span) {
+              const orig = span.textContent;
+              span.textContent = 'Skopiowano modlitwę!';
+              setTimeout(() => { span.textContent = orig; }, 1600);
+            }
+          }).catch(() => {});
+        }
+        return;
+      }
+
       // Obsługa odtwarzania audio wersetu / cytatu (P4)
       const playVerseBtn = e.target.closest('[data-action="toggle-audio"]');
       if (playVerseBtn) {
@@ -6980,6 +7348,7 @@ ${isStandalonePage ? '' : `
     verifyBibleQuote: verifyBibleQuote,
     renderComparePanel: renderComparePanel,
     renderQuoteVerificationCard: renderQuoteVerificationCard,
+    renderBibleTopicCard: renderBibleTopicCard,
     playBibleAudio: playBibleAudio,
     stopBibleAudio: stopBibleAudio,
     toggleBibleAudio: toggleBibleAudio,

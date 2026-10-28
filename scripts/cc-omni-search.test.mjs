@@ -793,3 +793,90 @@ test('cc-omni-search.js: Biblia Intelligence CC — P4 contracts (Audio Player, 
   assert.ok(omniSearchCode.includes('@keyframes ccWavePulse'), 'defines @keyframes ccWavePulse');
   assert.ok(omniSearchCode.includes('prefers-reduced-motion'), 'supports prefers-reduced-motion');
 });
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P5 contracts (Katalog 12 Tematów Pisma Świętego, Modlitewnik CC, UBG, Audio Modlitwy)', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const topics = sandbox.window.CCOmniSearch.BIBLE_TOPICS;
+  const detectTopic = sandbox.window.CCOmniSearch.detectBibleTopic;
+  const renderTopicCard = sandbox.window.CCOmniSearch.renderBibleTopicCard;
+
+  assert.ok(typeof topics === 'object', 'BIBLE_TOPICS is exported');
+  assert.ok(typeof detectTopic === 'function', 'detectBibleTopic is exported');
+  assert.ok(typeof renderTopicCard === 'function', 'renderBibleTopicCard is exported');
+
+  // 1. 12 Canonical Thematic Topics presence
+  const expectedTopics = [
+    'wiara', 'usprawiedliwienie', 'pokoj', 'modlitwa', 'nadzieja', 'szabat',
+    'posrednik', 'proroctwa', 'przebaczenie', 'milosc', 'uzdrowienie', 'madrosc'
+  ];
+  for (const slug of expectedTopics) {
+    assert.ok(topics[slug], `contains topic ${slug}`);
+    assert.ok(topics[slug].prayerText, `topic ${slug} has prayer text`);
+    assert.ok(topics[slug].prayerTitle, `topic ${slug} has prayer title`);
+    assert.ok(Array.isArray(topics[slug].verses) && topics[slug].verses.length >= 2, `topic ${slug} has multiple verses`);
+  }
+
+  // 2. Thematic detection queries
+  const faithMatch = detectTopic('jak mieć silną wiarę');
+  assert.ok(faithMatch, 'detects wiara');
+  assert.equal(faithMatch.slug, 'wiara');
+
+  const peaceMatch = detectTopic('modlitwa o pokój w sercu i uwolnienie od lęku');
+  assert.ok(peaceMatch, 'detects pokoj');
+  assert.equal(peaceMatch.slug, 'pokoj');
+
+  const healingMatch = detectTopic('uzdrowienie z choroby');
+  assert.ok(healingMatch, 'detects uzdrowienie');
+  assert.equal(healingMatch.slug, 'uzdrowienie');
+
+  const wisdomMatch = detectTopic('mądrość Boża');
+  assert.ok(wisdomMatch, 'detects madrosc');
+  assert.equal(wisdomMatch.slug, 'madrosc');
+
+  const loveMatch = detectTopic('miłość Boża agape');
+  assert.ok(loveMatch, 'detects milosc');
+  assert.equal(loveMatch.slug, 'milosc');
+
+  const forgivenessMatch = detectTopic('przebaczenie grzechów');
+  assert.ok(forgivenessMatch, 'detects przebaczenie');
+  assert.equal(forgivenessMatch.slug, 'przebaczenie');
+
+  // 3. Render HTML contracts for Modlitewnik
+  const topicHtml = renderTopicCard(topics.pokoj);
+  assert.ok(topicHtml.includes('cc-bible-topic-card'), 'renders topic card container');
+  assert.ok(topicHtml.includes('cc-btn-prayer-trigger'), 'renders prayer trigger button');
+  assert.ok(topicHtml.includes('cc-thematic-prayer-box'), 'renders prayer box');
+  assert.ok(topicHtml.includes('cc-btn-prayer-audio'), 'renders prayer audio button');
+  assert.ok(topicHtml.includes('cc-btn-prayer-copy'), 'renders copy prayer button');
+  assert.ok(topicHtml.includes('cc-btn-topic-verse-audio'), 'renders per-verse audio button');
+
+  // 4. CSS contracts for Modlitewnik
+  assert.ok(omniSearchCode.includes('.cc-thematic-prayer-box'), 'defines .cc-thematic-prayer-box');
+  assert.ok(omniSearchCode.includes('.cc-btn-prayer-trigger'), 'defines .cc-btn-prayer-trigger');
+  assert.ok(omniSearchCode.includes('.cc-btn-prayer-audio'), 'defines .cc-btn-prayer-audio');
+});
