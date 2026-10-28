@@ -2312,10 +2312,24 @@ export default {
     }
 
     if (
+      lowerPath === '/wioletta/pardon-czy-to-milosc' ||
+      lowerPath === '/pardon-czy-to-milosc'
+    ) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/Wioletta/pardon-czy-to-milosc/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
+    if (lowerPath.startsWith('/wioletta/pardon-czy-to-milosc/')) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/Wioletta/pardon-czy-to-milosc/' + url.pathname.slice('/wioletta/pardon-czy-to-milosc/'.length);
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
+    if (
       lowerPath === '/wioletta' ||
       lowerPath === '/violetta' ||
-      lowerPath === '/pardon' ||
-      lowerPath === '/pardon-czy-to-milosc'
+      lowerPath === '/pardon'
     ) {
       const targetUrl = new URL(request.url);
       targetUrl.pathname = '/Wioletta/';

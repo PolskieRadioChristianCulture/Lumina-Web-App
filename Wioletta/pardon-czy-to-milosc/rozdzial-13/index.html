@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Czytaj — Pardon, Czy To Miłość? | Wioletta Rogowska</title>
+<meta name="description" id="pageDesc" content="Czytaj powieść Wioletty Rogowskiej online — Pardon, Czy To Miłość?">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" id="canonicalLink" href="https://polskieradio.cc/Wioletta/pardon-czy-to-milosc/">
+<style>
+  :root {
+    --gold: #C4A35A;
+    --orange: #FF7A00;
+    --orange-hover: #FF8C33;
+    /* Papier theme (default) */
+    --bg: #faf7f2;
+    --text: #2c2416;
+    --muted: #776755;
+    --card: #f2ede4;
+    --border: rgba(0,0,0,0.08);
+    --nav-bg: rgba(250,247,242,0.96);
+    --link: var(--gold);
+    --font-size: 18px;
+  }
+  [data-theme="noc"]{
+    --bg:#0e0d0b;
+    --text:#e0d8ca;
+    --muted:#8a7d6a;
+    --card:#161410;
+    --border:rgba(255,255,255,0.06);
+    --nav-bg:rgba(14,13,11,0.97);
+  }
+  [data-theme="biel"]{
+    --bg:#ffffff;
+    --text:#1a1a1a;
+    --muted:#666;
+    --card:#f5f5f5;
+    --border:rgba(0,0,0,0.08);
+    --nav-bg:rgba(255,255,255,0.97);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Georgia',serif;
+    font-size:var(--font-size);
+    line-height:1.85;
+    min-height:100vh;
+    transition:background 0.25s,color 0.25s;
+  }
+
+  /* ── TOP NAV ── */
+  .reader-nav{
+    position:sticky;top:0;z-index:100;
+    background:var(--nav-bg);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    display:flex;align-items:center;
+    padding:0 1rem;height:52px;gap:0.5rem;
+  }
+  .nav-btn{
+    display:flex;align-items:center;justify-content:center;
+    width:44px;height:44px;
+    background:transparent;border:none;cursor:pointer;
+    color:var(--muted);border-radius:6px;
+    transition:background 0.15s,color 0.15s;
+    flex-shrink:0;
+  }
+  .nav-btn:hover{background:rgba(196,163,90,0.1);color:var(--gold)}
+  .nav-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .nav-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+  .nav-title{
+    flex:1;text-align:center;
+    font-size:0.8rem;
+    color:var(--muted);
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    padding:0 0.5rem;
+  }
+  .nav-title strong{color:var(--text)}
+
+  /* ── READING AREA ── */
+  .reader-wrap{
+    max-width:680px;margin:0 auto;
+    padding:3rem 1.5rem 6rem;
+  }
+  .chapter-header{
+    margin-bottom:2.5rem;
+    padding-bottom:2rem;
+    border-bottom:1px solid var(--border);
+  }
+  .chapter-meta{
+    font-size:0.72rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:0.75rem;
+    display:flex;align-items:center;gap:1rem;
+  }
+  .chapter-num-label{
+    background:rgba(196,163,90,0.12);
+    border:1px solid rgba(196,163,90,0.25);
+    color:var(--gold);
+    padding:0.2rem 0.6rem;
+    border-radius:2rem;
+    font-size:0.68rem;
+  }
+  h1.chapter-title{
+    font-size:clamp(1.5rem,4vw,2.2rem);
+    font-weight:400;
+    line-height:1.25;
+    letter-spacing:-0.01em;
+  }
+  h1.chapter-title em{
+    font-style:italic;
+    color:var(--gold);
+  }
+
+  /* ── PROSE ── */
+  .prose p{margin-bottom:1.4em}
+  .prose p:first-child::first-letter{
+    font-size:3.2em;
+    float:left;
+    line-height:0.75;
+    margin:0.1em 0.08em 0 0;
+    color:var(--gold);
+    font-family:'Georgia',serif;
+  }
+  .prose em{font-style:italic}
+  .prose strong{font-weight:700}
+  /* Cytaty/dialogi — linia zaczynająca się od — */
+  .prose .dialogue{
+    margin-left:0;
+    padding-left:1rem;
+    border-left:2px solid rgba(196,163,90,0.3);
+  }
+
+  /* ── TOOLBAR BOTTOM ── */
+  .toolbar{
+    position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:50px;
+    display:flex;align-items:center;
+    padding:0.3rem;
+    gap:0.2rem;
+    box-shadow:0 4px 24px rgba(0,0,0,0.12);
+    z-index:90;
+    backdrop-filter:blur(8px);
+  }
+  .tb-btn{
+    display:flex;align-items:center;justify-content:center;
+    width:44px;height:44px;
+    background:transparent;border:none;cursor:pointer;
+    color:var(--muted);border-radius:50%;
+    font-size:0.78rem;
+    font-family:'Georgia',serif;
+    transition:background 0.15s,color 0.15s;
+  }
+  .tb-btn:hover{background:rgba(196,163,90,0.1);color:var(--gold)}
+  .tb-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .tb-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+  .tb-sep{width:1px;height:28px;background:var(--border);margin:0 0.1rem}
+  .tb-btn.active{color:var(--gold)}
+
+  /* ── CHAPTER NAVIGATION ── */
+  .ch-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:2rem 0;
+    border-top:1px solid var(--border);
+    margin-top:3rem;
+    gap:1rem;
+  }
+  .ch-nav-btn{
+    display:flex;align-items:center;gap:0.5rem;
+    text-decoration:none;
+    color:var(--muted);
+    font-size:0.85rem;
+    padding:0.75rem 1.25rem;
+    border:1px solid var(--border);
+    border-radius:4px;
+    transition:border-color 0.15s,color 0.15s,background 0.15s;
+    min-height:44px;
+  }
+  .ch-nav-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(196,163,90,0.06)}
+  .ch-nav-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0}
+  .ch-nav-center{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--muted);
+  }
+  .ch-nav-center a{color:var(--gold);text-decoration:none}
+  .ch-nav-center a:hover{text-decoration:underline}
+
+  /* ── SETTINGS PANEL ── */
+  .settings-panel{
+    position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:1.25rem 1.5rem;
+    box-shadow:0 8px 32px rgba(0,0,0,0.18);
+    z-index:95;
+    min-width:260px;
+    display:none;
+  }
+  .settings-panel.open{display:block}
+  .settings-panel h3{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+  .settings-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;gap:1rem}
+  .settings-label{font-size:0.82rem;color:var(--text)}
+  .theme-btns{display:flex;gap:0.4rem}
+  .theme-btn{
+    padding:0.4rem 0.75rem;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:transparent;cursor:pointer;
+    font-size:0.75rem;color:var(--muted);
+    font-family:'Georgia',serif;
+    transition:all 0.15s;
+    min-height:36px;
+  }
+  .theme-btn:hover,.theme-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(196,163,90,0.08)}
+  .font-btns{display:flex;gap:0.4rem}
+  .font-btn{
+    width:36px;height:36px;
+    border:1px solid var(--border);border-radius:4px;
+    background:transparent;cursor:pointer;
+    font-family:'Georgia',serif;
+    color:var(--muted);
+    transition:all 0.15s;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .font-btn:hover{border-color:var(--gold);color:var(--gold)}
+  .font-size-display{
+    font-size:0.82rem;color:var(--text);min-width:40px;text-align:center
+  }
+
+  /* ── PROGRESS ── */
+  .reading-progress{
+    position:fixed;top:0;left:0;right:0;height:2px;
+    background:transparent;z-index:200;
+  }
+  .reading-progress-bar{
+    height:100%;
+    background:linear-gradient(90deg,var(--gold),var(--orange));
+    width:0%;transition:width 0.2s;
+  }
+
+  /* ── BOOKMARK TOAST ── */
+  .toast{
+    position:fixed;top:64px;right:1rem;
+    background:var(--card);border:1px solid var(--border);
+    padding:0.75rem 1rem;border-radius:8px;
+    font-size:0.82rem;color:var(--text);
+    box-shadow:0 4px 16px rgba(0,0,0,0.12);
+    transform:translateY(-10px);opacity:0;
+    transition:all 0.25s;z-index:300;
+    pointer-events:none;
+  }
+  .toast.show{transform:none;opacity:1}
+
+  /* ── OVERLAY dla settings ── */
+  .overlay{
+    position:fixed;inset:0;z-index:94;
+    display:none;
+  }
+  .overlay.open{display:block}
+
+  @media(max-width:600px){
+    .reader-wrap{padding:2rem 1rem 7rem}
+    h1.chapter-title{font-size:1.5rem}
+  }
+</style>
+</head>
+<body data-theme="papier">
+
+<!-- PROGRESS BAR -->
+<div class="reading-progress" aria-hidden="true">
+  <div class="reading-progress-bar" id="progressBar"></div>
+</div>
+
+<!-- READER NAV -->
+<nav class="reader-nav" aria-label="Nawigacja czytelnika">
+  <a href="/Wioletta/pardon-czy-to-milosc/" class="nav-btn" aria-label="Powrót do listy rozdziałów">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+  </a>
+  <div class="nav-title">
+    <strong id="navChapterLabel">Ładowanie…</strong>
+  </div>
+  <button class="nav-btn" id="navBookmarkBtn" aria-label="Dodaj zakładkę" title="Dodaj zakładkę">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+  </button>
+  <button class="nav-btn" id="navShareBtn" aria-label="Udostępnij rozdział" title="Udostępnij">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+  </button>
+</nav>
+
+<!-- READING AREA -->
+<main class="reader-wrap" id="readerWrap">
+  <header class="chapter-header">
+    <div class="chapter-meta">
+      <a href="/Wioletta/pardon-czy-to-milosc/" style="color:inherit;text-decoration:none;letter-spacing:inherit;">
+        Pardon, Czy To Miłość?
+      </a>
+      <span class="chapter-num-label" id="chapterNumLabel">Rozdział —</span>
+      <span id="readingTimeLabel"></span>
+    </div>
+    <h1 class="chapter-title" id="chapterTitle">Ładowanie…</h1>
+  </header>
+
+  <article class="prose" id="proseContent" aria-live="polite">
+    <!-- tekst ładowany z JS -->
+  </article>
+
+  <!-- CHAPTER NAVIGATION -->
+  <nav class="ch-nav" aria-label="Nawigacja między rozdziałami">
+    <a href="#" class="ch-nav-btn" id="prevBtn" style="visibility:hidden" aria-label="Poprzedni rozdział">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      <span id="prevLabel">Poprzedni</span>
+    </a>
+    <div class="ch-nav-center">
+      <a href="/Wioletta/pardon-czy-to-milosc/">Wszystkie rozdziały</a>
+    </div>
+    <a href="#" class="ch-nav-btn" id="nextBtn" style="visibility:hidden" aria-label="Następny rozdział">
+      <span id="nextLabel">Następny</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </nav>
+</main>
+
+<!-- BOTTOM TOOLBAR -->
+<div class="toolbar" role="toolbar" aria-label="Narzędzia czytelnika">
+  <button class="tb-btn" id="settingsBtn" aria-label="Ustawienia wyglądu" title="Ustawienia">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+  <div class="tb-sep" aria-hidden="true"></div>
+  <button class="tb-btn" id="prevChBtn" aria-label="Poprzedni rozdział">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <span style="font-size:0.72rem;color:var(--muted);min-width:60px;text-align:center" id="toolbarChNum">Rozdz. —</span>
+  <button class="tb-btn" id="nextChBtn" aria-label="Następny rozdział">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div class="tb-sep" aria-hidden="true"></div>
+  <button class="tb-btn" id="bookmarkBtn2" aria-label="Zakładka">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+  </button>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+<div class="settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-label="Ustawienia wyglądu">
+  <h3>Wygląd</h3>
+  <div class="settings-row">
+    <span class="settings-label">Motyw</span>
+    <div class="theme-btns" role="group" aria-label="Wybierz motyw">
+      <button class="theme-btn active" data-theme="papier" aria-pressed="true">Papier</button>
+      <button class="theme-btn" data-theme="noc" aria-pressed="false">Noc</button>
+      <button class="theme-btn" data-theme="biel" aria-pressed="false">Biel</button>
+    </div>
+  </div>
+  <div class="settings-row">
+    <span class="settings-label">Rozmiar tekstu</span>
+    <div class="font-btns" role="group" aria-label="Rozmiar czcionki">
+      <button class="font-btn" id="fontDecBtn" aria-label="Zmniejsz tekst">A−</button>
+      <span class="font-size-display" id="fontSizeDisplay">18px</span>
+      <button class="font-btn" id="fontIncBtn" aria-label="Zwiększ tekst">A+</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKMARK TOAST -->
+<div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+
+<script defer src="/js/wioletta-reader-data.js"></script>
+<script>
+(function(){
+  'use strict';
+  
+  // ── Wyciągnij numer rozdziału z URL ──
+  const urlMatch = location.pathname.match(/rozdzial-(\d+)/);
+  const chNum = urlMatch ? parseInt(urlMatch[1]) : 1;
+  
+  const LS_THEME    = 'wioletta_theme';
+  const LS_FONTSIZE = 'wioletta_fontsize';
+  const LS_BOOKMARK = 'wioletta_bookmark_ch';
+  const LS_LAST     = 'wioletta_last_chapter';
+  
+  let fontSize = parseInt(localStorage.getItem(LS_FONTSIZE) || '18');
+  let currentTheme = localStorage.getItem(LS_THEME) || 'papier';
+  
+  // Zastosuj zapisane ustawienia od razu (przed załadowaniem danych)
+  applyTheme(currentTheme);
+  applyFontSize(fontSize);
+  
+  // ── Czeka na dane i renderuje ──
+  function init() {
+    const data = window.WIOLETTA_BOOK_DATA;
+    if (!data) return;
+    
+    const ch = data.rozdzialy.find(c => c.nr === chNum);
+    if (!ch) {
+      document.getElementById('chapterTitle').textContent = 'Rozdział nie istnieje';
+      return;
+    }
+    
+    // Meta
+    document.title = `Rozdział ${ch.nr}: ${ch.tytul} — Pardon, Czy To Miłość? | Wioletta Rogowska`;
+    document.getElementById('pageDesc')?.setAttribute('content', ch.excerpt);
+    document.getElementById('canonicalLink')?.setAttribute('href', 
+      `https://polskieradio.cc/Wioletta/pardon-czy-to-milosc/rozdzial-${ch.nr}`);
+    
+    // Nagłówek
+    document.getElementById('navChapterLabel').textContent = `Rozdział ${ch.nr} z ${data.meta.rozdzialy}`;
+    document.getElementById('chapterNumLabel').textContent = `Rozdział ${ch.nr}`;
+    document.getElementById('chapterTitle').textContent = ch.tytul;
+    document.getElementById('readingTimeLabel').textContent = `${ch.readingTimeMin} min`;
+    document.getElementById('toolbarChNum').textContent = `Rozdz. ${ch.nr}`;
+    
+    // Prose — konwertuj \n na akapity
+    const prose = document.getElementById('proseContent');
+    const paras = ch.tekst.split(/\n{2,}/).filter(p => p.trim());
+    prose.innerHTML = paras.map(p => {
+      const text = p.trim()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      return `<p>${text}</p>`;
+    }).join('');
+    
+    // Nawigacja poprzedni/następny
+    const prev = data.rozdzialy.find(c => c.nr === chNum - 1);
+    const next = data.rozdzialy.find(c => c.nr === chNum + 1);
+    
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevChBtn = document.getElementById('prevChBtn');
+    const nextChBtn = document.getElementById('nextChBtn');
+    
+    if (prev) {
+      prevBtn.href = `/Wioletta/pardon-czy-to-milosc/rozdzial-${prev.nr}`;
+      prevBtn.style.visibility = '';
+      document.getElementById('prevLabel').textContent = `Rozdział ${prev.nr}`;
+      prevChBtn.onclick = () => location.href = prevBtn.href;
+    } else {
+      prevBtn.style.visibility = 'hidden';
+      prevChBtn.disabled = true;
+      prevChBtn.style.opacity = '0.3';
+    }
+    
+    if (next) {
+      nextBtn.href = `/Wioletta/pardon-czy-to-milosc/rozdzial-${next.nr}`;
+      nextBtn.style.visibility = '';
+      document.getElementById('nextLabel').textContent = `Rozdział ${next.nr}`;
+      nextChBtn.onclick = () => location.href = nextBtn.href;
+    } else {
+      // Ostatni rozdział
+      nextBtn.href = '/Wioletta/pardon-czy-to-milosc/';
+      nextBtn.style.visibility = '';
+      document.getElementById('nextLabel').textContent = 'Spis treści';
+      nextChBtn.onclick = () => location.href = '/Wioletta/pardon-czy-to-milosc/';
+    }
+    
+    // Zapisz ostatnio czytany
+    localStorage.setItem(LS_LAST, String(chNum));
+    
+    // Zakładka — aktualizuj ikonę
+    updateBookmarkIcon();
+  }
+  
+  // ── Sprawdź czy dane już dostępne ──
+  if (window.WIOLETTA_BOOK_DATA) {
+    init();
+  } else {
+    // Czekaj na skrypt
+    const checkInterval = setInterval(function() {
+      if (window.WIOLETTA_BOOK_DATA) {
+        clearInterval(checkInterval);
+        init();
+      }
+    }, 50);
+    // Fallback: po załadowaniu DOM
+    window.addEventListener('load', function() {
+      clearInterval(checkInterval);
+      if (window.WIOLETTA_BOOK_DATA) init();
+    });
+  }
+  
+  // ── Progress bar ──
+  window.addEventListener('scroll', function() {
+    const st = window.scrollY;
+    const dh = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = dh > 0 ? (st / dh * 100) : 0;
+    const bar = document.getElementById('progressBar');
+    if (bar) bar.style.width = pct.toFixed(1) + '%';
+  }, { passive: true });
+  
+  // ── Theme ──
+  function applyTheme(theme) {
+    document.body.setAttribute('data-theme', theme);
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      const isActive = btn.dataset.theme === theme;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', String(isActive));
+    });
+    currentTheme = theme;
+    localStorage.setItem(LS_THEME, theme);
+  }
+  
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
+  });
+  
+  // ── Font size ──
+  function applyFontSize(size) {
+    fontSize = Math.min(26, Math.max(14, size));
+    document.documentElement.style.setProperty('--font-size', fontSize + 'px');
+    const disp = document.getElementById('fontSizeDisplay');
+    if (disp) disp.textContent = fontSize + 'px';
+    localStorage.setItem(LS_FONTSIZE, String(fontSize));
+  }
+  
+  document.getElementById('fontIncBtn')?.addEventListener('click', () => applyFontSize(fontSize + 1));
+  document.getElementById('fontDecBtn')?.addEventListener('click', () => applyFontSize(fontSize - 1));
+  
+  // ── Settings panel ──
+  const settingsPanel = document.getElementById('settingsPanel');
+  const overlay = document.getElementById('overlay');
+  const settingsBtn = document.getElementById('settingsBtn');
+  
+  function toggleSettings() {
+    const isOpen = settingsPanel.classList.toggle('open');
+    overlay.classList.toggle('open', isOpen);
+    overlay.setAttribute('aria-hidden', String(!isOpen));
+    if (isOpen) settingsPanel.querySelector('.theme-btn')?.focus();
+  }
+  
+  settingsBtn?.addEventListener('click', toggleSettings);
+  overlay?.addEventListener('click', toggleSettings);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && settingsPanel.classList.contains('open')) toggleSettings();
+  });
+  
+  // ── Bookmarks ──
+  function updateBookmarkIcon() {
+    const saved = localStorage.getItem(LS_BOOKMARK);
+    const isBookmarked = saved && JSON.parse(saved).ch === chNum;
+    const icon1 = document.getElementById('navBookmarkBtn');
+    const icon2 = document.getElementById('bookmarkBtn2');
+    const fillColor = isBookmarked ? 'var(--gold)' : 'none';
+    [icon1, icon2].forEach(btn => {
+      if (!btn) return;
+      const path = btn.querySelector('path');
+      if (path) path.style.fill = fillColor;
+      btn.classList.toggle('active', !!isBookmarked);
+    });
+  }
+  
+  function toggleBookmark() {
+    const saved = localStorage.getItem(LS_BOOKMARK);
+    const isBookmarked = saved && JSON.parse(saved).ch === chNum;
+    
+    if (isBookmarked) {
+      localStorage.removeItem(LS_BOOKMARK);
+      showToast('Zakładka usunięta');
+    } else {
+      const scrollPct = Math.round(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100);
+      localStorage.setItem(LS_BOOKMARK, JSON.stringify({ch: chNum, scroll: scrollPct, date: new Date().toISOString()}));
+      showToast('✓ Zakładka dodana — Rozdział ' + chNum);
+    }
+    updateBookmarkIcon();
+  }
+  
+  document.getElementById('navBookmarkBtn')?.addEventListener('click', toggleBookmark);
+  document.getElementById('bookmarkBtn2')?.addEventListener('click', toggleBookmark);
+  
+  // ── Toast ──
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+  
+  // ── Share ──
+  document.getElementById('navShareBtn')?.addEventListener('click', async function() {
+    const title = document.getElementById('chapterTitle')?.textContent || '';
+    const url = location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `${title} — Wioletta Rogowska`, url });
+      } catch(e) { /* anulowane */ }
+    } else {
+      await navigator.clipboard.writeText(url).catch(() => {});
+      showToast('✓ Link skopiowany do schowka');
+    }
+  });
+  
+})();
+</script>
+</body>
+</html>

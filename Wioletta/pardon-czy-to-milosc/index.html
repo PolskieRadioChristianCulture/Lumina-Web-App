@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pardon, Czy To Miłość? — Wioletta Rogowska | PolskieRadio.cc</title>
+<meta name="description" content="Czytaj powieść Wioletty Rogowskiej „Pardon, Czy To Miłość?" — Tom I, 25 rozdziałów dostępnych online.">
+<meta property="og:title" content="Pardon, Czy To Miłość? — Wioletta Rogowska">
+<meta property="og:description" content="Miłość, przebaczenie i poszukiwanie prawdy. Romans literacki w 25 rozdziałach.">
+<meta property="og:image" content="/images/wioletta/wioletta-hero-bg.jpg">
+<meta property="og:url" content="https://polskieradio.cc/Wioletta/pardon-czy-to-milosc/">
+<link rel="canonical" href="https://polskieradio.cc/Wioletta/pardon-czy-to-milosc/">
+<style>
+  :root {
+    --gold: #C4A35A;
+    --gold-hover: #D4B578;
+    --dark: #0a0a0a;
+    --card-bg: #111;
+    --text: #e8e0d0;
+    --muted: #999;
+    --orange: #FF7A00;
+    --orange-hover: #FF8C33;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:#0d0c0a;
+    color:var(--text);
+    font-family:'Georgia',serif;
+    min-height:100vh;
+    line-height:1.7;
+  }
+
+  /* ── NAV ── */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(10,10,8,0.95);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(196,163,90,0.15);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 1.5rem;height:56px;
+  }
+  .nav-logo{
+    font-family:'Georgia',serif;
+    font-size:0.95rem;
+    color:var(--gold);
+    text-decoration:none;
+    letter-spacing:0.02em;
+  }
+  .nav-back{
+    color:var(--muted);
+    font-size:0.85rem;
+    text-decoration:none;
+    display:flex;align-items:center;gap:0.4rem;
+    transition:color 0.2s;
+  }
+  .nav-back:hover{color:var(--gold)}
+  .nav-back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+
+  /* ── HERO ── */
+  .hero{
+    padding:100px 2rem 64px;
+    max-width:860px;margin:0 auto;
+    text-align:center;
+  }
+  .hero-badge{
+    display:inline-block;
+    background:rgba(196,163,90,0.12);
+    border:1px solid rgba(196,163,90,0.3);
+    color:var(--gold);
+    font-size:0.7rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    padding:0.35rem 1rem;
+    border-radius:2rem;
+    margin-bottom:1.5rem;
+  }
+  .hero-title{
+    font-size:clamp(2rem,5vw,3.5rem);
+    font-weight:400;
+    line-height:1.2;
+    margin-bottom:0.75rem;
+    letter-spacing:-0.01em;
+  }
+  .hero-subtitle{
+    font-size:1.1rem;
+    color:var(--gold);
+    font-style:italic;
+    margin-bottom:1.5rem;
+  }
+  .hero-meta{
+    color:var(--muted);
+    font-size:0.85rem;
+    display:flex;align-items:center;justify-content:center;gap:1.5rem;
+    flex-wrap:wrap;
+    margin-bottom:2.5rem;
+  }
+  .hero-meta span{display:flex;align-items:center;gap:0.35rem}
+  .hero-meta svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;opacity:0.6}
+  .hero-excerpt{
+    max-width:560px;margin:0 auto 2.5rem;
+    font-size:1.05rem;
+    color:#bfb099;
+    line-height:1.8;
+    font-style:italic;
+  }
+  .btn-start{
+    display:inline-flex;align-items:center;gap:0.6rem;
+    background:var(--orange);
+    color:#fff;
+    text-decoration:none;
+    padding:0.9rem 2rem;
+    border-radius:3px;
+    font-family:'Georgia',serif;
+    font-size:1rem;
+    min-height:52px;
+    transition:background 0.2s,transform 0.15s;
+  }
+  .btn-start:hover{background:var(--orange-hover);transform:translateY(-1px)}
+  .btn-start:active{background:#E66A00;transform:none}
+  .btn-start svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2}
+
+  /* ── ROZDZIAŁY ── */
+  .section{padding:3rem 1.5rem 5rem;max-width:860px;margin:0 auto}
+  .section-label{
+    font-size:0.7rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:1.5rem;
+    display:flex;align-items:center;gap:0.75rem;
+  }
+  .section-label::after{content:'';flex:1;height:1px;background:rgba(196,163,90,0.2)}
+  
+  .chapter-grid{display:grid;gap:0}
+  .chapter-item{
+    display:grid;
+    grid-template-columns:48px 1fr auto;
+    align-items:center;
+    gap:1rem;
+    padding:1.1rem 1rem;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    text-decoration:none;
+    color:var(--text);
+    transition:background 0.15s;
+    border-radius:4px;
+  }
+  .chapter-item:hover{background:rgba(196,163,90,0.06)}
+  .chapter-item:first-child{border-top:1px solid rgba(255,255,255,0.05)}
+  .chapter-num{
+    font-size:0.75rem;
+    color:var(--muted);
+    text-align:center;
+    font-variant-numeric:tabular-nums;
+    line-height:1;
+  }
+  .chapter-info{}
+  .chapter-title{
+    font-size:0.95rem;
+    line-height:1.3;
+    margin-bottom:0.3rem;
+  }
+  .chapter-excerpt{
+    font-size:0.78rem;
+    color:var(--muted);
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:1;
+    -webkit-box-orient:vertical;
+  }
+  .chapter-time{
+    font-size:0.72rem;
+    color:var(--muted);
+    white-space:nowrap;
+    text-align:right;
+  }
+  .chapter-item.current .chapter-num{color:var(--orange)}
+  .chapter-item.current .chapter-title{color:var(--gold)}
+
+  /* ── FOOTER ── */
+  .book-footer{
+    padding:3rem 1.5rem;
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,0.06);
+    color:var(--muted);
+    font-size:0.82rem;
+    max-width:860px;margin:0 auto;
+  }
+  .book-footer a{color:var(--gold);text-decoration:none}
+  .book-footer a:hover{text-decoration:underline}
+
+  /* ── PROGRESS BAR ── */
+  .reading-progress{
+    position:fixed;bottom:0;left:0;right:0;
+    height:3px;
+    background:rgba(255,255,255,0.06);
+    z-index:99;
+  }
+  .reading-progress-bar{
+    height:100%;
+    background:linear-gradient(90deg,var(--gold),var(--orange));
+    width:0%;
+    transition:width 0.3s;
+  }
+
+  @media(max-width:600px){
+    .chapter-item{grid-template-columns:36px 1fr;gap:0.75rem}
+    .chapter-time{display:none}
+    .chapter-excerpt{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" aria-label="Nawigacja główna">
+  <a href="/Wioletta" class="nav-logo">Wioletta Rogowska</a>
+  <a href="/Wioletta" class="nav-back" aria-label="Powrót do strony autorki">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    Strona autorki
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">Tom I • Dostępny online</div>
+  <h1 class="hero-title">Pardon,<br>Czy To Miłość?</h1>
+  <p class="hero-subtitle">Wioletta Rogowska</p>
+  <div class="hero-meta">
+    <span>
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      25 rozdziałów
+    </span>
+    <span>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      ~78 min czytania
+    </span>
+    <span>
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Romans literacki
+    </span>
+  </div>
+  <p class="hero-excerpt">„Aleksandra Wysocka nie wierzyła w przypadki. Wierzyła w terminarze, dobrze sporządzone umowy i w to, że jeśli człowiek odpowiednio wcześnie przewidzi katastrofę, katastrofa zwykle rezygnuje z przyjścia."</p>
+  <a href="/Wioletta/pardon-czy-to-milosc/rozdzial-1" class="btn-start" aria-label="Czytaj od rozdziału 1">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Czytaj od początku
+  </a>
+</header>
+
+<!-- ROZDZIAŁY -->
+<main class="section" id="rozdzialy">
+  <div class="section-label">Lista rozdziałów</div>
+  <div class="chapter-grid" id="chapterGrid">
+    <!-- generowane przez JS -->
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="book-footer">
+  <p>© 2026 Wioletta Rogowska — Wszelkie prawa zastrzeżone</p>
+  <p style="margin-top:0.5rem">
+    Powieść opublikowana na <a href="https://polskieradio.cc">polskieradio.cc</a> · 
+    Kontakt: <a href="mailto:wiolettapardon@gmail.com">wiolettapardon@gmail.com</a>
+  </p>
+</footer>
+
+<!-- PROGRESS -->
+<div class="reading-progress" aria-hidden="true">
+  <div class="reading-progress-bar" id="progressBar"></div>
+</div>
+
+<script defer src="/js/wioletta-reader-data.js"></script>
+<script>
+(function(){
+  // ── Render listy rozdziałów z danych ──
+  function renderChapters() {
+    const data = window.WIOLETTA_BOOK_DATA;
+    if (!data) return;
+    
+    const grid = document.getElementById('chapterGrid');
+    const lastRead = parseInt(localStorage.getItem('wioletta_last_chapter') || '0');
+    
+    grid.innerHTML = data.rozdzialy.map(ch => {
+      const isCurrent = ch.nr === lastRead;
+      return `
+        <a href="/Wioletta/pardon-czy-to-milosc/rozdzial-${ch.nr}" 
+           class="chapter-item${isCurrent?' current':''}"
+           aria-label="Rozdział ${ch.nr}: ${ch.tytul}, ${ch.readingTimeMin} minut czytania">
+          <span class="chapter-num" aria-hidden="true">${String(ch.nr).padStart(2,'0')}</span>
+          <span class="chapter-info">
+            <span class="chapter-title">${ch.tytul}</span>
+            <span class="chapter-excerpt">${ch.excerpt}</span>
+          </span>
+          <span class="chapter-time" aria-hidden="true">${ch.readingTimeMin} min</span>
+        </a>
+      `;
+    }).join('');
+  }
+  
+  // Poczekaj na załadowanie danych
+  if (window.WIOLETTA_BOOK_DATA) {
+    renderChapters();
+  } else {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(renderChapters, 100);
+    });
+  }
+  
+  // ── Progress bar ──
+  window.addEventListener('scroll', function() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight * 100) : 0;
+    const bar = document.getElementById('progressBar');
+    if (bar) bar.style.width = pct.toFixed(1) + '%';
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
