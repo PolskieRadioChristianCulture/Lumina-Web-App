@@ -73,6 +73,78 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    "id": "art-z-biblia-za-pan-brat-dzien-29",
+    "title": "Z Biblią za Pan Brat: Dzień 29 — Zejście Izraela do Egiptu: Teofania w Beer-Szebie, etyka administracji kryzysowej i nadzieja Kanaanu w Rdz 46–47",
+    "slug": "z-biblia-za-pan-brat-dzien-29-bog-prowadzi-swoj-lud-do-egiptu",
+    "excerpt": "Księga Rodzaju 46–47: Migracja rodziny Jakuba do Egiptu, obietnica Bożej obecności poza Kanaanem, spotkanie w Goszen, błogosławieństwo faraona oraz realizm zarządzania kryzysem głodu przez Józefa.",
+    "content": [
+      "W ramach globalnego programu studiów biblijnych „Z Biblią za Pan Brat”, dzisiejsze opracowanie leksykonu teologicznego na portalu CCN analizuje rozdziały czterdziesty szósty i czterdziesty siódmy Księgi Rodzaju. Tekst ten dokumentuje historyczny moment migracji rodziny Jakuba do Egiptu, teologiczne znaczenie Bożej obecności poza granicami Ziemi Obiecanej oraz złożone zagadnienia społeczno-gospodarcze związane z zarządzaniem kryzysem głodowym przez Józefa.",
+      "1. TEOFANIA W BEER-SZEBIE I GENEALOGIA DOMU JAKUBA (RDZ 46:1–27)",
+      "W obliczu konieczności opuszczenia Kanaanu Jakub zatrzymuje się w Beer-Szebie, aby złożyć ofiary Bogu (Rdz 46:1). Podczas gdy Izaak w czasie głodu otrzymał zakaz schodzenia do Egiptu (Rdz 26:2), Jakub słyszy w nocnym widzeniu wyraźne przyzwolenie oraz potwierdzenie przymierza: „Nie bój się zejść do Egiptu, gdyż tam uczynię z ciebie wielki naród. Ja pójdę z tobą do Egiptu i Ja cię stamtąd wyprowadzę” (Rdz 46:3–4; por. Rdz 15:13–16). Wykaz genealogiczny (Rdz 46:8–27) wymienia 66 osób bezpośrednio towarzyszących Jakubowi oraz 70 osób całego domu Jakuba wraz z rodziną Józefa (por. 75 osób w tradycji Septuaginty przywołanej w Dz 7:14).",
+      "2. SPOTKANIE W GOSZEN I BŁOGOSŁAWIEŃSTWO DLA FARAONA (RDZ 46:28–47:12)",
+      "Wskazanie drogi do krainy Goszen zostaje powierzone Judzie (Rdz 46:28). Emocjonalne spotkanie Józefa z ojcem (Rdz 46:29–30) przechodzi w oficjalną audiencję na dworze królewskim, podczas której sto trzydziestoletni Jakub dwukrotnie błogosławi faraona (Rdz 47:7, 10), realizując paradygmat obietnicy Abrahamowej z Rdz 12:3.",
+      "3. POLITYKA GOSPODARCZA JÓZEFA I OSTATNIA WOLA JAKUBA (RDZ 47:13–31)",
+      "Druga połowa rozdziału 47 (Rdz 47:13–26) opisuje kolejne fazy zarządzania kryzysem przez Józefa, w wyniku których ludność Egiptu w zamian za zboże przekazuje skarbcowi faraona pieniądze, bydło oraz prawa własności do ziemi, przyjmując zobowiązanie oddawania jednej piątej plonów (20%). Choć system Józefa ocalił życie mieszkańców (Rdz 47:25), doprowadził zarazem do głębokiej centralizacji własności pod przymusem głodu. Rozdział zamyka się wzmianką o siedemnastu latach życia Jakuba w Egipcie (do wieku 147 lat) oraz uroczystą przysięgą Józefa, że pochowa ojca w grobie przodków w Kanaanie (Rdz 47:27–31; por. Hbr 11:21).",
+      "4. CHRYSTUS W CENTRUM: EMMANUEL I NIEBIAŃSKA OJCZYZNA",
+      "Obietnica „Ja pójdę z tobą” (Rdz 46:4) osiąga szczyt we wcieleniu Syna Bożego — Emmanuela („Boga z nami” — Mt 1:23; 28:20). Chrystus karmi głodnych bez odbierania im godności (Mk 6:34–44; Mt 25:35–40), definiuje wielkość jako ofiarną służbę (Mk 10:42–45) i prowadzi pielgrzymujący lud Boży ku lepszej, niebiańskiej ojczyźnie (Hbr 11:13–16; Ga 3:8, 16).",
+      "PODSUMOWANIE REDAKCYJNE CCN",
+      "Rozdziały 46–47 Księgi Rodzaju przypominają, że Boża wierność nie jest ograniczona terytorialnie i towarzyszy wierzącym w najtrudniejszych przełomach życiowych, wzywając zarazem do łączenia roztropności z poszanowaniem godności słabszych."
+    ],
+    "category": "wiara",
+    "categoryLabel": "Wiara & Rozwój",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-29T06:00:00.000Z",
+    "dateFormatted": "29 października 2026",
+    "imageUrl": "/images/news/art-z-biblia-za-pan-brat-dzien-29-bog-prowadzi-swoj-lud-do-egiptu.jpg",
+    "imageCaption": "Spotkanie Jakuba z Józefem w ziemi Goszen — ilustracja redakcyjna @A520 (Rdz 46:1–47:31). Z Biblią za Pan Brat Dzień 29",
+    "readTimeMinutes": 7,
+    "isHero": false,
+    "isPopular": true,
+    "popularRank": 2,
+    "tags": [
+      "Z Biblią za Pan Brat",
+      "Księga Rodzaju",
+      "Jakub",
+      "Józef",
+      "faraon",
+      "Egipt",
+      "Goszen",
+      "Beer-Szeba",
+      "opatrzność",
+      "Emmanuel",
+      "Rdz 46",
+      "Rdz 47",
+      "Mt 28:20"
+    ],
+    "scriptureReference": {
+      "verse": "Rdz 46:1–47:31; Mt 1:23; Mt 28:20; Hbr 11:13–16 (UBG)",
+      "text": ""
+    },
+    "sourceCitation": {
+      "sourceName": "Z Biblią za Pan Brat",
+      "sourceUrl": "https://polskieradio.cc/akademia#kurscodzienny"
+    },
+    "relatedCourse": {
+      "title": "Kurs Codzienny Pisma Świętego — Dzień 29",
+      "lesson": "Dzień 29",
+      "url": "/akademia/kurscodzienny/dzien-29"
+    },
+    "resourceLinks": [
+      {
+        "label": "Otwórz Lekcję Dnia 29 w Akademii Biblijnej",
+        "url": "/akademia/kurscodzienny/dzien-29"
+      },
+      {
+        "label": "Interlinearna MojaBiblia CC (Rdz 46–47)",
+        "url": "/mojabiblia"
+      },
+      {
+        "label": "Akademia Biblijna LUMINA",
+        "url": "/akademia"
+      }
+    ]
+  },
+  {
     "id": "art-z-biblia-za-pan-brat-dzien-28",
     "title": "Z Biblią za Pan Brat: Dzień 28 — „Ja jestem Józef”: Ofiarne poręczenie Judy, teologia opatrzności i pojednanie w Księdze Rodzaju 44–45",
     "slug": "z-biblia-za-pan-brat-dzien-28-ja-jestem-jozef-przebaczenie-zamiast-zemsty",
