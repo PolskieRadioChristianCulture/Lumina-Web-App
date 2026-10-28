@@ -1,9 +1,92 @@
 // =========================================================================
-// EKOCC SEARCH GLOBAL — BIBLIA INTELLIGENCE RAG SERVICE (ETAP 4)
+// EKOCC SEARCH GLOBAL — BIBLIA INTELLIGENCE RAG SERVICE (ETAP 4–6)
 // Standard ZERO COST FIRST • Source-Grounded • Cloudflare Workers AI Ready
 // =========================================================================
 
 import ragRegistryData from './bible-rag-registry.json' with { type: 'json' };
+
+export const MAX_REQUESTS_PER_MINUTE = 30;
+export const RATE_LIMIT_WINDOW_MS = 60_000;
+export const DAILY_AI_CALL_CAP = 500; // Bezpieczny bufor poniżej 10 000 Neurons/dzień (Free Tier)
+
+const ipRateStore = new Map();
+let dailyAiState = {
+  utcDay: new Date().toISOString().slice(0, 10),
+  callsUsed: 0
+};
+
+export function resetZeroCostState() {
+  ipRateStore.clear();
+  dailyAiState = {
+    utcDay: new Date().toISOString().slice(0, 10),
+    callsUsed: 0
+  };
+}
+
+export function checkRateLimit(ip = 'anonymous', now = Date.now(), maxReq = MAX_REQUESTS_PER_MINUTE) {
+  const key = String(ip || 'anonymous').split(',')[0].trim() || 'anonymous';
+  const entry = ipRateStore.get(key);
+
+  if (!entry || now - entry.windowStart >= RATE_LIMIT_WINDOW_MS) {
+    ipRateStore.set(key, { windowStart: now, count: 1 });
+    // Okresowe czyszczenie mapy przy przekroczeniu 2000 wpisów (ochrona pamięci Worker)
+    if (ipRateStore.size > 2000) {
+      for (const [k, v] of ipRateStore.entries()) {
+        if (now - v.windowStart >= RATE_LIMIT_WINDOW_MS) ipRateStore.delete(k);
+      }
+    }
+    return {
+      allowed: true,
+      remaining: Math.max(0, maxReq - 1),
+      resetMs: RATE_LIMIT_WINDOW_MS
+    };
+  }
+
+  if (entry.count >= maxReq) {
+    return {
+      allowed: false,
+      remaining: 0,
+      resetMs: Math.max(1000, RATE_LIMIT_WINDOW_MS - (now - entry.windowStart))
+    };
+  }
+
+  entry.count += 1;
+  return {
+    allowed: true,
+    remaining: Math.max(0, maxReq - entry.count),
+    resetMs: Math.max(1000, RATE_LIMIT_WINDOW_MS - (now - entry.windowStart))
+  };
+}
+
+export function canUseFreeAiQuota(now = new Date(), customCap = DAILY_AI_CALL_CAP) {
+  const dayStr = now.toISOString().slice(0, 10);
+  if (dailyAiState.utcDay !== dayStr) {
+    dailyAiState.utcDay = dayStr;
+    dailyAiState.callsUsed = 0;
+  }
+  return dailyAiState.callsUsed < customCap;
+}
+
+export function recordAiCallUsage(now = new Date()) {
+  const dayStr = now.toISOString().slice(0, 10);
+  if (dailyAiState.utcDay !== dayStr) {
+    dailyAiState.utcDay = dayStr;
+    dailyAiState.callsUsed = 0;
+  }
+  dailyAiState.callsUsed += 1;
+  return dailyAiState.callsUsed;
+}
+
+export function getZeroCostTelemetry() {
+  return {
+    zeroCostGuaranteed: true,
+    rateLimitPerMinute: MAX_REQUESTS_PER_MINUTE,
+    dailyAiCallCap: DAILY_AI_CALL_CAP,
+    dailyAiCallsUsed: dailyAiState.callsUsed,
+    currentUtcDay: dailyAiState.utcDay,
+    fallbackMode: 'grounded-zero-cost-v1'
+  };
+}
 
 const PROMPT_INJECTION_PATTERNS = [
   /ignore (?:all )?(?:previous|above) instructions/i,
@@ -139,14 +222,18 @@ export async function generateRagAnswer(question, sources, env = {}) {
   if (!sources || sources.length === 0) {
     return {
       mode: 'fallback',
+      zeroCostGuaranteed: true,
       message: 'Brak wystarczająco wiarygodnych źródeł w bazie do precyzyjnej odpowiedzi. Skorzystaj z klasycznych wyników wyszukiwarki ekosystemu Christian Culture.',
       sources: []
     };
   }
 
-  // ŚCIEŻKA A: Cloudflare Workers AI (gdy włączone przez zmienną środowiskową i dostępne powiązanie AI)
-  if (env.AI_ENABLED === 'true' && env.AI && typeof env.AI.run === 'function') {
+  const dailyCap = Number(env.DAILY_AI_CALL_CAP || DAILY_AI_CALL_CAP);
+
+  // ŚCIEŻKA A: Cloudflare Workers AI (tylko gdy włączone i w granicach darmowego budżetu ZERO COST)
+  if (env.AI_ENABLED === 'true' && env.AI && typeof env.AI.run === 'function' && canUseFreeAiQuota(new Date(), dailyCap)) {
     try {
+      recordAiCallUsage();
       const model = env.AI_MODEL || '@cf/zai-org/glm-4.7-flash';
       const context = sources.map(s => `[${s.id}] ${s.title} (${s.url})\nTreść: „${s.text}”`).join('\n\n');
 
@@ -168,6 +255,7 @@ export async function generateRagAnswer(question, sources, env = {}) {
       if (aiText && aiText.trim().length > 0) {
         return {
           mode: 'rag',
+          zeroCostGuaranteed: true,
           answer: aiText.trim(),
           model: model,
           sources: sources.map(({ id, title, url, type, verses }) => ({ id, title, url, type, verses }))
@@ -194,6 +282,7 @@ export async function generateRagAnswer(question, sources, env = {}) {
 
   return {
     mode: 'rag',
+    zeroCostGuaranteed: true,
     answer: answerLines.join('\n'),
     model: 'grounded-zero-cost-v1',
     sources: sources.map(({ id, title, url, type, verses }) => ({ id, title, url, type, verses }))
@@ -203,20 +292,22 @@ export async function generateRagAnswer(question, sources, env = {}) {
 export async function handleSearchRagApi(request, env = {}) {
   const url = new URL(request.url);
 
-  // 1. Healthcheck
+  // 1. Healthcheck & Zero Cost Telemetry
   if (url.pathname === '/api/search-rag/health' || (url.pathname === '/api/answer' && request.method === 'GET')) {
     return new Response(JSON.stringify({
       ok: true,
       service: 'ekocc-bible-rag',
-      version: '1.0.0',
+      version: '1.1.0',
       aiEnabled: env.AI_ENABLED === 'true',
       vectorEnabled: env.VECTOR_ENABLED === 'true',
-      itemsCount: ragRegistryData.chunkCount || 0
+      itemsCount: ragRegistryData.chunkCount || 0,
+      zeroCost: getZeroCostTelemetry()
     }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        'Cache-Control': 'no-store'
+        'Cache-Control': 'no-store',
+        'X-CC-Zero-Cost-Mode': 'active'
       }
     });
   }
@@ -241,7 +332,30 @@ export async function handleSearchRagApi(request, env = {}) {
     });
   }
 
-  // 3. Walidacja wielkości ciała żądania (ochrona DoS / ZERO COST)
+  // 3. Rate Limit per IP (Ochrona przed botami i gwarancja ZERO COST)
+  const clientIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'anonymous';
+  const maxReqPerMin = Number(env.MAX_REQUESTS_PER_MINUTE || MAX_REQUESTS_PER_MINUTE);
+  const rateCheck = checkRateLimit(clientIp, Date.now(), maxReqPerMin);
+
+  if (!rateCheck.allowed) {
+    return new Response(JSON.stringify({
+      error: 'rate_limit_exceeded',
+      zeroCostGuaranteed: true,
+      message: 'Przekroczono limit zapytań na minutę. Wyszukiwarka lokalna w przeglądarce nadal działa bez ograniczeń.'
+    }), {
+      status: 429,
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-store',
+        'Retry-After': '60',
+        'X-CC-Zero-Cost-Mode': 'active',
+        'X-CC-RateLimit-Limit': String(maxReqPerMin),
+        'X-CC-RateLimit-Remaining': '0'
+      }
+    });
+  }
+
+  // 4. Walidacja wielkości ciała żądania (ochrona DoS / ZERO COST)
   const contentLength = Number(request.headers.get('content-length') || 0);
   if (contentLength > 4096) {
     return new Response(JSON.stringify({ error: 'payload_too_large' }), {
@@ -271,7 +385,7 @@ export async function handleSearchRagApi(request, env = {}) {
     });
   }
 
-  // 4. Retrieval + Generation
+  // 5. Retrieval + Generation
   const sources = queryKnowledgeRegistry(question, ragRegistryData.items);
   const ragResult = await generateRagAnswer(question, sources, env);
 
@@ -281,6 +395,9 @@ export async function handleSearchRagApi(request, env = {}) {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
       'X-Content-Type-Options': 'nosniff',
+      'X-CC-Zero-Cost-Mode': 'active',
+      'X-CC-RateLimit-Limit': String(maxReqPerMin),
+      'X-CC-RateLimit-Remaining': String(rateCheck.remaining),
       'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || 'https://polskieradio.cc'
     }
   });

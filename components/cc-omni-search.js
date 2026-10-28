@@ -7787,7 +7787,7 @@ ${isStandalonePage ? '' : `
       shareTimer = setTimeout(() => { shareMsg.textContent = ''; }, 2600);
     };
     shareBtn.addEventListener('click', async () => {
-      const data = { title: 'Wyszukiwarka Christian Culture', text: 'Szukaj w całym ekosystemie Christian Culture — Słowo Boże, rozważania, radio, kanały i LUMINA:', url: SHARE_URL };
+      const data = { title: 'Wyszukiwarka Christian Culture — Globalna Wyszukiwarka Chrześcijańska', text: 'Globalna Wyszukiwarka Chrześcijańska — Słowo Boże, rozważania, radio, kanały i LUMINA:', url: SHARE_URL };
       if (navigator.share) {
         try { await navigator.share(data); return; } catch (e) { if (e && e.name === 'AbortError') return; }
       }
