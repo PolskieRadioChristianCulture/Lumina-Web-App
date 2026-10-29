@@ -342,6 +342,51 @@
     .canvas-footer a:hover {
       color: var(--gold-light);
     }
+    .footer-fade-text {
+      display: inline;
+      transition: opacity 1.2s ease, font-size 1.2s ease;
+      animation: fadeOutLegal 4.5s forwards;
+    }
+    .footer-fade-line {
+      display: block;
+      transition: opacity 1.2s ease, max-height 1.2s ease, margin 1.2s ease;
+      max-height: 24px;
+      overflow: hidden;
+      animation: collapseLegalLine 4.5s forwards;
+    }
+    .footer-legal-text.fade-out .footer-fade-text {
+      opacity: 0;
+      visibility: hidden;
+      font-size: 0;
+      pointer-events: none;
+    }
+    .footer-legal-text.fade-out .footer-fade-line {
+      opacity: 0;
+      max-height: 0;
+      margin: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .footer-legal-text:hover .footer-fade-text {
+      opacity: 0.65;
+      font-size: inherit;
+      visibility: visible;
+      animation-play-state: paused;
+    }
+    .footer-legal-text:hover .footer-fade-line {
+      opacity: 0.65;
+      max-height: 24px;
+      visibility: visible;
+      animation-play-state: paused;
+    }
+    @keyframes fadeOutLegal {
+      0%, 70% { opacity: 1; visibility: visible; }
+      100% { opacity: 0; visibility: hidden; font-size: 0; }
+    }
+    @keyframes collapseLegalLine {
+      0%, 70% { opacity: 1; max-height: 24px; visibility: visible; }
+      100% { opacity: 0; max-height: 0; margin: 0; visibility: hidden; }
+    }
     .envelope-btn {
       width: 44px;
       height: 44px;
@@ -1232,8 +1277,8 @@
       <!-- BOTTOM BAR: LEGAL & ENVELOPE CONTACT -->
       <footer class="canvas-footer">
         <div class="footer-legal-text">
-          <span>© 2026 Wioletta Rogowska · Wizytówka autorska (polskieradio.cc/Wioletta)</span>
-          <span>Powieść w przygotowaniu · Ekosystem Christian Culture nie jest powiązany z Polskim Radiem S.A.</span>
+          <span>© 2026 Wioletta Rogowska<span class="footer-fade-text"> · Wizytówka autorska (polskieradio.cc/Wioletta)</span></span>
+          <span class="footer-fade-line">Powieść w przygotowaniu · Ekosystem Christian Culture nie jest powiązany z Polskim Radiem S.A.</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:center;">
@@ -1738,6 +1783,12 @@
       }
       window.addEventListener('hashchange', checkHash);
       if (window.location.hash) checkHash();
+
+      // Auto fade-out secondary legal notice after a few seconds
+      setTimeout(function() {
+        var legal = document.querySelector('.footer-legal-text');
+        if (legal) legal.classList.add('fade-out');
+      }, 4000);
     })();
   </script>
 </body>
