@@ -294,7 +294,7 @@ body:has(#messageModal.open) :is(#luminaMiniPlayerContainer, #luminaFloatingRadi
     border-radius: 50% !important;
     left: auto !important;
     right: 10px !important;
-    bottom: 194px !important;
+    bottom: 256px !important; /* = 76px base + 180px slot; js refines via body:has() */
     transform: none !important;
     border: 2px solid var(--lmp-gold) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 18px rgba(250, 204, 21, 0.4) !important;
