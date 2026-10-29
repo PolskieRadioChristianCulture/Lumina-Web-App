@@ -95,6 +95,24 @@ test('Wioletta Intro: once-per-session playback and controls', async () => {
     await page.keyboard.press('Escape');
     await page.locator('#wiolettaIntro').waitFor({ state: 'detached', timeout: 3000 });
 
+    // 4. URL query ?intro=1 bypasses sessionStorage
+    await page.goto(baseUrl + '?intro=1', { waitUntil: 'domcontentloaded' });
+    await page.locator('#wiolettaIntro').waitFor({ state: 'visible', timeout: 3000 });
+    await page.keyboard.press('Escape');
+    await page.locator('#wiolettaIntro').waitFor({ state: 'detached', timeout: 3000 });
+
+    // 5. Menu replay button opens intro (via mobile edge panel -> Pełne menu)
+    await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+    assert.equal(await page.locator('#wiolettaIntro').count(), 0);
+    await page.locator('.cc-mobile-edge-trigger').click();
+    await page.locator('dialog.cc-mobile-edge button[data-edge-key="menu"]').click();
+    await page.locator('#modalMenu.open').waitFor({ state: 'visible', timeout: 3000 });
+    const replayBtn = page.locator('#menuIntroReplayBtn');
+    assert.ok(await replayBtn.isVisible());
+    await replayBtn.click();
+    await page.locator('#wiolettaIntro').waitFor({ state: 'visible', timeout: 3000 });
+    await page.keyboard.press('Escape');
+
     await ctx.close();
   } finally {
     await browser.close();

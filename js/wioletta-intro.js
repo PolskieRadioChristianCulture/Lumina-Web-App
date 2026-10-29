@@ -1,9 +1,10 @@
 /**
  * Wioletta Rogowska — powitalne intro wideo (raz na sesję przeglądarki).
  * Standard EkoCC v2 / @777 / Zero-QA.
- * - sessionStorage: po pierwszym wyświetleniu intro nie wraca do zamknięcia karty.
- * - Wideo własne: zero reklam, zero ciasteczek podmiotów trzecich, ZERO COST.
- * - Autoodtwarzanie wyciszone (wymóg przeglądarek), przyciski dźwięku i „Pomiń” min. 44×44 px.
+ * - sessionStorage: po pierwszym wyświetleniu intro nie wraca w tej samej karcie (chyba że ?intro=1 lub replay).
+ * - Parametr ?intro=1 lub ?replay wymusza odtworzenie nawet po wcześniejszym obejrzeniu.
+ * - Wideo własne MP4 faststart: zero reklam, zero ciasteczek podmiotów trzecich, ZERO COST.
+ * - Autoodtwarzanie wyciszone (standard przeglądarek), przyciski dźwięku i „Pomiń” min. 44×44 px.
  * - Szanuje prefers-reduced-motion oraz navigator.connection.saveData.
  */
 (() => {
@@ -28,13 +29,24 @@
   function showIntro({ force = false } = {}) {
     if (activeBox) return;
 
-    if (!force) {
+    const params = new URLSearchParams(location.search);
+    const forceParam = force || params.get('intro') === '1' || params.has('intro') || params.has('replay');
+
+    if (!forceParam) {
       let seen = false;
-      try { seen = sessionStorage.getItem(KEY) === '1'; } catch (e) { seen = true; }
+      try { seen = sessionStorage.getItem(KEY) === '1'; } catch (e) { seen = false; }
       const saveData = !!(navigator.connection && navigator.connection.saveData);
-      const params = new URLSearchParams(location.search);
       if (seen || saveData || params.get('intro') === '0') return;
       try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    } else {
+      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    }
+
+    if (!document.body) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => showIntro({ force }), { once: true });
+      }
+      return;
     }
 
     const t = getLang();
@@ -157,7 +169,9 @@
       if (video.paused) start();
     });
     video.addEventListener('ended', close);
-    video.addEventListener('error', close);
+    video.addEventListener('error', () => {
+      box.classList.add('needs-tap');
+    });
     video.addEventListener('timeupdate', () => {
       if (video.duration) {
         bar.style.width = (100 * video.currentTime / video.duration).toFixed(2) + '%';

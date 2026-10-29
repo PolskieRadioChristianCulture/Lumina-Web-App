@@ -1665,6 +1665,7 @@
               <li><a href="/wizytowki" style="color:var(--cream);text-decoration:none;font-size:1.1rem;font-family:var(--font-cinzel);display:block;padding:8px 0;">✦ Katalog Wizytówek EkoCC</a></li>
               <li><a href="/wyszukiwarka" style="color:var(--cream);text-decoration:none;font-size:1.1rem;font-family:var(--font-cinzel);display:block;padding:8px 0;">✦ Wyszukiwarka Christian Culture</a></li>
               <li><a href="/" style="color:var(--cream);text-decoration:none;font-size:1.1rem;font-family:var(--font-cinzel);display:block;padding:8px 0;">✦ Strona Główna Christian Culture</a></li>
+              <li><button type="button" id="menuIntroReplayBtn" style="background:none;border:none;color:var(--orange,#FF7A00);font-size:1.1rem;cursor:pointer;font-family:var(--font-cinzel);text-align:left;padding:8px 0;display:flex;align-items:center;gap:8px;"><span>▶</span> <span data-i18n="menu_intro_video">Powitalne intro wideo</span></button></li>
             </ul>
           </div>
         </div>
@@ -1771,6 +1772,14 @@
         });
       });
 
+      var replayBtn = document.getElementById("menuIntroReplayBtn");
+      if (replayBtn) {
+        replayBtn.addEventListener("click", function() {
+          closeAllModals();
+          if (window.CCWiolettaIntro) window.CCWiolettaIntro.replay();
+        });
+      }
+
       // Hash deep-linking support
       function checkHash() {
         var h = window.location.hash;
@@ -1795,6 +1804,6 @@
 <script defer src="/js/ekocc-i18n-core.js?v=20261029_1"></script>
 <script defer src="/js/cc-mobile-edge.js?v=20261029_standard1" data-cc-edge-profile="wioletta-manual"></script>
 <script defer src="/js/wioletta-i18n-edge.js?v=20261029_1"></script>
-<script defer src="/js/wioletta-intro.js?v=20261029_1"></script>
+<script defer src="/js/wioletta-intro.js?v=20261029_2"></script>
 </body>
 </html>

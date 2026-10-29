@@ -197,6 +197,7 @@
     ['#modalMenu li:nth-child(8) > *', { en: '✦ EkoCC profile directory', de: '✦ EkoCC-Profilverzeichnis' }],
     ['#modalMenu li:nth-child(9) > *', { en: '✦ Christian Culture Search', de: '✦ Christian-Culture-Suche' }],
     ['#modalMenu li:nth-child(10) > *', { en: '✦ Christian Culture Home', de: '✦ Christian-Culture-Startseite' }],
+    ['#menuIntroReplayBtn span:last-child', { en: 'Welcome intro video', de: 'Begrüßungsvideo' }],
   ];
 
   const UI = {
