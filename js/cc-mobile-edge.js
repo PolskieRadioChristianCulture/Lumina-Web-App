@@ -183,6 +183,16 @@
     mobile.addEventListener('change',() => { if (!mobile.matches) close(); });
     document.body.append(dialog);
     placement.before(trigger);
+    if (placement && placement !== trigger && placement instanceof HTMLElement && !placement._ccEdgeBound) {
+      placement._ccEdgeBound = true;
+      placement.addEventListener('click', (e) => {
+        if (mobile.matches) {
+          e.preventDefault();
+          e.stopPropagation();
+          trigger.click();
+        }
+      });
+    }
     legacy.dataset.ccEdgeMounted = 'true';
     if (hideLegacy) legacy.classList.add('cc-edge-legacy');
     for (const element of secondary) element?.classList.add('cc-edge-legacy');
@@ -200,5 +210,58 @@
       ['users','LUMINA — społeczność','/lumina'], ['board','Tablica LUMINA','/tablica'],
       ['chat','LUMI Messenger','/mess'], ['user','Konto i logowanie LUMINA','/lumina-login'], ...commonItems.filter(item=>!['users','chat'].includes(item[0])),
     ]});
+  } else if (!script?.dataset.ccEdgeProfile || script?.dataset.ccEdgeProfile === 'ecosystem' || script?.dataset.ccEdgeProfile === 'wioletta') {
+    function autoMount() {
+      if (document.getElementById('cc-mobile-edge-dialog') || document.querySelector('dialog.cc-mobile-edge')) return;
+      const isWioletta = /^\/wioletta/i.test(location.pathname);
+      const items = isWioletta ? [
+        ['home','Strona główna','/'],
+        ['book','Pardon, Czy To Miłość? — Powieść','/Wioletta'],
+        ['users','LUMINA — społeczność','/lumina'],
+        ['chat','LUMI Messenger','/mess'],
+        ['news','CCN News','/news'],
+        ['book','Moja Biblia','/mojabiblia'],
+        ['study','Akademia Biblijna','/akademia'],
+        ['calendar','HOLOS — planer','/holos'],
+        ['play','Kino VOD','/vod'],
+        ['yis','Your Imagination Studio (YIS)','/yis'],
+        ['search','Szukaj w ekosystemie','/szukaj'],
+      ] : commonItems;
+
+      const burger = document.querySelector(
+        '.btn-burger, #menuToggleBtn, [data-modal="modalMenu"], #hamburgerBtn, .hamburger-menu, [data-menu-open], #mobileMenuBtn, .mobile-menu-btn, .nav-burger, #navMenuBtn, button[aria-label*="menu" i]'
+      );
+
+      if (burger) {
+        const modalId = burger.getAttribute('data-modal');
+        const legacyModal = modalId ? document.getElementById(modalId) : null;
+        mount({
+          legacy: legacyModal || burger,
+          placement: burger,
+          hideLegacy: false,
+          profile: isWioletta ? 'wioletta' : 'ecosystem',
+          items,
+          canUseFullMenu: () => !!legacyModal
+        });
+        return;
+      }
+
+      const header = document.querySelector('.main-header, header, .topbar, .reader-nav, .nav, nav');
+      if (header) {
+        const placement = header.firstElementChild || header;
+        mount({
+          legacy: placement,
+          placement: placement,
+          hideLegacy: false,
+          profile: isWioletta ? 'wioletta' : 'ecosystem',
+          items
+        });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', autoMount);
+    } else {
+      autoMount();
+    }
   }
 })();

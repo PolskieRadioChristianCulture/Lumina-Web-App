@@ -28,7 +28,7 @@ html[data-theme="light"] .cc-mobile-edge[data-profile="lumina"],body[data-theme=
   touch-action:manipulation; -webkit-tap-highlight-color:transparent;
 }
 .cc-mobile-edge svg,.cc-mobile-edge-trigger svg { width:22px; height:22px; flex-shrink:0; }
-.cc-mobile-edge nav [aria-current="page"] { color:var(--edge-accent); background:#ffffff12; border-left:3px solid var(--edge-accent); }
+.cc-mobile-edge nav [aria-current="page"] { color:var(--edge-accent); background:#ffffff12; border:1.5px solid var(--edge-accent); border-radius:13px; }
 .cc-mobile-edge nav :is(a,button):hover { background:#ffffff18; }
 .cc-mobile-edge nav [hidden] { display:none!important; }
 .cc-mobile-edge nav [data-cc-favorite-toggle].is-active { color:var(--edge-accent); }
@@ -46,6 +46,7 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   #mainHeader #actionsToggleBtn .avatar-ring { width:56px; height:44px; box-sizing:border-box; border-radius:13px; }
   #mainHeader #actionsToggleIcon { display:none; }
   #mainHeader .cc-home-menu-label { display:inline; color:var(--gold-primary,#d4af37); font:700 11px/1 system-ui,sans-serif; letter-spacing:.04em; }
+  @media (max-width:359px) { #mainHeader #helplineFloat, #mainHeader .cc-header-lang-switcher { display:none!important; } }
   html.cc-edge-search-ready body #mobileNavSearchBtn,
   html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn { display:none!important; }
   /* Close the gap left in the radio/chat dock by the relocated theme switch. */
