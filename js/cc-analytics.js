@@ -28,6 +28,37 @@
   }
   window.ccTrack = ccTrack;
 
+  // Detekcja osrodka Polonii na podstawie strefy czasowej urzadzenia (zero danych osobowych)
+  function ccGetPoloniaHub() {
+    try {
+      var tz = (typeof Intl !== 'undefined' && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : '';
+      if (!tz) return 'UNKNOWN';
+      if (/Warsaw|Poland/i.test(tz)) return 'PL_KRAJ';
+      if (/New_York|Detroit|Indiana|Kentucky|Toronto|Montreal/i.test(tz)) return 'POLONIA_US_EAST';
+      if (/Chicago|Menominee|Winnipeg/i.test(tz)) return 'POLONIA_US_CHICAGO';
+      if (/Denver|Phoenix|Edmonton/i.test(tz)) return 'POLONIA_US_MOUNTAIN';
+      if (/Los_Angeles|Vancouver|Tijuana/i.test(tz)) return 'POLONIA_US_WEST';
+      if (/London|Dublin|Belfast/i.test(tz)) return 'POLONIA_UK_IRELAND';
+      if (/Berlin|Paris|Rome|Madrid|Amsterdam|Brussels|Vienna|Stockholm|Oslo/i.test(tz)) return 'POLONIA_EUROPE_ZACH';
+      return tz.replace(/[^a-zA-Z0-9_\-\/]/g, '_').slice(0, 40);
+    } catch (_) {
+      return 'UNKNOWN';
+    }
+  }
+  window.ccGetPoloniaHub = ccGetPoloniaHub;
+
+  function ccTrackPolonia(action, extra) {
+    var hub = ccGetPoloniaHub();
+    var tz = '';
+    try { tz = (typeof Intl !== 'undefined' && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : ''; } catch (_) {}
+    ccTrack('polonia_engagement', Object.assign({
+      polonia_hub: hub,
+      user_tz: tz || 'unknown',
+      action: action || 'interaction'
+    }, extra || {}));
+  }
+  window.ccTrackPolonia = ccTrackPolonia;
+
   const path = location.pathname;
 
   // Lekcja: /akademia/<kurs>/dzien-01, /kursy/<kurs>/lekcja-3 (z .html lub /index.html)
