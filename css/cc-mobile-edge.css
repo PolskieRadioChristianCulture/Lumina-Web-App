@@ -135,6 +135,13 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   pointer-events:none!important;
 }
 
+/* Na portalu LUMINA przycisk INFO jest zintegrowany w panelu krawędziowym - zakaz pływającego flotera kolidującego ze stosem FAB */
+html body:has(#luminaThemeSwitchBtn) :is(.ekocc-info-trigger, #ekoccInfoTriggerBtn),
+html[data-lumina-theme] :is(.ekocc-info-trigger, #ekoccInfoTriggerBtn),
+body.lumina-page :is(.ekocc-info-trigger, #ekoccInfoTriggerBtn) {
+  display:none!important;
+}
+
 /* EkoCC Search Topbar Trigger: bezwzgledne usuniecie pierwszego zdublowanego + (L0 29.10.2026) */
 .cc-omni-topnav .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn),
 .ccw-fallback .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn),

@@ -191,6 +191,7 @@
       html body:has(#luminaThemeSwitchBtn):has(#ccGlobalChatFab) #luminaFloatingChatBtn{display:none!important}
       html body:has(#luminaThemeSwitchBtn):has(#directMessagesModal.open) #luminaMiniPlayerContainer,
       html body:has(#luminaThemeSwitchBtn):has(#messageModal.open) #luminaMiniPlayerContainer{display:none!important}
+      html body:has(#luminaThemeSwitchBtn) :is(.ekocc-info-trigger, #ekoccInfoTriggerBtn){display:none!important}
     `;
     document.head.appendChild(css);
   }

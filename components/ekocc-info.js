@@ -155,6 +155,10 @@
         }
 
         /* Dyskretny pływający przycisk ⓘ */
+        body:has(#luminaThemeSwitchBtn) .ekocc-info-trigger,
+        body.lumina-page .ekocc-info-trigger,
+        html[data-lumina-theme] .ekocc-info-trigger { display: none !important; }
+
         .ekocc-info-trigger {
           position: fixed;
           bottom: 96px;
@@ -481,7 +485,7 @@
 
     createTriggerButton() {
       // Jeśli na stronie istnieje już przycisk z atrybutem data-ekocc-info-trigger, nie twórz pływającego
-      if (document.querySelector('[data-ekocc-info-trigger]:not(.cc-mobile-edge *)')) return;
+      if (document.querySelector('#luminaThemeSwitchBtn, body.lumina-page, [data-ekocc-info-trigger]:not(.cc-mobile-edge *)')) return;
 
       const btn = document.createElement('button');
       btn.type = 'button';
