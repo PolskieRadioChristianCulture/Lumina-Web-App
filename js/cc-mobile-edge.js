@@ -300,6 +300,7 @@
   window.CCMobileEdge = Object.freeze({mount});
 
   function autoInit() {
+    if (/^\/mess(?:\.html|\/|$)/i.test(location.pathname)) return;
     const script = document.querySelector('script[data-cc-edge-profile]');
     // Homepage exception requested by the owner: retain both original header controls.
     if (script?.dataset.ccEdgeProfile === 'home') {

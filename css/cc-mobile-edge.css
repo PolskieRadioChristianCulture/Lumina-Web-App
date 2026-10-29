@@ -129,7 +129,7 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
     right:max(16px, env(safe-area-inset-right))!important;
   }
   html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized {
-    bottom:calc(76px + env(safe-area-inset-bottom, 0px) + 128px)!important;
+    bottom:calc(var(--cc-lumina-action-base,76px) + 120px)!important;
     right:max(16px, env(safe-area-inset-right))!important;
   }
   

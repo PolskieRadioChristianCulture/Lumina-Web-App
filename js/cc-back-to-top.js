@@ -5,6 +5,20 @@
   window.CCBackToTop = true;
   function mount() {
     if (!document.body) return;
+    var oldLumina = document.getElementById('luminaScrollTop');
+    if (oldLumina && typeof oldLumina.remove === 'function') oldLumina.remove();
+    else if (oldLumina && oldLumina.parentNode && typeof oldLumina.parentNode.removeChild === 'function') oldLumina.parentNode.removeChild(oldLumina);
+    try {
+      new MutationObserver(function(m) {
+        for (var i = 0; i < m.length; i++) {
+          var nodes = m[i].addedNodes;
+          for (var j = 0; j < nodes.length; j++) {
+            var n = nodes[j];
+            if (n && (n.id === 'luminaScrollTop' || (n.classList && n.classList.contains('lumina-scroll-top')))) n.remove();
+          }
+        }
+      }).observe(document.body, { childList: true });
+    } catch (_) {}
     var button = document.getElementById('backToTopBtn');
     if (!button) {
       button = document.createElement('button');
