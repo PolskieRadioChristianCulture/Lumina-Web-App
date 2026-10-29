@@ -33,10 +33,9 @@
     gtag('js', new Date());
     gtag('config','G-Y4EFTVBPE3',(function(){try{var s=location.search,k='cc_team';if(/[?&]cc_team=1/.test(s))localStorage.setItem(k,'1');if(/[?&]cc_team=0/.test(s))localStorage.removeItem(k);if(localStorage.getItem(k)==='1'||/[?&]in_mcr=1/.test(s)||window.obsstudio)return{traffic_type:'internal'}}catch(e){}return{}})());
   </script><script src="/js/cc-analytics.js?v=20261026_1" defer></script>
-  <script src="/js/cc-analytics.js?v=20261026_1" defer></script>
 
   <!-- Style ekosystemu & wizytówki -->
-  <link rel="stylesheet" href="/Welch/style.css?v=20261029_hero3">
+  <link rel="stylesheet" href="/Welch/style.css?v=20261029_thecall1">
   <link rel="stylesheet" href="/css/cc-mobile-edge.css?v=20261029_edge5">
 
   <!-- Preload kluczowego obrazu hero (Core Web Vitals LCP) -->
@@ -76,7 +75,10 @@
         "name": "THE CALL",
         "albumProductionType": "https://schema.org/StudioAlbum",
         "byArtist": { "@id": "https://polskieradio.cc/Welch/#person" },
-        "description": "Debiutancki album studyjny Geralda Welcha."
+        "numTracks": 9,
+        "genre": ["Christian Rock", "Muzyka Wiary"],
+        "image": "https://polskieradio.cc/Welch/assets/the-call-master.webp",
+        "description": "Debiutancki album studyjny Geralda Welcha zawierający 9 autorskich kompozycji opartych na Piśmie Świętym i żywej wierze."
       },
       {
         "@type": "MusicAlbum",
@@ -335,6 +337,115 @@
       </div>
     </section>
 
+    <!-- EKRAN 4: THE CALL — ALBUM EXPERIENCE -->
+    <section class="gw-section gw-album-section" id="the-call" aria-labelledby="gwAlbumHeading">
+      <div class="gw-container">
+        <header class="gw-section-header">
+          <span class="gw-section-kicker">Doświadczenie Albumowe</span>
+          <h2 id="gwAlbumHeading" class="gw-section-title">THE CALL</h2>
+          <p class="gw-section-subtitle">
+            Dziewięć autorskich kompozycji. Wiara, Pismo Święte, duchowe przebudzenie i żywa relacja z Jezusem Chrystusem.
+          </p>
+        </header>
+
+        <div class="cc-album-experience">
+          <!-- Lewa kolumna: Okładka albumu -->
+          <div class="cc-album-art-wrap">
+            <div class="cc-album-art-frame">
+              <picture>
+                <source srcset="/Welch/assets/the-call-master-1200.webp" media="(min-width: 1024px)" type="image/webp">
+                <source srcset="/Welch/assets/the-call-master.webp" type="image/webp">
+                <img src="/Welch/assets/the-call-master.jpg" alt="Oficjalna okładka albumu THE CALL — Gerald Welch" loading="lazy" width="800" height="800" class="cc-album-art-img">
+              </picture>
+              <div class="cc-album-art-badge">
+                <span class="cc-art-badge-text">Oryginalna Okładka Master</span>
+              </div>
+            </div>
+            <div class="cc-album-meta-box">
+              <div class="cc-meta-row"><span>Artysta:</span> <strong>Gerald Welch</strong></div>
+              <div class="cc-meta-row"><span>Format:</span> <strong>Debiutancki Album Studyjny</strong></div>
+              <div class="cc-meta-row"><span>Utwory:</span> <strong>9 Autorskich Kompozycji</strong></div>
+              <div class="cc-meta-row"><span>Gatunek:</span> <strong>Christian Rock • Muzyka Wiary</strong></div>
+            </div>
+          </div>
+
+          <!-- Prawa kolumna: Odtwarzacz i lista utworów -->
+          <div class="cc-album-main">
+            <div class="cc-album-header">
+              <span class="cc-eyebrow">GERALD WELCH · DEBIUTANCKI ALBUM</span>
+              <h3 id="gwAlbumTitle" class="cc-album-h3">THE CALL</h3>
+              <p class="cc-album-meta-summary">
+                9 Utworów • Christian Rock • Wiara, Pismo i Prawda
+              </p>
+            </div>
+
+            <!-- Pasek informacyjny RDS -->
+            <div class="cc-rds-bar" role="status" aria-live="polite" aria-label="Wskaźnik RDS Albumu">
+              <div class="cc-rds-badge"><span class="cc-rds-dot" aria-hidden="true"></span>RDS</div>
+              <div class="cc-rds-ticker">
+                <span id="cc-rds-display" class="cc-rds-text">GERALD WELCH · THE CALL · ACTS 29</span>
+              </div>
+            </div>
+
+            <!-- Karta aktywnego utworu -->
+            <div class="cc-active-track-card" id="cc-active-track-card">
+              <div class="cc-track-card-header">
+                <span class="cc-track-num-label">Wybrany Utwór</span>
+                <span id="cc-selected-track" class="cc-track-title-label">01 · ACTS 29</span>
+              </div>
+              <p id="cc-selected-desc" class="cc-track-desc">
+                Poruszająca kompozycja zestawiająca bezpieczną religijność Zachodu z niezłomnością wierzących cierpiących prześladowania i męczeństwo w Chinach, Afryce i Iranie. „Tu chodzi o świętych, nie o znaki dolarów”.
+              </p>
+            </div>
+
+            <!-- Przyciski sterowania -->
+            <div class="cc-player-controls" role="toolbar" aria-label="Sterowanie wyborem utworów">
+              <button type="button" id="cc-prev" class="cc-ctrl-btn" aria-label="Poprzedni utwór">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                <span class="gw-sr-only">Poprzedni utwór</span>
+              </button>
+
+              <button type="button" id="cc-play" class="cc-ctrl-btn cc-play-btn is-locked" aria-label="Odsłuch zablokowany: Wymaga formalnej autoryzacji artysty" title="Odsłuch albumu wymaga autoryzacji artysty">
+                <svg class="cc-icon-lock" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                <span id="cc-play-btn-text" class="cc-play-text">Tryb Przeglądu</span>
+              </button>
+
+              <button type="button" id="cc-next" class="cc-ctrl-btn" aria-label="Następny utwór">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                <span class="gw-sr-only">Następny utwór</span>
+              </button>
+
+              <span class="cc-controls-hint">Wybierz utwór z listy, aby poznać opis</span>
+            </div>
+
+            <!-- Kontener podglądu (Faza B placeholder, niewidoczny w Fazie A) -->
+            <div id="cc-preview" hidden></div>
+
+            <!-- Komunikat statusu autoryzacji i praw (Faza A) -->
+            <div class="cc-playback-status-box" id="cc-playback-status-box">
+              <div class="cc-status-icon" aria-hidden="true">🔒</div>
+              <div class="cc-status-body">
+                <strong class="cc-status-heading">Prezentacja Albumowa i Tryb Redakcyjny</strong>
+                <p id="cc-playback-status" class="cc-status-text">
+                  Prezentacja albumu i autorskie opisy utworów są aktywne. Publiczny odsłuch nagrań na żądanie oczekuje na formalną autoryzację artysty i dystrybucji. Zgodnie ze standardami redakcyjnymi materiały przedpremierowe są chronione przed nieuprawnionym streamingiem.
+                </p>
+              </div>
+            </div>
+
+            <!-- Lista utworów -->
+            <div class="cc-tracklist-wrap">
+              <span class="cc-tracklist-kicker">Kolejność Utworów (Zgodnie z Oficjalną Broszurą)</span>
+              <ol id="cc-tracklist" class="cc-tracklist" aria-label="Lista utworów albumu"></ol>
+            </div>
+
+            <p class="cc-album-credit">
+              Muzyka i słowa &copy; Gerald Welch. Wszelkie prawa zastrzeżone. Nagrania master i grafika okładki przekazane do wglądu redakcyjnego Christian Culture Network.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- EKRAN 5: DYSKOGRAFIA -->
     <section id="dyskografia" class="gw-section" aria-labelledby="gwDiscHeading">
       <div class="gw-container">
@@ -345,16 +456,19 @@
 
         <div class="gw-disc-grid">
           <!-- 1. THE CALL (Debiutancki Album) -->
-          <article class="gw-disc-card">
+          <article class="gw-disc-card is-debut">
             <span class="gw-disc-status-tag gw-status-released">Debiutancki Album</span>
             <h3>THE CALL</h3>
-            <div class="gw-disc-type">Debiutancki Album Studyjny</div>
+            <div class="gw-disc-type">Debiutancki Album Studyjny • 9 Utworów</div>
             <p class="gw-disc-desc">
               Pierwszy album studyjny Geralda Welcha, otwierający jego drogę autorskiej pieśni chrześcijańskiej i niosący wezwanie do poszukiwania prawdy w Bogu.
             </p>
             <div class="gw-disc-meta">
-              <div><strong>Format:</strong> Album Studyjny</div>
+              <div><strong>Format:</strong> Album Studyjny (9 utworów)</div>
               <div><strong>Twórca:</strong> Gerald Welch</div>
+            </div>
+            <div style="margin-top:16px;">
+              <a href="#the-call" class="gw-disc-anchor-btn">Zobacz Prezentację Albumu &darr;</a>
             </div>
           </article>
 
@@ -511,7 +625,7 @@
   </footer>
 
   <!-- Skrypty wizytówki i EkoCC -->
-  <script defer src="/Welch/app.js?v=20261029_hero3"></script>
+  <script defer src="/Welch/app.js?v=20261029_thecall1"></script>
   <script defer src="/js/cc-mobile-edge.js?v=20261029_edge5"></script>
 
 </body>
