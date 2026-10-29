@@ -1112,6 +1112,46 @@ body {
   margin-top: 6px;
 }
 
+/* Oficjalna Karta Daty Wydania */
+.gw-release-badge-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 28px auto;
+  padding: 16px 32px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--gw-gold);
+  border-radius: var(--gw-radius-sm);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.gw-release-badge-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+}
+.gw-release-badge-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+.gw-release-badge-content {
+  display: flex;
+  flex-direction: column;
+}
+.gw-release-badge-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gw-text-muted);
+  font-weight: 600;
+}
+.gw-release-badge-date {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--gw-gold);
+  letter-spacing: -0.01em;
+}
+
 .gw-policy-notice {
   font-size: 0.85rem;
   color: rgba(243, 229, 200, 0.7);

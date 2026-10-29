@@ -78,12 +78,12 @@ if (!plPoemCaption.includes('Fragment autorskiego utworu przeznaczonego na przys
 }
 const plPremiereSub = await testPage.$eval('.gw-premiere-subtitle', el => el.textContent.trim());
 console.log('PL Premiere Subtitle:', plPremiereSub);
-if (!plPremiereSub.includes('Planowana premiera radiowa') || !plPremiereSub.includes('uzależniona od ostatecznego zatwierdzenia')) {
+if (!plPremiereSub.includes('Oficjalna premiera WORLD WAR YOU zaplanowana jest na 20 listopada 2026 roku') || !plPremiereSub.includes('niezbędnych zgód emisyjnych')) {
   throw new Error('PL Premiere Subtitle mismatch: ' + plPremiereSub);
 }
 const plRobots = await testPage.$eval('meta[name="robots"]', el => el.content);
 console.log('PL Robots:', plRobots);
-if (plRobots !== 'noindex, nofollow') throw new Error('PL Robots mismatch: ' + plRobots);
+if (!plRobots.includes('index, follow') || plRobots.includes('noindex')) throw new Error('PL Robots mismatch: ' + plRobots);
 
 await testPage.goto('http://127.0.0.1:8089/Welch/en/');
 const enSupportHref = await testPage.$eval('.gw-support-card a', el => el.href);
@@ -103,12 +103,18 @@ if (!enPoemCaption.includes('Excerpt from an original song intended for a future
 }
 const enPremiereSub = await testPage.$eval('.gw-premiere-subtitle', el => el.textContent.trim());
 console.log('EN Premiere Subtitle:', enPremiereSub);
-if (!enPremiereSub.includes('Planned radio premiere') || !enPremiereSub.includes('subject to final broadcasting approval')) {
+if (!enPremiereSub.includes('The official release of WORLD WAR YOU is scheduled for November 20, 2026') || !enPremiereSub.includes('broadcast permissions')) {
   throw new Error('EN Premiere Subtitle mismatch: ' + enPremiereSub);
 }
 const enRobots = await testPage.$eval('meta[name="robots"]', el => el.content);
 console.log('EN Robots:', enRobots);
-if (enRobots !== 'noindex, nofollow') throw new Error('EN Robots mismatch: ' + enRobots);
+if (!enRobots.includes('index, follow') || enRobots.includes('noindex')) throw new Error('EN Robots mismatch: ' + enRobots);
+
+// Verify root /Welch/ index dispatcher
+await testPage.goto('http://127.0.0.1:8089/Welch/');
+const rootRobots = await testPage.$eval('meta[name="robots"]', el => el.content);
+console.log('Root Welch Robots:', rootRobots);
+if (!rootRobots.includes('index, follow') || rootRobots.includes('noindex')) throw new Error('Root Welch Robots mismatch: ' + rootRobots);
 
 // Capture screenshot scrolled to radio player & section
 await testPage.evaluate(() => document.getElementById('gwRadioBar').scrollIntoView());
