@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "NOWY ARTYKUŁ eM (@MCC): Jak zdefiniować osobisty sukces w chrześcijaństwie? Biblijna miara życia w perspektywie wieczności — Cezary Rogowski (https://polskieradio.cc/eM)",
   "NOWY ARTYKUŁ eM (@MCC): Kim jestem, gdy nikt nie patrzy? Uczciwość i sumienie według Biblii — mocny rachunek sumienia Cezarego Rogowskiego (https://polskieradio.cc/eM)",
   "NOWY PROJEKT SURVIVAL CC: Przetrwać to za mało. Jak przygotować się na trudne czasy, nie tracąc wiary, człowieczeństwa i nadziei? Artykuł inaugurujący Cezarego Rogowskiego (https://polskieradio.cc/survival)",
   "NOWY PROJEKT eM (@MCC): Nie czekaj, aż życie się zmieni. Zacznij od siebie — z Bogiem możesz więcej! Artykuł inaugurujący Cezarego Rogowskiego (https://polskieradio.cc/eM)",
@@ -72,6 +73,85 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    "id": "art-osobisty-sukces-chrzescijanina-w-perspektywie-wiecznosci",
+    "title": "Jak zdefiniować osobisty sukces w chrześcijaństwie? Biblijna miara życia w perspektywie wieczności",
+    "slug": "osobisty-sukces-chrzescijanina-w-perspektywie-wiecznosci",
+    "excerpt": "Czym jest prawdziwy osobisty sukces chrześcijanina? Poznaj biblijną miarę charakteru, wierności, miłości i życia w perspektywie wieczności autorstwa Cezarego Rogowskiego w ramach eM — Motywacja Christian Culture.",
+    "content": [
+      "Wstęp. Czy naprawdę odnoszę sukces?",
+      "Można mieć pełen kalendarz, rosnące dochody i uznanie ludzi, a jednak przegrać to, co najważniejsze. Można też prowadzić życie mało widoczne, bez wielkich tytułów, a pozostawić po sobie dobro, które ma znaczenie przed Bogiem. Dlatego chcę postawić sobie i Tobie pytanie niewygodne, ale konieczne: czy moje pojęcie osobistego sukcesu przetrwa spotkanie z wiecznością?",
+      "Jezus mówi w Mk 8,36–37 o człowieku, który mógłby zyskać cały świat, a utracić własną duszę. To nie jest zakaz rozwoju, pracy czy przedsiębiorczości. To korekta naszej miary. Świat często pyta: „Ile zdobyłeś?”. Ewangelia pyta: „Kim się stałeś, komu służyłeś i czy należysz do Chrystusa?”.",
+      "1. Sukces osobisty nie jest ceną zbawienia",
+      "Zacznę od fundamentu, którego nie wolno pominąć. Nie mogę zapracować na życie wieczne imponującym charakterem, sumą dobrych uczynków ani osiągnięciami religijnymi. Ef 2,8–10 mówi, że zbawienie jest darem łaski przyjmowanym przez wiarę, nie powodem do przechwałek; dobre uczynki są owocem nowego życia, a nie opłatą za zbawienie.",
+      "Jeśli sukces w wymiarze wieczności rozumiem jako próbę zasłużenia na miłość Boga, już na początku mylę kolejność. Najpierw Chrystus. Potem odpowiedź człowieka: wiara, posłuszeństwo, przemiana, służba. Dobre życie nie kupuje zbawienia. Jest odpowiedzią na dar, którego nie da się kupić.",
+      "2. Pytanie o sukces zaczyna się od serca",
+      "W 1 Sm 16,7 Bóg przypomina Samuelowi, że człowiek patrzy na to, co widoczne, ale Pan patrzy na serce. To szczególnie wymagające w świecie kreowania wizerunku. Ludzie mogą widzieć sukces, a nie znać moich motywacji. Mogę publicznie mówić o uczciwości, a prywatnie omijać prawdę. Mogę budować projekt chrześcijański i równocześnie zaniedbywać najbliższych.",
+      "Osobisty sukces w perspektywie Boga wymaga integralności: jedności między tym, co wyznaję, mówię i robię. Nie perfekcji, lecz prawdomówności, gotowości do przyznania się do winy i naprawienia krzywdy. Prz 11,3 wskazuje na uczciwość jako przewodnika ludzi prawych. Kiedy nikt nie patrzy, mój charakter nadal pozostaje realny.",
+      "3. Sukces mierzy się wiernością, nie porównywaniem",
+      "W przypowieści o talentach (Mt 25,14–30) słudzy otrzymali różne zasoby. Ich zadaniem nie było udowodnić, że każdy ma identyczny potencjał; mieli wiernie gospodarować powierzonym dobrem. Nie wolno sprowadzać tej przypowieści do obietnicy pomnożenia pieniędzy. Jej kontekst dotyczy czujności i odpowiedzialności wobec powracającego Pana.",
+      "Nie mam obowiązku zostać kopią czyjegoś sukcesu. Mam obowiązek odpowiedzialnie gospodarować tym, co zostało mi powierzone: czasem, zdolnościami, pracą, relacjami, możliwościami służby. Z perspektywy wieczności pytanie brzmi nie tylko „ile osiągnąłem?”, lecz „czy byłem wierny w tym, co do mnie należało?” (1 Kor 4,2).",
+      "4. Owoc charakteru jest ważniejszy od aplauzu",
+      "Ga 5,22–23 opisuje owoc Ducha: miłość, radość, pokój, cierpliwość, życzliwość, dobroć, wierność, łagodność i opanowanie. Nie są to dekoracyjne dodatki do sukcesu. To sprawdzian, czy moje życie rzeczywiście ulega przemianie.",
+      "Mogę wygrać spór, lecz upokorzyć człowieka. Mogę osiągnąć cel, ale po drodze zniszczyć zaufanie. Mogę mówić o Bożej prawdzie w sposób pozbawiony miłości. 1 Kor 13,1–3 ostrzega, że nawet imponujące działania bez miłości tracą swój moralny sens. Trwały sukces osobisty nie może być budowany na krzywdzie drugiego człowieka.",
+      "5. Wielkość w królestwie Bożym ma postać służby",
+      "Jezus w Mk 10,42–45 przeciwstawia dominację nad innymi wielkości rozumianej jako służba. Sam przedstawia własne przyjście jako służenie i oddanie życia. To odwraca zwyczajną piramidę sukcesu.",
+      "Czy bliscy stają się bezpieczniejsi dzięki mojej obecności? Czy współpracownicy doświadczają uczciwości? Czy wykorzystuję wpływy do pomocy, czy do budowania własnego znaczenia? Nie oznacza to rezygnacji z ambicji. Oznacza podporządkowanie ambicji miłości i odpowiedzialności. Sukces nie może wymagać ode mnie zdrady sumienia.",
+      "6. Perspektywa wieczności porządkuje codzienne decyzje",
+      "Jezus zachęca, by gromadzić skarby w niebie, a nie uczynić z dóbr przemijających ostateczne zabezpieczenie (Mt 6,19–21). Paweł przypomina, że rzeczy widzialne są przemijające, zaś niewidzialne — wieczne (2 Kor 4,16–18). Nie chodzi o gardzenie światem ani zaniedbywanie obowiązków. Chodzi o właściwą hierarchię.",
+      "W perspektywie wieczności znaczenie ma to, jak traktuję osobę słabszą, jak gospodaruję powierzonymi środkami, czy dotrzymuję słowa, czy jestem gotów do pojednania i czy wybieram prawdę, gdy kłamstwo byłoby wygodniejsze. Wierność w małych sprawach kształtuje życie (Łk 16,10).",
+      "7. Nie myl cierpienia lub ubóstwa z porażką",
+      "Nie każda trudność oznacza brak Bożego błogosławieństwa. Historia apostoła Pawła, który doświadczył słabości i prześladowań (2 Kor 12,7–10), burzy prostą tezę, że osobisty sukces wierzącego zawsze oznacza zdrowie, bogactwo czy społeczny awans.",
+      "Chrystus sam przeszedł drogę odrzucenia i krzyża. Dlatego nie wolno zawstydzać osób doświadczających choroby, bezrobocia czy straty, jakoby ich sytuacja dowodziła duchowej przegranej. Można być wiernym w trudnym położeniu. Można również odnosić zewnętrzne sukcesy i potrzebować głębokiej zmiany serca.",
+      "8. Mój osobisty rachunek sukcesu — sześć pytań",
+      "Chcę zaproponować sobie i Tobie sześć pytań, na które nie odpowiemy liczbą obserwujących ani stanem konta:\n\n1. Czy moja relacja z Chrystusem jest autentyczna, czy jedynie publiczna?\n2. Czy ludzie, którym najwięcej jestem winien, doświadczają mojej uczciwości?\n3. Czy umiem przyznać się do błędu i podjąć naprawę?\n4. Czy moja praca i moje cele służą również innym?\n5. Czy rozwijam powierzony mi dar, nie zazdroszcząc cudzej drogi?\n6. Czy decyzję, którą podejmuję dzisiaj, mógłbym przedstawić przed Bogiem bez świadomego ukrywania prawdy?",
+      "Nie proponuję tego jako testu, który pozwoli samodzielnie obliczyć sobie zbawienie. To rachunek sumienia — wezwanie do nawrócenia, wdzięczności i odpowiedzialności.",
+      "Zakończenie. Co chciałbym usłyszeć u kresu drogi?",
+      "W Mt 25,21 padają słowa pochwały wiernego sługi. Nie tworzą one instrukcji zdobywania prestiżu, ale obraz odpowiedzialności wobec Pana. Myśląc o własnym sukcesie, chcę przestać pytać wyłącznie: „Jak wysoko zajdę?”. Chcę pytać: „Czy pójdę właściwą drogą?”.",
+      "Jeśli będę bogatszy, lecz mniej uczciwy — czy to będzie sukces? Jeśli zyskam wpływy, lecz utracę miłość — czy to będzie zwycięstwo? Jeśli moje życie nie zrobi wrażenia na świecie, ale będzie wierną odpowiedzią na Bożą łaskę — czy naprawdę przegrałem?",
+      "Dla mnie osobisty sukces w perspektywie wieczności oznacza nie samodzielne zdobycie nieba, lecz życie zakorzenione w Chrystusie, przemieniane przez Jego łaskę i wyrażane w wierności, uczciwości oraz miłości. To sukces, którego nie mierzy się oklaskami.",
+      "Panie, naucz mnie nie tylko osiągać cele, lecz wybierać cele, które warto osiągać. Niech moje życie będzie prawdziwe także wtedy, gdy nikt nie patrzy. Amen.",
+      "Podstawa biblijna i uwagi redakcyjne",
+      "Mk 8,36–37; Ef 2,8–10; 1 Sm 16,7; Prz 11,3; Mt 25,14–30; 1 Kor 4,2; Ga 5,22–23; 1 Kor 13,1–3; Mk 10,42–45; Mt 6,19–21; 2 Kor 4,16–18; Łk 16,10; 2 Kor 12,7–10; Mt 25,21. Odniesienia egzegetyczne: NKJV. Tekst jest autorskim komentarzem, nie dosłownym przekładem cytatów. Publikacja główna: eM — Motywacja Christian Culture (polskieradio.cc/eM). Promocja: CCN News i media Christian Culture."
+    ],
+    "scriptureReference": {
+      "verse": "Mk 8,36–37",
+      "text": "Cóż bowiem pomoże człowiekowi, choćby cały świat pozyskał, a na swojej duszy poniósł szkodę? Albo co da człowiek w zamian za swoją duszę?"
+    },
+    "category": "wiara",
+    "categoryLabel": "eM / Motywacja Christian Culture",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-29T08:00:00Z",
+    "dateFormatted": "29 października 2026",
+    "imageUrl": "/images/news/art-osobisty-sukces-chrzescijanina-w-perspektywie-wiecznosci.jpg",
+    "imageCaption": "Christian Culture / eM Motywacja: Jak zdefiniować sukces w chrześcijaństwie? Cezary Rogowski",
+    "readTimeMinutes": 7,
+    "isHero": true,
+    "isPopular": true,
+    "popularRank": 1,
+    "tags": [
+      "eM",
+      "motywacja",
+      "mcc",
+      "cezary rogowski",
+      "sukces",
+      "wieczność",
+      "charakter",
+      "wierność",
+      "biblia",
+      "chrześcijaństwo"
+    ],
+    "actionLinks": [
+      {
+        "label": "eM — Motywacja Christian Culture",
+        "url": "/em"
+      },
+      {
+        "label": "Artykuł w formacie PDF",
+        "url": "/assets/CCN_Osobisty_Sukces_w_Perspektywie_Wiecznosci.pdf"
+      }
+    ]
+  },
   {
     "id": "art-z-biblia-za-pan-brat-dzien-29",
     "title": "Z Biblią za Pan Brat: Dzień 29 — Zejście Izraela do Egiptu: Teofania w Beer-Szebie, etyka administracji kryzysowej i nadzieja Kanaanu w Rdz 46–47",

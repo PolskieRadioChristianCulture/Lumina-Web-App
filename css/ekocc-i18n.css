@@ -1,0 +1,88 @@
+/**
+ * EkoCC i18n Core — Styles for Language Selector & UI Internationalization
+ * Standard: Christian Culture Global Language System (29.10.2026)
+ * Ergonomia: touch target min. 44x44px (JOMA-D005 / SMCC)
+ */
+
+.ekocc-lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(196, 163, 90, 0.28);
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+}
+
+.ekocc-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  color: rgba(243, 229, 200, 0.75);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s ease-in-out;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ekocc-lang-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(196, 163, 90, 0.4);
+}
+
+.ekocc-lang-btn:focus-visible {
+  outline: 2px solid #C4A35A;
+  outline-offset: 2px;
+}
+
+.ekocc-lang-btn.is-active,
+.ekocc-lang-btn[aria-pressed="true"] {
+  color: #FFFFFF;
+  background: rgba(196, 163, 90, 0.28);
+  border: 1.5px solid #C4A35A;
+  font-weight: 800;
+  box-shadow: 0 0 12px rgba(196, 163, 90, 0.35);
+}
+
+/* Light mode support */
+html[data-theme="light"] .ekocc-lang-switcher,
+body[data-theme="light"] .ekocc-lang-switcher {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(160, 128, 64, 0.35);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .ekocc-lang-btn,
+body[data-theme="light"] .ekocc-lang-btn {
+  color: #3b3123;
+}
+
+html[data-theme="light"] .ekocc-lang-btn:hover,
+body[data-theme="light"] .ekocc-lang-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #1a150e;
+}
+
+html[data-theme="light"] .ekocc-lang-btn.is-active,
+body[data-theme="light"] .ekocc-lang-btn[aria-pressed="true"] {
+  background: rgba(196, 163, 90, 0.2);
+  border-color: #8C6F2D;
+  color: #1a150e;
+}

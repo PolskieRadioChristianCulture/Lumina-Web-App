@@ -75,19 +75,52 @@
     } catch (_) {}
   }
 
-  const PLACEHOLDERS = [
-    'Zapytaj Christian Culture…',
-    "Szukaj: 'Apokalipsa 14'",
-    "Szukaj: 'Jak pokonać lęk'",
-    "Szukaj: 'Lekcja 27'",
-    "Szukaj: 'Radio na żywo'",
-    "Szukaj: 'Werset o pokoju'",
-    "Szukaj: 'J 3:16'",
-    "Szukaj: 'Lekcja 28 na dziś'",
-    "Szukaj: 'Rozważanie Dobrze że jesteś'",
-    "Szukaj: 'Infolinia Nadziei'",
-    "Szukaj: 'LUMINA społeczność'"
-  ];
+  const PLACEHOLDERS_BY_LANG = {
+    pl: [
+      'Zapytaj Christian Culture…',
+      "Szukaj: 'Apokalipsa 14'",
+      "Szukaj: 'Jak pokonać lęk'",
+      "Szukaj: 'Lekcja 27'",
+      "Szukaj: 'Radio na żywo'",
+      "Szukaj: 'Werset o pokoju'",
+      "Szukaj: 'J 3:16'",
+      "Szukaj: 'Lekcja 28 na dziś'",
+      "Szukaj: 'Rozważanie Dobrze że jesteś'",
+      "Szukaj: 'Infolinia Nadziei'",
+      "Szukaj: 'LUMINA społeczność'"
+    ],
+    en: [
+      'Ask Christian Culture…',
+      "Search: 'Apocalypse 14'",
+      "Search: 'How to overcome fear'",
+      "Search: 'Lesson 27'",
+      "Search: 'Live Radio'",
+      "Search: 'Verse about peace'",
+      "Search: 'John 3:16'",
+      "Search: 'Daily reflection'",
+      "Search: 'Hope Helpline'",
+      "Search: 'LUMINA Community'"
+    ],
+    de: [
+      'Christian Culture fragen…',
+      "Suche: 'Apokalypse 14'",
+      "Suche: 'Angst überwinden'",
+      "Suche: 'Lektion 27'",
+      "Suche: 'Live-Radio'",
+      "Suche: 'Vers über Frieden'",
+      "Suche: 'Johannes 3:16'",
+      "Suche: 'Tagesandacht'",
+      "Suche: 'Hoffnungs-Hotline'",
+      "Suche: 'LUMINA-Gemeinschaft'"
+    ]
+  };
+
+  function getPlaceholders() {
+    const lang = (window.EkoCCI18n?.getLocale?.() || document.documentElement?.getAttribute('lang') || 'pl').toLowerCase();
+    return PLACEHOLDERS_BY_LANG[lang] || PLACEHOLDERS_BY_LANG.pl;
+  }
+
+  const PLACEHOLDERS = PLACEHOLDERS_BY_LANG.pl;
   let placeholderInterval = null;
   function stopPlaceholderRotation() {
     if (placeholderInterval) {
@@ -107,8 +140,9 @@
       if (searchEngine === 'google') return;
       // Jeśli użytkownik wpisał własny tekst — nie zmieniamy podpowiedzi
       if (input.value && input.value.trim().length > 0) return;
-      idx = (idx + 1) % PLACEHOLDERS.length;
-      input.setAttribute('placeholder', PLACEHOLDERS[idx]);
+      const currentPlaceholders = getPlaceholders();
+      idx = (idx + 1) % currentPlaceholders.length;
+      input.setAttribute('placeholder', currentPlaceholders[idx]);
       const fallbackInput = document.getElementById('ccw-q');
       if (fallbackInput && (!fallbackInput.value || !fallbackInput.value.trim().length)) {
         fallbackInput.setAttribute('placeholder', PLACEHOLDERS[idx]);
@@ -7658,6 +7692,7 @@
             <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA" title="Twoje konto LUMINA">
               <span class="cc-omni-account-face" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
             </a>
+            <div class="cc-omni-lang-mount" data-ekocc-lang-mount></div>
           </nav>
 ${isStandalonePage ? '' : `
           <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę" title="Zamknij (Esc)">
@@ -7677,7 +7712,7 @@ ${isStandalonePage ? '' : `
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </span>
-          <input type="text" id="ccOmniInput" placeholder="Zapytaj Christian Culture…" autocomplete="off" spellcheck="false" aria-label="Wpisz szukane słowo">
+          <input type="text" id="ccOmniInput" data-i18n-placeholder="search_placeholder" placeholder="Zapytaj Christian Culture…" autocomplete="off" spellcheck="false" aria-label="Wpisz szukane słowo">
           <button type="button" id="ccOmniClear" class="cc-omni-btn" aria-label="Wyczyść zapytanie" style="display:none;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -7825,6 +7860,22 @@ ${isStandalonePage ? '' : `
     const favoriteObserver = new MutationObserver(placeFavorite);
     favoriteObserver.observe(topnav, { childList: true });
     placeFavorite();
+
+    // EkoCC i18n Core — integracja językowa modala wyszukiwarki
+    const mountI18n = () => {
+      if (window.EkoCCI18n) {
+        const langMount = overlay.querySelector('.cc-omni-lang-mount');
+        if (langMount && !langMount.hasChildNodes()) {
+          window.EkoCCI18n.renderSwitcher(langMount);
+        }
+        if (input) {
+          input.placeholder = window.EkoCCI18n.t('search_placeholder');
+          input.setAttribute('aria-label', window.EkoCCI18n.t('search_label'));
+        }
+      }
+    };
+    mountI18n();
+    document.addEventListener('ekocc:locale-changed', () => mountI18n());
 
     // Zdarzenia wewnątrz modala
     const input = document.getElementById('ccOmniInput');
