@@ -48,9 +48,24 @@ test('Reader landing page and all 25 chapter pages exist with correct structure'
     assert.ok(fs.existsSync(chPath), `Chapter page ${i} must exist at ${chPath}`);
     const chHtml = fs.readFileSync(chPath, 'utf8');
     assert.ok(chHtml.includes('wioletta-reader-data.js'), `Chapter ${i} must include reader data bundle`);
+    assert.ok(chHtml.includes('wioletta-reader-tts.js'), `Chapter ${i} must include reader TTS module`);
     assert.ok(chHtml.includes('data-theme'), `Chapter ${i} must support themes`);
     assert.ok(chHtml.includes('wioletta_last_chapter'), `Chapter ${i} must save reading progress`);
   }
+});
+
+test('Reader TTS module exists and implements complete lektor audio player', () => {
+  const ttsPath = path.join(ROOT, 'js', 'wioletta-reader-tts.js');
+  assert.ok(fs.existsSync(ttsPath), 'js/wioletta-reader-tts.js must exist');
+  const ttsContent = fs.readFileSync(ttsPath, 'utf8');
+
+  assert.ok(ttsContent.includes('window.WiolettaReaderTTS'), 'Must define window.WiolettaReaderTTS');
+  assert.ok(ttsContent.includes('speechSynthesis'), 'Must use Web Speech API');
+  assert.ok(ttsContent.includes('wioletta-tts-dock'), 'Must implement floating dock player');
+  assert.ok(ttsContent.includes('chapter-tts-box'), 'Must implement header hero listen box');
+  assert.ok(ttsContent.includes('tts-active-para'), 'Must support active paragraph highlighting');
+  assert.ok(ttsContent.includes('min-height: 44px') || ttsContent.includes('min-height:44px'), 'Must satisfy min 44px touch target');
+  assert.ok(ttsContent.includes('FF7A00'), 'Must use Christian Culture orange #FF7A00 standard');
 });
 
 test('Reader routes exist in _redirects and _worker.js', () => {
