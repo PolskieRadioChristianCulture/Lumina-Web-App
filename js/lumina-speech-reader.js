@@ -100,14 +100,16 @@
         window.speechSynthesis.cancel();
 
         const utt = new SpeechSynthesisUtterance(text);
-        utt.lang  = 'pl-PL';
+        const activeLang = (typeof localStorage !== 'undefined' && (localStorage.getItem('cc_user_lang_choice') || localStorage.getItem('lumina_lang'))) || (document.documentElement.lang || 'pl');
+        utt.lang  = activeLang.startsWith('en') ? 'en-US' : (activeLang.startsWith('es') ? 'es-ES' : 'pl-PL');
         utt.rate  = 0.92;
         utt.pitch = 1.0;
 
         // Spróbuj wybrać polski głos jeśli dostępny
         const voices = window.speechSynthesis.getVoices();
-        const plVoice = voices.find(v => v.lang.startsWith('pl'));
-        if (plVoice) utt.voice = plVoice;
+        const langPrefix = utt.lang.slice(0, 2);
+        const matchVoice = voices.find(v => (v.lang || '').toLowerCase().startsWith(langPrefix));
+        if (matchVoice) utt.voice = matchVoice;
 
         utt.onend = () => {
             if (_activeBtn === btn) stopSpeech();
@@ -141,14 +143,14 @@
             display         : 'inline-flex',
             alignItems      : 'center',
             justifyContent  : 'center',
-            minWidth        : '34px',
-            minHeight       : '34px',
-            width           : '34px',
-            height          : '34px',
+            minWidth        : '44px',
+            minHeight       : '44px',
+            width           : '44px',
+            height          : '44px',
             borderRadius    : '50%',
-            background      : 'rgba(245,158,11,0.12)',
-            border          : '1.5px solid rgba(245,158,11,0.45)',
-            color           : '#f59e0b',
+            background      : 'rgba(255,122,0,0.15)',
+            border          : '1.5px solid #FF7A00',
+            color           : '#FF7A00',
             cursor          : 'pointer',
             marginLeft      : '8px',
             flexShrink      : '0',
@@ -163,12 +165,12 @@
 
         btn.addEventListener('mouseenter', () => {
             if (btn.dataset.ttsActive !== 'true') {
-                btn.style.background = 'rgba(245,158,11,0.25)';
+                btn.style.background = 'rgba(255,122,0,0.25)';
             }
         });
         btn.addEventListener('mouseleave', () => {
             if (btn.dataset.ttsActive !== 'true') {
-                btn.style.background = 'rgba(245,158,11,0.12)';
+                btn.style.background = 'rgba(255,122,0,0.15)';
             }
         });
 

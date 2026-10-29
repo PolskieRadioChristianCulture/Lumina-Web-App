@@ -248,6 +248,14 @@
 
   // 3. AUTO-START I ANALITYKA POLONII
   function boot() {
+  // Auto-load Universal Multilingual TTS Reader
+  if (!document.getElementById('ccUniversalTtsScript') && !window.CCUniversalTTS && typeof document !== 'undefined') {
+    var ttsScript = document.createElement('script');
+    ttsScript.id = 'ccUniversalTtsScript';
+    ttsScript.src = '/js/cc-universal-tts.js?v=20261029_1';
+    document.head.appendChild(ttsScript);
+  }
+
     initPoloniaClocks();
     renderLanguageSwitchers();
 
