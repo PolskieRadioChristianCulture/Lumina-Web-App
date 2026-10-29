@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "NOWY ARTYKUŁ eM (@MCC): Jaka jest Twoja pobożność? Wiara czy religijna maska — mocny biblijny rachunek sumienia Cezarego Rogowskiego (https://polskieradio.cc/eM)",
   "NOWY ARTYKUŁ eM (@MCC): Jak zdefiniować osobisty sukces w chrześcijaństwie? Biblijna miara życia w perspektywie wieczności — Cezary Rogowski (https://polskieradio.cc/eM)",
   "NOWY ARTYKUŁ eM (@MCC): Kim jestem, gdy nikt nie patrzy? Uczciwość i sumienie według Biblii — mocny rachunek sumienia Cezarego Rogowskiego (https://polskieradio.cc/eM)",
   "NOWY PROJEKT SURVIVAL CC: Przetrwać to za mało. Jak przygotować się na trudne czasy, nie tracąc wiary, człowieczeństwa i nadziei? Artykuł inaugurujący Cezarego Rogowskiego (https://polskieradio.cc/survival)",
@@ -73,6 +74,87 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    "id": "art-jaka-jest-twoja-poboznosc-wiara-czy-maska",
+    "title": "Jaka jest Twoja pobożność? Wiara czy religijna maska",
+    "slug": "jaka-jest-twoja-poboznosc-wiara-czy-maska",
+    "excerpt": "Czy religijny wizerunek zgadza się z Twoim życiem? Mocny biblijny rachunek sumienia o prawdzie, uczciwości, przemocy, łasce i nawróceniu autorstwa Cezarego Rogowskiego w ramach eM — Motywacja Christian Culture.",
+    "content": [
+      "Pobożność, która kończy się za drzwiami kościoła",
+      "Możesz śpiewać najgłośniej podczas nabożeństwa, cytować Pismo Święte z pamięci i publicznie mówić o miłości Jezusa. A potem wrócić do domu, gdzie bliscy boją się Twoich słów. Możesz znać wszystkie właściwe odpowiedzi, a równocześnie nie umieć powiedzieć: „Przepraszam. Skrzywdziłem Cię”. Wtedy trzeba postawić pytanie, którego nie zagłuszy żadna pieśń: jaka jest moja pobożność naprawdę?",
+      "Nie piszę tych słów po to, by stawiać się ponad kimkolwiek. Stawiam to pytanie również sobie. Najbardziej niebezpieczna religijność to taka, która pozwala mi kontrolować cudze życie, ale zwalnia mnie z uczciwego spojrzenia na własne serce.",
+      "Jezus nie potępiał gorliwości. Demaskował pozór",
+      "W Ewangelii Mateusza 23,25–28 Jezus kieruje bardzo ostre słowa do uczonych w Piśmie i faryzeuszów. Wskazuje na rozbieżność między tym, co widoczne na zewnątrz, a rzeczywistym stanem wnętrza człowieka. Problem nie polega na tym, że publiczna modlitwa jest zła albo że dokładność w sprawach wiary nie ma znaczenia. Problem zaczyna się wówczas, gdy religijny wygląd osłania niesprawiedliwość.",
+      "W tym samym rozdziale Jezus mówi o zaniedbywaniu sprawiedliwości, miłosierdzia i wiary (Mt 23,23). Nie przeciwstawia prawdzie biblijnej dobroci. Domaga się ich spójności. Możesz bronić przykazania i jednocześnie łamać ducha tego przykazania sposobem, w jaki traktujesz człowieka. To nie jest wierność Bogu. To sprzeczność, z którą trzeba się rozprawić.",
+      "Co widzą ludzie, którzy żyją ze mną?",
+      "Prawdziwy test charakteru odbywa się często poza kamerą, kazalnicą i profilem społecznościowym. Jak mówisz do współmałżonka, gdy jesteś zmęczony? Jak reagujesz, gdy dziecko popełnia błąd? Czy słabszego pracownika traktujesz z godnością? Czy przyznajesz się do pomyłek, czy zawsze znajdujesz winnego?",
+      "Jeżeli człowiek publicznie naucza o pokoju, a prywatnie zastrasza bliskich, nie wolno nazywać tego jedynie „trudnym charakterem”. Krzyk, upokarzanie, przymus i przemoc wymagają zatrzymania, odpowiedzialności i ochrony osób krzywdzonych. Chrześcijańskie przebaczenie nie oznacza obowiązku dalszego znoszenia przemocy ani rezygnacji z pomocy i bezpieczeństwa.",
+      "Paweł w Ef 4,25–32 wzywa do prawdomówności, panowania nad gniewem, uczciwej pracy i słów, które budują innych. To konkretne kryteria. Pobożność bez nich może stać się tylko dekoracją.",
+      "Nie wystarczy mieć Biblię w ręku",
+      "Jakub 1,22–27 ostrzega przed słuchaniem Słowa bez wprowadzania go w życie. Człowiek może intensywnie zajmować się religią, a zarazem nie panować nad własnym językiem. Jakub nazywa taką pobożność daremną (Jk 1,26). Następnie wskazuje na troskę o osieroconych i wdowy oraz nieskalane życie przed Bogiem.",
+      "To nie są dwie odrębne religie: jedna od prawdy, druga od miłości. To dwa konieczne wymiary posłuszeństwa Bogu. Samo powoływanie się na zasady nie uprawnia do pogardy. A deklarowanie współczucia nie zastępuje uczciwego działania.",
+      "Pierwszy List Jana mówi bezpośrednio, że nie można przekonująco deklarować miłości do Boga, równocześnie żyjąc w nienawiści do brata (1 J 4,20–21). Pytanie o pobożność jest zatem pytaniem o wiarygodność mojego świadectwa.",
+      "Uczciwość zaczyna się tam, gdzie można oszukać",
+      "Czy oddałbyś pieniądze, których brak nikt nie zauważy? Czy sprostowałbyś informację, gdy kłamstwo działa na Twoją korzyść? Czy obroniłbyś nieobecną osobę przed oszczerstwem? Czy byłbyś sprawiedliwy wobec człowieka, który nie może Ci się odwdzięczyć?",
+      "Prz 11,1 potępia nieuczciwe miary, a Mi 6,8 łączy sprawiedliwość, miłosierdzie i pokorne chodzenie z Bogiem. Zastosowanie tych zasad nie kończy się na handlu starożytnego Izraela. Dotyczy umów, rachunków, zatrudniania, podatków, obietnic, publikowanych wiadomości i naszego słowa.",
+      "Nie da się kupić moralnej wiarygodności ofiarą, pięknym wystąpieniem ani hojnością na pokaz. Zadośćuczynienie zaczyna się od prawdy: „To zrobiłem. Było złe. Nie będę przerzucać winy. Podejmę konkretne kroki, aby naprawić szkodę”.",
+      "Bóg widzi serce, ale nie wolno zasłaniać się sercem",
+      "W 1 Sm 16,7 czytamy, że człowiek patrzy na to, co widoczne, a Pan patrzy na serce. Nie jest to usprawiedliwienie dla czynów. W Biblii serce oznacza również źródło intencji, wyborów i działania. Jezus naucza, że drzewo poznaje się po owocu (Mt 7,16–20).",
+      "Nie mogę więc powiedzieć: „W sercu jestem dobry”, jeśli uporczywie krzywdzę innych i odmawiam odpowiedzialności. Moje deklaracje trzeba skonfrontować z owocem życia. Zarazem nie wolno nam udawać, że znamy w pełni cudze serce. Możemy i powinniśmy oceniać konkretne zachowania, nie uzurpując sobie Bożego sądu nad całym człowiekiem.",
+      "Nie zbawia Cię własna moralna doskonałość",
+      "Tu potrzebna jest równie mocna druga prawda. Etyczne życie jest koniecznym owocem autentycznej wiary, ale nie kupuje zbawienia. Według Ef 2,8–10 jesteśmy zbawieni z łaski przez wiarę, a stworzeni w Chrystusie do dobrych uczynków. Kolejność jest istotna: łaska jest źródłem, a dobre życie jej owocem.",
+      "Gdy odkryję własną obłudę, nie muszę budować nowej maski „człowieka już doskonałego”. Mam wyznać grzech, szukać przebaczenia, przyjąć odpowiedzialność i wydawać owoce nawrócenia. Zacheusz, po spotkaniu z Jezusem, deklaruje realne naprawienie wyrządzonych szkód (Łk 19,1–10). To przykład przemiany, której nie sposób zredukować do wzruszenia podczas nabożeństwa.",
+      "Prawdziwa pokuta nie jest przedstawieniem. Ma konsekwencje.",
+      "Siedem pytań do mojego sumienia",
+      "1. Czy mówię prawdę również wtedy, gdy może mnie to kosztować reputację lub pieniądze?\n2. Czy osoby z mojego domu czują się przy mnie bezpieczne i szanowane?\n3. Czy przyznaję się do winy bez manipulowania i usprawiedliwiania się?\n4. Czy moje pieniądze, umowy i obietnice wytrzymują próbę uczciwości?\n5. Czy prywatnie traktuję ludzi tak, jak deklaruję publicznie?\n6. Czy troszczę się o skrzywdzonych, czy bardziej o własny wizerunek?\n7. Co konkretnie muszę dziś naprawić, zamiast obiecywać ogólną poprawę?",
+      "To nie jest formularz do oceniania sąsiada, pastora czy współmałżonka. To lustro, które najpierw kieruję na siebie.",
+      "Zdejmij maskę. Wybierz prawdę",
+      "Nie chcę pobożności, która dobrze wygląda tylko w świetle reflektorów. Chcę wiary, która zmienia moje słowa, pieniądze, relacje i decyzje. Chcę sumienia wrażliwego na prawdę, nawet gdy prawda obnaża moje porażki.",
+      "Jezus w Mt 5,23–24 wskazuje, że pojednanie z człowiekiem ma znaczenie również wtedy, gdy ktoś przychodzi z darem przed Boga. Nie oznacza to, że każda relacja może zostać bezpiecznie odnowiona; odpowiedzialność za krzywdę nie daje sprawcy prawa do wymuszania kontaktu. Oznacza jednak, że religijne czynności nie zastąpią naprawienia tego, co zostało zniszczone.",
+      "Dlatego moje wezwanie jest proste i wymagające: przestań chronić pozory. Nazwij kłamstwo kłamstwem. Oddaj, co zabrałeś. Przeproś bez „ale”. Przestań krzywdzić. Skorzystaj z pomocy, jeśli nie potrafisz zatrzymać własnych zachowań. A jeśli doświadczasz przemocy, szukaj ochrony i nie pozwól wmówić sobie, że milczenie jest pobożnością.",
+      "W perspektywie wieczności nie najważniejsze będzie, ilu ludzi uznało mnie za religijnego. Najważniejsze jest, czy należę do Chrystusa i czy moja wiara przynosi owoce prawdy i miłości.",
+      "Jaka jest Twoja pobożność? Zanim odpowiesz publicznie, odpowiedz uczciwie przed Bogiem.",
+      "Podstawa biblijna i uwagi redakcyjne",
+      "Mt 23,23–28; Ef 4,25–32; Jk 1,22–27; 1 J 4,20–21; Prz 11,1; Mi 6,8; 1 Sm 16,7; Mt 7,16–20; Ef 2,8–10; Łk 19,1–10; Mt 5,23–24. Przekład podstawowy: Uwspółcześniona Biblia Gdańska (UBG). Tekst stanowi autorski komentarz biblijny Cezarego Rogowskiego. Publikacja główna: eM — Motywacja Christian Culture (polskieradio.cc/eM). Promocja: CCN News i sieć portali Christian Culture."
+    ],
+    "scriptureReference": {
+      "verse": "Mt 23,23; Jk 1,26 (UBG)",
+      "text": "Biada wam, uczeni w Piśmie i faryzeusze, obłudnicy! Bo dajecie dziesięcinę z mięty, anyżu i kminku, a zaniedbujecie to, co ważniejsze w zakonie: sąd, miłosierdzie i wiarę. (...) Jeśli ktoś wśród was uważa się za pobożnego, a nie powściąga swego języka, lecz oszukuje swe serce, tego pobożność jest daremna."
+    },
+    "category": "wiara",
+    "categoryLabel": "eM / Motywacja Christian Culture",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-29T10:00:00Z",
+    "dateFormatted": "29 października 2026",
+    "imageUrl": "/images/news/art-jaka-jest-twoja-poboznosc-wiara-czy-maska.jpg",
+    "imageCaption": "Człowiek z Biblią trzyma maskę, w tle kontrast publicznej pobożności i prywatnej krzywdy — Cezary Rogowski",
+    "readTimeMinutes": 6,
+    "isHero": true,
+    "isPopular": true,
+    "popularRank": 1,
+    "tags": [
+      "eM",
+      "motywacja",
+      "mcc",
+      "cezary rogowski",
+      "pobożność",
+      "wiara",
+      "sumienie",
+      "prawda",
+      "nawrócenie",
+      "biblia"
+    ],
+    "actionLinks": [
+      {
+        "label": "eM — Motywacja Christian Culture",
+        "url": "/em"
+      },
+      {
+        "label": "Pobierz oficjalny PDF",
+        "url": "/assets/CCN_Jaka_jest_Twoja_poboznosc_Cezary_Rogowski.pdf"
+      }
+    ]
+  },
   {
     "id": "art-osobisty-sukces-chrzescijanina-w-perspektywie-wiecznosci",
     "title": "Jak zdefiniować osobisty sukces w chrześcijaństwie? Biblijna miara życia w perspektywie wieczności",

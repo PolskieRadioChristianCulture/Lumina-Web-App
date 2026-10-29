@@ -20,6 +20,19 @@ const ARTICLES_TS_PATH = path.join(ROOT, 'portals/ccn-news/src/data/articles.ts'
 const FINANSE_ARTICLES_TS_PATH = path.join(ROOT, 'portals/ccn-finanse/src/data/articles.ts');
 const SITEMAP_PATH = path.join(ROOT, 'sitemap.xml');
 
+function safeWriteFileSync(p, data, encoding = 'utf8', retries = 5) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      fs.writeFileSync(p, data, encoding);
+      return;
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      const start = Date.now();
+      while (Date.now() - start < 150) {}
+    }
+  }
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   return String(str)
@@ -1283,7 +1296,17 @@ ${JSON.stringify(jsonLd, null, 2)}
               trimmed.startsWith('DOBRZE, ŻE JESTEŚ') ||
               trimmed.startsWith('Wstęp') ||
               trimmed.startsWith('Zakończenie') ||
-              trimmed.startsWith('Podstawa biblijna')
+              trimmed.startsWith('Podstawa biblijna') ||
+              trimmed.startsWith('Pobożność, która') ||
+              trimmed.startsWith('Jezus nie potępiał') ||
+              trimmed.startsWith('Co widzą ludzie') ||
+              trimmed.startsWith('Nie wystarczy mieć Biblię') ||
+              trimmed.startsWith('Uczciwość zaczyna się') ||
+              trimmed.startsWith('Bóg widzi serce') ||
+              trimmed.startsWith('Nie zbawia Cię') ||
+              trimmed.startsWith('Prawdziwa pokuta') ||
+              trimmed.startsWith('Siedem pytań') ||
+              trimmed.startsWith('Zdejmij maskę')
             ) {
               return `<h2>${escapeHtml(trimmed)}</h2>`;
             }
@@ -1414,7 +1437,7 @@ function updateSitemap(articles, portalSlug = 'news') {
   }
 
   if (sitemapContent !== originalSitemap) {
-    fs.writeFileSync(SITEMAP_PATH, sitemapContent, 'utf8');
+    safeWriteFileSync(SITEMAP_PATH, sitemapContent, 'utf8');
     console.log(`Sitemap (${portalSlug}): Added ${addedCount} new article URLs to sitemap.xml.`);
   } else {
     console.log(`Sitemap (${portalSlug}): All ${articles.length} article URLs already present in sitemap.xml.`);
@@ -1450,20 +1473,20 @@ export async function buildCcnStaticPages() {
 
     // 1. Write news/${article.slug}.html
     const slugFile = path.join(ROOT, 'news', `${article.slug}.html`);
-    fs.writeFileSync(slugFile, html, 'utf8');
+    safeWriteFileSync(slugFile, html, 'utf8');
 
     // 2. Write news/${article.slug}/index.html (Clean URL)
     const cleanDir = path.join(ROOT, 'news', article.slug);
     fs.mkdirSync(cleanDir, { recursive: true });
-    fs.writeFileSync(path.join(cleanDir, 'index.html'), html, 'utf8');
+    safeWriteFileSync(path.join(cleanDir, 'index.html'), html, 'utf8');
 
     // 3. If ID differs from slug, alias news/${article.id}.html & news/${article.id}/index.html
     if (article.id && article.id !== article.slug) {
       const idFile = path.join(ROOT, 'news', `${article.id}.html`);
-      fs.writeFileSync(idFile, html, 'utf8');
+      safeWriteFileSync(idFile, html, 'utf8');
       const idDir = path.join(ROOT, 'news', article.id);
       fs.mkdirSync(idDir, { recursive: true });
-      fs.writeFileSync(path.join(idDir, 'index.html'), html, 'utf8');
+      safeWriteFileSync(path.join(idDir, 'index.html'), html, 'utf8');
     }
 
     generatedPages++;
@@ -1484,18 +1507,18 @@ export async function buildCcnStaticPages() {
       });
 
       const slugFile = path.join(ROOT, 'finanse', `${article.slug}.html`);
-      fs.writeFileSync(slugFile, html, 'utf8');
+      safeWriteFileSync(slugFile, html, 'utf8');
 
       const cleanDir = path.join(ROOT, 'finanse', article.slug);
       fs.mkdirSync(cleanDir, { recursive: true });
-      fs.writeFileSync(path.join(cleanDir, 'index.html'), html, 'utf8');
+      safeWriteFileSync(path.join(cleanDir, 'index.html'), html, 'utf8');
 
       if (article.id && article.id !== article.slug) {
         const idFile = path.join(ROOT, 'finanse', `${article.id}.html`);
-        fs.writeFileSync(idFile, html, 'utf8');
+        safeWriteFileSync(idFile, html, 'utf8');
         const idDir = path.join(ROOT, 'finanse', article.id);
         fs.mkdirSync(idDir, { recursive: true });
-        fs.writeFileSync(path.join(idDir, 'index.html'), html, 'utf8');
+        safeWriteFileSync(path.join(idDir, 'index.html'), html, 'utf8');
       }
       generatedPages++;
     }
@@ -1528,27 +1551,27 @@ export async function buildCcnStaticPages() {
         });
 
         const slugFile = path.join(ROOT, portalId, `${article.slug}.html`);
-        fs.writeFileSync(slugFile, html, 'utf8');
+        safeWriteFileSync(slugFile, html, 'utf8');
 
         const cleanDir = path.join(ROOT, portalId, article.slug);
         fs.mkdirSync(cleanDir, { recursive: true });
-        fs.writeFileSync(path.join(cleanDir, 'index.html'), html, 'utf8');
+        safeWriteFileSync(path.join(cleanDir, 'index.html'), html, 'utf8');
 
         if (article.id && article.id !== article.slug) {
           const idFile = path.join(ROOT, portalId, `${article.id}.html`);
-          fs.writeFileSync(idFile, html, 'utf8');
+          safeWriteFileSync(idFile, html, 'utf8');
           const idDir = path.join(ROOT, portalId, article.id);
           fs.mkdirSync(idDir, { recursive: true });
-          fs.writeFileSync(path.join(idDir, 'index.html'), html, 'utf8');
+          safeWriteFileSync(path.join(idDir, 'index.html'), html, 'utf8');
         }
 
         // Also alias in news/ if not already present
         const newsSlugFile = path.join(ROOT, 'news', `${article.slug}.html`);
         if (!fs.existsSync(newsSlugFile)) {
-          fs.writeFileSync(newsSlugFile, html, 'utf8');
+          safeWriteFileSync(newsSlugFile, html, 'utf8');
           const newsCleanDir = path.join(ROOT, 'news', article.slug);
           fs.mkdirSync(newsCleanDir, { recursive: true });
-          fs.writeFileSync(path.join(newsCleanDir, 'index.html'), html, 'utf8');
+          safeWriteFileSync(path.join(newsCleanDir, 'index.html'), html, 'utf8');
         }
 
         generatedPages++;
@@ -1557,7 +1580,7 @@ export async function buildCcnStaticPages() {
     }
   }
 
-  fs.writeFileSync(path.join(ROOT, 'data/ccn-article-routes.js'),
+  safeWriteFileSync(path.join(ROOT, 'data/ccn-article-routes.js'),
     '// Generated by scripts/build-ccn-static-pages.mjs from public article sources.\nexport default ' +
     JSON.stringify(articleRoutes, null, 2) + ';\n', 'utf8');
   console.log(`Generated static pages for ${generatedPages} articles.`);
