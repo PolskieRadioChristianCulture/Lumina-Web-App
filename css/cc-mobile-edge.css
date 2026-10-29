@@ -136,7 +136,11 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
 }
 
 /* EkoCC Search Topbar Trigger: bezwzgledne usuniecie pierwszego zdublowanego + (L0 29.10.2026) */
-.cc-omni-topnav .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn) {
+.cc-omni-topnav .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn),
+.ccw-fallback .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn),
+.ccw-fallback > .cc-mobile-edge-trigger,
+body:has(#ccOmniOverlay) .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn),
+body:has(.cc-omni-topnav) .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn) {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;

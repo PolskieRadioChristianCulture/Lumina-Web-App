@@ -504,6 +504,36 @@
     // Usuniecie jakiegokolwiek zduplikowanego pierwszego przycisku + w belce wyszukiwarki (L0 29.10.2026)
     document.querySelectorAll('.cc-omni-topnav .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn)').forEach(el => el.remove());
     if (/^\/mess(?:\.html|\/|$)/i.test(location.pathname)) return;
+
+    // Search surfaces: wyszukiwarka / szukaj / omni-search overlay (L0 29.10.2026)
+    const isSearch = /^\/(?:wyszukiwarka|szukaj)/i.test(location.pathname) || !!document.getElementById('ccOmniOverlay') || !!document.querySelector('.cc-omni-topnav');
+    if (isSearch) {
+      document.querySelectorAll('.cc-mobile-edge-trigger:not(#ccOmniEdgeBtn)').forEach(el => el.remove());
+      const attachSearchEdge = () => {
+        document.querySelectorAll('.cc-mobile-edge-trigger:not(#ccOmniEdgeBtn)').forEach(el => el.remove());
+        const btn = document.getElementById('ccOmniEdgeBtn');
+        if (btn && !btn.dataset.ccEdgeMounted) {
+          mount({
+            legacy: btn,
+            placement: btn,
+            trigger: btn,
+            hideLegacy: false,
+            profile: 'search',
+            items: commonItems
+          });
+          return true;
+        }
+        return false;
+      };
+      if (attachSearchEdge()) return;
+      const observer = new MutationObserver(() => {
+        if (attachSearchEdge()) observer.disconnect();
+      });
+      observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
+      setTimeout(() => observer.disconnect(), 4000);
+      return;
+    }
+
     const script = document.querySelector('script[data-cc-edge-profile]');
     // Homepage exception requested by the owner: retain both original header controls.
     if (script?.dataset.ccEdgeProfile === 'home') {
@@ -535,31 +565,6 @@
     if (!script?.dataset.ccEdgeProfile || script?.dataset.ccEdgeProfile === 'ecosystem' || script?.dataset.ccEdgeProfile === 'wioletta') {
       if (document.getElementById('cc-mobile-edge-dialog') || document.querySelector('dialog.cc-mobile-edge')) return;
       const isWioletta = /^\/wioletta/i.test(location.pathname);
-      const isSearch = /^\/(?:wyszukiwarka|szukaj)/i.test(location.pathname) || !!document.getElementById('ccOmniOverlay');
-      if (isSearch) {
-        const attachSearchEdge = () => {
-          const btn = document.getElementById('ccOmniEdgeBtn');
-          if (btn && !btn.dataset.ccEdgeMounted) {
-            mount({
-              legacy: btn,
-              placement: btn,
-              trigger: btn,
-              hideLegacy: false,
-              profile: 'search',
-              items: commonItems
-            });
-            return true;
-          }
-          return false;
-        };
-        if (attachSearchEdge()) return;
-        const observer = new MutationObserver(() => {
-          if (attachSearchEdge()) observer.disconnect();
-        });
-        observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
-        setTimeout(() => observer.disconnect(), 4000);
-        return;
-      }
       const items = isWioletta ? [
         ['home','Strona główna','/'],
         ['book','Pardon, Czy To Miłość? — Powieść','/Wioletta'],
