@@ -70,6 +70,21 @@ console.log('PL Radio Btn:', plRadioBtnText);
 if (plSupportHref !== 'https://zrzutka.pl/rs4g4v') throw new Error('PL Support link mismatch');
 if (plAudioSrc !== 'https://stream.zeno.fm/umej2cuqncluv') throw new Error('PL Audio stream mismatch');
 
+// Verify 4 Audit Corrections in PL
+const plPoemCaption = await testPage.$eval('.gw-poem-caption', el => el.textContent.trim());
+console.log('PL Poem Caption:', plPoemCaption);
+if (!plPoemCaption.includes('Fragment autorskiego utworu przeznaczonego na przyszły album')) {
+  throw new Error('PL Poem Caption mismatch: ' + plPoemCaption);
+}
+const plPremiereSub = await testPage.$eval('.gw-premiere-subtitle', el => el.textContent.trim());
+console.log('PL Premiere Subtitle:', plPremiereSub);
+if (!plPremiereSub.includes('Planowana premiera radiowa') || !plPremiereSub.includes('uzależniona od ostatecznego zatwierdzenia')) {
+  throw new Error('PL Premiere Subtitle mismatch: ' + plPremiereSub);
+}
+const plRobots = await testPage.$eval('meta[name="robots"]', el => el.content);
+console.log('PL Robots:', plRobots);
+if (plRobots !== 'noindex, nofollow') throw new Error('PL Robots mismatch: ' + plRobots);
+
 await testPage.goto('http://127.0.0.1:8089/Welch/en/');
 const enSupportHref = await testPage.$eval('.gw-support-card a', el => el.href);
 const enAudioSrc = await testPage.$eval('#gwGlobalAudio source', el => el.src);
@@ -79,6 +94,21 @@ console.log('EN Audio Src:', enAudioSrc);
 console.log('EN Radio Btn:', enRadioBtnText);
 if (enSupportHref !== 'https://revolut.me/christianculture') throw new Error('EN Support link mismatch: expected https://revolut.me/christianculture');
 if (enAudioSrc !== 'https://stream.zeno.fm/umej2cuqncluv') throw new Error('EN Audio stream mismatch: expected https://stream.zeno.fm/umej2cuqncluv');
+
+// Verify 4 Audit Corrections in EN
+const enPoemCaption = await testPage.$eval('.gw-poem-caption', el => el.textContent.trim());
+console.log('EN Poem Caption:', enPoemCaption);
+if (!enPoemCaption.includes('Excerpt from an original song intended for a future album')) {
+  throw new Error('EN Poem Caption mismatch: ' + enPoemCaption);
+}
+const enPremiereSub = await testPage.$eval('.gw-premiere-subtitle', el => el.textContent.trim());
+console.log('EN Premiere Subtitle:', enPremiereSub);
+if (!enPremiereSub.includes('Planned radio premiere') || !enPremiereSub.includes('subject to final broadcasting approval')) {
+  throw new Error('EN Premiere Subtitle mismatch: ' + enPremiereSub);
+}
+const enRobots = await testPage.$eval('meta[name="robots"]', el => el.content);
+console.log('EN Robots:', enRobots);
+if (enRobots !== 'noindex, nofollow') throw new Error('EN Robots mismatch: ' + enRobots);
 
 // Capture screenshot scrolled to radio player & section
 await testPage.evaluate(() => document.getElementById('gwRadioBar').scrollIntoView());

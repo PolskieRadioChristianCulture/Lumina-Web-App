@@ -42,8 +42,8 @@ export const I18N = {
     'A New Bible Karaoke Initiative for the World', // 39
     'Featured Christian Artists & Showcases', // 40
     'Explore Artist Showcase', // 41
-    'Upcoming Radio Premiere', // 42
-    'World War You — Radio Premiere Nov 20, 2026', // 43
+    'Planned Radio Premiere', // 42
+    'World War You — Planned Premiere Nov 20, 2026', // 43
     'Artists' // 44
   ],
   pl: [
@@ -89,8 +89,8 @@ export const I18N = {
     'Nowa inicjatywa Biblijnego Karaoke dla Świata',
     'Wyróżnieni Twórcy i Świadectwa',
     'Otwórz Wizytówkę i Świadectwo',
-    'Nadchodząca Premiera Radiowa',
-    'World War You — Premiera Radiowa 20.11.2026',
+    'Planowana Premiera Radiowa',
+    'World War You — Planowana Premiera 20.11.2026',
     'Twórcy'
   ],
   es: [
