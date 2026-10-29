@@ -23,6 +23,105 @@
     arrowUp: 'M12 19V5M5 12l7-7 7 7',
     yis: 'M6 4l6 8 6-8M12 12v8',
   };
+
+  const labels = {
+    pl: {
+      home: 'Strona główna',
+      users: 'LUMINA — społeczność',
+      board: 'Tablica LUMINA',
+      chat: 'LUMI Messenger',
+      user: 'Konto i logowanie LUMINA',
+      news: 'CCN News',
+      book: 'Moja Biblia',
+      study: 'Akademia Biblijna',
+      calendar: 'HOLOS — planer',
+      play: 'Kino VOD',
+      yis: 'Your Imagination Studio (YIS)',
+      search: 'Szukaj w ekosystemie',
+      close: 'Zamknij panel nawigacji',
+      open: 'Otwórz panel nawigacji',
+      star: 'Dodaj tę stronę do Ulubionych',
+      starActive: 'Usuń tę stronę z Ulubionych',
+      info: 'Informacje o projekcie',
+      menu: 'Pełne menu — wszystkie funkcje',
+      theme: 'Przełącz motyw',
+      themeLight: 'Przełącz na motyw ciemny',
+      themeDark: 'Przełącz na motyw jasny',
+      radioPlay: 'Włącz Radio CC na żywo',
+      radioStop: 'Zatrzymaj Radio CC',
+      scrollTop: 'Przewiń na górę strony',
+      navAria: 'Nawigacja Christian Culture',
+      shortcutsAria: 'Skróty ekosystemu'
+    },
+    en: {
+      home: 'Home',
+      users: 'LUMINA — Community',
+      board: 'LUMINA Board',
+      chat: 'LUMI Messenger',
+      user: 'LUMINA Account & Login',
+      news: 'CCN News',
+      book: 'My Bible',
+      study: 'Bible Academy',
+      calendar: 'HOLOS — Planner',
+      play: 'Cinema VOD',
+      yis: 'Your Imagination Studio (YIS)',
+      search: 'Search Ecosystem',
+      close: 'Close navigation panel',
+      open: 'Open navigation panel',
+      star: 'Add to favorites',
+      starActive: 'Remove from favorites',
+      info: 'About the project',
+      menu: 'Full menu — all features',
+      theme: 'Toggle theme',
+      themeLight: 'Switch to dark theme',
+      themeDark: 'Switch to light theme',
+      radioPlay: 'Play Radio CC live',
+      radioStop: 'Stop Radio CC',
+      scrollTop: 'Scroll to top',
+      navAria: 'Christian Culture Navigation',
+      shortcutsAria: 'Ecosystem shortcuts'
+    },
+    de: {
+      home: 'Startseite',
+      users: 'LUMINA — Gemeinschaft',
+      board: 'LUMINA Pinnwand',
+      chat: 'LUMI Messenger',
+      user: 'LUMINA Konto & Anmelden',
+      news: 'CCN News',
+      book: 'Meine Bibel',
+      study: 'Bibel-Akademie',
+      calendar: 'HOLOS — Planer',
+      play: 'Kino VOD',
+      yis: 'Your Imagination Studio (YIS)',
+      search: 'Im Ökosystem suchen',
+      close: 'Navigationspanel schließen',
+      open: 'Navigationspanel öffnen',
+      star: 'Zu Favoriten hinzufügen',
+      starActive: 'Aus Favoriten entfernen',
+      info: 'Über das Projekt',
+      menu: 'Vollständiges Menü — alle Funktionen',
+      theme: 'Design wechseln',
+      themeLight: 'Zu dunklem Design wechseln',
+      themeDark: 'Zu hellem Design wechseln',
+      radioPlay: 'Radio CC live starten',
+      radioStop: 'Radio CC anhalten',
+      scrollTop: 'Nach oben scrollen',
+      navAria: 'Christian Culture Navigation',
+      shortcutsAria: 'Ökosystem-Verknüpfungen'
+    }
+  };
+
+  function getLocale() {
+    return (window.EkoCCI18n && typeof window.EkoCCI18n.getLocale === 'function')
+      ? window.EkoCCI18n.getLocale()
+      : ((document.documentElement && document.documentElement.lang) || 'pl').slice(0, 2).toLowerCase();
+  }
+
+  function t(key, fallback) {
+    const loc = getLocale();
+    return labels[loc]?.[key] || labels.pl[key] || fallback || key;
+  }
+
   const icon = name => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     for (const [key,value] of Object.entries({viewBox:'0 0 24 24',fill:'none',stroke:'currentColor','stroke-width':'1.8','stroke-linecap':'round','stroke-linejoin':'round','aria-hidden':'true'})) svg.setAttribute(key,value);
@@ -36,7 +135,6 @@
     ['chat','LUMI Messenger','/mess'], ['news','CCN News','/news'],
     ['book','Moja Biblia','/mojabiblia'], ['study','Akademia Biblijna','/akademia'],
     ['calendar','HOLOS — planer','/holos'], ['play','Kino VOD','/vod'],
-    ['yis','Your Imagination Studio (YIS)','/yis'],
     ['search','Szukaj w ekosystemie','/szukaj'],
   ];
 
@@ -47,18 +145,19 @@
     dialog.id = 'cc-mobile-edge-dialog';
     dialog.className = 'cc-mobile-edge';
     dialog.dataset.profile = profile;
-    dialog.setAttribute('aria-label', profile === 'lumina' ? 'Nawigacja LUMINA i Christian Culture' : 'Nawigacja Christian Culture');
+    dialog.setAttribute('aria-label', profile === 'lumina' ? (getLocale() === 'en' ? 'LUMINA and Christian Culture Navigation' : (getLocale() === 'de' ? 'LUMINA und Christian Culture Navigation' : 'Nawigacja LUMINA i Christian Culture')) : t('navAria', 'Nawigacja Christian Culture'));
     const trigger = document.createElement('button');
     trigger.type = 'button';
     trigger.className = 'cc-mobile-edge-trigger';
     trigger.dataset.profile = profile;
-    trigger.setAttribute('aria-label','Otwórz panel nawigacji');
+    trigger.dataset.edgeKey = 'open';
+    trigger.setAttribute('aria-label', t('open', 'Otwórz panel nawigacji'));
     trigger.setAttribute('aria-haspopup','dialog');
     trigger.setAttribute('aria-controls',dialog.id);
     trigger.setAttribute('aria-expanded','false');
     trigger.append(icon('plus'));
     const nav = document.createElement('nav');
-    nav.setAttribute('aria-label','Skróty ekosystemu');
+    nav.setAttribute('aria-label', t('shortcutsAria', 'Skróty ekosystemu'));
     dialog.append(nav);
     let restoreOverflow = '', previousFocus = null, active = false, touch = null;
     function cleanup() {
@@ -71,11 +170,14 @@
     function close() { if (dialog.open) dialog.close(); cleanup(); }
     function button(name, label, onClick) {
       const b = document.createElement('button');
-      b.type = 'button'; b.setAttribute('aria-label',label); b.title = label;
+      const text = t(name, label);
+      b.type = 'button'; b.setAttribute('aria-label', text); b.title = text;
+      b.dataset.edgeKey = name;
       b.append(icon(name)); b.addEventListener('click',onClick); nav.append(b);
       return b;
     }
-    button('close','Zamknij panel nawigacji',close).autofocus = true;
+    const closeBtn = button('close','Zamknij panel nawigacji',close);
+    closeBtn.autofocus = true;
 
     // Reuse canonical LUMINA controllers; keep exact data-cc-edge-action anchors.
     let searchAction, themeAction, radioAction;
@@ -100,13 +202,13 @@
     function syncLuminaControls() {
       if (profile !== 'lumina') return;
       const searchReady = !!document.getElementById('mobileNavSearchBtn') && typeof window.toggleMobileNavbarSearch === 'function';
-      const themeReady = !!document.getElementById('luminaThemeSwitchBtn') && typeof window.toggleLuminaTheme === 'function';
+      const themeReady = !!document.getElementById('luminaThemeSwitchBtn') && (typeof window.toggleLuminaTheme === 'function' || typeof window.applyLuminaTheme === 'function');
       document.documentElement.classList.toggle('cc-edge-search-ready', searchReady);
       document.documentElement.classList.toggle('cc-edge-theme-ready', themeReady);
       if (searchAction) {
         const localSearch = searchReady && !document.body.classList.contains('user-is-guest');
         searchAction.hidden = !localSearch;
-        const globalSearch = nav.querySelector('a[href="/szukaj"]');
+        const globalSearch = nav.querySelector('a[href="/szukaj"], a[href="/wyszukiwarka"]');
         if (globalSearch) globalSearch.hidden = localSearch;
       }
       if (themeAction) {
@@ -132,8 +234,21 @@
         event.stopPropagation();
         if (typeof window.toggleLuminaTheme === 'function') {
           window.toggleLuminaTheme();
+        } else if (typeof window.applyLuminaTheme === 'function') {
+          const isLight = document.documentElement.getAttribute('data-lumina-theme') === 'light' || document.body.classList.contains('theme-lumina-light');
+          window.applyLuminaTheme(isLight ? 'dark' : 'light', true);
         } else {
-          document.getElementById('luminaThemeSwitchBtn')?.click();
+          const btn = document.getElementById('luminaThemeSwitchBtn');
+          if (btn) {
+            btn.click();
+          } else {
+            const isLight = document.documentElement.getAttribute('data-lumina-theme') === 'light' || document.body.classList.contains('theme-lumina-light');
+            const next = isLight ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-lumina-theme', next);
+            if (document.body) document.body.classList.toggle('theme-lumina-light', next === 'light');
+            try { localStorage.setItem('lumina_theme', next); } catch(e) {}
+            try { window.dispatchEvent(new CustomEvent('luminathemechange', { detail: { theme: next } })); } catch(e) {}
+          }
         }
         syncLuminaControls();
       });
@@ -164,10 +279,18 @@
       const url = new URL(href, location.origin);
       if (url.origin !== location.origin || !['https:','http:'].includes(url.protocol)) continue;
       const a = document.createElement('a');
+      const text = t(name, label);
       a.href = url.pathname + url.search + url.hash;
-      a.setAttribute('aria-label',label); a.title = label; a.append(icon(name));
+      a.setAttribute('aria-label', text); a.title = text; a.append(icon(name));
+      a.dataset.edgeKey = name;
       const targetPath = url.pathname.replace(/\.html$/, '').replace(/\/$/,'') || '/';
-      if ((current === targetPath || (current === '/tablica' && targetPath === '/lumina-tablica') || (current === '/lumina-tablica' && targetPath === '/tablica')) && !url.hash) {
+      const isMatch = (current === targetPath) ||
+        (targetPath === '/wyszukiwarka' && (current === '/szukaj' || current === '/wyszukiwarka')) ||
+        (targetPath === '/szukaj' && (current === '/wyszukiwarka' || current === '/szukaj')) ||
+        (targetPath === '/akademia' && current.startsWith('/akademia')) ||
+        (targetPath === '/vod' && (current === '/vod' || current === '/kino')) ||
+        ((current === '/tablica' && targetPath === '/lumina-tablica') || (current === '/lumina-tablica' && targetPath === '/tablica'));
+      if (isMatch && !url.hash) {
         a.setAttribute('aria-current','page');
       }
       if (url.pathname === '/mess') {
@@ -204,7 +327,7 @@
         if (revision !== favoriteRevision) return;
         favBtn.classList.toggle('is-active', !!isFav);
         favBtn.setAttribute('aria-pressed', String(!!isFav));
-        favBtn.title = isFav ? 'Usuń tę stronę z Ulubionych' : 'Dodaj tę stronę do Ulubionych';
+        favBtn.title = isFav ? t('starActive', 'Usuń tę stronę z Ulubionych') : t('star', 'Dodaj tę stronę do Ulubionych');
         favBtn.setAttribute('aria-label',favBtn.title);
       } catch { /* The canonical favorite controller retains its own error UI. */ }
     }
@@ -231,6 +354,28 @@
     const fullMenu = button('menu','Pełne menu — wszystkie funkcje',event => {
       event.stopPropagation(); close(); if (canUseFullMenu()) legacy.click();
     });
+
+    function applyTranslations() {
+      trigger.setAttribute('aria-label', t('open', 'Otwórz panel nawigacji'));
+      dialog.setAttribute('aria-label', profile === 'lumina' ? (getLocale() === 'en' ? 'LUMINA and Christian Culture Navigation' : (getLocale() === 'de' ? 'LUMINA und Christian Culture Navigation' : 'Nawigacja LUMINA i Christian Culture')) : t('navAria', 'Nawigacja Christian Culture'));
+      nav.setAttribute('aria-label', t('shortcutsAria', 'Skróty ekosystemu'));
+      nav.querySelectorAll('[data-edge-key]').forEach(el => {
+        const k = el.dataset.edgeKey;
+        let txt = t(k);
+        if (k === 'star') {
+          txt = el.classList.contains('is-active') ? t('starActive') : t('star');
+        } else if (k === 'radio') {
+          txt = el.classList.contains('is-playing') ? t('radioStop') : t('radioPlay');
+        }
+        if (txt) {
+          el.setAttribute('aria-label', txt);
+          el.title = txt;
+        }
+      });
+    }
+    document.addEventListener('ekocc:locale-changed', applyTranslations);
+    window.addEventListener('ekocc:locale-changed', applyTranslations);
+    applyTranslations();
     trigger.addEventListener('click',() => {
       if (!mobile.matches || dialog.open || document.querySelector('dialog[open]')) return;
       previousFocus = document.activeElement;
@@ -280,7 +425,11 @@
 
     mobile.addEventListener('change',() => { if (!mobile.matches) close(); });
     document.body.append(dialog);
-    placement.before(trigger);
+    if (placement.classList?.contains('nav-left') || placement.classList?.contains('header-left') || placement.classList?.contains('brand-wrap')) {
+      placement.prepend(trigger);
+    } else {
+      placement.before(trigger);
+    }
     if (placement && placement !== trigger && placement instanceof HTMLElement && !placement._ccEdgeBound) {
       placement._ccEdgeBound = true;
       placement.addEventListener('click', (e) => {
@@ -364,9 +513,9 @@
         return;
       }
 
-      const header = document.querySelector('.main-header, header, .topbar, .reader-nav, .nav, nav');
+      const header = document.querySelector('.main-header, header, .topbar, .reader-nav, .nav, nav, .cin-header, .ccw-fallback, main, body');
       if (header) {
-        const placement = header.firstElementChild || header;
+        const placement = header.querySelector('.nav-left, .header-left, .brand-wrap') || header.firstElementChild || header;
         mount({
           legacy: placement,
           placement: placement,

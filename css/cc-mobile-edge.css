@@ -119,16 +119,21 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   html.cc-edge-search-ready body #mobileNavSearchBtn,
   html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn { display:none!important; }
   
+  /* Zduplikowany dymek czatu ukryty przy obecności głównego przycisku czatu */
+  html body:has(#ccGlobalChatFab) .lumina-floating-chat-btn {
+    display:none!important;
+  }
+
   /* Czyste i równe rozmieszczenie pozostałych przycisków pływających na prawej krawędzi bez kolizji */
-  html body:has(#luminaThemeSwitchBtn) #backToTopBtn[data-cc-back-to-top] {
+  html body #backToTopBtn[data-cc-back-to-top] {
     bottom:calc(76px + env(safe-area-inset-bottom, 0px))!important;
     right:max(16px, env(safe-area-inset-right))!important;
   }
-  html body:has(#luminaThemeSwitchBtn) #ccGlobalChatFab {
+  html body :is(#ccGlobalChatFab, .lumina-floating-chat-btn) {
     bottom:calc(76px + env(safe-area-inset-bottom, 0px) + 64px)!important;
     right:max(16px, env(safe-area-inset-right))!important;
   }
-  html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized {
+  html body #luminaMiniPlayerContainer.minimized {
     bottom:calc(var(--cc-lumina-action-base,76px) + 120px)!important;
     right:max(16px, env(safe-area-inset-right))!important;
   }
@@ -149,6 +154,19 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
     width:44px; height:44px; min-width:44px; min-height:44px; padding:10px;
     box-sizing:border-box; border:1px solid #d4af3766; border-radius:50%;
     background:#101010; color:#e2cc9a; cursor:pointer; touch-action:manipulation;
+  }
+  body:has(#ccOmniOverlay.cc-open) .cc-mobile-edge-trigger,
+  .ccw-fallback .cc-mobile-edge-trigger {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    left: max(12px, env(safe-area-inset-left));
+    z-index: 1000001;
+  }
+  .netflix-navbar .cc-mobile-edge-trigger {
+    position: relative;
+    z-index: 10000;
+    margin-right: 8px;
+    flex-shrink: 0;
   }
   .cc-mobile-edge-trigger[data-profile="lumina"] {
     background:#0b1120;
