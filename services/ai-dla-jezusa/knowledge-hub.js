@@ -5,6 +5,7 @@
 // =========================================================================
 
 import searchIndexData from '../../data/cc-search-index.json' with { type: 'json' };
+import bibleRagData from '../../data/bible-rag-registry.json' with { type: 'json' };
 
 /**
  * Normalizacja polskich znaków diakrytycznych i małych liter do porównań
@@ -247,4 +248,65 @@ export function getTopicsCatalog(lang = 'pl') {
   return Object.entries(categoryCounts)
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count);
+}
+
+/**
+ * Wyszukiwanie licencjonowanego fragmentu Pisma Świętego (UBG)
+ */
+export function findScripture(reference = '', translation = 'UBG') {
+  const normRef = normalizeText(reference);
+  const items = bibleRagData.items || [];
+  
+  if (!normRef) return null;
+
+  // 1. Dopasowanie po dokładnych wersetach (np. J 3:16)
+  for (const item of items) {
+    if (item.verses && item.verses.some(v => normalizeText(v).includes(normRef) || normRef.includes(normalizeText(v)))) {
+      return {
+        reference: item.verses.join(', '),
+        translation: item.author || 'Uwspółcześniona Biblia Gdańska (UBG)',
+        license: item.license || 'UBG_AUTHORIZED',
+        topic: item.topic || 'Biblia',
+        text: item.text,
+        canonical_url: item.url || 'https://polskieradio.cc/mojabiblia'
+      };
+    }
+  }
+
+  // 2. Dopasowanie po tytule
+  for (const item of items) {
+    if (normalizeText(item.title).includes(normRef)) {
+      return {
+        reference: (item.verses && item.verses.join(', ')) || item.title,
+        translation: item.author || 'Uwspółcześniona Biblia Gdańska (UBG)',
+        license: item.license || 'UBG_AUTHORIZED',
+        topic: item.topic || 'Biblia',
+        text: item.text,
+        canonical_url: item.url || 'https://polskieradio.cc/mojabiblia'
+      };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Oficjalna polityka źródeł i zasad redakcyjnych (Sola Scriptura & Zero QA)
+ */
+export function getSourcePolicy() {
+  return {
+    doctrine: "Sola Scriptura",
+    canonical_bible_translation: "Uwspółcześniona Biblia Gdańska (UBG)",
+    support_tool: "MojaBiblia CC (polskieradio.cc/mojabiblia)",
+    principles: [
+      "Pismo Święte jest ostatecznym autorytetem wiary i życia.",
+      "Kategoryczny zakaz fabrykowania wersetów, autorów, dat i cytatów.",
+      "Ścisłe rozróżnienie literalnego tekstu Pisma od komentarzy, tradycji i publicystyki.",
+      "Kategoryczny zakaz podszywania się pod Jezusa Chrystusa lub udawania głosu Boga.",
+      "Standard ZERO COST — publiczne wyszukiwanie i serwer MCP działają bezpłatnie, bez opłat modelowych po stronie misji.",
+      "Prawo autorskie i licencje: teksty cytowane są wyłącznie zgodnie z licencją UBG i prawami autorskimi Christian Culture."
+    ],
+    version: "1.0.0",
+    published_by: "Christian Culture / EkoCC"
+  };
 }
