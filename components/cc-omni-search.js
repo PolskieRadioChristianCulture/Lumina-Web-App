@@ -4053,6 +4053,7 @@
       .cc-omni-toplink,
       .cc-omni-apps-btn,
       .cc-omni-radio,
+      .cc-omni-edge-btn,
       #ccOmniOverlay #ccTopBarFavBtn,
       #ccOmniOverlay .cc-topbar-fav-btn {
         width: 44px;
@@ -4077,6 +4078,7 @@
       .cc-omni-toplink:hover, .cc-omni-toplink:focus-visible,
       .cc-omni-apps-btn:hover, .cc-omni-apps-btn:focus-visible,
       .cc-omni-radio:hover, .cc-omni-radio:focus-visible,
+      .cc-omni-edge-btn:hover, .cc-omni-edge-btn:focus-visible,
       #ccOmniOverlay #ccTopBarFavBtn:hover, #ccOmniOverlay #ccTopBarFavBtn:focus-visible {
         background: rgba(255, 255, 255, 0.12);
         color: #FF8C33;
@@ -4085,12 +4087,14 @@
       }
       .cc-omni-toplink:active,
       .cc-omni-apps-btn:active,
-      .cc-omni-radio:active {
+      .cc-omni-radio:active,
+      .cc-omni-edge-btn:active {
         transform: scale(0.95);
       }
       .cc-omni-toplink svg,
       .cc-omni-apps-btn svg,
       .cc-omni-radio svg,
+      .cc-omni-edge-btn svg,
       #ccOmniOverlay #ccTopBarFavBtn svg {
         width: 22px;
         height: 22px;
@@ -7529,12 +7533,30 @@
       }
       /* Trzy koła (Wszystko, PLAY, konto) z odstępem, żeby ich poświaty się nie stykały (L0 26.10.2026) */
       .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 10px; }
-      .cc-omni-topnav .cc-omni-radio,
+      .cc-omni-topnav .cc-omni-radio { margin-left: 16px; }
+      .cc-omni-topnav .cc-omni-edge-btn { margin-left: 6px; }
       .cc-omni-topnav .cc-omni-account { margin-left: 16px; }
       @media (max-width: 440px) {
-        .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 6px; }
-        .cc-omni-topnav .cc-omni-radio,
-        .cc-omni-topnav .cc-omni-account { margin-left: 12px; }
+        .cc-omni-top { padding-left: 8px !important; padding-right: 8px !important; }
+        .cc-omni-topnav a[href="/mess"],
+        .cc-omni-topnav a[href="/news"] {
+          display: none !important;
+        }
+        .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 4px; }
+        .cc-omni-topnav .cc-omni-radio { margin-left: 6px; }
+        .cc-omni-topnav .cc-omni-edge-btn { margin-left: 4px; }
+        .cc-omni-topnav .cc-omni-account { margin-left: 6px; }
+        .cc-omni-lang-mount .ekocc-lang-switcher { padding: 2px 4px; gap: 3px; }
+        .cc-omni-lang-mount .ekocc-lang-btn { min-width: 34px; height: 38px; min-height: 38px; padding: 0 4px; font-size: 0.76rem; }
+      }
+      @media (max-width: 340px) {
+        .cc-omni-top { padding-left: 4px !important; padding-right: 4px !important; }
+        .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 2px; }
+        .cc-omni-topnav .cc-omni-radio { margin-left: 4px; }
+        .cc-omni-topnav .cc-omni-edge-btn { margin-left: 2px; }
+        .cc-omni-topnav .cc-omni-account { margin-left: 4px; }
+        .cc-omni-lang-mount .ekocc-lang-switcher { padding: 1px 2px; gap: 2px; }
+        .cc-omni-lang-mount .ekocc-lang-btn { min-width: 28px; height: 36px; min-height: 36px; padding: 0 2px; font-size: 0.72rem; }
       }
       /* ── FAZA 3: AUTOKOREKTA LITERÓWEK & ERGONOMIA KCIUKA MOBILE ── */
       .cc-omni-autocorrect-banner {
@@ -7687,6 +7709,11 @@
               </svg>
               <svg class="cc-i-stop" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <rect x="5.5" y="5.5" width="13" height="13" rx="2.5"/>
+              </svg>
+            </button>
+            <button type="button" id="ccOmniEdgeBtn" class="cc-omni-toplink cc-omni-edge-btn cc-mobile-edge-trigger" data-profile="search" data-edge-key="open" aria-label="Otwórz panel nawigacji EkoCC" aria-haspopup="dialog" aria-controls="cc-mobile-edge-dialog" aria-expanded="false" title="Nawigacja ekosystemu Christian Culture">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+                <path d="M12 5v14M5 12h14"/>
               </svg>
             </button>
             <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA" title="Twoje konto LUMINA">
@@ -8024,6 +8051,20 @@ ${isStandalonePage ? '' : `
     }
 
     // PLAY/STOP Radia CC: wspólny odtwarzacz ekosystemu (cc-chat-radio.js); start liczy się do /milion (cc-radio-milion.js)
+    // Przycisk + obok PLAY otwierający panel krawędziowy EkoCC (L0 29.10.2026)
+    const edgeBtn = document.getElementById('ccOmniEdgeBtn');
+    if (edgeBtn) {
+      edgeBtn.addEventListener('click', (e) => {
+        const dialog = document.getElementById('cc-mobile-edge-dialog');
+        if (dialog && !dialog.open && typeof dialog.showModal === 'function') {
+          e.stopPropagation();
+          dialog.showModal();
+          document.body.style.overflow = 'hidden';
+          edgeBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+
     const radioBtn = document.getElementById('ccOmniRadio');
     const loadScript = (src) => new Promise((resolve, reject) => {
       const s = document.createElement('script');

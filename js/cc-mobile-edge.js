@@ -138,7 +138,7 @@
     ['search','Szukaj w ekosystemie','/szukaj'],
   ];
 
-  function mount({legacy, placement = legacy, secondary = [], hideLegacy = true, profile = 'home', items = commonItems, canUseFullMenu = () => true}) {
+  function mount({legacy, placement = legacy, trigger: customTrigger, secondary = [], hideLegacy = true, profile = 'home', items = commonItems, canUseFullMenu = () => true}) {
     if (!(legacy instanceof HTMLElement) || !(placement instanceof HTMLElement) || legacy.dataset.ccEdgeMounted || document.getElementById('cc-mobile-edge-dialog') || typeof HTMLDialogElement === 'undefined' || !HTMLDialogElement.prototype.showModal) return null;
     const mobile = matchMedia('(max-width: 767px)');
     const dialog = document.createElement('dialog');
@@ -146,16 +146,18 @@
     dialog.className = 'cc-mobile-edge';
     dialog.dataset.profile = profile;
     dialog.setAttribute('aria-label', profile === 'lumina' ? (getLocale() === 'en' ? 'LUMINA and Christian Culture Navigation' : (getLocale() === 'de' ? 'LUMINA und Christian Culture Navigation' : 'Nawigacja LUMINA i Christian Culture')) : t('navAria', 'Nawigacja Christian Culture'));
-    const trigger = document.createElement('button');
-    trigger.type = 'button';
-    trigger.className = 'cc-mobile-edge-trigger';
+    const trigger = (customTrigger instanceof HTMLElement) ? customTrigger : document.createElement('button');
+    if (trigger !== customTrigger) {
+      trigger.type = 'button';
+      trigger.className = 'cc-mobile-edge-trigger';
+      trigger.append(icon('plus'));
+    }
     trigger.dataset.profile = profile;
     trigger.dataset.edgeKey = 'open';
     trigger.setAttribute('aria-label', t('open', 'Otwórz panel nawigacji'));
     trigger.setAttribute('aria-haspopup','dialog');
     trigger.setAttribute('aria-controls',dialog.id);
     trigger.setAttribute('aria-expanded','false');
-    trigger.append(icon('plus'));
     const nav = document.createElement('nav');
     nav.setAttribute('aria-label', t('shortcutsAria', 'Skróty ekosystemu'));
     dialog.append(nav);
@@ -377,7 +379,7 @@
     window.addEventListener('ekocc:locale-changed', applyTranslations);
     applyTranslations();
     trigger.addEventListener('click',() => {
-      if (!mobile.matches || dialog.open || document.querySelector('dialog[open]')) return;
+      if ((!mobile.matches && profile !== 'search') || dialog.open || document.querySelector('dialog[open]:not(#ccwMcpDialog)')) return;
       previousFocus = document.activeElement;
       fullMenu.hidden = !canUseFullMenu();
       syncLuminaControls();
@@ -423,12 +425,14 @@
       }
     }, { passive: true });
 
-    mobile.addEventListener('change',() => { if (!mobile.matches) close(); });
+    mobile.addEventListener('change',() => { if (!mobile.matches && profile !== 'search') close(); });
     document.body.append(dialog);
-    if (placement.classList?.contains('nav-left') || placement.classList?.contains('header-left') || placement.classList?.contains('brand-wrap')) {
-      placement.prepend(trigger);
-    } else {
-      placement.before(trigger);
+    if (!customTrigger) {
+      if (placement.classList?.contains('nav-left') || placement.classList?.contains('header-left') || placement.classList?.contains('brand-wrap')) {
+        placement.prepend(trigger);
+      } else {
+        placement.before(trigger);
+      }
     }
     if (placement && placement !== trigger && placement instanceof HTMLElement && !placement._ccEdgeBound) {
       placement._ccEdgeBound = true;
@@ -481,6 +485,31 @@
     if (!script?.dataset.ccEdgeProfile || script?.dataset.ccEdgeProfile === 'ecosystem' || script?.dataset.ccEdgeProfile === 'wioletta') {
       if (document.getElementById('cc-mobile-edge-dialog') || document.querySelector('dialog.cc-mobile-edge')) return;
       const isWioletta = /^\/wioletta/i.test(location.pathname);
+      const isSearch = /^\/(?:wyszukiwarka|szukaj)/i.test(location.pathname) || !!document.getElementById('ccOmniOverlay');
+      if (isSearch) {
+        const attachSearchEdge = () => {
+          const btn = document.getElementById('ccOmniEdgeBtn');
+          if (btn && !btn.dataset.ccEdgeMounted) {
+            mount({
+              legacy: btn,
+              placement: btn,
+              trigger: btn,
+              hideLegacy: false,
+              profile: 'search',
+              items: commonItems
+            });
+            return true;
+          }
+          return false;
+        };
+        if (attachSearchEdge()) return;
+        const observer = new MutationObserver(() => {
+          if (attachSearchEdge()) observer.disconnect();
+        });
+        observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
+        setTimeout(() => observer.disconnect(), 4000);
+        return;
+      }
       const items = isWioletta ? [
         ['home','Strona główna','/'],
         ['book','Pardon, Czy To Miłość? — Powieść','/Wioletta'],
