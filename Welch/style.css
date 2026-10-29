@@ -609,229 +609,325 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   SEKCJA 1: POZNAJ GERALDA / LEAD
+   SEKCJA 1: EDITORIAL STATEMENT (EKRAN 2)
+   Cinematic Editorial / Statement Artysty
    -------------------------------------------------------------------------- */
-.gw-intro-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 36px;
+.gw-statement-section {
+  padding: 100px 0 80px 0;
+  border-bottom: 1px solid var(--gw-border-card);
+  background: radial-gradient(circle at 50% 0%, rgba(196, 163, 90, 0.1) 0%, transparent 70%), var(--gw-bg);
+  text-align: center;
+}
+
+.gw-statement-container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.gw-statement-eyebrow {
+  display: inline-flex;
   align-items: center;
-}
-
-@media (min-width: 900px) {
-  .gw-intro-grid {
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 60px;
-  }
-}
-
-.gw-intro-text p.gw-lead {
-  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
-  font-weight: 500;
-  line-height: 1.55;
-  color: #fff;
-  margin-top: 0;
+  gap: 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gw-gold);
+  font-weight: 700;
   margin-bottom: 24px;
 }
 
-.gw-intro-text p {
+.gw-statement-eyebrow::before,
+.gw-statement-eyebrow::after {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background-color: var(--gw-gold);
+  opacity: 0.6;
+}
+
+.gw-statement-quote {
+  font-family: var(--gw-font-serif);
+  font-size: clamp(1.8rem, 3.8vw, 2.9rem);
+  font-style: italic;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.35;
+  margin: 0 0 28px 0;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.gw-statement-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.gw-statement-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gw-gold-light);
+}
+
+.gw-statement-role {
+  font-size: 0.92rem;
+  color: var(--gw-text-muted);
+  font-weight: 500;
+}
+
+.gw-statement-lead {
+  margin-top: 36px;
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: rgba(243, 229, 200, 0.85);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --------------------------------------------------------------------------
+   SEKCJA 2: AUTENTYCZNE ŚWIADECTWO / THE TESTIMONY
+   Literary Editorial Column (Długość wiersza 60-75 znaków, rytm reportażu)
+   -------------------------------------------------------------------------- */
+.gw-testimony-section {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--gw-border-card);
+  background-color: var(--gw-bg-surface);
+}
+
+.gw-testimony-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.gw-testimony-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.gw-testimony-kicker {
+  font-size: 0.8rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gw-gold);
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.gw-testimony-title {
+  margin: 0 0 16px 0;
+  font-size: clamp(2.1rem, 4.2vw, 3.2rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.gw-testimony-subtitle {
   font-size: 1.05rem;
   color: var(--gw-text-muted);
-  margin-bottom: 20px;
+  margin: 0;
+  font-style: italic;
 }
 
-.gw-intro-highlights {
-  background: var(--gw-bg-card);
-  border: 1px solid var(--gw-border);
-  border-radius: var(--gw-radius);
-  padding: 32px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+.gw-testimony-body {
+  font-size: 1.14rem;
+  line-height: 1.85;
+  color: rgba(243, 229, 200, 0.88);
 }
 
-.gw-highlight-item {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
+.gw-testimony-body p {
+  margin-bottom: 28px;
 }
-.gw-highlight-item:last-child {
+
+.gw-testimony-body p.gw-dropcap::first-letter {
+  font-family: var(--gw-font-serif);
+  float: left;
+  font-size: 3.6rem;
+  line-height: 0.8;
+  padding-top: 4px;
+  padding-right: 12px;
+  padding-bottom: 4px;
+  color: var(--gw-gold);
+  font-weight: 700;
+}
+
+/* Pudełko wiersza Geralda */
+.gw-poem-box {
+  margin: 40px 0;
+  padding: 28px 32px;
+  background: linear-gradient(135deg, rgba(196, 163, 90, 0.08) 0%, rgba(18, 23, 36, 0.6) 100%);
+  border-left: 3px solid var(--gw-gold);
+  border-radius: 0 var(--gw-radius-sm) var(--gw-radius-sm) 0;
+  font-family: var(--gw-font-serif);
+  font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+  font-style: italic;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+.gw-poem-box div {
+  margin-bottom: 4px;
+}
+.gw-poem-box div:last-child {
   margin-bottom: 0;
 }
 
-.gw-highlight-icon {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(196, 163, 90, 0.15);
-  color: var(--gw-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gw-highlight-content h4 {
-  margin: 0 0 6px 0;
-  color: #fff;
-  font-size: 1.1rem;
-}
-
-.gw-highlight-content p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--gw-text-muted);
-}
-
-/* --------------------------------------------------------------------------
-   SEKCJA 2: ŚWIADECTWO / TESTIMONY (REPORTAŻ)
-   -------------------------------------------------------------------------- */
-.gw-testimony-article {
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.gw-pullquote {
-  position: relative;
-  margin: 40px 0;
-  padding: 32px 36px;
-  background: linear-gradient(135deg, rgba(196, 163, 90, 0.08) 0%, rgba(18, 23, 36, 0.8) 100%);
-  border-left: 4px solid var(--gw-gold);
-  border-radius: 0 var(--gw-radius) var(--gw-radius) 0;
-}
-
-.gw-pullquote blockquote {
-  margin: 0;
-  font-family: var(--gw-font-serif);
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-  font-style: italic;
-  color: #fff;
-  line-height: 1.5;
-}
-
-.gw-pullquote cite {
-  display: block;
-  margin-top: 16px;
+.gw-poem-caption {
   font-family: var(--gw-font-main);
-  font-size: 0.9rem;
-  font-style: normal;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gw-gold);
-}
-
-.gw-narrative-text {
-  font-size: 1.12rem;
-  line-height: 1.8;
-  color: var(--gw-text-muted);
-}
-
-.gw-narrative-text p {
-  margin-bottom: 24px;
-}
-
-.gw-narrative-text p.gw-emphasis {
-  color: #fff;
-  font-size: 1.25rem;
+  margin-top: 14px;
+  font-style: normal;
   font-weight: 600;
 }
 
-.gw-testimony-meta {
-  margin-top: 48px;
-  padding-top: 24px;
+/* Podpis świadectwa */
+.gw-testimony-signoff {
+  margin-top: 50px;
+  padding-top: 32px;
   border-top: 1px solid var(--gw-border-card);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.88rem;
-  color: rgba(243, 229, 200, 0.6);
+  text-align: right;
+}
+
+.gw-testimony-sig-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.gw-testimony-sig-role {
+  font-size: 0.95rem;
+  color: var(--gw-gold);
+  margin-top: 4px;
+  font-style: italic;
 }
 
 /* --------------------------------------------------------------------------
-   SEKCJA 3: GALERIA / HISTORIA I TERAŹNIEJSZOŚĆ
+   SEKCJA 3: DWA CZASY / FOTOGRAFICZNY DIALOG (1980s VS WSPÓŁCZESNOŚĆ)
+   Autentyczne Archiwum vs Portret Współczesny
    -------------------------------------------------------------------------- */
-.gw-gallery-grid {
+.gw-eras-section {
+  padding: 100px 0;
+  border-bottom: 1px solid var(--gw-border-card);
+  background: var(--gw-bg);
+}
+
+.gw-eras-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 50px auto;
+}
+
+.gw-eras-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 28px;
+  gap: 36px;
+  align-items: stretch;
 }
 
 @media (min-width: 768px) {
-  .gw-gallery-grid {
+  .gw-eras-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
   }
 }
 
-.gw-gallery-card {
+.gw-era-card {
   background: var(--gw-bg-card);
   border: 1px solid var(--gw-border);
   border-radius: var(--gw-radius);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.gw-gallery-media {
+.gw-era-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gw-gold);
+}
+
+.gw-era-media {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: #000;
+  background: #020306;
 }
 
-.gw-gallery-media img {
+.gw-era-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
+  display: block;
   transition: transform 0.4s ease;
 }
 
-.gw-gallery-card:hover .gw-gallery-media img {
-  transform: scale(1.04);
+.gw-era-card:hover .gw-era-media img {
+  transform: scale(1.03);
 }
 
-.gw-gallery-badge {
+.gw-era-badge {
   position: absolute;
   top: 14px;
   left: 14px;
-  background: rgba(5, 7, 12, 0.8);
-  border: 1px solid var(--gw-border);
+  background: rgba(5, 7, 12, 0.85);
+  border: 1px solid var(--gw-gold);
   backdrop-filter: blur(8px);
-  padding: 4px 12px;
-  border-radius: 14px;
+  padding: 6px 14px;
+  border-radius: 16px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--gw-gold);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.gw-gallery-info {
-  padding: 24px;
-  flex-grow: 1;
+.gw-era-badge.is-archive {
+  border-color: #81c784;
+  color: #a5d6a7;
 }
 
-.gw-gallery-info h4 {
+.gw-era-info {
+  padding: 24px 28px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.gw-era-info h4 {
   margin: 0 0 8px 0;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   color: #fff;
 }
 
-.gw-gallery-info p {
+.gw-era-info p {
   margin: 0;
   font-size: 0.95rem;
   color: var(--gw-text-muted);
+  line-height: 1.6;
 }
 
-.gw-gallery-note {
-  margin-top: 32px;
-  padding: 16px 20px;
-  background: rgba(196, 163, 90, 0.06);
+.gw-disclaimer-box {
+  margin-top: 40px;
+  padding: 20px 24px;
+  background: rgba(196, 163, 90, 0.05);
   border: 1px dashed var(--gw-border);
   border-radius: var(--gw-radius-sm);
   font-size: 0.88rem;
   color: rgba(243, 229, 200, 0.8);
+  line-height: 1.65;
   text-align: center;
 }
 

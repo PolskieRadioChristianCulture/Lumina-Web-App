@@ -1579,6 +1579,166 @@ img {
   }
 }
 
+/* ==========================================================================
+   FEATURED CHRISTIAN ARTISTS & SHOWCASES
+   Standard: Christian Culture Network | EkoCC v2 PREMIUM
+   ========================================================================== */
+.artists-section {
+  margin-top: 48px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border-gold);
+}
+
+.artists-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 24px;
+}
+
+.artist-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding: 28px;
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  background: var(--bg-card);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+@media (min-width: 768px) {
+  .artist-card {
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+  }
+}
+
+.artist-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold-light);
+}
+
+.artist-img-col {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #020813;
+  aspect-ratio: 1 / 1;
+}
+
+.artist-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.artist-archival-cue {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(6, 18, 37, 0.88);
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-light);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.artist-content-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.artist-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.pill-track {
+  background: rgba(196, 163, 90, 0.15);
+  border: 1px solid rgba(196, 163, 90, 0.4);
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.artist-name {
+  margin: 0 0 6px 0;
+  font-size: 26px;
+  font-family: var(--font-serif);
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.artist-role {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold-primary);
+  margin-bottom: 12px;
+}
+
+.artist-desc {
+  font-size: 14.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0 0 18px 0;
+}
+
+.artist-meta-list {
+  font-size: 13px;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.artist-meta-list strong {
+  color: var(--text-primary);
+}
+
+.artist-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-outline-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-gold);
+  color: var(--gold-light);
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 40px;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-sm:hover {
+  background: rgba(196, 163, 90, 0.12);
+  border-color: var(--gold-light);
+  color: #fff;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

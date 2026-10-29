@@ -1,5 +1,5 @@
 import './style.css';
-import { CONFIG, SONGS, PLAYLISTS, LANGS } from './config.js';
+import { CONFIG, SONGS, PLAYLISTS, LANGS, ARTISTS } from './config.js';
 import { t } from './i18n.js';
 import { ARTICLES } from './articles.js';
 import { setupAuth, signIn, signOut } from './auth.js';
@@ -15,6 +15,15 @@ let player = null;
 let modalId = null;
 let playError = '';
 
+// Shared Anti-Double-Audio Coordination across CC Ecosystem
+window.addEventListener('cc:radio-start', (e) => {
+  if (e.detail?.source !== 'cc-global' && player && !player.paused) {
+    player.pause();
+    drawVisualizers();
+    renderPlayer();
+  }
+});
+
 const e = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const asset = name => `${import.meta.env.BASE_URL}assets/${name}`;
 const tr = i => e(t(lang, i));
@@ -22,6 +31,7 @@ const tr = i => e(t(lang, i));
 const nav = [
   ['#radio', 20],
   ['#bible', 21],
+  ['#artists', 44],
   ['#music', 22],
   ['#articles', 23],
   ['#about', 24]
@@ -82,6 +92,7 @@ function shell(content) {
           <button class="auth-btn" id="auth-btn">
             ${user ? `<span class="auth-avatar">👤</span> ${e(user.displayName || user.email || tr(10))}` : tr(9)}
           </button>
+          <button type="button" class="cc-mobile-edge-trigger" id="ccGlobalEdgeTrigger" aria-label="Open Christian Culture Ecosystem Menu" title="Menu nawigacji" style="width:38px;height:38px;border-radius:50%;border:1px solid var(--border-gold);color:var(--gold-light);display:inline-flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;margin-left:8px;background:rgba(196,163,90,0.12); cursor:pointer;">+</button>
         </div>
       </div>
     </header>
@@ -99,13 +110,16 @@ function shell(content) {
           <div class="footer-col">
             <div class="footer-heading">Network</div>
             <a href="https://polskieradio.cc" target="_blank" rel="noopener noreferrer">PolskieRadio.cc ↗</a>
+            <a href="/Welch/en/">Gerald Welch Showcase (EN)</a>
+            <a href="/Welch/pl/">Gerald Welch Świadectwo (PL)</a>
             <a href="https://polskieradio.cc/BiblijneUwielbienie" target="_blank" rel="noopener noreferrer">Biblijne Uwielbienie ↗</a>
             <a href="https://polskieradio.cc/mojabiblia" target="_blank" rel="noopener noreferrer">MojaBiblia ↗</a>
             <a href="https://polskieradio.cc/akademia" target="_blank" rel="noopener noreferrer">Akademia Biblijna ↗</a>
-            <a href="https://cclite.pl" target="_blank" rel="noopener noreferrer">CC Lite PWA ↗</a>
           </div>
           <div class="footer-col">
-            <div class="footer-heading">Media</div>
+            <div class="footer-heading">Media &amp; Artists</div>
+            <a href="/Global/#artists">Featured Artists</a>
+            <a href="/Welch/en/">Gerald Welch — WORLD WAR YOU</a>
             <a href="https://youtube.com/@personalitypluscc" target="_blank" rel="noopener noreferrer">Personality Plus ↗</a>
             <a href="/Global/#radio">Radio 24/7</a>
             <a href="/Global/#music">Music Releases</a>
@@ -171,6 +185,43 @@ function songCard(song) {
   `;
 }
 
+function artistCard(a) {
+  const isPl = lang === 'pl';
+  const role = isPl ? (a.rolePl || a.role) : a.role;
+  const tag = isPl ? (a.tagPl || a.tag) : a.tag;
+  const desc = isPl ? (a.descPl || a.desc) : a.desc;
+  const showcaseUrl = isPl ? a.urlPl : a.urlEn;
+  const isExternal = showcaseUrl.startsWith('http');
+
+  return `
+    <article class="card artist-card" id="artist-${e(a.id)}">
+      <div class="artist-img-col">
+        <img class="artist-avatar" src="${asset(a.image)}" alt="${e(a.name)}" width="360" height="360" loading="lazy"/>
+        ${a.archivalImage ? `<span class="artist-archival-cue" title="Contains original archival photos">1980s Archive</span>` : ''}
+      </div>
+      <div class="artist-content-col">
+        <div class="artist-tag-row">
+          <span class="pill-release">${e(tag)}</span>
+          ${a.featuredTrack ? `<span class="pill-track">Featured: ${e(a.featuredTrack)}</span>` : ''}
+        </div>
+        <h3 class="artist-name">${e(a.name)}</h3>
+        <div class="artist-role">${e(role)}</div>
+        <p class="artist-desc">${e(desc)}</p>
+        <div class="artist-meta-list">
+          <div><strong>Albums:</strong> ${e(a.albums.join(', '))}</div>
+          ${a.premiereDate ? `<div><strong>Premiere:</strong> November 20, 2026 (Radio CC Global)</div>` : ''}
+        </div>
+        <div class="artist-actions-row">
+          <a class="btn-gold" href="${e(showcaseUrl)}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+            ${isPl ? 'Otwórz Wizytówkę i Świadectwo →' : 'Explore Artist Showcase →'}
+          </a>
+          ${a.urlPl && !isPl ? `<a class="btn-outline-sm" href="${e(a.urlPl)}">Wersja PL ↗</a>` : ''}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
 function home() {
   const featuredArticle = ARTICLES[0];
   const latestArticles = ARTICLES.slice(1);
@@ -216,6 +267,22 @@ function home() {
                 'radio-bible-v2.webp',
                 tr(29)
               )}
+            </div>
+          </section>
+
+          <!-- FEATURED CHRISTIAN ARTISTS & SHOWCASES -->
+          <section class="artists-section" id="artists" aria-label="Featured Christian Artists & Showcases">
+            <div class="section-head-row">
+              <div>
+                <h2 class="section-heading">${tr(40)}</h2>
+                <p class="section-sub">Authentic testimonies, original Christian songwriting and global premieres.</p>
+              </div>
+              <a class="link-more" href="/Welch/en/">
+                Gerald Welch Showcase →
+              </a>
+            </div>
+            <div class="artists-grid">
+              ${ARTISTS.map(a => artistCard(a)).join('')}
             </div>
           </section>
 
@@ -488,6 +555,12 @@ function playStation(station) {
   }
 
   if (player.paused) {
+    // Shared anti-double-audio: notify ecosystem and pause any other audio elements
+    window.dispatchEvent(new CustomEvent('cc:radio-start', { detail: { source: 'cc-global', station } }));
+    document.querySelectorAll('audio').forEach(a => {
+      if (a !== player && !a.paused) a.pause();
+    });
+
     player.play().then(() => {
       playError = '';
       drawVisualizers();

@@ -130,6 +130,43 @@ export const PLAYLISTS = [
   }
 ];
 
+export const ARTISTS = [
+  {
+    id: 'gerald-welch',
+    name: 'Gerald Welch',
+    role: 'Christian Songwriter & Composer',
+    rolePl: 'Chrześcijański Kompozytor i Autor Pieśni',
+    urlEn: '/Welch/en/',
+    urlPl: '/Welch/pl/',
+    image: 'gerald-artist.webp',
+    archivalImage: 'gerald-1980s.webp',
+    featuredTrack: 'WORLD WAR YOU',
+    premiereDate: '2026-11-20',
+    tag: 'FEATURED ARTIST',
+    tagPl: 'WYRÓŻNIONY ARTYSTA',
+    desc: 'Faith journey forged across four decades. Author of debut album THE CALL, upcoming album SECOND WIND, and the spiritual warfare rock anthem WORLD WAR YOU.',
+    descPl: 'Autentyczna droga wiary trwająca ponad 40 lat. Twórca debiutanckiego albumu THE CALL, albumu SECOND WIND oraz zwiastuna radiowego WORLD WAR YOU.',
+    albums: ['THE CALL', 'SECOND WIND'],
+    singles: ['WORLD WAR YOU (ISRC QTA842643088)']
+  },
+  {
+    id: 'jj-beauvais',
+    name: 'JJ Beauvais',
+    role: 'Gospel & Worship Artist',
+    rolePl: 'Wokalista Gospel i Uwielbienia',
+    urlEn: 'https://youtu.be/5-MJ-rfXiYY',
+    urlPl: 'https://youtu.be/5-MJ-rfXiYY',
+    image: 'now-is-the-time.webp',
+    featuredTrack: 'Now Is The Time',
+    tag: 'CONTEMPORARY WORSHIP',
+    tagPl: 'WSPÓŁCZESNE UWIELBIENIE',
+    desc: 'Passionate worship music calling the global church to repentance, prayer and spiritual revival.',
+    descPl: 'Poruszające utwory uwielbienia wzywające do modlitwy, pokuty i duchowego przebudzenia.',
+    albums: ['Written In Heaven'],
+    singles: ['Now Is The Time']
+  }
+];
+
 export const LANGS = [
   ['en', 'English', 'EN', 'M0 0h640v480H0z'],
   ['pl', 'Polski', 'PL', ''],

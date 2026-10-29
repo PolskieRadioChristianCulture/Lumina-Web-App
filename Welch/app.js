@@ -6,12 +6,12 @@
 (() => {
   'use strict';
 
-  // 1. Odliczanie do oficjalnej premiery radiowej WORLD WAR YOU: 20 listopada 2026 00:00:00 UTC
-  const PREMIERE_DATE_UTC = Date.UTC(2026, 10, 20, 0, 0, 0); // Miesiąc 10 to listopad (0-indexed)
+  // 1. Odliczanie do oficjalnej premiery radiowej WORLD WAR YOU: 20 listopada 2026
+  const PREMIERE_DATE = new Date('2026-11-20T00:00:00Z').getTime();
 
   function updateCountdown() {
     const now = Date.now();
-    const diff = PREMIERE_DATE_UTC - now;
+    const diff = PREMIERE_DATE - now;
 
     const daysEl = document.getElementById('gwDays');
     const hoursEl = document.getElementById('gwHours');
@@ -124,6 +124,12 @@
     }
 
     if (audioEl.paused) {
+      // Shared anti-double-audio: notify ecosystem and pause any other radio elements
+      window.dispatchEvent(new CustomEvent('cc:radio-start', { detail: { source: 'welch-radio' } }));
+      document.querySelectorAll('audio').forEach(a => {
+        if (a !== audioEl && !a.paused) a.pause();
+      });
+
       if (statusEl) statusEl.textContent = labels.connecting;
       const playPromise = audioEl.play();
       if (playPromise !== undefined) {
@@ -167,6 +173,14 @@
     audioEl.addEventListener('error', () => {
       setPlayingState(false);
       if (statusEl) statusEl.textContent = labels.error;
+    });
+
+    // Listen for other audio activations across Christian Culture Network
+    window.addEventListener('cc:radio-start', (e) => {
+      if (e.detail?.source !== 'welch-radio' && !audioEl.paused) {
+        audioEl.pause();
+        setPlayingState(false);
+      }
     });
   }
 })();
