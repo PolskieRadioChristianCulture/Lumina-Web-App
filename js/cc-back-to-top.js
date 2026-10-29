@@ -183,6 +183,10 @@
       html body:has(#luminaThemeSwitchBtn) #ccChatFabBtn{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;max-width:48px!important;max-height:48px!important}
       html body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn{display:flex!important;bottom:calc(var(--cc-lumina-action-base) + 120px)!important;right:var(--cc-lumina-action-right)!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;box-sizing:border-box!important}
       html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized{display:flex!important;bottom:calc(var(--cc-lumina-action-base) + 180px)!important;right:var(--cc-lumina-action-right)!important;left:auto!important;width:48px!important;height:48px!important;box-sizing:border-box!important;transform:none!important}
+      @media (max-width:767px){
+        html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized{bottom:calc(var(--cc-lumina-action-base) + 120px)!important}
+      }
+      html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized{bottom:calc(var(--cc-lumina-action-base) + 120px)!important}
       html body:has(#luminaThemeSwitchBtn) #ccFabDockToggle,
       html body:has(#luminaThemeSwitchBtn):has(#ccGlobalChatFab) #luminaFloatingChatBtn{display:none!important}
       html body:has(#luminaThemeSwitchBtn):has(#directMessagesModal.open) #luminaMiniPlayerContainer,

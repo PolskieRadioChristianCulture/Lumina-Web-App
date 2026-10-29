@@ -33,6 +33,32 @@ body.theme-lumina-light .cc-mobile-edge[data-profile="lumina"] {
   box-shadow:8px 0 28px rgba(0,0,0,0.15), 2px 0 12px rgba(196,163,90,0.2);
 }
 
+/* SEARCH Theme - Wyszukiwarka Christian Culture Palette (L0 / START_TUTAJ 29.10.2026) */
+.cc-mobile-edge[data-profile="search"] {
+  --edge-bg:#080c14;
+  --edge-text:#EDE6D6;
+  --edge-accent:#C4A35A;
+  --edge-accent-hover:#FF7A00;
+  background:radial-gradient(circle at 50% 20%, #151b28 0%, #080c14 100%);
+  border-right:1.5px solid rgba(196, 163, 90, 0.35);
+  box-shadow:8px 0 32px rgba(0,0,0,0.85), 2px 0 16px rgba(196,163,90,0.2);
+}
+.cc-mobile-edge[data-profile="search"]::backdrop {
+  background:rgba(8, 12, 20, 0.8);
+  backdrop-filter:blur(4px);
+}
+.cc-mobile-edge[data-profile="search"] nav [aria-current="page"] {
+  color:#FF7A00;
+  background:rgba(255, 122, 0, 0.12);
+  border:1.5px solid #FF7A00;
+  border-radius:13px;
+}
+.cc-mobile-edge[data-profile="search"] nav :is(a, button):hover,
+.cc-mobile-edge[data-profile="search"] nav :is(a, button):focus-visible {
+  background:rgba(255, 255, 255, 0.12);
+  color:#FF8C33;
+}
+
 .cc-mobile-edge nav {
   display:flex; flex-direction:column; align-items:center; gap:4px;
   min-height:100%; box-sizing:border-box;
@@ -109,6 +135,40 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   pointer-events:none!important;
 }
 
+/* EkoCC Search Topbar Trigger (+ obok PLAY - L0 29.10.2026) */
+.cc-omni-topnav .cc-mobile-edge-trigger,
+#ccOmniEdgeBtn.cc-mobile-edge-trigger {
+  display:inline-flex !important;
+  position:static !important;
+  top:auto !important;
+  left:auto !important;
+  z-index:auto !important;
+  width:44px !important;
+  height:44px !important;
+  min-width:44px !important;
+  min-height:44px !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:50% !important;
+  background:transparent !important;
+  color:#FF7A00 !important;
+  box-shadow:none !important;
+  transform:none;
+}
+.cc-omni-topnav .cc-mobile-edge-trigger:hover,
+.cc-omni-topnav .cc-mobile-edge-trigger:focus-visible,
+#ccOmniEdgeBtn.cc-mobile-edge-trigger:hover,
+#ccOmniEdgeBtn.cc-mobile-edge-trigger:focus-visible {
+  background:rgba(255, 255, 255, 0.12) !important;
+  color:#FF8C33 !important;
+  transform:scale(1.08) !important;
+  outline:none !important;
+}
+.cc-omni-topnav .cc-mobile-edge-trigger:active,
+#ccOmniEdgeBtn.cc-mobile-edge-trigger:active {
+  transform:scale(0.95) !important;
+}
+
 @media (max-width:767px) {
   #mainHeader #hamburgerBtn { width:44px; height:44px; min-width:44px; min-height:44px; padding:12px 10px; box-sizing:border-box; }
   #mainHeader #actionsToggleBtn { width:56px!important; height:44px!important; min-width:56px; padding:0; }
@@ -130,11 +190,12 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
     right:max(16px, env(safe-area-inset-right))!important;
   }
   html body :is(#ccGlobalChatFab, .lumina-floating-chat-btn) {
-    bottom:calc(76px + env(safe-area-inset-bottom, 0px) + 64px)!important;
+    bottom:calc(var(--cc-lumina-action-base, calc(76px + env(safe-area-inset-bottom, 0px))) + 60px)!important;
     right:max(16px, env(safe-area-inset-right))!important;
   }
+  html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized,
   html body #luminaMiniPlayerContainer.minimized {
-    bottom:calc(var(--cc-lumina-action-base,76px) + 120px)!important;
+    bottom:calc(var(--cc-lumina-action-base, 76px) + 120px)!important;
     right:max(16px, env(safe-area-inset-right))!important;
   }
   
@@ -155,8 +216,8 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
     box-sizing:border-box; border:1px solid #d4af3766; border-radius:50%;
     background:#101010; color:#e2cc9a; cursor:pointer; touch-action:manipulation;
   }
-  body:has(#ccOmniOverlay.cc-open) .cc-mobile-edge-trigger,
-  .ccw-fallback .cc-mobile-edge-trigger {
+  body:has(#ccOmniOverlay.cc-open) .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn):not(.cc-omni-toplink),
+  .ccw-fallback .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn):not(.cc-omni-toplink) {
     position: fixed;
     top: max(12px, env(safe-area-inset-top));
     left: max(12px, env(safe-area-inset-left));
