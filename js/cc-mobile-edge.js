@@ -586,14 +586,18 @@
       if (burger) {
         const modalId = burger.getAttribute('data-modal');
         const legacyModal = modalId ? document.getElementById(modalId) : null;
+        const isWelch = burger.id === 'gwEdgeTriggerBtn' || burger.classList.contains('gw-edge-btn');
         mount({
           legacy: legacyModal || burger,
           placement: burger,
-          hideLegacy: false,
+          hideLegacy: isWelch ? true : false,
           profile: isWioletta ? 'wioletta' : 'ecosystem',
           items,
           canUseFullMenu: () => !!legacyModal
         });
+        if (isWelch) {
+          burger.remove();
+        }
         return;
       }
 

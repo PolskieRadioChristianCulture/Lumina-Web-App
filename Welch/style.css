@@ -209,9 +209,8 @@ body {
   outline-offset: 2px;
 }
 
-/* Przycisk krawędziowy + w belce */
-.gw-edge-trigger-wrap .cc-mobile-edge-trigger,
-.gw-edge-btn {
+/* Przycisk krawędziowy + w belce: zachowujemy wyłącznie jeden główny, złoty przycisk standardu EkoCC */
+.gw-hero-controls .cc-mobile-edge-trigger {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
@@ -220,19 +219,16 @@ body {
   min-width: 44px !important;
   min-height: 44px !important;
   border-radius: 50% !important;
-  border: 1px solid var(--gw-border) !important;
-  background: rgba(18, 23, 36, 0.6) !important;
-  backdrop-filter: blur(8px) !important;
-  color: var(--gw-orange) !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
 }
-.gw-edge-btn:hover {
-  transform: scale(1.08);
-  border-color: var(--gw-orange);
-  background: rgba(255, 122, 0, 0.12) !important;
+#gwEdgeTriggerBtn,
+.gw-hero-controls .gw-edge-btn {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  opacity: 0 !important;
 }
 
 /* Treść w Hero — Tylko Imię i Nazwisko */
@@ -249,6 +245,34 @@ body {
   .gw-hero-center {
     padding: 0 48px;
     margin-bottom: 4vh;
+  }
+}
+
+@media (max-width: 767px) {
+  .gw-hero {
+    justify-content: flex-start;
+  }
+  .gw-hero-topbar {
+    padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left));
+  }
+  .gw-hero-center {
+    /* Przesunięcie pionowe w dół: na ciemną koszulkę artysty, poniżej brody/szyi i powyżej DISCOVER */
+    margin-top: auto;
+    margin-bottom: clamp(18px, 4.2svh, 38px);
+    padding: 0 max(20px, env(safe-area-inset-left));
+  }
+  .gw-hero-title {
+    font-size: clamp(2.3rem, 8.8vw, 3.4rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  .gw-hero-eyebrow {
+    font-size: clamp(0.68rem, 2.2vw, 0.78rem);
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+  }
+  .gw-hero-bottom {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
   }
 }
 
