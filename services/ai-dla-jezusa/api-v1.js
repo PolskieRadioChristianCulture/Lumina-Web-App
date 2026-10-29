@@ -11,6 +11,7 @@ import {
   getTopicsCatalog
 } from './knowledge-hub.js';
 import { openApiSpec } from './openapi.js';
+import { handleMcpRequest } from './mcp-server.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -33,6 +34,11 @@ export async function handleAiDlaJezusaApi(request, env = {}) {
   // Obsługa CORS Preflight
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
+
+  // 0. Remote MCP Server (Etap 3): /api/ai-dla-jezusa/v1/mcp
+  if (path === '/api/ai-dla-jezusa/v1/mcp' || path.startsWith('/api/ai-dla-jezusa/v1/mcp/')) {
+    return handleMcpRequest(request, env);
   }
 
   // Tylko metoda GET w publicznym API odczytowym
