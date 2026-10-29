@@ -501,6 +501,8 @@
   window.CCMobileEdge = Object.freeze({mount});
 
   function autoInit() {
+    // Usuniecie jakiegokolwiek zduplikowanego pierwszego przycisku + w belce wyszukiwarki (L0 29.10.2026)
+    document.querySelectorAll('.cc-omni-topnav .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn)').forEach(el => el.remove());
     if (/^\/mess(?:\.html|\/|$)/i.test(location.pathname)) return;
     const script = document.querySelector('script[data-cc-edge-profile]');
     // Homepage exception requested by the owner: retain both original header controls.
@@ -590,7 +592,7 @@
         return;
       }
 
-      const header = document.querySelector('.main-header, header, .topbar, .reader-nav, .nav, nav, .cin-header, .ccw-fallback, main, body');
+      const header = document.querySelector('.main-header, header, .topbar, .reader-nav, .nav:not(.cc-omni-topnav), nav:not(.cc-omni-topnav), .cin-header, .ccw-fallback, main, body');
       if (header) {
         const placement = header.querySelector('.nav-left, .header-left, .brand-wrap') || header.firstElementChild || header;
         mount({

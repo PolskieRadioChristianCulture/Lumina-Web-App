@@ -135,9 +135,14 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   pointer-events:none!important;
 }
 
-/* EkoCC Search Topbar Trigger (+ obok PLAY - L0 29.10.2026) */
-.cc-omni-topnav .cc-mobile-edge-trigger,
-#ccOmniEdgeBtn.cc-mobile-edge-trigger {
+/* EkoCC Search Topbar Trigger: bezwzgledne usuniecie pierwszego zdublowanego + (L0 29.10.2026) */
+.cc-omni-topnav .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+#ccOmniEdgeBtn.cc-mobile-edge-trigger,
+.cc-omni-topnav #ccOmniEdgeBtn {
   display:inline-flex !important;
   position:static !important;
   top:auto !important;
@@ -155,8 +160,6 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   box-shadow:none !important;
   transform:none;
 }
-.cc-omni-topnav .cc-mobile-edge-trigger:hover,
-.cc-omni-topnav .cc-mobile-edge-trigger:focus-visible,
 #ccOmniEdgeBtn.cc-mobile-edge-trigger:hover,
 #ccOmniEdgeBtn.cc-mobile-edge-trigger:focus-visible {
   background:rgba(255, 255, 255, 0.12) !important;
@@ -164,7 +167,6 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   transform:scale(1.08) !important;
   outline:none !important;
 }
-.cc-omni-topnav .cc-mobile-edge-trigger:active,
 #ccOmniEdgeBtn.cc-mobile-edge-trigger:active {
   transform:scale(0.95) !important;
 }

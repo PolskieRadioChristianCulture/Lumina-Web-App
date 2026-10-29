@@ -8051,6 +8051,9 @@ ${isStandalonePage ? '' : `
 
     // PLAY/STOP Radia CC: wspólny odtwarzacz ekosystemu (cc-chat-radio.js); start liczy się do /milion (cc-radio-milion.js)
     // Przycisk + obok PLAY otwierający panel krawędziowy EkoCC (L0 29.10.2026)
+    // Usuniecie ewentualnego zduplikowanego pierwszego przycisku + (L0 29.10.2026)
+    overlay.querySelectorAll('.cc-omni-topnav .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn)').forEach(d => d.remove());
+
     const edgeBtn = document.getElementById('ccOmniEdgeBtn');
     if (edgeBtn) {
       edgeBtn.addEventListener('click', (e) => {
