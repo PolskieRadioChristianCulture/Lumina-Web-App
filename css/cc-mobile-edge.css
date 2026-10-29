@@ -33,30 +33,78 @@ body.theme-lumina-light .cc-mobile-edge[data-profile="lumina"] {
   box-shadow:8px 0 28px rgba(0,0,0,0.15), 2px 0 12px rgba(196,163,90,0.2);
 }
 
-/* SEARCH Theme - Wyszukiwarka Christian Culture Palette (L0 / START_TUTAJ 29.10.2026) */
+/* SEARCH Theme - Wyszukiwarka Christian Culture Palette & 2-Kolumnowy Panel (L0 / START_TUTAJ 29.10.2026) */
 .cc-mobile-edge[data-profile="search"] {
   --edge-bg:#080c14;
   --edge-text:#EDE6D6;
   --edge-accent:#C4A35A;
   --edge-accent-hover:#FF7A00;
+  width:122px;
+  max-width:90vw;
   background:radial-gradient(circle at 50% 20%, #151b28 0%, #080c14 100%);
   border-right:1.5px solid rgba(196, 163, 90, 0.35);
   box-shadow:8px 0 32px rgba(0,0,0,0.85), 2px 0 16px rgba(196,163,90,0.2);
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+.cc-mobile-edge[data-profile="search"]::-webkit-scrollbar {
+  display:none;
+  width:0;
+  height:0;
 }
 .cc-mobile-edge[data-profile="search"]::backdrop {
   background:rgba(8, 12, 20, 0.8);
   backdrop-filter:blur(4px);
+}
+.cc-mobile-edge[data-profile="search"] nav {
+  display:grid;
+  grid-template-columns:repeat(2, 44px);
+  gap:6px 8px;
+  justify-content:center;
+  align-content:start;
+  padding:max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));
+  box-sizing:border-box;
+  width:100%;
+}
+.cc-mobile-edge[data-profile="search"] nav button[data-edge-key="close"] {
+  grid-column:1 / -1;
+  justify-self:center;
+  margin-bottom:2px;
 }
 .cc-mobile-edge[data-profile="search"] nav [aria-current="page"] {
   color:#FF7A00;
   background:rgba(255, 122, 0, 0.12);
   border:1.5px solid #FF7A00;
   border-radius:13px;
+  box-shadow:0 0 10px rgba(255, 122, 0, 0.25);
 }
 .cc-mobile-edge[data-profile="search"] nav :is(a, button):hover,
 .cc-mobile-edge[data-profile="search"] nav :is(a, button):focus-visible {
   background:rgba(255, 255, 255, 0.12);
   color:#FF8C33;
+}
+.cc-mobile-edge[data-profile="search"] .cc-edge-lang-divider {
+  grid-column:1 / -1;
+  width:100%;
+  height:1px;
+  background:rgba(196, 163, 90, 0.25);
+  margin:6px 0 2px 0;
+}
+.cc-mobile-edge[data-profile="search"] .cc-edge-lang-group {
+  grid-column:1 / -1;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:6px 8px;
+  width:100%;
+}
+.cc-mobile-edge[data-profile="search"] .cc-edge-lang-btn {
+  width:44px !important;
+  height:44px !important;
+  flex-shrink:0;
 }
 
 .cc-mobile-edge nav {
