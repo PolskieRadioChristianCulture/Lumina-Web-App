@@ -116,12 +116,18 @@ test('EkoCC i18n Core — Browser smoke test in /wyszukiwarka', async () => {
     const placeholderDe = await omniInput.getAttribute('placeholder');
     assert.equal(placeholderDe, 'Christian Culture fragen…');
 
-    // Check active button in omni overlay
-    const activeBtnDe = pageDe.locator('#ccOmniOverlay button[data-ekocc-lang-choice="de"]');
+    // Open edge panel to access language selection (L0 29.10.2026: wybór języka w panelu krawędziowym)
+    const edgeBtn = pageDe.locator('#ccOmniEdgeBtn, .cc-mobile-edge-trigger');
+    await edgeBtn.click();
+    const edgeDialog = pageDe.locator('dialog.cc-mobile-edge');
+    await edgeDialog.waitFor({ state: 'visible', timeout: 5000 });
+
+    // Check active button in edge panel
+    const activeBtnDe = edgeDialog.locator('button[data-ekocc-lang-choice="de"]');
     assert.equal(await activeBtnDe.getAttribute('aria-pressed'), 'true');
 
     // Test 2: Touch targets: All language switcher buttons must be at least 44x44px
-    const buttons = await pageDe.$$('#ccOmniOverlay .ekocc-lang-btn');
+    const buttons = await pageDe.$$('dialog.cc-mobile-edge .ekocc-lang-btn');
     assert.equal(buttons.length, 3, 'Must render PL, EN, DE buttons');
     for (const btn of buttons) {
       const box = await btn.boundingBox();
@@ -129,7 +135,7 @@ test('EkoCC i18n Core — Browser smoke test in /wyszukiwarka', async () => {
     }
 
     // Test 3: Manual selection of Polish (PL) persists across reloads
-    const plBtn = pageDe.locator('#ccOmniOverlay button[data-ekocc-lang-choice="pl"]');
+    const plBtn = edgeDialog.locator('button[data-ekocc-lang-choice="pl"]');
     await plBtn.click();
     await pageDe.waitForTimeout(100);
 
@@ -150,7 +156,9 @@ test('EkoCC i18n Core — Browser smoke test in /wyszukiwarka', async () => {
     assert.equal(placeholderReload, 'Zapytaj Christian Culture…');
 
     // Test 4: Switching to English (EN) works instantly
-    const enBtn = pageDe.locator('#ccOmniOverlay button[data-ekocc-lang-choice="en"]');
+    await edgeBtn.click();
+    await edgeDialog.waitFor({ state: 'visible', timeout: 5000 });
+    const enBtn = edgeDialog.locator('button[data-ekocc-lang-choice="en"]');
     await enBtn.click();
     await pageDe.waitForTimeout(100);
 

@@ -244,3 +244,77 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
     box-shadow:0 2px 8px rgba(196,163,90,0.2);
   }
 }
+
+/* Wybór języka w panelu krawędziowym (Dyrektywa L0 29.10.2026) */
+.cc-edge-lang-divider {
+  width: 44px;
+  height: 1px;
+  background: rgba(196, 163, 90, 0.25);
+  margin: 8px 0 4px 0;
+  flex-shrink: 0;
+}
+.cc-edge-lang-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding-bottom: 8px;
+  flex-shrink: 0;
+}
+.cc-mobile-edge nav .cc-edge-lang-btn,
+.cc-edge-lang-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1.5px solid transparent !important;
+  border-radius: 13px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--edge-text, #EDE6D6) !important;
+  font-family: inherit !important;
+  font-size: 0.88rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
+}
+.cc-mobile-edge nav .cc-edge-lang-btn:hover,
+.cc-mobile-edge nav .cc-edge-lang-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: var(--edge-accent, #C4A35A) !important;
+  color: #FFFFFF !important;
+  transform: scale(1.05);
+  outline: none !important;
+}
+.cc-mobile-edge nav .cc-edge-lang-btn:active {
+  transform: scale(0.95);
+}
+.cc-mobile-edge nav .cc-edge-lang-btn.is-active,
+.cc-mobile-edge nav .cc-edge-lang-btn[aria-pressed="true"] {
+  background: rgba(255, 122, 0, 0.18) !important;
+  border: 1.5px solid var(--edge-accent-hover, #FF7A00) !important;
+  color: var(--edge-accent-hover, #FF7A00) !important;
+  font-weight: 800 !important;
+  box-shadow: 0 0 10px rgba(255, 122, 0, 0.25) !important;
+}
+
+/* Light mode support */
+html[data-theme="light"] .cc-mobile-edge nav .cc-edge-lang-btn,
+body[data-theme="light"] .cc-mobile-edge nav .cc-edge-lang-btn {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #1a1625 !important;
+}
+html[data-theme="light"] .cc-mobile-edge nav .cc-edge-lang-btn.is-active,
+body[data-theme="light"] .cc-mobile-edge nav .cc-edge-lang-btn[aria-pressed="true"] {
+  background: rgba(196, 163, 90, 0.2) !important;
+  border-color: #C4A35A !important;
+  color: #A08040 !important;
+}
