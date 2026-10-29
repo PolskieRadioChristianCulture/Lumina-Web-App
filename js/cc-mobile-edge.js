@@ -18,6 +18,9 @@
     heart: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z',
     info: 'M12 16v-4M12 8h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0',
     theme: 'M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z',
+    sun: 'M12 3v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M3 12h2M19 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z',
+    radio: 'M4.93 4.93a10 10 0 0 0 0 14.14M19.07 4.93a10 10 0 0 1 0 14.14M7.76 7.76a6 6 0 0 0 0 8.48M16.24 7.76a6 6 0 0 1 0 8.48M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z',
+    arrowUp: 'M12 19V5M5 12l7-7 7 7',
     yis: 'M6 4l6 8 6-8M12 12v8',
   };
   const icon = name => {
@@ -73,39 +76,88 @@
       return b;
     }
     button('close','Zamknij panel nawigacji',close).autofocus = true;
-    // Reuse the canonical LUMINA controllers, never a second search/theme engine.
-    let searchAction, themeAction;
+
+    // Reuse canonical LUMINA controllers; keep exact data-cc-edge-action anchors.
+    let searchAction, themeAction, radioAction;
+
+    function syncRadioControl() {
+      if (!radioAction) return;
+      const isPlaying = typeof window.LuminaMiniPlayer?.isPlaying === 'function' ? window.LuminaMiniPlayer.isPlaying() : false;
+      radioAction.classList.toggle('is-playing', !!isPlaying);
+      radioAction.title = isPlaying ? 'Zatrzymaj Radio CC' : 'Włącz Radio CC na żywo';
+      radioAction.setAttribute('aria-label', radioAction.title);
+      radioAction.setAttribute('aria-pressed', String(!!isPlaying));
+    }
+
+    function syncChatBadge() {
+      const chatLink = nav.querySelector('a[href="/mess"]');
+      if (!chatLink) return;
+      const unreadEl = document.querySelector('#ccChatFabBtn .lumi-badge, .lumi-fab-unread-badge, #ccGlobalChatBadge, .lumi-chat-badge');
+      const hasUnread = unreadEl && unreadEl.textContent.trim() !== '' && unreadEl.textContent.trim() !== '0';
+      chatLink.classList.toggle('has-unread', !!hasUnread);
+    }
+
     function syncLuminaControls() {
       if (profile !== 'lumina') return;
       const searchReady = !!document.getElementById('mobileNavSearchBtn') && typeof window.toggleMobileNavbarSearch === 'function';
       const themeReady = !!document.getElementById('luminaThemeSwitchBtn') && typeof window.toggleLuminaTheme === 'function';
       document.documentElement.classList.toggle('cc-edge-search-ready', searchReady);
       document.documentElement.classList.toggle('cc-edge-theme-ready', themeReady);
-      const localSearch = searchReady && !document.body.classList.contains('user-is-guest');
-      searchAction.hidden = !localSearch;
-      const globalSearch = nav.querySelector('a[href="/szukaj"]');
-      if (globalSearch) globalSearch.hidden = localSearch;
-      themeAction.hidden = !themeReady;
-      const light = document.documentElement.getAttribute('data-lumina-theme') === 'light';
-      themeAction.title = light ? 'Przełącz na motyw ciemny' : 'Przełącz na motyw jasny';
-      themeAction.setAttribute('aria-label', themeAction.title);
-      themeAction.setAttribute('aria-pressed', String(!light));
+      if (searchAction) {
+        const localSearch = searchReady && !document.body.classList.contains('user-is-guest');
+        searchAction.hidden = !localSearch;
+        const globalSearch = nav.querySelector('a[href="/szukaj"]');
+        if (globalSearch) globalSearch.hidden = localSearch;
+      }
+      if (themeAction) {
+        themeAction.hidden = !themeReady;
+        const light = document.documentElement.getAttribute('data-lumina-theme') === 'light' || document.body.classList.contains('theme-lumina-light');
+        themeAction.title = light ? 'Przełącz na motyw ciemny' : 'Przełącz na motyw jasny';
+        themeAction.setAttribute('aria-label', themeAction.title);
+        themeAction.setAttribute('aria-pressed', String(!light));
+        themeAction.replaceChildren(icon(light ? 'sun' : 'theme'));
+      }
+      syncRadioControl();
+      syncChatBadge();
     }
+
     if (profile === 'lumina') {
       searchAction = button('search','Szukaj na portalu LUMINA',event => {
         event.stopPropagation(); close();
         document.getElementById('mobileNavSearchBtn')?.click();
       });
       searchAction.dataset.ccEdgeAction = 'search';
+
       themeAction = button('theme','Przełącz motyw',event => {
         event.stopPropagation();
-        document.getElementById('luminaThemeSwitchBtn')?.click();
+        if (typeof window.toggleLuminaTheme === 'function') {
+          window.toggleLuminaTheme();
+        } else {
+          document.getElementById('luminaThemeSwitchBtn')?.click();
+        }
         syncLuminaControls();
       });
       themeAction.dataset.ccEdgeAction = 'theme';
+
+      radioAction = button('radio','Włącz Radio CC na żywo',event => {
+        event.stopPropagation();
+        if (window.LuminaMiniPlayer && typeof window.LuminaMiniPlayer.toggle === 'function') {
+          window.LuminaMiniPlayer.toggle(event);
+        } else {
+          const playBtn = document.getElementById('lmpBtnPlay') || document.getElementById('luminaMiniPlayerPlayBtn');
+          if (playBtn) playBtn.click();
+        }
+        syncRadioControl();
+      });
+      radioAction.dataset.ccEdgeAction = 'radio';
+
       window.addEventListener('luminathemechange',syncLuminaControls);
+      window.addEventListener('luminaplayerchange',syncRadioControl);
+      document.addEventListener('play',syncRadioControl,true);
+      document.addEventListener('pause',syncRadioControl,true);
       window.addEventListener('load',syncLuminaControls,{once:true});
     }
+
     const current = location.pathname.replace(/\.html$/, '').replace(/\/$/,'') || '/';
     for (const [name,label,href] of items) {
       // Only trusted same-origin routes/fragments; never executable URLs.
@@ -114,9 +166,34 @@
       const a = document.createElement('a');
       a.href = url.pathname + url.search + url.hash;
       a.setAttribute('aria-label',label); a.title = label; a.append(icon(name));
-      if (current === url.pathname && !url.hash) a.setAttribute('aria-current','page');
+      const targetPath = url.pathname.replace(/\.html$/, '').replace(/\/$/,'') || '/';
+      if ((current === targetPath || (current === '/tablica' && targetPath === '/lumina-tablica') || (current === '/lumina-tablica' && targetPath === '/tablica')) && !url.hash) {
+        a.setAttribute('aria-current','page');
+      }
+      if (url.pathname === '/mess') {
+        a.addEventListener('click', event => {
+          if (window.CCUnifiedChat && typeof window.CCUnifiedChat.open === 'function') {
+            event.preventDefault();
+            close();
+            window.CCUnifiedChat.open();
+          }
+        });
+      }
       a.addEventListener('click',close); nav.append(a);
     }
+
+    if (profile === 'lumina') {
+      const scrollTopBtn = button('arrowUp','Przewiń na górę strony',event => {
+        event.stopPropagation();
+        close();
+        window.scrollTo({
+          top: 0,
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+        });
+      });
+      scrollTopBtn.dataset.ccEdgeAction = 'scroll-top';
+    }
+
     let favoriteRevision = 0;
     async function syncFavorite() {
       const revision = ++favoriteRevision;
@@ -180,6 +257,27 @@
       const dx = e.changedTouches[0].clientX-start.x, dy = e.changedTouches[0].clientY-start.y;
       if (dx < -50 && Math.abs(dx) > Math.abs(dy)*1.5) close();
     },{passive:true});
+
+    // Left edge swipe right gesture to reveal edge panel
+    let startEdgeTouch = null;
+    document.addEventListener('touchstart', e => {
+      if (mobile.matches && !dialog.open && e.touches.length === 1 && e.touches[0].clientX <= 30) {
+        startEdgeTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      } else {
+        startEdgeTouch = null;
+      }
+    }, { passive: true });
+    document.addEventListener('touchcancel', () => { startEdgeTouch = null; });
+    document.addEventListener('touchend', e => {
+      if (!startEdgeTouch || !e.changedTouches.length) return;
+      const dx = e.changedTouches[0].clientX - startEdgeTouch.x;
+      const dy = e.changedTouches[0].clientY - startEdgeTouch.y;
+      startEdgeTouch = null;
+      if (dx > 45 && Math.abs(dx) > Math.abs(dy) * 1.2 && !dialog.open) {
+        trigger.click();
+      }
+    }, { passive: true });
+
     mobile.addEventListener('change',() => { if (!mobile.matches) close(); });
     document.body.append(dialog);
     placement.before(trigger);
@@ -200,18 +298,37 @@
     return {close, dialog, trigger};
   }
   window.CCMobileEdge = Object.freeze({mount});
-  const script = document.querySelector('script[data-cc-edge-profile]');
-  // Homepage exception requested by the owner: retain both original header controls.
-  if (script?.dataset.ccEdgeProfile === 'home') mount({legacy:document.getElementById('actionsToggleBtn'),placement:document.getElementById('hamburgerBtn'),hideLegacy:false});
-  // /mess is generated from lumina.html but retains its dedicated app navigation.
-  if (script?.dataset.ccEdgeProfile === 'lumina' && /^\/lumina(?:\.html)?\/?$/i.test(location.pathname)) {
-    const legacy = document.getElementById('topNavMenuBtn');
-    mount({legacy,placement:legacy?.closest('.nav-menu-wrapper'),profile:'lumina',canUseFullMenu:()=>!document.body.classList.contains('user-is-guest'),items:[
-      ['users','LUMINA — społeczność','/lumina'], ['board','Tablica LUMINA','/tablica'],
-      ['chat','LUMI Messenger','/mess'], ['user','Konto i logowanie LUMINA','/lumina-login'], ...commonItems.filter(item=>!['users','chat'].includes(item[0])),
-    ]});
-  } else if (!script?.dataset.ccEdgeProfile || script?.dataset.ccEdgeProfile === 'ecosystem' || script?.dataset.ccEdgeProfile === 'wioletta') {
-    function autoMount() {
+
+  function autoInit() {
+    const script = document.querySelector('script[data-cc-edge-profile]');
+    // Homepage exception requested by the owner: retain both original header controls.
+    if (script?.dataset.ccEdgeProfile === 'home') {
+      mount({legacy:document.getElementById('actionsToggleBtn'),placement:document.getElementById('hamburgerBtn'),hideLegacy:false});
+      return;
+    }
+    // LUMINA Portal surfaces (odkrywaj, tablica, profile)
+    const isLumina = script?.dataset.ccEdgeProfile === 'lumina' || (/lumina|tablica/i.test(location.pathname) && !/^\/mess/i.test(location.pathname));
+    if (isLumina) {
+      const legacy = document.getElementById('topNavMenuBtn');
+      if (legacy) {
+        mount({
+          legacy,
+          placement: legacy.closest('.nav-menu-wrapper') || legacy,
+          profile: 'lumina',
+          canUseFullMenu: () => !document.body.classList.contains('user-is-guest'),
+          items: [
+            ['users', 'LUMINA — społeczność', '/lumina'],
+            ['board', 'Tablica LUMINA', '/tablica'],
+            ['chat', 'LUMI Messenger', '/mess'],
+            ['user', 'Konto i logowanie LUMINA', '/lumina-login'],
+            ...commonItems.filter(item => !['users', 'chat'].includes(item[0])),
+          ]
+        });
+        return;
+      }
+    }
+    // Ecosystem fallbacks
+    if (!script?.dataset.ccEdgeProfile || script?.dataset.ccEdgeProfile === 'ecosystem' || script?.dataset.ccEdgeProfile === 'wioletta') {
       if (document.getElementById('cc-mobile-edge-dialog') || document.querySelector('dialog.cc-mobile-edge')) return;
       const isWioletta = /^\/wioletta/i.test(location.pathname);
       const items = isWioletta ? [
@@ -258,10 +375,11 @@
         });
       }
     }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', autoMount);
-    } else {
-      autoMount();
-    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', autoInit, { once: true });
+  } else {
+    autoInit();
   }
 })();

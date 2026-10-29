@@ -11,10 +11,28 @@
   box-shadow:8px 0 32px #0008; scrollbar-width:thin;
 }
 .cc-mobile-edge::backdrop { background:#0009; backdrop-filter:blur(2px); }
-.cc-mobile-edge[data-profile="lumina"] { --edge-bg:#0b1120; --edge-text:#f3e8ff; --edge-accent:#c084fc; }
-html[data-theme="light"] .cc-mobile-edge[data-profile="lumina"],body[data-theme="light"] .cc-mobile-edge[data-profile="lumina"] {
-  --edge-bg:#fffaff; --edge-text:#291a39; --edge-accent:#7e22ce;
+
+/* LUMINA Theme - Canonical Champagne Gold (#C4A35A) Palette */
+.cc-mobile-edge[data-profile="lumina"] {
+  --edge-bg:#0b1120;
+  --edge-text:#f5eedf;
+  --edge-accent:#C4A35A;
+  --edge-accent-hover:#D4B578;
+  border-right:1.5px solid #C4A35A;
+  box-shadow:8px 0 32px rgba(0,0,0,0.8), 2px 0 16px rgba(196,163,90,0.25);
 }
+html[data-theme="light"] .cc-mobile-edge[data-profile="lumina"],
+body[data-theme="light"] .cc-mobile-edge[data-profile="lumina"],
+html[data-lumina-theme="light"] .cc-mobile-edge[data-profile="lumina"],
+body.theme-lumina-light .cc-mobile-edge[data-profile="lumina"] {
+  --edge-bg:#fffaff;
+  --edge-text:#1a1625;
+  --edge-accent:#C4A35A;
+  --edge-accent-hover:#A08040;
+  border-right:1.5px solid #C4A35A;
+  box-shadow:8px 0 28px rgba(0,0,0,0.15), 2px 0 12px rgba(196,163,90,0.2);
+}
+
 .cc-mobile-edge nav {
   display:flex; flex-direction:column; align-items:center; gap:4px;
   min-height:100%; box-sizing:border-box;
@@ -33,13 +51,64 @@ html[data-theme="light"] .cc-mobile-edge[data-profile="lumina"],body[data-theme=
 .cc-mobile-edge nav [hidden] { display:none!important; }
 .cc-mobile-edge nav [data-cc-favorite-toggle].is-active { color:var(--edge-accent); }
 .cc-mobile-edge nav [data-cc-favorite-toggle].is-active svg { fill:var(--edge-accent); stroke:var(--edge-accent); }
-html[data-lumina-theme="light"] .cc-mobile-edge[data-profile="lumina"] {
-  --edge-bg:#fffaff; --edge-text:#291a39; --edge-accent:#7e22ce;
+
+/* Active Radio CC state */
+.cc-mobile-edge nav [data-cc-edge-action="radio"].is-playing {
+  color:var(--edge-accent,#C4A35A);
+  background:#ffffff18;
+  border:1.5px solid var(--edge-accent,#C4A35A);
+  position:relative;
 }
+.cc-mobile-edge nav [data-cc-edge-action="radio"].is-playing::after {
+  content:'';
+  position:absolute;
+  top:8px;
+  right:8px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 8px #22c55e;
+  animation:cc-edge-live-pulse 1.6s infinite ease-in-out;
+}
+@keyframes cc-edge-live-pulse {
+  0%,100% { transform:scale(1); opacity:1; }
+  50% { transform:scale(1.3); opacity:0.6; }
+}
+
+/* Chat Unread Badge indicator */
+.cc-mobile-edge nav a[href="/mess"].has-unread,
+.cc-mobile-edge nav [data-cc-edge-action="chat"].has-unread {
+  position:relative;
+}
+.cc-mobile-edge nav a[href="/mess"].has-unread::after,
+.cc-mobile-edge nav [data-cc-edge-action="chat"].has-unread::after {
+  content:'';
+  position:absolute;
+  top:8px;
+  right:8px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 6px #22c55e;
+}
+
 .cc-mobile-edge nav :is(a,button):focus-visible,.cc-mobile-edge-trigger:focus-visible { outline:2px solid var(--edge-accent,#d4af37); outline-offset:-2px; }
 body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edge,body.light-mode .cc-mobile-edge {
   --edge-bg:#fffdf7; --edge-text:#272016; --edge-accent:#76570b;
 }
+
+/* ── Eliminacja kolizji przycisków na krawędzi ekranu ── */
+#luminaScrollTop,
+.lumina-scroll-top,
+.lumina-scroll-top-btn {
+  display:none!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
 @media (max-width:767px) {
   #mainHeader #hamburgerBtn { width:44px; height:44px; min-width:44px; min-height:44px; padding:12px 10px; box-sizing:border-box; }
   #mainHeader #actionsToggleBtn { width:56px!important; height:44px!important; min-width:56px; padding:0; }
@@ -49,10 +118,21 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
   @media (max-width:359px) { #mainHeader #helplineFloat, #mainHeader .cc-header-lang-switcher { display:none!important; } }
   html.cc-edge-search-ready body #mobileNavSearchBtn,
   html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn { display:none!important; }
-  /* Close the gap left in the radio/chat dock by the relocated theme switch. */
-  html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized {
-    bottom:calc(var(--cc-lumina-action-base,76px) + 120px)!important;
+  
+  /* Czyste i równe rozmieszczenie pozostałych przycisków pływających na prawej krawędzi bez kolizji */
+  html body:has(#luminaThemeSwitchBtn) #backToTopBtn[data-cc-back-to-top] {
+    bottom:calc(76px + env(safe-area-inset-bottom, 0px))!important;
+    right:max(16px, env(safe-area-inset-right))!important;
   }
+  html body:has(#luminaThemeSwitchBtn) #ccGlobalChatFab {
+    bottom:calc(76px + env(safe-area-inset-bottom, 0px) + 64px)!important;
+    right:max(16px, env(safe-area-inset-right))!important;
+  }
+  html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized {
+    bottom:calc(76px + env(safe-area-inset-bottom, 0px) + 128px)!important;
+    right:max(16px, env(safe-area-inset-right))!important;
+  }
+  
   .cc-edge-legacy { display:none!important; }
   #ccTopBarFavBtn,
   .cc-topbar-fav-btn,
@@ -70,7 +150,18 @@ body[data-theme="light"] .cc-mobile-edge,html[data-theme="light"] .cc-mobile-edg
     box-sizing:border-box; border:1px solid #d4af3766; border-radius:50%;
     background:#101010; color:#e2cc9a; cursor:pointer; touch-action:manipulation;
   }
-  .cc-mobile-edge-trigger[data-profile="lumina"] { background:#171126; color:#e9d5ff; border-color:#a855f780; }
-  html[data-lumina-theme="light"] .cc-mobile-edge-trigger[data-profile="lumina"] { background:#fffaff; color:#7e22ce; border-color:#7e22ce66; }
-  html[data-theme="light"] .cc-mobile-edge-trigger[data-profile="lumina"] { background:#fffaff; color:#7e22ce; border-color:#7e22ce66; }
+  .cc-mobile-edge-trigger[data-profile="lumina"] {
+    background:#0b1120;
+    color:#C4A35A;
+    border-color:rgba(196,163,90,0.65);
+    box-shadow:0 0 12px rgba(196,163,90,0.3);
+  }
+  html[data-lumina-theme="light"] .cc-mobile-edge-trigger[data-profile="lumina"],
+  html[data-theme="light"] .cc-mobile-edge-trigger[data-profile="lumina"],
+  body.theme-lumina-light .cc-mobile-edge-trigger[data-profile="lumina"] {
+    background:#fffaff;
+    color:#A08040;
+    border-color:rgba(196,163,90,0.75);
+    box-shadow:0 2px 8px rgba(196,163,90,0.2);
+  }
 }
