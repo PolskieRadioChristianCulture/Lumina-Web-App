@@ -133,3 +133,94 @@ test('AI DLA JEZUSA [Etap 2]: Security, CORS & Method safety', async () => {
   assert.equal(prob.status, 405);
   assert.equal(prob.title, 'Metoda niedozwolona');
 });
+
+test('AI DLA JEZUSA [Etap 3]: Remote MCP Server protocol & tool execution', async () => {
+  // 1. initialize
+  const reqInit = new Request('https://polskieradio.cc/api/ai-dla-jezusa/v1/mcp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize', params: {} })
+  });
+  const resInit = await handleAiDlaJezusaApi(reqInit);
+  assert.equal(resInit.status, 200);
+  const initData = await resInit.json();
+  assert.equal(initData.jsonrpc, '2.0');
+  assert.equal(initData.id, 1);
+  assert.equal(initData.result.serverInfo.name, 'ai-dla-jezusa-mcp');
+  assert.equal(initData.result.protocolVersion, '2024-11-05');
+
+  // 2. tools/list
+  const reqList = new Request('https://polskieradio.cc/api/ai-dla-jezusa/v1/mcp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} })
+  });
+  const resList = await handleAiDlaJezusaApi(reqList);
+  assert.equal(resList.status, 200);
+  const listData = await resList.json();
+  const tools = listData.result.tools;
+  assert.ok(Array.isArray(tools));
+  assert.equal(tools.length, 5);
+  const toolNames = tools.map(t => t.name);
+  assert.ok(toolNames.includes('cc_search'));
+  assert.ok(toolNames.includes('cc_get_document'));
+  assert.ok(toolNames.includes('cc_find_scripture'));
+  assert.ok(toolNames.includes('cc_topics'));
+  assert.ok(toolNames.includes('cc_get_source_policy'));
+
+  // 3. tools/call: cc_find_scripture (J 3:16)
+  const reqCallScripture = new Request('https://polskieradio.cc/api/ai-dla-jezusa/v1/mcp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 3,
+      method: 'tools/call',
+      params: { name: 'cc_find_scripture', arguments: { reference: 'J 3:16' } }
+    })
+  });
+  const resCallScripture = await handleAiDlaJezusaApi(reqCallScripture);
+  assert.equal(resCallScripture.status, 200);
+  const callScriptureData = await resCallScripture.json();
+  const scriptureText = callScriptureData.result.content[0].text;
+  assert.ok(scriptureText.includes('Tak bowiem Bóg umiłował świat'));
+  assert.ok(scriptureText.includes('Uwspółcześniona Biblia Gdańska (UBG)'));
+
+  // 4. tools/call: cc_search
+  const reqCallSearch = new Request('https://polskieradio.cc/api/ai-dla-jezusa/v1/mcp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 4,
+      method: 'tools/call',
+      params: { name: 'cc_search', arguments: { query: 'Apokalipsa', limit: 3 } }
+    })
+  });
+  const resCallSearch = await handleAiDlaJezusaApi(reqCallSearch);
+  assert.equal(resCallSearch.status, 200);
+  const callSearchData = await resCallSearch.json();
+  assert.ok(callSearchData.result.content[0].text.includes('Apokalipsa'));
+
+  // 5. tools/call: cc_get_source_policy
+  const reqCallPolicy = new Request('https://polskieradio.cc/api/ai-dla-jezusa/v1/mcp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 5,
+      method: 'tools/call',
+      params: { name: 'cc_get_source_policy', arguments: {} }
+    })
+  });
+  const resCallPolicy = await handleAiDlaJezusaApi(reqCallPolicy);
+  assert.equal(resCallPolicy.status, 200);
+  const callPolicyData = await resCallPolicy.json();
+  assert.ok(callPolicyData.result.content[0].text.includes('Sola Scriptura'));
+
+  // 6. SSE Stream connection: GET /api/ai-dla-jezusa/v1/mcp/sse
+  const reqSse = new Request('https://polskieradio.cc/api/ai-dla-jezusa/v1/mcp/sse', { method: 'GET' });
+  const resSse = await handleAiDlaJezusaApi(reqSse);
+  assert.equal(resSse.status, 200);
+  assert.equal(resSse.headers.get('Content-Type'), 'text/event-stream');
+});

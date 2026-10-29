@@ -25,6 +25,24 @@ export const openApiSpec = {
     }
   ],
   paths: {
+    "/mcp": {
+      get: {
+        summary: "Remote MCP SSE Stream / Status",
+        description: "Inicjalizacja Server-Sent Events (SSE) lub odczyt statusu serwera MCP.",
+        operationId: "handleMcpSse",
+        responses: {
+          "200": { description: "Strumień SSE lub metadane MCP" }
+        }
+      },
+      post: {
+        summary: "Remote MCP Server (JSON-RPC 2.0)",
+        description: "Punkt wejściowy protokołu Model Context Protocol (2024-11-05). Udostępnia odczytowe narzędzia cc_search, cc_get_document, cc_find_scripture, cc_topics, cc_get_source_policy.",
+        operationId: "handleMcp",
+        responses: {
+          "200": { description: "Odpowiedź JSON-RPC 2.0" }
+        }
+      }
+    },
     "/health": {
       get: {
         summary: "Stan zdrowia usługi",
