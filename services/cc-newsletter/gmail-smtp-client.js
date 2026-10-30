@@ -20,12 +20,10 @@ function toBase64(str) {
 export const GMAIL_ACCOUNTS = {
   radio: {
     email: 'radiochristianculture@gmail.com',
-    defaultAppPass: 'kywlxtqifxfaooxc',
     displayName: 'Polskie Radio Christian Culture',
   },
   cctv: {
     email: 'polskiercctv@gmail.com',
-    defaultAppPass: 'cffhplyglpmdbmbc',
     displayName: 'CCTV24 Worship • Christian Culture',
   },
 };
@@ -34,8 +32,19 @@ export const GMAIL_ACCOUNTS = {
  * Wybór konta wysyłkowego w zależności od typu wiadomości i preferencji
  */
 export function resolveSenderAccount(env = {}, deliveryType = 'doi_confirm') {
-  const radioPass = env.GMAIL_RADIO_PASS || GMAIL_ACCOUNTS.radio.defaultAppPass;
-  const cctvPass = env.GMAIL_CCTV_PASS || GMAIL_ACCOUNTS.cctv.defaultAppPass;
+  // Hasła aplikacji WYŁĄCZNIE z zaszyfrowanych sekretów środowiska (Cloudflare Pages / process.env).
+  // Zakaz wpisywania haseł w kodzie (Konstytucja LUMINA, MUST NOT #8).
+  const radioPass = String(env.GMAIL_RADIO_PASS || '').trim();
+  const cctvPass = String(env.GMAIL_CCTV_PASS || '').trim();
+  if (!radioPass && !cctvPass) {
+    throw new Error('Gmail SMTP not configured: missing GMAIL_RADIO_PASS and GMAIL_CCTV_PASS secrets');
+  }
+  if (!radioPass || !cctvPass) {
+    // Tylko jedno konto skonfigurowane — używamy go jako jedynego nadawcy.
+    const acc = radioPass ? GMAIL_ACCOUNTS.radio : GMAIL_ACCOUNTS.cctv;
+    const only = { email: acc.email, pass: radioPass || cctvPass, name: acc.displayName };
+    return { primary: only, fallback: only };
+  }
 
   // Domyślnie transakcyjne (DOI, linki, powitania) idą z Radia
   if (['doi_confirm', 'welcome', 'manage_link'].includes(deliveryType)) {

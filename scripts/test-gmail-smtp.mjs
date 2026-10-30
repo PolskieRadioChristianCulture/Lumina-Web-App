@@ -85,7 +85,7 @@ async function run() {
   try {
     const res = await sendGmail({
       fromEmail: 'radiochristianculture@gmail.com',
-      appPassword: 'kywlxtqifxfaooxc',
+      appPassword: process.env.GMAIL_RADIO_PASS || (() => { throw new Error('Ustaw zmienną środowiskową GMAIL_RADIO_PASS'); })(),
       toEmail: 'polskiercctv@gmail.com',
       subject: 'Test Połączenia Newslettera EkoCC [OK]',
       text: 'Szczęść Boże! To jest testowy e-mail potwierdzający autoryzację i pełną gotowość wysyłki z konta Radia.',
