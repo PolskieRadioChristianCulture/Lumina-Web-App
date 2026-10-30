@@ -124,6 +124,16 @@ async function runCatchUp() {
   } catch (err) {
     log(`⚠️ Błąd odświeżania propozycji wyszukiwarki: ${err.message}`);
   }
+  // ─── 6. KONTROLA I WYKONANIE CYKLI LIVE CONTENT V3 (Trend Radar & CC Inside) ───
+  try {
+    log('📡 Sprawdzanie i nadrabianie cykli redakcyjnych LIVE CONTENT V3...');
+    execSync('node scripts/live_content_v3/orchestrate-cycles.mjs --auto', { cwd: ROOT, stdio: 'inherit' });
+    log('✅ Cykle redakcyjne LIVE CONTENT V3 zsynchronizowane.');
+  } catch (err) {
+    log('⚠️ Błąd orkiestracji cykli LIVE CONTENT V3: ' + err.message);
+  }
+
+
 
   log(`🏁 Zakończono skanowanie autostartu. Wykonano nadrzędnych akcji: ${actionsTaken}.`);
   log('═══════════════════════════════════════════════════════════════\n');

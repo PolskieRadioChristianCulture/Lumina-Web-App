@@ -319,9 +319,9 @@ const menuItems = [
     title: "CCN Współpraca — Dołącz do Misji Christian Culture, Wolontariat & Redakcja",
     category: "Narzędzia i misja",
     url: "https://polskieradio.cc/wspolpraca",
-    description: "Możliwości zaangażowania swoich talentów w misję CC: autorzy artykułów, lektorzy, montażyści wideo, programiści, tłumacze, graficy i wolontariusze infolinii modlitewnej.",
-    tags: ["współpraca", "wolontariat", "dołącz do nas", "służba", "rekrutacja", "redakcja", "pomoc w misji", "talenty dla boga", "zespół cc"],
-    featured: false
+    description: "Współpraca misyjna i partnerstwo w dziele CC: możliwości zaangażowania swoich talentów — autorzy artykułów, lektorzy, montażyści wideo, programiści, tłumacze, graficy i wolontariusze infolinii modlitewnej.",
+    tags: ["współpraca", "współpraca misyjna", "partnerstwo", "partnerstwo misyjne", "wolontariat", "dołącz do nas", "służba", "rekrutacja", "redakcja", "pomoc w misji", "talenty dla boga", "zespół cc"],
+    featured: true
   },
   {
     title: "TV Epafraz — Całodobowy Kanał Telewizyjny Zboru w Warszawie (Live 24/7)",

@@ -40,7 +40,13 @@
     "test:ccn-ecosystem": "node --test scripts/ccn-ecosystem-import.test.mjs scripts/ccn-static-release.test.mjs scripts/ccn-editorial-panel.test.mjs scripts/ccn-static-pages.test.mjs && node scripts/test-ccn-feed.mjs",
     "editorial:ccn": "node scripts/ccn-editorial-panel.mjs C:/CC-Private/CCN-Editorial",
     "test:presence-pilot": "node --test scripts/presence-pilot-runtime.test.mjs",
-    "update:search": "node scripts/update-search-recommendations.mjs"
+    "update:search": "node scripts/update-search-recommendations.mjs",
+    "cycle:radar": "node scripts/live_content_v3/trend-radar-15m.mjs",
+    "cycle:hourly": "node scripts/live_content_v3/topics-desk-hourly.mjs && node scripts/live_content_v3/cc-inside-hourly.mjs",
+    "cycle:daily": "node scripts/live_content_v3/daily-edition.mjs",
+    "cycle:weekly": "node scripts/live_content_v3/weekly-culture-review.mjs",
+    "cycle:qa": "node scripts/live_content_v3/editorial-qa.mjs",
+    "cycles:run": "node scripts/live_content_v3/orchestrate-cycles.mjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",
