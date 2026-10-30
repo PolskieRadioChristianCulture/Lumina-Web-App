@@ -85,6 +85,12 @@ async function run() {
     results.searchIndex = true;
     console.log('✅ Centralna wyszukiwarka /wyszukiwarka i /szukaj w 100% zsynchronizowana.');
 
+    // ── KROK 3b: DYNAMICZNE PROPOZYCJE WYSZUKIWARKI (POLECANE NA DZIŚ) ──
+    console.log('\n[3b/7] ✨ Aktualizacja tętniącego życiem okna wyszukiwarki (Polecane na dziś)...');
+    execSync('node scripts/update-search-recommendations.mjs', { cwd: ROOT, stdio: 'inherit' });
+    results.searchRecommendations = true;
+    console.log('✅ Dynamiczne okna propozycji /wyszukiwarka zsynchronizowane.');
+
     // ── KROK 4: BOTY AI & LLM DISCOVERY (llms.txt) ──
     console.log('\n[4/7] 🤖 Aktualizacja rejestru dla botów AI i asystentów LLM (llms.txt)...');
     const llmsPath = path.join(ROOT, 'llms.txt');

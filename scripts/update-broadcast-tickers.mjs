@@ -108,6 +108,10 @@ export async function updateBroadcastTickers() {
 
   tickerItems.push(
     {
+      topic: "WYSZUKIWARKA EKOSYSTEMU",
+      text: "Inteligentna wyszukiwarka treści, wersetów Pisma Świętego, lekcji i audycji: polskieradio.cc/wyszukiwarka (skrót: Ctrl+K)"
+    },
+    {
       topic: "AKADEMIA BIBLIJNA",
       text: `${latestLesson.title} — studiuj na polskieradio.cc/akademia`
     },

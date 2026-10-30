@@ -983,3 +983,19 @@ test('cc-omni-search.js: Biblia Intelligence CC — P6 contracts (Karty Dzieleni
   assert.ok(omniSearchCode.includes('.cc-share-tg:hover'), 'defines .cc-share-tg Telegram color');
 });
 
+test('cc-omni-search.js: Tętniąca Życiem Wyszukiwarka EkoCC — dynamiczne okna propozycji (POLECANE NA DZIŚ, LIVE badge, pule rotacji)', () => {
+  assert.ok(omniSearchCode.includes('Polecane na dziś'), 'header renamed to Polecane na dziś');
+  assert.ok(omniSearchCode.includes('cc-omni-live-badge'), 'defines cc-omni-live-badge');
+  assert.ok(omniSearchCode.includes('cc-live-pulse-dot'), 'defines cc-live-pulse-dot pulsing indicator');
+  assert.ok(omniSearchCode.includes('ccPulseLive'), 'defines animation ccPulseLive');
+  assert.ok(omniSearchCode.includes('cc-omni-featured-dots'), 'defines interactive pagination dots container');
+  assert.ok(omniSearchCode.includes('cc-omni-feat-dot'), 'defines individual interactive dots');
+  assert.ok(omniSearchCode.includes('cc-card-updating'), 'defines smooth card update transition');
+  assert.ok(omniSearchCode.includes('FEATURED_POOLS'), 'defines FEATURED_POOLS rotation data');
+  assert.ok(omniSearchCode.includes('rotateFeaturedCards'), 'defines rotateFeaturedCards logic');
+  assert.ok(omniSearchCode.includes('startFeaturedRotation'), 'defines startFeaturedRotation timer');
+  assert.ok(omniSearchCode.includes('stopFeaturedRotation'), 'defines stopFeaturedRotation cleanup');
+  assert.ok(omniSearchCode.includes('isFeaturedHovered'), 'pauses rotation on user hover/touch interaction');
+});
+
+

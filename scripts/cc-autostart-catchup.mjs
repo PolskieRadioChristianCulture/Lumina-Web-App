@@ -116,6 +116,15 @@ async function runCatchUp() {
     log(`⚠️ Błąd odświeżania pasków TV: ${err.message}`);
   }
 
+  // ─── 5. KONTROLA I ODŚWIEŻENIE OKNA I PROPOZYCJI /WYSZUKIWARKA ───
+  try {
+    log('🔍 Odświeżanie tętniącego życiem okna wyszukiwarki (Polecane na dziś)...');
+    execSync('node scripts/update-search-recommendations.mjs', { cwd: ROOT, stdio: 'inherit' });
+    log('✅ Dynamiczne propozycje /wyszukiwarka zsynchronizowane.');
+  } catch (err) {
+    log(`⚠️ Błąd odświeżania propozycji wyszukiwarki: ${err.message}`);
+  }
+
   log(`🏁 Zakończono skanowanie autostartu. Wykonano nadrzędnych akcji: ${actionsTaken}.`);
   log('═══════════════════════════════════════════════════════════════\n');
 }

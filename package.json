@@ -39,7 +39,8 @@
     "build:ccn-music": "node scripts/build-ccn-music.mjs",
     "test:ccn-ecosystem": "node --test scripts/ccn-ecosystem-import.test.mjs scripts/ccn-static-release.test.mjs scripts/ccn-editorial-panel.test.mjs scripts/ccn-static-pages.test.mjs && node scripts/test-ccn-feed.mjs",
     "editorial:ccn": "node scripts/ccn-editorial-panel.mjs C:/CC-Private/CCN-Editorial",
-    "test:presence-pilot": "node --test scripts/presence-pilot-runtime.test.mjs"
+    "test:presence-pilot": "node --test scripts/presence-pilot-runtime.test.mjs",
+    "update:search": "node scripts/update-search-recommendations.mjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",
