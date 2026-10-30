@@ -131,10 +131,6 @@ body.theme-lumina-light .cc-mobile-edge[data-profile="lumina"] {
   justify-self:center !important;
   margin-bottom:2px;
 }
-.cc-mobile-edge:not([data-profile="lumina"]) nav button[data-edge-key="menu"] {
-  grid-column:1 / -1 !important;
-  justify-self:center !important;
-}
 .cc-mobile-edge nav :is(a,button)[data-edge-key="heart"] {
   color:#FF7A00 !important;
 }

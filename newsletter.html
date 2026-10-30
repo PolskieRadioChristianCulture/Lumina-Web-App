@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>Newsletter EkoCC — Bądźmy w kontakcie | Christian Culture • PolskieRadio.cc</title>
+  <meta name="description" content="Centralny Newsletter Ekosystemu Christian Culture (EkoCC). Wybierz interesujące Cię dziedziny: Nowości EkoCC, Muzyka & Radio, Biblia & Akademia, Literatura, Rodzina & Rozwój.">
+  <link rel="canonical" href="https://polskieradio.cc/newsletter">
+  <link rel="icon" type="image/png" href="/icon.png">
+  <link rel="stylesheet" href="/css/cc-mobile-edge.css?v=20261030_edge10">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07090F;
+      --surface: #0F1420;
+      --surface-soft: rgba(255, 255, 255, 0.04);
+      --gold: #C4A35A;
+      --orange: #FF7A00;
+      --orange-hover: #FF8C33;
+      --orange-active: #E66A00;
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+      --border: rgba(196, 163, 90, 0.32);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: radial-gradient(circle at 50% 0%, #171E31 0%, var(--bg) 55%);
+      color: var(--text);
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+    }
+    header.nl-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(7, 9, 15, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nl-topbar-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .nl-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      font-size: 0.98rem;
+      min-height: 44px;
+    }
+    .nl-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .nl-nav-link {
+      min-height: 44px;
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+    }
+    .nl-nav-link:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    main.nl-main {
+      max-width: 760px;
+      margin: 32px auto 72px;
+      padding: 0 16px;
+    }
+    .nl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: clamp(20px, 4vw, 36px);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
+    }
+    .nl-kicker {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    h1.nl-h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.55rem, 4vw, 2.15rem);
+      line-height: 1.25;
+    }
+    .nl-lead {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .nl-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 44px;
+      padding: 12px 24px;
+      border-radius: 14px;
+      border: none;
+      background: var(--orange);
+      color: #FFFFFF;
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nl-btn-primary:hover { background: var(--orange-hover); }
+    .nl-btn-primary:active { background: var(--orange-active); }
+    .nl-btn-danger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 24px;
+      border-radius: 14px;
+      border: 1px solid rgba(239, 68, 68, 0.55);
+      background: rgba(239, 68, 68, 0.16);
+      color: #FECACA;
+      font-size: 0.94rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .nl-status-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      font-size: 0.9rem;
+    }
+    .nl-admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin: 16px 0 24px;
+    }
+    .nl-stat-tile {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+    }
+    .nl-stat-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .nl-stat-lbl {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+    .nl-input, .nl-textarea {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(7, 9, 15, 0.85);
+      color: var(--text);
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+    }
+    .nl-textarea { min-height: 110px; font-family: inherit; }
+  </style>
+</head>
+<body>
+  <header class="nl-topbar">
+    <div class="nl-topbar-inner">
+      <div class="header-left" style="display:flex;align-items:center;gap:8px;">
+        <a class="nl-brand" href="/">✦ CHRISTIAN CULTURE • EkoCC</a>
+      </div>
+      <nav class="nl-nav-links" aria-label="Skróty powrotne">
+        <a class="nl-nav-link" href="/wyszukiwarka">Szukaj</a>
+        <a class="nl-nav-link" href="/privacy#newsletter">RODO i Prywatność</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="nl-main">
+    <!-- 1. Widok domyślny: Formularz zapisu i zarządzania (/newsletter) -->
+    <section class="nl-card" id="nlViewSubscribe">
+      <div id="nlInlineMount"></div>
+    </section>
+
+    <!-- 2. Widok potwierdzenia Double Opt-In (/newsletter/confirm?token=...) -->
+    <section class="nl-card" id="nlViewConfirm" hidden>
+      <span class="nl-kicker">Double Opt-In • Weryfikacja Zgody</span>
+      <h1 class="nl-h1">Potwierdź zapis na Newsletter EkoCC</h1>
+      <p class="nl-lead" id="nlConfirmDesc">
+        Weryfikujemy Twój jednorazowy link aktywacyjny. Aby chronić Cię przed automatycznymi skanerami pocztowymi, subskrypcja zostaje aktywowana dopiero po kliknięciu poniższego przycisku.
+      </p>
+      <div id="nlConfirmDetails" class="nl-status-box" style="margin-bottom:18px;">Sprawdzanie tokenu…</div>
+      <button type="button" class="nl-btn-primary" id="nlConfirmBtn" disabled>Potwierdzam zapis na Newsletter</button>
+    </section>
+
+    <!-- 3. Widok zarządzania preferencjami (/newsletter/manage?token=...) -->
+    <section class="nl-card" id="nlViewManage" hidden>
+      <span class="nl-kicker">Centrum Preferencji Subskrybenta</span>
+      <h1 class="nl-h1">Zarządzaj swoimi kategoriami tematycznymi</h1>
+      <p class="nl-lead" id="nlManageEmailInfo">Ładowanie aktualnych ustawień subskrypcji…</p>
+      <form id="nlManagePrefsForm">
+        <div id="nlManageTopicsList" style="margin-bottom:16px;"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button type="submit" class="nl-btn-primary" id="nlSavePrefsBtn">Zapisz wybrane kategorie</button>
+          <button type="button" class="nl-btn-danger" id="nlManageUnsubBtn">Wypisz się całkowicie (1-Click)</button>
+        </div>
+      </form>
+      <div id="nlManageStatus" class="nl-status-box" hidden></div>
+    </section>
+
+    <!-- 4. Widok wypisu 1-Click (/newsletter/unsubscribe?token=...) -->
+    <section class="nl-card" id="nlViewUnsubscribe" hidden>
+      <span class="nl-kicker">Wycofanie Zgody • Natychmiastowy Wypis</span>
+      <h1 class="nl-h1">Wypisz się z Newslettera EkoCC</h1>
+      <p class="nl-lead">
+        Kliknij poniższy przycisk, aby natychmiast i trwale wycofać zgodę na otrzymywanie newslettera. Operacja zatrzymuje wszelkie wysyłki.
+      </p>
+      <button type="button" class="nl-btn-danger" id="nlUnsubConfirmBtn">Potwierdzam wypis z Newslettera (1 kliknięciem)</button>
+      <div id="nlUnsubStatus" class="nl-status-box" hidden></div>
+    </section>
+
+    <!-- 5. Widok administracyjny (/newsletter/admin) -->
+    <section class="nl-card" id="nlViewAdmin" hidden>
+      <span class="nl-kicker">Panel Administracyjny RBAC • EkoCC Newsletter</span>
+      <h1 class="nl-h1">Zarządzanie Kampaniami i Zgodnością RODO</h1>
+      <div style="margin-bottom:16px;">
+        <label for="nlAdminSecretInput" style="display:block;font-size:0.82rem;font-weight:700;margin-bottom:6px;">Klucz autoryzacji administratora (X-Newsletter-Admin-Secret)</label>
+        <div style="display:flex;gap:8px;">
+          <input id="nlAdminSecretInput" class="nl-input" type="password" placeholder="Wprowadź klucz administratora…" style="margin-bottom:0;">
+          <button type="button" class="nl-btn-primary" id="nlAdminLoadBtn">Załaduj dane</button>
+        </div>
+      </div>
+      <div id="nlAdminContent" hidden>
+        <div class="nl-admin-grid" id="nlAdminStats"></div>
+        <h2 style="font-size:1.15rem;color:var(--gold);">Nowy Szkic Kampanii</h2>
+        <form id="nlAdminCampaignForm">
+          <input class="nl-input" name="subjectPl" placeholder="Temat wiadomości (PL) *" required>
+          <input class="nl-input" name="preheaderPl" placeholder="Preheader (krótka zapowiedź w skrzynce)">
+          <textarea class="nl-textarea" name="htmlBody" placeholder="Treść HTML kampanii (np. <h2>Nowości tygodnia w EkoCC</h2><p>...</p>) *" required></textarea>
+          <textarea class="nl-textarea" name="textBody" placeholder="Wersja czysto tekstowa (Plain-Text) *" required></textarea>
+          <button type="submit" class="nl-btn-primary">Zapisz szkic kampanii</button>
+        </form>
+        <div id="nlAdminStatus" class="nl-status-box" hidden></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/cc-newsletter.js?v=20261030_nl1"></script>
+  <script defer src="/js/cc-mobile-edge.js?v=20261030_edge10"></script>
+  <script>
+    (() => {
+      'use strict';
+      const path = location.pathname.toLowerCase().replace(/\/$/, '');
+      const params = new URLSearchParams(location.search);
+      const token = params.get('token') || '';
+      const source = params.get('source') || 'newsletter-standalone';
+
+      const views = {
+        subscribe: document.getElementById('nlViewSubscribe'),
+        confirm: document.getElementById('nlViewConfirm'),
+        manage: document.getElementById('nlViewManage'),
+        unsubscribe: document.getElementById('nlViewUnsubscribe'),
+        admin: document.getElementById('nlViewAdmin'),
+      };
+
+      function showOnly(viewName) {
+        Object.entries(views).forEach(([k, el]) => {
+          if (el) el.hidden = k !== viewName;
+        });
+      }
+
+      if (path.endsWith('/confirm')) {
+        showOnly('confirm');
+        const detailsEl = document.getElementById('nlConfirmDetails');
+        const btn = document.getElementById('nlConfirmBtn');
+        // Safe-GET: sprawdzamy ważność tokenu bez aktywacji subskrypcji na GET
+        fetch(`/api/newsletter/confirm?token=${encodeURIComponent(token)}`)
+          .then(r => r.json().then(d => ({ ok: r.ok, d })))
+          .then(({ ok, d }) => {
+            if (!ok || !d.valid) {
+              detailsEl.textContent = 'Link potwierdzający jest nieprawidłowy, wygasł lub został już wykorzystany.';
+              return;
+            }
+            detailsEl.textContent = `Adres: ${d.maskedEmail} • Wybrane kategorie: ${(d.topics || []).join(', ')}`;
+            btn.disabled = false;
+            btn.onclick = async () => {
+              btn.disabled = true;
+              const res = await fetch('/api/newsletter/confirm', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token }),
+              });
+              const out = await res.json().catch(() => ({}));
+              if (res.ok && out.status === 'active') {
+                detailsEl.textContent = 'Dziękujemy! Twoja subskrypcja została aktywowana (status: active).';
+              } else {
+                detailsEl.textContent = 'Nie udało się potwierdzić tokenu (mógł już zostać zużyty).';
+              }
+            };
+          })
+          .catch(() => {
+            detailsEl.textContent = 'Wystąpił błąd podczas weryfikacji tokenu.';
+          });
+      } else if (path.endsWith('/manage')) {
+        showOnly('manage');
+        const infoEl = document.getElementById('nlManageEmailInfo');
+        const listEl = document.getElementById('nlManageTopicsList');
+        const statusEl = document.getElementById('nlManageStatus');
+        const form = document.getElementById('nlManagePrefsForm');
+        const unsubBtn = document.getElementById('nlManageUnsubBtn');
+
+        fetch(`/api/newsletter/manage?token=${encodeURIComponent(token)}`)
+          .then(r => r.json().then(d => ({ ok: r.ok, d })))
+          .then(({ ok, d }) => {
+            if (!ok || !d.valid) {
+              infoEl.textContent = 'Link do zarządzania subskrypcją wygasł lub jest nieprawidłowy.';
+              form.hidden = true;
+              return;
+            }
+            infoEl.textContent = `Subskrybent: ${d.maskedEmail} (Status: ${d.subscriberStatus})`;
+            const currentTopics = d.topics || [];
+            listEl.innerHTML = (window.CCNewsletter?.TOPICS || []).map(t => `
+              <label class="cc-nl-topic-item">
+                <input type="checkbox" name="manage_topic" value="${t.slug}" ${currentTopics.includes(t.slug) ? 'checked' : ''}>
+                <span>
+                  <span class="cc-nl-topic-title">${t.pl[0]}</span>
+                  <span class="cc-nl-topic-desc">${t.pl[1]}</span>
+                </span>
+              </label>
+            `).join('');
+          });
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const topics = [...form.querySelectorAll('input[name="manage_topic"]:checked')].map(el => el.value);
+          const res = await fetch('/api/newsletter/preferences', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token, topics }),
+          });
+          const out = await res.json().catch(() => ({}));
+          statusEl.hidden = false;
+          statusEl.textContent = res.ok
+            ? `Zapisano preferencje: ${(out.topics || []).join(', ')}`
+            : (out.message || 'Wybierz przynajmniej jedną kategorię lub kliknij Wypisz się.');
+        });
+
+        unsubBtn.addEventListener('click', async () => {
+          const res = await fetch('/api/newsletter/unsubscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token }),
+          });
+          statusEl.hidden = false;
+          statusEl.textContent = res.ok
+            ? 'Twoja subskrypcja została natychmiast zakończona.'
+            : 'Wystąpił błąd podczas wypisu.';
+        });
+      } else if (path.endsWith('/unsubscribe')) {
+        showOnly('unsubscribe');
+        const btn = document.getElementById('nlUnsubConfirmBtn');
+        const statusEl = document.getElementById('nlUnsubStatus');
+        btn.addEventListener('click', async () => {
+          btn.disabled = true;
+          const res = await fetch('/api/newsletter/unsubscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token }),
+          });
+          const out = await res.json().catch(() => ({}));
+          statusEl.hidden = false;
+          statusEl.textContent = res.ok
+            ? `Wypisano pomyślnie (${out.maskedEmail || 'adres usunięty z listy aktywnej'}). Nie wyślemy kolejnych wiadomości.`
+            : 'Link wypisu jest nieprawidłowy.';
+        });
+      } else if (path.endsWith('/admin')) {
+        showOnly('admin');
+        const secretInput = document.getElementById('nlAdminSecretInput');
+        const loadBtn = document.getElementById('nlAdminLoadBtn');
+        const contentEl = document.getElementById('nlAdminContent');
+        const statsEl = document.getElementById('nlAdminStats');
+        const statusEl = document.getElementById('nlAdminStatus');
+        const form = document.getElementById('nlAdminCampaignForm');
+
+        loadBtn.addEventListener('click', async () => {
+          const secret = secretInput.value.trim();
+          const res = await fetch('/api/newsletter/admin/overview', {
+            headers: { 'x-newsletter-admin-secret': secret },
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            statusEl.hidden = false;
+            statusEl.textContent = 'Brak autoryzacji (401 Unauthorized).';
+            return;
+          }
+          contentEl.hidden = false;
+          const c = data.counts || {};
+          statsEl.innerHTML = `
+            <div class="nl-stat-tile"><div class="nl-stat-num">${c.active || 0}</div><div class="nl-stat-lbl">Aktywni (DOI)</div></div>
+            <div class="nl-stat-tile"><div class="nl-stat-num">${c.pending_confirmation || 0}</div><div class="nl-stat-lbl">Oczekujący DOI</div></div>
+            <div class="nl-stat-tile"><div class="nl-stat-num">${c.unsubscribed || 0}</div><div class="nl-stat-lbl">Wypisani</div></div>
+            <div class="nl-stat-tile"><div class="nl-stat-num">${data.deliveryEnabled ? 'LIVE' : 'DRY-RUN'}</div><div class="nl-stat-lbl">Tryb wysyłki</div></div>
+          `;
+        });
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const secret = secretInput.value.trim();
+          const fd = new FormData(form);
+          const res = await fetch('/api/newsletter/admin/campaigns', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-newsletter-admin-secret': secret,
+            },
+            body: JSON.stringify({
+              subjectPl: fd.get('subjectPl'),
+              preheaderPl: fd.get('preheaderPl'),
+              htmlBody: fd.get('htmlBody'),
+              textBody: fd.get('textBody'),
+              topics: ['nowosci-ekocc'],
+            }),
+          });
+          const out = await res.json().catch(() => ({}));
+          statusEl.hidden = false;
+          statusEl.textContent = res.ok
+            ? `Zapisano szkic kampanii (ID: ${out.campaign?.id}).`
+            : 'Błąd zapisu kampanii.';
+        });
+      } else {
+        showOnly('subscribe');
+        const mountEl = document.getElementById('nlInlineMount');
+        if (window.CCNewsletter && mountEl) {
+          window.CCNewsletter.mountInline(mountEl, { sourcePortal: source });
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

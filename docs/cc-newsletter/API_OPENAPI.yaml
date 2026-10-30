@@ -1,0 +1,427 @@
+openapi: 3.1.0
+info:
+  title: EkoCC / CC Newsletter API
+  version: 1.0.0
+  description: >
+    Centralny interfejs API dla Newslettera Ekosystemu Christian Culture (EkoCC).
+    Obsługuje dobrowolny zapis z obowiązkowym Double Opt-In (DOI), ochronę przed skanerami linków (Safe-GET + Mutating-POST),
+    zarządzanie kategoriami tematycznymi v1, natychmiastowy wypis 1-Click (RFC 8058), webhooki odbić/skarg oraz panel administracyjny RBAC.
+servers:
+  - url: https://polskieradio.cc
+    description: Produkcja Cloudflare Pages + Worker
+  - url: http://localhost:8788
+    description: Środowisko lokalne / testowe
+
+paths:
+  /api/newsletter/topics:
+    get:
+      summary: Pobiera listę aktywnych kategorii tematycznych v1 oraz metadane zgody
+      operationId: getNewsletterTopics
+      responses:
+        '200':
+          description: Lista kategorii tematycznych v1 w językach PL/EN/DE
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  consentVersion:
+                    type: string
+                  deliveryEnabled:
+                    type: boolean
+                  topics:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Topic'
+
+  /api/newsletter/subscribe:
+    post:
+      summary: Zgłoszenie zapisu na newsletter (Double Opt-In)
+      description: >
+        Zawsze zwraca neutralną odpowiedź 200 OK dla poprawnych składniowo żądań z zaznaczoną zgodą,
+        aby uniemożliwić enumerację adresów e-mail w bazie.
+      operationId: subscribeNewsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscribeRequest'
+      responses:
+        '200':
+          description: Neutralna odpowiedź potwierdzająca przyjęcie zgłoszenia
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeutralResponse'
+        '400':
+          description: Błąd walidacji (niepoprawny e-mail, brak zgody lub puste kategorie)
+        '429':
+          description: Przekroczono limit zapytań (Rate Limit)
+
+  /api/newsletter/confirm:
+    get:
+      summary: Bezpieczna weryfikacja tokenu potwierdzenia (Read-Only dla ochrony przed skanerami linków)
+      description: >
+        NIE aktywuje subskrypcji i NIE zużywa tokenu na żądaniu GET.
+        Zwraca informację, czy token jest ważny i gotowy do potwierdzenia przyciskiem POST.
+      operationId: checkConfirmToken
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Token jest ważny i gotowy do potwierdzenia przez POST
+        '400':
+          description: Token nieprawidłowy, wygasły lub już wykorzystany
+    post:
+      summary: Jednorazowa aktywacja subskrypcji (Double Opt-In Finalization)
+      operationId: confirmSubscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: Subskrypcja została aktywowana (status = active)
+        '400':
+          description: Token nieprawidłowy, wygasły lub już zużyty
+
+  /api/newsletter/manage/request-link:
+    post:
+      summary: Wysyła jednorazowy link do zarządzania preferencjami (neutralna odpowiedź)
+      operationId: requestManageLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  type: string
+                locale:
+                  type: string
+                  enum: [pl, en, de]
+      responses:
+        '200':
+          description: Neutralny komunikat o wysłaniu linku zarządzania
+
+  /api/newsletter/manage:
+    get:
+      summary: Pobiera aktualne preferencje subskrybenta na podstawie ważnego tokenu manage
+      operationId: getSubscriberPreferences
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Zwraca zamaskowany e-mail, status oraz wybrane kategorie
+        '400':
+          description: Token wygasły lub nieprawidłowy
+
+  /api/newsletter/preferences:
+    post:
+      summary: Aktualizuje wybrane kategorie tematyczne i język subskrybenta
+      operationId: updateSubscriberPreferences
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, topics]
+              properties:
+                token:
+                  type: string
+                topics:
+                  type: array
+                  items:
+                    type: string
+                locale:
+                  type: string
+                  enum: [pl, en, de]
+                firstName:
+                  type: string
+      responses:
+        '200':
+          description: Preferencje zostały zaktualizowane i zapisane w audycie
+        '400':
+          description: Token nieprawidłowy lub niepoprawne kategorie
+
+  /api/newsletter/unsubscribe:
+    get:
+      summary: Bezpieczna weryfikacja tokenu wypisu (Read-Only, nie wypisuje na GET)
+      operationId: checkUnsubscribeToken
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Token wypisu zweryfikowany (wymaga POST do wykonania wypisu)
+    post:
+      summary: Natychmiastowy, idempotentny wypis z newslettera (obsługuje również RFC 8058 One-Click)
+      operationId: unsubscribeNewsletter
+      parameters:
+        - name: token
+          in: query
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                reason:
+                  type: string
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                List-Unsubscribe:
+                  type: string
+                token:
+                  type: string
+      responses:
+        '200':
+          description: Subskrybent został natychmiast wypisany (status = unsubscribed)
+
+  /api/newsletter/webhooks/delivery:
+    post:
+      summary: Webhook dostawcy poczty (bounces, complaints, delivered) weryfikowany podpisem HMAC-SHA256
+      operationId: handleDeliveryWebhook
+      parameters:
+        - name: X-Newsletter-Signature
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [event, email]
+              properties:
+                event:
+                  type: string
+                  enum: [delivered, hard_bounce, soft_bounce, spam_complaint]
+                email:
+                  type: string
+                campaignId:
+                  type: string
+                providerMessageId:
+                  type: string
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Zdarzenie przetworzone; dla hard_bounce/spam_complaint dodano do supresji
+        '401':
+          description: Nieprawidłowy podpis HMAC webhooka
+
+  /api/newsletter/admin/overview:
+    get:
+      summary: Statystyki zagregowane i lista kampanii (wymaga autoryzacji RBAC Admin)
+      security:
+        - AdminSecret: []
+        - FirebaseBearer: []
+      responses:
+        '200':
+          description: Zagregowane metryki subskrybentów, kategorii i kampanii
+        '401':
+          description: Brak autoryzacji
+
+  /api/newsletter/admin/campaigns:
+    post:
+      summary: Tworzy lub aktualizuje szkic kampanii newslettera
+      security:
+        - AdminSecret: []
+        - FirebaseBearer: []
+      responses:
+        '200':
+          description: Szkic kampanii zapisany
+
+  /api/newsletter/admin/campaigns/{id}/preview:
+    post:
+      summary: Generuje podgląd HTML i tekstowy kampanii oraz uruchamia bramkę zgodności (Compliance Gate)
+      security:
+        - AdminSecret: []
+        - FirebaseBearer: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Podgląd wygenerowany wraz z wynikiem walidacji linków i stopki
+
+  /api/newsletter/admin/campaigns/{id}/send-test:
+    post:
+      summary: Wysyła lub kolejkuje testową wiadomość wyłącznie na wewnętrzny adres testowy administratora
+      security:
+        - AdminSecret: []
+        - FirebaseBearer: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Wysyłka testowa zarejestrowana
+
+  /api/newsletter/admin/campaigns/{id}/approve:
+    post:
+      summary: Zatwierdza kampanię do wysyłki (wymaga przejścia Compliance Gate)
+      security:
+        - AdminSecret: []
+        - FirebaseBearer: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Kampania zatwierdzona (status = approved)
+
+  /api/newsletter/admin/campaigns/{id}/send:
+    post:
+      summary: Uruchamia idempotentną wysyłkę zatwierdzonej kampanii wyłącznie do subskrybentów ze statusem active
+      security:
+        - AdminSecret: []
+        - FirebaseBearer: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Kampania przetworzona (w trybie dry-run lub live z kontrolą limitu Free Tier)
+
+  /api/newsletter/admin/gdpr:
+    post:
+      summary: Obsługa praw RODO (eksport historii zgód lub trwałe usunięcie danych z zachowaniem skrótu supresji)
+      security:
+        - AdminSecret: []
+        - FirebaseBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action, email]
+              properties:
+                action:
+                  type: string
+                  enum: [export, erase]
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Operacja RODO wykonana i zaprotokołowana
+
+components:
+  securitySchemes:
+    AdminSecret:
+      type: apiKey
+      in: header
+      name: x-newsletter-admin-secret
+    FirebaseBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Topic:
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        namePl:
+          type: string
+        nameEn:
+          type: string
+        descriptionPl:
+          type: string
+        descriptionEn:
+          type: string
+        isActive:
+          type: boolean
+        sortOrder:
+          type: integer
+    SubscribeRequest:
+      type: object
+      required: [email, consentAccepted]
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+          maxLength: 80
+        locale:
+          type: string
+          enum: [pl, en, de]
+          default: pl
+        sourcePortal:
+          type: string
+          default: polskieradio-home
+        sourcePath:
+          type: string
+          default: /
+        topics:
+          type: array
+          items:
+            type: string
+        consentAccepted:
+          type: boolean
+        consentVersion:
+          type: string
+        websiteUrl:
+          type: string
+          description: Pole pułapki antybotowej (honeypot) — musi pozostać puste
+    NeutralResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        neutral:
+          type: boolean
+        message:
+          type: string
+        consentVersion:
+          type: string

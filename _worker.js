@@ -2,10 +2,12 @@ import ccnArticleRoutes from './data/ccn-article-routes.js';
 import { handleBUApi } from './lib/bu-voting-worker.js';
 import { handleSearchRagApi } from './data/cc-search-rag-service.js';
 import { handleAiDlaJezusaApi } from './services/ai-dla-jezusa/api-v1.js';
+import { handleNewsletterApiRequest } from './services/cc-newsletter/newsletter-service.js';
 
 const BLOCKED_PREFIXES = [
   '/.agents/', '/.github/', '/.firebase/', '/.gemini/', '/.vscode/', '/.wrangler/',
   '/cloudflare/', '/cloudflare-worker/', '/lib/', '/tests/', '/firebase_functions/', '/functions/', '/scratch/', '/src/',
+  '/services/', '/migrations/',
   '/scripts/agent-matrix/.matrix_sessions/',
   '/tresci-18plus/',
 ];
@@ -18,7 +20,7 @@ const BLOCKED_FILES = new Set([
 ]);
 
 const BLOCKED_EXTENSIONS = [
-  '.bak', '.cjs', '.map', '.md', '.mjs', '.ps1', '.py', '.ts', '.vue', '.xlsx', '.yaml', '.yml',
+  '.bak', '.cjs', '.map', '.md', '.mjs', '.ps1', '.py', '.sql', '.ts', '.vue', '.xlsx', '.yaml', '.yml',
 ];
 
 function isBlocked(pathname) {
@@ -1574,6 +1576,9 @@ export default {
     if (url.pathname.startsWith('/api/ai-dla-jezusa/v1')) {
       return handleAiDlaJezusaApi(request, env);
     }
+    if (url.pathname.startsWith('/api/newsletter')) {
+      return handleNewsletterApiRequest(request, env, (tok) => verifyFirebaseIdToken(tok));
+    }
     if (url.pathname === '/api/answer' || url.pathname.startsWith('/api/search-rag')) {
       return handleSearchRagApi(request, env);
     }
@@ -2258,6 +2263,27 @@ export default {
 
     // CC Clean Routing & Case-Insensitive Aliases (P0 / P1)
     const lowerPath = url.pathname.toLowerCase().replace(/\/$/, '');
+    if (
+      lowerPath === '/newsletter' ||
+      lowerPath === '/newsletter/confirm' ||
+      lowerPath === '/newsletter/manage' ||
+      lowerPath === '/newsletter/unsubscribe' ||
+      lowerPath === '/newsletter/admin'
+    ) {
+      const nlUrl = new URL(request.url);
+      nlUrl.pathname = '/newsletter.html';
+      const assetResp = await env.ASSETS.fetch(new Request(nlUrl.toString(), { method: 'GET', headers: { Accept: 'text/html' } }));
+      const isSensitiveRoute = lowerPath !== '/newsletter' || url.searchParams.has('token');
+      return new Response(assetResp.body, {
+        status: assetResp.status === 404 ? 404 : 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': isSensitiveRoute ? 'private, no-store, no-cache, must-revalidate' : 'public, max-age=0, must-revalidate',
+          'X-Robots-Tag': isSensitiveRoute ? 'noindex, nofollow, noarchive' : 'index, follow',
+          'Referrer-Policy': 'no-referrer',
+        },
+      });
+    }
     if (lowerPath === '/yis') {
       const yisUrl = new URL(request.url);
       yisUrl.pathname = '/YIS.html';

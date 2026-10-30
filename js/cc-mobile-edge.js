@@ -22,6 +22,7 @@
     radio: 'M4.93 4.93a10 10 0 0 0 0 14.14M19.07 4.93a10 10 0 0 1 0 14.14M7.76 7.76a6 6 0 0 0 0 8.48M16.24 7.76a6 6 0 0 1 0 8.48M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z',
     arrowUp: 'M12 19V5M5 12l7-7 7 7',
     yis: 'M6 4l6 8 6-8M12 12v8',
+    mail: 'M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2 8 6 8-6',
   };
 
   const labels = {
@@ -38,6 +39,7 @@
       play: 'Kino VOD',
       yis: 'Your Imagination Studio (YIS)',
       search: 'Szukaj w ekosystemie',
+      mail: 'Newsletter — Bądźmy w kontakcie',
       heart: 'Wspieram To — Wolne Media Boże',
       close: 'Zamknij panel nawigacji',
       open: 'Otwórz panel nawigacji',
@@ -67,6 +69,7 @@
       play: 'Cinema VOD',
       yis: 'Your Imagination Studio (YIS)',
       search: 'Search Ecosystem',
+      mail: 'Newsletter — Stay in touch',
       heart: 'Support Us — Free Christian Media',
       close: 'Close navigation panel',
       open: 'Open navigation panel',
@@ -96,6 +99,7 @@
       play: 'Kino VOD',
       yis: 'Your Imagination Studio (YIS)',
       search: 'Im Ökosystem suchen',
+      mail: 'Newsletter — In Kontakt bleiben',
       heart: 'Unterstützen — Freie Christliche Medien',
       close: 'Navigationspanel schließen',
       open: 'Navigationspanel öffnen',
@@ -139,6 +143,7 @@
     ['book','Moja Biblia','/mojabiblia'], ['study','Akademia Biblijna','/akademia'],
     ['calendar','HOLOS — planer','/holos'], ['play','Kino VOD','/vod'],
     ['search','Szukaj w ekosystemie','/szukaj'],
+    ['mail','Newsletter — Bądźmy w kontakcie','/newsletter'],
     ['heart','Wspieram To','/wspieraj'],
   ];
 
@@ -163,7 +168,6 @@
           padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)) !important;
         }
         .cc-mobile-edge nav button[data-edge-key="close"] { grid-column: 1 / -1 !important; justify-self: center !important; margin-bottom: 2px !important; }
-        .cc-mobile-edge:not([data-profile="lumina"]) nav button[data-edge-key="menu"] { grid-column: 1 / -1 !important; justify-self: center !important; }
         .cc-mobile-edge nav :is(a,button)[data-edge-key="heart"] { color: #FF7A00 !important; }
         .cc-mobile-edge .cc-edge-lang-divider { grid-column: 1 / -1 !important; width: 100% !important; height: 1px !important; background: rgba(196, 163, 90, 0.25) !important; margin: 6px 0 2px 0 !important; }
         .cc-mobile-edge .cc-edge-lang-group { grid-column: 1 / -1 !important; display: flex !important; flex-direction: row !important; justify-content: center !important; flex-wrap: wrap !important; gap: 6px 8px !important; width: 100% !important; }
@@ -331,6 +335,15 @@
             event.preventDefault();
             close();
             window.CCUnifiedChat.open();
+          }
+        });
+      }
+      if (url.pathname === '/newsletter') {
+        a.addEventListener('click', event => {
+          if (window.CCNewsletter && typeof window.CCNewsletter.open === 'function') {
+            event.preventDefault();
+            close();
+            window.CCNewsletter.open();
           }
         });
       }
@@ -607,6 +620,7 @@
         ['play','Kino VOD','/vod'],
         ['yis','Your Imagination Studio (YIS)','/yis'],
         ['search','Szukaj w ekosystemie','/szukaj'],
+        ['mail','Newsletter — Bądźmy w kontakcie','/newsletter'],
         ['heart','Wspieram To','/wspieraj'],
       ] : commonItems;
 
