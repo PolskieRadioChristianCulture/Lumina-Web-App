@@ -1093,11 +1093,13 @@ export async function syncUserAuthProfile(user, activeDb = db) {
         isBrandNewUser = true;
         const isCezary = detectLuminaOfficialIdentity(user) === 'cezary';
         const isWioletta = detectLuminaOfficialIdentity(user) === 'wioletta';
+        const isMarek = detectLuminaOfficialIdentity(user) === 'marek' || (user.email && user.email.toLowerCase() === 'marusjakubowski@gmail.com');
         
         let cleanSlug;
         if (isRadioCC) cleanSlug = 'radiocc';
         else if (isCezary) cleanSlug = 'cezaryrgowski';
         else if (isWioletta) cleanSlug = 'wiolettarogowska';
+        else if (isMarek) cleanSlug = 'marekjakubowski';
         else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + user.uid.substring(0, 4).toLowerCase();
         
         const isMission = isRadioCC || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
@@ -1109,7 +1111,7 @@ export async function syncUserAuthProfile(user, activeDb = db) {
         existingProfile = {
             uid: user.uid,
             slug: cleanSlug,
-            name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
+            name: isMarek ? 'Marek Jakubowski' : (user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')))),
             // 🛡️ e-mail NIE trafia do publicznego profilu (RODO) — jest w Firebase Auth
             age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : null)),
             city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : ''),

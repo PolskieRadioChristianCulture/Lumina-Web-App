@@ -661,6 +661,7 @@
                 const isWioletta = userEmail.split('@')[0] === 'wioletta1240';
                 const isZbyszek = profile.slug === 'zbyszekgieron';
                 const isZofia = profile.slug === 'zofiadudek';
+                const isMarek = userEmail === 'marusjakubowski@gmail.com' || profile.slug === 'marekjakubowski' || profile.slug === 'u_marekjakubowski';
 
                 let avatar = profile.avatar || user.photoURL || '/lumina_icon.jpg';
                 if (isCezary && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_cezary_official.jpg';

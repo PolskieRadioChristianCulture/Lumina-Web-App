@@ -1206,6 +1206,8 @@
                 myProfileHref = 'lumina.wiolettarogowska.html';
             } else if (s === 'cezaryrgowski' || s.includes('cezary')) {
                 myProfileHref = 'lumina.cezaryrgowski.html';
+            } else if (s === 'marekjakubowski' || s.includes('marek') || s.includes('jakubowski')) {
+                myProfileHref = 'lumina.marekjakubowski.html';
             } else {
                 myProfileHref = `lumina-profile.html?u=${s}`;
             }
@@ -1815,6 +1817,10 @@
         if (curUser) {
             const dName = (curUser.displayName || '').toLowerCase();
             const mail = (curUser.email || '').toLowerCase();
+            if (mail === 'marusjakubowski@gmail.com' || mail.includes('jakubowski') || dName.includes('marek jakubowski')) {
+                window.location.href = 'lumina.marekjakubowski.html';
+                return;
+            }
             if (dName.includes('zbyszek') || mail.includes('zbyszek') || mail.includes('gieron')) {
                 window.location.href = 'lumina.zbyszekgieron.html';
                 return;
@@ -1831,6 +1837,8 @@
                 window.location.href = 'lumina.wiolettarogowska.html';
             } else if (s === 'cezaryrgowski' || s.includes('cezary')) {
                 window.location.href = 'lumina.cezaryrgowski.html';
+            } else if (s === 'marekjakubowski' || s.includes('marek') || s.includes('jakubowski')) {
+                window.location.href = 'lumina.marekjakubowski.html';
             } else if (s === 'zbyszekgieron' || s.includes('zbyszek') || s.includes('gieron')) {
                 window.location.href = 'lumina.zbyszekgieron.html';
             } else if (s === 'zofiadudek' || s.includes('zofia') || s.includes('dudek')) {
