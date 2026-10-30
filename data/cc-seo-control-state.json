@@ -1,13 +1,13 @@
 {
   "standardVersion": "CCN Global SEO & AI Search 2026 v1.0",
-  "generatedAt": "2026-10-30T07:39:04.892Z",
+  "generatedAt": "2026-10-30T14:19:21.927Z",
   "zeroFakeDataPolicy": true,
   "counts": {
-    "totalValidatedUrls": 74,
-    "validUrls": 74,
+    "totalValidatedUrls": 78,
+    "validUrls": 78,
     "invalidUrls": 0,
-    "newsArticlesCount": 68,
-    "googleNews48hCount": 22,
+    "newsArticlesCount": 72,
+    "googleNews48hCount": 26,
     "akademiaUrlsCount": 45,
     "bibliaUrlsCount": 4,
     "muzykaUrlsCount": 9,
@@ -31,25 +31,25 @@
     {
       "path": "/feed.xml",
       "exists": true,
-      "sizeBytes": 22169,
+      "sizeBytes": 22460,
       "status": "OK"
     },
     {
       "path": "/news/feed.xml",
       "exists": true,
-      "sizeBytes": 30064,
+      "sizeBytes": 30162,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news.xml",
       "exists": true,
-      "sizeBytes": 33694,
+      "sizeBytes": 35730,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news-google.xml",
       "exists": true,
-      "sizeBytes": 18240,
+      "sizeBytes": 21456,
       "status": "OK"
     },
     {
@@ -92,8 +92,8 @@
   "indexNow": {
     "keyConfigured": false,
     "keyNote": "Brak klucza INDEXNOW_KEY w zmiennych środowiskowych.",
-    "totalQueued": 29,
-    "pendingCount": 29,
+    "totalQueued": 33,
+    "pendingCount": 33,
     "submittedCount": 0,
     "failedCount": 0,
     "recentItems": [
@@ -291,7 +291,7 @@
         "url": "https://polskieradio.cc/edukacja/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "edukacja",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-30T07:39:04.888Z",
+        "queuedAt": "2026-10-30T14:19:21.923Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -310,7 +310,7 @@
         "url": "https://polskieradio.cc/rodzina/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "rodzina",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-30T07:39:04.888Z",
+        "queuedAt": "2026-10-30T14:19:21.923Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -329,7 +329,7 @@
         "url": "https://polskieradio.cc/misje/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "misje",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-30T07:39:04.888Z",
+        "queuedAt": "2026-10-30T14:19:21.923Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -348,7 +348,7 @@
         "url": "https://polskieradio.cc/spoleczenstwo/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "spoleczenstwo",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-30T07:39:04.888Z",
+        "queuedAt": "2026-10-30T14:19:21.923Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -367,7 +367,7 @@
         "url": "https://polskieradio.cc/akademia/dzien-17",
         "section": "akademia",
         "publishedAt": "2026-10-17T04:00:00Z",
-        "queuedAt": "2026-10-30T07:39:04.888Z",
+        "queuedAt": "2026-10-30T14:19:21.923Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -398,6 +398,38 @@
   },
   "alerts": [],
   "sampleValidatedPages": [
+    {
+      "file": "news/bioetyka-edycja-genomu-syntetyczne-embriony-biblia.html",
+      "canonicalUrl": "https://polskieradio.cc/news/bioetyka-edycja-genomu-syntetyczne-embriony-biblia",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/oficjalny-start-newslettera-christian-culture-dolacz.html",
+      "canonicalUrl": "https://polskieradio.cc/news/oficjalny-start-newslettera-christian-culture-dolacz",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj.html",
+      "canonicalUrl": "https://polskieradio.cc/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/przeglad-ekosystemu-nowe-artykuly-i-lekcje-akademii.html",
+      "canonicalUrl": "https://polskieradio.cc/news/przeglad-ekosystemu-nowe-artykuly-i-lekcje-akademii",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
     {
       "file": "news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski.html",
       "canonicalUrl": "https://polskieradio.cc/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski",
@@ -561,38 +593,6 @@
     {
       "file": "news/czy-jezus-istnial-dowody-historyczne.html",
       "canonicalUrl": "https://polskieradio.cc/news/czy-jezus-istnial-dowody-historyczne",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/czy-ai-zastapi-ludzka-madrosc.html",
-      "canonicalUrl": "https://polskieradio.cc/news/czy-ai-zastapi-ludzka-madrosc",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych.html",
-      "canonicalUrl": "https://polskieradio.cc/news/dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog.html",
-      "canonicalUrl": "https://polskieradio.cc/news/dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna.html",
-      "canonicalUrl": "https://polskieradio.cc/news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna",
       "section": "news",
       "valid": true,
       "errors": [],

@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "CCN NAUKA & BIOETYKA: Granice ingerencji w ludzki genom. CRISPR, syntetyczne embriony a biblijna prawda o początku życia — analiza Cezarego Rogowskiego (Ps 139:13–16; Rdz 1:26–27)",
   "OFICJALNY START NEWSLETTERA CC: Dołącz do Newslettera Christian Culture — wybierz interesujące Cię kategorie i bądź na bieżąco ze Słowem, muzyką i akcją #antyHALLOWEEN! (https://polskieradio.cc/newsletter)",
   "NOWY ARTYKUŁ RODZINA & WIARA: Cyfrowy detoks w chrześcijańskim domu — jak odzyskać prawdziwą bliskość przy wspólnym stole? Praktyczny poradnik Wioletty Rogowskiej (https://polskieradio.cc/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj)",
   "TĘTNO MISJI CC INSIDE: Przegląd ekosystemu Christian Culture — nowe artykuły, lekcje Akademii Biblijnej i narzędzia duchowego wzrostu (https://polskieradio.cc/news/przeglad-ekosystemu-nowe-artykuly-i-lekcje-akademii)",
@@ -77,6 +78,59 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-bioetyka-edycja-genomu-syntetyczne-embriony-biblia',
+    title: 'Bioetyka i granice ingerencji w ludzki genom. CRISPR, syntetyczne embriony a biblijna prawda o początku życia',
+    slug: 'bioetyka-edycja-genomu-syntetyczne-embriony-biblia',
+    excerpt: 'Rewolucja w inżynierii genetycznej osiągnęła punkt zwrotny. Narzędzia precyzyjnej edycji DNA, takie jak CRISPR-Cas9, oraz laboratoryjna hodowla syntetycznych modeli embrionów ze komórek macierzystych stawiają ludzkość przed pytaniami, które do niedawna należały do sfery science fiction. Gdzie kończy się uprawnione leczenie wrodzonych chorób, a zaczyna niebezpieczna pycha samostworzenia? W obliczu globalnych raportów WHO i wytycznych bioetycznych, chrześcijanie są wezwani do obrony nienaruszalnej godności człowieka, którego życie od pierwszego zalążka pozostaje pod suwerenną opieką Stwórcy.',
+    content: [
+      '1. Nowa era inżynierii genetycznej: Od narzędzi CRISPR do syntetycznych embrionów',
+      'W ciągu ostatnich kilku lat biotechnologia przeszła gigantyczny skok ewolucyjny. Technologia edycji zasad azotowych oraz systemy CRISPR-Cas9 przestały być domeną teoretycznych rozważań, a stały się praktycznymi narzędziami stosowanymi w terapiach klinicznych komórek somatycznych. Równolegle wiodące ośrodki badawcze w Cambridge i Instytucie Weizmanna zaprezentowały syntetyczne modele embrionów ludzkich (ang. stem cell-based embryo models, SEMs), które rozwijają się bez udziału komórki jajowej i plemnika.',
+      'Te laboratoryjne struktury potrafią w warunkach in vitro symulować kluczowe procesy wczesnego rozwoju embrionalnego, w tym implantację i gastrulację. Naukowcy argumentują, że badania te pozwolą zrozumieć przyczyny poronień i wad genetycznych. Jednocześnie jednak w świecie nauki narasta bezprecedensowy spór o to, czy syntetyczny zarodek jest jedynie „agregatem komórkowym”, czy też nową, sztucznie powołaną do bytu formą życia ludzkiego.',
+      'Tradycyjna, obowiązująca od dekad zasada „14 dni” (zakazująca hodowli embrionów in vitro powyżej dwóch tygodni) jest dziś otwarcie kwestionowana przez część środowisk bioetycznych. Presja przemysłu biotechnologicznego i dążenie do komercjalizacji procedur rodzą realne ryzyko przekroczenia granicy, zza której nie ma już odwrotu.',
+      '2. Terapia genowa a ulepszanie człowieka: Gdzie leży granica etyczna według raportów WHO i ISSCR?',
+      'W opublikowanym przez Światową Organizację Zdrowia (WHO) raporcie dotyczącym zarządzania edycją genomu ludzkiego („Human Genome Editing: Recommendations and Governance Framework”) eksperci jednoznacznie oddzielili terapię somatyczną od modyfikacji linii zarodkowej. Terapia somatyczna, polegająca na korygowaniu wadliwego genu w chorym narządzie pacjenta (np. w komórkach szpiku kostnego przy anemii sierpowatej), nie przenosi się na potomstwo i stanowi formę klasycznego leczenia medycznego.',
+      'Zupełnie inny charakter ma ingerencja w genom zarodkowy (tzw. heritable genome editing), która trwale zmienia kod DNA przyszłych pokoleń. Międzynarodowe Towarzystwo Badań nad Komórkami Macierzystymi (ISSCR) oraz Europejska Grupa ds. Etyki (EGE) ostrzegają przed pokusą tzw. ulepszania człowieka (enhancement), czyli selekcji cech fizycznych, intelektualnych czy behawioralnych pod dyktando oczekiwań rodziców lub rynku.',
+      'Gdy medycyna przestaje służyć leczeniu cierpiących, a zaczyna projektować „optymalne jednostki”, nieuchronnie wkraczamy na drogę nowej, technologicznej eugeniki. Prowadzi to do głębokich nierówności społecznych i traktowania potomstwa jak produktu konsumpcyjnego podlegającego kontroli jakości.',
+      '3. Biblijna tajemnica początku życia: „Twoje oczy widziały mój zalążek” (Egzegeza Psalmu 139)',
+      'Pismo Święte podchodzi do tajemnicy ludzkiego życia z najgłębszą czcią i zachwytem, widząc w nim bezpośrednie dzieło suwerennego Boga. W 139. Psalmie król Dawid formułuje natchnione świadectwo o początkach każdej ludzkiej istoty: „Bo ty stworzyłeś moje nerki, utkałeś mnie w łonie mojej matki. Będę ci dziękował, że w cudowny sposób zostałem stworzony; cudowne są twoje dzieła, a moja dusza wie o tym bardzo dobrze” (Ps 139:13–14 UBG).',
+      'Szczególne znaczenie ma werset 16., w którym czytamy: „Twoje oczy widziały mój zalążek; a w twojej księdze zostały spisane wszystkie moje członki, które były kształtowane, gdy jeszcze żadnego z nich nie było” (UBG). Użyte w języku hebrajskim słowo „zalążek” (golem, Strong H1564) oznacza materię jeszcze nie w pełni ukształtowaną, embrionalny stan istnienia. Bóg nie czeka na wykształcenie układu nerwowego ani na moment narodzin — Jego wzrok i osobista relacja przymierza obejmują człowieka już w najwcześniejszej fazie komórkowej.',
+      'Podobną prawdę wyraża cierpiący Hiob, pytając o sprawiedliwość wobec najsłabszych: „Czy ten, który mnie uczynił w łonie, nie uczynił i jego? Czy nie ukształtował nas oboje w jednym łonie?” (Hi 31:15 UBG). W perspektywie biblijnej embrion nie jest bezwartościową grudką białka ani materiałem biologicznym, lecz istotą ludzką powołaną po imieniu przez Stwórcę.',
+      '4. Człowiek na obraz Boży (Imago Dei) a pokusa tworzenia życia w probówce',
+      'Fundamentem chrześcijańskiej antropologii jest prawda o stworzeniu człowieka na obraz i podobieństwo Boże: „Potem Bóg powiedział: Uczyńmy człowieka na nasz obraz, na nasze podobieństwo... I stworzył Bóg człowieka na swój obraz, na obraz Boga go stworzył; stworzył ich mężczyzną i kobietą” (Rdz 1:26–27 UBG). Godność ludzka nie wynika z naszych zdolności, sprawności intelektualnej czy idealnego profilu DNA, lecz z faktu bycia ukochanym stworzeniem Najwyższego.',
+      'Gdy człowiek próbuje zredefiniować początek życia, zastępując intymny, małżeński akt miłości laboratoryjną syntezą komórek macierzystych, stawia się w roli stwórcy samego siebie. To odwieczna pokusa z ogrodu Eden: „będziecie jak bogowie” (Rdz 3:5). Pycha technokratyczna zakłada, że człowiek potrafi zaprojektować lepsze życie niż Bóg, podczas gdy historia uczy, że każda próba selekcji ludzi kończyła się pogardą dla słabych, chorych i niedoskonałych.',
+      'W chrześcijaństwie to nie genetyczna perfekcja nadaje życiu wartość. Apostoł Paweł przypomina: „Za wielką bowiem cenę zostaliście kupieni. Chwalcie więc Boga w waszym ciele i w waszym duchu, które należą do Boga” (1 Kor 6:20 UBG). Wartość każdego człowieka została ostatecznie potwierdzona krwią Chrystusa przelaną na krzyżu za każdego z nas.',
+      '5. Praktyczna postawa chrześcijanina: Wdzięczność za medycynę, sprzeciw wobec pychy eugeniki',
+      'Jako naśladowcy Chrystusa nie jesteśmy wrogami postępu naukowego ani medycyny. Jezus wielokrotnie okazywał współczucie chorym i uzdrawiał cierpiących, a ewangelista Łukasz był cenionym lekarzem. Wspieramy wszelkie uczciwe badania, które leczą ludzi, usuwają ból i przywracają sprawność uszkodzonym komórkom w granicach Bożego porządku.',
+      'Musimy jednak głośno i jednoznacznie sprzeciwiać się redukowaniu człowieka do roli biologicznego surowca. Chrześcijańskie sumienie nie może milczeć, gdy ludzkie embriony — zarówno te poczęte in vitro, jak i tworzone syntetycznie — są traktowane jak jednorazowe probówki do eksperymentów, a następnie bezrefleksyjnie niszczone.',
+      'Potrzebujemy odwagi w przestrzeni publicznej, rzetelnej edukacji w kościołach oraz wspierania lekarzy i naukowców, którzy odmawiają udziału w procedurach niszczących życie. Prawdziwa mądrość polega na uznaniu własnych ograniczeń przed Bogiem i szacunku dla cudu, którym jest każde ludzkie istnienie.',
+      'PODSUMOWANIE REDAKCYJNE CCN',
+      'Granica między uprawnioną terapią a niebezpieczną uzurpacją praw Stwórcy jest dziś najważniejszą linią frontu bioetycznego. Odpowiedzią na dylematy inżynierii genetycznej nie jest ani lękowy antymodernizm, ani bezkrytyczny zachwyt technologią, lecz wierność biblijnemu objawieniu o godności człowieka stworzonego na obraz Boży. Prawdziwe lekarstwo na cierpienie i śmierć nie nadejdzie z probówek inżynierów genetycznych, lecz zmartwychwstałego Jezusa Chrystusa, który jako jedyny ma moc odnowić całe stworzenie.',
+      'WEZWANIE DO DZIAŁANIA I MODLITWA',
+      'Trzy konkretne kroki dla Ciebie na dziś: 1. Podziękuj Bogu w modlitwie za dar swojego życia i za to, że znał Twój zalążek, zanim jeszcze ukształtował Cię w łonie matki (Ps 139:13–16). 2. Pogłębiaj wiedzę bioetyczną opartą na Piśmie Świętym — dziel się prawdą o nienaruszalnej godności człowieka w rozmowach ze znajomymi i w mediach społecznościowych. 3. Wesprzyj chrześcijańskie media i inicjatywy chroniące życie, które odważnie stawiają pytania o granice nauki i przypominają światu o suwerenności Boga.'
+    ],
+    category: 'Wiadomości i Społeczeństwo',
+    categoryLabel: 'Nauka & Bioetyka',
+    publishedAt: '2026-10-30T14:00:00+01:00',
+    dateFormatted: '30 października 2026',
+    author: AUTHORS.cezary,
+    imageUrl: '/images/news/art-bioetyka-edycja-genomu-syntetyczne-embriony-biblia.jpg',
+    imageCaption: 'Podwójna helisa DNA i badania nad syntetyczną biologią — pytanie o granice ingerencji w ludzki genom i tajemnicę początku życia w świetle Psalmu 139 (ilustracja redakcyjna EkoCC / Christian Culture).',
+    readTimeMinutes: 8,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ["@CezaryRogowski","@CCNNews","@NaukaEkoCC","@ChristianCulture","#Bioetyka","#CRISPR","#InżynieriaGenetyczna","#Psalm139","#ImagoDei","#ObronaŻycia","#GodnośćCzłowieka","#PismoŚwięte","#UBG","#JezusChrystus"],
+    scriptureReference: {
+      verse: 'Psalm 139:13–16',
+      text: 'Bo ty stworzyłeś moje nerki, utkałeś mnie w łonie mojej matki. Będę ci dziękował, że w cudowny sposób zostałem stworzony; cudowne są twoje dzieła, a moja dusza wie o tym bardzo dobrze. Żadna moja kość nie była ukryta przed tobą, gdy zostałem ukształtowany w skrytości i misternie utkany w głębiach ziemi. Twoje oczy widziały mój zalążek; a w twojej księdze zostały spisane wszystkie moje członki, które były kształtowane, gdy jeszcze żadnego z nich nie było.',
+      strongCode: 'H1564'
+    },
+    sourceCitation: {
+      sourceName: 'Nature Biotechnology & WHO Global Genome Editing Framework',
+      sourceUrl: 'https://www.who.int/publications/i/item/9789240030060'
+    }
+  },
   {
     id: 'art-oficjalny-start-newslettera-christian-culture-dolacz',
     title: 'Oficjalny start Newslettera Christian Culture: Bądź na bieżąco ze Słowem, muzyką i misją',
