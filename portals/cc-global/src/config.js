@@ -157,6 +157,7 @@ export const ARTISTS = [
     urlEn: 'https://youtu.be/5-MJ-rfXiYY',
     urlPl: 'https://youtu.be/5-MJ-rfXiYY',
     image: 'now-is-the-time.webp',
+    aspectRatio: '16/9',
     featuredTrack: 'Now Is The Time',
     tag: 'CONTEMPORARY WORSHIP',
     tagPl: 'WSPÓŁCZESNE UWIELBIENIE',

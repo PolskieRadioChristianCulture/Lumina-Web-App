@@ -1627,6 +1627,18 @@ img {
   aspect-ratio: 1 / 1;
 }
 
+.artist-img-col.aspect-16-9,
+.artist-card#artist-jj-beauvais .artist-img-col {
+  aspect-ratio: 16 / 9;
+}
+
+@media (min-width: 768px) {
+  .artist-card#artist-jj-beauvais .artist-img-col,
+  .artist-img-col.aspect-16-9 {
+    align-self: center;
+  }
+}
+
 .artist-avatar {
   width: 100%;
   height: 100%;

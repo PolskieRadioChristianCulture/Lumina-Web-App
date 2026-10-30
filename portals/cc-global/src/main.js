@@ -192,11 +192,13 @@ function artistCard(a) {
   const desc = isPl ? (a.descPl || a.desc) : a.desc;
   const showcaseUrl = isPl ? a.urlPl : a.urlEn;
   const isExternal = showcaseUrl.startsWith('http');
+  const aspectClass = a.aspectRatio === '16/9' ? 'aspect-16-9' : '';
+  const imgHeight = a.aspectRatio === '16/9' ? '202' : '360';
 
   return `
     <article class="card artist-card" id="artist-${e(a.id)}">
-      <div class="artist-img-col">
-        <img class="artist-avatar" src="${asset(a.image)}" alt="${e(a.name)}" width="360" height="360" loading="lazy"/>
+      <div class="artist-img-col ${aspectClass}">
+        <img class="artist-avatar" src="${asset(a.image)}" alt="${e(a.name)}" width="360" height="${imgHeight}" loading="lazy"/>
         ${a.archivalImage ? `<span class="artist-archival-cue" title="Contains original archival photos">1980s Archive</span>` : ''}
       </div>
       <div class="artist-content-col">
