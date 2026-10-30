@@ -75,6 +75,79 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    "id": "art-z-biblia-za-pan-brat-dzien-30",
+    "title": "Z Biblią za Pan Brat: Dzień 30 — Błogosławieństwo Jakuba, proroctwo o berle Judy i Chrystus jako Lew i Baranek w Rdz 48–49",
+    "slug": "z-biblia-za-pan-brat-dzien-30-blogoslawienstwo-obietnica-i-lew-z-judy",
+    "excerpt": "Księga Rodzaju 48–49: Ostatnie dni Jakuba, skrzyżowanie rąk nad Efraimem i Manassesem, wyrocznie nad dwunastoma synami oraz mesjańska obietnica berła Judy wypełniona w Chrystusie.",
+    "content": [
+      "W ramach ogólnopolskiego studium biblijnego „Z Biblią za Pan Brat”, portal informacyjny CCN publikuje analizę rozdziałów 48 i 49 Księgi Rodzaju. Stanowią one punkt kulminacyjny historii patriarchów, w którym gasnący Jakub przekazuje Boże przymierze kolejnemu pokoleniu oraz wypowiada prorocze wyrocznie dotyczące dwunastu plemion Izraela.",
+      "1. ADOPCJA I SKRZYŻOWANIE RĄK JAKUBA (RDZ 48:1–22)",
+      "W obliczu nadchodzącej śmierci Jakub przyjmuje synów Józefa — Efraima i Manassesa — jako własnych spadkobierców (Rdz 48:5), co w podziale ziemi da rodowi Józefa podwójną część. Gest skrzyżowania rąk i uprzywilejowanie młodszego Efraima (Rdz 48:14, 19) stanowi kolejny w Księdze Rodzaju przykład suwerennego Bożego wyboru, który nie podporządkowuje się ludzkim zwyczajom primogenitury. Patriarcha wyznaje wiarę w Boga, który „był moim pasterzem przez całe moje życie aż do tego dnia” (Rdz 48:15).",
+      "2. WYROCZNIE NAD SYNAMI: OCENA CZYNÓW I PERSPEKTYWA PLEMION (RDZ 49:1–7, 13–27)",
+      "Przemowa Jakuba w Rdz 49 ma formę poezji hebrajskiej łączącej ocenę moralną z zapowiedzią przyszłych losów plemion. Ruben traci pozycję lidera z powodu braku opanowania i grzechu kazirodztwa (Rdz 49:3–4; por. 35:22). Symeon i Lewi zostają potępieni za okrutną przemoc w Sychem (Rdz 49:5–7; por. 34:25–31). Józef otrzymuje rozbudowane błogosławieństwo płodności i siły od „Potężnego Boga Jakuba, Pasterza i Skały Izraela” (Rdz 49:22–26).",
+      "3. BERŁO JUDY I NADZIEJA MESJAŃSKA (RDZ 49:8–12)",
+      "Centralnym punktem rozdziału jest wyrocznia nad Judą. Patriarcha porównuje syna do lwa (Rdz 49:9) i zapowiada trwałość królewskiego berła: „Nie oddali się berło od Judy ani laska władcy spośród jego nóg, aż przyjdzie Szilo [Ten, do którego należy], i jemu będzie posłuszeństwo narodów” (Rdz 49:10). Fragment ten otwiera w kanonie biblijnym linię królewską, która prowadzi przez Dawida (2 Sm 7:12–16) aż do Jezusa Chrystusa.",
+      "4. WYPEŁNIENIE W NOWYM TESTAMENCIE: LEW I BARANEK (AP 5:5–6)",
+      "Nowy Testament odczytuje Rdz 49:9–10 w osobie zmartwychwstałego Chrystusa. W Księdze Apokalipsy Jezus zostaje nazwany „Lwem z pokolenia Judy, Korzeniem Dawida” (Ap 5:5). Paradoks chrześcijańskiej teologii polega na tym, że ów zwycięski Lew objawia się Janowi jako „Baranek stojący, jakby zabity” (Ap 5:6) — królowanie Boga manifestuje się poprzez odkupieńczą ofiarę krzyża.",
+      "PODSUMOWANIE REDAKCYJNE CCN",
+      "Rozdziały 48 i 49 Księgi Rodzaju uczą, że Boże obietnice nie giną wraz ze śmiercią człowieka, a historia zbawienia prowadzona jest przez suwerenną łaskę Boga, która w Chrystusie otwiera przed wierzącymi wieczne dziedzictwo."
+    ],
+    "category": "wiara",
+    "categoryLabel": "Wiara & Rozwój",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-30T06:00:00.000Z",
+    "dateFormatted": "30 października 2026",
+    "imageUrl": "/images/news/art-z-biblia-za-pan-brat-dzien-30-blogoslawienstwo-obietnica-i-lew-z-judy.jpg",
+    "imageCaption": "Błogosławieństwo Jakuba i proroctwo o berle Judy — ilustracja redakcyjna @A520 (Rdz 48:1–49:33). Z Biblią za Pan Brat Dzień 30",
+    "readTimeMinutes": 7,
+    "isHero": false,
+    "isPopular": true,
+    "popularRank": 1,
+    "tags": [
+      "Z Biblią za Pan Brat",
+      "Księga Rodzaju",
+      "Jakub",
+      "Józef",
+      "Juda",
+      "Efraim",
+      "Manasses",
+      "Lew z Judy",
+      "Szilo",
+      "berło",
+      "błogosławieństwo",
+      "Rdz 48",
+      "Rdz 49",
+      "Ap 5:5"
+    ],
+    "scriptureReference": {
+      "verse": "Rdz 48:1–49:33; Ap 5:5–6; 2 Sm 7:12–16; J 10:11 (UBG)",
+      "text": ""
+    },
+    "sourceCitation": {
+      "sourceName": "Z Biblią za Pan Brat",
+      "sourceUrl": "https://polskieradio.cc/akademia#kurscodzienny"
+    },
+    "relatedCourse": {
+      "title": "Kurs Codzienny Pisma Świętego — Dzień 30",
+      "lesson": "Dzień 30",
+      "url": "/akademia/kurscodzienny/dzien-30"
+    },
+    "resourceLinks": [
+      {
+        "label": "Otwórz Lekcję Dnia 30 w Akademii Biblijnej",
+        "url": "/akademia/kurscodzienny/dzien-30"
+      },
+      {
+        "label": "Interlinearna MojaBiblia CC (Rdz 48–49)",
+        "url": "/mojabiblia"
+      },
+      {
+        "label": "Akademia Biblijna LUMINA",
+        "url": "/akademia"
+      }
+    ]
+  },
+  {
     "id": "art-gerald-welch-the-call-rockowe-wezwanie-do-przebudzenia-sumienia-i-zywej-wiary",
     "title": "Gerald Welch – THE CALL. Rockowe wezwanie do przebudzenia sumienia i żywej wiary",
     "slug": "gerald-welch-the-call-rockowe-wezwanie-do-przebudzenia-sumienia-i-zywej-wiary",
