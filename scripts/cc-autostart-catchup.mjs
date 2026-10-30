@@ -142,6 +142,15 @@ async function runCatchUp() {
     log('⚠️ Błąd runnera zaczepek WhatsApp: ' + err.message);
   }
 
+  // ─── 8. SYNCHRONIZACJA CUDA KAŻDEGO DNIA (Andrzej Thiel / szukajacboga.pl) ───
+  try {
+    log('🙏 Sprawdzanie i synchronizacja rozważań Cuda Każdego Dnia (Andrzej Thiel)...');
+    execSync('node scripts/cuda_kazdego_dnia/sync-cuda-channel-auto.mjs', { cwd: ROOT, stdio: 'inherit' });
+    log('✅ Cuda Każdego Dnia zsynchronizowane.');
+  } catch (err) {
+    log('⚠️ Błąd synchronizacji Cuda Każdego Dnia: ' + err.message);
+  }
+
 
 
   log(`🏁 Zakończono skanowanie autostartu. Wykonano nadrzędnych akcji: ${actionsTaken}.`);

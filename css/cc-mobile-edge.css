@@ -66,8 +66,8 @@ body.theme-lumina-light .cc-mobile-edge[data-profile="lumina"] {
   backdrop-filter:blur(4px);
 }
 .cc-mobile-edge[data-profile="search"] nav {
-  display:grid;
-  grid-template-columns:repeat(2, 44px);
+  display:grid !important;
+  grid-template-columns:repeat(2, 44px) !important;
   gap:6px 8px;
   justify-content:center;
   align-content:start;

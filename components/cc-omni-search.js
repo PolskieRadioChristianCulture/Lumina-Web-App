@@ -4544,11 +4544,11 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        font-size: 0.82rem;
+        font-size: 0.88rem;
         font-weight: 800;
         letter-spacing: 0.05em;
         text-transform: uppercase;
-        color: var(--omni-gold);
+        color: #FF7A00;
       }
       .cc-omni-live-badge {
         display: inline-flex;
@@ -9302,6 +9302,8 @@ ${isStandalonePage ? '' : `
     scale: '<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h18"/>',
     users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
     heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
+    mic: '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
+    book: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
     moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
     search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
@@ -10045,16 +10047,40 @@ ${isStandalonePage ? '' : `
     }
   }
 
+  const CANONICAL_FEATURED_CARDS = [
+    {
+      tag: 'INSPIRACJA NA DZIŚ',
+      title: 'Rozważanie „Dobrze, że jesteś”',
+      desc: 'Codzienne słowo umocnienia, modlitwa i Boży pokój na każdy dzień.',
+      url: '/player',
+      icon: 'heart'
+    },
+    {
+      tag: 'AKADEMIA BIBLIJNA',
+      title: 'Lekcja Dnia: Z Biblią za Pan Brat',
+      desc: 'Codzienne studium Pisma Świętego werset po wersecie z komentarzem.',
+      url: '/akademia#kurscodzienny',
+      icon: 'book'
+    },
+    {
+      tag: 'PODCAST SPOTIFY SDS',
+      title: 'APOKALIPSA — Księga Nadziei',
+      desc: 'Profetyczny cykl wykładów biblijnych Studia Dobrego Słowa.',
+      url: '/player#apokalipsa',
+      icon: 'mic'
+    },
+    {
+      tag: 'NADAJEMY 24/7',
+      title: 'Radio Christian Culture & Player',
+      desc: 'Muzyka uwielbienia, słuchowiska Biblia Audio i stacje tematyczne.',
+      url: '/player',
+      icon: 'radio'
+    }
+  ];
+
   function getFeaturedCardData(slotIdx, setIdx) {
-    // Zestaw 0 ("Dla Ciebie") łączy inteligentny kontekst pory dnia, daty/świąt i potrzeb użytkownika
     if (setIdx === 0) {
-      const smart = getSmartContextInfo();
-      if (smart && Array.isArray(smart.cards) && smart.cards[slotIdx]) {
-        return smart.cards[slotIdx];
-      }
-      if (catalogData && Array.isArray(catalogData.recommendedToday) && catalogData.recommendedToday[slotIdx]) {
-        return catalogData.recommendedToday[slotIdx];
-      }
+      return CANONICAL_FEATURED_CARDS[slotIdx] || CANONICAL_FEATURED_CARDS[0];
     }
     const pool = FEATURED_POOLS[slotIdx] || [];
     return pool[setIdx % pool.length];
@@ -10215,71 +10241,25 @@ ${isStandalonePage ? '' : `
       : `${activeFeaturedSet + 1}/${FEATURED_MODES.length} • ${activeModeObj.fullLabel}`;
 
     const featuredCards = `
-      <section class="cc-omni-featured-section" aria-label="Polecane na dziś w Christian Culture">
+      <section class="cc-omni-featured-section" aria-label="Polecane dziś w EkoCC">
         <div class="cc-omni-featured-head">
           <div class="cc-omni-featured-title-wrap">
             <span class="cc-omni-featured-label">
-              ${svgIcon('star', 15)} Polecane na dziś
-              <span class="cc-omni-live-badge"><span class="cc-live-pulse-dot"></span> LIVE</span>
+              ☆ POLECANE DZIŚ W EKOCC
             </span>
-            <span class="cc-omni-context-pill" id="ccOmniContextPill">${escapeHtml(initialContextText)}</span>
-          </div>
-          <div class="cc-omni-featured-controls">
-            <button type="button" class="cc-omni-feat-nav" data-feat-nav="prev" aria-label="Poprzedni zestaw propozycji" title="Poprzedni zestaw">‹</button>
-            <div class="cc-omni-featured-dots" role="tablist" aria-label="Wybierz zestaw propozycji">
-              ${FEATURED_MODES.map((m, idx) => `
-                <button type="button" class="cc-omni-feat-dot${activeFeaturedSet === idx ? ' active' : ''}" data-feat-set="${idx}" aria-label="Zestaw ${idx + 1}: ${escapeHtml(m.fullLabel)}" aria-current="${activeFeaturedSet === idx}"></button>
-              `).join('')}
-            </div>
-            <button type="button" class="cc-omni-feat-nav" data-feat-nav="next" aria-label="Następny zestaw propozycji" title="Następny zestaw">›</button>
-          </div>
-        </div>
-        <div class="cc-omni-feat-modes" role="tablist" aria-label="Kategorie inteligentnych propozycji">
-          ${FEATURED_MODES.map((m, idx) => `
-            <button type="button" role="tab" class="cc-omni-feat-mode-btn${activeFeaturedSet === idx ? ' active' : ''}" data-feat-set="${idx}" aria-selected="${activeFeaturedSet === idx}">
-              ${svgIcon(m.icon, 13)}
-              <span>${escapeHtml(m.label)}</span>
-            </button>
-          `).join('')}
-        </div>
-        <div class="cc-omni-stream-bar" id="ccOmniStreamBar" role="region" aria-label="Odtwarzacz strumienia w wyszukiwarce" aria-live="polite">
-          <div class="cc-omni-stream-bar-info">
-            <span class="cc-feat-eq" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="cc-omni-stream-bar-tag">NA ŻYWO:</span>
-            <span class="cc-omni-stream-bar-title">Radio Christian Culture 24/7</span>
-          </div>
-          <div class="cc-omni-stream-bar-actions">
-            <button type="button" class="cc-omni-stream-station-btn" data-feat-station-switch="poland" data-feat-station-label="Radio Christian Culture 24/7">Radio PL</button>
-            <button type="button" class="cc-omni-stream-station-btn" data-feat-station-switch="biblia_audio" data-feat-station-label="Nowy Testament & Słowo Boże">Biblia Audio</button>
-            <button type="button" class="cc-omni-stream-station-btn" data-feat-station-switch="biblia_spiewana" data-feat-station-label="Śpiewane Psalmy i Przypowieści">Biblia Śpiewana</button>
-            <button type="button" class="cc-omni-stream-station-btn" data-feat-station-switch="instrumental_worship" data-feat-station-label="Pasmo Bożej Obecności & Modlitwy">Uwielbienie</button>
-            <button type="button" class="cc-omni-stream-stop-btn" data-feat-stream-stop="true" aria-label="Zatrzymaj odtwarzanie">⏸ Zatrzymaj</button>
           </div>
         </div>
         <div class="cc-omni-featured-grid">
-          ${initialCards.map((card, i) => {
-            const streamId = resolveCardStream(card);
-            return `
+          ${initialCards.map((card, i) => `
             <a class="cc-omni-feat-card" href="${escapeHtml(card.url)}" data-slot-index="${i}">
               <span class="cc-omni-feat-icon">${svgIcon(card.icon, 20)}</span>
               <span class="cc-omni-feat-info">
-                <span class="cc-omni-feat-top">
-                  <span class="cc-omni-feat-tag">${escapeHtml(card.tag)}</span>
-                  <span class="cc-omni-feat-badge">${escapeHtml(card.badge || 'POLECANE')}</span>
-                </span>
+                <span class="cc-omni-feat-tag">${escapeHtml(card.tag)}</span>
                 <strong class="cc-omni-feat-title">${escapeHtml(card.title)}</strong>
                 <span class="cc-omni-feat-desc">${escapeHtml(card.desc)}</span>
-                <span class="cc-omni-feat-actions" style="${streamId ? 'display:flex' : 'display:none'}">
-                  <button type="button" class="cc-omni-feat-listen-btn" data-feat-stream="${escapeHtml(streamId)}" data-feat-stream-title="${escapeHtml(card.title)}" aria-pressed="false" title="Uruchom strumień bez opuszczania wyszukiwarki">
-                    <span class="cc-feat-listen-ico" aria-hidden="true">▶</span>
-                    <span class="cc-feat-listen-txt">Słuchaj teraz</span>
-                    <span class="cc-feat-eq" aria-hidden="true"><i></i><i></i><i></i></span>
-                  </button>
-                </span>
               </span>
               <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
-            </a>`;
-          }).join('')}
+            </a>`).join('')}
         </div>
       </section>`;
 

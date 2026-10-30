@@ -47,7 +47,8 @@
     "cycle:weekly": "node scripts/live_content_v3/weekly-culture-review.mjs",
     "cycle:qa": "node scripts/live_content_v3/editorial-qa.mjs",
     "cycles:run": "node scripts/live_content_v3/orchestrate-cycles.mjs",
-    "hooks:whatsapp": "node scripts/whatsapp_hooks/whatsapp-hooks-runner.mjs"
+    "hooks:whatsapp": "node scripts/whatsapp_hooks/whatsapp-hooks-runner.mjs",
+    "sync:cuda": "node scripts/cuda_kazdego_dnia/sync-cuda-channel-auto.mjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",

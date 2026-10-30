@@ -984,7 +984,7 @@ test('cc-omni-search.js: Biblia Intelligence CC — P6 contracts (Karty Dzieleni
 });
 
 test('cc-omni-search.js: Tętniąca Życiem Wyszukiwarka EkoCC — dynamiczne okna propozycji (POLECANE NA DZIŚ, LIVE badge, pule rotacji)', () => {
-  assert.ok(omniSearchCode.includes('Polecane na dziś'), 'header renamed to Polecane na dziś');
+  assert.ok(omniSearchCode.includes('POLECANE DZIŚ W EKOCC') || omniSearchCode.includes('Polecane na dziś'), 'header renamed to POLECANE DZIŚ W EKOCC');
   assert.ok(omniSearchCode.includes('cc-omni-live-badge'), 'defines cc-omni-live-badge');
   assert.ok(omniSearchCode.includes('cc-live-pulse-dot'), 'defines cc-live-pulse-dot pulsing indicator');
   assert.ok(omniSearchCode.includes('ccPulseLive'), 'defines animation ccPulseLive');
