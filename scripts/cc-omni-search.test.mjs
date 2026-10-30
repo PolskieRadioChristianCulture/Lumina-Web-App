@@ -991,6 +991,13 @@ test('cc-omni-search.js: Tętniąca Życiem Wyszukiwarka EkoCC — dynamiczne ok
   assert.ok(omniSearchCode.includes('cc-omni-featured-dots'), 'defines interactive pagination dots container');
   assert.ok(omniSearchCode.includes('cc-omni-feat-dot'), 'defines individual interactive dots');
   assert.ok(omniSearchCode.includes('cc-card-updating'), 'defines smooth card update transition');
+  assert.ok(omniSearchCode.includes('cc-card-entering'), 'defines premium 3D entering cascade transition');
+  assert.ok(omniSearchCode.includes('ccCardCascadeIn'), 'defines ccCardCascadeIn keyframe');
+  assert.ok(omniSearchCode.includes('ccCardShimmerSweep'), 'defines ccCardShimmerSweep golden sheen keyframe');
+  assert.ok(omniSearchCode.includes('FEATURED_MODES'), 'defines 8 thematic FEATURED_MODES');
+  assert.ok(omniSearchCode.includes('getSmartContextInfo'), 'defines intelligent time/date/holiday/user context engine');
+  assert.ok(omniSearchCode.includes('cc-omni-feat-modes'), 'defines interactive thematic mode strip');
+  assert.ok(omniSearchCode.includes('cc-omni-context-pill'), 'defines live context indicator pill');
   assert.ok(omniSearchCode.includes('FEATURED_POOLS'), 'defines FEATURED_POOLS rotation data');
   assert.ok(omniSearchCode.includes('rotateFeaturedCards'), 'defines rotateFeaturedCards logic');
   assert.ok(omniSearchCode.includes('startFeaturedRotation'), 'defines startFeaturedRotation timer');

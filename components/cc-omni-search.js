@@ -4517,14 +4517,26 @@
       }
       .cc-omni-featured-section {
         width: 100%;
-        max-width: 820px;
+        max-width: 860px;
+        background: linear-gradient(180deg, rgba(16, 21, 36, 0.62) 0%, rgba(10, 14, 24, 0.42) 100%);
+        border: 1px solid rgba(196, 163, 90, 0.22);
+        border-radius: 20px;
+        padding: 16px 18px 18px;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        box-sizing: border-box;
       }
       .cc-omni-featured-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
-        padding: 0 4px;
+        margin-bottom: 10px;
+        padding: 0 2px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .cc-omni-featured-title-wrap {
+        display: flex;
+        align-items: center;
         flex-wrap: wrap;
         gap: 8px;
       }
@@ -4533,8 +4545,8 @@
         align-items: center;
         gap: 6px;
         font-size: 0.82rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
+        font-weight: 800;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
         color: var(--omni-gold);
       }
@@ -4542,16 +4554,30 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        margin-left: 6px;
-        padding: 2px 7px;
-        border-radius: 10px;
-        background: rgba(255, 122, 0, 0.15);
-        border: 1px solid rgba(255, 122, 0, 0.4);
+        margin-left: 4px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(255, 122, 0, 0.16);
+        border: 1px solid rgba(255, 122, 0, 0.45);
         color: #FF7A00;
-        font-size: 0.65rem;
+        font-size: 0.64rem;
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
+      }
+      .cc-omni-context-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: rgba(196, 163, 90, 0.12);
+        border: 1px solid rgba(196, 163, 90, 0.3);
+        color: rgba(243, 229, 200, 0.92);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        transition: opacity 0.22s ease, transform 0.22s ease;
       }
       .cc-live-pulse-dot {
         width: 6px;
@@ -4565,35 +4591,106 @@
         0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 6px #FF7A00; }
         50% { transform: scale(1.35); opacity: 0.55; box-shadow: 0 0 12px #FF8C33; }
       }
+      .cc-omni-featured-controls {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .cc-omni-feat-nav {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        border: 1px solid rgba(196, 163, 90, 0.32);
+        background: rgba(15, 20, 34, 0.75);
+        color: var(--omni-gold);
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s;
+      }
+      .cc-omni-feat-nav:hover, .cc-omni-feat-nav:focus-visible {
+        background: rgba(255, 122, 0, 0.2);
+        border-color: #FF7A00;
+        color: #fff;
+        transform: scale(1.06);
+        outline: none;
+      }
       .cc-omni-featured-dots {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
       }
       .cc-omni-feat-dot {
         width: 8px;
         height: 8px;
-        border-radius: 50%;
-        background: rgba(196, 163, 90, 0.28);
-        border: 1px solid rgba(196, 163, 90, 0.4);
+        border-radius: 999px;
+        background: rgba(196, 163, 90, 0.26);
+        border: 1px solid rgba(196, 163, 90, 0.38);
         padding: 0;
         cursor: pointer;
-        transition: background 0.2s, transform 0.2s, border-color 0.2s;
+        transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1), background 0.22s, transform 0.22s, border-color 0.22s, box-shadow 0.22s;
       }
       .cc-omni-feat-dot:hover {
-        background: rgba(255, 122, 0, 0.5);
+        background: rgba(255, 122, 0, 0.55);
         border-color: #FF7A00;
       }
       .cc-omni-feat-dot.active {
-        background: #FF7A00;
+        width: 22px;
+        background: linear-gradient(90deg, #FF7A00, #C4A35A);
         border-color: #FF8C33;
-        transform: scale(1.25);
-        box-shadow: 0 0 8px rgba(255, 122, 0, 0.6);
+        box-shadow: 0 0 10px rgba(255, 122, 0, 0.55);
+      }
+      .cc-omni-feat-modes {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 2px 2px 12px;
+        margin-bottom: 2px;
+      }
+      .cc-omni-feat-modes::-webkit-scrollbar {
+        display: none;
+      }
+      .cc-omni-feat-mode-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 11px;
+        border-radius: 999px;
+        border: 1px solid rgba(196, 163, 90, 0.22);
+        background: rgba(14, 18, 30, 0.72);
+        color: rgba(243, 229, 200, 0.78);
+        font-size: 0.72rem;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+      }
+      .cc-omni-feat-mode-btn:hover, .cc-omni-feat-mode-btn:focus-visible {
+        border-color: rgba(255, 122, 0, 0.55);
+        color: #fff;
+        background: rgba(255, 122, 0, 0.14);
+        transform: translateY(-1px);
+        outline: none;
+      }
+      .cc-omni-feat-mode-btn.active {
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.24), rgba(196, 163, 90, 0.22));
+        border-color: #FF7A00;
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(255, 122, 0, 0.22);
       }
       .cc-omni-featured-grid {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
         gap: 12px;
+        perspective: 1000px;
       }
       @media (min-width: 641px) {
         .cc-omni-featured-grid {
@@ -4604,107 +4701,180 @@
         display: flex;
         align-items: flex-start;
         gap: 14px;
-        padding: 14px 16px;
-        min-height: 84px;
-        background: rgba(14, 18, 30, 0.82);
-        border: 1px solid rgba(196, 163, 90, 0.25);
+        padding: 15px 16px;
+        min-height: 98px;
+        background: linear-gradient(145deg, rgba(16, 21, 36, 0.9) 0%, rgba(11, 15, 26, 0.86) 100%);
+        border: 1px solid rgba(196, 163, 90, 0.28);
         border-radius: 16px;
         text-decoration: none;
         color: var(--omni-ink);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.22s, box-shadow 0.22s, background-color 0.22s, opacity 0.22s ease, filter 0.22s ease;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42);
+        transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.26s ease, box-shadow 0.26s ease, background-color 0.26s ease, opacity 0.26s cubic-bezier(0.22, 1, 0.36, 1), filter 0.26s ease;
         box-sizing: border-box;
         position: relative;
         overflow: hidden;
+        will-change: transform, opacity, filter;
       }
       .cc-omni-feat-card.cc-card-updating {
-        opacity: 0.15;
-        transform: translateY(6px) scale(0.985);
-        filter: blur(2px);
+        opacity: 0.08;
+        transform: perspective(900px) translate3d(0, 10px, -16px) rotateX(5deg) scale(0.965);
+        filter: blur(3px);
+      }
+      .cc-omni-feat-card.cc-card-entering {
+        animation: ccCardCascadeIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      @keyframes ccCardCascadeIn {
+        0% {
+          opacity: 0.22;
+          transform: perspective(900px) translate3d(0, -8px, 10px) scale(0.98);
+          border-color: rgba(255, 122, 0, 0.65);
+        }
+        60% {
+          border-color: rgba(196, 163, 90, 0.58);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 122, 0, 0.2);
+        }
+        100% {
+          opacity: 1;
+          transform: perspective(900px) translate3d(0, 0, 0) scale(1);
+        }
+      }
+      .cc-omni-feat-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 75%;
+        height: 100%;
+        background: linear-gradient(105deg, transparent 0%, rgba(255, 140, 51, 0.14) 45%, rgba(196, 163, 90, 0.22) 55%, transparent 100%);
+        transform: skewX(-20deg);
+        pointer-events: none;
+      }
+      .cc-omni-feat-card.cc-card-entering::after {
+        animation: ccCardShimmerSweep 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      @keyframes ccCardShimmerSweep {
+        0% { left: -110%; opacity: 1; }
+        100% { left: 140%; opacity: 0; }
       }
       @media (prefers-reduced-motion: reduce) {
         .cc-live-pulse-dot { animation: none; }
         .cc-omni-feat-card.cc-card-updating { transform: none; filter: none; opacity: 0.6; }
+        .cc-omni-feat-card.cc-card-entering { animation: none; }
+        .cc-omni-feat-card.cc-card-entering::after { animation: none; }
       }
       .cc-omni-feat-card::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(196, 163, 90, 0.08) 0%, transparent 60%);
+        background: linear-gradient(135deg, rgba(196, 163, 90, 0.09) 0%, transparent 62%);
         pointer-events: none;
       }
       .cc-omni-feat-card:hover, .cc-omni-feat-card:focus-visible {
-        transform: translateY(-2px);
+        transform: translateY(-3px);
         border-color: var(--omni-gold);
-        background: rgba(22, 28, 46, 0.92);
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 16px rgba(196, 163, 90, 0.25);
+        background: linear-gradient(145deg, rgba(24, 31, 52, 0.95) 0%, rgba(15, 20, 35, 0.92) 100%);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 18px rgba(196, 163, 90, 0.26);
         outline: none;
       }
       .cc-omni-feat-icon {
         width: 44px;
         height: 44px;
         border-radius: 12px;
-        background: linear-gradient(135deg, rgba(255, 122, 0, 0.2), rgba(196, 163, 90, 0.3));
-        border: 1px solid rgba(255, 122, 0, 0.4);
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.22), rgba(196, 163, 90, 0.32));
+        border: 1px solid rgba(255, 122, 0, 0.45);
         color: #FF7A00;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+        transition: transform 0.22s ease, border-color 0.22s ease, color 0.22s ease;
       }
       .cc-omni-feat-card:hover .cc-omni-feat-icon {
         border-color: var(--omni-gold);
         color: var(--omni-gold);
-        transform: scale(1.05);
+        transform: scale(1.06);
       }
       .cc-omni-feat-info {
         flex: 1;
         min-width: 0;
       }
+      .cc-omni-feat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        margin-bottom: 4px;
+      }
       .cc-omni-feat-tag {
         display: inline-block;
-        font-size: 0.68rem;
-        font-weight: 700;
+        font-size: 0.67rem;
+        font-weight: 800;
         letter-spacing: 0.06em;
         text-transform: uppercase;
         color: #FF7A00;
-        margin-bottom: 3px;
-      }
-      .cc-omni-feat-title {
-        display: block;
-        font-size: 0.98rem;
-        font-weight: 600;
-        line-height: 1.3;
-        color: #fff;
-        margin-bottom: 4px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+      .cc-omni-feat-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: rgba(196, 163, 90, 0.14);
+        border: 1px solid rgba(196, 163, 90, 0.28);
+        color: var(--omni-gold-light);
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        flex-shrink: 0;
+      }
+      .cc-omni-feat-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        white-space: normal;
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.32;
+        color: #fff;
+        margin-bottom: 4px;
       }
       .cc-omni-feat-card:hover .cc-omni-feat-title {
         color: var(--omni-gold-light);
       }
       .cc-omni-feat-desc {
-        display: block;
-        font-size: 0.78rem;
-        color: var(--omni-muted);
-        line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        font-size: 0.77rem;
+        color: var(--omni-muted);
+        line-height: 1.4;
       }
       .cc-omni-feat-arrow {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(196, 163, 90, 0.2);
         color: var(--omni-muted);
-        font-size: 1rem;
+        font-size: 0.92rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         align-self: center;
-        transition: transform 0.15s, color 0.15s;
+        transition: transform 0.2s, color 0.2s, background 0.2s, border-color 0.2s;
         flex-shrink: 0;
       }
       .cc-omni-feat-card:hover .cc-omni-feat-arrow {
         transform: translateX(3px);
-        color: var(--omni-gold);
+        color: #fff;
+        background: rgba(255, 122, 0, 0.25);
+        border-color: #FF7A00;
       }
       .cc-omni-pro-shortcuts {
         display: flex;
@@ -8012,15 +8182,28 @@ ${isStandalonePage ? '' : `
     const filterChips = overlay.querySelectorAll('.cc-omni-filter-chip');
 
     overlay.addEventListener('click', (e) => {
-      const featDot = e.target.closest('.cc-omni-feat-dot');
-      if (featDot) {
+      const featTrigger = e.target.closest('.cc-omni-feat-dot, .cc-omni-feat-mode-btn');
+      if (featTrigger) {
         e.preventDefault();
         e.stopPropagation();
-        const setIdx = parseInt(featDot.getAttribute('data-feat-set'), 10);
+        const setIdx = parseInt(featTrigger.getAttribute('data-feat-set'), 10);
         if (!isNaN(setIdx)) {
           rotateFeaturedCards(setIdx);
           startFeaturedRotation();
         }
+        return;
+      }
+      const featNav = e.target.closest('.cc-omni-feat-nav');
+      if (featNav) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dir = featNav.getAttribute('data-feat-nav');
+        const totalSets = FEATURED_MODES.length;
+        const nextIdx = dir === 'prev'
+          ? (activeFeaturedSet - 1 + totalSets) % totalSets
+          : (activeFeaturedSet + 1) % totalSets;
+        rotateFeaturedCards(nextIdx);
+        startFeaturedRotation();
         return;
       }
       // Na /wyszukiwarka kliknięcie w tapetę odsłania panele, nie zamyka strony
@@ -8935,7 +9118,10 @@ ${isStandalonePage ? '' : `
     newspaper: '<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8V6Z"/>',
     scale: '<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h18"/>',
     users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
-    heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>'
+    heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+    moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
   };
   const svgIcon = (name, size = 22) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${HOME_ICONS[name] || ''}</svg>`;
   // Menu „Wszystko”: cały ekosystem w sekcjach z rejestru linków (L0 24.10.2026); każdy adres sprawdzony 26.10.2026 (200).
@@ -9033,12 +9219,256 @@ ${isStandalonePage ? '' : `
     if (d.toDateString() === y.toDateString()) return 'Odwiedzono wczoraj, ' + time;
     return 'Odwiedzono ' + d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' });
   }
-    // ── Silnik Dynamicznych Okien Propozycji („Tętniąca Życiem Wyszukiwarka EkoCC”) ──
+    // ── Silnik Dynamicznych Okien Propozycji („Tętniąca Życiem Wyszukiwarka EkoCC” — Wersja Premium) ──
+  const FEATURED_MODES = [
+    { id: 0, label: 'Dla Ciebie', fullLabel: 'Dla Ciebie • Pora Dnia & Kalendarz', icon: 'sparkle' },
+    { id: 1, label: 'Słowo & Kurs', fullLabel: 'Słowo Boże & Kurs Codzienny', icon: 'bible' },
+    { id: 2, label: 'Proroctwa', fullLabel: 'Proroctwa & Czas Końca', icon: 'compass' },
+    { id: 3, label: 'Radio & Live', fullLabel: 'Radio 24/7 & Telewizja Uwielbienia', icon: 'radio' },
+    { id: 4, label: 'CCN & Wiedza', fullLabel: 'Aktualności CCN, Nauka & Historia', icon: 'newspaper' },
+    { id: 5, label: 'Pokój & Pomoc', fullLabel: 'Pokój Serca, Modlitwa & Wsparcie', icon: 'heart' },
+    { id: 6, label: 'Kino & Audio', fullLabel: 'Kino VOD, Słuchowiska & Książki', icon: 'film' },
+    { id: 7, label: 'Społeczność', fullLabel: 'LUMINA, Rodzina & Rozwój', icon: 'users' }
+  ];
+
+  function getSmartContextInfo(nowDate = new Date()) {
+    const hour = nowDate.getHours();
+    const dayOfWeek = nowDate.getDay(); // 0=Nd, 5=Pt, 6=Sob
+    const dayOfMonth = nowDate.getDate();
+    const month = nowDate.getMonth() + 1; // 1..12
+    const lessonDay = Math.max(1, Math.min(31, dayOfMonth));
+    const monthsGenitive = [
+      '', 'Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca',
+      'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'
+    ];
+    const dateShort = `${dayOfMonth} ${monthsGenitive[month] || ''}`.trim();
+
+    // 1. Karta Pory Dnia (Slot 0)
+    let timeCard;
+    let timeContextLabel;
+    if (hour >= 5 && hour < 12) {
+      timeContextLabel = 'Poranek ze Słowem';
+      timeCard = {
+        tag: 'PORANEK ZE SŁOWEM • NA DZIŚ',
+        badge: 'PORANEK',
+        title: 'Rozważanie „Dobrze, że jesteś” i Werset Dnia',
+        desc: 'Rozpocznij dzień z Bożą obietnicą, modlitwą i pokojem serca na nowe wyzwania.',
+        url: '/werset-dnia',
+        icon: 'sun'
+      };
+    } else if (hour >= 12 && hour < 17) {
+      timeContextLabel = 'Popołudnie z Radiem i Słowem';
+      timeCard = {
+        tag: 'W CIĄGU DNIA • SŁUCHAJ NA ŻYWO',
+        badge: 'LIVE 24/7',
+        title: 'Radio Christian Culture 24/7 & Audycje Dnia',
+        desc: 'Muzyka uwielbienia, Biblia Audio i budujące pasma towarzyszące Ci w pracy i w drodze.',
+        url: '/player',
+        icon: 'radio'
+      };
+    } else if (hour >= 17 && hour < 22) {
+      timeContextLabel = 'Wieczorne Studium i Wyciszenie';
+      timeCard = {
+        tag: 'WIECZÓR Z BOGIEM • STUDIUM & FILM',
+        badge: 'WIECZÓR',
+        title: 'Wieczorne Studium: Apokalipsa & Kino VOD',
+        desc: 'Odpocznij po całym dniu przy profetycznym Słowie Bożym lub wartościowym filmie.',
+        url: '/apokalipsa-live',
+        icon: 'film'
+      };
+    } else {
+      timeContextLabel = 'Nocne Ukojenie i Boży Pokój';
+      timeCard = {
+        tag: 'NOCNE PASMO • POKÓJ SERCA',
+        badge: 'NOC 24/7',
+        title: 'Nocne Ukojenie: Psalmy, Ambient Sleep & Modlitwa',
+        desc: 'Łagodne brzmienia uwielbienia i biblijne obietnice na spokojny, głęboki sen bez lęku.',
+        url: '/cctv24-worship',
+        icon: 'moon'
+      };
+    }
+
+    // 2. Karta Wydarzeń, Okoliczności, Świąt i Dnia Tygodnia (Slot 1)
+    let occasionCard;
+    let occasionLabel = dateShort;
+    const isSabbath = (dayOfWeek === 6) || (dayOfWeek === 5 && hour >= 16);
+    const isReformationLightSeason = (month === 10 && dayOfMonth >= 24) || (month === 11 && dayOfMonth <= 5);
+    const isIndependenceSeason = (month === 11 && dayOfMonth >= 8 && dayOfMonth <= 14);
+    const isNativitySeason = (month === 12 && dayOfMonth >= 15) || (month === 1 && dayOfMonth <= 6);
+    const isPaschaSeason = (month === 3 && dayOfMonth >= 20) || (month === 4 && dayOfMonth <= 25);
+    const isSummerMission = (month === 7 || month === 8);
+
+    if (isSabbath) {
+      occasionLabel = 'Święty Czas Odpocznienia • Szabat';
+      occasionCard = {
+        tag: 'ŚWIĘTY CZAS ODPOCZNIENIA • SZABAT',
+        badge: 'SZABAT',
+        title: 'Błogosławiony Szabat: Odpocznij w Bożej Obecności',
+        desc: 'Śpiewane Psalmy, uwielbienie i studium Słowa na święty dzień odpocznienia (Wj 20:8–11).',
+        url: '/biblia-spiewana-live',
+        icon: 'worship'
+      };
+    } else if (isReformationLightSeason) {
+      occasionLabel = `Reformacja & Światło (${dateShort})`;
+      occasionCard = {
+        tag: 'TEMAT OKOLICZNOŚCIOWY • PAŹDZIERNIK / LISTOPAD',
+        badge: 'ŚWIATŁO vs MROK',
+        title: 'Światło Zwycięża Mrok — Reformacja & Prawda Biblijna',
+        desc: 'Dlaczego chrześcijanie wybierają Życie i Światłość Chrystusa? Biblijna odpowiedź na kulturę mroku.',
+        url: '/Halloween',
+        icon: 'shield'
+      };
+    } else if (isIndependenceSeason) {
+      occasionLabel = `Modlitwa za Polskę (${dateShort})`;
+      occasionCard = {
+        tag: 'WYDARZENIE NARODOWE • LISTOPAD',
+        badge: 'ZA POLSKĘ',
+        title: 'Zjednoczeni za Polskę — Modlitwa o Naród i Pokój',
+        desc: 'Wspólne wstawiennictwo o błogosławieństwo, mądrość i Bożą ochronę dla naszej Ojczyzny.',
+        url: '/zapolske-live',
+        icon: 'flag'
+      };
+    } else if (isNativitySeason) {
+      occasionLabel = 'Proroctwa Mesjańskie • Immanuel';
+      occasionCard = {
+        tag: 'CZAS ŚWIĄTECZNY • PROROCTWA BIBLIJNE',
+        badge: 'IMMANUEL',
+        title: 'Bóg z Nami — 300 Proroctw o Narodzeniu Mesjasza',
+        desc: 'Odkryj niezwykłe wypełnienie starotestamentowych proroctw o przyjściu Zbawiciela Świata.',
+        url: '/mojabiblia',
+        icon: 'star'
+      };
+    } else if (isPaschaSeason) {
+      occasionLabel = 'Pascha & Zmartwychwstanie';
+      occasionCard = {
+        tag: 'PASCHA & ZWYCIĘSTWO KRZYŻA',
+        badge: 'ZMARTWYCHWSTANIE',
+        title: 'Baranek Boży i Pusty Grób — Fundament Wiary',
+        desc: 'Historyczne i biblijne świadectwa zmartwychwstania Jezusa Chrystusa oraz nowego życia.',
+        url: '/Ewangelia',
+        icon: 'cross'
+      };
+    } else if (isSummerMission) {
+      occasionLabel = 'Misja Boże Wakacje';
+      occasionCard = {
+        tag: 'CYKL LETNI • BOŻE WAKACJE',
+        badge: 'LATO CC',
+        title: 'Boże Wakacje — Odpoczynek, Misja i Ewangelizacja',
+        desc: 'Inspiracje w podróży, Biblia Audio i codzienne umocnienie podczas letniego wypoczynku.',
+        url: '/akademia',
+        icon: 'compass'
+      };
+    } else if (dayOfWeek === 0) {
+      occasionLabel = `Niedziela dla Rodziny (${dateShort})`;
+      occasionCard = {
+        tag: 'CZAS DLA RODZINY I BLISKICH',
+        badge: 'NIEDZIELA',
+        title: 'Cyfrowy Detoks i Rodzinne Kino Chrześcijańskie',
+        desc: 'Jak odzyskać prawdziwą bliskość przy wspólnym stole oraz budujące filmy dla całego domu.',
+        url: '/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj',
+        icon: 'family'
+      };
+    } else {
+      occasionCard = {
+        tag: 'INTERLINEARNA BIBLIA • STUDIUM',
+        badge: 'GREKA & HEBR',
+        title: 'MojaBiblia: Kody Stronga & Greka',
+        desc: 'Badaj oryginalne znaczenie słów hebrajskich i greckich z przekładami UBG, BW, BT i BG.',
+        url: '/mojabiblia',
+        icon: 'scroll'
+      };
+    }
+
+    // 3. Karta Kalendarzowej Lekcji Dnia (Slot 2)
+    const dailyLessonCard = {
+      tag: `LEKCJA NA DZIŚ • ${dateShort.toUpperCase()}`,
+      badge: `DZIEŃ ${lessonDay}`,
+      title: `Kurs Codzienny (Dzień ${lessonDay}): Z Biblią za Pan Brat`,
+      desc: 'Dzisiejsze rozważanie Pisma Świętego werset po wersecie przygotowane dokładnie na ten dzień.',
+      url: `/akademia/kurscodzienny/dzien-${lessonDay}`,
+      icon: 'calendar'
+    };
+
+    // 4. Karta Dopasowana do Indywidualnych Potrzeb Użytkownika (Slot 3)
+    let personalCard = {
+      tag: 'DOPASOWANE DO POTRZEB • POKÓJ SERCA',
+      badge: 'DLA CIEBIE',
+      title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
+      desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
+      url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+      icon: 'newspaper'
+    };
+
+    try {
+      const recents = getRecentSearches();
+      const joinedQueries = recents.join(' ').toLowerCase();
+      let favs = [];
+      let history = [];
+      if (typeof localStorage !== 'undefined') {
+        favs = JSON.parse(localStorage.getItem('cc_user_favorites') || '[]');
+        history = JSON.parse(localStorage.getItem('cc_user_visit_history') || '[]');
+      }
+      if (/lęk|lek|strach|stres|depres|dług|dlug|kredyt|pomoc|kryzys|samotn|ból|bol/.test(joinedQueries)) {
+        personalCard = {
+          tag: 'TWOJA POTRZEBA • WSPARCIE I RATUNEK',
+          badge: 'DOPASOWANE',
+          title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
+          desc: 'Biblijne uciszenie burzy w sercu, wsparcie modlitewne 24/7 i wyjście z kryzysu.',
+          url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+          icon: 'heart'
+        };
+      } else if (/apokalips|daniel|proroc|koniec|znak|besti|objawieni/.test(joinedQueries)) {
+        personalCard = {
+          tag: 'TWOJE ZAINTERESOWANIA • PROROCTWA',
+          badge: 'DOPASOWANE',
+          title: 'APOKALIPSA — Księga Nadziei (Wykłady SDS)',
+          desc: 'Kontynuuj odkrywanie proroctw Księgi Daniela i Objawienia św. Jana w świetle Biblii.',
+          url: '/apokalipsa-live',
+          icon: 'compass'
+        };
+      } else if (/muzyk|śpiew|spiew|karaoke|uwielbieni|psalm|radio/.test(joinedQueries)) {
+        personalCard = {
+          tag: 'TWOJE BRZMIENIE • UWIELBIENIE 24/7',
+          badge: 'DOPASOWANE',
+          title: 'Śpiewane Psalmy i Przypowieści (Karaoke Live)',
+          desc: 'Transmisja telewizyjna na żywo z dynamicznym karaoke biblijnym i pieśniami chwały.',
+          url: '/biblia-spiewana-live',
+          icon: 'music'
+        };
+      } else if (Array.isArray(favs) && favs.length > 0 && favs[0] && favs[0].url && favs[0].title) {
+        personalCard = {
+          tag: 'TWOJE ULUBIONE • SZYBKI POWRÓT',
+          badge: 'ULUBIONE ★',
+          title: String(favs[0].title),
+          desc: 'Wróć jednym kliknięciem do zapisanego przez Ciebie materiału w ekosystemie CC.',
+          url: String(favs[0].url),
+          icon: 'star'
+        };
+      } else if (Array.isArray(history) && history.length > 0 && history[0] && history[0].url && history[0].title) {
+        personalCard = {
+          tag: 'KONTYNUUJ ODKRYWANIE • OSTATNIO',
+          badge: 'TWOJA ŚCIEŻKA',
+          title: String(history[0].title),
+          desc: 'Kontynuuj dokładnie tam, gdzie ostatnio zakończyłeś lekturę lub odsłuch.',
+          url: String(history[0].url),
+          icon: 'clock'
+        };
+      }
+    } catch (_) {}
+
+    return {
+      pillText: `${timeContextLabel} • ${occasionLabel}`,
+      cards: [timeCard, occasionCard, dailyLessonCard, personalCard]
+    };
+  }
+
+  // 8 Zestawów Tematycznych × 4 Sloty = 32 Wyselekcjonowane Propozycje Premium
   const FEATURED_POOLS = [
-    // Slot 0: Inspiracje, Słowo na Dziś, Modlitwa, Audio
+    // Slot 0 (Lewy Górny) — 8 zestawów (0..7)
     [
       {
         tag: 'Inspiracja na Dziś',
+        badge: 'PORANEK',
         title: 'Rozważanie „Dobrze, że jesteś”',
         desc: 'Codzienne słowo umocnienia, modlitwa i Boży pokój na każdy dzień.',
         url: '/player',
@@ -9046,117 +9476,260 @@ ${isStandalonePage ? '' : `
       },
       {
         tag: 'Słowo Boże na Dziś',
+        badge: 'OBIETNICA',
         title: 'Mój Werset Dnia z Obietnicą',
         desc: 'Losuj i rozważaj żywe obietnice Pisma Świętego przygotowane na dziś.',
         url: '/werset-dnia',
         icon: 'sparkle'
       },
       {
-        tag: 'Modlitwa & Wstawiennictwo',
-        title: 'Zjednoczeni za Polskę — Czuwanie',
-        desc: 'Wspólna modlitwa narodu o pokój, Boże prowadzenie i przebudzenie.',
-        url: '/modlitwa',
-        icon: 'shield'
+        tag: 'Podcast Spotify SDS',
+        badge: 'PODCAST',
+        title: 'APOKALIPSA — Księga Nadziei',
+        desc: 'Profetyczny cykl wykładów biblijnych Studia Dobrego Słowa werset po wersecie.',
+        url: '/podcasty',
+        icon: 'mic'
       },
       {
-        tag: 'Słuchowisko Biblijne',
-        title: 'Biblia Audio — Nowy Testament UBG',
-        desc: 'Żywe Słowo Boże z profesjonalną muzyką i udźwiękowieniem radiowym.',
+        tag: 'Nadajemy 24/7',
+        badge: 'LIVE 24/7',
+        title: 'Radio Christian Culture & Player',
+        desc: 'Muzyka uwielbienia, słuchowiska Biblia Audio i stacje tematyczne non-stop.',
         url: '/player',
-        icon: 'volume'
+        icon: 'radio'
+      },
+      {
+        tag: 'Portal Informacyjny CC',
+        badge: 'CCN NEWS',
+        title: 'Aktualności CCN — Świat w Świetle Biblii',
+        desc: 'Rzetelne analizy wydarzeń, komentarze i publicystyka bez manipulacji.',
+        url: '/news',
+        icon: 'newspaper'
+      },
+      {
+        tag: 'Psychologia & Wiara',
+        badge: 'POKÓJ SERCA',
+        title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
+        desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
+        url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+        icon: 'heart'
+      },
+      {
+        tag: 'Kino Chrześcijańskie VOD',
+        badge: 'BEZ REKLAM',
+        title: 'Filmy Fabularne i Dokumentalne CC',
+        desc: 'Wartościowe kino chrześcijańskie dla całej rodziny bez opłat i subskrypcji.',
+        url: '/vod',
+        icon: 'film'
+      },
+      {
+        tag: 'Społeczność Wiary',
+        badge: 'LUMINA',
+        title: 'Portal Społecznościowy LUMINA',
+        desc: 'Dołącz do chrześcijan z całej Polski — dyskusje, świadectwa i wspólna modlitwa.',
+        url: '/lumina',
+        icon: 'users'
       }
     ],
-    // Slot 1: Akademia Biblijna, Kurs Codzienny, MojaBiblia
+    // Slot 1 (Prawy Górny) — 8 zestawów (0..7)
     [
       {
-        tag: 'Akademia Biblijna',
-        title: 'Lekcja Dnia: Z Biblią za Pan Brat',
-        desc: 'Codzienne studium Pisma Świętego werset po wersecie z komentarzem.',
-        url: '/akademia#kurscodzienny',
-        icon: 'book'
-      },
-      {
         tag: 'Interlinearna Biblia',
+        badge: 'GREKA & HEBR',
         title: 'MojaBiblia: Kody Stronga & Greka',
         desc: 'Oryginalne znaczenie słów hebrajskich i greckich w Twojej przeglądarce.',
         url: '/mojabiblia',
         icon: 'scroll'
       },
       {
+        tag: 'Interlinearna Biblia',
+        badge: '4 PRZEKŁADY',
+        title: 'MojaBiblia: Kody Stronga & Greka',
+        desc: 'Porównuj przekłady UBG, BW, BT i BG ze słownikiem grecko-hebrajskim.',
+        url: '/mojabiblia',
+        icon: 'bible'
+      },
+      {
         tag: 'Kurs Proroctw Biblijnych',
+        badge: 'PROROCTWA',
         title: 'Księga Daniela — 2300 Wieczorów i Poranków',
         desc: 'Klucz do zrozumienia czasów ostatecznych i nadziei Zbawienia w Chrystusie.',
         url: '/akademia',
         icon: 'compass'
       },
       {
-        tag: 'Szkoła Uczniostwa',
-        title: 'Boże Zasady Zwycięskiego Życia',
-        desc: 'Praktyczne lekcje wiary, pokoju i zaufania Bogu w każdej próbie.',
-        url: '/akademia',
-        icon: 'bookmark'
-      }
-    ],
-    // Slot 2: Podcasty SDS, Aktualności CCN, VOD, Publicystyka
-    [
-      {
-        tag: 'Podcast Spotify SDS',
-        title: 'APOKALIPSA — Księga Nadziei',
-        desc: 'Profetyczny cykl wykładów biblijnych Studia Dobrego Słowa.',
-        url: '/podcasty',
-        icon: 'mic'
-      },
-      {
-        tag: 'Aktualności CCN • Na Dziś',
-        title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
-        desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
-        url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
-        icon: 'newspaper'
-      },
-      {
-        tag: 'Kino Chrześcijańskie VOD',
-        title: 'Filmy Fabularne i Dokumentalne CC',
-        desc: 'Wartościowe kino chrześcijańskie bez reklam, opłat i subskrypcji.',
-        url: '/vod',
-        icon: 'film'
-      },
-      {
-        tag: 'Analizy & Społeczeństwo',
-        title: 'Wolność Sumienia i Prawo Boże',
-        desc: 'Głębokie analizy wyzwań współczesnego świata w świetle Pisma Świętego.',
-        url: '/prawo',
-        icon: 'scale'
-      }
-    ],
-    // Slot 3: Radio CC 24/7, TV Na Żywo, Biblia Śpiewana, LUMINA
-    [
-      {
-        tag: 'Nadajemy 24/7',
-        title: 'Radio Christian Culture & Player',
-        desc: 'Muzyka uwielbienia, słuchowiska Biblia Audio i stacje tematyczne.',
-        url: '/player',
-        icon: 'radio'
-      },
-      {
         tag: 'Biblia Śpiewana Live 24/7',
+        badge: 'KARAOKE TV',
         title: 'Śpiewane Psalmy i Przypowieści',
         desc: 'Transmisja telewizyjna na żywo z dynamicznym karaoke biblijnym non-stop.',
         url: '/biblia-spiewana-live',
         icon: 'tv'
       },
       {
+        tag: 'Nauka & Stworzenie',
+        badge: 'ODKRYCIA',
+        title: 'Portal Nauka — Dowody Bożego Projektu',
+        desc: 'Fascynujące odkrycia fizyki, kosmologii i biologii potwierdzające Stworzenie.',
+        url: '/nauka',
+        icon: 'flask'
+      },
+      {
+        tag: 'Wstawiennictwo 24/7',
+        badge: 'MODLITWA',
+        title: 'Całodobowa Modlitwa Wstawiennicza BCM24',
+        desc: 'Zostaw intencję modlitewną lub dołącz do strażników modlitwy o każdej porze.',
+        url: '/BCM24',
+        icon: 'pray'
+      },
+      {
+        tag: 'Słuchowisko Biblijne',
+        badge: 'AUDIO HD',
+        title: 'Biblia Audio — Nowy Testament UBG',
+        desc: 'Żywe Słowo Boże z profesjonalną muzyką i udźwiękowieniem radiowym.',
+        url: '/player',
+        icon: 'volume'
+      },
+      {
+        tag: 'Relacje & Małżeństwo',
+        badge: 'RODZINA',
+        title: 'Cyfrowy detoks w chrześcijańskim domu',
+        desc: 'Jak odzyskać prawdziwą bliskość przy wspólnym stole (Wioletta Rogowska).',
+        url: '/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj',
+        icon: 'family'
+      }
+    ],
+    // Slot 2 (Lewy Dolny) — 8 zestawów (0..7)
+    [
+      {
+        tag: 'Akademia Biblijna',
+        badge: 'LEKCJA DNIA',
+        title: 'Lekcja Dnia: Z Biblią za Pan Brat',
+        desc: 'Codzienne studium Pisma Świętego werset po wersecie z komentarzem.',
+        url: '/akademia#kurscodzienny',
+        icon: 'book'
+      },
+      {
+        tag: 'Akademia Biblijna',
+        badge: 'KURS 31 DNI',
+        title: 'Lekcja Dnia: Z Biblią za Pan Brat',
+        desc: 'Systematyczny kurs biblijny prowadzący przez kluczowe księgi Pisma Świętego.',
+        url: '/akademia#kurscodzienny',
+        icon: 'calendar'
+      },
+      {
+        tag: 'Kanał Profetyczny 24/7',
+        badge: 'WIDEO LIVE',
+        title: 'Apokalipsa Live — Wykłady Wideo Non-Stop',
+        desc: 'Całodobowe pasmo telewizyjne z wykładami o proroctwach Księgi Objawienia.',
+        url: '/apokalipsa-live',
+        icon: 'tv'
+      },
+      {
         tag: 'Telewizja CCTV24 Worship',
+        badge: 'PASMO NOCNE',
         title: 'CCTV24 — Pasmo Bożej Obecności',
         desc: 'Nocne czuwania, modlitwy i pieśni chwały w krystalicznej jakości HD.',
         url: '/cctv24-worship',
         icon: 'play'
       },
       {
-        tag: 'Społeczność Wiary',
-        title: 'Portal Społecznościowy LUMINA',
-        desc: 'Dołącz do chrześcijan z całej Polski — dyskusje, świadectwa, modlitwa.',
-        url: '/lumina',
-        icon: 'users'
+        tag: 'Historia & Korzenie Wiary',
+        badge: 'HISTORIA',
+        title: 'Historia Chrześcijaństwa, Słowian i Biblii',
+        desc: 'Niezafałszowane dzieje Kościoła, Reformacji i polskich przekładów Pisma.',
+        url: '/historia',
+        icon: 'columns'
+      },
+      {
+        tag: 'Modlitwa & Wstawiennictwo',
+        badge: 'ZA POLSKĘ',
+        title: 'Zjednoczeni za Polskę — Czuwanie',
+        desc: 'Wspólna modlitwa narodu o pokój, Boże prowadzenie i duchowe przebudzenie.',
+        url: '/modlitwa',
+        icon: 'flag'
+      },
+      {
+        tag: 'Literatura Chrześcijańska',
+        badge: 'KSIĄŻKI',
+        title: 'Książki Autora & Powieść „Pardon, Czy To Miłość?”',
+        desc: 'Poruszająca literatura, poradniki duchowe i publikacje Cezarego Rogowskiego.',
+        url: '/ksiazki-autora',
+        icon: 'pen'
+      },
+      {
+        tag: 'Zdrowie Ciała i Ducha',
+        badge: 'HOLOS',
+        title: 'HOLOS — Biblijne Zdrowie, Sen i Odporność',
+        desc: 'Osiem naturalnych praw zdrowia, regeneracja organizmu i higiena myśli.',
+        url: '/holos',
+        icon: 'sparkle'
+      }
+    ],
+    // Slot 3 (Prawy Dolny) — 8 zestawów (0..7)
+    [
+      {
+        tag: 'Aktualności CCN • Na Dziś',
+        badge: 'POLECANE',
+        title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
+        desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
+        url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+        icon: 'newspaper'
+      },
+      {
+        tag: 'Biblioteka Słowa Bożego',
+        badge: 'PDF & AUDIO',
+        title: 'Biblia do Pobrania Za Darmo (UBG / BG)',
+        desc: 'Pobierz Pismo Święte w formacie PDF oraz audiobooki do słuchania offline.',
+        url: '/biblia-do-pobrania',
+        icon: 'download'
+      },
+      {
+        tag: 'Obrona Wiary & Prawda',
+        badge: 'APOLOGETYKA',
+        title: 'Apologetyka Biblijna — Odpowiedzi na Trudne Pytania',
+        desc: 'Rzeczowe argumenty potwierdzające wiarygodność Biblii i proroctw mesjańskich.',
+        url: '/apologetyka',
+        icon: 'shield'
+      },
+      {
+        tag: 'Studio Śpiewu & Tekstów',
+        badge: 'ŚPIEWAJ Z NAMI',
+        title: 'Biblijne Uwielbienie & Studio Karaoke CC',
+        desc: 'Śpiewaj pieśni uwielbienia z zsynchronizowanym tekstem na żywo w przeglądarce.',
+        url: '/BiblijneUwielbienie',
+        icon: 'music'
+      },
+      {
+        tag: 'Analizy & Społeczeństwo',
+        badge: 'PRAWO & ETYKA',
+        title: 'Wolność Sumienia i Prawo Boże',
+        desc: 'Głębokie analizy wyzwań współczesnego świata w świetle Pisma Świętego.',
+        url: '/prawo',
+        icon: 'scale'
+      },
+      {
+        tag: 'Finanse & Szafarstwo',
+        badge: 'WOLNOŚĆ',
+        title: 'Boże Zasady Finansów i Wyjście z Długów',
+        desc: 'Praktyczna mądrość biblijna w zarządzaniu budżetem domowym i pokonywaniu długów.',
+        url: '/finanse',
+        icon: 'coins'
+      },
+      {
+        tag: 'Krótkie Formy Wideo',
+        badge: 'CC SHORTS',
+        title: 'CC Shorts — 60 Sekund z Dobrym Słowem',
+        desc: 'Dynamiczne pionowe rolki wideo z myślą dnia, wersetem i inspiracją.',
+        url: '/shorts',
+        icon: 'video'
+      },
+      {
+        tag: 'Nawigator Ekosystemu',
+        badge: '60+ MODUŁÓW',
+        title: 'Żywa Mapa Ekosystemu Christian Culture',
+        desc: 'Interaktywna mapa wszystkich portali, kanałów TV, kursów i narzędzi misji CC.',
+        url: '/mapa',
+        icon: 'map'
       }
     ]
   ];
@@ -9166,9 +9739,15 @@ ${isStandalonePage ? '' : `
   let isFeaturedHovered = false;
 
   function getFeaturedCardData(slotIdx, setIdx) {
-    // Dynamiczne wstrzyknięcie z catalogData jeśli dostępne
-    if (catalogData && Array.isArray(catalogData.recommendedToday) && catalogData.recommendedToday[slotIdx]) {
-      if (setIdx === 0) return catalogData.recommendedToday[slotIdx];
+    // Zestaw 0 ("Dla Ciebie") łączy inteligentny kontekst pory dnia, daty/świąt i potrzeb użytkownika
+    if (setIdx === 0) {
+      const smart = getSmartContextInfo();
+      if (smart && Array.isArray(smart.cards) && smart.cards[slotIdx]) {
+        return smart.cards[slotIdx];
+      }
+      if (catalogData && Array.isArray(catalogData.recommendedToday) && catalogData.recommendedToday[slotIdx]) {
+        return catalogData.recommendedToday[slotIdx];
+      }
     }
     const pool = FEATURED_POOLS[slotIdx] || [];
     return pool[setIdx % pool.length];
@@ -9180,19 +9759,40 @@ ${isStandalonePage ? '' : `
     const cards = grid.querySelectorAll('.cc-omni-feat-card');
     if (cards.length < 4) return;
 
-    const nextSet = (targetSet !== null) ? targetSet : (activeFeaturedSet + 1) % 4;
+    const totalSets = FEATURED_MODES.length;
+    const nextSet = (targetSet !== null)
+      ? ((targetSet % totalSets) + totalSets) % totalSets
+      : (activeFeaturedSet + 1) % totalSets;
     activeFeaturedSet = nextSet;
 
-    // Aktualizacja kropek wskaźnika
+    // Aktualizacja kapsułek wskaźnika (dots)
     const dots = document.querySelectorAll('.cc-omni-feat-dot');
     dots.forEach((dot, idx) => {
       dot.classList.toggle('active', idx === nextSet);
       dot.setAttribute('aria-current', idx === nextSet ? 'true' : 'false');
     });
 
-    // Płynna kaskada aktualizacji okien (stagger 80ms)
+    // Aktualizacja przycisków trybów tematycznych
+    const modeBtns = document.querySelectorAll('.cc-omni-feat-mode-btn');
+    modeBtns.forEach((btn, idx) => {
+      btn.classList.toggle('active', idx === nextSet);
+      btn.setAttribute('aria-selected', idx === nextSet ? 'true' : 'false');
+    });
+
+    // Aktualizacja pigułki kontekstu w nagłówku
+    const contextPill = document.getElementById('ccOmniContextPill');
+    if (contextPill) {
+      const smart = getSmartContextInfo();
+      const modeObj = FEATURED_MODES[nextSet] || FEATURED_MODES[0];
+      contextPill.textContent = nextSet === 0
+        ? smart.pillText
+        : `${nextSet + 1}/${totalSets} • ${modeObj.fullLabel}`;
+    }
+
+    // Wielostopniowa kaskada 3D ze złotym połyskiem (stagger 95ms między okienkami)
     cards.forEach((card, slotIdx) => {
       setTimeout(() => {
+        card.classList.remove('cc-card-entering');
         card.classList.add('cc-card-updating');
         setTimeout(() => {
           const item = getFeaturedCardData(slotIdx, nextSet);
@@ -9200,17 +9800,26 @@ ${isStandalonePage ? '' : `
           card.href = item.url;
           const iconSpan = card.querySelector('.cc-omni-feat-icon');
           const tagSpan = card.querySelector('.cc-omni-feat-tag');
+          const badgeSpan = card.querySelector('.cc-omni-feat-badge');
           const titleEl = card.querySelector('.cc-omni-feat-title');
           const descSpan = card.querySelector('.cc-omni-feat-desc');
 
           if (iconSpan) iconSpan.innerHTML = svgIcon(item.icon || 'star', 20);
-          if (tagSpan) tagSpan.textContent = item.tag;
-          if (titleEl) titleEl.textContent = item.title;
-          if (descSpan) descSpan.textContent = item.desc;
+          if (tagSpan) tagSpan.textContent = item.tag || '';
+          if (badgeSpan) {
+            badgeSpan.textContent = item.badge || 'POLECANE';
+            badgeSpan.style.display = item.badge ? 'inline-flex' : 'none';
+          }
+          if (titleEl) titleEl.textContent = item.title || '';
+          if (descSpan) descSpan.textContent = item.desc || '';
 
           card.classList.remove('cc-card-updating');
-        }, 160);
-      }, slotIdx * 80);
+          card.classList.add('cc-card-entering');
+          setTimeout(() => {
+            card.classList.remove('cc-card-entering');
+          }, 680);
+        }, 185);
+      }, slotIdx * 95);
     });
   }
 
@@ -9220,7 +9829,7 @@ ${isStandalonePage ? '' : `
     featuredRotationTimer = setInterval(() => {
       if (isFeaturedHovered || (typeof document !== 'undefined' && document.hidden)) return;
       rotateFeaturedCards();
-    }, 5500);
+    }, 5600);
   }
 
   function stopFeaturedRotation() {
@@ -9269,34 +9878,56 @@ ${isStandalonePage ? '' : `
         </div>
       </div>`;
 
-    // 3. 4 Kluczowe Okna Ekosystemu („POLECANE NA DZIŚ” — Tętniące Życiem)
+    // 3. 4 Kluczowe Okna Ekosystemu („POLECANE NA DZIŚ” — Kaskadowa Auto-Promocja Premium)
+    const smartContext = getSmartContextInfo();
     const initialCards = [
       getFeaturedCardData(0, activeFeaturedSet),
       getFeaturedCardData(1, activeFeaturedSet),
       getFeaturedCardData(2, activeFeaturedSet),
       getFeaturedCardData(3, activeFeaturedSet)
     ];
+    const activeModeObj = FEATURED_MODES[activeFeaturedSet] || FEATURED_MODES[0];
+    const initialContextText = activeFeaturedSet === 0
+      ? smartContext.pillText
+      : `${activeFeaturedSet + 1}/${FEATURED_MODES.length} • ${activeModeObj.fullLabel}`;
 
     const featuredCards = `
       <section class="cc-omni-featured-section" aria-label="Polecane na dziś w Christian Culture">
         <div class="cc-omni-featured-head">
-          <span class="cc-omni-featured-label">
-            ${svgIcon('star', 15)} Polecane na dziś
-            <span class="cc-omni-live-badge"><span class="cc-live-pulse-dot"></span> LIVE</span>
-          </span>
-          <div class="cc-omni-featured-dots" role="tablist" aria-label="Wybierz propozycje">
-            <button type="button" class="cc-omni-feat-dot${activeFeaturedSet === 0 ? ' active' : ''}" data-feat-set="0" aria-label="Zestaw 1: Fundament Dnia" aria-current="${activeFeaturedSet === 0}"></button>
-            <button type="button" class="cc-omni-feat-dot${activeFeaturedSet === 1 ? ' active' : ''}" data-feat-set="1" aria-label="Zestaw 2: Świeże Słowo i Odkrycia" aria-current="${activeFeaturedSet === 1}"></button>
-            <button type="button" class="cc-omni-feat-dot${activeFeaturedSet === 2 ? ' active' : ''}" data-feat-set="2" aria-label="Zestaw 3: Modlitwa i Proroctwa" aria-current="${activeFeaturedSet === 2}"></button>
-            <button type="button" class="cc-omni-feat-dot${activeFeaturedSet === 3 ? ' active' : ''}" data-feat-set="3" aria-label="Zestaw 4: Słuchowiska i Społeczność" aria-current="${activeFeaturedSet === 3}"></button>
+          <div class="cc-omni-featured-title-wrap">
+            <span class="cc-omni-featured-label">
+              ${svgIcon('star', 15)} Polecane na dziś
+              <span class="cc-omni-live-badge"><span class="cc-live-pulse-dot"></span> LIVE</span>
+            </span>
+            <span class="cc-omni-context-pill" id="ccOmniContextPill">${escapeHtml(initialContextText)}</span>
           </div>
+          <div class="cc-omni-featured-controls">
+            <button type="button" class="cc-omni-feat-nav" data-feat-nav="prev" aria-label="Poprzedni zestaw propozycji" title="Poprzedni zestaw">‹</button>
+            <div class="cc-omni-featured-dots" role="tablist" aria-label="Wybierz zestaw propozycji">
+              ${FEATURED_MODES.map((m, idx) => `
+                <button type="button" class="cc-omni-feat-dot${activeFeaturedSet === idx ? ' active' : ''}" data-feat-set="${idx}" aria-label="Zestaw ${idx + 1}: ${escapeHtml(m.fullLabel)}" aria-current="${activeFeaturedSet === idx}"></button>
+              `).join('')}
+            </div>
+            <button type="button" class="cc-omni-feat-nav" data-feat-nav="next" aria-label="Następny zestaw propozycji" title="Następny zestaw">›</button>
+          </div>
+        </div>
+        <div class="cc-omni-feat-modes" role="tablist" aria-label="Kategorie inteligentnych propozycji">
+          ${FEATURED_MODES.map((m, idx) => `
+            <button type="button" role="tab" class="cc-omni-feat-mode-btn${activeFeaturedSet === idx ? ' active' : ''}" data-feat-set="${idx}" aria-selected="${activeFeaturedSet === idx}">
+              ${svgIcon(m.icon, 13)}
+              <span>${escapeHtml(m.label)}</span>
+            </button>
+          `).join('')}
         </div>
         <div class="cc-omni-featured-grid">
           ${initialCards.map((card, i) => `
             <a class="cc-omni-feat-card" href="${escapeHtml(card.url)}" data-slot-index="${i}">
               <span class="cc-omni-feat-icon">${svgIcon(card.icon, 20)}</span>
               <span class="cc-omni-feat-info">
-                <span class="cc-omni-feat-tag">${escapeHtml(card.tag)}</span>
+                <span class="cc-omni-feat-top">
+                  <span class="cc-omni-feat-tag">${escapeHtml(card.tag)}</span>
+                  <span class="cc-omni-feat-badge">${escapeHtml(card.badge || 'POLECANE')}</span>
+                </span>
                 <strong class="cc-omni-feat-title">${escapeHtml(card.title)}</strong>
                 <span class="cc-omni-feat-desc">${escapeHtml(card.desc)}</span>
               </span>
