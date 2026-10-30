@@ -1,0 +1,29 @@
+# EkoCC PORTAL MATRIX
+**Data audytu:** 2026-10-30 | **Status:** Produkcyjny rejestr portali i kanałów EkoCC
+
+> **Zasada nadrzędna:** Żadnych wymyślonych domen ani fikcyjnych ścieżek URL. Każda pozycja w tej matrycy odpowiada istniejącemu, zweryfikowanemu zasobowi ekosystemu Christian Culture (`https://polskieradio.cc`).
+
+---
+
+| ID Portalu / Sekcji | Kanoniczny URL | Właściciel / Redakcja | Odbiorcy Docelowi | Główne Kategorie | Źródła Wiarygodne | Język | Rekomendowany Rytm | Interfejs Publikacji | Status Integracji | Wsparcie TTS | Poziom Ryzyka |
+|---|---|---|---|---|---|:---:|---|---|:---:|:---:|:---:|
+| **CCN News** | `https://polskieradio.cc/news` | Redakcja CCN / Cezary Rogowski | Szerokie grono internautów poszukujących faktów i etyki | Świat, Polska, Bezpieczeństwo, Społeczeństwo, AI | Oficjalne komunikaty, PAP, Reuters, serwisy instytucjonalne | `pl` | Monitoring co 15 min; publikacja 1–2 art./dzień przy potwierdzonym newsie | `portals/ccn-news/src/data/articles.ts` + SSG | `PRODUKCJA` | Web Speech API | Średnie (wymaga 2 źródeł) |
+| **CCN Nauka** | `https://polskieradio.cc/nauka` | Redakcja CCN Nauka / Cezary Rogowski | Pasjonaci nauki, studenci, poszukujący dowodów na Projekt | Kosmologia, Fine-Tuning, BGV, Astrofizyka, Socjologia | Czasopisma recenzowane (Nature, arXiv), NASA, ESA | `pl` | 2–3 art. / tydzień | `scripts/portals_data.cjs` + SSG | `PRODUKCJA` | Web Speech API | Niskie |
+| **CCN Historia** | `https://polskieradio.cc/historia` | Redakcja CCN Historia / Cezary Rogowski | Miłośnicy historii biblijnej, archeologii i faktów | Archeologia biblijna, Qumran, Rękopisy NT, Stela Tel Dan | Muzea, IAA (Israel Antiquities Authority), publikacje archeologiczne | `pl` | 2 art. / tydzień | `scripts/portals_data.cjs` + SSG | `PRODUKCJA` | Web Speech API | Niskie |
+| **CCN Prawo** | `https://polskieradio.cc/prawo` | Redakcja CCN Prawo / Cezary Rogowski | Obywatele, osoby dotknięte bezprawiem, prawnicy | Dekalog a prawo zachodnie, wolność sumienia, bezstronność | Dzienniki ustaw, traktaty filozoficzno-prawne, Pismo Święte | `pl` | 1–2 art. / tydzień | `scripts/portals_data.cjs` + SSG | `PRODUKCJA` | Web Speech API | Średnie |
+| **CCN Finanse** | `https://polskieradio.cc/finanse` | Redakcja CCN Finanse / Cezary Rogowski | Rodziny, osoby z długami, przedsiębiorcy | Wolność od długów, budżet domowy, szafarstwo, CBDC | Banki centralne, analizy makroekonomiczne, GUS, Pismo Święte | `pl` | 2 art. / tydzień | `portals/ccn-finanse/src/data/articles.ts` + SSG | `PRODUKCJA` | Web Speech API | Niskie |
+| **CCN Biologia** | `https://polskieradio.cc/biologia` | Redakcja CCN Biologia | Poszukujący prawdy o cudzie życia | Biologia molekularna, DNA, cud narodzin | Recenzowane badania biologiczne, PubMed | `pl` | 1–2 art. / tydzień | `scripts/portals_data.cjs` + SSG | `PRODUKCJA` | Web Speech API | Niskie |
+| **CCN Rodzina & Seks** | `https://polskieradio.cc/seks` | Wioletta Rogowska / Cezary Rogowski | Małżeństwa, narzeczeni, rodzice, młodzież | Boży model małżeństwa, czystość, wychowanie, relacje | Pismo Święte, badania psychologii rodziny | `pl` | 2 art. / tydzień | `scripts/portals_data.cjs` + SSG | `PRODUKCJA` | Web Speech API | Średnie |
+| **Akademia Biblijna** | `https://polskieradio.cc/akademia` | Cezary Rogowski / Studio Dobrego Słowa | Wierzący studiujący Pismo Święte dzień po dniu | Kurs Codzienny (2009 dni), Apokalipsa SDS, Leksykon | Uwspółcześniona Biblia Gdańska (UBG), kody Stronga | `pl` | Codziennie 1 lekcja (00:00) | `scripts/sync-akademia-kurscodzienny.mjs` + SSG | `PRODUKCJA` | Dedykowane TTS | Bardzo wysokie doktrynalnie |
+| **LUMINA Portal** | `https://polskieradio.cc/lumina` | Społeczność CC / Dowódca Nazir | Członkowie wspólnoty, autorzy, szukający modlitwy | Tablica, świadectwa, intencje, profile twórców | Posty autorskie, świadectwa, moderatorzy | `pl` | Codziennie 2 posty (12:00, 18:00) | Firestore + Cloudflare Pages | `PRODUKCJA` | Web Speech API | Średnie |
+| **Kino VOD** | `https://polskieradio.cc/vod` | Studio Dobrego Słowa (SDS) | Widzowie filmów fabularnych i wykładów | Filmy chrześcijańskie, serie Apokalipsa, wykłady | Licencje filmowe, produkcje własne SDS | `pl` | 1 aktualizacja / tydzień | `vod.html` + CDN | `PRODUKCJA` | N/A (Wideo) | Niskie |
+| **CCN Music & Global** | `https://polskieradio.cc/Global` | CC Global / Cezary Rogowski | Słuchacze w Polsce i na świecie | Muzyka chrześcijańska, rock ewangelizacyjny, worship | Artyści (Gerald Welch, JJ Beauvais), wytwórnie | `pl`, `en` | 1–2 art. / tydzień | `Global/articles/` + SSG | `PRODUKCJA` | Web Speech API | Niskie |
+| **MojaBiblia** | `https://polskieradio.cc/mojabiblia` | Redakcja Biblijna CC | Badacze tekstu biblijnego, kaznodzieje, uczniowie | Przekłady UBG, BW, BT, BG, kody Stronga, greka, hebrajski | Manuskrypty, Textus Receptus, Masoreci | `pl` | Stałe narzędzie | Silnik JS Client-Side | `PRODUKCJA` | Web Speech API | Bardzo wysokie |
+| **Paski TV (Tickers)** | `https://polskieradio.cc/data/ccn-news-ticker.json` | Redakcja TV / Antigravity Sentinel | Widzowie telewizji CCTV24, Worship Live, Zapolskę | Najnowsze artykuły, lekcje, Biblia SMS, pomoc | Centralny indeks EkoCC + `news-google.xml` | `pl` | Odświeżanie w czasie rzeczywistym | `scripts/update-broadcast-tickers.mjs` | `PRODUKCJA` | N/A (Pasek TV) | Niskie |
+
+---
+
+### Zasady Publikacji i Cross-Promocji
+1. **Brak linkowania na siłę:** Wiadomość zewnętrzna (Trend Radar) może wskazywać na pokrewną treść w EkoCC wyłącznie wtedy, gdy istnieje merytoryczne uzasadnienie.
+2. **Transparentność autopromocji (CC INSIDE):** Każdy artykuł prezentujący nowości, audycje lub inicjatywy ekosystemu ma jawnie oznaczony charakter informacyjno-redakcyjny z podpisem redakcji Christian Culture.
+3. **Pancerne URLs:** Nigdy nie wolno generować linku `https://polskieradio.cc/...` bez wcześniejszego sprawdzenia w kodzie lub preflight HTTP.
