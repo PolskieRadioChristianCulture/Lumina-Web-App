@@ -5722,6 +5722,58 @@
                 tags: ['KONCEPT', 'Meble Kuchenne', 'Kuchnie na Wymiar', 'Lublin', 'Przedsiębiorca z wartościami', 'Projektowanie Wnętrz', 'Wiara w biznesie', 'Rodzina'],
                 photos: ['avatar_andrzej_hamera.jpg', 'lumina_default_cover.jpg'],
                 posts: []
+            },
+            'marekjakubowski': {
+                uid: 'marekjakubowski',
+                slug: 'marekjakubowski',
+                name: 'Marek Jakubowski',
+                age: '',
+                city: 'Polska',
+                gender: 'mezczyzna',
+                avatar: 'avatar_marek_jakubowski.jpg',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Autor Rozważań Biblijnych',
+                role: 'Autor Rozważań & Społeczność LUMINA ✨',
+                church: 'Wspólnota Chrześcijańska',
+                denom: 'Chrześcijanin',
+                status: '',
+                pin: '7777',
+                visibility: 'public',
+                match: '98%',
+                matchScore: '98%',
+                verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
+                verseRef: '\u2014 Psalm 28, 7 (UBG)',
+                bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce \u2014 przez codzienne rozważania Słowa Bożego.',
+                tags: ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'],
+                photos: ['avatar_marek_jakubowski.jpg', 'lumina_default_cover.jpg'],
+                posts: []
+            },
+            'u_marekjakubowski': {
+                uid: 'marekjakubowski',
+                slug: 'marekjakubowski',
+                name: 'Marek Jakubowski',
+                age: '',
+                city: 'Polska',
+                gender: 'mezczyzna',
+                avatar: 'avatar_marek_jakubowski.jpg',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Autor Rozważań Biblijnych',
+                role: 'Autor Rozważań & Społeczność LUMINA ✨',
+                church: 'Wspólnota Chrześcijańska',
+                denom: 'Chrześcijanin',
+                status: '',
+                pin: '7777',
+                visibility: 'public',
+                match: '98%',
+                matchScore: '98%',
+                verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
+                verseRef: '\u2014 Psalm 28, 7 (UBG)',
+                bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce \u2014 przez codzienne rozważania Słowa Bożego.',
+                tags: ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'],
+                photos: ['avatar_marek_jakubowski.jpg', 'lumina_default_cover.jpg'],
+                posts: []
             }
         };
 
@@ -5738,6 +5790,9 @@
             if (slug === 'u_yciezywymbogiem_4231' || slug === 'pawelmurawski' || slug === 'pawel-murawski' || slug === 'pawel' || slug.includes('murawski')) {
                 window.location.replace('pawelmurawski');
                 return 'pawelmurawski';
+            }
+            if (slug === 'marekjakubowski' || slug === 'u_marekjakubowski' || slug.includes('marekjakubowski')) {
+                return 'marekjakubowski';
             }
             return slug;
         }
@@ -5901,6 +5956,9 @@
             }
 
             // 3. Statyczna baza znanych profili
+            if (slug === 'marekjakubowski' || slug === 'u_marekjakubowski') {
+                return PROFILES_DB['marekjakubowski'] || PROFILES_DB['u_marekjakubowski'];
+            }
             if (slug.includes('robert') || slug === 'u_robertukaszpio_5668' || slug === 'robertlukaszpio' || slug === 'robertukaszpio') {
                 return PROFILES_DB['robertlukaszpio'] || PROFILES_DB['u_robertukaszpio_5668'] || PROFILES_DB['robertukaszpio'];
             }
@@ -6126,6 +6184,9 @@
                     isSelf = true;
                 }
                 if (curUser && (curUser.email === 'bozenowezycie@gmail.com' || curUser.uid === 'NHjYeuO4nxM8fIfEJPHmi9rTQV12') && (slug === 'u_yciezywymbogiem_4231' || slug === 'pawelmurawski')) {
+                    isSelf = true;
+                }
+                if (curUser && curUser.email === 'marusjakubowski@gmail.com' && (slug === 'marekjakubowski' || slug === 'u_marekjakubowski')) {
                     isSelf = true;
                 }
             } catch(e) {}
@@ -11356,6 +11417,7 @@ window.addEventListener('lumina-auth-state', () => {
         const OMNI_DIRECTORY = [
             { query: '@robert @bratrobert @robertlukaszpio robert lukasz pio u_robertukaszpio_5668', name: 'Robert Łukasz Pio', handle: '@robert', role: 'Członek Społeczności LUMINA ✨', avatar: 'lumina_icon.jpg', url: 'lumina-profile.html?u=u_robertukaszpio_5668', type: 'user' },
             { query: '@pawel @pawelmurawski pawel murawski paweł murawski u_yciezywymbogiem_4231 bozenowezycie', name: 'Paweł Murawski', handle: '@pawel', role: 'Członek Społeczności LUMINA ✨', avatar: 'avatar_pawel_murawski.jpg', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', type: 'user' },
+            { query: '@marek @marekjakubowski marek jakubowski u_marekjakubowski marusjakubowski autor rozwazan', name: 'Marek Jakubowski', handle: '@marek', role: 'Autor Rozważań & Społeczność LUMINA ✨', avatar: 'avatar_marek_jakubowski.jpg', url: 'lumina.marekjakubowski.html', type: 'user' },
             { query: '@ccwomen @women @cc_women cc women ccwomen', name: 'CC Women • YouTube', handle: '@ccwomen', role: 'Oficjalny Kanał YouTube CC Women 🌸', avatar: 'logo_cc_women.jpg', url: 'lumina.ccwomen.html', type: 'channel' },
             { query: '@cezary @cezaryrgowski @cezaryrogowski cezary rogowski', name: 'Cezary Rogowski', handle: '@cezary', role: 'Założyciel Christian Culture ✨', avatar: 'avatar_cezary_official.jpg', url: 'lumina.cezaryrgowski.html', type: 'founder' },
             { query: '@wioletta @wiolettarogowska wioletta rogowska', name: 'Wioletta Rogowska', handle: '@wioletta', role: 'Współzałożycielka Christian Culture 🌸', avatar: 'avatar_wioletta_official.jpg', url: 'lumina.wiolettarogowska.html', type: 'founder' },
