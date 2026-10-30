@@ -390,7 +390,25 @@ Status w wyszukiwarce ekosystemu:
   };
 }
 
-// Jeśli uruchomiono bezpośrednio z CLI (np. test)
+// Jeśli uruchomiono bezpośrednio z CLI (np. test lub pakowanie)
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  console.log('EkoCC Article Packager Module Ready.');
+  const jsonArg = process.argv[2] || path.join(ROOT, 'scripts/current-article-data.json');
+  if (fs.existsSync(jsonArg)) {
+    console.log(`📦 Ładowanie danych artykułu z: ${jsonArg}`);
+    const articleData = JSON.parse(fs.readFileSync(jsonArg, 'utf8'));
+    packageEkoccArticle(articleData)
+      .then((res) => {
+        console.log('🎉 Kompletny pakiet redakcyjny EkoCC przygotowany pomyślnie!');
+        console.log('ZIP:', res.zipPath);
+        console.log('DOCX:', res.docxPath);
+        console.log('TXT:', res.txtPath);
+        console.log('SEO:', res.seoPath);
+      })
+      .catch((err) => {
+        console.error('❌ Błąd pakowania:', err);
+        process.exit(1);
+      });
+  } else {
+    console.log('EkoCC Article Packager Module Ready. Użyj: node scripts/package-ekocc-article.mjs [ścieżka_do_pliku.json]');
+  }
 }
