@@ -7,6 +7,7 @@ import {batch7Sources,batch7Topics} from './batch7.mjs';
 import {batch8Sources,batch8Topics} from './batch8.mjs';
 import {batch9Sources,batch9Topics} from './batch9.mjs';
 import {batch10Sources,batch10Topics} from './batch10.mjs';
+import {batch11Sources,batch11Topics} from './batch11.mjs';
 export const sources = {
  ...batch3Sources,
  ...batch4Sources,
@@ -16,6 +17,7 @@ export const sources = {
  ...batch8Sources,
  ...batch9Sources,
  ...batch10Sources,
+ ...batch11Sources,
  legal: ['https://www.gov.pl/web/gov/skorzystaj-z-darmowej-pomocy-prawnej','Nieodpłatna pomoc prawna — gov.pl','Free legal aid — gov.pl'],
  mental: ['https://pacjent.gov.pl/leczenie-ambulatoryjne-doroslych','Pomoc ambulatoryjna dla dorosłych — Pacjent.gov.pl','Adult outpatient care — Pacjent.gov.pl'],
  crisis: ['https://www.gov.pl/web/zdrowie/depresja-to-powazny-problem-zdrowotny-nie-boj-sie-szukac-pomocy','Depresja i źródła wsparcia — Ministerstwo Zdrowia','Depression and support — Ministry of Health'],
@@ -35,6 +37,7 @@ export const topics = [
  ...batch8Topics,
  ...batch9Topics,
  ...batch10Topics,
+ ...batch11Topics,
  {id:'pastor',route:'pastor',enRoute:'pastoral-support',ref:'1 Tes 5,21',resources:['bible','academy','mental'],
  pl:{name:'Pastor — rozmowa o wierze',title:'Miejsce na pytania. Rozmowa z szacunkiem.',lead:'Wiara, codzienne wybory i trudne pytania. Przygotuj się do rozmowy duszpasterskiej i poznaj granice takiego wsparcia.',alt:'Otwarta Biblia, notatnik i kubek na drewnianym stole',
  steps:[['Nazwij temat rozmowy','Zapisz pytanie lub sytuację, o której chcesz porozmawiać. Możesz wskazać fragment Biblii, którego nie rozumiesz, bez opisywania publicznie prywatnej historii.'],['Poznaj rozmówcę','Zapytaj o wspólnotę, rolę i doświadczenie osoby oferującej wsparcie. Sam tytuł duszpasterski nie oznacza uprawnień do terapii ani porad prawnych.'],['Uzgodnij zasady','Przed spotkaniem ustal zakres rozmowy, poufność, ewentualne opłaty i możliwość zakończenia kontaktu. Masz prawo odmówić odpowiedzi na pytanie.']],
@@ -54,11 +57,11 @@ export const topics = [
  guides:[['Assessing an offer of support','Ask about identity, qualifications, scope and confidentiality. Pressure to make an immediate payment or promises of guaranteed results are reasons to pause and independently check an offer.'],['Joining the initiative','Describe your specialism, experience, possible role and time commitment. Do not send patients’ or clients’ histories or identity documents. Terms, qualifications and any staffed sessions must be agreed before availability is announced.']],
  faq:[['Is this a list of specialists accepting appointments?','Not yet. It is a centre for information, topics and recruitment. We publish no empty provider profiles or fictional ratings. The public topic list is separate from the private outreach contact database.'],['Is every topic already available?','No. Published guides are links; other topics are marked as in preparation. Publishing information does not establish a service or a staffed session.']],hope:'1 Peter 4:10 encourages using our gifts to serve others. In support work, that also means taking responsibility for competence and the limits of our role.'}},
  {id:'legal',route:'prawnik',enRoute:'legal-help',ref:'Prz 15,22',resources:['legal','consumer'],
- pl:{name:'Pomoc prawna',title:'Zrozumieć sytuację. Poznać swoje prawa.',lead:'Dokumenty, terminy i pytania do prawnika — uporządkuj to, co potrzebne przed rozmową.',alt:'Dokumenty i książki na uporządkowanym biurku',
+ pl:{name:'Pomoc prawna',title:'Zrozumieć sytuację. Poznać swoje prawa.',lead:'Dokumenty, terminy i pytania do prawnika — uporządkuj to, co potrzebne przed rozmową.',alt:'Stos książek, okulary, papier i ołówek na drewnianym biurku',
  steps:[['Zbierz dokumenty','Ułóż pisma według dat. Zapisz datę doręczenia, nadawcę i wskazany termin odpowiedzi. Zachowaj koperty oraz oryginały.'],['Opisz sprawę','Spisz krótko: co się wydarzyło, czego potrzebujesz i jakie działania już podjęto. Oddziel fakty od przypuszczeń.'],['Wybierz pomoc','Sprawdź punkt nieodpłatnej pomocy w swoim powiecie. O uprawnienie do skorzystania i wymagane dokumenty zapytaj organizatora.']],
  guides:[['Przed konsultacją','Przygotuj umowy, decyzje i korespondencję dotyczącą sprawy. Zapisz trzy najważniejsze pytania. Nie publikuj skanów z numerem PESEL, adresem ani podpisem na czacie lub w komentarzu.'],['Gdy zbliża się termin','Nie zakładaj, że wiadomość do CC zatrzymuje termin urzędowy lub sądowy. Sposób odpowiedzi i skutki pisma ustal z prawnikiem. Informacja ogólna nie zastępuje analizy Twoich dokumentów.']],
  faq:[['Czy CC prowadzi kancelarię?','Nie. Ta strona pomaga przygotować rozmowę i znaleźć oficjalne źródła pomocy. Nie ogłaszamy dyżurów prawników CC.'],['Czy mediacja zawsze jest właściwa?','Nie. Przy podejrzeniu przemocy najpierw potrzebna jest ochrona i indywidualna pomoc. Oficjalna nieodpłatna mediacja ma określone warunki i wyłączenia.']],hope:'Przysłów 15,22 przypomina o wartości dobrej rady. Szukanie kompetentnej pomocy jest wyrazem odpowiedzialności.'},
- en:{name:'Legal help',title:'Understand the situation. Know your rights.',lead:'Documents, deadlines and questions for a lawyer: prepare for a useful conversation.',alt:'Documents and books on a tidy desk',
+ en:{name:'Legal help',title:'Understand the situation. Know your rights.',lead:'Documents, deadlines and questions for a lawyer: prepare for a useful conversation.',alt:'Stacked books, glasses, paper and a pencil on a wooden desk',
  steps:[['Collect documents','Put letters in date order. Note when each arrived, who sent it and any response deadline. Keep envelopes and originals.'],['Describe the issue','Briefly record what happened, what you need and what has already been done. Separate facts from assumptions.'],['Find assistance','Check your county’s free legal aid service in Poland. Ask the organiser about eligibility and required documents.']],
  guides:[['Before a consultation','Bring relevant agreements, decisions and correspondence. Write down your three main questions. Do not post scans containing identifiers, addresses or signatures in chats or comments.'],['When a deadline is close','Contacting CC does not suspend a court or administrative deadline. Ask a lawyer how to respond and what the document means for you. General information cannot replace a review of your documents.']],
  faq:[['Is CC a law firm?','No. This page helps you prepare and find official resources in Poland. No CC lawyer sessions are currently announced.'],['Is mediation always appropriate?','No. Suspected violence calls for protection and individual support first. Official free mediation has eligibility rules and exclusions.']],hope:'Proverbs 15:22 points to the value of good counsel. Seeking qualified advice is a responsible step.'}},

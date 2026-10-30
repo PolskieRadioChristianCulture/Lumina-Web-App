@@ -4267,6 +4267,226 @@
       ]
     },
     {
+      "id": "cc-help-health-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Zdrowie — konsultacja i profilaktyka",
+      "shortDesc": "Przygotuj rozmowę z personelem medycznym i sprawdź oficjalne informacje o profilaktyce. Strona nie ocenia objawów ani wyników badań.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/wsparcie-zdrowia",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Zdrowie — konsultacja i profilaktyka",
+        "Health — consultations and prevention",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-dietitian-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Dietetyk — edukacja i przygotowanie do rozmowy",
+      "shortDesc": "Przygotuj pytania o jedzenie, codzienne możliwości i stan zdrowia. Nie układamy diety leczniczej ani nie oceniamy wyglądu użytkowników.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/dietetyk",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Dietetyk — edukacja i przygotowanie do rozmowy",
+        "Dietitian — education and preparing for advice",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-healthy-living",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Zdrowy styl życia — realne codzienne kroki",
+      "shortDesc": "Ruch, odpoczynek, odżywianie i kontakt z pomocą można omawiać razem. Nie tworzymy rankingu zdrowia ani planu dobrego dla każdego.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/zdrowy-styl-zycia",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Zdrowy styl życia — realne codzienne kroki",
+        "Healthy living — realistic everyday steps",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-diabetes-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Cukrzyca — edukacja i pytania do zespołu leczenia",
+      "shortDesc": "Przygotowanie do rozmowy o cukrzycy i profilaktyce. Nie rozpoznajemy choroby z pojedynczego wyniku i nie dobieramy insuliny ani innych leków.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/cukrzyca",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Cukrzyca — edukacja i pytania do zespołu leczenia",
+        "Diabetes — education and questions for your care team",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-pressure-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Nadciśnienie — przygotowanie do kontroli",
+      "shortDesc": "Dowiedz się, o co zapytać przy kontroli ciśnienia. Ta strona nie ustala rozpoznania, norm właściwych dla Ciebie ani leczenia.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/nadcisnienie",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Nadciśnienie — przygotowanie do kontroli",
+        "Blood pressure — preparing for follow-up",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-heart-health",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Serce i krążenie — profilaktyka i kontakt z pomocą",
+      "shortDesc": "Informacje o przygotowaniu do kontroli i oficjalnych ścieżkach pomocy. Nie określamy ryzyka zawału ani nie wykluczamy zagrożenia na podstawie opisu.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/zdrowe-serce",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Serce i krążenie — profilaktyka i kontakt z pomocą",
+        "Heart and circulation — prevention and care",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-sleep-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Sen i odpoczynek — rozmowa o trudnościach",
+      "shortDesc": "Przygotuj rozmowę o śnie i jego wpływie na dzień. Nie rozpoznajemy bezsenności, nie interpretujemy zegarka i nie dobieramy środków nasennych.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/zdrowy-sen",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Sen i odpoczynek — rozmowa o trudnościach",
+        "Sleep and rest — discussing difficulties",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-rehabilitation-support",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Rehabilitacja — przygotowanie do opieki",
+      "shortDesc": "Przygotuj pytania o rehabilitację i dostęp do świadczeń. Nie układamy ćwiczeń po urazie ani nie gwarantujemy powrotu do wcześniejszej sprawności.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/rehabilitacja",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Rehabilitacja — przygotowanie do opieki",
+        "Rehabilitation — preparing for care",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-physical-activity",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Aktywność fizyczna — ruch dostosowany do możliwości",
+      "shortDesc": "Przygotuj pytania o bezpieczną aktywność. Nie dobieramy intensywności treningu ani nie oceniamy zdrowia na podstawie liczby kroków.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/aktywnosc-fizyczna",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Aktywność fizyczna — ruch dostosowany do możliwości",
+        "Physical activity — movement within your circumstances",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
+      "id": "cc-help-spa-treatment",
+      "branchId": "misja-wspolpraca",
+      "name": "CC Pomoc — Sanatoria — leczenie i warunki wyjazdu",
+      "shortDesc": "Przygotuj pytania o leczenie uzdrowiskowe w Polsce. Wyjazd wypoczynkowy, pobyt prywatny i leczenie finansowane przez NFZ mają różne zasady.",
+      "fullDesc": "Informacyjna strona PL/EN z pierwszymi krokami i oficjalnymi źródłami pomocy w Polsce. Nabór trwa; bez ogłoszonych dyżurów.",
+      "type": "portal",
+      "url": "https://polskieradio.cc/sanatoria",
+      "status": "active",
+      "lang": "pl",
+      "icon": "🤝",
+      "category": "Misja i współpraca",
+      "keywords": [
+        "Sanatoria — leczenie i warunki wyjazdu",
+        "Spa treatment — care and stay arrangements",
+        "CC Pomoc",
+        "wsparcie"
+      ],
+      "connections": [
+        "cc-help-debt"
+      ]
+    },
+    {
       "id": "cc-help-pastor",
       "branchId": "misja-wspolpraca",
       "name": "CC Pomoc — Pastor — rozmowa o wierze",
