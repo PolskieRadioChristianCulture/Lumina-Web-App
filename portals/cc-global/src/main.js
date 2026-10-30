@@ -347,7 +347,7 @@ function home() {
               <div class="latest-list">
                 ${latestArticles.map(a => `
                   <a class="latest-item" href="/Global/articles/${encodeURIComponent(a.slug)}/">
-                    <img class="latest-thumb" src="${asset(a.image || 'article-power-of-worship.webp')}" alt="" loading="lazy" width="56" height="56"/>
+                    <img class="latest-thumb" src="${asset(a.image || 'article-power-of-worship.webp')}" alt="" loading="lazy" width="64" height="38"/>
                     <div class="latest-info">
                       <div class="latest-title">${e(a.title)}</div>
                     </div>

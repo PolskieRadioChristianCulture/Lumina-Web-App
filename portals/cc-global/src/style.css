@@ -837,9 +837,10 @@ img {
 }
 
 .latest-thumb {
-  width: 52px;
-  height: 52px;
-  border-radius: 8px;
+  width: 64px;
+  height: 38px;
+  aspect-ratio: 16 / 9.5;
+  border-radius: 6px;
   object-fit: cover;
   flex-shrink: 0;
   border: 1px solid var(--border-gold);
