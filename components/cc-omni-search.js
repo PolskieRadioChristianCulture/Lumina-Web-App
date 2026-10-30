@@ -75,19 +75,52 @@
     } catch (_) {}
   }
 
-  const PLACEHOLDERS = [
-    'Zapytaj Christian Culture…',
-    "Szukaj: 'Apokalipsa 14'",
-    "Szukaj: 'Jak pokonać lęk'",
-    "Szukaj: 'Lekcja 27'",
-    "Szukaj: 'Radio na żywo'",
-    "Szukaj: 'Werset o pokoju'",
-    "Szukaj: 'J 3:16'",
-    "Szukaj: 'Lekcja 28 na dziś'",
-    "Szukaj: 'Rozważanie Dobrze że jesteś'",
-    "Szukaj: 'Infolinia Nadziei'",
-    "Szukaj: 'LUMINA społeczność'"
-  ];
+  const PLACEHOLDERS_BY_LANG = {
+    pl: [
+      'Zapytaj Christian Culture…',
+      "Szukaj: 'Apokalipsa 14'",
+      "Szukaj: 'Jak pokonać lęk'",
+      "Szukaj: 'Lekcja 27'",
+      "Szukaj: 'Radio na żywo'",
+      "Szukaj: 'Werset o pokoju'",
+      "Szukaj: 'J 3:16'",
+      "Szukaj: 'Lekcja 28 na dziś'",
+      "Szukaj: 'Rozważanie Dobrze że jesteś'",
+      "Szukaj: 'Infolinia Nadziei'",
+      "Szukaj: 'LUMINA społeczność'"
+    ],
+    en: [
+      'Ask Christian Culture…',
+      "Search: 'Apocalypse 14'",
+      "Search: 'How to overcome fear'",
+      "Search: 'Lesson 27'",
+      "Search: 'Live Radio'",
+      "Search: 'Verse about peace'",
+      "Search: 'John 3:16'",
+      "Search: 'Daily reflection'",
+      "Search: 'Hope Helpline'",
+      "Search: 'LUMINA Community'"
+    ],
+    de: [
+      'Christian Culture fragen…',
+      "Suche: 'Apokalypse 14'",
+      "Suche: 'Angst überwinden'",
+      "Suche: 'Lektion 27'",
+      "Suche: 'Live-Radio'",
+      "Suche: 'Vers über Frieden'",
+      "Suche: 'Johannes 3:16'",
+      "Suche: 'Tagesandacht'",
+      "Suche: 'Hoffnungs-Hotline'",
+      "Suche: 'LUMINA-Gemeinschaft'"
+    ]
+  };
+
+  function getPlaceholders() {
+    const lang = (window.EkoCCI18n?.getLocale?.() || document.documentElement?.getAttribute('lang') || 'pl').toLowerCase();
+    return PLACEHOLDERS_BY_LANG[lang] || PLACEHOLDERS_BY_LANG.pl;
+  }
+
+  const PLACEHOLDERS = PLACEHOLDERS_BY_LANG.pl;
   let placeholderInterval = null;
   function stopPlaceholderRotation() {
     if (placeholderInterval) {
@@ -107,8 +140,9 @@
       if (searchEngine === 'google') return;
       // Jeśli użytkownik wpisał własny tekst — nie zmieniamy podpowiedzi
       if (input.value && input.value.trim().length > 0) return;
-      idx = (idx + 1) % PLACEHOLDERS.length;
-      input.setAttribute('placeholder', PLACEHOLDERS[idx]);
+      const currentPlaceholders = getPlaceholders();
+      idx = (idx + 1) % currentPlaceholders.length;
+      input.setAttribute('placeholder', currentPlaceholders[idx]);
       const fallbackInput = document.getElementById('ccw-q');
       if (fallbackInput && (!fallbackInput.value || !fallbackInput.value.trim().length)) {
         fallbackInput.setAttribute('placeholder', PLACEHOLDERS[idx]);
@@ -559,7 +593,217 @@
   };
 
   // Rozpoznawanie referencji biblijnych w zapytaniu
-  function parseBibleRef(q) {
+
+  // =========================================================================
+  // PORÓWNYWARKA WIELOPRZEKŁADOWA & WERYFIKACJA CYTOWAŃ (P3)
+  // Standard @777: UBG (Wzorzec Kanoniczny), BW (1975), BT (Wyd. V), BG (1632)
+  // Protokół Weryfikacji Biblijnej — EkoCC @777 (Dyrektywa Dowódcy 2026-10-20)
+  // =========================================================================
+  const TOP_COMPARE_VERSES = {
+    "JHN:3:16": {
+      refTitle: "Ewangelia Jana 3:16",
+      UBG: "Tak bowiem Bóg umiłował świat, że dał swego jednorodzonego Syna, aby każdy, kto w niego wierzy, nie zginął, ale miał życie wieczne.",
+      BW: "Albowiem tak Bóg umiłował świat, że Syna swego jednorodzonego dał, aby każdy, kto weń wierzy, nie zginął, ale miał żywot wieczny.",
+      BT: "Tak bowiem Bóg umiłował świat, że Syna swego Jednorodzonego dał, aby każdy, kto w Niego wierzy, nie zginął, ale miał życie wieczne.",
+      BG: "Albowiem tak Bóg umiłował świat, że Syna swego jednorodzonego dał, aby każdy, kto weń wierzy, nie zginął, ale miał żywot wieczny."
+    },
+    "PSA:23:1": {
+      refTitle: "Psalm 23:1",
+      UBG: "PAN jest moim pasterzem, niczego mi nie zabraknie.",
+      BW: "Pan jest pasterzem moim, niczego mi nie braknie.",
+      BT: "Pan jest moim pasterzem, nie brak mi niczego.",
+      BG: "Pan jest pasterzem moim, na niczem mi nie zejdzie."
+    },
+    "ROM:8:28": {
+      refTitle: "List do Rzymian 8:28",
+      UBG: "A wiemy, że wszystko współdziała dla dobra tych, którzy miłują Boga, to jest tych, którzy są powołani według postanowienia Boga.",
+      BW: "A wiemy, że Bóg współdziała we wszystkim ku dobremu z tymi, którzy Boga miłują, to jest z tymi, którzy według postanowienia jego są powołani.",
+      BT: "Wiemy też, że Bóg z tymi, którzy Go miłują, współdziała we wszystkim dla ich dobra, z tymi, którzy są powołani według Jego zamiaru.",
+      BG: "A wiemy, iż tym, którzy miłują Boga, wszystkie rzeczy dopomagają ku dobremu, to jest tym, którzy według postanowienia powołani są."
+    },
+    "GEN:1:1": {
+      refTitle: "Księga Rodzaju 1:1",
+      UBG: "Na początku Bóg stworzył niebo i ziemię.",
+      BW: "Na początku stworzył Bóg niebo i ziemię.",
+      BT: "Na początku Bóg stworzył niebo i ziemię.",
+      BG: "Na początku stworzył Bóg niebo i ziemię."
+    },
+    "JHN:1:1": {
+      refTitle: "Ewangelia Jana 1:1",
+      UBG: "Na początku było Słowo, a Słowo było u Boga i Bogiem było Słowo.",
+      BW: "Na początku było Słowo, a Słowo było u Boga, a Bogiem było Słowo.",
+      BT: "Na początku było Słowo, a Słowo było u Boga, i Bogiem było Słowo.",
+      BG: "Na początku było Słowo, a ono Słowo było u Boga, a Bogiem było ono Słowo."
+    },
+    "PHP:4:13": {
+      refTitle: "List do Filipian 4:13",
+      UBG: "Wszystko mogę w Chrystusie, który mnie umacnia.",
+      BW: "Wszystko mogę w tym, który mnie wzmacnia, w Chrystusie.",
+      BT: "Wszystko mogę w Tym, który mnie umacnia.",
+      BG: "Wszystko mogę w Chrystusie, który mię posila."
+    },
+    "1TI:2:5": {
+      refTitle: "1 List do Tymoteusza 2:5",
+      UBG: "Jeden bowiem jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus;",
+      BW: "Albowiem jeden jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus,",
+      BT: "Albowiem jeden jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek, Chrystus Jezus,",
+      BG: "Albowiem jeden jest Bóg, jeden też pośrednik między Bogiem i ludźmi, człowiek Chrystus Jezus;"
+    },
+    "REV:14:7": {
+      refTitle: "Objawienie Jana (Apokalipsa) 14:7",
+      UBG: "Mówiącego donośnym głosem: Bójcie się Boga i oddajcie mu chwałę, gdyż przyszła godzina jego sądu. Pokłońcie się temu, który stworzył niebo i ziemię, morze i źródła wód.",
+      BW: "I mówił donośnym głosem: Bójcie się Boga i oddajcie mu chwałę, gdyż nadeszła godzina sądu jego, i oddajcie pokłon temu, który stworzył niebo i ziemię, i morze, i źródła wód.",
+      BT: "Mówił on głosem donośnym: «Ulęknijcie się Boga i dajcie Mu chwałę, bo przyszła godzina Jego sądu. Pokłońcie się Temu, co niebo uczynił i ziemię, i morze, i źródła wód!»",
+      BG: "Mówiący głosem wielkim: Bójcie się Boga, i dajcie mu chwałę, iż przyszła godzina sądu jego; i kłońcie się temu, który uczynił niebo i ziemię, i morze, i źródła wód."
+    },
+    "EXO:20:8": {
+      refTitle: "Księga Wyjścia 20:8",
+      UBG: "Pamiętaj o dniu szabatu, aby go święcić.",
+      BW: "Pamiętaj o dniu sabatu, aby go święcić.",
+      BT: "Pamiętaj o dniu szabatu, aby go uświęcić.",
+      BG: "Pamiętaj na dzień odpocznienia, abyś go święcił."
+    },
+    "EPH:2:8": {
+      refTitle: "List do Efezjan 2:8",
+      UBG: "Łaską bowiem jesteście zbawieni przez wiarę, i to nie jest z was, jest to dar Boga.",
+      BW: "Albowiem łaską zbawieni jesteście przez wiarę, i to nie z was: Boży to dar;",
+      BT: "Łaską bowiem jesteście zbawieni przez wiarę. A to pochodzi nie od was, lecz jest darem Boga:",
+      BG: "Albowiem łaską jesteście zbawieni przez wiarę, i to nie z was; dar to Boży jest;"
+    }
+  };
+
+  function normalizeTextForComparison(str) {
+    return String(str || '').toLowerCase()
+      .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
+      .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
+      .replace(/[ś]/g, 's').replace(/[źż]/g, 'z')
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function verifyBibleQuote(query) {
+    if (!query) return null;
+    const normQ = normalizeTextForComparison(query);
+    if (normQ.length < 12) return null;
+
+    let bestMatch = null;
+
+    for (const [key, vText] of Object.entries(TOP_UBG_VERSES)) {
+      const normUbg = normalizeTextForComparison(vText);
+      const comp = TOP_COMPARE_VERSES[key];
+      const normBw = comp ? normalizeTextForComparison(comp.BW) : '';
+      const normBt = comp ? normalizeTextForComparison(comp.BT) : '';
+      const normBg = comp ? normalizeTextForComparison(comp.BG) : '';
+
+      // 1. Zgodność dosłowna z UBG (całość lub podciąg)
+      if (normUbg.includes(normQ) || normQ.includes(normUbg)) {
+        return {
+          isQuote: true,
+          refKey: key,
+          refTitle: comp ? comp.refTitle : key,
+          status: 'VERIFIED_UBG',
+          statusLabel: '100% ZGODNOŚĆ DOSŁOWNA Z UBG',
+          badgeClass: 'cc-quote-badge-verified',
+          ubgText: vText,
+          inputQuery: query,
+          matchedEdition: 'UBG',
+          isExactUbg: true,
+          note: 'Tekst jest w 100% zgodny z kanonicznym przekładem Uwspółcześnionej Biblii Gdańskiej (Standard @777 / Zero-QA).'
+        };
+      }
+
+      // 2. Wykrycie innego tradycyjnego przekładu (BW / BT / BG)
+      if (normBw && normBw.includes(normQ)) {
+        return {
+          isQuote: true,
+          refKey: key,
+          refTitle: comp.refTitle,
+          status: 'DIFF_EDITION',
+          statusLabel: 'ROZBIEŻNOŚĆ BRZMIENIOWA — ROZPOZNANO PRZEKŁAD BW (WARSZAWSKA)',
+          badgeClass: 'cc-quote-badge-warning',
+          ubgText: vText,
+          detectedText: comp.BW,
+          inputQuery: query,
+          matchedEdition: 'BW',
+          isExactUbg: false,
+          note: 'Wpisany fragment odpowiada brzmieniu Biblii Warszawskiej (1975). Zgodnie z Protokołem @777 do publicznego cytowania zaleca się kanoniczne brzmienie UBG.'
+        };
+      }
+
+      if (normBt && normBt.includes(normQ)) {
+        return {
+          isQuote: true,
+          refKey: key,
+          refTitle: comp.refTitle,
+          status: 'DIFF_EDITION',
+          statusLabel: 'ROZBIEŻNOŚĆ BRZMIENIOWA — ROZPOZNANO PRZEKŁAD BT (TYSIĄCLECIA)',
+          badgeClass: 'cc-quote-badge-warning',
+          ubgText: vText,
+          detectedText: comp.BT,
+          inputQuery: query,
+          matchedEdition: 'BT',
+          isExactUbg: false,
+          note: 'Wpisany fragment odpowiada brzmieniu Biblii Tysiąclecia. Zgodnie z Protokołem @777 do publicznego cytowania zaleca się kanoniczne brzmienie UBG.'
+        };
+      }
+
+      if (normBg && normBg.includes(normQ)) {
+        return {
+          isQuote: true,
+          refKey: key,
+          refTitle: comp.refTitle,
+          status: 'DIFF_EDITION',
+          statusLabel: 'ROZBIEŻNOŚĆ BRZMIENIOWA — ROZPOZNANO PRZEKŁAD BG (GDAŃSKA 1632)',
+          badgeClass: 'cc-quote-badge-warning',
+          ubgText: vText,
+          detectedText: comp.BG,
+          inputQuery: query,
+          matchedEdition: 'BG',
+          isExactUbg: false,
+          note: 'Wpisany fragment odpowiada historycznemu brzmieniu Biblii Gdańskiej z 1632 roku. W ekosystemie CC zalecamy uwspółcześnione brzmienie UBG.'
+        };
+      }
+
+      // 3. Ocena tokenowa dla parafraz (z uwzględnieniem rdzeni polskich słów min 4 znaki)
+      const qTokens = normQ.split(' ').filter(t => t.length >= 3);
+      const ubgTokens = normUbg.split(' ').filter(t => t.length >= 3);
+      let matches = 0;
+      for (const t of qTokens) {
+        const hasMatch = ubgTokens.some(u => u === t || (t.length >= 4 && u.length >= 4 && (u.startsWith(t.slice(0, 4)) || t.startsWith(u.slice(0, 4)))));
+        if (hasMatch) matches++;
+      }
+      const ratio = matches / Math.max(qTokens.length, 1);
+      if (ratio >= 0.45 && (!bestMatch || ratio > bestMatch.ratio)) {
+        bestMatch = {
+          key,
+          ratio,
+          vText,
+          refTitle: comp ? comp.refTitle : key
+        };
+      }
+    }
+
+    if (bestMatch && bestMatch.ratio >= 0.45) {
+      return {
+        isQuote: true,
+        refKey: bestMatch.key,
+        refTitle: bestMatch.refTitle,
+        status: 'PARAPHRASE',
+        statusLabel: 'PARAFRAZA LUB NIEDOSŁOWNY CYTAT',
+        badgeClass: 'cc-quote-badge-paraphrase',
+        ubgText: bestMatch.vText,
+        inputQuery: query,
+        matchedEdition: 'PARAFRAZA',
+        isExactUbg: false,
+        note: 'Standard @777: Tekst różni się od kanonicznego brzmienia UBG. Cytując jako Słowo Boże, podawaj dosłowne brzmienie przekładu.'
+      };
+    }
+
+    return null;
+  }
+
+    function parseBibleRef(q) {
     if (!q) return null;
     const norm = q.toLowerCase()
       .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
@@ -622,20 +866,381 @@
 
   // Asynchroniczne dociąganie wersetu z plików UBG-2025
   
-  // Tematy Biblijne i Zagadnienia Teologiczne (Biblia Intelligence CC — P0)
+  // =========================================================================
+// =========================================================================
+  // EKOCC SEARCH GLOBAL: KANONICZNY REJESTR RAG WIEDZY BIBLIJNEJ (ETAP 4 & 5)
+  // 21 Zweryfikowanych Fragmentów UBG & Materiałów CC • Standard ZERO COST
+  // =========================================================================
+  const PRESET_WALLS = [
+    {
+      id: 'polska-radio',
+      name: 'Polska & Fale Radiowe CC',
+      tag: 'Oficjalny motyw CC',
+      desktop: '/images/search/polska-radio-1600.webp',
+      mobile: '/images/search/polska-radio-800.webp',
+      thumb: '/images/search/polska-radio-thumb.webp',
+      credit: 'Tło: Polska & Fale Radiowe · Christian Culture'
+    },
+    {
+      id: 'global-radio',
+      name: 'Global Christian Culture',
+      tag: 'Złote Fale Misji',
+      desktop: '/images/search/global-radio-1600.webp',
+      mobile: '/images/search/global-radio-800.webp',
+      thumb: '/images/search/global-radio-thumb.webp',
+      credit: 'Tło: Global Christian Culture · Złote Fale Świata'
+    },
+    {
+      id: 'andromeda',
+      name: 'Galaktyka Andromedy',
+      tag: 'Kosmos & Stworzenie',
+      desktop: '/images/search/andromeda-1600.webp',
+      mobile: '/images/search/andromeda-800.webp',
+      thumb: '/images/search/andromeda-thumb.webp',
+      credit: 'Tło: Galaktyka Andromedy · fot. Unsplash'
+    }
+  ];
+
+  let currentWallId = 'polska-radio';
+  let applyWallGlobal = null;
+  const WALL_KEY = 'cc_search_wallpaper';
+
+  const BIBLE_RAG_REGISTRY = [
+  {
+    "id": "rag-zbawienie-jhn-3-16",
+    "title": "Ewangelia Jana 3:16 — Boża miłość i dar życia wiecznego",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=J+3:16",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "zbawienie",
+    "verses": [
+      "J 3:16",
+      "J 3:17"
+    ],
+    "text": "Tak bowiem Bóg umiłował świat, że dał swego Jednorodzonego Syna, aby każdy, kto w niego wierzy, nie zginął, ale miał życie wieczne. Bo Bóg nie posłał swego Syna na świat, aby potępił świat, lecz aby świat był przez niego zbawiony."
+  },
+  {
+    "id": "rag-laska-eph-2-8-9",
+    "title": "List do Efezjan 2:8-9 — Zbawienie z łaski przez wiarę, dar Boży",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Ef+2:8-9",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "laska",
+    "verses": [
+      "Ef 2:8",
+      "Ef 2:9",
+      "Ef 2:10"
+    ],
+    "text": "Łaską bowiem jesteście zbawieni przez wiarę, i to nie jest z was, jest to dar Boga. Nie z uczynków, aby nikt się nie chlubił. Jesteśmy bowiem jego dziełem, stworzeni w Chrystusie Jezusie do dobrych uczynków, które Bóg przygotował, abyśmy w nich postępowali."
+  },
+  {
+    "id": "rag-usprawiedliwienie-rom-3-23-24",
+    "title": "List do Rzymian 3:23-24 — Wszyscy zgrzeszyli i darmo są usprawiedliwieni",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Rz+3:23-24",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "usprawiedliwienie",
+    "verses": [
+      "Rz 3:23",
+      "Rz 3:24"
+    ],
+    "text": "Wszyscy bowiem zgrzeszyli i są pozbawieni chwały Bożej; a zostają usprawiedliwieni darmo, z jego łaski, przez odkupienie, które jest w Jezusie Chrystusie."
+  },
+  {
+    "id": "rag-wyznanie-1jhn-1-9",
+    "title": "1 List Jana 1:9 — Przebaczenie grzechów i oczyszczenie z niesprawiedliwości",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=1J+1:9",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "przebaczenie",
+    "verses": [
+      "1J 1:9"
+    ],
+    "text": "Jeśli wyznajemy nasze grzechy, Bóg jest wierny i sprawiedliwy, aby nam odpuścić grzechy i oczyścić nas z wszelkiej niesprawiedliwości."
+  },
+  {
+    "id": "rag-posrednik-1tim-2-5",
+    "title": "1 List do Tymoteusza 2:5 — Jeden jest Bóg i jeden Pośrednik Jezus Chrystus",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=1Tm+2:5",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "posrednik",
+    "verses": [
+      "1Tm 2:5"
+    ],
+    "text": "Jeden bowiem jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus, który oddał samego siebie na okup za wszystkich, o czym świadectwo zostało złożone we właściwym czasie."
+  },
+  {
+    "id": "rag-droga-jhn-14-6",
+    "title": "Ewangelia Jana 14:6 — Jezus jest Drogą, Prawdą i Życiem",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=J+14:6",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "posrednik",
+    "verses": [
+      "J 14:6"
+    ],
+    "text": "Odpowiedział mu Jezus: Ja jestem drogą, prawdą i życiem. Nikt nie przychodzi do Ojca jak tylko przeze mnie."
+  },
+  {
+    "id": "rag-imie-act-4-12",
+    "title": "Dzieje Apostolskie 4:12 — Nie ma innego imienia pod niebem dla zbawienia",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Dz+4:12",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "posrednik",
+    "verses": [
+      "Dz 4:12"
+    ],
+    "text": "I nie ma w nikim innym zbawienia. Nie ma bowiem pod niebem żadnego innego imienia danego ludziom, przez które moglibyśmy być zbawieni."
+  },
+  {
+    "id": "rag-szabat-exo-20-8-11",
+    "title": "Księga Wyjścia 20:8-11 — Czwarte Przykazanie Dekalogu: Pamiętaj o dniu szabatu",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Wj+20:8-11",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "szabat",
+    "verses": [
+      "Wj 20:8",
+      "Wj 20:9",
+      "Wj 20:10",
+      "Wj 20:11"
+    ],
+    "text": "Pamiętaj o dniu szabatu, aby go święcić. Sześć dni będziesz pracować i wykonywać wszystkie swoje prace; ale siódmy dzień jest szabatem PANA, twego Boga. [...] Gdyż przez sześć dni PAN stworzył niebo i ziemię, morze i wszystko, co jest w nich, a siódmego dnia odpoczął. Dlatego PAN pobłogosławił dzień szabatu i uświęcił go."
+  },
+  {
+    "id": "rag-szabat-gen-2-2-3",
+    "title": "Księga Rodzaju 2:2-3 — Ustanowienie Szabatu przy stworzeniu świata",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Rdz+2:2-3",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "szabat",
+    "verses": [
+      "Rdz 2:2",
+      "Rdz 2:3"
+    ],
+    "text": "I odpoczął w siódmym dniu od wszelkiego swego dzieła, które uczynił. I pobłogosławił Bóg siódmy dzień, i uświęcił go, bo w nim odpoczął od wszelkiego swego dzieła, które stworzył i uczynił."
+  },
+  {
+    "id": "rag-szabat-mrk-2-27-28",
+    "title": "Ewangelia Marka 2:27-28 — Szabat dla człowieka, Syn Człowieczy Panem szabatu",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Mk+2:27-28",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "szabat",
+    "verses": [
+      "Mk 2:27",
+      "Mk 2:28"
+    ],
+    "text": "I powiedział im: Szabat został ustanowiony dla człowieka, a nie człowiek dla szabatu. Tak więc Syn Człowieczy jest Panem także szabatu."
+  },
+  {
+    "id": "rag-pokoj-php-4-6-7",
+    "title": "List do Filipian 4:6-7 — Pokój Boży przewyższający wszelki rozum",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Flp+4:6-7",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "pokoj",
+    "verses": [
+      "Flp 4:6",
+      "Flp 4:7"
+    ],
+    "text": "O nic się zbytnio nie troszczcie, ale we wszystkim w modlitwie i błaganiu z dziękczynieniem powierzcie wasze prośby Bogu. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie."
+  },
+  {
+    "id": "rag-pokoj-jhn-14-27",
+    "title": "Ewangelia Jana 14:27 — Mój pokój wam daję, niech się nie trwoży serce wasze",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=J+14:27",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "pokoj",
+    "verses": [
+      "J 14:27"
+    ],
+    "text": "Pokój zostawiam wam, mój pokój wam daję; nie daję wam tak, jak daje świat. Niech się nie trwoży wasze serce ani się nie lęka."
+  },
+  {
+    "id": "rag-pasterz-psa-23",
+    "title": "Psalm 23:1-4 — PAN jest moim pasterzem, niczego mi nie braknie",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Ps+23:1-4",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "pokoj",
+    "verses": [
+      "Ps 23:1",
+      "Ps 23:2",
+      "Ps 23:3",
+      "Ps 23:4"
+    ],
+    "text": "PAN jest moim pasterzem, niczego mi nie braknie. Sprawia, że kładę się na zielonych pastwiskach, prowadzi mnie nad spokojne wody. [...] Choćbym nawet chodził doliną cienia śmierci, zła się nie ulęknę, bo ty jesteś ze mną; twoja laska i twój kij mnie pocieszają."
+  },
+  {
+    "id": "rag-smierc-ecc-9-5-6",
+    "title": "Księga Kaznodziei 9:5-6 — Umarli o niczym nie wiedzą aż do zmartwychwstania",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Kzn+9:5-6",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "zmartwychwstanie",
+    "verses": [
+      "Kzn 9:5",
+      "Kzn 9:6"
+    ],
+    "text": "Żyjący bowiem wiedzą, że umrą, ale umarli o niczym nie wiedzą i nie mają już żadnej zapłaty, gdyż pamięć o nich poszła w zapomnienie. Zarówno ich miłość, jak i nienawiść oraz zazdrość już dawno zginęły i nigdy nie będą mieli udziału w niczym, co dzieje się pod słońcem."
+  },
+  {
+    "id": "rag-zmartwychwstanie-1thess-4-16-17",
+    "title": "1 List do Tesaloniczan 4:16-17 — Powtórne Przyjście i zmartwychwstanie sprawiedliwych",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=1Tes+4:16-17",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "zmartwychwstanie",
+    "verses": [
+      "1Tes 4:16",
+      "1Tes 4:17"
+    ],
+    "text": "Gdyż sam Pan zstąpi z nieba z okrzykiem, z głosem archanioła i z trąbą Bożą, a zmarli w Chrystusie powstaną pierwsi. Potem my, którzy żyjemy i pozostaniemy, razem z nimi będziemy porwani w chmurach naprzeciw Panu w powietrze; i tak zawsze będziemy z Panem."
+  },
+  {
+    "id": "rag-trojorzedzie-rev-14-6-7",
+    "title": "Apokalipsa 14:6-7 — Pierwsze Orędzie Anielskie: Ewangelia Wieczna i Sąd Boży",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Obj+14:6-7",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "apokalipsa",
+    "verses": [
+      "Obj 14:6",
+      "Obj 14:7"
+    ],
+    "text": "I widziałem innego anioła lecącego środkiem nieba, który miał wieczną ewangelię, aby ją zwiastować mieszkańcom ziemi [...] mówiącego donośnym głosem: Bójcie się Boga i oddajcie mu chwałę, bo przyszła godzina jego sądu. Oddajcie pokłon temu, który stworzył niebo i ziemię, morze i źródła wód."
+  },
+  {
+    "id": "rag-cierpliwosc-rev-14-12",
+    "title": "Apokalipsa 14:12 — Wytrwałość świętych: Strzegą przykazań Boga i wiary Jezusa",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Obj+14:12",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "apokalipsa",
+    "verses": [
+      "Obj 14:12"
+    ],
+    "text": "Tu jest wytrwałość świętych, tu są ci, którzy strzegą przykazań Boga i wiary Jezusa."
+  },
+  {
+    "id": "rag-nowa-ziemia-rev-21-3-4",
+    "title": "Apokalipsa 21:3-4 — Otrze Bóg wszelką łzę, śmierci już nie będzie",
+    "url": "https://polskieradio.cc/wyszukiwarka?q=Obj+21:3-4",
+    "type": "scripture",
+    "language": "pl",
+    "author": "Uwspółcześniona Biblia Gdańska (UBG)",
+    "license": "UBG_AUTHORIZED",
+    "topic": "nadzieja",
+    "verses": [
+      "Obj 21:3",
+      "Obj 21:4"
+    ],
+    "text": "Oto przybytek Boga jest z ludźmi i będzie mieszkał z nimi, a oni będą jego ludem, a sam Bóg będzie z nimi, będąc ich Bogiem. I otrze Bóg wszelką łzę z ich oczu, i śmierci już nie będzie ani smutku, ani krzyku, ani bólu już nie będzie, bo pierwsze rzeczy przeminęły."
+  },
+  {
+    "id": "rag-cc-apokalipsa-wyklady",
+    "title": "Apokalipsa — Księga Nadziei: Seria 28 wykładów biblijnych Cezarego Rogowskiego",
+    "url": "https://polskieradio.cc/akademia/apokalipsa",
+    "type": "course",
+    "language": "pl",
+    "author": "Cezary Rogowski (Christian Culture)",
+    "license": "CC_ORIGINAL",
+    "topic": "apokalipsa",
+    "verses": [
+      "Obj 1:1-3",
+      "Obj 14:6-12",
+      "Obj 21:1-7"
+    ],
+    "text": "Cykl 28 autorytatywnych wykładów teologicznych i historycznych z egzegezą werset po wersecie Księgi Objawienia. Apokalipsa nie jest księgą grozy, lecz chrystocentryczną Księgą Nadziei odsłaniającą zwycięstwo Baranka nad złem, odkupienie ludu Bożego i nastanie Nowej Ziemi."
+  },
+  {
+    "id": "rag-cc-kurs-codzienny-jozef",
+    "title": "Kurs Codzienny: Dzień 28 — Ja jestem Józef — Przebaczenie zamiast zemsty (Rdz 44–45)",
+    "url": "https://polskieradio.cc/akademia/kurscodzienny/dzien-28",
+    "type": "course",
+    "language": "pl",
+    "author": "Cezary Rogowski & Christian Culture",
+    "license": "CC_ORIGINAL",
+    "topic": "przebaczenie",
+    "verses": [
+      "Rdz 45:4-8",
+      "Rdz 50:20"
+    ],
+    "text": "Lekcja studium Księgi Rodzaju w cyklu Z Biblią za Pan Brat. Kluczowy moment pojednania Józefa z braćmi w Egipcie. Przebaczenie jako decyzja wiary w suwerenność Bożą: Wy obmyśliliście przeciwko mnie zło, ale Bóg obrócił to w dobro, aby ocalić życie wielu ludzi."
+  },
+  {
+    "id": "rag-cc-radio-247",
+    "title": "Radio Christian Culture — 6 całodobowych kanałów nadawczych 24/7",
+    "url": "https://polskieradio.cc/player",
+    "type": "broadcast",
+    "language": "pl",
+    "author": "Christian Culture Media",
+    "license": "CC_ORIGINAL",
+    "topic": "radio",
+    "verses": [
+      "Rz 10:17",
+      "Ps 150:1-6"
+    ],
+    "text": "Globalna platforma nadawcza PolskieRadio.cc: Program 1 (słowno-muzyczny), Radio Global (English worship & sermons), Biblia Audio PL (24/7 ciągłe czytanie Pisma Świętego UBG), Global Bible (anglojęzyczna Biblia Audio), Instrumental Worship (muzyka do modlitwy) oraz Biblia Śpiewana (słowa wersetów w pieśniach)."
+  }
+];
+
+  // KATALOG TEMATYCZNY PISMA ŚWIĘTEGO & MODLITEWNIK CC (P5)
+  // 12 Kanonicznych Wątków Wiary • UBG Canonical Text • Zero Cost First
+  // =========================================================================
   const BIBLE_TOPICS = {
-    szabat: {
-      title: 'Szabat — Dzień Pański i Pamiątka Stworzenia',
-      slug: 'szabat',
-      summary: 'Siódmy dzień tygodnia ustanowiony przez Boga przy stworzeniu (Rdz 2:2-3), włączony do Dekalogu (Wj 20:8-11) i potwierdzony przez Jezusa Chrystusa (Mk 2:27-28) jako święty dar odpoczynku i komunii ze Stwórcą.',
+    wiara: {
+      title: 'Wiara i Zaufanie Bogu — Pewność Rzeczy Niewidzialnych',
+      slug: 'wiara',
+      summary: 'Wiara biblijna to niezłomne zaufanie Bogu, Jego charakterowi i Jego obietnicom wbrew widzialnym okolicznościom. Rodzi się ze słuchania Słowa Bożego i przynosi owoc w posłuszeństwie miłości.',
       verses: [
-        { ref: 'Rdz 2:2-3', text: 'I ukończył Bóg w siódmym dniu swoje dzieło... I pobłogosławił Bóg dzień siódmy, i uświęcił go.' },
-        { ref: 'Wj 20:8-11', text: 'Pamiętaj o dniu szabatu, aby go święcić. Sześć dni będziesz pracować... Ale siódmy dzień jest szabatem PANA, twego Boga.' },
-        { ref: 'Mk 2:27-28', text: 'Szabat został ustanowiony dla człowieka, a nie człowiek dla szabatu. Dlatego Syn Człowieczy jest Panem także szabatu.' },
-        { ref: 'Hbr 4:9', text: 'Pozostaje więc jeszcze odpoczynek dla ludu Bożego.' }
+        { ref: 'Hbr 11:1', text: 'A wiara jest pewnością tego, czego się spodziewamy, i dowodem tego, czego nie widzimy.' },
+        { ref: 'Rz 10:17', text: 'Wiara więc jest ze słuchania, a słuchanie przez słowo Boże.' },
+        { ref: 'Mk 11:24', text: 'Wszystko, o co w modlitwie prosicie, wierzcie, że otrzymacie, a stanie się wam.' },
+        { ref: 'Prz 3:5-6', text: 'Ufaj PANU z całego swego serca i nie polegaj na swoim rozumie. Zważaj na niego na wszystkich swoich drogach, a on wyrówna twoje ścieżki.' }
       ],
-      studyUrl: '/mojabiblia?book=EXO&chapter=20',
-      mediaUrl: '/player?q=szabat'
+      prayerTitle: 'Modlitwa o Pomnożenie Wiary i Niezłomne Zaufanie',
+      prayerText: 'Panie Jezu Chryste, Ty jesteś Dawcą i Dokończycielem naszej wiary. Odrzucam wszelkie zwątpienie i opieram moje życie na Twojej niezmiennej obietnicy. Wierzę, że Twoje Słowo jest prawdą i że Ty prowadzisz moje drogi. Przymnóż mi wiary, abym nie zachwiał się w próbie, lecz oddawał Tobie chwałę każdego dnia. Amen.',
+      studyUrl: '/mojabiblia?book=HEB&chapter=11',
+      mediaUrl: '/player?q=wiara'
     },
     usprawiedliwienie: {
       title: 'Usprawiedliwienie z Wiary i Boża Łaska',
@@ -646,8 +1251,67 @@
         { ref: 'Ef 2:8-9', text: 'Łaską bowiem jesteście zbawieni przez wiarę, i to nie jest z was, jest to dar Boga. Nie z uczynków, aby nikt się nie chlubił.' },
         { ref: 'Rz 5:1', text: 'Będąc więc usprawiedliwieni z wiary, mamy pokój z Bogiem przez naszego Pana Jezusa Chrystusa;' }
       ],
+      prayerTitle: 'Modlitwa Dziękczynna za Dar Zbawienia i Łaskę',
+      prayerText: 'Boże i Ojcze Niebiański, dziękuję Ci z całego serca, że z darmowej łaski, przez wiarę w Twojego Syna Jezusa Chrystusa, darowałeś mi wszystkie grzechy i dałeś życie wieczne. Wyznaję, że Jezus jest jedyną Drogą, Prawdą i Życiem. Moje zbawienie jest w Twojej darmowej łasce, a nie w moich zasługach. Bądź uwielbiony na wieki. Amen.',
       studyUrl: '/mojabiblia?book=ROM&chapter=3',
       mediaUrl: '/player?q=laska'
+    },
+    pokoj: {
+      title: 'Boży Pokój i Ukojenie Lęku — Pokój Przewyższający Rozum',
+      slug: 'pokoj',
+      summary: 'Boży pokój (Szalom) nie jest brakiem burzy, lecz obecnością Chrystusa w sercu. Uwalnia od paraliżującego lęku i rozpaczy, chroniąc myśli i dając głębokie ukojenie.',
+      verses: [
+        { ref: 'Flp 4:6-7', text: 'O nic się zbytnio nie troszczcie, ale we wszystkim przez modlitwę i błaganie z dziękczynieniem niech wasze prośby będą przedstawiane Bogu. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie.' },
+        { ref: 'J 14:27', text: 'Pokój zostawiam wam, mój pokój daję wam; nie daję wam tak, jak daje świat. Niech się nie trwoży wasze serce ani się nie lęka.' },
+        { ref: 'Ps 4:8', text: 'W pokoju się położę i zasnę, bo ty sam, PANIE, sprawiasz, że mieszkam bezpiecznie.' }
+      ],
+      prayerTitle: 'Modlitwa o Wewnętrzny Pokój i Uwolnienie od Lęku',
+      prayerText: 'Panie mój, w Twoje ręce składam wszelki niepokój, strach i troskę o jutro. Przyjmuję Twój pokój, który przewyższa wszelki ludzki rozum i który strzeże mego serca i myśli w Chrystusie Jezusie. Ty powiedziałeś: Niech się nie trwoży wasze serce ani się nie lęka. W Twoim pokoju kładę się i zasypiam, bo Ty sam, Panie, sprawiasz, że mieszkam bezpiecznie. Amen.',
+      studyUrl: '/mojabiblia?book=PHP&chapter=4',
+      mediaUrl: '/player?q=pokoj'
+    },
+    modlitwa: {
+      title: 'Moc Modlitwy i Żywa Komunia z Ojcem',
+      slug: 'modlitwa',
+      summary: 'Modlitwa to oddech odrodzonej duszy — szczera, ufna rozmowa z Ojcem Niebiańskim w imieniu Jezusa Chrystusa, niosąca Bożą interwencję i przemianę ludzkiego serca.',
+      verses: [
+        { ref: 'Mt 6:6', text: 'Ale ty, gdy się modlisz, wejdź do swego pokoju, zamknij drzwi i módl się do twego Ojca, który jest w ukryciu, a twój Ojciec, który widzi w ukryciu, nagrodzi cię jawnie.' },
+        { ref: '1 Tes 5:17', text: 'Nieustannie się módlcie.' },
+        { ref: 'Jk 5:16', text: 'Wiele może usilna modlitwa sprawiedliwego.' }
+      ],
+      prayerTitle: 'Modlitwa o Ducha Modlitwy i Bliskość z Bogiem',
+      prayerText: 'Ojcze nasz, który jesteś w niebie, dziękuję Ci, że Twoje ucho jest otwarte na wołanie Twoich dzieci. Napełnij mnie Duchem Świętym, naucz mnie modlić się nieustannie i trwać w Twojej obecności. Niech moja modlitwa będzie wonnym kadzidłem przed Twoim tronem, a moje serce niech zawsze szuka Twojej woli. Amen.',
+      studyUrl: '/mojabiblia?book=MAT&chapter=6',
+      mediaUrl: '/modlitwa'
+    },
+    nadzieja: {
+      title: 'Żywa Nadzieja i Zmartwychwstanie w Chrystusie',
+      slug: 'nadzieja',
+      summary: 'Nadzieja chrześcijańska to nie życzeniowe myślenie, lecz pewna kotwica duszy oparta na fakcie historycznego zmartwychwstania Jezusa Chrystusa i obietnicy wiecznego życia.',
+      verses: [
+        { ref: '1 P 1:3', text: 'Błogosławiony niech będzie Bóg i Ojciec naszego Pana Jezusa Chrystusa, który według swego wielkiego miłosierdzia zrodził nas na nowo do żywej nadziei przez zmartwychwstanie Jezusa Chrystusa;' },
+        { ref: 'Rz 15:13', text: 'A Bóg nadziei niech was napełni wszelką radością i pokojem w wierze, abyście obfitowali w nadzieję przez moc Ducha Świętego.' },
+        { ref: 'Tyt 2:13', text: 'Oczekując błogosławionej nadziei i chwalebnego objawienia się wielkiego Boga i Zbawiciela naszego, Jezusa Chrystusa;' }
+      ],
+      prayerTitle: 'Modlitwa o Odnowienie Żywej Nadziei',
+      prayerText: 'Boże wszelkiej nadziei, napełnij mnie wszelką radością i pokojem w wierze, abym obfitował w nadzieję przez moc Ducha Świętego. Choćbym przechodził przez ciemną dolinę, wiem, że mój Odkupiciel żyje i że przyjdzie dzień Jego chwały. Kotwico mojej duszy, w Tobie pokładam całą moją ufność. Amen.',
+      studyUrl: '/mojabiblia?book=1PE&chapter=1',
+      mediaUrl: '/player?q=nadzieja'
+    },
+    szabat: {
+      title: 'Szabat — Dzień Pański i Pamiątka Stworzenia',
+      slug: 'szabat',
+      summary: 'Siódmy dzień tygodnia ustanowiony przez Boga przy stworzeniu (Rdz 2:2-3), włączony do Dekalogu (Wj 20:8-11) i potwierdzony przez Jezusa Chrystusa (Mk 2:27-28) jako święty dar odpoczynku i komunii ze Stwórcą.',
+      verses: [
+        { ref: 'Rdz 2:2-3', text: 'I ukończył Bóg w siódmym dniu swoje dzieło... I pobłogosławił Bóg dzień siódmy, i uświęcił go.' },
+        { ref: 'Wj 20:8-11', text: 'Pamiętaj o dniu szabatu, aby go święcić. Sześć dni będziesz pracować... Ale siódmy dzień jest szabatem PANA, twego Boga.' },
+        { ref: 'Mk 2:27-28', text: 'Szabat został ustanowiony dla człowieka, a nie człowiek dla szabatu. Dlatego Syn Człowieczy jest Panem także szabatu.' },
+        { ref: 'Hbr 4:9', text: 'Pozostaje więc jeszcze odpoczynek dla ludu Bożego.' }
+      ],
+      prayerTitle: 'Modlitwa Szabatowa o Święty Boży Odpoczynek',
+      prayerText: 'Święty Boże i Stwórco Wszechświata, dziękuję Ci za dar świętego dnia szabatu — pamiątkę Twojego wspaniałego stworzenia i odkupienia w Chrystusie. Wyciszam moje serce z codziennego znoju i oddaję ten czas na uwielbienie Ciebie, studiowanie Twojego Słowa i braterską miłość. Uświęć mnie w Twojej prawdzie. Amen.',
+      studyUrl: '/mojabiblia?book=EXO&chapter=20',
+      mediaUrl: '/player?q=szabat'
     },
     posrednik: {
       title: 'Jeden Jedyny Pośrednik — Jezus Chrystus',
@@ -655,8 +1319,11 @@
       summary: 'Nowy Testament jednoznacznie naucza o jedynym arcykapłanie i pośredniku pomiędzy Bogiem Ojcem a ludzkością — zmartwychwstałym Chrystusie, który wstawia się za nami w niebiańskiej świątyni.',
       verses: [
         { ref: '1 Tm 2:5', text: 'Jeden bowiem jest Bóg, jeden też pośrednik między Bogiem a ludźmi, człowiek Chrystus Jezus;' },
+        { ref: 'Hbr 7:25', text: 'Dlatego też całkowicie może zbawić tych, którzy przez niego przychodzą do Boga, bo zawsze żyje, aby wstawiać się za nimi.' },
         { ref: 'J 14:6', text: 'Ja jestem drogą, prawdą i życiem. Nikt nie przychodzi do Ojca jak tylko przeze mnie.' }
       ],
+      prayerTitle: 'Modlitwa przez Jedynego Pośrednika Jezusa Chrystusa',
+      prayerText: 'Panie Jezu Chryste, człowieku i Synu Boży, Ty jesteś moim jedynym i doskonałym Arcykapłanem. Z ufnością przystępuję do tronu łaski, bo wiem, że Ty orędujesz za mną przed obliczem Ojca. Dziękuję Ci za przelaną krew na krzyżu Golgoty, która otworzyła mi drogę do samego serca Boga. Amen.',
       studyUrl: '/mojabiblia?book=1TI&chapter=2',
       mediaUrl: '/player?q=jezus'
     },
@@ -670,8 +1337,67 @@
         { ref: 'Ap 14:12', text: 'Tu jest cierpliwość świętych, tu są ci, którzy strzegą przykazań Boga i wiary Jezusa.' },
         { ref: '2 P 1:19', text: 'Mamy też mocniejsze słowo prorockie, a wy dobrze robicie, trzymając się go jak lampy świecącej w ciemnym miejscu...' }
       ],
+      prayerTitle: 'Modlitwa o Czuwanie i Gotowość na Przyjście Pana',
+      prayerText: 'Wszechmogący Panie, Twoje słowo prorockie jest pochodnią świecącą w ciemności tego świata. Daj mi czujne serce, mądrość Ducha i wierność Twoim przykazaniom w tych ostatecznych czasach. Spraw, abym głosił wieczną ewangelię z odwagą i radością, wołając wraz z całym Kościołem: Przyjdź, Panie Jezu! Amen.',
       studyUrl: '/mojabiblia?book=REV&chapter=14',
       mediaUrl: '/vod?q=apokalipsa'
+    },
+    przebaczenie: {
+      title: 'Boże Przebaczenie, Oczyszczenie z Grzechu i Pojednanie',
+      slug: 'przebaczenie',
+      summary: 'Bóg jest gotowy przebaczyć każdy wyznany grzech dzięki krwi Chrystusa. Przebaczenie Boże uzdrawia z poczucia winy i uzdalnia nas do darowania win naszym winowajcom.',
+      verses: [
+        { ref: '1 J 1:9', text: 'Jeśli wyznajemy nasze grzechy, Bóg jest wierny i sprawiedliwy, aby nam przebaczyć grzechy i oczyścić nas z wszelkiej nieprawości.' },
+        { ref: 'Ps 103:12', text: 'Jak daleko jest wschód od zachodu, tak daleko oddalił od nas nasze występki.' },
+        { ref: 'Ef 4:32', text: 'Bądźcie raczej dla siebie nawzajem życzliwi, miłosierni, przebaczając sobie, jak i wam Bóg przebaczył w Chrystusie.' }
+      ],
+      prayerTitle: 'Modlitwa o Przebaczenie i Czystość Serca',
+      prayerText: 'Miłosierny Ojcze, wyznaję przed Tobą moje winy i słabości. Ty jesteś wierny i sprawiedliwy, aby odpuścić mi grzechy i oczyścić mnie z wszelkiej nieprawości. Usuwasz moje przewinienia tak daleko, jak wschód jest od zachodu. Ulecz moje serce i uzdolnij mnie, bym tak jak Ty przebaczył mi w Chrystusie, przebaczał wszystkim, którzy mnie zranili. Amen.',
+      studyUrl: '/mojabiblia?book=1JN&chapter=1',
+      mediaUrl: '/player?q=przebaczenie'
+    },
+    milosc: {
+      title: 'Boża Miłość (Agape) i Największe Przykazanie',
+      slug: 'milosc',
+      summary: 'Bóg sam jest miłością. Miłość Boża objawiła się najpełniej w posłaniu Syna Bożego jako ofiary za nasze grzechy. Jest fundamentem i spoiwem wszelkiej doskonałości.',
+      verses: [
+        { ref: 'J 3:16', text: 'Tak bowiem Bóg umiłował świat, że dał swego jednorodzonego Syna, aby każdy, kto w niego wierzy, nie zginął, ale miał życie wieczne.' },
+        { ref: '1 J 4:8', text: 'Kto nie miłuje, nie zna Boga, gdyż Bóg jest miłością.' },
+        { ref: '1 Kor 13:4-8', text: 'Miłość jest cierpliwa, jest życzliwa... Miłość nigdy nie ustaje.' },
+        { ref: 'Rz 5:5', text: 'A nadzieja nie zawodzi, bo miłość Boża jest rozlana w naszych sercach przez Ducha Świętego, który został nam dany.' }
+      ],
+      prayerTitle: 'Modlitwa o Wypełnienie Bożą Miłością',
+      prayerText: 'Ojcze Niebiański, Ty tak umiłowałeś świat, że dałeś swego jednorodzonego Syna. Wlej Twoją miłość w moje serce przez Ducha Świętego, który został mi dany. Naucz mnie kochać prawdziwie — cierpliwie, łaskawie, bez zazdrości i bez szukania swego. Niech Twoja miłość we mnie będzie świadectwem dla wszystkich ludzi. Amen.',
+      studyUrl: '/mojabiblia?book=1CO&chapter=13',
+      mediaUrl: '/player?q=milosc'
+    },
+    uzdrowienie: {
+      title: 'Boże Uzdrowienie — Pocieszenie, Siła i Ratunek w Chorobie',
+      slug: 'uzdrowienie',
+      summary: 'Bóg jest Lekarzem dusz i ciał. W cierpieniu i słabości ofiarowuje Swoją łaskę, pocieszenie, odnowienie sił i wierność, a ostatecznie uwolnienie od wszelkiego bólu i łez.',
+      verses: [
+        { ref: 'Iz 53:5', text: 'Lecz on był zraniony za nasze występki, starty za nasze nieprawości. Kara dla naszego pokoju była na nim, a jego ranami zostaliśmy uzdrowieni.' },
+        { ref: 'Ps 103:3', text: 'On przebacza wszystkie twoje nieprawości, on uzdrawia wszystkie twoje choroby;' },
+        { ref: 'Jk 5:14-15', text: 'Choruje ktoś wśród was? Niech zawoła starszych zboru i niech się modlą nad nim... A modlitwa wiary uzdrowi chorego i Pan go podźwignie;' }
+      ],
+      prayerTitle: 'Modlitwa o Boże Uzdrowienie i Siłę w Cierpieniu',
+      prayerText: 'Panie Jezu, Ty wziąłeś na siebie nasze niemoc i nosiłeś nasze choroby, a w Twoich ranach jest nasze uzdrowienie. Wołam do Ciebie o zdrowie dla mojego ciała, ukojenie w bólu i pokój dla mojej duszy. Oddaję Ci moje życie i ufam Twojej wszechmocy i miłości. Bądź moją siłą i moim lekarzem. Amen.',
+      studyUrl: '/mojabiblia?book=PSA&chapter=103',
+      mediaUrl: '/player?q=uzdrowienie'
+    },
+    madrosc: {
+      title: 'Boża Mądrość i Przewodnictwo Ducha Świętego',
+      slug: 'madrosc',
+      summary: 'Początkiem mądrości jest bojaźń Pańska. Bóg obiecuje udzielić obficie mądrości każdemu, kto prosi z wiarą, prowadząc przez labirynty życia światłem Swojego Słowa.',
+      verses: [
+        { ref: 'Prz 3:5-6', text: 'Ufaj PANU z całego swego serca i nie polegaj na swoim rozumie. Zważaj na niego na wszystkich swoich drogach, a on wyrówna twoje ścieżki.' },
+        { ref: 'Jk 1:5', text: 'A jeśli komuś z was brakuje mądrości, niech prosi Boga, który daje wszystkim obficie i nie wymawia, a będzie mu dana.' },
+        { ref: 'Ps 119:105', text: 'Twoje słowo jest pochodnią dla moich nóg i światłem na mojej ścieżce.' }
+      ],
+      prayerTitle: 'Modlitwa o Mądrość i Boże Prowadzenie',
+      prayerText: 'Panie, Twoje Słowo jest lampą dla moich stóp i światłem na mojej ścieżce. Proszę Cię o dar Bożej mądrości z góry — czystej, miłującej pokój i pełnej dobrych owoców. Nie pozwól mi polegać na własnym rozumie, lecz daj mi w każdym kroku rozpoznawać Twoją wolę i podążać za głosem Twojego Ducha. Amen.',
+      studyUrl: '/mojabiblia?book=PRO&chapter=3',
+      mediaUrl: '/player?q=madrosc'
     }
   };
 
@@ -1025,14 +1751,403 @@
       .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
       .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
       .replace(/[ś]/g, 's').replace(/[źż]/g, 'z').trim();
-    if (norm.includes('szabat') || norm.includes('sabat') || norm.includes('dzien siodmy') || norm.includes('dzien panski')) return BIBLE_TOPICS.szabat;
-    if (norm.includes('usprawiedliwien') || norm.includes('laska boza') || norm.includes('zbawien') || norm.includes('z laski')) return BIBLE_TOPICS.usprawiedliwienie;
-    if (norm.includes('posrednik') || norm.includes('arcykaplan') || norm.includes('jedyny posrednik')) return BIBLE_TOPICS.posrednik;
-    if (norm.includes('proroctw') || norm.includes('apokalips') || norm.includes('daniel') || norm.includes('trzy poselstwa')) return BIBLE_TOPICS.proroctwa;
+
+    if (norm.includes('usprawiedliwien') || norm.includes('laska boza') || norm.includes('zbawien') || norm.includes('z laski') || norm.includes('darmo')) return BIBLE_TOPICS.usprawiedliwienie;
+    if (norm.includes('wiar') || norm.includes('wierz') || norm.includes('zaufan') || norm.includes('niewidzialn')) return BIBLE_TOPICS.wiara;
+    if (norm.includes('pokoj') || norm.includes('spokoj') || norm.includes('lek') || norm.includes('strach') || norm.includes('niepokoj') || norm.includes('ukojenie')) return BIBLE_TOPICS.pokoj;
+    if (norm.includes('modlitw') || norm.includes('modlic') || norm.includes('wstawiennictw') || norm.includes('ojcze nasz')) return BIBLE_TOPICS.modlitwa;
+    if (norm.includes('nadziej') || norm.includes('zmartwychwstan') || norm.includes('otucha')) return BIBLE_TOPICS.nadzieja;
+    if (norm.includes('szabat') || norm.includes('sabat') || norm.includes('dzien siodmy') || norm.includes('dzien panski') || norm.includes('odpocznien')) return BIBLE_TOPICS.szabat;
+    if (norm.includes('posrednik') || norm.includes('arcykaplan') || norm.includes('jedyny posrednik') || norm.includes('oredownik')) return BIBLE_TOPICS.posrednik;
+    if (norm.includes('proroctw') || norm.includes('apokalips') || norm.includes('daniel') || norm.includes('trzy poselstwa') || norm.includes('paruzj') || norm.includes('powtorne przyjscie')) return BIBLE_TOPICS.proroctwa;
+    if (norm.includes('przebaczen') || norm.includes('odpuszczen') || norm.includes('pojednan') || norm.includes('oczyszczen z grzech')) return BIBLE_TOPICS.przebaczenie;
+    if (norm.includes('milosc') || norm.includes('agape') || norm.includes('milowac') || norm.includes('przykazanie milosci')) return BIBLE_TOPICS.milosc;
+    if (norm.includes('uzdrowien') || norm.includes('chorob') || norm.includes('uleczen') || norm.includes('cierpien') || norm.includes('lekarz')) return BIBLE_TOPICS.uzdrowienie;
+    if (norm.includes('madrosc') || norm.includes('przewodnictw') || norm.includes('rozeznan')) return BIBLE_TOPICS.madrosc;
+
     return null;
   }
 
-  async function fetchBibleVerse(bookCode, chapter, verse) {
+
+  // =========================================================================
+  // ATLAS BIBLIJNY & GEOGRAFIA SACRA (Biblia Intelligence CC — P2)
+  // Źródła: OpenBible Geocoding Data (CC BY 4.0 - R13), Wikidata (CC0 - R18),
+  // OpenStreetMap (ODbL - R20). Standard ZERO COST FIRST.
+  // =========================================================================
+  const BIBLE_PLACES = {
+    jerusalem: {
+      id: 'jerusalem',
+      name: 'Jerozolima (Syjon / Miasto Dawida)',
+      origName: 'יְרוּשָׁלַםִ / Ierousalēm',
+      lang: 'he',
+      region: 'Judea / Góry Judzkie',
+      coords: { lat: 31.7767, lon: 35.2345 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q1218',
+      summary: 'Centralne miasto historii biblijnej: stolica Królestwa Dawida i Salomona, miejsce Świątyni Pańskiej, ukrzyżowania i zmartwychwstania Jezusa Chrystusa, zesłania Ducha Świętego oraz zapowiedź Nowego Jeruzalem.',
+      verses: [
+        { ref: 'Ps 122:6', text: 'Proście o pokój dla Jeruzalem: Niech zażywają pokoju ci, którzy cię miłują!' },
+        { ref: 'Łk 24:47', text: 'I aby w jego imieniu głoszono pokutę i przebaczenie grzechów wszystkim narodom, począwszy od Jerozolimy.' },
+        { ref: 'Ap 21:2', text: 'A ja, Jan, widziałem święte miasto, Nowe Jeruzalem, zstępujące z nieba od Boga, przygotowane jak oblubienica ozdobiona dla swego męża.' }
+      ],
+      studyUrl: '/mojabiblia?q=Jerozolima',
+      aliases: ['jerozolima', 'jeruzalem', 'syjon', 'miasto dawida', 'morijja', 'jerusalem']
+    },
+    bethlehem: {
+      id: 'bethlehem',
+      name: 'Betlejem (Efrata)',
+      origName: 'בֵּית לֶחֶם / Bēth Leḥem',
+      lang: 'he',
+      region: 'Judea (ok. 8 km na południe od Jerozolimy)',
+      coords: { lat: 31.7054, lon: 35.2024 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q5662',
+      summary: 'Dosłownie „Dom Chleba”. Miasto narodzin króla Dawida oraz prorocze miejsce narodzenia Mesjasza — Jezusa Chrystusa (Mi 5:2), który jest Prawdziwym Chlebem Żywota.',
+      verses: [
+        { ref: 'Mi 5:2', text: 'Ale ty, Betlejem Efrata, choć jesteś najmniejsze wśród tysięcy w Judzie, z ciebie wyjdzie mi ten, który ma być władcą w Izraelu...' },
+        { ref: 'Mt 2:1', text: 'Gdy zaś Jezus urodził się w Betlejem w Judei za dni króla Heroda, oto mędrcy ze Wschodu przybyli do Jerozolimy;' },
+        { ref: 'Łk 2:4', text: 'Poszedł też Józef z Galilei, z miasta Nazaret, do Judei, do miasta Dawida, zwanego Betlejem...' }
+      ],
+      studyUrl: '/mojabiblia?q=Betlejem',
+      aliases: ['betlejem', 'efrata', 'bethlehem']
+    },
+    nazareth: {
+      id: 'nazareth',
+      name: 'Nazaret',
+      origName: 'Ναζαρέτ / Nazaret',
+      lang: 'grc',
+      region: 'Dolna Galilea',
+      coords: { lat: 32.7019, lon: 35.3035 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q430776',
+      summary: 'Miejscowość dzieciństwa i młodości Jezusa Chrystusa, skąd wziął się Jego tytuł „Jezus z Nazaretu” (Nazarejczyk). Miejsce zwiastowania Maryi przez archanioła Gabriela.',
+      verses: [
+        { ref: 'Łk 1:26', text: 'A w szóstym miesiącu Bóg posłał anioła Gabriela do miasta w Galilei, zwanego Nazaret;' },
+        { ref: 'Mt 2:23', text: 'A przyszedłszy, zamieszkał w mieście zwanym Nazaret, aby się spełniło, co zostało powiedziane przez proroków: Będzie nazwany Nazarejczykiem.' },
+        { ref: 'J 1:46', text: 'I powiedział mu Natanael: Czy z Nazaretu może być coś dobrego? Filip mu odpowiedział: Chodź i zobacz!' }
+      ],
+      studyUrl: '/mojabiblia?q=Nazaret',
+      aliases: ['nazaret', 'nazareth', 'nazarejczyk']
+    },
+    capernaum: {
+      id: 'capernaum',
+      name: 'Kafarnaum (Kfar Nahum)',
+      origName: 'כְּפַר נַחוּם / Kapharnaoum',
+      lang: 'he',
+      region: 'Północny brzeg Jeziora Galilejskiego (Tal Hum)',
+      coords: { lat: 32.8805, lon: 35.5750 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q193139',
+      summary: 'Główna baza galilejskiej służby Jezusa, nazwana w Ewangelii „Jego miastem” (Mt 9:1). Miejsce powołania celnika Mateusza, uzdrowienia sługi setnika i wygłoszenia mowy o Chlebie Życia w tamtejszej synagodze.',
+      verses: [
+        { ref: 'Mt 4:13', text: 'I opuściwszy Nazaret, przyszedł i zamieszkał w Kafarnaum, nad morzem, w granicach Zabulona i Neftalego;' },
+        { ref: 'Mk 2:1', text: 'Po kilku dniach znowu wszedł do Kafarnaum i usłyszano, że jest w domu.' },
+        { ref: 'J 6:59', text: 'To mówił w synagodze, nauczając w Kafarnaum.' }
+      ],
+      studyUrl: '/mojabiblia?q=Kafarnaum',
+      aliases: ['kafarnaum', 'capernaum', 'kfar nahum']
+    },
+    sinai: {
+      id: 'sinai',
+      name: 'Góra Synaj (Horeb / Dżabal Musa)',
+      origName: 'סִינַי / Har Sīnay',
+      lang: 'he',
+      region: 'Półwysep Synaj',
+      coords: { lat: 28.5397, lon: 33.9750 },
+      certainty: 'PRAWDOPODOBNA / TRADYCYJNA',
+      wikidataId: 'Q377485',
+      summary: 'Święta góra Bożego Przymierza: miejsce objawienia się Boga w krzewie gorejącym, ogłoszenia Dekalogu (Dziesięciu Przykazań) Mojżeszowi, zawarcia przymierza z Izraelem oraz ucieczki i odnowienia proroka Eliasza.',
+      verses: [
+        { ref: 'Wj 19:18', text: 'A cała góra Synaj dymiła, gdyż PAN zstąpił na nią w ogniu; i unosił się dym z niej jak dym z pieca, a cała góra bardzo się trzęsła.' },
+        { ref: 'Wj 20:1-2', text: 'Wtedy Bóg mówił wszystkie te słowa: Ja jestem PAN, twój Bóg, który cię wyprowadził z ziemi Egiptu, z domu niewoli.' },
+        { ref: '1 Krl 19:8', text: 'Wstał więc, pojadł i popił, a posiliwszy się tym pokarmem, szedł czterdzieści dni i czterdzieści nocy aż do Bożej góry Horeb.' }
+      ],
+      studyUrl: '/mojabiblia?q=Synaj',
+      aliases: ['synaj', 'horeb', 'gora synaj', 'gora horeb', 'mount sinai', 'sinai']
+    },
+    jericho: {
+      id: 'jericho',
+      name: 'Jerycho (Miasto Palm / Tell es-Sultan)',
+      origName: 'יְרִיחוֹ / Yərīḥō',
+      lang: 'he',
+      region: 'Dolina Dolnego Jordanu (Depresja Morza Martwego)',
+      coords: { lat: 31.8706, lon: 35.4444 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q5788',
+      summary: 'Jedno z najstarszych stale zamieszkanych miast świata (ok. 250 m p.p.m.). Miejsce cudownego upadku murów za czasów Jozuego, ocalenia Rachab oraz spotkania Jezusa z Zacheuszem i uzdrowienia ślepego Bartymeusza.',
+      verses: [
+        { ref: 'Joz 6:20', text: 'Wtedy lud krzyknął i zadęli w trąby. A gdy lud usłyszał dźwięk trąb i wzniósł wielki okrzyk, mur runął na swoje miejsce...' },
+        { ref: 'Łk 19:1-2', text: 'Potem wszedł do Jerycha i przechodził przez nie. A był tam pewien człowiek, imieniem Zacheusz, który był przełożonym celników i był bogaty.' },
+        { ref: 'Hbr 11:30', text: 'Przez wiarę runęły mury Jerycha, gdy je obchodzono dokoła przez siedem dni.' }
+      ],
+      studyUrl: '/mojabiblia?q=Jerycho',
+      aliases: ['jerycho', 'jericho', 'tell es-sultan', 'miasto palm']
+    },
+    hebron: {
+      id: 'hebron',
+      name: 'Hebron (Kiriat-Arba / Grobowiec Patriarchów)',
+      origName: 'חֶבְרוֹן / Ḥevrōn',
+      lang: 'he',
+      region: 'Góry Judzkie (Judea)',
+      coords: { lat: 31.5297, lon: 35.0938 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q16869',
+      summary: 'Jedno z najstarszych miast Judy: miejsce pobytu Abrahama, Izaaka i Jakuba, pieczary Makpela (miejsca pochówku patriarchów) oraz pierwsza stolica króla Dawida, gdzie panował przez 7 lat i 6 miesięcy.',
+      verses: [
+        { ref: 'Rdz 23:19', text: 'I potem Abraham pochował Sarę, swoją żonę, w jaskini na polu Makpela naprzeciw Mamre, czyli Hebronu, w ziemi Kanaan.' },
+        { ref: '2 Sm 2:1-4', text: 'I zapytał Dawid PANA: Czy mam iść do któregoś z miast Judy?... Do Hebronu... I namaścili tam Dawida na króla nad domem Judy.' }
+      ],
+      studyUrl: '/mojabiblia?q=Hebron',
+      aliases: ['hebron', 'makpela', 'kiriat-arba', 'kiriat arba', 'mamre']
+    },
+    babylon: {
+      id: 'babylon',
+      name: 'Babilon (Babel / Mezopotamia)',
+      origName: 'בָּבֶל / Babylōn',
+      lang: 'he',
+      region: 'Mezopotamia (współczesny Irak nad Eufratem)',
+      coords: { lat: 32.5364, lon: 44.4208 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q5684',
+      summary: 'Symbol buntu człowieka przeciw Bogu od wieży Babel (Rdz 11), imperium Nabuchodonozora niszczące Świątynię Jerozolimską w 586 r. p.n.e. oraz w Apokalipsie wielki symbol odstępczego systemu religijno-politycznego czasów końca.',
+      verses: [
+        { ref: 'Ps 137:1', text: 'Nad rzekami Babilonu — tam siedzieliśmy i płakaliśmy na wspomnienie Syjonu.' },
+        { ref: 'Dan 4:30', text: 'Czyż to nie jest ten wielki Babilon, który ja zbudowałem na stolicę królestwa potęgą mojej władzy i ku chwale mojego majestatu?' },
+        { ref: 'Ap 18:2', text: 'I zawołał donośnie silnym głosem: Upadł, upadł wielki Babilon i stał się siedliskiem demonów i schronieniem wszelkiego ducha nieczystego...' }
+      ],
+      studyUrl: '/mojabiblia?q=Babilon',
+      aliases: ['babilon', 'babel', 'babylon', 'wieza babel']
+    },
+    patmos: {
+      id: 'patmos',
+      name: 'Wyspa Patmos',
+      origName: 'Πάτμος / Patmos',
+      lang: 'grc',
+      region: 'Morze Egejskie (archipelag Dodekanez, Grecja)',
+      coords: { lat: 37.5147, lon: 26.5458 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q178703',
+      summary: 'Górzysta wyspa na Morzu Egejskim, miejsce zesłania apostoła Jana za panowania cesarza Domicjana, gdzie otrzymał on od zmartwychwstałego Chrystusa wizję Księgi Objawienia (Apokalipsy).',
+      verses: [
+        { ref: 'Ap 1:9', text: 'Ja, Jan, wasz brat i współuczestnik w ucisku, w królestwie i w cierpliwości Jezusa Chrystusa, byłem na wyspie zwanej Patmos z powodu słowa Bożego i świadectwa Jezusa Chrystusa.' },
+        { ref: 'Ap 1:10', text: 'W dzień Pański byłem w zachwyceniu i usłyszałem za sobą donośny głos jakby trąby;' }
+      ],
+      studyUrl: '/mojabiblia?q=Patmos',
+      aliases: ['patmos', 'wyspa patmos']
+    },
+    antioch: {
+      id: 'antioch',
+      name: 'Antiochia Syryjska (Antakya)',
+      origName: 'Ἀντιόχεια / Antiocheia',
+      lang: 'grc',
+      region: 'Syria / Rzymska prowincja Syrii (dziś płd. Turcja)',
+      coords: { lat: 36.2021, lon: 36.1606 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q200441',
+      summary: 'Kolebka misji pogańskiej w pierwotnym Kościele: miasto, w którym po raz pierwszy nazwano uczniów „chrześcijanami” (Dz 11:26), oraz baza wypadowa podróży misyjnych apostoła Pawła i Barnaby.',
+      verses: [
+        { ref: 'Dz 11:26', text: 'I przez cały rok zbierali się w tym kościele i nauczali wielu ludzi. W Antiochii też po raz pierwszy nazwano uczniów chrześcijanami.' },
+        { ref: 'Dz 13:1-3', text: 'A w kościele w Antiochii byli prorocy i nauczyciele... Wtedy po poście i modlitwie włożyli na nich ręce i wyprawili ich.' },
+        { ref: 'Ga 2:11', text: 'A gdy Piotr przyszedł do Antiochii, sprzeciwiłem mu się w twarz, bo zasłużył na naganę.' }
+      ],
+      studyUrl: '/mojabiblia?q=Antiochia',
+      aliases: ['antiochia', 'antioch', 'antakya', 'antiochia syryjska']
+    },
+    carmel: {
+      id: 'carmel',
+      name: 'Góra Karmel (Karem El)',
+      origName: 'כַּרְמֶל / Har haKarmel',
+      lang: 'he',
+      region: 'Wybrzeże Morza Śródziemnego / Północny Izrael',
+      coords: { lat: 32.7333, lon: 35.0500 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q185526',
+      summary: 'Dosłownie „Ogród Boży”. Pasmo górskie, na którym prorok Eliasz stawił czoła 450 prorokom Baala, a Bóg odpowiedział ogniem z nieba trawiącym całopalenie i potwierdzającym, że PAN jest jedynym prawdziwym Bogiem.',
+      verses: [
+        { ref: '1 Krl 18:21', text: 'Wtedy Eliasz podszedł do całego ludu i powiedział: Jak długo będziecie chwiać się między dwiema stronami? Jeśli PAN jest Bogiem, idźcie za nim, a jeśli Baal, idźcie za nim!' },
+        { ref: '1 Krl 18:38', text: 'Wtedy spadł ogień PANA i strawił całopalenie, drwa, kamienie i proch, a wodę, która była w rowie, wysuszył.' }
+      ],
+      studyUrl: '/mojabiblia?q=Karmel',
+      aliases: ['karmel', 'gora karmel', 'carmel', 'mount carmel']
+    },
+    galilee: {
+      id: 'galilee',
+      name: 'Jezioro Galilejskie (Genezaret / Tyberiadzkie)',
+      origName: 'יָם כִּנֶּרֶת / Limnē Gennēzaret',
+      lang: 'he',
+      region: 'Galilea / Rów Jordanu (ok. 210 m p.p.m.)',
+      coords: { lat: 32.8333, lon: 35.5833 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q126982',
+      summary: 'Słodkowodne jezioro, nad brzegami którego Jezus powołał rybaków Piotra, Andrzeja, Jakuba i Jana; miejsce uciszenia burzy, chodzenia Jezusa po wodzie oraz cudownego połowu ryb po zmartwychwstaniu.',
+      verses: [
+        { ref: 'Mt 4:18-19', text: 'A Jezus, przechodząc koło Morza Galilejskiego, ujrzał dwóch braci... I powiedział im: Pójdźcie za mną, a uczynię was rybakami ludzi.' },
+        { ref: 'Mk 4:39', text: 'Wtedy wstał, zgromił wiatr i powiedział do morza: Milcz, ucisz się! I ustał wiatr, i nastała wielka cisza.' },
+        { ref: 'J 21:1', text: 'Potem Jezus znowu objawił się uczniom nad Morzem Tyberiadzkim...' }
+      ],
+      studyUrl: '/mojabiblia?q=Galilejskie',
+      aliases: ['jezioro galilejskie', 'morze galilejskie', 'genezaret', 'tyberiadzkie', 'kinneret']
+    },
+    jordan: {
+      id: 'jordan',
+      name: 'Rzeka Jordan (Jarden)',
+      origName: 'יַרְדֵּן / Yardēn',
+      lang: 'he',
+      region: 'Rów Tektoniczny Jordanu (od Hermonu do Morza Martwego)',
+      coords: { lat: 31.8986, lon: 35.5564 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q40059',
+      summary: 'Główna rzeka Ziemi Obiecanej: miejsce cudownego przejścia Izraelitów pod wodzą Jozuego, uzdrowienia syryjskiego wodza Naamana z trądu oraz chrztu Jezusa Chrystusa przez Jana Chrzciciela i zstąpienia Ducha Świętego.',
+      verses: [
+        { ref: 'Joz 3:17', text: 'A kapłani niosący Arkę Przymierza PANA stali mocno na suchym dnie pośrodku Jordanu, a cały Izrael przechodził po suchym...' },
+        { ref: 'Mt 3:13-16', text: 'Wtedy przyszedł Jezus z Galilei nad Jordan do Jana, aby być ochrzczonym przez niego... I oto otworzyły mu się niebiosa, i ujrzał Ducha Bożego zstępującego jak gołębica...' }
+      ],
+      studyUrl: '/mojabiblia?q=Jordan',
+      aliases: ['jordan', 'rzeka jordan', 'jarden']
+    },
+    olives: {
+      id: 'olives',
+      name: 'Góra Oliwna (Oliwki / Getsemani)',
+      origName: 'הַר הַזֵּיתִים / To Oros tōn Elaiōn',
+      lang: 'he',
+      region: 'Na wschód od Jerozolimy (Dolina Cedronu)',
+      coords: { lat: 31.7781, lon: 35.2444 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q206161',
+      summary: 'Wzgórze górujące nad Jerozolimą: miejsce modlitwy i krwawego potu Jezusa w ogrodzie Getsemani, mowy eschatologicznej o znakach końca świata (Mt 24), wniebowstąpienia Chrystusa oraz proroczej zapowiedzi Jego triumfalnego powrotu (Zach 14:4).',
+      verses: [
+        { ref: 'Zach 14:4', text: 'W tym dniu jego stopy staną na Górze Oliwnej, która jest naprzeciw Jerozolimy od wschodu, a Góra Oliwna rozstąpi się pośrodku...' },
+        { ref: 'Łk 22:39', text: 'A wyszedłszy, udał się według zwyczaju na Górę Oliwną; i szli za nim także jego uczniowie.' },
+        { ref: 'Dz 1:11-12', text: 'Ten Jezus, który został wzięty od was do nieba, przyjdzie tak samo... Wtedy wrócili do Jerozolimy z góry zwanej Oliwną...' }
+      ],
+      studyUrl: '/mojabiblia?q=Oliwna',
+      aliases: ['gora oliwna', 'oliwna', 'getsemani', 'oliwki', 'mount of olives']
+    },
+    ephesus: {
+      id: 'ephesus',
+      name: 'Efez',
+      origName: 'Ἔφεσος / Ephesos',
+      lang: 'grc',
+      region: 'Ionia / Azja Mniejsza (dziś zachodnia Turcja)',
+      coords: { lat: 37.9497, lon: 27.3639 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q47611',
+      summary: 'Metropolia rzymskiej prowincji Azji: ośrodek wieloletniej posługi apostoła Pawła (ponad 2 lata w szkole Tyrannosa), adresat Listu do Efezjan oraz pierwszy z siedmiu kościołów w Księdze Objawienia (Ap 2:1-7).',
+      verses: [
+        { ref: 'Dz 19:10', text: 'A działo się to przez dwa lata, tak że wszyscy, którzy mieszkali w Azji, zarówno Żydzi, jak i Grecy, słyszeli słowo Pana Jezusa.' },
+        { ref: 'Ap 2:1', text: 'Aniołowi kościoła w Efezie napisz: To mówi ten, który trzyma siedem gwiazd w swojej prawej ręce, który chodzi pośród siedmiu złotych świeczników...' }
+      ],
+      studyUrl: '/mojabiblia?q=Efez',
+      aliases: ['efez', 'ephesus', 'efezjan']
+    },
+    rome: {
+      id: 'rome',
+      name: 'Rzym',
+      origName: 'Ῥώμη / Rōmē',
+      lang: 'grc',
+      region: 'Półwysep Apeniński (stolica Imperium Rzymskiego)',
+      coords: { lat: 41.9028, lon: 12.4964 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q220',
+      summary: 'Stolica Imperium Rzymskiego: cel ostatniej drogi uwięzionego apostoła Pawła, gdzie głosił Ewangelię w areszcie domowym „z całą odwagą, bez przeszkód” (Dz 28:31) oraz adresat fundamentalnego Listu do Rzymian.',
+      verses: [
+        { ref: 'Dz 28:16', text: 'A gdy przybyliśmy do Rzymu, setnik przekazał więźniów dowódcy straży, lecz Pawłowi pozwolono mieszkać osobno z żołnierzem, który go pilnował.' },
+        { ref: 'Rz 1:7', text: 'Wszystkim, którzy jesteście w Rzymie, umiłowanym Boga, powołanym świętym: Łaska wam i pokój od Boga, naszego Ojca, i Pana Jezusa Chrystusa.' }
+      ],
+      studyUrl: '/mojabiblia?q=Rzym',
+      aliases: ['rzym', 'rome', 'rzymian']
+    },
+    damascus: {
+      id: 'damascus',
+      name: 'Damaszek',
+      origName: 'דַּמֶּשֶׂק / Damaskos',
+      lang: 'he',
+      region: 'Syria (jedno z najstarszych miast świata)',
+      coords: { lat: 33.5138, lon: 36.2765 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q3616',
+      summary: 'Starożytna stolica Syrii: miejsce dramatycznego nawrócenia Szawła z Tarsu w drodze do Damaszku po ujrzeniu zmartwychwstałego Chrystusa w oślepiającym świetle, ulica Prosta i chrzest przez Ananiasza.',
+      verses: [
+        { ref: 'Dz 9:3-5', text: 'A gdy jechał i zbliżał się do Damaszku, nagle olśniła go światłość z nieba. A gdy upadł na ziemię, usłyszał głos: Szawle, Szawle, dlaczego mnie prześladujesz? A on zapytał: Kim jesteś, Panie? A Pan odpowiedział: Ja jestem Jezus, którego ty prześladujesz...' },
+        { ref: 'Ga 1:17', text: 'Lecz odszedłem do Arabii, a potem znowu wróciłem do Damaszku.' }
+      ],
+      studyUrl: '/mojabiblia?q=Damaszek',
+      aliases: ['damaszek', 'damascus']
+    },
+    tarsus: {
+      id: 'tarsus',
+      name: 'Tars w Cylicji',
+      origName: 'Ταρσός / Tarsos',
+      lang: 'grc',
+      region: 'Cylicja (południowa Azja Mniejsza, dzisiejsza Turcja)',
+      coords: { lat: 36.9167, lon: 34.9000 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q172370',
+      summary: 'Miasto rodzinne apostoła Pawła (Szawła): znany starożytny ośrodek uniwersytecki i filozoficzny, nadający Pawłowi prestiżowe rzymskie obywatelstwo z urodzenia (Dz 22:28).',
+      verses: [
+        { ref: 'Dz 21:39', text: 'Lecz Paweł powiedział: Ja jestem Żydem z Tarsu w Cylicji, obywatelem niepośledniego miasta...' },
+        { ref: 'Dz 22:3', text: 'Ja jestem Żydem urodzonym w Tarsie w Cylicji, lecz wychowanym w tym mieście u stóp Gamaliela...' }
+      ],
+      studyUrl: '/mojabiblia?q=Tars',
+      aliases: ['tars', 'tarsus', 'tars w cylicji']
+    },
+    nebo: {
+      id: 'nebo',
+      name: 'Góra Nebo (Pisga)',
+      origName: 'הַר נְבוֹ / Har Nəvō',
+      lang: 'he',
+      region: 'Płaskowyż Moabu (dzisiejsza Jordania, na wschód od Jordanu)',
+      coords: { lat: 31.7683, lon: 35.7253 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q831862',
+      summary: 'Szczyt pasma Pisga, na który Bóg wprowadził 120-letniego Mojżesza, by ukazać mu całą Ziemię Obiecaną przed śmiercią; miejsce spoczynku i pochówku Mojżesza ręką samego Boga (Pwt 34:5-6).',
+      verses: [
+        { ref: 'Pwt 34:1', text: 'I wstąpił Mojżesz z równin Moabu na górę Nebo, na wierzchołek Pisga, który jest naprzeciw Jerycha. A PAN pokazał mu całą ziemię...' },
+        { ref: 'Pwt 34:5', text: 'I umarł tam Mojżesz, sługa PANA, w ziemi Moabu, według słowa PANA.' }
+      ],
+      studyUrl: '/mojabiblia?q=Nebo',
+      aliases: ['nebo', 'gora nebo', 'pisga', 'mount nebo']
+    },
+    moriah: {
+      id: 'moriah',
+      name: 'Góra Moria (Wzgórze Świątynne)',
+      origName: 'הַר הַמּוֹרִיָּה / Har haMōrīyyā',
+      lang: 'he',
+      region: 'Jerozolima (Wzgórze Świątynne)',
+      coords: { lat: 31.7781, lon: 35.2353 },
+      certainty: 'POTWIERDZONA ARCHEOLOGICZNIE',
+      wikidataId: 'Q1131114',
+      summary: 'Święte wzgórze ofiary: miejsce, gdzie Abraham z wiarą przyprowadził syna Izaaka na całopalenie (Bóg zaopatrzył baranka na ofiarę zastępczą) oraz gdzie król Salomon zbudował wspaniałą Świątynię Pańską na klepisku Ornana Jebuzejczyka.',
+      verses: [
+        { ref: 'Rdz 22:2', text: 'I rzekł: Weź teraz twego syna, twego jedynego, którego miłujesz, Izaaka, i idź do ziemi Moria, i złóż go tam na całopalenie...' },
+        { ref: '2 Krn 3:1', text: 'I zaczął Salomon budować dom PANA w Jerozolimie na górze Moria, która została wskazana Dawidowi, jego ojcu...' }
+      ],
+      studyUrl: '/mojabiblia?q=Moria',
+      aliases: ['moria', 'gora moria', 'moriah', 'mount moriah', 'wzgorze swiatynne']
+    }
+  };
+
+  function detectBiblePlace(query) {
+    if (!query) return null;
+    const raw = String(query).trim();
+    const norm = raw.toLowerCase()
+      .replace(/[ą]/g, 'a').replace(/[ć]/g, 'c').replace(/[ę]/g, 'e')
+      .replace(/[ł]/g, 'l').replace(/[ń]/g, 'n').replace(/[ó]/g, 'o')
+      .replace(/[ś]/g, 's').replace(/[źż]/g, 'z').trim();
+    if (norm.length < 3) return null;
+
+    for (const key of Object.keys(BIBLE_PLACES)) {
+      const p = BIBLE_PLACES[key];
+      if (norm === p.id || norm === p.name.toLowerCase()) return p;
+      for (const a of p.aliases) {
+        if (norm === a || norm === a.replace(/\s+/g, '')) return p;
+        if (norm.length >= 4 && (norm.startsWith(a) || a.startsWith(norm))) return p;
+      }
+    }
+    return null;
+  }
+
+    async function fetchBibleVerse(bookCode, chapter, verse) {
     const chPad = String(chapter).padStart(3, '0');
     const url = '/data/bible/ubg-2025/' + bookCode + '-' + chPad + '.json';
     try {
@@ -1183,7 +2298,804 @@
     `;
   }
 
-  function renderScriptureCard(match) {
+
+  // =========================================================================
+  // AUDIO PLAYER & BIBLIA SŁUCHANA CC (P4)
+  // Standard ZERO COST FIRST • Web Speech API • Radio Waveform Visualizer
+  // =========================================================================
+  let currentAudioUtterance = null;
+  let currentAudioState = 'idle'; // 'idle' | 'playing' | 'paused'
+  let currentAudioSpeed = 1.0;
+
+  function stopBibleAudio() {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    currentAudioState = 'idle';
+    currentAudioUtterance = null;
+    updateAudioUI('idle');
+  }
+
+  function playBibleAudio(text, refTitle, speed = currentAudioSpeed) {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      console.warn('SpeechSynthesis API not supported in this browser.');
+      return false;
+    }
+
+    if (currentAudioState === 'paused' && currentAudioUtterance) {
+      window.speechSynthesis.resume();
+      currentAudioState = 'playing';
+      updateAudioUI('playing');
+      return true;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const cleanText = String(text || '')
+      .replace(/\[\d+\]/g, '')
+      .replace(/G\d+|H\d+/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!cleanText) return false;
+
+    const fullUtteranceText = refTitle ? `${refTitle}. ${cleanText}` : cleanText;
+    const UtteranceClass = (typeof window !== 'undefined' && window.SpeechSynthesisUtterance) || (typeof SpeechSynthesisUtterance !== 'undefined' ? SpeechSynthesisUtterance : null);
+    if (!UtteranceClass) return false;
+    const utterance = new UtteranceClass(fullUtteranceText);
+    const activeLang = (typeof localStorage !== 'undefined' && (localStorage.getItem('cc_user_lang_choice') || localStorage.getItem('lumina_lang'))) || (typeof document !== 'undefined' && document.documentElement && document.documentElement.lang) || 'pl';
+    const isEn = typeof activeLang === 'string' && activeLang.startsWith('en');
+    utterance.lang = isEn ? 'en-US' : (typeof activeLang === 'string' && activeLang.startsWith('es') ? 'es-ES' : 'pl-PL');
+    utterance.rate = Number(speed) || 1.0;
+    utterance.pitch = 1.0;
+
+    const voices = window.speechSynthesis.getVoices() || [];
+    const plVoice = voices.find(v => v.lang && (v.lang === 'pl-PL' || v.lang.startsWith('pl')));
+    if (plVoice) utterance.voice = plVoice;
+
+    utterance.onstart = () => {
+      currentAudioState = 'playing';
+      updateAudioUI('playing');
+    };
+
+    utterance.onend = () => {
+      currentAudioState = 'idle';
+      currentAudioUtterance = null;
+      updateAudioUI('idle');
+    };
+
+    utterance.onerror = (e) => {
+      if (e.error !== 'canceled' && e.error !== 'interrupted') {
+        console.warn('Speech synthesis error:', e);
+      }
+      currentAudioState = 'idle';
+      currentAudioUtterance = null;
+      updateAudioUI('idle');
+    };
+
+    currentAudioUtterance = utterance;
+    currentAudioState = 'playing';
+    updateAudioUI('playing');
+    window.speechSynthesis.speak(utterance);
+    return true;
+  }
+
+  function toggleBibleAudio(text, refTitle) {
+    if (currentAudioState === 'playing') {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.pause();
+      }
+      currentAudioState = 'paused';
+      updateAudioUI('paused');
+    } else if (currentAudioState === 'paused') {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.resume();
+      }
+      currentAudioState = 'playing';
+      updateAudioUI('playing');
+    } else {
+      playBibleAudio(text, refTitle, currentAudioSpeed);
+    }
+  }
+
+  function updateAudioUI(state) {
+    if (typeof document === 'undefined') return;
+    const playBtns = document.querySelectorAll('[data-action="toggle-audio"]');
+    playBtns.forEach(btn => {
+      const icon = btn.querySelector('.cc-audio-play-icon');
+      const label = btn.querySelector('.cc-audio-play-label');
+      if (state === 'playing') {
+        btn.setAttribute('aria-pressed', 'true');
+        btn.classList.add('cc-playing');
+        if (icon) icon.textContent = '⏸';
+        if (label) label.textContent = 'Pauza';
+      } else if (state === 'paused') {
+        btn.setAttribute('aria-pressed', 'false');
+        btn.classList.remove('cc-playing');
+        if (icon) icon.textContent = '▶';
+        if (label) label.textContent = 'Wznów';
+      } else {
+        btn.setAttribute('aria-pressed', 'false');
+        btn.classList.remove('cc-playing');
+        if (icon) icon.textContent = '▶';
+        if (label) label.textContent = 'Słuchaj wersetu';
+      }
+    });
+
+    const waveforms = document.querySelectorAll('.cc-waveform-visualizer');
+    waveforms.forEach(wf => {
+      if (state === 'playing') {
+        wf.classList.add('cc-waveform-active');
+      } else {
+        wf.classList.remove('cc-waveform-active');
+      }
+    });
+
+    const statusTags = document.querySelectorAll('.cc-audio-status-tag');
+    statusTags.forEach(tag => {
+      if (state === 'playing') {
+        tag.textContent = '🔊 Odtwarzanie...';
+        tag.classList.add('cc-tag-playing');
+      } else if (state === 'paused') {
+        tag.textContent = '⏸ Wstrzymano';
+        tag.classList.remove('cc-tag-playing');
+      } else {
+        tag.textContent = '🎙️ Lektor UBG';
+        tag.classList.remove('cc-tag-playing');
+      }
+    });
+  }
+
+  function renderScriptureAudioBar(match) {
+    if (!match) return '';
+    const rawText = match.verseText || '';
+    const audioUrl = `/player?q=${encodeURIComponent(match.bookName + ' ' + match.chapter)}`;
+    const safeRef = escapeHtml(match.refTitle || '');
+    const safeText = escapeHtml(rawText);
+
+    return `
+      <div class="cc-scripture-audio-bar" id="ccScriptureAudioBar">
+        <div class="cc-audio-bar-left">
+          <button type="button" class="cc-btn-play-verse" id="ccBtnPlayVerse" data-action="toggle-audio" data-verse="${safeText}" data-ref="${safeRef}" aria-pressed="false" title="Słuchaj wersetu (Lektor UBG / Mowa)">
+            <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
+            <span class="cc-audio-play-label">Słuchaj wersetu</span>
+          </button>
+          <div class="cc-waveform-visualizer" id="ccAudioWaveform" aria-hidden="true" title="Wskaźnik fali radiowej CC">
+            <span class="cc-wave-bar cc-wave-1"></span>
+            <span class="cc-wave-bar cc-wave-2"></span>
+            <span class="cc-wave-bar cc-wave-3"></span>
+            <span class="cc-wave-bar cc-wave-4"></span>
+            <span class="cc-wave-bar cc-wave-5"></span>
+          </div>
+          <span class="cc-audio-status-tag" id="ccAudioStatusTag">🎙️ Lektor UBG</span>
+        </div>
+        <div class="cc-audio-bar-right">
+          <div class="cc-audio-speed-selector" title="Prędkość lektora">
+            <button type="button" class="cc-speed-btn active" data-speed="1.0">1.0x</button>
+            <button type="button" class="cc-speed-btn" data-speed="1.25">1.25x</button>
+            <button type="button" class="cc-speed-btn" data-speed="1.5">1.5x</button>
+          </div>
+          <a href="${audioUrl}" class="cc-btn-open-player" title="Otwórz pełny rozdział w odtwarzaczu CC Player">
+            <span>CC Player →</span>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+  
+  // =========================================================================
+  // WIZUALIZACJE & KARTY DZIELENIA SOCIAL MEDIA (P6)
+  // Standard ZERO COST FIRST • HTML5 Canvas 1080x1080 • Direct Social Share
+  // =========================================================================
+
+  function drawBibleShareCard(canvas, verseText, refTitle) {
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const W = 1080;
+    const H = 1080;
+    canvas.width = W;
+    canvas.height = H;
+
+    // 1. Tło: głęboki kosmiczny gradient (EkoCC Dark Obsidian)
+    const bgGrad = ctx.createRadialGradient(W / 2, H / 2, 50, W / 2, H / 2, 650);
+    bgGrad.addColorStop(0, '#131c2e');
+    bgGrad.addColorStop(0.55, '#090e17');
+    bgGrad.addColorStop(1, '#04060a');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // 2. Złote ozdobne linie i podwójna ramka
+    ctx.strokeStyle = 'rgba(196, 163, 90, 0.45)';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(50, 50, W - 100, H - 100);
+
+    ctx.strokeStyle = 'rgba(255, 122, 0, 0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(62, 62, W - 124, H - 124);
+
+    // Narożniki ozdobne
+    const cornerSize = 24;
+    ctx.strokeStyle = '#FF7A00';
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(42, 42 + cornerSize); ctx.lineTo(42, 42); ctx.lineTo(42 + cornerSize, 42); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W - 42 - cornerSize, 42); ctx.lineTo(W - 42, 42); ctx.lineTo(W - 42, 42 + cornerSize); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(42, H - 42 - cornerSize); ctx.lineTo(42, H - 42); ctx.lineTo(42 + cornerSize, H - 42); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W - 42 - cornerSize, H - 42); ctx.lineTo(W - 42, H - 42); ctx.lineTo(W - 42, H - 42 - cornerSize); ctx.stroke();
+
+    // 3. Nagłówek: krzyż / emblemat i plakietka
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    ctx.fillStyle = '#FF7A00';
+    ctx.font = 'bold 36px "Outfit", system-ui, sans-serif';
+    ctx.fillText('✝', W / 2, 130);
+
+    ctx.fillStyle = '#C4A35A';
+    ctx.font = 'bold 22px "Outfit", system-ui, sans-serif';
+    ctx.fillText('S Ł O W O   B O Ż E   •   U B G', W / 2, 185);
+
+    // Linia podziału ze złotym rombem
+    ctx.strokeStyle = 'rgba(196, 163, 90, 0.35)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - 160, 220); ctx.lineTo(W / 2 - 25, 220);
+    ctx.moveTo(W / 2 + 25, 220); ctx.lineTo(W / 2 + 160, 220);
+    ctx.stroke();
+
+    ctx.fillStyle = '#FF7A00';
+    ctx.beginPath();
+    ctx.arc(W / 2, 220, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 4. Tekst wersetu: łamanie wierszy i wyśrodkowanie
+    const cleanQuote = String(verseText || '')
+      .replace(/\[\d+\]/g, '')
+      .replace(/G\d+|H\d+/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const formattedQuote = `„${cleanQuote}”`;
+    
+    let fontSize = 42;
+    if (formattedQuote.length > 250) fontSize = 30;
+    else if (formattedQuote.length > 160) fontSize = 35;
+    else if (formattedQuote.length < 80) fontSize = 48;
+
+    ctx.font = `italic 600 ${fontSize}px "Outfit", Georgia, serif`;
+    ctx.fillStyle = '#ffffff';
+
+    const maxTextWidth = W - 220;
+    const words = formattedQuote.split(' ');
+    let lines = [];
+    let currentLine = '';
+
+    for (let i = 0; i < words.length; i++) {
+      const testLine = currentLine ? currentLine + ' ' + words[i] : words[i];
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxTextWidth && i > 0) {
+        lines.push(currentLine);
+        currentLine = words[i];
+      } else {
+        currentLine = testLine;
+      }
+    }
+    if (currentLine) lines.push(currentLine);
+
+    const lineHeight = fontSize * 1.5;
+    const totalTextHeight = lines.length * lineHeight;
+    let startY = (H / 2) - (totalTextHeight / 2) + 20;
+
+    for (let i = 0; i < lines.length; i++) {
+      ctx.fillText(lines[i], W / 2, startY + (i * lineHeight));
+    }
+
+    // 5. Sigla referencyjna w kolorze akcji #FF7A00
+    const refY = startY + (lines.length * lineHeight) + 60;
+    ctx.font = 'bold 30px "Outfit", system-ui, sans-serif';
+    ctx.fillStyle = '#FF7A00';
+    ctx.fillText(`— ${refTitle} (UBG)`, W / 2, Math.min(refY, H - 180));
+
+    // 6. Stopka: logo / watermark Christian Culture
+    ctx.font = '500 20px "Outfit", system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(243, 229, 200, 0.7)';
+    ctx.fillText('polskieradio.cc  •  Christian Culture', W / 2, H - 100);
+  }
+
+// =========================================================================
+  // MODAL GALERII TEŁ WYSZUKIWARKI (WALLPAPER PICKER)
+  // Wybór oficjalnych motywów CC + Własne zdjęcie z dysku • LocalStorage
+  // =========================================================================
+  function ensureWallpaperModal() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('ccWallpaperModalBackdrop')) return;
+    const modal = document.createElement('div');
+    modal.className = 'cc-wallpaper-modal-backdrop';
+    modal.id = 'ccWallpaperModalBackdrop';
+    modal.style.display = 'none';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'ccWallpaperModalTitle');
+    modal.innerHTML = `
+      <div class="cc-wallpaper-modal">
+        <div class="cc-wallpaper-modal-head">
+          <div class="cc-wallpaper-modal-title" id="ccWallpaperModalTitle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
+            <span>Zmień tło wyszukiwarki</span>
+          </div>
+          <button type="button" class="cc-wallpaper-modal-close" id="ccWallpaperModalClose" aria-label="Zamknij okno">×</button>
+        </div>
+        <div class="cc-wallpaper-modal-body">
+          <p class="cc-wallpaper-modal-desc">
+            Wybierz oficjalne tło Christian Culture lub wgraj własne zdjęcie z dysku / aparatu:
+          </p>
+          <div class="cc-wallpaper-grid" id="ccWallpaperGrid"></div>
+        </div>
+        <div class="cc-wallpaper-modal-foot">
+          <button type="button" class="cc-btn-wall-reset-modal" id="ccBtnWallResetModal">
+            Przywróć domyślne tło CC
+          </button>
+          <button type="button" class="cc-btn-wall-close-modal" id="ccBtnWallCloseModal">
+            Gotowe
+          </button>
+        </div>
+      </div>
+    `;
+    const targetRoot = document.getElementById('ccOmniOverlay') || document.body;
+    targetRoot.appendChild(modal);
+
+    modal.querySelector('#ccWallpaperModalClose').addEventListener('click', closeWallpaperModal);
+    modal.querySelector('#ccBtnWallCloseModal').addEventListener('click', closeWallpaperModal);
+    modal.querySelector('#ccBtnWallResetModal').addEventListener('click', () => {
+      try { localStorage.removeItem(WALL_KEY); } catch (_) {}
+      if (typeof applyWallGlobal === 'function') applyWallGlobal('polska-radio');
+      renderWallpaperGrid();
+    });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeWallpaperModal();
+    });
+  }
+
+  function renderWallpaperGrid() {
+    const grid = document.getElementById('ccWallpaperGrid');
+    if (!grid) return;
+
+    let customUrl = null;
+    try {
+      const saved = localStorage.getItem(WALL_KEY);
+      if (saved && (saved.startsWith('data:image') || saved.startsWith('http'))) {
+        customUrl = saved;
+      }
+    } catch (_) {}
+
+    const presetsHtml = PRESET_WALLS.map(w => {
+      const isActive = (currentWallId === w.id);
+      return `
+        <div class="cc-wall-card ${isActive ? 'active' : ''}" data-wall-id="${w.id}">
+          <div class="cc-wall-thumb-wrap">
+            <img src="${w.thumb || w.desktop}" alt="${escapeHtml(w.name)}" class="cc-wall-thumb" loading="lazy">
+            ${isActive ? '<span class="cc-wall-active-pill">✓ Wybrane</span>' : ''}
+          </div>
+          <div class="cc-wall-info">
+            <strong class="cc-wall-title">${escapeHtml(w.name)}</strong>
+            <span class="cc-wall-tag">${escapeHtml(w.tag || 'Motyw CC')}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const customIsActive = (currentWallId === 'custom');
+    const customCardHtml = `
+      <div class="cc-wall-card cc-wall-custom-card ${customIsActive ? 'active' : ''}" id="ccWallCustomCard">
+        <div class="cc-wall-thumb-wrap cc-wall-custom-wrap">
+          ${customUrl ? `<img src="${customUrl}" alt="Własna tapeta" class="cc-wall-thumb">` : `
+            <div class="cc-wall-upload-placeholder">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Wgraj z pliku</span>
+            </div>
+          `}
+          ${customIsActive ? '<span class="cc-wall-active-pill">✓ Wybrane</span>' : ''}
+        </div>
+        <div class="cc-wall-info">
+          <strong class="cc-wall-title">Własna tapeta</strong>
+          <span class="cc-wall-tag">${customUrl ? 'Zmień plik 📁' : 'Wybierz zdjęcie 📁'}</span>
+        </div>
+      </div>
+    `;
+
+    grid.innerHTML = presetsHtml + customCardHtml;
+
+    // Obsługa kliknięć w karty
+    grid.querySelectorAll('.cc-wall-card[data-wall-id]').forEach(card => {
+      card.addEventListener('click', () => {
+        const wallId = card.getAttribute('data-wall-id');
+        try { localStorage.setItem(WALL_KEY, wallId); } catch (_) {}
+        if (typeof applyWallGlobal === 'function') applyWallGlobal(wallId);
+        renderWallpaperGrid();
+      });
+    });
+
+    const customBtn = grid.querySelector('#ccWallCustomCard');
+    if (customBtn) {
+      customBtn.addEventListener('click', () => {
+        const wallFile = document.getElementById('ccOmniWallFile');
+        if (wallFile) wallFile.click();
+      });
+    }
+  }
+
+  function openWallpaperModal() {
+    ensureWallpaperModal();
+    renderWallpaperGrid();
+    const modal = document.getElementById('ccWallpaperModalBackdrop');
+    if (modal) {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeWallpaperModal() {
+    const modal = document.getElementById('ccWallpaperModalBackdrop');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+
+  function ensureShareModal() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('ccShareCardModalBackdrop')) return;
+    const modal = document.createElement('div');
+    modal.className = 'cc-share-card-modal-backdrop';
+    modal.id = 'ccShareCardModalBackdrop';
+    modal.style.display = 'none';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'ccShareModalTitle');
+    modal.innerHTML = `
+      <div class="cc-share-card-modal">
+        <div class="cc-share-modal-head">
+          <div class="cc-share-modal-title" id="ccShareModalTitle">
+            <span aria-hidden="true">🖼️</span>
+            <strong id="ccShareCardRefTitle">Karta Słowa Bożego &amp; Dzielenie</strong>
+          </div>
+          <button type="button" class="cc-share-modal-close" id="ccShareModalClose" aria-label="Zamknij okno">×</button>
+        </div>
+        <div class="cc-share-modal-body">
+          <div class="cc-share-canvas-wrap">
+            <canvas id="ccShareVerseCanvas" class="cc-share-verse-canvas" width="1080" height="1080"></canvas>
+          </div>
+          <div class="cc-share-card-actions">
+            <button type="button" class="cc-btn-share-main" id="ccBtnDownloadCardPng">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Pobierz grafikę PNG</span>
+            </button>
+            <button type="button" class="cc-btn-share-sub" id="ccBtnCopyCardText">
+              <span>Kopiuj tekst i link</span>
+            </button>
+          </div>
+          <div class="cc-share-social-grid">
+            <a href="#" target="_blank" rel="noopener" class="cc-social-share-btn cc-share-wa" id="ccShareLinkWa" title="Udostępnij na WhatsApp">
+              <span>WhatsApp</span>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="cc-social-share-btn cc-share-tg" id="ccShareLinkTg" title="Udostępnij na Telegram">
+              <span>Telegram</span>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="cc-social-share-btn cc-share-fb" id="ccShareLinkFb" title="Udostępnij na Facebook">
+              <span>Facebook</span>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="cc-social-share-btn cc-share-x" id="ccShareLinkX" title="Udostępnij na X">
+              <span>X (Twitter)</span>
+            </a>
+            <a href="/lumina-tablica" class="cc-social-share-btn cc-share-lumina" id="ccShareLinkLumina" title="Opublikuj w Społeczności LUMINA">
+              <span>LUMINA</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    modal.querySelector('#ccShareModalClose').addEventListener('click', closeShareModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeShareModal();
+    });
+
+    modal.querySelector('#ccBtnDownloadCardPng').addEventListener('click', () => {
+      const canvas = document.getElementById('ccShareVerseCanvas');
+      if (!canvas) return;
+      const refTitle = modal.getAttribute('data-ref') || 'werset-ubg';
+      const safeFilename = 'Biblia-CC-' + refTitle.replace(/[^a-zA-Z0-9]/g, '_') + '.png';
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = safeFilename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    modal.querySelector('#ccBtnCopyCardText').addEventListener('click', () => {
+      const text = modal.getAttribute('data-full-text') || '';
+      if (text && navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = modal.querySelector('#ccBtnCopyCardText span');
+          if (btn) {
+            const orig = btn.textContent;
+            btn.textContent = 'Skopiowano!';
+            setTimeout(() => { btn.textContent = orig; }, 1600);
+          }
+        }).catch(() => {});
+      }
+    });
+  }
+
+  function openShareModal(verseText, refTitle) {
+    ensureShareModal();
+    const modal = document.getElementById('ccShareCardModalBackdrop');
+    if (!modal) return;
+
+    modal.setAttribute('data-verse', verseText);
+    modal.setAttribute('data-ref', refTitle);
+
+    const titleEl = modal.querySelector('#ccShareCardRefTitle');
+    if (titleEl) titleEl.textContent = refTitle || 'Karta Słowa Bożego';
+
+    const fullShareText = `„${verseText}” — ${refTitle} (UBG)\nhttps://polskieradio.cc/wyszukiwarka?q=${encodeURIComponent(refTitle)}`;
+    modal.setAttribute('data-full-text', fullShareText);
+
+    const shareUrl = `https://polskieradio.cc/wyszukiwarka?q=${encodeURIComponent(refTitle)}`;
+    const encText = encodeURIComponent(fullShareText);
+    const encUrl = encodeURIComponent(shareUrl);
+
+    const linkWa = modal.querySelector('#ccShareLinkWa');
+    if (linkWa) linkWa.href = `https://api.whatsapp.com/send?text=${encText}`;
+
+    const linkTg = modal.querySelector('#ccShareLinkTg');
+    if (linkTg) linkTg.href = `https://t.me/share/url?url=${encUrl}&text=${encodeURIComponent('„' + verseText + '” — ' + refTitle + ' (UBG)')}`;
+
+    const linkFb = modal.querySelector('#ccShareLinkFb');
+    if (linkFb) linkFb.href = `https://www.facebook.com/sharer/sharer.php?u=${encUrl}`;
+
+    const linkX = modal.querySelector('#ccShareLinkX');
+    if (linkX) linkX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent('„' + verseText + '” — ' + refTitle + ' (UBG)')}&url=${encUrl}`;
+
+    const linkLumina = modal.querySelector('#ccShareLinkLumina');
+    if (linkLumina) linkLumina.href = `/lumina-tablica?draft=${encText}`;
+
+    const canvas = modal.querySelector('#ccShareVerseCanvas');
+    if (canvas) {
+      drawBibleShareCard(canvas, verseText, refTitle);
+    }
+
+    modal.style.display = 'flex';
+  }
+
+  function closeShareModal() {
+    const modal = document.getElementById('ccShareCardModalBackdrop');
+    if (modal) modal.style.display = 'none';
+  }
+
+// =========================================================================
+  // EKOCC SEARCH GLOBAL: SILNIK RAG & ODPOWIEDZI BIBLIJNYCH (ETAP 5)
+  // Zero Cost Grounded Synthesis • UBG Canonical Text
+  // =========================================================================
+  function stripPolishDiacritics(str) {
+    return normalizeStr(str);
+  }
+
+  function normalizeTokens(text) {
+    return normalizeStr(text)
+      .replace(/[^a-z0-9]/gi, ' ')
+      .split(/\s+/)
+      .filter(t => t.length > 2);
+  }
+
+  const RAG_TOPIC_STEMS = {
+    apokalipsa: 'apokalips',
+    zbawienie: 'zbawien',
+    przebaczenie: 'przebaczen',
+    usprawiedliwienie: 'usprawiedliwien',
+    posrednik: 'posredni',
+    zmartwychwstanie: 'zmartwychwstan',
+    szabat: 'szaba',
+    pokoj: 'pokoj',
+    laska: 'lask',
+    nadzieja: 'nadziej',
+    milosc: 'milosc',
+    madrosc: 'madrosc',
+    uzdrowienie: 'uzdrowien',
+    modlitwa: 'modlitw',
+    wiara: 'wiar'
+  };
+
+  function queryKnowledgeRegistryClient(question, minScore = 0.35) {
+    if (!question || typeof question !== 'string') return [];
+    const qTrim = question.trim();
+    if (qTrim.length < 2) return [];
+
+    const queryNorm = stripPolishDiacritics(qTrim).toLowerCase();
+    const queryTokens = normalizeTokens(qTrim);
+
+    const scored = BIBLE_RAG_REGISTRY.map(item => {
+      let score = 0;
+
+      // 1. Sigla wersetowe
+      if (Array.isArray(item.verses)) {
+        for (const v of item.verses) {
+          const vClean = stripPolishDiacritics(v).toLowerCase().replace(/\s+/g, '');
+          const qClean = queryNorm.replace(/\s+/g, '');
+          if (qClean.includes(vClean) || queryNorm.includes(stripPolishDiacritics(v).toLowerCase())) {
+            score += 0.55;
+            break;
+          }
+        }
+      }
+
+      // 2. Rdzeń tematu
+      const topicNorm = stripPolishDiacritics(item.topic || '').toLowerCase();
+      const stem = RAG_TOPIC_STEMS[topicNorm] || (topicNorm.length > 4 ? topicNorm.slice(0, -1) : topicNorm);
+      if (stem && queryNorm.includes(stem)) {
+        score += 0.35;
+      }
+
+      // 3. Słowa kluczowe w tytule i tekście
+      const itemTokens = new Set([
+        ...normalizeTokens(item.title),
+        ...normalizeTokens(item.topic),
+        ...normalizeTokens(item.text).slice(0, 40)
+      ]);
+
+      let matchCount = 0;
+      for (const token of queryTokens) {
+        if (itemTokens.has(token)) {
+          matchCount++;
+        } else {
+          for (const it of itemTokens) {
+            if (it.length >= 4 && token.length >= 4 && (it.startsWith(token.slice(0, 4)) || token.startsWith(it.slice(0, 4)))) {
+              matchCount += 0.6;
+              break;
+            }
+          }
+        }
+      }
+
+      if (queryTokens.length > 0) {
+        score += Math.min(0.5, (matchCount / queryTokens.length) * 0.5);
+      }
+
+      return { item, score: Number(score.toFixed(3)) };
+    });
+
+    return scored
+      .filter(x => x.score >= minScore)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map((x, idx) => ({
+        id: idx + 1,
+        chunkId: x.item.id,
+        title: x.item.title,
+        url: x.item.url,
+        type: x.item.type,
+        topic: x.item.topic,
+        verses: x.item.verses || [],
+        text: x.item.text,
+        score: x.score
+      }));
+  }
+
+  function detectBibleRagQuery(query) {
+    if (!query || typeof query !== 'string') return null;
+    const q = query.trim();
+    if (q.length < 3) return null;
+
+    const isQuestion = q.includes('?') ||
+      /^(jak|co|kto|dlaczego|czym|gdzie|kiedy|czy|po co|ile)\b/i.test(q) ||
+      /co mówi biblia|co biblia mówi|pismo mówi|jak biblia|według biblii|w biblii/i.test(q);
+
+    const sources = queryKnowledgeRegistryClient(q);
+    if (!sources || sources.length === 0) return null;
+
+    if (isQuestion || sources[0].score >= 0.35) {
+      return {
+        query: q,
+        isQuestion,
+        sources,
+        primary: sources[0]
+      };
+    }
+    return null;
+  }
+
+  function renderBibleRagCard(ragData) {
+    if (!ragData || !ragData.sources || !ragData.sources.length) return '';
+    const primary = ragData.sources[0];
+    const secondary = ragData.sources.length > 1 ? ragData.sources[1] : null;
+
+    const primaryRef = (primary.verses && primary.verses[0]) || primary.title;
+    const secondaryRef = secondary ? ((secondary.verses && secondary.verses[0]) || secondary.title) : '';
+
+    const sourcesHtml = ragData.sources.slice(0, 3).map((s, idx) => {
+      const vRef = (s.verses && s.verses[0]) || '';
+      const searchUrl = vRef ? `/wyszukiwarka?q=${encodeURIComponent(vRef)}` : (s.url || '#');
+      return `
+        <a href="${searchUrl}" class="cc-rag-source-chip" title="Zobacz źródło [${idx + 1}]: ${escapeHtml(s.title)}">
+          <span class="cc-rag-source-num">[${idx + 1}]</span>
+          <span class="cc-rag-source-title">${escapeHtml(s.title)}</span>
+          ${vRef ? `<span class="cc-rag-source-ref">${escapeHtml(vRef)}</span>` : ''}
+        </a>
+      `;
+    }).join('');
+
+    const answerLines = [];
+    answerLines.push(`<p class="cc-rag-p-lead">Na podstawie Pisma Świętego (UBG) <span class="cc-rag-cite-tag" title="Źródło 1">[1]</span>:</p>`);
+    answerLines.push(`<blockquote class="cc-rag-quote">„${escapeHtml(primary.text)}” <span class="cc-rag-cite-tag" title="Źródło 1">[1]</span></blockquote>`);
+    if (secondary) {
+      answerLines.push(`<p class="cc-rag-p-secondary">Świadectwo to potwierdza również fragment <span class="cc-rag-cite-tag" title="Źródło 2">[2]</span>: <em>„${escapeHtml(secondary.text)}”</em> <span class="cc-rag-cite-tag" title="Źródło 2">[2]</span></p>`);
+    }
+    answerLines.push(`<p class="cc-rag-footnote">(Opracowanie biblijne Christian Culture oparte na kanonicznym tekście UBG · Standard ZERO COST).</p>`);
+
+    const fullPlainText = `Na podstawie Pisma Świętego (UBG) [1]:\n„${primary.text}” [1]\n` +
+      (secondary ? `\nŚwiadectwo to potwierdza również fragment [2]: „${secondary.text}” [2]\n` : '') +
+      `\nŹródła:\n[1] ${primary.title} (${primaryRef})\n` +
+      (secondary ? `[2] ${secondary.title} (${secondaryRef})\n` : '') +
+      `https://polskieradio.cc/wyszukiwarka?q=${encodeURIComponent(ragData.query)}`;
+
+    return `
+      <div class="cc-rag-answer-card" id="ccBibleRagCard" data-query="${escapeHtml(ragData.query)}">
+        <div class="cc-rag-card-header">
+          <div class="cc-rag-badge-group">
+            <span class="cc-rag-badge-ai">✨ ODPOWIEDŹ BIBLIJNA CC</span>
+            <span class="cc-rag-badge-standard">UBG · ZERO COST</span>
+          </div>
+          <span class="cc-rag-model-badge" id="ccRagModelBadge" title="Deterministyczna synteza źródłowa UBG (100% zgodności doktrynalnej)">Grounded Scripture</span>
+        </div>
+
+        <div class="cc-rag-question-bar">
+          <span class="cc-rag-q-icon" aria-hidden="true">💡</span>
+          <span class="cc-rag-q-text">Pytanie: <strong>„${escapeHtml(ragData.query)}”</strong></span>
+        </div>
+
+        <div class="cc-rag-answer-content" id="ccRagAnswerContent">
+          ${answerLines.join('')}
+        </div>
+
+        <div class="cc-rag-sources-box">
+          <div class="cc-rag-sources-label">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+            <span>Autorytatywne źródła Pisma Świętego i materiałów CC:</span>
+          </div>
+          <div class="cc-rag-sources-grid">
+            ${sourcesHtml}
+          </div>
+        </div>
+
+        <div class="cc-rag-actions">
+          <button type="button" class="cc-btn-rag-copy cc-btn-orange" data-action="copy-rag-answer" data-answer="${escapeHtml(fullPlainText)}" title="Skopiuj odpowiedź z wersetami i źródłami">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Kopiuj odpowiedź</span>
+          </button>
+          <a href="/mojabiblia?q=${encodeURIComponent(primaryRef)}" class="cc-btn-rag-link" title="Otwórz fragment w MojaBiblia">
+            <span>📖 MojaBiblia →</span>
+          </a>
+          <button type="button" class="cc-btn-rag-link" data-action="toggle-compare" data-ref="${escapeHtml(primaryRef)}" title="Porównaj w 4 przekładach (UBG / BW / BT / BG)">
+            <span>⚖️ 4 Przekłady</span>
+          </button>
+          <button type="button" class="cc-btn-rag-link" data-action="toggle-audio" data-verse="${escapeHtml(primary.text)}" data-ref="${escapeHtml(primaryRef)}" title="Słuchaj wersetu (Lektor UBG)">
+            <span aria-hidden="true">▶</span>
+            <span>Słuchaj</span>
+          </button>
+          <button type="button" class="cc-btn-rag-link" data-action="open-share-card" data-verse="${escapeHtml(primary.text)}" data-ref="${escapeHtml(primaryRef)}" title="Generuj kartę graficzną 1080x1080">
+            <span>🎨 Karta graficzna</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+    function renderScriptureCard(match) {
     if (!match) return '';
     const quoteText = match.verseText ? escapeHtml(match.verseText) : 'Ładowanie wersetu z Uwspółcześnionej Biblii Gdańskiej (UBG)...';
     const strongUrl = `/mojabiblia?book=${encodeURIComponent(match.bookCode)}&chapter=${match.chapter}${match.verse ? '&verse=' + match.verse : ''}`;
@@ -1254,6 +3166,7 @@
         <blockquote class="cc-scripture-quote" id="ccScriptureQuote">
           „${quoteText}”
         </blockquote>
+        ${renderScriptureAudioBar(match)}
         ${tokensHtml}
         ${crossRefsHtml}
         <div class="cc-scripture-actions">
@@ -1263,9 +3176,9 @@
           <a href="${contextUrl}" class="cc-btn-scripture-sub" title="Zobacz cały rozdział w kontekście (±5 wersetów)">
             Kontekst rozdziału
           </a>
-          <a href="${compareUrl}" class="cc-btn-scripture-sub" title="Porównaj przekłady UBG, BW, BT, BG">
-            Porównaj przekłady
-          </a>
+          <button type="button" class="cc-btn-scripture-sub cc-btn-compare-trigger" data-action="toggle-compare" data-ref="${escapeHtml(refKey)}" title="Porównaj 4 przekłady UBG, BW, BT, BG">
+            <span>⚖️ Porównaj 4 przekłady</span>
+          </button>
           <button type="button" class="cc-btn-scripture-copy" id="ccScriptureCopyBtn" data-quote="${copyPayload}">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -1279,10 +3192,15 @@
             </svg>
             <span>Biblia Audio CC</span>
           </a>
+          <button type="button" class="cc-btn-scripture-share" data-action="open-share-card" data-verse="${quoteText}" data-ref="${escapeHtml(match.refTitle)}" title="Udostępnij werset lub pobierz kartę graficzną">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span>Karta &amp; Udostępnij</span>
+          </button>
           <button type="button" class="cc-btn-scripture-sources" data-open-sources="true" title="Zobacz rejestr licencji i źródeł Biblia Intelligence CC">
             <span>📜 Źródła (R01–R40)</span>
           </button>
         </div>
+        ${renderComparePanel(refKey, match)}
         <div class="cc-scripture-license-note">
           Kanoniczny tekst UBG • Standard ZERO COST • Dane językowe: STEPBible &amp; SBLGNT (CC BY 4.0) • Bez płatnych modeli AI
         </div>
@@ -1291,7 +3209,123 @@
   }
 
 
-  function renderLemmaCard(lemma) {
+
+  function renderComparePanel(refKey, match) {
+    const comp = TOP_COMPARE_VERSES[refKey] || {
+      refTitle: match ? match.refTitle : refKey,
+      UBG: (match && match.verseText) ? match.verseText : (TOP_UBG_VERSES[refKey] || 'Brak tekstu UBG'),
+      BW: (match && match.verseText) ? match.verseText : (TOP_UBG_VERSES[refKey] || 'Brak tekstu BW'),
+      BT: (match && match.verseText) ? match.verseText : (TOP_UBG_VERSES[refKey] || 'Brak tekstu BT'),
+      BG: (match && match.verseText) ? match.verseText : (TOP_UBG_VERSES[refKey] || 'Brak tekstu BG')
+    };
+
+    const title = comp.refTitle || (match ? match.refTitle : refKey);
+
+    return `
+      <div class="cc-scripture-compare-panel" id="ccComparePanel_${escapeHtml(refKey.replace(/[^a-zA-Z0-9]/g, '_'))}" style="display:none;">
+        <div class="cc-compare-head">
+          <div class="cc-compare-title">
+            <span class="cc-compare-icon" aria-hidden="true">⚖️</span>
+            <strong>Zestawienie 4 Przekładów Pisma Świętego: ${escapeHtml(title)}</strong>
+          </div>
+          <span class="cc-compare-sub">Standard Kanoniczny EkoCC: UBG (Textus Receptus)</span>
+        </div>
+        <div class="cc-compare-grid">
+          <div class="cc-compare-col cc-compare-ubg">
+            <div class="cc-compare-col-head">
+              <span class="cc-badge-trans cc-badge-ubg">UBG</span>
+              <span class="cc-compare-edition-name">Uwspółcześniona Gdańska</span>
+              <button type="button" class="cc-btn-copy-trans" data-copy="${escapeHtml(comp.UBG)}" title="Kopiuj przekład UBG">Kopiuj</button>
+            </div>
+            <p class="cc-compare-text">„${escapeHtml(comp.UBG)}”</p>
+          </div>
+          <div class="cc-compare-col cc-compare-bw">
+            <div class="cc-compare-col-head">
+              <span class="cc-badge-trans cc-badge-bw">BW</span>
+              <span class="cc-compare-edition-name">Biblia Warszawska (1975)</span>
+              <button type="button" class="cc-btn-copy-trans" data-copy="${escapeHtml(comp.BW)}" title="Kopiuj przekład BW">Kopiuj</button>
+            </div>
+            <p class="cc-compare-text">„${escapeHtml(comp.BW)}”</p>
+          </div>
+          <div class="cc-compare-col cc-compare-bt">
+            <div class="cc-compare-col-head">
+              <span class="cc-badge-trans cc-badge-bt">BT</span>
+              <span class="cc-compare-edition-name">Biblia Tysiąclecia (Wyd. V)</span>
+              <button type="button" class="cc-btn-copy-trans" data-copy="${escapeHtml(comp.BT)}" title="Kopiuj przekład BT">Kopiuj</button>
+            </div>
+            <p class="cc-compare-text">„${escapeHtml(comp.BT)}”</p>
+          </div>
+          <div class="cc-compare-col cc-compare-bg">
+            <div class="cc-compare-col-head">
+              <span class="cc-badge-trans cc-badge-bg">BG</span>
+              <span class="cc-compare-edition-name">Biblia Gdańska (1632)</span>
+              <button type="button" class="cc-btn-copy-trans" data-copy="${escapeHtml(comp.BG)}" title="Kopiuj przekład BG">Kopiuj</button>
+            </div>
+            <p class="cc-compare-text">„${escapeHtml(comp.BG)}”</p>
+          </div>
+        </div>
+        <div class="cc-compare-footer-note">
+          ℹ️ Zgodnie ze Standardem @777 Christian Culture, podstawowym zatwierdzonym tekstem do cytowania w całym ekosystemie jest <strong>UBG</strong>. Pozostałe przekłady służą celom badawczym, lingwistycznym i porównawczym.
+        </div>
+      </div>
+    `;
+  }
+
+  function renderQuoteVerificationCard(result) {
+    if (!result) return '';
+    const safeRef = escapeHtml(result.refTitle);
+    const ubgCopy = escapeHtml(`„${result.ubgText}” — ${result.refTitle} (UBG)`);
+    const compareUrl = `/mojabiblia?q=${encodeURIComponent(result.refKey)}&compare=1`;
+
+    return `
+      <div class="cc-quote-verification-card" id="ccQuoteVerificationCard">
+        <div class="cc-quote-verif-head">
+          <div class="cc-quote-verif-badge">
+            <span class="cc-quote-verif-icon" aria-hidden="true">🛡️</span>
+            <span class="cc-quote-verif-level">WERYFIKACJA CYTATU BIBLIJNEGO</span>
+            <span class="cc-quote-verif-standard">PROTOKÓŁ @777 • ZERO-QA</span>
+          </div>
+          <span class="cc-quote-status-badge ${result.badgeClass}">${escapeHtml(result.statusLabel)}</span>
+        </div>
+        <div class="cc-quote-detected-row">
+          <span class="cc-quote-ref-pill">📖 ${safeRef}</span>
+          <span class="cc-quote-edition-pill">Wzorzec Kanoniczny: UBG</span>
+        </div>
+        <blockquote class="cc-quote-canonical-text">
+          „${escapeHtml(result.ubgText)}”
+        </blockquote>
+        ${result.detectedText ? `
+        <div class="cc-quote-diff-box">
+          <span class="cc-quote-diff-label">Rozpoznany wariant (${escapeHtml(result.matchedEdition)}):</span>
+          <p class="cc-quote-diff-text">„${escapeHtml(result.detectedText)}”</p>
+        </div>` : ''}
+        <div class="cc-quote-verif-note">
+          ${escapeHtml(result.note)}
+        </div>
+        <div class="cc-quote-verif-actions">
+          <button type="button" class="cc-btn-scripture-main" style="background:#FF7A00;" id="ccQuoteCopyCanonicalBtn" data-quote="${ubgCopy}">
+            <span>Kopiuj Kanoniczny Cytat UBG</span>
+          </button>
+          <button type="button" class="cc-btn-scripture-sub" data-action="toggle-audio" data-verse="${escapeHtml(result.ubgText)}" data-ref="${safeRef}" title="Słuchaj kanonicznego wersetu UBG">
+            <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
+            <span class="cc-audio-play-label">Słuchaj (Lektor UBG)</span>
+          </button>
+          <button type="button" class="cc-btn-scripture-sub" data-action="open-share-card" data-verse="${escapeHtml(result.ubgText)}" data-ref="${safeRef}" title="Udostępnij cytat lub pobierz kartę graficzną">
+            <span>🖼️ Karta &amp; Udostępnij</span>
+          </button>
+          <button type="button" class="cc-btn-scripture-sub" data-action="toggle-compare" data-ref="${escapeHtml(result.refKey)}">
+            <span>⚖️ Zobacz 4 Przekłady (UBG, BW, BT, BG)</span>
+          </button>
+          <a href="${compareUrl}" class="cc-btn-scripture-sub" title="Otwórz badanie w MojaBiblia">
+            <span>Badaj w MojaBiblia →</span>
+          </a>
+        </div>
+        ${renderComparePanel(result.refKey, { refTitle: result.refTitle, verseText: result.ubgText })}
+      </div>
+    `;
+  }
+
+    function renderLemmaCard(lemma) {
     if (!lemma) return '';
     const isHe = lemma.lang === 'he';
     const strongUrl = `/mojabiblia?strong=${encodeURIComponent(lemma.strong)}`;
@@ -1355,10 +3389,44 @@
     if (!topicData) return '';
     const versesHtml = topicData.verses.map(v => `
       <div class="cc-bible-topic-verse-item">
-        <strong class="cc-bible-topic-ref">${escapeHtml(v.ref)}:</strong>
-        <span class="cc-bible-topic-text">„${escapeHtml(v.text)}”</span>
+        <div class="cc-topic-verse-row">
+          <strong class="cc-bible-topic-ref">${escapeHtml(v.ref)}:</strong>
+          <span class="cc-bible-topic-text">„${escapeHtml(v.text)}”</span>
+        </div>
+        <button type="button" class="cc-btn-topic-verse-audio" data-action="toggle-audio" data-verse="${escapeHtml(v.text)}" data-ref="${escapeHtml(v.ref)}" title="Słuchaj wersetu (Lektor UBG)">
+          <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
+          <span>Słuchaj</span>
+        </button>
       </div>
     `).join('');
+
+    const prayerBoxId = 'ccPrayerBox_' + escapeHtml(topicData.slug);
+    const prayerHtml = topicData.prayerText ? `
+      <div class="cc-thematic-prayer-box" id="${prayerBoxId}" style="display:none;">
+        <div class="cc-prayer-box-head">
+          <div class="cc-prayer-box-title">
+            <span aria-hidden="true">🙏</span>
+            <span>${escapeHtml(topicData.prayerTitle || 'Modlitwa Biblijna')}</span>
+          </div>
+          <span class="cc-prayer-box-sub">Modlitewnik Christian Culture • Oparty na UBG</span>
+        </div>
+        <blockquote class="cc-prayer-text">
+          „${escapeHtml(topicData.prayerText)}”
+        </blockquote>
+        <div class="cc-prayer-actions">
+          <button type="button" class="cc-btn-prayer-audio" data-action="toggle-audio" data-verse="${escapeHtml(topicData.prayerText)}" data-ref="${escapeHtml(topicData.prayerTitle || topicData.title)}" title="Módl się z lektorem">
+            <span class="cc-audio-play-icon" aria-hidden="true">▶</span>
+            <span class="cc-audio-play-label">Módl się z lektorem</span>
+          </button>
+          <button type="button" class="cc-btn-prayer-copy" data-action="copy-prayer" data-prayer="${escapeHtml(topicData.prayerText)}" title="Kopiuj treść modlitwy">
+            <span>Kopiuj modlitwę</span>
+          </button>
+          <a href="/modlitwa" class="cc-btn-prayer-intercede" title="Przejdź do Zjednoczeni za Polskę / Tablica Modlitwy">
+            <span>Zanieś intencję do Społeczności →</span>
+          </a>
+        </div>
+      </div>
+    ` : '';
 
     return `
       <div class="cc-bible-topic-card" id="ccBibleTopicCard">
@@ -1377,6 +3445,10 @@
           ${versesHtml}
         </div>
         <div class="cc-bible-topic-actions">
+          ${topicData.prayerText ? `
+          <button type="button" class="cc-btn-prayer-trigger" data-action="toggle-prayer" data-target="${prayerBoxId}" aria-expanded="false" title="Otwórz modlitwę opartą na tym Słowie">
+            <span>🙏 Pomódl się tym Słowem</span>
+          </button>` : ''}
           <a href="${escapeHtml(topicData.studyUrl)}" class="cc-btn-scripture-main">Studiuj w MojaBiblia (Strong) →</a>
           <a href="${escapeHtml(topicData.mediaUrl)}" class="cc-btn-scripture-audio">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7Z"/></svg>
@@ -1386,6 +3458,7 @@
             <span>📜 Rejestr Źródeł (R01–R40)</span>
           </button>
         </div>
+        ${prayerHtml}
         <div class="cc-scripture-license-note">
           Biblia w centrum • Oddzielenie tekstu Pisma od opracowań i komentarzy redakcyjnych Christian Culture
         </div>
@@ -1393,7 +3466,66 @@
     `;
   }
 
-  function renderHopeCard(query) {
+
+  function renderPlaceCard(place) {
+    if (!place) return '';
+    const osmUrl = `https://www.openstreetmap.org/?mlat=${place.coords.lat}&mlon=${place.coords.lon}#map=13/${place.coords.lat}/${place.coords.lon}`;
+    const wikidataUrl = `https://www.wikidata.org/wiki/${place.wikidataId}`;
+    const versesHtml = place.verses.map(v => `
+      <div class="cc-bible-place-verse-item">
+        <strong class="cc-bible-place-ref">${escapeHtml(v.ref)}:</strong>
+        <span class="cc-bible-place-text">„${escapeHtml(v.text)}”</span>
+      </div>
+    `).join('');
+
+    return `
+      <div class="cc-bible-place-card" id="ccBiblePlaceCard">
+        <div class="cc-bible-place-head">
+          <div class="cc-bible-place-badge">
+            <span class="cc-bible-place-icon" aria-hidden="true">🗺️</span>
+            <span class="cc-bible-place-level">ATLAS BIBLIJNY &amp; GEOGRAFIA SACRA</span>
+            <span class="cc-bible-place-sub">OPENBIBLE (R13) • OSM (R20)</span>
+          </div>
+          <span class="cc-bible-place-certainty" title="Stopień weryfikacji archeologiczno-historycznej">${escapeHtml(place.certainty)}</span>
+        </div>
+        <div class="cc-bible-place-title-row">
+          <h3 class="cc-bible-place-title">${escapeHtml(place.name)}</h3>
+          <span class="cc-bible-place-orig" ${place.lang === 'he' ? 'dir="rtl"' : ''}>${escapeHtml(place.origName)}</span>
+        </div>
+        <div class="cc-bible-place-meta-bar">
+          <span class="cc-bible-place-region">📍 Region: <b>${escapeHtml(place.region)}</b></span>
+          <a href="${osmUrl}" target="_blank" rel="noopener noreferrer" class="cc-bible-place-coords" title="Otwórz współrzędne w OpenStreetMap">
+            🌐 ${place.coords.lat.toFixed(4)}° N, ${place.coords.lon.toFixed(4)}° E ↗
+          </a>
+          <span class="cc-bible-place-qid" title="Identyfikator otwartych danych Wikidata">ID: ${escapeHtml(place.wikidataId)}</span>
+        </div>
+        <p class="cc-bible-place-summary">${escapeHtml(place.summary)}</p>
+        <div class="cc-bible-place-verses">
+          <div class="cc-bible-place-verses-label">Kluczowe Miejsca w Piśmie Świętym (UBG):</div>
+          ${versesHtml}
+        </div>
+        <div class="cc-bible-place-actions">
+          <a href="${osmUrl}" target="_blank" rel="noopener noreferrer" class="cc-btn-scripture-main" style="background:#FF7A00;" title="Otwórz interaktywną mapę satelitarno-topograficzną OpenStreetMap">
+            <span>Otwórz na Mapie (OpenStreetMap) ↗</span>
+          </a>
+          <a href="${escapeHtml(place.studyUrl)}" class="cc-btn-scripture-sub" title="Szukaj wszystkich wystąpień w MojaBiblia">
+            Konkordancja w MojaBiblia →
+          </a>
+          <a href="${wikidataUrl}" target="_blank" rel="noopener noreferrer" class="cc-btn-scripture-sub" title="Dane historyczno-archeologiczne Wikidata">
+            Wikidata (${escapeHtml(place.wikidataId)}) ↗
+          </a>
+          <button type="button" class="cc-btn-scripture-sources" data-open-sources="true" title="Zobacz rejestr licencji i źródeł Biblia Intelligence CC">
+            <span>📜 Źródła (R01–R40)</span>
+          </button>
+        </div>
+        <div class="cc-scripture-license-note">
+          OpenBible Geocoding Data (CC BY 4.0) • OpenStreetMap (ODbL) • Wikidata (CC0) • Standard ZERO COST • Bez opłat i modeli AI
+        </div>
+      </div>
+    `;
+  }
+
+    function renderHopeCard(query) {
     return `
       <div class="cc-hope-card" id="ccHopeCard">
         <div class="cc-hope-badge">💛 Wsparcie Duchowe & Modlitwa</div>
@@ -1831,9 +3963,11 @@
         position: fixed;
         inset: 0;
         z-index: 999999;
-        background: #05070c url('/images/search/andromeda-1600.webp') center / cover no-repeat fixed;
+        background: #05070c url('/images/search/polska-radio-1600.webp') center / cover no-repeat fixed;
         overflow-y: auto;
         overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(196, 163, 90, 0.35) transparent;
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.2s ease-out, visibility 0.2s;
@@ -1848,9 +3982,38 @@
         pointer-events: none;
       }
       @media (max-width: 640px) {
-        #ccOmniOverlay { background-image: url('/images/search/andromeda-800.webp'); }
+        #ccOmniOverlay { background-image: url('/images/search/polska-radio-800.webp'); }
       }
-      #ccOmniOverlay.cc-open {
+
+      /* Elegancki ciemny pasek przewijania (eliminacja białych pasków Windows) */
+      #ccOmniOverlay::-webkit-scrollbar,
+      .cc-omni-results-col::-webkit-scrollbar,
+      .cc-sources-modal-body::-webkit-scrollbar,
+      .cc-omni-apps::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      #ccOmniOverlay::-webkit-scrollbar-track,
+      .cc-omni-results-col::-webkit-scrollbar-track,
+      .cc-sources-modal-body::-webkit-scrollbar-track,
+      .cc-omni-apps::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      #ccOmniOverlay::-webkit-scrollbar-thumb,
+      .cc-omni-results-col::-webkit-scrollbar-thumb,
+      .cc-sources-modal-body::-webkit-scrollbar-thumb,
+      .cc-omni-apps::-webkit-scrollbar-thumb {
+        background: rgba(196, 163, 90, 0.35);
+        border-radius: 6px;
+      }
+      #ccOmniOverlay::-webkit-scrollbar-thumb:hover,
+      .cc-omni-results-col::-webkit-scrollbar-thumb:hover,
+      .cc-sources-modal-body::-webkit-scrollbar-thumb:hover,
+      .cc-omni-apps::-webkit-scrollbar-thumb:hover {
+        background: #FF7A00;
+      }
+
+            #ccOmniOverlay.cc-open {
         opacity: 1;
         visibility: visible;
       }
@@ -1890,6 +4053,7 @@
       .cc-omni-toplink,
       .cc-omni-apps-btn,
       .cc-omni-radio,
+      .cc-omni-edge-btn,
       #ccOmniOverlay #ccTopBarFavBtn,
       #ccOmniOverlay .cc-topbar-fav-btn {
         width: 44px;
@@ -1914,6 +4078,7 @@
       .cc-omni-toplink:hover, .cc-omni-toplink:focus-visible,
       .cc-omni-apps-btn:hover, .cc-omni-apps-btn:focus-visible,
       .cc-omni-radio:hover, .cc-omni-radio:focus-visible,
+      .cc-omni-edge-btn:hover, .cc-omni-edge-btn:focus-visible,
       #ccOmniOverlay #ccTopBarFavBtn:hover, #ccOmniOverlay #ccTopBarFavBtn:focus-visible {
         background: rgba(255, 255, 255, 0.12);
         color: #FF8C33;
@@ -1922,12 +4087,14 @@
       }
       .cc-omni-toplink:active,
       .cc-omni-apps-btn:active,
-      .cc-omni-radio:active {
+      .cc-omni-radio:active,
+      .cc-omni-edge-btn:active {
         transform: scale(0.95);
       }
       .cc-omni-toplink svg,
       .cc-omni-apps-btn svg,
       .cc-omni-radio svg,
+      .cc-omni-edge-btn svg,
       #ccOmniOverlay #ccTopBarFavBtn svg {
         width: 22px;
         height: 22px;
@@ -2350,29 +4517,186 @@
       }
       .cc-omni-featured-section {
         width: 100%;
-        max-width: 820px;
+        max-width: 860px;
+        background: linear-gradient(180deg, rgba(16, 21, 36, 0.62) 0%, rgba(10, 14, 24, 0.42) 100%);
+        border: 1px solid rgba(196, 163, 90, 0.22);
+        border-radius: 20px;
+        padding: 16px 18px 18px;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        box-sizing: border-box;
       }
       .cc-omni-featured-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
-        padding: 0 4px;
+        margin-bottom: 10px;
+        padding: 0 2px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .cc-omni-featured-title-wrap {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
       }
       .cc-omni-featured-label {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        font-size: 0.82rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
+        font-size: 0.88rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
+        color: #FF7A00;
+      }
+      .cc-omni-live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-left: 4px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(255, 122, 0, 0.16);
+        border: 1px solid rgba(255, 122, 0, 0.45);
+        color: #FF7A00;
+        font-size: 0.64rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .cc-omni-context-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: rgba(196, 163, 90, 0.12);
+        border: 1px solid rgba(196, 163, 90, 0.3);
+        color: rgba(243, 229, 200, 0.92);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+      }
+      .cc-live-pulse-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #FF7A00;
+        box-shadow: 0 0 6px #FF7A00;
+        animation: ccPulseLive 1.8s infinite ease-in-out;
+      }
+      @keyframes ccPulseLive {
+        0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 6px #FF7A00; }
+        50% { transform: scale(1.35); opacity: 0.55; box-shadow: 0 0 12px #FF8C33; }
+      }
+      .cc-omni-featured-controls {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .cc-omni-feat-nav {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        border: 1px solid rgba(196, 163, 90, 0.32);
+        background: rgba(15, 20, 34, 0.75);
         color: var(--omni-gold);
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s;
+      }
+      .cc-omni-feat-nav:hover, .cc-omni-feat-nav:focus-visible {
+        background: rgba(255, 122, 0, 0.2);
+        border-color: #FF7A00;
+        color: #fff;
+        transform: scale(1.06);
+        outline: none;
+      }
+      .cc-omni-featured-dots {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .cc-omni-feat-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(196, 163, 90, 0.26);
+        border: 1px solid rgba(196, 163, 90, 0.38);
+        padding: 0;
+        cursor: pointer;
+        transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1), background 0.22s, transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+      }
+      .cc-omni-feat-dot:hover {
+        background: rgba(255, 122, 0, 0.55);
+        border-color: #FF7A00;
+      }
+      .cc-omni-feat-dot.active {
+        width: 22px;
+        background: linear-gradient(90deg, #FF7A00, #C4A35A);
+        border-color: #FF8C33;
+        box-shadow: 0 0 10px rgba(255, 122, 0, 0.55);
+      }
+      .cc-omni-feat-modes {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 2px 2px 12px;
+        margin-bottom: 2px;
+      }
+      @media (min-width: 641px) {
+        .cc-omni-feat-modes {
+          flex-wrap: wrap;
+          overflow-x: visible;
+        }
+      }
+      .cc-omni-feat-modes::-webkit-scrollbar {
+        display: none;
+      }
+      .cc-omni-feat-mode-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(196, 163, 90, 0.22);
+        background: rgba(14, 18, 30, 0.72);
+        color: rgba(243, 229, 200, 0.78);
+        font-size: 0.7rem;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+      }
+      .cc-omni-feat-mode-btn:hover, .cc-omni-feat-mode-btn:focus-visible {
+        border-color: rgba(255, 122, 0, 0.55);
+        color: #fff;
+        background: rgba(255, 122, 0, 0.14);
+        transform: translateY(-1px);
+        outline: none;
+      }
+      .cc-omni-feat-mode-btn.active {
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.24), rgba(196, 163, 90, 0.22));
+        border-color: #FF7A00;
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(255, 122, 0, 0.22);
       }
       .cc-omni-featured-grid {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
         gap: 12px;
+        perspective: 1000px;
       }
       @media (min-width: 641px) {
         .cc-omni-featured-grid {
@@ -2383,98 +4707,348 @@
         display: flex;
         align-items: flex-start;
         gap: 14px;
-        padding: 14px 16px;
-        min-height: 84px;
-        background: rgba(14, 18, 30, 0.82);
-        border: 1px solid rgba(196, 163, 90, 0.25);
+        padding: 15px 16px;
+        min-height: 98px;
+        background: linear-gradient(145deg, rgba(16, 21, 36, 0.9) 0%, rgba(11, 15, 26, 0.86) 100%);
+        border: 1px solid rgba(196, 163, 90, 0.28);
         border-radius: 16px;
         text-decoration: none;
         color: var(--omni-ink);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42);
+        transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.26s ease, box-shadow 0.26s ease, background-color 0.26s ease, opacity 0.26s cubic-bezier(0.22, 1, 0.36, 1), filter 0.26s ease;
         box-sizing: border-box;
         position: relative;
         overflow: hidden;
+        will-change: transform, opacity, filter;
+      }
+      .cc-omni-feat-card.cc-card-updating {
+        opacity: 0.08;
+        transform: perspective(900px) translate3d(0, 10px, -16px) rotateX(5deg) scale(0.965);
+        filter: blur(3px);
+      }
+      .cc-omni-feat-card.cc-card-entering {
+        animation: ccCardCascadeIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      @keyframes ccCardCascadeIn {
+        0% {
+          opacity: 0.22;
+          transform: perspective(900px) translate3d(0, -8px, 10px) scale(0.98);
+          border-color: rgba(255, 122, 0, 0.65);
+        }
+        60% {
+          border-color: rgba(196, 163, 90, 0.58);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 122, 0, 0.2);
+        }
+        100% {
+          opacity: 1;
+          transform: perspective(900px) translate3d(0, 0, 0) scale(1);
+        }
+      }
+      .cc-omni-feat-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 75%;
+        height: 100%;
+        background: linear-gradient(105deg, transparent 0%, rgba(255, 140, 51, 0.14) 45%, rgba(196, 163, 90, 0.22) 55%, transparent 100%);
+        transform: skewX(-20deg);
+        pointer-events: none;
+      }
+      .cc-omni-feat-card.cc-card-entering::after {
+        animation: ccCardShimmerSweep 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      @keyframes ccCardShimmerSweep {
+        0% { left: -110%; opacity: 1; }
+        100% { left: 140%; opacity: 0; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .cc-live-pulse-dot { animation: none; }
+        .cc-omni-feat-card.cc-card-updating { transform: none; filter: none; opacity: 0.6; }
+        .cc-omni-feat-card.cc-card-entering { animation: none; }
+        .cc-omni-feat-card.cc-card-entering::after { animation: none; }
       }
       .cc-omni-feat-card::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(196, 163, 90, 0.08) 0%, transparent 60%);
+        background: linear-gradient(135deg, rgba(196, 163, 90, 0.09) 0%, transparent 62%);
         pointer-events: none;
       }
       .cc-omni-feat-card:hover, .cc-omni-feat-card:focus-visible {
-        transform: translateY(-2px);
+        transform: translateY(-3px);
         border-color: var(--omni-gold);
-        background: rgba(22, 28, 46, 0.92);
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 16px rgba(196, 163, 90, 0.25);
+        background: linear-gradient(145deg, rgba(24, 31, 52, 0.95) 0%, rgba(15, 20, 35, 0.92) 100%);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 18px rgba(196, 163, 90, 0.26);
         outline: none;
       }
       .cc-omni-feat-icon {
         width: 44px;
         height: 44px;
         border-radius: 12px;
-        background: linear-gradient(135deg, rgba(255, 122, 0, 0.2), rgba(196, 163, 90, 0.3));
-        border: 1px solid rgba(255, 122, 0, 0.4);
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.22), rgba(196, 163, 90, 0.32));
+        border: 1px solid rgba(255, 122, 0, 0.45);
         color: #FF7A00;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+        transition: transform 0.22s ease, border-color 0.22s ease, color 0.22s ease;
       }
       .cc-omni-feat-card:hover .cc-omni-feat-icon {
         border-color: var(--omni-gold);
         color: var(--omni-gold);
-        transform: scale(1.05);
+        transform: scale(1.06);
       }
       .cc-omni-feat-info {
         flex: 1;
         min-width: 0;
       }
+      .cc-omni-feat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        margin-bottom: 4px;
+      }
       .cc-omni-feat-tag {
         display: inline-block;
-        font-size: 0.68rem;
-        font-weight: 700;
+        font-size: 0.67rem;
+        font-weight: 800;
         letter-spacing: 0.06em;
         text-transform: uppercase;
         color: #FF7A00;
-        margin-bottom: 3px;
-      }
-      .cc-omni-feat-title {
-        display: block;
-        font-size: 0.98rem;
-        font-weight: 600;
-        line-height: 1.3;
-        color: #fff;
-        margin-bottom: 4px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+      .cc-omni-feat-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: rgba(196, 163, 90, 0.14);
+        border: 1px solid rgba(196, 163, 90, 0.28);
+        color: var(--omni-gold-light);
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        flex-shrink: 0;
+      }
+      .cc-omni-feat-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        white-space: normal;
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.32;
+        color: #fff;
+        margin-bottom: 4px;
       }
       .cc-omni-feat-card:hover .cc-omni-feat-title {
         color: var(--omni-gold-light);
       }
       .cc-omni-feat-desc {
-        display: block;
-        font-size: 0.78rem;
-        color: var(--omni-muted);
-        line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        font-size: 0.77rem;
+        color: var(--omni-muted);
+        line-height: 1.4;
+      }
+      .cc-omni-feat-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .cc-omni-feat-listen-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 30px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: #FF7A00;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        color: #FFFFFF;
+        font-family: inherit;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(255, 122, 0, 0.35);
+        transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        position: relative;
+        z-index: 2;
+      }
+      .cc-omni-feat-listen-btn:hover, .cc-omni-feat-listen-btn:focus-visible {
+        background: #FF8C33;
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 5px 14px rgba(255, 122, 0, 0.5);
+        outline: none;
+      }
+      .cc-omni-feat-listen-btn:active {
+        background: #E66A00;
+        transform: translateY(0) scale(0.99);
+      }
+      .cc-omni-feat-listen-btn.cc-loading {
+        opacity: 0.8;
+        pointer-events: none;
+      }
+      .cc-omni-feat-listen-btn.is-playing {
+        background: #E66A00;
+        border-color: #FFD29D;
+        box-shadow: 0 0 0 2px rgba(255, 140, 51, 0.42), 0 5px 16px rgba(255, 122, 0, 0.55);
+      }
+      .cc-feat-listen-ico {
+        font-size: 0.72rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+      }
+      .cc-feat-eq {
+        display: none;
+        align-items: flex-end;
+        gap: 2px;
+        height: 11px;
+        margin-left: 2px;
+      }
+      .cc-omni-feat-listen-btn.is-playing .cc-feat-eq,
+      .cc-omni-stream-bar.is-playing .cc-feat-eq {
+        display: inline-flex;
+      }
+      .cc-feat-eq i {
+        display: inline-block;
+        width: 2.5px;
+        height: 10px;
+        border-radius: 2px;
+        background: #FFFFFF;
+        animation: ccFeatEqBounce 0.85s infinite ease-in-out;
+      }
+      .cc-feat-eq i:nth-child(2) {
+        animation-delay: 0.2s;
+        height: 7px;
+      }
+      .cc-feat-eq i:nth-child(3) {
+        animation-delay: 0.4s;
+        height: 11px;
+      }
+      @keyframes ccFeatEqBounce {
+        0%, 100% { transform: scaleY(0.35); }
+        50% { transform: scaleY(1); }
+      }
+      .cc-omni-stream-bar {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 9px 14px;
+        margin-bottom: 12px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.18) 0%, rgba(196, 163, 90, 0.16) 100%);
+        border: 1px solid rgba(255, 122, 0, 0.5);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      }
+      .cc-omni-stream-bar.is-playing {
+        display: flex;
+      }
+      .cc-omni-stream-bar-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        flex: 1;
+      }
+      .cc-omni-stream-bar-tag {
+        font-size: 0.66rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #FF8C33;
+        white-space: nowrap;
+      }
+      .cc-omni-stream-bar-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cc-omni-stream-bar-actions {
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .cc-omni-stream-station-btn {
+        padding: 4px 9px;
+        border-radius: 999px;
+        border: 1px solid rgba(196, 163, 90, 0.3);
+        background: rgba(12, 16, 28, 0.78);
+        color: rgba(243, 229, 200, 0.85);
+        font-size: 0.68rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.16s, border-color 0.16s, color 0.16s;
+      }
+      .cc-omni-stream-station-btn:hover,
+      .cc-omni-stream-station-btn.active {
+        background: rgba(255, 122, 0, 0.25);
+        border-color: #FF7A00;
+        color: #FFFFFF;
+      }
+      .cc-omni-stream-stop-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        background: #FF7A00;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #FFFFFF;
+        font-size: 0.72rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.16s;
+      }
+      .cc-omni-stream-stop-btn:hover {
+        background: #FF8C33;
+      }
+      .cc-omni-stream-stop-btn:active {
+        background: #E66A00;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .cc-feat-eq i { animation: none; }
       }
       .cc-omni-feat-arrow {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(196, 163, 90, 0.2);
         color: var(--omni-muted);
-        font-size: 1rem;
+        font-size: 0.92rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         align-self: center;
-        transition: transform 0.15s, color 0.15s;
+        transition: transform 0.2s, color 0.2s, background 0.2s, border-color 0.2s;
         flex-shrink: 0;
       }
       .cc-omni-feat-card:hover .cc-omni-feat-arrow {
         transform: translateX(3px);
-        color: var(--omni-gold);
+        color: #fff;
+        background: rgba(255, 122, 0, 0.25);
+        border-color: #FF7A00;
       }
       .cc-omni-pro-shortcuts {
         display: flex;
@@ -2799,15 +5373,22 @@
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: 18px;
-          padding: 18px;
+          padding: 16px;
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
           box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
           display: flex;
           flex-direction: column;
-          gap: 12px;
-          max-height: calc(82vh - 120px);
+          gap: 10px;
+          max-height: calc(100vh - 60px);
           overflow-y: auto;
+          scrollbar-width: none !important; /* Firefox: brak paska przewijania */
+          -ms-overflow-style: none !important; /* IE / Edge */
+        }
+        .cc-omni-preview-pane::-webkit-scrollbar {
+          display: none !important; /* Chrome, Safari, Edge: całkowite ukrycie paska */
+          width: 0 !important;
+          height: 0 !important;
         }
         @media (max-width: 860px) {
           .cc-omni-split-layout {
@@ -2821,7 +5402,7 @@
         .cc-preview-card {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 10px;
         }
         .cc-preview-placeholder {
           text-align: center;
@@ -2831,6 +5412,7 @@
           position: relative;
           width: 100%;
           aspect-ratio: 16 / 9;
+          max-height: 190px;
           border-radius: 12px;
           overflow: hidden;
           background: rgba(0, 0, 0, 0.4);
@@ -2869,18 +5451,18 @@
         }
         .cc-preview-title {
           margin: 0;
-          font-size: 1.18rem;
+          font-size: 1.12rem;
           font-weight: 700;
           line-height: 1.35;
           color: #ffffff;
         }
         .cc-preview-desc {
           margin: 0;
-          font-size: 0.88rem;
-          line-height: 1.55;
+          font-size: 0.86rem;
+          line-height: 1.5;
           color: rgba(255, 255, 255, 0.82);
           display: -webkit-box;
-          -webkit-line-clamp: 4;
+          -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
@@ -2889,8 +5471,8 @@
           flex-wrap: wrap;
           align-items: center;
           gap: 8px;
-          margin-top: 4px;
-          padding-top: 12px;
+          margin-top: 2px;
+          padding-top: 10px;
           border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .cc-preview-btn-main {
@@ -3105,6 +5687,241 @@
           background: rgba(255, 255, 255, 0.14);
           border-color: #C4A35A;
           color: #ffffff;
+        }
+
+/* Karta Odpowiedzi Biblijnej AI & RAG CC (ZERO COST) */
+        .cc-rag-answer-card {
+          background: linear-gradient(135deg, rgba(196, 163, 90, 0.18) 0%, rgba(10, 14, 23, 0.94) 100%);
+          border: 1.5px solid rgba(196, 163, 90, 0.45);
+          border-radius: 16px;
+          padding: 20px 22px;
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          animation: ccFadeIn 0.25s ease-out;
+        }
+        .cc-rag-card-header {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .cc-rag-badge-group {
+          display: inline-flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 8px;
+        }
+        .cc-rag-badge-ai {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(196, 163, 90, 0.2);
+          border: 1px solid rgba(196, 163, 90, 0.5);
+          color: #E2CC9A;
+          padding: 4px 10px;
+          border-radius: 20px;
+          font-size: 0.76rem;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .cc-rag-badge-standard {
+          display: inline-flex;
+          align-items: center;
+          background: rgba(255, 122, 0, 0.15);
+          border: 1px solid rgba(255, 122, 0, 0.4);
+          color: #FFB366;
+          padding: 4px 8px;
+          border-radius: 20px;
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+        .cc-rag-model-badge {
+          font-size: 0.76rem;
+          color: rgba(243, 229, 200, 0.7);
+          font-family: monospace;
+          background: rgba(0, 0, 0, 0.35);
+          padding: 3px 8px;
+          border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .cc-rag-question-bar {
+          display: flex;
+          align-items: baseline;
+          gap: 8px;
+          padding: 8px 12px;
+          background: rgba(255, 255, 255, 0.04);
+          border-radius: 8px;
+          font-size: 0.95rem;
+          color: #F3E5C8;
+        }
+        .cc-rag-q-icon {
+          font-size: 1.1rem;
+        }
+        .cc-rag-q-text strong {
+          color: #ffffff;
+        }
+        .cc-rag-answer-content {
+          font-size: 1.05rem;
+          line-height: 1.65;
+          color: #ffffff;
+        }
+        .cc-rag-p-lead {
+          margin: 0 0 8px 0;
+          font-weight: 600;
+          color: #E2CC9A;
+        }
+        .cc-rag-quote {
+          margin: 8px 0 12px 0;
+          padding: 10px 16px;
+          background: rgba(196, 163, 90, 0.08);
+          border-left: 3px solid #FF7A00;
+          border-radius: 0 8px 8px 0;
+          font-style: italic;
+          font-size: 1.06rem;
+          line-height: 1.6;
+          color: #ffffff;
+        }
+        .cc-rag-p-secondary {
+          margin: 8px 0;
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 0.98rem;
+        }
+        .cc-rag-footnote {
+          margin: 10px 0 0 0;
+          font-size: 0.78rem;
+          color: rgba(243, 229, 200, 0.6);
+          font-style: italic;
+        }
+        .cc-rag-cite-tag {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.75rem;
+          font-weight: 800;
+          color: #FF7A00;
+          background: rgba(255, 122, 0, 0.15);
+          padding: 1px 5px;
+          border-radius: 4px;
+          vertical-align: super;
+          margin-left: 2px;
+        }
+        .cc-rag-sources-box {
+          margin-top: 4px;
+          padding: 12px 14px;
+          background: rgba(0, 0, 0, 0.28);
+          border: 1px solid rgba(196, 163, 90, 0.2);
+          border-radius: 10px;
+        }
+        .cc-rag-sources-label {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.78rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--omni-gold);
+          margin-bottom: 8px;
+        }
+        .cc-rag-sources-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .cc-rag-source-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          min-height: 38px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 19px;
+          color: #F3E5C8;
+          text-decoration: none;
+          font-size: 0.82rem;
+          transition: background 0.15s, border-color 0.15s, transform 0.15s;
+        }
+        .cc-rag-source-chip:hover {
+          background: rgba(196, 163, 90, 0.18);
+          border-color: rgba(196, 163, 90, 0.4);
+          transform: translateY(-1px);
+          color: #ffffff;
+        }
+        .cc-rag-source-num {
+          font-weight: 800;
+          color: #FF7A00;
+        }
+        .cc-rag-source-title {
+          font-weight: 600;
+        }
+        .cc-rag-source-ref {
+          font-size: 0.74rem;
+          color: rgba(243, 229, 200, 0.65);
+          background: rgba(0, 0, 0, 0.25);
+          padding: 2px 6px;
+          border-radius: 8px;
+        }
+        .cc-rag-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 8px;
+          margin-top: 6px;
+        }
+        .cc-btn-rag-copy {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          min-height: 44px;
+          padding: 0 18px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff !important;
+          font-size: 0.88rem;
+          font-weight: 700;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
+          transition: background 0.15s, transform 0.15s;
+        }
+        .cc-btn-rag-copy:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+        }
+        .cc-btn-rag-copy:active {
+          background: #E66A00;
+        }
+        .cc-btn-rag-link {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #F3E5C8 !important;
+          font-size: 0.85rem;
+          font-weight: 600;
+          text-decoration: none;
+          cursor: pointer;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cc-btn-rag-link:hover {
+          background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(196, 163, 90, 0.45);
+          color: #ffffff !important;
         }
 
         /* Karta Tematu Biblijnego (Bible Topic Guide) */
@@ -3444,6 +6261,910 @@
           color: rgba(255, 255, 255, 0.75);
         }
 
+        
+        /* Biblia Intelligence CC (P2): Atlas Geograficzny & Miejsca Biblijne */
+        .cc-bible-place-card {
+          margin: 14px 0;
+          padding: 18px 20px;
+          border-radius: 14px;
+          background: rgba(16, 22, 34, 0.95);
+          border: 1px solid rgba(196, 163, 90, 0.4);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(196, 163, 90, 0.2);
+          color: #F3E5C8;
+          font-family: inherit;
+        }
+        .cc-bible-place-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .cc-bible-place-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .cc-bible-place-level {
+          color: #FF7A00;
+        }
+        .cc-bible-place-sub {
+          color: rgba(243, 229, 200, 0.6);
+          font-weight: 500;
+        }
+        .cc-bible-place-certainty {
+          font-size: 0.68rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 6px;
+          background: rgba(34, 197, 94, 0.15);
+          color: #4ade80;
+          border: 1px solid rgba(34, 197, 94, 0.35);
+          letter-spacing: 0.04em;
+        }
+        .cc-bible-place-title-row {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 6px;
+        }
+        .cc-bible-place-title {
+          margin: 0;
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #C4A35A;
+        }
+        .cc-bible-place-orig {
+          font-family: "SBL Greek", "SBL Hebrew", "Ezra SIL", Georgia, serif;
+          font-size: 1.1rem;
+          color: #E2CC9A;
+        }
+        .cc-bible-place-meta-bar {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-bottom: 12px;
+          font-size: 0.82rem;
+          color: rgba(243, 229, 200, 0.8);
+        }
+        .cc-bible-place-coords {
+          color: #C4A35A;
+          text-decoration: none;
+          padding: 2px 8px;
+          background: rgba(196, 163, 90, 0.1);
+          border-radius: 6px;
+          border: 1px solid rgba(196, 163, 90, 0.25);
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cc-bible-place-coords:hover {
+          background: rgba(255, 122, 0, 0.15);
+          border-color: #FF7A00;
+          color: #FF8C33;
+        }
+        .cc-bible-place-qid {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.5);
+          font-family: monospace;
+        }
+        .cc-bible-place-summary {
+          margin: 0 0 14px 0;
+          font-size: 0.95rem;
+          line-height: 1.55;
+          color: rgba(243, 229, 200, 0.92);
+        }
+        .cc-bible-place-verses {
+          margin-bottom: 14px;
+          padding: 10px 14px;
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.35);
+          border-left: 3px solid #C4A35A;
+        }
+        .cc-bible-place-verses-label {
+          font-size: 0.76rem;
+          font-weight: 700;
+          color: #C4A35A;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 6px;
+        }
+        .cc-bible-place-verse-item {
+          font-size: 0.86rem;
+          line-height: 1.45;
+          margin-bottom: 4px;
+        }
+        .cc-bible-place-verse-item:last-child {
+          margin-bottom: 0;
+        }
+        .cc-bible-place-ref {
+          color: #FF8C33;
+          margin-right: 4px;
+        }
+        .cc-bible-place-text {
+          font-style: italic;
+          color: rgba(243, 229, 200, 0.9);
+        }
+        .cc-bible-place-actions {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+
+        
+
+
+
+        /* ── BIBLIA INTELLIGENCE CC (P6): KARTY DZIELENIA SOCIAL MEDIA ── */
+        .cc-btn-scripture-share {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(255, 122, 0, 0.14);
+          border: 1px solid rgba(255, 122, 0, 0.4);
+          color: #FF8C33;
+          font-size: 0.85rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .cc-btn-scripture-share:hover {
+          background: #FF7A00;
+          border-color: #FF7A00;
+          color: #ffffff !important;
+        }
+        .cc-share-card-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 1000000;
+          background: rgba(0, 0, 0, 0.82);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+          animation: ccFadeIn 0.2s ease-out;
+        }
+        .cc-share-card-modal {
+          width: 100%;
+          max-width: 480px;
+          background: rgba(14, 20, 32, 0.98);
+          border: 1px solid rgba(196, 163, 90, 0.4);
+          border-radius: 18px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+          overflow: hidden;
+          color: #F3E5C8;
+          display: flex;
+          flex-direction: column;
+        }
+        .cc-share-modal-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 14px 18px;
+          border-bottom: 1px solid rgba(196, 163, 90, 0.25);
+          background: rgba(196, 163, 90, 0.05);
+        }
+        .cc-share-modal-title {
+          font-size: 0.92rem;
+          color: #FF8C33;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .cc-share-modal-close {
+          background: transparent;
+          border: 0;
+          color: rgba(243, 229, 200, 0.7);
+          font-size: 1.5rem;
+          cursor: pointer;
+          width: 36px;
+          height: 36px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+        }
+        .cc-share-modal-close:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #fff;
+        }
+        .cc-share-modal-body {
+          padding: 18px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          max-height: calc(88vh - 60px);
+          overflow-y: auto;
+          scrollbar-width: none;
+        }
+        .cc-share-modal-body::-webkit-scrollbar { display: none; }
+        .cc-share-canvas-wrap {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+        .cc-share-verse-canvas {
+          max-width: 100%;
+          width: 320px;
+          height: 320px;
+          border-radius: 14px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+        .cc-share-card-actions {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .cc-btn-share-main {
+          flex: 1;
+          min-width: 180px;
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff;
+          font-size: 0.88rem;
+          font-weight: 700;
+          border: 0;
+          cursor: pointer;
+          box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+        }
+        .cc-btn-share-main:hover {
+          background: #FF8C33;
+        }
+        .cc-btn-share-sub {
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 22px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #fff;
+          font-size: 0.82rem;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .cc-btn-share-sub:hover {
+          background: rgba(255, 255, 255, 0.16);
+        }
+        .cc-share-social-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+          gap: 8px;
+          padding-top: 10px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .cc-social-share-btn {
+          min-height: 40px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          font-size: 0.76rem;
+          font-weight: 700;
+          text-decoration: none;
+          color: #fff;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          transition: background 0.15s, transform 0.15s;
+        }
+        .cc-social-share-btn:hover {
+          transform: translateY(-1px);
+        }
+        .cc-share-wa:hover { background: #25D366; border-color: #25D366; color: #fff; }
+        .cc-share-tg:hover { background: #229ED9; border-color: #229ED9; color: #fff; }
+        .cc-share-fb:hover { background: #1877F2; border-color: #1877F2; color: #fff; }
+        .cc-share-x:hover { background: #000000; border-color: #ffffff; color: #fff; }
+        .cc-share-lumina:hover { background: #FF7A00; border-color: #FF7A00; color: #fff; }
+
+                /* ── BIBLIA INTELLIGENCE CC (P5): KATALOG TEMATYCZNY & MODLITEWNIK ── */
+        .cc-topic-verse-row {
+          flex: 1;
+        }
+        .cc-bible-topic-verse-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          padding: 8px 12px;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          margin-bottom: 6px;
+        }
+        .cc-btn-topic-verse-audio {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 10px;
+          border-radius: 14px;
+          background: rgba(255, 122, 0, 0.12);
+          border: 1px solid rgba(255, 122, 0, 0.35);
+          color: #FF8C33;
+          font-size: 0.72rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s, color 0.15s;
+        }
+        .cc-btn-topic-verse-audio:hover {
+          background: #FF7A00;
+          color: #ffffff;
+        }
+        .cc-btn-prayer-trigger {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          min-height: 44px;
+          padding: 0 16px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff !important;
+          border: 0;
+          font-size: 0.86rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+          box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+        }
+        .cc-btn-prayer-trigger:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(255, 122, 0, 0.5);
+        }
+        .cc-btn-prayer-trigger:active {
+          background: #E66A00;
+          transform: translateY(0);
+        }
+        .cc-thematic-prayer-box {
+          margin-top: 14px;
+          padding: 16px 18px;
+          border-radius: 14px;
+          background: rgba(10, 16, 28, 0.95);
+          border: 1.5px solid rgba(196, 163, 90, 0.4);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+          animation: ccFadeIn 0.25s ease-out;
+        }
+        .cc-prayer-box-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .cc-prayer-box-title {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: #FF8C33;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .cc-prayer-box-sub {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.6);
+        }
+        .cc-prayer-text {
+          margin: 0 0 14px 0;
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: #ffffff;
+          font-style: italic;
+          border-left: 3px solid #FF7A00;
+          padding-left: 14px;
+        }
+        .cc-prayer-actions {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .cc-btn-prayer-audio {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          min-height: 40px;
+          padding: 0 14px;
+          border-radius: 20px;
+          background: rgba(255, 122, 0, 0.15);
+          border: 1px solid rgba(255, 122, 0, 0.4);
+          color: #FF8C33;
+          font-size: 0.8rem;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        .cc-btn-prayer-audio:hover {
+          background: #FF7A00;
+          color: #ffffff;
+        }
+        .cc-btn-prayer-copy {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          min-height: 40px;
+          padding: 0 12px;
+          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #F3E5C8;
+          font-size: 0.78rem;
+          cursor: pointer;
+        }
+        .cc-btn-prayer-copy:hover {
+          background: rgba(255, 255, 255, 0.16);
+          color: #ffffff;
+        }
+        .cc-btn-prayer-intercede {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          min-height: 40px;
+          padding: 0 12px;
+          border-radius: 20px;
+          background: transparent;
+          border: 1px solid rgba(196, 163, 90, 0.35);
+          color: #C4A35A;
+          font-size: 0.78rem;
+          text-decoration: none;
+        }
+        .cc-btn-prayer-intercede:hover {
+          background: rgba(196, 163, 90, 0.15);
+          color: #ffffff;
+        }
+
+                /* ── BIBLIA INTELLIGENCE CC (P4): AUDIO PLAYER & BIBLIA SŁUCHANA ── */
+        .cc-scripture-audio-bar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin: 12px 0 10px 0;
+          padding: 10px 14px;
+          border-radius: 12px;
+          background: rgba(15, 23, 42, 0.75);
+          border: 1px solid rgba(196, 163, 90, 0.3);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+        .cc-audio-bar-left, .cc-audio-bar-right {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        /* Styl przycisku PLAY dla wyników wyszukiwania (JOMA-D052 Orange #FF7A00) */
+      .cc-omni-item-play-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        min-height: 44px;
+        min-width: 44px;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        background: #FF7A00;
+        color: #FFFFFF !important;
+        border: none;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        margin-left: auto;
+        box-shadow: 0 2px 8px rgba(255, 122, 0, 0.4);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2;
+      }
+      .cc-omni-item-play-btn:hover {
+        background: #FF8C33;
+        transform: scale(1.05);
+        box-shadow: 0 4px 14px rgba(255, 122, 0, 0.6);
+      }
+      .cc-omni-item-play-btn:active {
+        background: #E66A00;
+        transform: scale(0.97);
+      }
+      .cc-omni-item-play-btn.cc-playing {
+        background: #22c55e;
+        box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+      }
+      .cc-preview-btn-tts {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        min-width: 44px;
+        padding: 8px 16px;
+        border-radius: 9999px;
+        background: #FF7A00;
+        color: #FFFFFF !important;
+        border: none;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(255, 122, 0, 0.4);
+        transition: all 0.2s;
+      }
+      .cc-preview-btn-tts:hover {
+        background: #FF8C33;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(255, 122, 0, 0.55);
+      }
+      .cc-preview-btn-tts.cc-playing {
+        background: #22c55e;
+        box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+      }
+      .cc-btn-play-verse {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          min-height: 44px;
+          padding: 0 18px;
+          border-radius: 22px;
+          background: #FF7A00;
+          color: #ffffff !important;
+          border: 0;
+          font-size: 0.88rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+          box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
+        }
+        .cc-btn-play-verse:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(255, 122, 0, 0.5);
+        }
+        .cc-btn-play-verse:active {
+          background: #E66A00;
+          transform: translateY(0);
+        }
+        .cc-btn-play-verse.cc-playing {
+          background: #22c55e;
+          box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+        }
+        .cc-btn-play-verse.cc-playing:hover {
+          background: #16a34a;
+        }
+        .cc-audio-play-icon {
+          font-size: 0.95rem;
+          line-height: 1;
+        }
+        .cc-waveform-visualizer {
+          display: inline-flex;
+          align-items: center;
+          gap: 3px;
+          height: 22px;
+          padding: 0 4px;
+        }
+        .cc-wave-bar {
+          display: inline-block;
+          width: 3.5px;
+          height: 6px;
+          background: rgba(196, 163, 90, 0.45);
+          border-radius: 2px;
+          transition: height 0.15s ease, background-color 0.15s;
+        }
+        .cc-waveform-active .cc-wave-bar {
+          background: #FF7A00;
+          animation: ccWavePulse 0.9s ease-in-out infinite alternate;
+        }
+        .cc-waveform-active .cc-wave-1 { animation-delay: 0.0s; height: 16px; }
+        .cc-waveform-active .cc-wave-2 { animation-delay: 0.2s; height: 22px; }
+        .cc-waveform-active .cc-wave-3 { animation-delay: 0.4s; height: 12px; }
+        .cc-waveform-active .cc-wave-4 { animation-delay: 0.1s; height: 18px; }
+        .cc-waveform-active .cc-wave-5 { animation-delay: 0.3s; height: 14px; }
+
+        @keyframes ccWavePulse {
+          0% { height: 5px; }
+          50% { height: 22px; }
+          100% { height: 8px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cc-waveform-active .cc-wave-bar {
+            animation: none !important;
+            height: 14px !important;
+          }
+        }
+        .cc-audio-status-tag {
+          font-size: 0.74rem;
+          font-weight: 700;
+          color: rgba(243, 229, 200, 0.75);
+          letter-spacing: 0.04em;
+        }
+        .cc-audio-status-tag.cc-tag-playing {
+          color: #4ade80;
+        }
+        .cc-audio-speed-selector {
+          display: inline-flex;
+          align-items: center;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 16px;
+          padding: 2px;
+          gap: 2px;
+        }
+        .cc-speed-btn {
+          background: transparent;
+          border: 0;
+          color: rgba(243, 229, 200, 0.7);
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 12px;
+          cursor: pointer;
+          min-height: 28px;
+          min-width: 32px;
+          transition: background 0.15s, color 0.15s;
+        }
+        .cc-speed-btn:hover {
+          color: #ffffff;
+        }
+        .cc-speed-btn.active {
+          background: rgba(196, 163, 90, 0.25);
+          color: #FF8C33;
+          border: 1px solid rgba(196, 163, 90, 0.4);
+        }
+        .cc-btn-open-player {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          min-height: 36px;
+          padding: 0 12px;
+          border-radius: 18px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          color: #F3E5C8;
+          font-size: 0.76rem;
+          font-weight: 700;
+          text-decoration: none;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .cc-btn-open-player:hover {
+          background: rgba(255, 255, 255, 0.14);
+          border-color: #FF7A00;
+          color: #ffffff;
+        }
+
+                /* Biblia Intelligence CC (P3): Porównywarka Wieloprzekładowa i Weryfikacja Cytowań */
+        .cc-scripture-compare-panel {
+          margin: 14px 0;
+          padding: 16px;
+          border-radius: 12px;
+          background: rgba(8, 12, 20, 0.95);
+          border: 1px solid rgba(196, 163, 90, 0.35);
+          animation: ccFadeIn 0.2s ease-out;
+        }
+        .cc-compare-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-bottom: 12px;
+        }
+        .cc-compare-title {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: #C4A35A;
+          font-size: 0.92rem;
+        }
+        .cc-compare-sub {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.6);
+        }
+        .cc-compare-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+        .cc-compare-col {
+          padding: 12px 14px;
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          display: flex;
+          flex-direction: column;
+        }
+        .cc-compare-ubg {
+          border-color: rgba(196, 163, 90, 0.5);
+          background: rgba(196, 163, 90, 0.06);
+        }
+        .cc-compare-bw {
+          border-color: rgba(56, 189, 248, 0.4);
+          background: rgba(56, 189, 248, 0.05);
+        }
+        .cc-compare-bt {
+          border-color: rgba(168, 85, 247, 0.4);
+          background: rgba(168, 85, 247, 0.05);
+        }
+        .cc-compare-bg {
+          border-color: rgba(52, 211, 153, 0.4);
+          background: rgba(52, 211, 153, 0.05);
+        }
+        .cc-compare-col-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 6px;
+          margin-bottom: 8px;
+        }
+        .cc-badge-trans {
+          font-size: 0.68rem;
+          font-weight: 800;
+          padding: 2px 6px;
+          border-radius: 4px;
+          letter-spacing: 0.06em;
+        }
+        .cc-badge-ubg { background: #C4A35A; color: #000; }
+        .cc-badge-bw { background: #38bdf8; color: #000; }
+        .cc-badge-bt { background: #c084fc; color: #000; }
+        .cc-badge-bg { background: #34d399; color: #000; }
+        .cc-compare-edition-name {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.75);
+          flex: 1;
+          margin-left: 4px;
+        }
+        .cc-btn-copy-trans {
+          padding: 2px 8px;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.08);
+          color: #fff;
+          font-size: 0.68rem;
+          cursor: pointer;
+        }
+        .cc-btn-copy-trans:hover {
+          background: #FF7A00;
+          border-color: #FF7A00;
+        }
+        .cc-compare-text {
+          margin: 0;
+          font-size: 0.88rem;
+          line-height: 1.45;
+          color: rgba(255, 255, 255, 0.92);
+          font-style: italic;
+        }
+        .cc-compare-footer-note {
+          font-size: 0.72rem;
+          color: rgba(243, 229, 200, 0.6);
+          line-height: 1.4;
+        }
+
+        /* Weryfikator Cytowań */
+        .cc-quote-verification-card {
+          margin: 14px 0;
+          padding: 18px 20px;
+          border-radius: 14px;
+          background: rgba(14, 20, 32, 0.96);
+          border: 1.5px solid rgba(196, 163, 90, 0.5);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+          color: #F3E5C8;
+        }
+        .cc-quote-verif-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .cc-quote-verif-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .cc-quote-verif-level { color: #C4A35A; }
+        .cc-quote-verif-standard { color: rgba(243, 229, 200, 0.6); }
+        .cc-quote-status-badge {
+          font-size: 0.68rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 6px;
+          letter-spacing: 0.04em;
+        }
+        .cc-quote-badge-verified {
+          background: rgba(34, 197, 94, 0.2);
+          color: #4ade80;
+          border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+        .cc-quote-badge-warning {
+          background: rgba(245, 158, 11, 0.2);
+          color: #fbbf24;
+          border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+        .cc-quote-badge-paraphrase {
+          background: rgba(239, 68, 68, 0.2);
+          color: #f87171;
+          border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+        .cc-quote-detected-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .cc-quote-ref-pill {
+          font-size: 0.88rem;
+          font-weight: 700;
+          color: #FF8C33;
+          background: rgba(255, 122, 0, 0.12);
+          padding: 2px 10px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 122, 0, 0.3);
+        }
+        .cc-quote-edition-pill {
+          font-size: 0.74rem;
+          color: rgba(243, 229, 200, 0.75);
+        }
+        .cc-quote-canonical-text {
+          margin: 0 0 12px 0;
+          font-size: 1.05rem;
+          line-height: 1.5;
+          font-weight: 600;
+          color: #ffffff;
+          border-left: 3px solid #C4A35A;
+          padding-left: 14px;
+        }
+        .cc-quote-diff-box {
+          margin-bottom: 12px;
+          padding: 8px 12px;
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.35);
+          border-left: 3px solid #f59e0b;
+        }
+        .cc-quote-diff-label {
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: #fbbf24;
+          text-transform: uppercase;
+        }
+        .cc-quote-diff-text {
+          margin: 4px 0 0 0;
+          font-size: 0.88rem;
+          font-style: italic;
+          color: rgba(243, 229, 200, 0.85);
+        }
+        .cc-quote-verif-note {
+          font-size: 0.76rem;
+          color: rgba(243, 229, 200, 0.7);
+          line-height: 1.45;
+          margin-bottom: 14px;
+        }
+        .cc-quote-verif-actions {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
         /* Modal Źródeł i Licencji (R01–R40) */
         .cc-sources-modal-backdrop {
           position: fixed;
@@ -3582,6 +7303,236 @@
         }
         .cc-sources-doc-link:hover {
           color: #FF7A00;
+        }
+
+        /* =========================================================================
+           Dedykowane Okno Zmiany Tła Wyszukiwarki (Wallpaper Modal)
+           Wybór oficjalnych motywów CC + Własne zdjęcie z dysku / aparatu
+           ========================================================================= */
+        .cc-wallpaper-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 1000000;
+          background: rgba(0, 0, 0, 0.82);
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+          box-sizing: border-box;
+          animation: ccWallFadeIn 0.2s ease-out;
+        }
+        @keyframes ccWallFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .cc-wallpaper-modal {
+          background: #0B0F1A;
+          border: 1.5px solid rgba(196, 163, 90, 0.45);
+          border-radius: 20px;
+          max-width: 680px;
+          width: 100%;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(196, 163, 90, 0.25);
+          color: #ffffff;
+          overflow: hidden;
+          animation: ccWallSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes ccWallSlideUp {
+          from { transform: translateY(16px) scale(0.98); opacity: 0; }
+          to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .cc-wallpaper-modal-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 18px 24px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.03);
+        }
+        .cc-wallpaper-modal-title {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 1.15rem;
+          font-weight: 800;
+          color: #ffffff;
+        }
+        .cc-wallpaper-modal-title svg {
+          color: var(--omni-gold);
+          flex-shrink: 0;
+        }
+        .cc-wallpaper-modal-close {
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          color: #ffffff;
+          font-size: 1.25rem;
+          line-height: 1;
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .cc-wallpaper-modal-close:hover {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: #FF7A00;
+        }
+        .cc-wallpaper-modal-body {
+          padding: 22px 24px;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .cc-wallpaper-modal-desc {
+          margin: 0;
+          font-size: 0.9rem;
+          line-height: 1.45;
+          color: rgba(243, 229, 200, 0.85);
+        }
+        .cc-wallpaper-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 14px;
+        }
+        @media (max-width: 580px) {
+          .cc-wallpaper-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+        .cc-wall-card {
+          background: rgba(255, 255, 255, 0.04);
+          border: 1.5px solid rgba(255, 255, 255, 0.12);
+          border-radius: 14px;
+          overflow: hidden;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+          position: relative;
+        }
+        .cc-wall-card:hover {
+          transform: translateY(-2px);
+          border-color: rgba(196, 163, 90, 0.7);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+        .cc-wall-card.active {
+          border-color: #FF7A00;
+          box-shadow: 0 0 0 1.5px #FF7A00, 0 10px 28px rgba(255, 122, 0, 0.25);
+          background: rgba(255, 122, 0, 0.06);
+        }
+        .cc-wall-thumb-wrap {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          background: #000;
+          overflow: hidden;
+        }
+        .cc-wall-thumb {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.2s ease;
+        }
+        .cc-wall-card:hover .cc-wall-thumb {
+          transform: scale(1.03);
+        }
+        .cc-wall-active-pill {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: #FF7A00;
+          color: #ffffff;
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+        .cc-wall-info {
+          padding: 10px 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .cc-wall-title {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: #ffffff;
+        }
+        .cc-wall-tag {
+          font-size: 0.76rem;
+          color: var(--omni-gold);
+        }
+        .cc-wall-custom-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.02);
+          border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+        .cc-wall-upload-placeholder {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          color: var(--omni-gold);
+          font-size: 0.84rem;
+          font-weight: 600;
+          padding: 16px;
+        }
+        .cc-wallpaper-modal-foot {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 16px 24px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.02);
+          gap: 12px;
+        }
+        .cc-btn-wall-reset-modal {
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: rgba(243, 229, 200, 0.8);
+          font-size: 0.84rem;
+          font-weight: 600;
+          padding: 10px 16px;
+          border-radius: 20px;
+          cursor: pointer;
+          min-height: 44px;
+          transition: background 0.15s, color 0.15s;
+        }
+        .cc-btn-wall-reset-modal:hover {
+          background: rgba(255, 255, 255, 0.08);
+          color: #ffffff;
+        }
+        .cc-btn-wall-close-modal {
+          background: #FF7A00;
+          border: 0;
+          color: #ffffff;
+          font-size: 0.88rem;
+          font-weight: 700;
+          padding: 10px 24px;
+          border-radius: 22px;
+          cursor: pointer;
+          min-height: 44px;
+          transition: background 0.15s, transform 0.15s;
+        }
+        .cc-btn-wall-close-modal:hover {
+          background: #FF8C33;
+          transform: translateY(-1px);
+        }
+        .cc-btn-wall-close-modal:active {
+          background: #E66A00;
         }
 
 
@@ -3898,6 +7849,20 @@
         gap: 6px;
         flex-shrink: 0;
       }
+      .cc-omni-support-btn {
+        color: #FF7A00 !important;
+        position: relative;
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, color 0.2s;
+      }
+      .cc-omni-support-btn:hover, .cc-omni-support-btn:focus-visible {
+        color: #FF8C33 !important;
+        background: rgba(255, 122, 0, 0.16) !important;
+        transform: scale(1.12);
+        outline: none;
+      }
+      .cc-omni-support-btn:active {
+        transform: scale(0.94);
+      }
       .cc-omni-iconbtn {
         width: 44px;
         height: 44px;
@@ -3912,6 +7877,7 @@
         text-decoration: none;
       }
       .cc-omni-iconbtn:hover, .cc-omni-iconbtn:focus-visible { background: rgba(255, 255, 255, 0.12); color: var(--omni-gold-hover); outline: none; }
+      .cc-omni-iconbtn[hidden] { display: none !important; }
       .cc-omni-share-msg { font-size: 0.8rem; color: #fff; white-space: nowrap; }
       .cc-omni-share-msg:empty { display: none; }
       .cc-omni-view-all {
@@ -3988,12 +7954,30 @@
       }
       /* Trzy koła (Wszystko, PLAY, konto) z odstępem, żeby ich poświaty się nie stykały (L0 26.10.2026) */
       .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 10px; }
-      .cc-omni-topnav .cc-omni-radio,
+      .cc-omni-topnav .cc-omni-radio { margin-left: 16px; }
+      .cc-omni-topnav .cc-omni-edge-btn { margin-left: 6px; }
       .cc-omni-topnav .cc-omni-account { margin-left: 16px; }
       @media (max-width: 440px) {
-        .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 6px; }
-        .cc-omni-topnav .cc-omni-radio,
-        .cc-omni-topnav .cc-omni-account { margin-left: 12px; }
+        .cc-omni-top { padding-left: 8px !important; padding-right: 8px !important; }
+        .cc-omni-topnav a[href="/mess"],
+        .cc-omni-topnav a[href="/news"] {
+          display: none !important;
+        }
+        .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 4px; }
+        .cc-omni-topnav .cc-omni-radio { margin-left: 6px; }
+        .cc-omni-topnav .cc-omni-edge-btn { margin-left: 4px; }
+        .cc-omni-topnav .cc-omni-account { margin-left: 6px; }
+        .cc-omni-lang-mount .ekocc-lang-switcher { padding: 2px 4px; gap: 3px; }
+        .cc-omni-lang-mount .ekocc-lang-btn { min-width: 34px; height: 38px; min-height: 38px; padding: 0 4px; font-size: 0.76rem; }
+      }
+      @media (max-width: 340px) {
+        .cc-omni-top { padding-left: 4px !important; padding-right: 4px !important; }
+        .cc-omni-topnav .cc-omni-apps-wrap { margin-left: 2px; }
+        .cc-omni-topnav .cc-omni-radio { margin-left: 4px; }
+        .cc-omni-topnav .cc-omni-edge-btn { margin-left: 2px; }
+        .cc-omni-topnav .cc-omni-account { margin-left: 4px; }
+        .cc-omni-lang-mount .ekocc-lang-switcher { padding: 1px 2px; gap: 2px; }
+        .cc-omni-lang-mount .ekocc-lang-btn { min-width: 28px; height: 36px; min-height: 36px; padding: 0 2px; font-size: 0.72rem; }
       }
       /* ── FAZA 3: AUTOKOREKTA LITERÓWEK & ERGONOMIA KCIUKA MOBILE ── */
       .cc-omni-autocorrect-banner {
@@ -4094,6 +8078,27 @@
       }
 
       /* /wyszukiwarka — pełna gotowość do natychmiastowego wyszukiwania (Spotlight/Raycast) */
+      /* 2-kolumnowy panel krawędziowy bez paska przewijania (Dyrektywa L0 30.10.2026) */
+      dialog.cc-mobile-edge, .cc-mobile-edge, .cc-mobile-edge[data-profile="search"] {
+        width: 122px !important; max-width: 90vw !important;
+        overflow-y: auto !important; overflow-x: hidden !important;
+        scrollbar-width: none !important; -ms-overflow-style: none !important;
+      }
+      dialog.cc-mobile-edge::-webkit-scrollbar, .cc-mobile-edge::-webkit-scrollbar, .cc-mobile-edge[data-profile="search"]::-webkit-scrollbar {
+        display: none !important; width: 0 !important; height: 0 !important;
+      }
+      dialog.cc-mobile-edge nav, .cc-mobile-edge nav, .cc-mobile-edge[data-profile="search"] nav {
+        display: grid !important; grid-template-columns: repeat(2, 44px) !important;
+        gap: 6px 8px !important; justify-content: center !important; align-content: start !important;
+        min-height: auto !important; width: 100% !important; box-sizing: border-box !important;
+        padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)) !important;
+      }
+      .cc-mobile-edge nav button[data-edge-key="close"] { grid-column: 1 / -1 !important; justify-self: center !important; margin-bottom: 2px !important; }
+      .cc-mobile-edge:not([data-profile="lumina"]) nav button[data-edge-key="menu"] { grid-column: 1 / -1 !important; justify-self: center !important; }
+      .cc-mobile-edge nav :is(a,button)[data-edge-key="heart"] { color: #FF7A00 !important; }
+      .cc-mobile-edge .cc-edge-lang-divider { grid-column: 1 / -1 !important; width: 100% !important; height: 1px !important; background: rgba(196, 163, 90, 0.25) !important; margin: 6px 0 2px 0 !important; }
+      .cc-mobile-edge .cc-edge-lang-group { grid-column: 1 / -1 !important; display: flex !important; flex-direction: row !important; justify-content: center !important; flex-wrap: wrap !important; gap: 6px 8px !important; width: 100% !important; }
+
 `;
     document.head.appendChild(style);
   }
@@ -4148,10 +8153,15 @@
                 <rect x="5.5" y="5.5" width="13" height="13" rx="2.5"/>
               </svg>
             </button>
+            <button type="button" id="ccOmniEdgeBtn" class="cc-omni-toplink cc-omni-edge-btn cc-mobile-edge-trigger" data-profile="search" data-edge-key="open" aria-label="Otwórz panel nawigacji EkoCC" aria-haspopup="dialog" aria-controls="cc-mobile-edge-dialog" aria-expanded="false" title="Nawigacja ekosystemu Christian Culture">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+            </button>
             <a class="cc-omni-account" id="ccOmniAccount" href="/lumina-login" aria-label="Zaloguj przez Google do LUMINA" title="Twoje konto LUMINA">
               <span class="cc-omni-account-face" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
             </a>
-          </nav>
+            </nav>
 ${isStandalonePage ? '' : `
           <button type="button" id="ccOmniClose" class="cc-omni-btn" aria-label="Zamknij wyszukiwarkę" title="Zamknij (Esc)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -4170,7 +8180,7 @@ ${isStandalonePage ? '' : `
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </span>
-          <input type="text" id="ccOmniInput" placeholder="Zapytaj Christian Culture…" autocomplete="off" spellcheck="false" aria-label="Wpisz szukane słowo">
+          <input type="text" id="ccOmniInput" data-i18n-placeholder="search_placeholder" placeholder="Zapytaj Christian Culture…" autocomplete="off" spellcheck="false" aria-label="Wpisz szukane słowo">
           <button type="button" id="ccOmniClear" class="cc-omni-btn" aria-label="Wyczyść zapytanie" style="display:none;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -4204,25 +8214,21 @@ ${isStandalonePage ? '' : `
         </div>
 
         <div class="cc-omni-footer">
-          <div class="cc-omni-footer-center">
-            Powered by <a href="https://polskieradio.cc/yis" class="cc-omni-yis-link" target="_blank" rel="noopener noreferrer">Your Imagination Studio</a> dla Christian Culture
-          </div>
           <div class="cc-omni-footer-sub">
             <div class="cc-omni-footer-left">
-              <button type="button" id="ccOmniSourcesBtn" class="cc-omni-footlink" title="Rejestr źródeł i licencji Biblia Intelligence">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
-                <span>Źródła &amp; Licencje</span>
+              <button type="button" id="ccOmniSourcesBtn" class="cc-omni-iconbtn" aria-label="Rejestr źródeł i licencji Biblia Intelligence (R01–R40)" title="Źródła i licencje">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
               </button>
-              <button type="button" id="ccOmniWallBtn" class="cc-omni-footlink">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
-                <span>Zmień tapetę</span>
+              <button type="button" id="ccOmniWallBtn" class="cc-omni-iconbtn" aria-label="Zmień tło wyszukiwarki" title="Zmień tło wyszukiwarki (wybierz motyw lub wgraj własne zdjęcie)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>
               </button>
-              <button type="button" id="ccOmniWallReset" class="cc-omni-footlink" hidden>Przywróć tło</button>
               <input type="file" id="ccOmniWallFile" accept="image/*" hidden>
-              <span id="ccOmniCredit" class="cc-omni-credit">Tło: Galaktyka Andromedy · fot. Unsplash</span>
             </div>
             <div class="cc-omni-footer-right">
               <span id="ccOmniShareMsg" class="cc-omni-share-msg" role="status" aria-live="polite"></span>
+              <a href="https://polskieradio.cc/wspieraj" id="ccOmniSupport" class="cc-omni-iconbtn cc-omni-support-btn" aria-label="Wspieram To — Wolne Media Boże" title="Wspieram To">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+              </a>
               <button type="button" id="ccOmniShare" class="cc-omni-iconbtn" aria-label="Udostępnij wyszukiwarkę Christian Culture" title="Udostępnij">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
               </button>
@@ -4230,6 +8236,9 @@ ${isStandalonePage ? '' : `
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
               </a>
             </div>
+          </div>
+          <div class="cc-omni-footer-center">
+            Powered by <a href="https://polskieradio.cc/yis" class="cc-omni-yis-link" target="_blank" rel="noopener noreferrer">Your Imagination Studio</a> dla Christian Culture
           </div>
         </div>
         <!-- Modal Rejestru Źródeł i Licencji (R01–R40) -->
@@ -4323,6 +8332,22 @@ ${isStandalonePage ? '' : `
     favoriteObserver.observe(topnav, { childList: true });
     placeFavorite();
 
+    // EkoCC i18n Core — integracja językowa modala wyszukiwarki
+    const mountI18n = () => {
+      if (window.EkoCCI18n) {
+        const langMount = overlay.querySelector('.cc-omni-lang-mount');
+        if (langMount && !langMount.hasChildNodes()) {
+          window.EkoCCI18n.renderSwitcher(langMount);
+        }
+        if (input) {
+          input.placeholder = window.EkoCCI18n.t('search_placeholder');
+          input.setAttribute('aria-label', window.EkoCCI18n.t('search_label'));
+        }
+      }
+    };
+    mountI18n();
+    document.addEventListener('ekocc:locale-changed', () => mountI18n());
+
     // Zdarzenia wewnątrz modala
     const input = document.getElementById('ccOmniInput');
     const clearBtn = document.getElementById('ccOmniClear');
@@ -4331,6 +8356,57 @@ ${isStandalonePage ? '' : `
     const filterChips = overlay.querySelectorAll('.cc-omni-filter-chip');
 
     overlay.addEventListener('click', (e) => {
+      const featListenBtn = e.target.closest('.cc-omni-feat-listen-btn');
+      if (featListenBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const stationId = featListenBtn.getAttribute('data-feat-stream') || 'poland';
+        const streamTitle = featListenBtn.getAttribute('data-feat-stream-title') || '';
+        toggleFeaturedStream(stationId, streamTitle, featListenBtn);
+        return;
+      }
+      const streamStopBtn = e.target.closest('[data-feat-stream-stop]');
+      if (streamStopBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (window.CCChatRadio && window.CCChatRadio.state().playing) {
+          window.CCChatRadio.pause();
+        }
+        return;
+      }
+      const streamSwitchBtn = e.target.closest('[data-feat-station-switch]');
+      if (streamSwitchBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const stId = streamSwitchBtn.getAttribute('data-feat-station-switch') || 'poland';
+        const stLabel = streamSwitchBtn.getAttribute('data-feat-station-label') || '';
+        toggleFeaturedStream(stId, stLabel, streamSwitchBtn, true);
+        return;
+      }
+      const featTrigger = e.target.closest('.cc-omni-feat-dot, .cc-omni-feat-mode-btn');
+      if (featTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        const setIdx = parseInt(featTrigger.getAttribute('data-feat-set'), 10);
+        if (!isNaN(setIdx)) {
+          rotateFeaturedCards(setIdx);
+          startFeaturedRotation();
+        }
+        return;
+      }
+      const featNav = e.target.closest('.cc-omni-feat-nav');
+      if (featNav) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dir = featNav.getAttribute('data-feat-nav');
+        const totalSets = FEATURED_MODES.length;
+        const nextIdx = dir === 'prev'
+          ? (activeFeaturedSet - 1 + totalSets) % totalSets
+          : (activeFeaturedSet + 1) % totalSets;
+        rotateFeaturedCards(nextIdx);
+        startFeaturedRotation();
+        return;
+      }
       // Na /wyszukiwarka kliknięcie w tapetę odsłania panele, nie zamyka strony
       if (e.target === overlay && !isStandalonePage) closeSearch();
     });
@@ -4348,7 +8424,7 @@ ${isStandalonePage ? '' : `
       shareTimer = setTimeout(() => { shareMsg.textContent = ''; }, 2600);
     };
     shareBtn.addEventListener('click', async () => {
-      const data = { title: 'Wyszukiwarka Christian Culture', text: 'Szukaj w całym ekosystemie Christian Culture — Słowo Boże, rozważania, radio, kanały i LUMINA:', url: SHARE_URL };
+      const data = { title: 'Wyszukiwarka Christian Culture — Globalna Wyszukiwarka Chrześcijańska', text: 'Globalna Wyszukiwarka Chrześcijańska — Słowo Boże, rozważania, radio, kanały i LUMINA:', url: SHARE_URL };
       if (navigator.share) {
         try { await navigator.share(data); return; } catch (e) { if (e && e.name === 'AbortError') return; }
       }
@@ -4360,24 +8436,78 @@ ${isStandalonePage ? '' : `
       }
     });
 
-    // Własna tapeta: obraz zmniejszany w przeglądarce i zapamiętywany tylko na tym urządzeniu (bez wysyłania na serwer)
-    const WALL_KEY = 'cc_search_wallpaper';
+    // Obsługa tapety: oficjalne motywy CC + własna tapeta użytkownika (localStorage)
     const wallBtn = document.getElementById('ccOmniWallBtn');
+    const wallLabel = document.getElementById('ccOmniWallLabel');
+    const wallUpload = document.getElementById('ccOmniWallUpload');
     const wallReset = document.getElementById('ccOmniWallReset');
     const wallFile = document.getElementById('ccOmniWallFile');
     const credit = document.getElementById('ccOmniCredit');
-    const DEFAULT_CREDIT = credit.textContent;
-    const applyWall = (dataUrl) => {
-      overlay.style.backgroundImage = dataUrl ? `url("${dataUrl}")` : '';
-      wallReset.hidden = !dataUrl;
-      credit.textContent = dataUrl ? 'Tło: Twoja tapeta' : DEFAULT_CREDIT;
+
+    currentWallId = 'polska-radio';
+
+    const applyWall = (wallVal) => {
+      const preset = PRESET_WALLS.find(p => p.id === wallVal);
+      if (preset) {
+        currentWallId = preset.id;
+        overlay.style.backgroundImage = `url("${preset.desktop}")`;
+        if (credit) credit.textContent = preset.credit;
+        if (wallLabel) wallLabel.textContent = `Tło: ${preset.name}`;
+        if (wallBtn) {
+          wallBtn.title = `Zmień tło wyszukiwarki (aktualne: ${preset.name})`;
+          wallBtn.setAttribute('aria-label', `Zmień tło wyszukiwarki (aktualne: ${preset.name})`);
+        }
+        if (wallReset) wallReset.hidden = (preset.id === 'polska-radio');
+      } else if (!wallVal) {
+        currentWallId = 'polska-radio';
+        overlay.style.backgroundImage = `url("${PRESET_WALLS[0].desktop}")`;
+        if (credit) credit.textContent = PRESET_WALLS[0].credit;
+        if (wallLabel) wallLabel.textContent = `Tło: ${PRESET_WALLS[0].name}`;
+        if (wallBtn) {
+          wallBtn.title = `Galeria teł (aktualne: ${PRESET_WALLS[0].name})`;
+          wallBtn.setAttribute('aria-label', `Wybierz tło wyszukiwarki (aktualne: ${PRESET_WALLS[0].name})`);
+        }
+        if (wallReset) wallReset.hidden = true;
+      } else {
+        currentWallId = 'custom';
+        overlay.style.backgroundImage = `url("${wallVal}")`;
+        if (credit) credit.textContent = 'Tło: Twoja tapeta';
+        if (wallLabel) wallLabel.textContent = 'Tło: Własna';
+        if (wallBtn) {
+          wallBtn.title = 'Galeria teł (aktualne: Twoja tapeta)';
+          wallBtn.setAttribute('aria-label', 'Wybierz tło wyszukiwarki (aktualne: Twoja tapeta)');
+        }
+        if (wallReset) wallReset.hidden = false;
+      }
     };
-    try { applyWall(localStorage.getItem(WALL_KEY)); } catch (_) {}
-    wallBtn.addEventListener('click', () => wallFile.click());
-    wallReset.addEventListener('click', () => {
-      try { localStorage.removeItem(WALL_KEY); } catch (_) {}
-      applyWall(null);
-    });
+    applyWallGlobal = (v) => applyWall(v);
+
+    try {
+      const saved = localStorage.getItem(WALL_KEY);
+      applyWall(saved);
+    } catch (_) {
+      applyWall('polska-radio');
+    }
+
+    if (wallBtn) {
+      wallBtn.addEventListener('click', (e) => {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        openWallpaperModal();
+      });
+    }
+
+    if (wallUpload) {
+      wallUpload.addEventListener('click', () => {
+        if (wallFile) wallFile.click();
+      });
+    }
+
+    if (wallReset) {
+      wallReset.addEventListener('click', () => {
+        try { localStorage.removeItem(WALL_KEY); } catch (_) {}
+        applyWall('polska-radio');
+      });
+    }
     wallFile.addEventListener('change', () => {
       const file = wallFile.files && wallFile.files[0];
       wallFile.value = '';
@@ -4397,6 +8527,7 @@ ${isStandalonePage ? '' : `
           try {
             localStorage.setItem(WALL_KEY, dataUrl);
             applyWall(dataUrl);
+            renderWallpaperGrid();
             return;
           } catch (_) {}
         }
@@ -4415,29 +8546,43 @@ ${isStandalonePage ? '' : `
     }
 
     // PLAY/STOP Radia CC: wspólny odtwarzacz ekosystemu (cc-chat-radio.js); start liczy się do /milion (cc-radio-milion.js)
-    const radioBtn = document.getElementById('ccOmniRadio');
-    const loadScript = (src) => new Promise((resolve, reject) => {
-      const s = document.createElement('script');
-      s.src = src;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-    let radioReady = null;
-    const ensureRadio = () => radioReady || (radioReady = (async () => {
-      if (!window.CCRadioStations) await loadScript('/js/cc-radio-catalog.js?v=20261025_repertoire');
-      if (!window.CCChatRadio) await loadScript('/js/cc-chat-radio.js?v=20261026_spectrum1');
-      if (!window.CCRadioMilion) await loadScript('/js/cc-radio-milion.js?v=20261011_2');
-      window.CCChatRadio.subscribe((st) => {
-        radioBtn.setAttribute('aria-pressed', String(!!st.playing));
-        radioBtn.setAttribute('aria-label', st.playing ? 'Zatrzymaj Radio Christian Culture' : 'Słuchaj Radia Christian Culture');
+    // Przycisk + obok PLAY otwierający panel krawędziowy EkoCC (L0 29.10.2026)
+    // Usuniecie ewentualnego zduplikowanego pierwszego przycisku + (L0 29.10.2026)
+    overlay.querySelectorAll('.cc-omni-topnav .cc-mobile-edge-trigger:not(#ccOmniEdgeBtn)').forEach(d => d.remove());
+
+    const edgeBtn = document.getElementById('ccOmniEdgeBtn');
+    if (edgeBtn) {
+      edgeBtn.addEventListener('click', (e) => {
+        const dialog = document.getElementById('cc-mobile-edge-dialog');
+        if (dialog) {
+          dialog.dataset.profile = 'search';
+          const nav = dialog.querySelector('nav');
+          if (nav && !nav.querySelector('[data-edge-key="heart"]')) {
+            const heartLink = document.createElement('a');
+            heartLink.href = '/wspieraj';
+            heartLink.dataset.edgeKey = 'heart';
+            heartLink.setAttribute('aria-label', 'Wspieram To — Wolne Media Boże');
+            heartLink.title = 'Wspieram To — Wolne Media Boże';
+            heartLink.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg>';
+            const searchLink = nav.querySelector('[data-edge-key="search"]');
+            if (searchLink && searchLink.nextSibling) nav.insertBefore(heartLink, searchLink.nextSibling);
+            else nav.appendChild(heartLink);
+          }
+          if (!dialog.open && typeof dialog.showModal === 'function') {
+            e.stopPropagation();
+            dialog.showModal();
+            document.body.style.overflow = 'hidden';
+            edgeBtn.setAttribute('aria-expanded', 'true');
+          }
+        }
       });
-      return window.CCChatRadio;
-    })());
+    }
+
+    const radioBtn = document.getElementById('ccOmniRadio');
     radioBtn.addEventListener('click', async () => {
       radioBtn.classList.add('cc-loading');
       try {
-        const radio = await ensureRadio();
+        const radio = await ensureOmniRadio();
         if (radio.state().playing) {
           radio.pause();
         } else {
@@ -4448,13 +8593,13 @@ ${isStandalonePage ? '' : `
         }
       } catch (_) {
         radioBtn.setAttribute('aria-label', 'Radio chwilowo niedostępne — spróbuj ponownie');
-        radioReady = null;
+        omniRadioReady = null;
       } finally {
         radioBtn.classList.remove('cc-loading');
       }
     });
     // Jeśli radio już gra na tej stronie, przycisk od razu pokazuje STOP
-    if (window.CCChatRadio) ensureRadio();
+    if (window.CCChatRadio) ensureOmniRadio();
 
     // Przełącznik G: Christian Culture ↔ Google (cały internet)
     const engineBtn = document.getElementById('ccOmniEngine');
@@ -4559,6 +8704,147 @@ ${isStandalonePage ? '' : `
 
     // Faza 2: Obsługa kopiowania linku / wersetu oraz hoveru na wynikach dla Split-View
     overlay.addEventListener('click', (e) => {
+      // Obsługa otwierania generatora kart / udostępniania (P6)
+      const shareCardBtn = e.target.closest('[data-action="open-share-card"]');
+      if (shareCardBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const verseText = shareCardBtn.getAttribute('data-verse') || '';
+        const refTitle = shareCardBtn.getAttribute('data-ref') || '';
+        openShareModal(verseText, refTitle);
+        return;
+      }
+
+      // Kopiowanie odpowiedzi RAG (Etap 5)
+      const copyRagBtn = e.target.closest('[data-action="copy-rag-answer"]');
+      if (copyRagBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const textToCopy = copyRagBtn.getAttribute('data-answer');
+        if (textToCopy && navigator.clipboard) {
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const span = copyRagBtn.querySelector('span');
+            if (span) {
+              const orig = span.textContent;
+              span.textContent = 'Skopiowano odpowiedź!';
+              setTimeout(() => { span.textContent = orig; }, 1800);
+            }
+          }).catch(() => {});
+        }
+        return;
+      }
+
+      // Obsługa otwierania modlitewnika tematycznego (P5)
+      const prayerTrigger = e.target.closest('[data-action="toggle-prayer"]');
+      if (prayerTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        const targetId = prayerTrigger.getAttribute('data-target');
+        const box = document.getElementById(targetId);
+        if (box) {
+          const isOpen = box.style.display !== 'none';
+          box.style.display = isOpen ? 'none' : 'block';
+          prayerTrigger.setAttribute('aria-expanded', String(!isOpen));
+          if (!isOpen) box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+        return;
+      }
+
+      // Kopiowanie modlitwy (P5)
+      const copyPrayerBtn = e.target.closest('[data-action="copy-prayer"]');
+      if (copyPrayerBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const prayerToCopy = copyPrayerBtn.getAttribute('data-prayer');
+        if (prayerToCopy && navigator.clipboard) {
+          navigator.clipboard.writeText(prayerToCopy).then(() => {
+            const span = copyPrayerBtn.querySelector('span');
+            if (span) {
+              const orig = span.textContent;
+              span.textContent = 'Skopiowano modlitwę!';
+              setTimeout(() => { span.textContent = orig; }, 1600);
+            }
+          }).catch(() => {});
+        }
+        return;
+      }
+
+      // Obsługa odtwarzania audio wersetu / cytatu (P4)
+      const playVerseBtn = e.target.closest('[data-action="toggle-audio"]');
+      if (playVerseBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const verseText = playVerseBtn.getAttribute('data-verse') || '';
+        const refTitle = playVerseBtn.getAttribute('data-ref') || '';
+        toggleBibleAudio(verseText, refTitle);
+        return;
+      }
+
+      // Wybór prędkości lektora (P4)
+      const speedBtn = e.target.closest('.cc-speed-btn');
+      if (speedBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const speed = parseFloat(speedBtn.getAttribute('data-speed')) || 1.0;
+        currentAudioSpeed = speed;
+        document.querySelectorAll('.cc-speed-btn').forEach(b => b.classList.remove('active'));
+        speedBtn.classList.add('active');
+        if (currentAudioState === 'playing' && currentAudioUtterance) {
+          const vText = currentAudioUtterance.text;
+          playBibleAudio(vText, '', speed);
+        }
+        return;
+      }
+
+      const compareTrigger = e.target.closest('[data-action="toggle-compare"]');
+      if (compareTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        const refKey = compareTrigger.getAttribute('data-ref') || '';
+        const idSafe = 'ccComparePanel_' + refKey.replace(/[^a-zA-Z0-9]/g, '_');
+        const panel = document.getElementById(idSafe) || compareTrigger.closest('.cc-scripture-card, .cc-quote-verification-card')?.querySelector('.cc-scripture-compare-panel');
+        if (panel) {
+          const isOpen = panel.style.display !== 'none';
+          panel.style.display = isOpen ? 'none' : 'block';
+          compareTrigger.setAttribute('aria-expanded', String(!isOpen));
+          if (!isOpen) panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+        return;
+      }
+
+      const copyTransBtn = e.target.closest('.cc-btn-copy-trans');
+      if (copyTransBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const textToCopy = copyTransBtn.getAttribute('data-copy');
+        if (textToCopy && navigator.clipboard) {
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const orig = copyTransBtn.textContent;
+            copyTransBtn.textContent = 'Skopiowano!';
+            setTimeout(() => { copyTransBtn.textContent = orig; }, 1600);
+          }).catch(() => {});
+        }
+        return;
+      }
+
+      const quoteCopyBtn = e.target.closest('#ccQuoteCopyCanonicalBtn');
+      if (quoteCopyBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const qText = quoteCopyBtn.getAttribute('data-quote');
+        if (qText && navigator.clipboard) {
+          navigator.clipboard.writeText(qText).then(() => {
+            const span = quoteCopyBtn.querySelector('span');
+            if (span) {
+              const orig = span.textContent;
+              span.textContent = 'Skopiowano do schowka!';
+              setTimeout(() => { span.textContent = orig; }, 1800);
+            }
+          }).catch(() => {});
+        }
+        return;
+      }
+
       const tokenChip = e.target.closest('.cc-token-chip');
       if (tokenChip) {
         e.preventDefault();
@@ -4634,6 +8920,9 @@ ${isStandalonePage ? '' : `
     });
 
     overlay.addEventListener('mouseover', (e) => {
+      if (e.target.closest('.cc-omni-featured-section')) {
+        isFeaturedHovered = true;
+      }
       const it = e.target.closest('.cc-omni-item');
       if (!it) return;
       const allItems = Array.from(overlay.querySelectorAll('.cc-omni-item'));
@@ -4646,6 +8935,19 @@ ${isStandalonePage ? '' : `
         }
       }
     });
+
+        overlay.addEventListener('mouseout', (e) => {
+      if (e.target.closest('.cc-omni-featured-section') && !e.relatedTarget?.closest('.cc-omni-featured-section')) {
+        isFeaturedHovered = false;
+      }
+    });
+
+    overlay.addEventListener('touchstart', (e) => {
+      if (e.target.closest('.cc-omni-featured-section')) {
+        isFeaturedHovered = true;
+        setTimeout(() => { isFeaturedHovered = false; }, 4000);
+      }
+    }, { passive: true });
 
     clearBtn.addEventListener('click', () => {
       input.value = '';
@@ -4775,8 +9077,10 @@ ${isStandalonePage ? '' : `
       currentResults = [];
       activeIndex = -1;
       body.innerHTML = renderHome();
+      startFeaturedRotation();
       return;
     }
+    stopFeaturedRotation();
     const { items, guide, isSuggestion, suggestionNote, autocorrect } = performSearch(query, filter);
     currentResults = items;
     activeIndex = (items && items.length > 0) ? 0 : -1;
@@ -4792,6 +9096,18 @@ ${isStandalonePage ? '' : `
     // Biblia Intelligence: Detekcja tematu biblijnego (jeśli brak bezpośredniego wersetu i lematu)
     const bibleTopic = (!bibleMatch && !lemmaMatch) ? detectBibleTopic(query) : null;
     const bibleTopicCardHtml = bibleTopic ? renderBibleTopicCard(bibleTopic) : '';
+
+    // Biblia Intelligence CC (P2): Detekcja miejsca biblijnego i atlasu (OpenBible / OSM)
+    const placeMatch = (!bibleMatch && !lemmaMatch) ? detectBiblePlace(query) : null;
+    const placeCardHtml = placeMatch ? renderPlaceCard(placeMatch) : '';
+
+    // Biblia Intelligence CC (P3): Weryfikacja cytowań Pisma Świętego (jeśli brak bezpośredniej sigli)
+    const quoteVerification = (!bibleMatch) ? verifyBibleQuote(query) : null;
+    const quoteVerificationCardHtml = quoteVerification ? renderQuoteVerificationCard(quoteVerification) : '';
+
+    // Etap 5: Detekcja pytania biblijnego i synteza RAG CC (ZERO COST)
+    const ragMatch = (!bibleMatch && !lemmaMatch) ? detectBibleRagQuery(query) : null;
+    const ragCardHtml = ragMatch ? renderBibleRagCard(ragMatch) : '';
 
     // Faza 2: Detekcja intencji duszpasterskiej / pomocy
     const isHope = detectHopeIntent(query);
@@ -4812,8 +9128,17 @@ ${isStandalonePage ? '' : `
     if (scriptureCardHtml) {
       leftColHtml += scriptureCardHtml;
     }
+    if (ragCardHtml) {
+      leftColHtml += ragCardHtml;
+    }
+    if (quoteVerificationCardHtml) {
+      leftColHtml += quoteVerificationCardHtml;
+    }
     if (lemmaCardHtml) {
       leftColHtml += lemmaCardHtml;
+    }
+    if (placeCardHtml) {
+      leftColHtml += placeCardHtml;
     }
     if (bibleTopicCardHtml) {
       leftColHtml += bibleTopicCardHtml;
@@ -4967,7 +9292,21 @@ ${isStandalonePage ? '' : `
     chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     map: '<path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Z"/><path d="M9 3v15M15 6v15"/>',
-    heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>'
+        sparkle: '<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/>',
+    shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    volume: '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>',
+    scroll: '<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/>',
+    compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+    bookmark: '<path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/>',
+    newspaper: '<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8V6Z"/>',
+    scale: '<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h18"/>',
+    users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+    heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
+    mic: '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
+    book: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+    moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
   };
   const svgIcon = (name, size = 22) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${HOME_ICONS[name] || ''}</svg>`;
   // Menu „Wszystko”: cały ekosystem w sekcjach z rejestru linków (L0 24.10.2026); każdy adres sprawdzony 26.10.2026 (200).
@@ -5065,6 +9404,790 @@ ${isStandalonePage ? '' : `
     if (d.toDateString() === y.toDateString()) return 'Odwiedzono wczoraj, ' + time;
     return 'Odwiedzono ' + d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' });
   }
+    // ── Silnik Dynamicznych Okien Propozycji („Tętniąca Życiem Wyszukiwarka EkoCC” — Wersja Premium) ──
+  const FEATURED_MODES = [
+    { id: 0, label: 'Dla Ciebie', fullLabel: 'Dla Ciebie • Pora Dnia & Kalendarz', icon: 'sparkle' },
+    { id: 1, label: 'Słowo & Kurs', fullLabel: 'Słowo Boże & Kurs Codzienny', icon: 'bible' },
+    { id: 2, label: 'Proroctwa', fullLabel: 'Proroctwa & Czas Końca', icon: 'compass' },
+    { id: 3, label: 'Radio & Live', fullLabel: 'Radio 24/7 & Telewizja Uwielbienia', icon: 'radio' },
+    { id: 4, label: 'CCN & Wiedza', fullLabel: 'Aktualności CCN, Nauka & Historia', icon: 'newspaper' },
+    { id: 5, label: 'Pokój & Pomoc', fullLabel: 'Pokój Serca, Modlitwa & Wsparcie', icon: 'heart' },
+    { id: 6, label: 'Kino & Audio', fullLabel: 'Kino VOD, Słuchowiska & Książki', icon: 'film' },
+    { id: 7, label: 'Społeczność', fullLabel: 'LUMINA, Rodzina & Rozwój', icon: 'users' }
+  ];
+
+  function getSmartContextInfo(nowDate = new Date()) {
+    const hour = nowDate.getHours();
+    const dayOfWeek = nowDate.getDay(); // 0=Nd, 5=Pt, 6=Sob
+    const dayOfMonth = nowDate.getDate();
+    const month = nowDate.getMonth() + 1; // 1..12
+    const lessonDay = Math.max(1, Math.min(31, dayOfMonth));
+    const monthsGenitive = [
+      '', 'Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca',
+      'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'
+    ];
+    const dateShort = `${dayOfMonth} ${monthsGenitive[month] || ''}`.trim();
+
+    // 1. Karta Pory Dnia (Slot 0)
+    let timeCard;
+    let timeContextLabel;
+    if (hour >= 5 && hour < 12) {
+      timeContextLabel = 'Poranek ze Słowem';
+      timeCard = {
+        tag: 'PORANEK ZE SŁOWEM',
+        badge: 'PORANEK',
+        title: 'Rozważanie „Dobrze, że jesteś” i Werset Dnia',
+        desc: 'Rozpocznij dzień z Bożą obietnicą, modlitwą i pokojem serca na nowe wyzwania.',
+        url: '/werset-dnia',
+        icon: 'sun'
+      };
+    } else if (hour >= 12 && hour < 17) {
+      timeContextLabel = 'Popołudnie z Radiem i Słowem';
+      timeCard = {
+        tag: 'SŁUCHAJ W CIĄGU DNIA',
+        badge: 'LIVE 24/7',
+        title: 'Radio Christian Culture 24/7 & Audycje Dnia',
+        desc: 'Muzyka uwielbienia, Biblia Audio i budujące pasma towarzyszące Ci w pracy i w drodze.',
+        url: '/player',
+        icon: 'radio'
+      };
+    } else if (hour >= 17 && hour < 22) {
+      timeContextLabel = 'Wieczorne Studium i Wyciszenie';
+      timeCard = {
+        tag: 'WIECZÓR Z BOGIEM',
+        badge: 'WIECZÓR',
+        title: 'Wieczorne Studium: Apokalipsa & Kino VOD',
+        desc: 'Odpocznij po całym dniu przy profetycznym Słowie Bożym lub wartościowym filmie.',
+        url: '/apokalipsa-live',
+        icon: 'film'
+      };
+    } else {
+      timeContextLabel = 'Nocne Ukojenie i Boży Pokój';
+      timeCard = {
+        tag: 'NOCNE PASMO POKOJU',
+        badge: 'NOC 24/7',
+        title: 'Nocne Ukojenie: Psalmy, Ambient Sleep & Modlitwa',
+        desc: 'Łagodne brzmienia uwielbienia i biblijne obietnice na spokojny, głęboki sen bez lęku.',
+        url: '/cctv24-worship',
+        icon: 'moon'
+      };
+    }
+
+    // 2. Karta Wydarzeń, Okoliczności, Świąt i Dnia Tygodnia (Slot 1)
+    let occasionCard;
+    let occasionLabel = dateShort;
+    const isSabbath = (dayOfWeek === 6) || (dayOfWeek === 5 && hour >= 16);
+    const isReformationLightSeason = (month === 10 && dayOfMonth >= 24) || (month === 11 && dayOfMonth <= 5);
+    const isIndependenceSeason = (month === 11 && dayOfMonth >= 8 && dayOfMonth <= 14);
+    const isNativitySeason = (month === 12 && dayOfMonth >= 15) || (month === 1 && dayOfMonth <= 6);
+    const isPaschaSeason = (month === 3 && dayOfMonth >= 20) || (month === 4 && dayOfMonth <= 25);
+    const isSummerMission = (month === 7 || month === 8);
+
+    if (isSabbath) {
+      occasionLabel = 'Święty Czas Odpocznienia • Szabat';
+      occasionCard = {
+        tag: 'ŚWIĘTY CZAS ODPOCZNIENIA',
+        badge: 'SZABAT',
+        title: 'Błogosławiony Szabat: Odpocznij w Bożej Obecności',
+        desc: 'Śpiewane Psalmy, uwielbienie i studium Słowa na święty dzień odpocznienia (Wj 20:8–11).',
+        url: '/biblia-spiewana-live',
+        icon: 'worship'
+      };
+    } else if (isReformationLightSeason) {
+      occasionLabel = `Reformacja & Światło (${dateShort})`;
+      occasionCard = {
+        tag: 'WYDARZENIE SEZONU',
+        badge: 'ŚWIATŁO vs MROK',
+        title: 'Światło Zwycięża Mrok — Reformacja & Prawda Biblijna',
+        desc: 'Dlaczego chrześcijanie wybierają Życie i Światłość Chrystusa? Biblijna odpowiedź na kulturę mroku.',
+        url: '/Halloween',
+        icon: 'shield'
+      };
+    } else if (isIndependenceSeason) {
+      occasionLabel = `Modlitwa za Polskę (${dateShort})`;
+      occasionCard = {
+        tag: 'WYDARZENIE NARODOWE',
+        badge: 'ZA POLSKĘ',
+        title: 'Zjednoczeni za Polskę — Modlitwa o Naród i Pokój',
+        desc: 'Wspólne wstawiennictwo o błogosławieństwo, mądrość i Bożą ochronę dla naszej Ojczyzny.',
+        url: '/zapolske-live',
+        icon: 'flag'
+      };
+    } else if (isNativitySeason) {
+      occasionLabel = 'Proroctwa Mesjańskie • Immanuel';
+      occasionCard = {
+        tag: 'PROROCTWA MESJAŃSKIE',
+        badge: 'IMMANUEL',
+        title: 'Bóg z Nami — 300 Proroctw o Narodzeniu Mesjasza',
+        desc: 'Odkryj niezwykłe wypełnienie starotestamentowych proroctw o przyjściu Zbawiciela Świata.',
+        url: '/mojabiblia',
+        icon: 'star'
+      };
+    } else if (isPaschaSeason) {
+      occasionLabel = 'Pascha & Zmartwychwstanie';
+      occasionCard = {
+        tag: 'PASCHA & KRZYŻ',
+        badge: 'ZMARTWYCHWSTANIE',
+        title: 'Baranek Boży i Pusty Grób — Fundament Wiary',
+        desc: 'Historyczne i biblijne świadectwa zmartwychwstania Jezusa Chrystusa oraz nowego życia.',
+        url: '/Ewangelia',
+        icon: 'cross'
+      };
+    } else if (isSummerMission) {
+      occasionLabel = 'Misja Boże Wakacje';
+      occasionCard = {
+        tag: 'CYKL BOŻE WAKACJE',
+        badge: 'LATO CC',
+        title: 'Boże Wakacje — Odpoczynek, Misja i Ewangelizacja',
+        desc: 'Inspiracje w podróży, Biblia Audio i codzienne umocnienie podczas letniego wypoczynku.',
+        url: '/akademia',
+        icon: 'compass'
+      };
+    } else if (dayOfWeek === 0) {
+      occasionLabel = `Niedziela dla Rodziny (${dateShort})`;
+      occasionCard = {
+        tag: 'CZAS DLA RODZINY',
+        badge: 'NIEDZIELA',
+        title: 'Cyfrowy Detoks i Rodzinne Kino Chrześcijańskie',
+        desc: 'Jak odzyskać prawdziwą bliskość przy wspólnym stole oraz budujące filmy dla całego domu.',
+        url: '/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj',
+        icon: 'family'
+      };
+    } else {
+      occasionCard = {
+        tag: 'INTERLINEARNA BIBLIA',
+        badge: 'GREKA & HEBR',
+        title: 'MojaBiblia: Kody Stronga & Greka',
+        desc: 'Badaj oryginalne znaczenie słów hebrajskich i greckich z przekładami UBG, BW, BT i BG.',
+        url: '/mojabiblia',
+        icon: 'scroll'
+      };
+    }
+
+    // 3. Karta Kalendarzowej Lekcji Dnia (Slot 2)
+    const dailyLessonCard = {
+      tag: 'LEKCJA NA DZIŚ',
+      badge: `DZIEŃ ${lessonDay}`,
+      title: `Kurs Codzienny (Dzień ${lessonDay}): Z Biblią za Pan Brat`,
+      desc: 'Dzisiejsze rozważanie Pisma Świętego werset po wersecie przygotowane dokładnie na ten dzień.',
+      url: `/akademia/kurscodzienny/dzien-${lessonDay}`,
+      icon: 'calendar'
+    };
+
+    // 4. Karta Dopasowana do Indywidualnych Potrzeb Użytkownika (Slot 3)
+    let personalCard = {
+      tag: 'POKÓJ SERCA • NA DZIŚ',
+      badge: 'DLA CIEBIE',
+      title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
+      desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
+      url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+      icon: 'newspaper'
+    };
+
+    try {
+      const recents = getRecentSearches();
+      const joinedQueries = recents.join(' ').toLowerCase();
+      let favs = [];
+      let history = [];
+      if (typeof localStorage !== 'undefined') {
+        favs = JSON.parse(localStorage.getItem('cc_user_favorites') || '[]');
+        history = JSON.parse(localStorage.getItem('cc_user_visit_history') || '[]');
+      }
+      favs = (Array.isArray(favs) ? favs : []).filter(f => f && f.url && f.title && !/^\/(wyszukiwarka|szukaj)\b/i.test(f.url));
+      history = (Array.isArray(history) ? history : []).filter(h => h && h.url && h.title && !/^\/(wyszukiwarka|szukaj)\b/i.test(h.url));
+
+      if (/lęk|lek|strach|stres|depres|dług|dlug|kredyt|pomoc|kryzys|samotn|ból|bol/.test(joinedQueries)) {
+        personalCard = {
+          tag: 'WSPARCIE I RATUNEK',
+          badge: 'DOPASOWANE',
+          title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
+          desc: 'Biblijne uciszenie burzy w sercu, wsparcie modlitewne 24/7 i wyjście z kryzysu.',
+          url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+          icon: 'heart'
+        };
+      } else if (/apokalips|daniel|proroc|koniec|znak|besti|objawieni/.test(joinedQueries)) {
+        personalCard = {
+          tag: 'TWOJE ZAINTERESOWANIA',
+          badge: 'PROROCTWA',
+          title: 'APOKALIPSA — Księga Nadziei (Wykłady SDS)',
+          desc: 'Kontynuuj odkrywanie proroctw Księgi Daniela i Objawienia św. Jana w świetle Biblii.',
+          url: '/apokalipsa-live',
+          icon: 'compass'
+        };
+      } else if (/muzyk|śpiew|spiew|karaoke|uwielbieni|psalm|radio/.test(joinedQueries)) {
+        personalCard = {
+          tag: 'TWOJE BRZMIENIE 24/7',
+          badge: 'UWIELBIENIE',
+          title: 'Śpiewane Psalmy i Przypowieści (Karaoke Live)',
+          desc: 'Transmisja telewizyjna na żywo z dynamicznym karaoke biblijnym i pieśniami chwały.',
+          url: '/biblia-spiewana-live',
+          icon: 'music'
+        };
+      } else if (favs.length > 0) {
+        personalCard = {
+          tag: 'TWOJE ULUBIONE',
+          badge: 'ULUBIONE ★',
+          title: String(favs[0].title),
+          desc: 'Wróć jednym kliknięciem do zapisanego przez Ciebie materiału w ekosystemie CC.',
+          url: String(favs[0].url),
+          icon: 'star'
+        };
+      } else if (history.length > 0) {
+        personalCard = {
+          tag: 'KONTYNUUJ ODKRYWANIE',
+          badge: 'TWOJA ŚCIEŻKA',
+          title: String(history[0].title),
+          desc: 'Kontynuuj dokładnie tam, gdzie ostatnio zakończyłeś lekturę lub odsłuch.',
+          url: String(history[0].url),
+          icon: 'clock'
+        };
+      }
+    } catch (_) {}
+
+    return {
+      pillText: `${timeContextLabel} • ${occasionLabel}`,
+      cards: [timeCard, occasionCard, dailyLessonCard, personalCard]
+    };
+  }
+
+  // 8 Zestawów Tematycznych × 4 Sloty = 32 Wyselekcjonowane Propozycje Premium
+  const FEATURED_POOLS = [
+    // Slot 0 (Lewy Górny) — 8 zestawów (0..7)
+    [
+      {
+        tag: 'Inspiracja na Dziś',
+        badge: 'PORANEK',
+        title: 'Rozważanie „Dobrze, że jesteś”',
+        desc: 'Codzienne słowo umocnienia, modlitwa i Boży pokój na każdy dzień.',
+        url: '/player',
+        icon: 'heart'
+      },
+      {
+        tag: 'Słowo Boże na Dziś',
+        badge: 'OBIETNICA',
+        title: 'Mój Werset Dnia z Obietnicą',
+        desc: 'Losuj i rozważaj żywe obietnice Pisma Świętego przygotowane na dziś.',
+        url: '/werset-dnia',
+        icon: 'sparkle'
+      },
+      {
+        tag: 'Podcast Spotify SDS',
+        badge: 'PODCAST',
+        title: 'APOKALIPSA — Księga Nadziei',
+        desc: 'Profetyczny cykl wykładów biblijnych Studia Dobrego Słowa werset po wersecie.',
+        url: '/podcasty',
+        icon: 'mic'
+      },
+      {
+        tag: 'Nadajemy 24/7',
+        badge: 'LIVE 24/7',
+        title: 'Radio Christian Culture & Player',
+        desc: 'Muzyka uwielbienia, słuchowiska Biblia Audio i stacje tematyczne non-stop.',
+        url: '/player',
+        icon: 'radio'
+      },
+      {
+        tag: 'Portal Informacyjny CC',
+        badge: 'CCN NEWS',
+        title: 'Aktualności CCN — Świat w Świetle Biblii',
+        desc: 'Rzetelne analizy wydarzeń, komentarze i publicystyka bez manipulacji.',
+        url: '/news',
+        icon: 'newspaper'
+      },
+      {
+        tag: 'Psychologia & Wiara',
+        badge: 'POKÓJ SERCA',
+        title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
+        desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
+        url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+        icon: 'heart'
+      },
+      {
+        tag: 'Kino Chrześcijańskie VOD',
+        badge: 'BEZ REKLAM',
+        title: 'Filmy Fabularne i Dokumentalne CC',
+        desc: 'Wartościowe kino chrześcijańskie dla całej rodziny bez opłat i subskrypcji.',
+        url: '/vod',
+        icon: 'film'
+      },
+      {
+        tag: 'Społeczność Wiary',
+        badge: 'LUMINA',
+        title: 'Portal Społecznościowy LUMINA',
+        desc: 'Dołącz do chrześcijan z całej Polski — dyskusje, świadectwa i wspólna modlitwa.',
+        url: '/lumina',
+        icon: 'users'
+      }
+    ],
+    // Slot 1 (Prawy Górny) — 8 zestawów (0..7)
+    [
+      {
+        tag: 'Interlinearna Biblia',
+        badge: 'GREKA & HEBR',
+        title: 'MojaBiblia: Kody Stronga & Greka',
+        desc: 'Oryginalne znaczenie słów hebrajskich i greckich w Twojej przeglądarce.',
+        url: '/mojabiblia',
+        icon: 'scroll'
+      },
+      {
+        tag: 'Interlinearna Biblia',
+        badge: '4 PRZEKŁADY',
+        title: 'MojaBiblia: Kody Stronga & Greka',
+        desc: 'Porównuj przekłady UBG, BW, BT i BG ze słownikiem grecko-hebrajskim.',
+        url: '/mojabiblia',
+        icon: 'bible'
+      },
+      {
+        tag: 'Kurs Proroctw Biblijnych',
+        badge: 'PROROCTWA',
+        title: 'Księga Daniela — 2300 Wieczorów i Poranków',
+        desc: 'Klucz do zrozumienia czasów ostatecznych i nadziei Zbawienia w Chrystusie.',
+        url: '/akademia',
+        icon: 'compass'
+      },
+      {
+        tag: 'Biblia Śpiewana Live 24/7',
+        badge: 'KARAOKE TV',
+        title: 'Śpiewane Psalmy i Przypowieści',
+        desc: 'Transmisja telewizyjna na żywo z dynamicznym karaoke biblijnym non-stop.',
+        url: '/biblia-spiewana-live',
+        icon: 'tv'
+      },
+      {
+        tag: 'Nauka & Stworzenie',
+        badge: 'ODKRYCIA',
+        title: 'Portal Nauka — Dowody Bożego Projektu',
+        desc: 'Fascynujące odkrycia fizyki, kosmologii i biologii potwierdzające Stworzenie.',
+        url: '/nauka',
+        icon: 'flask'
+      },
+      {
+        tag: 'Wstawiennictwo 24/7',
+        badge: 'MODLITWA',
+        title: 'Całodobowa Modlitwa Wstawiennicza BCM24',
+        desc: 'Zostaw intencję modlitewną lub dołącz do strażników modlitwy o każdej porze.',
+        url: '/BCM24',
+        icon: 'pray'
+      },
+      {
+        tag: 'Słuchowisko Biblijne',
+        badge: 'AUDIO HD',
+        title: 'Biblia Audio — Nowy Testament UBG',
+        desc: 'Żywe Słowo Boże z profesjonalną muzyką i udźwiękowieniem radiowym.',
+        url: '/player',
+        icon: 'volume'
+      },
+      {
+        tag: 'Relacje & Małżeństwo',
+        badge: 'RODZINA',
+        title: 'Cyfrowy detoks w chrześcijańskim domu',
+        desc: 'Jak odzyskać prawdziwą bliskość przy wspólnym stole (Wioletta Rogowska).',
+        url: '/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj',
+        icon: 'family'
+      }
+    ],
+    // Slot 2 (Lewy Dolny) — 8 zestawów (0..7)
+    [
+      {
+        tag: 'Akademia Biblijna',
+        badge: 'LEKCJA DNIA',
+        title: 'Lekcja Dnia: Z Biblią za Pan Brat',
+        desc: 'Codzienne studium Pisma Świętego werset po wersecie z komentarzem.',
+        url: '/akademia#kurscodzienny',
+        icon: 'book'
+      },
+      {
+        tag: 'Akademia Biblijna',
+        badge: 'KURS 31 DNI',
+        title: 'Lekcja Dnia: Z Biblią za Pan Brat',
+        desc: 'Systematyczny kurs biblijny prowadzący przez kluczowe księgi Pisma Świętego.',
+        url: '/akademia#kurscodzienny',
+        icon: 'calendar'
+      },
+      {
+        tag: 'Kanał Profetyczny 24/7',
+        badge: 'WIDEO LIVE',
+        title: 'Apokalipsa Live — Wykłady Wideo Non-Stop',
+        desc: 'Całodobowe pasmo telewizyjne z wykładami o proroctwach Księgi Objawienia.',
+        url: '/apokalipsa-live',
+        icon: 'tv'
+      },
+      {
+        tag: 'Telewizja CCTV24 Worship',
+        badge: 'PASMO NOCNE',
+        title: 'CCTV24 — Pasmo Bożej Obecności',
+        desc: 'Nocne czuwania, modlitwy i pieśni chwały w krystalicznej jakości HD.',
+        url: '/cctv24-worship',
+        icon: 'play'
+      },
+      {
+        tag: 'Historia & Korzenie Wiary',
+        badge: 'HISTORIA',
+        title: 'Historia Chrześcijaństwa, Słowian i Biblii',
+        desc: 'Niezafałszowane dzieje Kościoła, Reformacji i polskich przekładów Pisma.',
+        url: '/historia',
+        icon: 'columns'
+      },
+      {
+        tag: 'Modlitwa & Wstawiennictwo',
+        badge: 'ZA POLSKĘ',
+        title: 'Zjednoczeni za Polskę — Czuwanie',
+        desc: 'Wspólna modlitwa narodu o pokój, Boże prowadzenie i duchowe przebudzenie.',
+        url: '/modlitwa',
+        icon: 'flag'
+      },
+      {
+        tag: 'Literatura Chrześcijańska',
+        badge: 'KSIĄŻKI',
+        title: 'Książki Autora & Powieść „Pardon, Czy To Miłość?”',
+        desc: 'Poruszająca literatura, poradniki duchowe i publikacje Cezarego Rogowskiego.',
+        url: '/ksiazki-autora',
+        icon: 'pen'
+      },
+      {
+        tag: 'Zdrowie Ciała i Ducha',
+        badge: 'HOLOS',
+        title: 'HOLOS — Biblijne Zdrowie, Sen i Odporność',
+        desc: 'Osiem naturalnych praw zdrowia, regeneracja organizmu i higiena myśli.',
+        url: '/holos',
+        icon: 'sparkle'
+      }
+    ],
+    // Slot 3 (Prawy Dolny) — 8 zestawów (0..7)
+    [
+      {
+        tag: 'Aktualności CCN • Na Dziś',
+        badge: 'POLECANE',
+        title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
+        desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
+        url: '/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+        icon: 'newspaper'
+      },
+      {
+        tag: 'Biblioteka Słowa Bożego',
+        badge: 'PDF & AUDIO',
+        title: 'Biblia do Pobrania Za Darmo (UBG / BG)',
+        desc: 'Pobierz Pismo Święte w formacie PDF oraz audiobooki do słuchania offline.',
+        url: '/biblia-do-pobrania',
+        icon: 'download'
+      },
+      {
+        tag: 'Obrona Wiary & Prawda',
+        badge: 'APOLOGETYKA',
+        title: 'Apologetyka Biblijna — Odpowiedzi na Trudne Pytania',
+        desc: 'Rzeczowe argumenty potwierdzające wiarygodność Biblii i proroctw mesjańskich.',
+        url: '/apologetyka',
+        icon: 'shield'
+      },
+      {
+        tag: 'Studio Śpiewu & Tekstów',
+        badge: 'ŚPIEWAJ Z NAMI',
+        title: 'Biblijne Uwielbienie & Studio Karaoke CC',
+        desc: 'Śpiewaj pieśni uwielbienia z zsynchronizowanym tekstem na żywo w przeglądarce.',
+        url: '/BiblijneUwielbienie',
+        icon: 'music'
+      },
+      {
+        tag: 'Analizy & Społeczeństwo',
+        badge: 'PRAWO & ETYKA',
+        title: 'Wolność Sumienia i Prawo Boże',
+        desc: 'Głębokie analizy wyzwań współczesnego świata w świetle Pisma Świętego.',
+        url: '/prawo',
+        icon: 'scale'
+      },
+      {
+        tag: 'Finanse & Szafarstwo',
+        badge: 'WOLNOŚĆ',
+        title: 'Boże Zasady Finansów i Wyjście z Długów',
+        desc: 'Praktyczna mądrość biblijna w zarządzaniu budżetem domowym i pokonywaniu długów.',
+        url: '/finanse',
+        icon: 'coins'
+      },
+      {
+        tag: 'Krótkie Formy Wideo',
+        badge: 'CC SHORTS',
+        title: 'CC Shorts — 60 Sekund z Dobrym Słowem',
+        desc: 'Dynamiczne pionowe rolki wideo z myślą dnia, wersetem i inspiracją.',
+        url: '/shorts',
+        icon: 'video'
+      },
+      {
+        tag: 'Nawigator Ekosystemu',
+        badge: '60+ MODUŁÓW',
+        title: 'Żywa Mapa Ekosystemu Christian Culture',
+        desc: 'Interaktywna mapa wszystkich portali, kanałów TV, kursów i narzędzi misji CC.',
+        url: '/mapa',
+        icon: 'map'
+      }
+    ]
+  ];
+
+  let activeFeaturedSet = 0;
+  let featuredRotationTimer = null;
+  let isFeaturedHovered = false;
+  let omniRadioReady = null;
+  let activeStreamCardTitle = '';
+
+  const OMNI_STATION_NAMES = {
+    poland: 'Radio Christian Culture 24/7',
+    biblia_audio: 'Radio Biblia Audio UBG',
+    biblia_spiewana: 'Biblia Śpiewana 24/7',
+    instrumental_worship: 'Pasmo Uwielbienia & Modlitwy',
+    global: 'Radio CC Global (EN)',
+    global_biblia: 'Global Bible Audio'
+  };
+
+  function resolveCardStream(card) {
+    if (!card) return '';
+    if (card.streamStation) return card.streamStation;
+    const url = String(card.url || '').toLowerCase();
+    const icon = String(card.icon || '').toLowerCase();
+    const title = String(card.title || '').toLowerCase();
+    if (url.includes('biblia-spiewana') || url.includes('biblijneuwielbienie') || url.includes('karaoke') || icon === 'worship' || icon === 'music') {
+      return 'biblia_spiewana';
+    }
+    if (url.includes('cctv24-worship') || url.includes('bcm24') || url.includes('modlitwa') || url.includes('zapolske') || icon === 'moon' || icon === 'pray') {
+      return 'instrumental_worship';
+    }
+    if (url.includes('werset-dnia') || url.includes('kurscodzienny') || url.includes('biblia-do-pobrania') || title.includes('biblia audio') || title.includes('rozważanie')) {
+      return 'biblia_audio';
+    }
+    if (url.includes('/player') || url.includes('/podcasty') || url.includes('apokalipsa') || url.includes('/vod') || url.includes('/shorts') || ['radio', 'mic', 'volume', 'play', 'tv', 'film', 'video', 'sun'].includes(icon)) {
+      return 'poland';
+    }
+    return '';
+  }
+
+  function loadOmniExternalScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  function syncFeaturedStreamUI(st) {
+    const state = st || (typeof window !== 'undefined' && window.CCChatRadio && typeof window.CCChatRadio.state === 'function'
+      ? window.CCChatRadio.state()
+      : { playing: false, stationId: '' });
+    const isPlaying = !!state.playing;
+    const currentStation = state.stationId || 'poland';
+
+    const radioBtn = typeof document !== 'undefined' ? document.getElementById('ccOmniRadio') : null;
+    if (radioBtn) {
+      radioBtn.setAttribute('aria-pressed', String(isPlaying));
+      radioBtn.setAttribute('aria-label', isPlaying ? 'Zatrzymaj Radio Christian Culture' : 'Słuchaj Radia Christian Culture');
+    }
+
+    if (typeof document === 'undefined') return;
+    const listenBtns = document.querySelectorAll('.cc-omni-feat-listen-btn');
+    listenBtns.forEach((btn) => {
+      const btnStation = btn.getAttribute('data-feat-stream') || '';
+      const activeForCard = isPlaying && btnStation === currentStation;
+      btn.classList.toggle('is-playing', activeForCard);
+      btn.setAttribute('aria-pressed', String(activeForCard));
+      const ico = btn.querySelector('.cc-feat-listen-ico');
+      const txt = btn.querySelector('.cc-feat-listen-txt');
+      if (ico) ico.textContent = activeForCard ? '⏸' : '▶';
+      if (txt) txt.textContent = activeForCard ? 'Odtwarzanie • Stop' : 'Słuchaj teraz';
+    });
+
+    const streamBar = document.getElementById('ccOmniStreamBar');
+    if (streamBar) {
+      streamBar.classList.toggle('is-playing', isPlaying);
+      const barTitle = streamBar.querySelector('.cc-omni-stream-bar-title');
+      if (barTitle && isPlaying) {
+        const stName = OMNI_STATION_NAMES[currentStation] || 'Radio Christian Culture';
+        barTitle.textContent = activeStreamCardTitle
+          ? `${stName} — ${activeStreamCardTitle}`
+          : stName;
+      }
+      streamBar.querySelectorAll('.cc-omni-stream-station-btn').forEach((sBtn) => {
+        const sId = sBtn.getAttribute('data-feat-station-switch');
+        sBtn.classList.toggle('active', isPlaying && sId === currentStation);
+      });
+    }
+  }
+
+  function ensureOmniRadio() {
+    if (omniRadioReady) return omniRadioReady;
+    omniRadioReady = (async () => {
+      if (!window.CCRadioStations) await loadOmniExternalScript('/js/cc-radio-catalog.js?v=20261025_repertoire');
+      if (!window.CCChatRadio) await loadOmniExternalScript('/js/cc-chat-radio.js?v=20261026_spectrum1');
+      if (!window.CCRadioMilion) await loadOmniExternalScript('/js/cc-radio-milion.js?v=20261011_2');
+      window.CCChatRadio.subscribe((st) => {
+        syncFeaturedStreamUI(st);
+      });
+      syncFeaturedStreamUI(window.CCChatRadio.state());
+      return window.CCChatRadio;
+    })();
+    return omniRadioReady;
+  }
+
+  async function toggleFeaturedStream(stationId, streamTitle = '', triggerBtn = null, forcePlay = false) {
+    if (triggerBtn) triggerBtn.classList.add('cc-loading');
+    try {
+      const radio = await ensureOmniRadio();
+      const st = radio.state();
+      if (!forcePlay && st.playing && st.stationId === stationId) {
+        radio.pause();
+      } else {
+        activeStreamCardTitle = streamTitle || OMNI_STATION_NAMES[stationId] || '';
+        await radio.prepare(stationId);
+        radio.select(stationId);
+        await radio.play();
+      }
+      syncFeaturedStreamUI(radio.state());
+    } catch (_) {
+      omniRadioReady = null;
+    } finally {
+      if (triggerBtn) triggerBtn.classList.remove('cc-loading');
+    }
+  }
+
+  const CANONICAL_FEATURED_CARDS = [
+    {
+      tag: 'INSPIRACJA NA DZIŚ',
+      title: 'Rozważanie „Dobrze, że jesteś”',
+      desc: 'Codzienne słowo umocnienia, modlitwa i Boży pokój na każdy dzień.',
+      url: '/player',
+      icon: 'heart'
+    },
+    {
+      tag: 'AKADEMIA BIBLIJNA',
+      title: 'Lekcja Dnia: Z Biblią za Pan Brat',
+      desc: 'Codzienne studium Pisma Świętego werset po wersecie z komentarzem.',
+      url: '/akademia#kurscodzienny',
+      icon: 'book'
+    },
+    {
+      tag: 'PODCAST SPOTIFY SDS',
+      title: 'APOKALIPSA — Księga Nadziei',
+      desc: 'Profetyczny cykl wykładów biblijnych Studia Dobrego Słowa.',
+      url: '/player#apokalipsa',
+      icon: 'mic'
+    },
+    {
+      tag: 'NADAJEMY 24/7',
+      title: 'Radio Christian Culture & Player',
+      desc: 'Muzyka uwielbienia, słuchowiska Biblia Audio i stacje tematyczne.',
+      url: '/player',
+      icon: 'radio'
+    }
+  ];
+
+  function getFeaturedCardData(slotIdx, setIdx) {
+    if (setIdx === 0) {
+      return CANONICAL_FEATURED_CARDS[slotIdx] || CANONICAL_FEATURED_CARDS[0];
+    }
+    const pool = FEATURED_POOLS[slotIdx] || [];
+    return pool[setIdx % pool.length];
+  }
+
+  function rotateFeaturedCards(targetSet = null) {
+    const grid = document.querySelector('.cc-omni-featured-grid');
+    if (!grid) return;
+    const cards = grid.querySelectorAll('.cc-omni-feat-card');
+    if (cards.length < 4) return;
+
+    const totalSets = FEATURED_MODES.length;
+    const nextSet = (targetSet !== null)
+      ? ((targetSet % totalSets) + totalSets) % totalSets
+      : (activeFeaturedSet + 1) % totalSets;
+    activeFeaturedSet = nextSet;
+
+    // Aktualizacja kapsułek wskaźnika (dots)
+    const dots = document.querySelectorAll('.cc-omni-feat-dot');
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === nextSet);
+      dot.setAttribute('aria-current', idx === nextSet ? 'true' : 'false');
+    });
+
+    // Aktualizacja przycisków trybów tematycznych
+    const modeBtns = document.querySelectorAll('.cc-omni-feat-mode-btn');
+    modeBtns.forEach((btn, idx) => {
+      btn.classList.toggle('active', idx === nextSet);
+      btn.setAttribute('aria-selected', idx === nextSet ? 'true' : 'false');
+    });
+
+    // Aktualizacja pigułki kontekstu w nagłówku
+    const contextPill = document.getElementById('ccOmniContextPill');
+    if (contextPill) {
+      const smart = getSmartContextInfo();
+      const modeObj = FEATURED_MODES[nextSet] || FEATURED_MODES[0];
+      contextPill.textContent = nextSet === 0
+        ? smart.pillText
+        : `${nextSet + 1}/${totalSets} • ${modeObj.fullLabel}`;
+    }
+
+    // Wielostopniowa kaskada 3D ze złotym połyskiem (stagger 95ms między okienkami)
+    cards.forEach((card, slotIdx) => {
+      setTimeout(() => {
+        card.classList.remove('cc-card-entering');
+        card.classList.add('cc-card-updating');
+        setTimeout(() => {
+          const item = getFeaturedCardData(slotIdx, nextSet);
+          if (!item) return;
+          card.href = item.url;
+          const iconSpan = card.querySelector('.cc-omni-feat-icon');
+          const tagSpan = card.querySelector('.cc-omni-feat-tag');
+          const badgeSpan = card.querySelector('.cc-omni-feat-badge');
+          const titleEl = card.querySelector('.cc-omni-feat-title');
+          const descSpan = card.querySelector('.cc-omni-feat-desc');
+          const actionsSpan = card.querySelector('.cc-omni-feat-actions');
+          const listenBtn = card.querySelector('.cc-omni-feat-listen-btn');
+
+          if (iconSpan) iconSpan.innerHTML = svgIcon(item.icon || 'star', 20);
+          if (tagSpan) tagSpan.textContent = item.tag || '';
+          if (badgeSpan) {
+            badgeSpan.textContent = item.badge || 'POLECANE';
+            badgeSpan.style.display = item.badge ? 'inline-flex' : 'none';
+          }
+          if (titleEl) titleEl.textContent = item.title || '';
+          if (descSpan) descSpan.textContent = item.desc || '';
+
+          const streamId = resolveCardStream(item);
+          if (actionsSpan && listenBtn) {
+            if (streamId) {
+              actionsSpan.style.display = 'flex';
+              listenBtn.setAttribute('data-feat-stream', streamId);
+              listenBtn.setAttribute('data-feat-stream-title', item.title || '');
+            } else {
+              actionsSpan.style.display = 'none';
+              listenBtn.setAttribute('data-feat-stream', '');
+            }
+          }
+          syncFeaturedStreamUI();
+
+          card.classList.remove('cc-card-updating');
+          card.classList.add('cc-card-entering');
+          setTimeout(() => {
+            card.classList.remove('cc-card-entering');
+          }, 680);
+        }, 185);
+      }, slotIdx * 95);
+    });
+  }
+
+  function startFeaturedRotation() {
+    stopFeaturedRotation();
+    if (typeof window === 'undefined') return;
+    featuredRotationTimer = setInterval(() => {
+      const radioPlaying = !!(window.CCChatRadio && typeof window.CCChatRadio.state === 'function' && window.CCChatRadio.state().playing);
+      if (isFeaturedHovered || radioPlaying || (typeof document !== 'undefined' && document.hidden)) return;
+      rotateFeaturedCards();
+    }, 5600);
+  }
+
+  function stopFeaturedRotation() {
+    if (featuredRotationTimer) {
+      clearInterval(featuredRotationTimer);
+      featuredRotationTimer = null;
+    }
+  }
+
   function renderHome() {
     // 1. Ostatnie wyszukiwania użytkownika
     const recents = getRecentSearches();
@@ -5104,49 +10227,39 @@ ${isStandalonePage ? '' : `
         </div>
       </div>`;
 
-    // 3. 4 Kluczowe Filary Ekosystemu („Polecane Dziś”)
+    // 3. 4 Kluczowe Okna Ekosystemu („POLECANE NA DZIŚ” — Kaskadowa Auto-Promocja Premium)
+    const smartContext = getSmartContextInfo();
+    const initialCards = [
+      getFeaturedCardData(0, activeFeaturedSet),
+      getFeaturedCardData(1, activeFeaturedSet),
+      getFeaturedCardData(2, activeFeaturedSet),
+      getFeaturedCardData(3, activeFeaturedSet)
+    ];
+    const activeModeObj = FEATURED_MODES[activeFeaturedSet] || FEATURED_MODES[0];
+    const initialContextText = activeFeaturedSet === 0
+      ? smartContext.pillText
+      : `${activeFeaturedSet + 1}/${FEATURED_MODES.length} • ${activeModeObj.fullLabel}`;
+
     const featuredCards = `
-      <section class="cc-omni-featured-section" aria-label="Polecane dziś w Christian Culture">
+      <section class="cc-omni-featured-section" aria-label="Polecane dziś w EkoCC">
         <div class="cc-omni-featured-head">
-          <span class="cc-omni-featured-label">${svgIcon('star', 15)} Polecane Dziś w EkoCC</span>
+          <div class="cc-omni-featured-title-wrap">
+            <span class="cc-omni-featured-label">
+              ☆ POLECANE DZIŚ W EKOCC
+            </span>
+          </div>
         </div>
         <div class="cc-omni-featured-grid">
-          <a class="cc-omni-feat-card" href="/player">
-            <span class="cc-omni-feat-icon">${svgIcon('heart', 20)}</span>
-            <span class="cc-omni-feat-info">
-              <span class="cc-omni-feat-tag">Inspiracja na Dziś</span>
-              <strong class="cc-omni-feat-title">Rozważanie „Dobrze, że jesteś”</strong>
-              <span class="cc-omni-feat-desc">Codzienne słowo umocnienia, modlitwa i Boży pokój na każdy dzień.</span>
-            </span>
-            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="cc-omni-feat-card" href="/akademia#kurscodzienny">
-            <span class="cc-omni-feat-icon">${svgIcon('book', 20)}</span>
-            <span class="cc-omni-feat-info">
-              <span class="cc-omni-feat-tag">Akademia Biblijna</span>
-              <strong class="cc-omni-feat-title">Lekcja Dnia: Z Biblią za Pan Brat</strong>
-              <span class="cc-omni-feat-desc">Codzienne studium Pisma Świętego werset po wersecie z komentarzem.</span>
-            </span>
-            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="cc-omni-feat-card" href="/podcasty">
-            <span class="cc-omni-feat-icon">${svgIcon('mic', 20)}</span>
-            <span class="cc-omni-feat-info">
-              <span class="cc-omni-feat-tag">Podcast Spotify SDS</span>
-              <strong class="cc-omni-feat-title">APOKALIPSA — Księga Nadziei</strong>
-              <span class="cc-omni-feat-desc">Profetyczny cykl wykładów biblijnych Studia Dobrego Słowa.</span>
-            </span>
-            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="cc-omni-feat-card" href="/player">
-            <span class="cc-omni-feat-icon">${svgIcon('radio', 20)}</span>
-            <span class="cc-omni-feat-info">
-              <span class="cc-omni-feat-tag">Nadajemy 24/7</span>
-              <strong class="cc-omni-feat-title">Radio Christian Culture & Player</strong>
-              <span class="cc-omni-feat-desc">Muzyka uwielbienia, słuchowiska Biblia Audio i stacje tematyczne.</span>
-            </span>
-            <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
-          </a>
+          ${initialCards.map((card, i) => `
+            <a class="cc-omni-feat-card" href="${escapeHtml(card.url)}" data-slot-index="${i}">
+              <span class="cc-omni-feat-icon">${svgIcon(card.icon, 20)}</span>
+              <span class="cc-omni-feat-info">
+                <span class="cc-omni-feat-tag">${escapeHtml(card.tag)}</span>
+                <strong class="cc-omni-feat-title">${escapeHtml(card.title)}</strong>
+                <span class="cc-omni-feat-desc">${escapeHtml(card.desc)}</span>
+              </span>
+              <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
+            </a>`).join('')}
         </div>
       </section>`;
 
@@ -5192,6 +10305,7 @@ ${isStandalonePage ? '' : `
 
   // 8. Otwieranie i zamykanie wyszukiwarki
   function openSearch(initialQuery = '') {
+    startFeaturedRotation();
     if (isSearchPage) {
       // Jeśli jesteśmy na stronie /szukaj, skupiamy dedykowane pole
       const searchPageInput = document.getElementById('q') || document.querySelector('input[name="q"]');
@@ -5231,6 +10345,9 @@ ${isStandalonePage ? '' : `
   }
 
   function closeSearch() {
+    stopFeaturedRotation();
+    closeShareModal();
+    stopBibleAudio();
     stopPlaceholderRotation();
     const overlay = document.getElementById('ccOmniOverlay');
     if (!overlay) return;
@@ -5384,6 +10501,30 @@ ${isStandalonePage ? '' : `
     detectStrongOrLemma: detectStrongOrLemma,
     TOP_CROSS_REFS: TOP_CROSS_REFS,
     TOP_INTERLINEAR_TOKENS: TOP_INTERLINEAR_TOKENS,
+    BIBLE_PLACES: BIBLE_PLACES,
+    detectBiblePlace: detectBiblePlace,
+    renderPlaceCard: renderPlaceCard,
+    TOP_COMPARE_VERSES: TOP_COMPARE_VERSES,
+    verifyBibleQuote: verifyBibleQuote,
+    renderComparePanel: renderComparePanel,
+    renderQuoteVerificationCard: renderQuoteVerificationCard,
+    renderBibleTopicCard: renderBibleTopicCard,
+    detectBibleRagQuery: detectBibleRagQuery,
+    queryKnowledgeRegistryClient: queryKnowledgeRegistryClient,
+    renderBibleRagCard: renderBibleRagCard,
+    BIBLE_RAG_REGISTRY: BIBLE_RAG_REGISTRY,
+    PRESET_WALLS: PRESET_WALLS,
+    openWallpaperModal: openWallpaperModal,
+    closeWallpaperModal: closeWallpaperModal,
+    renderWallpaperGrid: renderWallpaperGrid,
+    drawBibleShareCard: drawBibleShareCard,
+    openShareModal: openShareModal,
+    closeShareModal: closeShareModal,
+    playBibleAudio: playBibleAudio,
+    stopBibleAudio: stopBibleAudio,
+    toggleBibleAudio: toggleBibleAudio,
+    renderScriptureAudioBar: renderScriptureAudioBar,
+    getAudioState: () => currentAudioState,
     getPreviewHtml: getPreviewHtml,
     TOP_UBG_VERSES: TOP_UBG_VERSES,
     PLACEHOLDERS: PLACEHOLDERS,

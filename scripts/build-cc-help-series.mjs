@@ -57,7 +57,15 @@ function render(t,en){
 }
 for(const t of topics)for(const en of [false,true]){
  const dir=route(t,en);await mkdir(path.join(root,dir),{recursive:true});
- const html=applyCatalog(prioritiseUrgentHelp(render(t,en),t),en?'en':'pl',dir);await writeFile(path.join(root,dir,'index.html'),html);await writeFile(path.join(root,dir+'.html'),html);
+ let html=applyCatalog(prioritiseUrgentHelp(render(t,en),t),en?'en':'pl',dir);
+ // Preserve head extensions already introduced by other agents on this existing page.
+ // Do not introduce those integrations on newly created routes.
+ try {
+  const existing=await readFile(path.join(root,dir,'index.html'),'utf8');
+  const prelude=existing.match(/<head>([\s\S]*?)(?=<meta\s+charset=)/i)?.[1]||'';
+  if(prelude.trim()) html=html.replace('<head>','<head>'+prelude);
+ } catch(error) {if(error.code!=='ENOENT')throw error;}
+ await writeFile(path.join(root,dir,'index.html'),html);await writeFile(path.join(root,dir+'.html'),html);
 }
 // Patch only navigation in the current debt pilot; never rerun the obsolete pilot renderer.
 for(const [dir,lang] of [['dlugi','pl'],['en/debt-help','en']]){
@@ -84,7 +92,15 @@ catalog.totalItems=catalog.items.length;catalog.updatedAt=new Date().toISOString
 const serialized=JSON.stringify(catalog,null,2)+'\n';
 await writeFile(path.join(root,'szukaj/catalog.json'),serialized);await writeFile(path.join(root,'data/cc-search-index.json'),serialized);
 let sitemap=await readFile(path.join(root,'sitemap.xml'),'utf8');
-for(const url of urls)if(!sitemap.includes(`<loc>${url}</loc>`))sitemap=sitemap.replace('</urlset>',`  <url><loc>${url}</loc><lastmod>2026-10-27</lastmod></url>\n</urlset>`);
+const helpUrls=[...new Set([...urls,origin+'/dlugi',origin+'/en/debt-help'])];
+if(sitemap.includes('<sitemapindex')){
+ const helpSitemap=origin+'/sitemaps/cc-pomoc.xml';
+ await mkdir(path.join(root,'sitemaps'),{recursive:true});
+ await writeFile(path.join(root,'sitemaps/cc-pomoc.xml'),'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+helpUrls.map(url=>`  <url><loc>${url}</loc></url>`).join('\n')+'\n</urlset>\n');
+ if(!sitemap.includes(`<loc>${helpSitemap}</loc>`))sitemap=sitemap.replace('</sitemapindex>',`  <sitemap><loc>${helpSitemap}</loc></sitemap>\n</sitemapindex>`);
+}else{
+ for(const url of helpUrls)if(!sitemap.includes(`<loc>${url}</loc>`))sitemap=sitemap.replace('</urlset>',`  <url><loc>${url}</loc></url>\n</urlset>`);
+}
 await writeFile(path.join(root,'sitemap.xml'),sitemap);
 const mapPath=path.join(root,'data/ecosystem-map.json');
 const map=JSON.parse(await readFile(mapPath,'utf8'));

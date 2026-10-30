@@ -110,7 +110,8 @@ test('HTML structure and real live players (podcasty.html)', () => {
 test('SEO & AI Search Discovery files (sitemap.xml & llms.txt)', () => {
   const sitemapPath = path.join(ROOT, 'sitemap.xml');
   assert.ok(fs.existsSync(sitemapPath), 'sitemap.xml must exist');
-  const sitemap = fs.readFileSync(sitemapPath, 'utf8');
+  const rootMap = fs.readFileSync(sitemapPath, 'utf8');
+  const sitemap = rootMap.includes('<sitemapindex') && rootMap.includes('<loc>https://polskieradio.cc/sitemaps/pages.xml</loc>') ? fs.readFileSync(path.join(ROOT, 'sitemaps/pages.xml'), 'utf8') : rootMap;
   assert.ok(sitemap.includes('<loc>https://polskieradio.cc/podcasty</loc>'), 'sitemap.xml indexes /podcasty');
 
   const llmsPath = path.join(ROOT, 'llms.txt');

@@ -23,6 +23,18 @@
 /szukaj/*
   Cache-Control: no-cache, no-store, must-revalidate
 
+/wyszukiwarka*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/wyszukiwarka/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/css/cc-mobile-edge.css
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/js/cc-mobile-edge.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
 /index
   Cache-Control: public, max-age=3600, must-revalidate
 

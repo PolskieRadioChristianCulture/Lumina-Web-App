@@ -539,6 +539,22 @@ const CORE_PROJECTS = [
     featured: true
   },
   {
+    title: "Wioletta Rogowska — Wizytówka autorska & Powieść online",
+    category: "Media i treści",
+    url: "https://polskieradio.cc/Wioletta",
+    description: "Oficjalna wizytówka autorska Wioletty Rogowskiej — powieść Pardon, Czy To Miłość?, czytnik online z lektorem TTS, newsletter i kontakt.",
+    tags: ["wioletta rogowska", "autorka", "pardon czy to miłość", "powieść", "romans chrześcijański", "romance author", "książki", "wioletta"],
+    featured: true
+  },
+  {
+    title: "Powieść: Pardon, Czy To Miłość? — Wioletta Rogowska (Czytnik Online)",
+    category: "Media i treści",
+    url: "https://polskieradio.cc/Wioletta/pardon-czy-to-milosc/",
+    description: "Czytaj online powieść Wioletty Rogowskiej Pardon, Czy To Miłość? Tom I — 25 rozdziałów, czytnik z modułem lektora audio TTS.",
+    tags: ["pardon czy to miłość", "wioletta rogowska", "powieść", "czytnik", "rozdziały", "audiobook", "lektor tts", "książka online"],
+    featured: true
+  },
+  {
     title: "Książka: Prawda Bez Filtra — Wioletta Rogowska",
     category: "Media i treści",
     url: "https://polskieradio.cc/prawda-bez-filtra",

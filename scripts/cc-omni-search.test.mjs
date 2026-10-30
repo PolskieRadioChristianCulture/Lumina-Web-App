@@ -434,7 +434,7 @@ test('cc-omni-search.js: Biblia Intelligence CC — P0 contracts (topics, script
   assert.ok(omniSearchCode.includes('TEKST BIBLIJNY'), 'contains TEKST BIBLIJNY badge');
   assert.ok(omniSearchCode.includes('.cc-btn-scripture-sub'), 'defines .cc-btn-scripture-sub for context and compare');
   assert.ok(omniSearchCode.includes('Kontekst rozdziału'), 'contains Kontekst rozdziału action');
-  assert.ok(omniSearchCode.includes('Porównaj przekłady'), 'contains Porównaj przekłady action');
+  assert.ok(omniSearchCode.includes('Porównaj przekłady') || omniSearchCode.includes('Porównaj 4 przekłady'), 'contains Porównaj przekłady action');
   assert.ok(omniSearchCode.includes('.cc-bible-topic-card'), 'defines .cc-bible-topic-card');
   assert.ok(omniSearchCode.includes('.cc-sources-modal-backdrop'), 'defines .cc-sources-modal-backdrop');
   assert.ok(omniSearchCode.includes('STEPBible Data'), 'cites STEPBible Data');
@@ -524,3 +524,496 @@ test('cc-omni-search.js: Biblia Intelligence CC — P1 contracts (Greek/Hebrew l
   assert.ok(omniSearchCode.includes('STEPBible Data'), 'declares STEPBible Data provenance');
   assert.ok(omniSearchCode.includes('SBL Greek New Testament'), 'declares SBLGNT provenance');
 });
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P2 contracts (Atlas Geograficzny, Miejsca Biblijne, OpenBible, OSM, Wikidata)', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const detectPlace = sandbox.window.CCOmniSearch.detectBiblePlace;
+  const places = sandbox.window.CCOmniSearch.BIBLE_PLACES;
+
+  assert.ok(typeof detectPlace === 'function', 'detectBiblePlace is exported');
+  assert.ok(typeof places === 'object', 'BIBLE_PLACES is exported');
+  assert.ok(places.jerusalem, 'BIBLE_PLACES has Jerusalem');
+  assert.ok(places.sinai, 'BIBLE_PLACES has Mount Sinai');
+  assert.ok(places.patmos, 'BIBLE_PLACES has Patmos Island');
+
+  // 1. Detection of Jerusalem by canonical Polish name, ID, and aliases
+  const jerusalemMatch = detectPlace('Jerozolima');
+  assert.ok(jerusalemMatch, 'detects Jerozolima');
+  assert.equal(jerusalemMatch.id, 'jerusalem');
+  assert.equal(jerusalemMatch.coords.lat, 31.7767);
+  assert.equal(jerusalemMatch.coords.lon, 35.2345);
+  assert.equal(jerusalemMatch.wikidataId, 'Q1218');
+  assert.equal(jerusalemMatch.certainty, 'POTWIERDZONA ARCHEOLOGICZNIE');
+
+  const syjonMatch = detectPlace('syjon');
+  assert.ok(syjonMatch, 'detects Syjon alias for Jerusalem');
+  assert.equal(syjonMatch.id, 'jerusalem');
+
+  // 2. Detection of Mount Sinai (Horeb)
+  const sinaiMatch = detectPlace('Góra Synaj');
+  assert.ok(sinaiMatch, 'detects Góra Synaj');
+  assert.equal(sinaiMatch.id, 'sinai');
+  assert.equal(sinaiMatch.coords.lat, 28.5397);
+  assert.equal(sinaiMatch.coords.lon, 33.9750);
+  assert.equal(sinaiMatch.certainty, 'PRAWDOPODOBNA / TRADYCYJNA');
+
+  const horebMatch = detectPlace('horeb');
+  assert.ok(horebMatch, 'detects Horeb alias for Sinai');
+  assert.equal(horebMatch.id, 'sinai');
+
+  // 3. Detection of Patmos Island (Apocalypse)
+  const patmosMatch = detectPlace('patmos');
+  assert.ok(patmosMatch, 'detects Patmos');
+  assert.equal(patmosMatch.id, 'patmos');
+  assert.equal(patmosMatch.coords.lat, 37.5147);
+  assert.equal(patmosMatch.coords.lon, 26.5458);
+
+  // 4. Detection of Capernaum
+  const capernaumMatch = detectPlace('kafarnaum');
+  assert.ok(capernaumMatch, 'detects Kafarnaum');
+  assert.equal(capernaumMatch.id, 'capernaum');
+
+  // 5. UI contracts for Bible Places Card
+  assert.ok(omniSearchCode.includes('.cc-bible-place-card'), 'defines .cc-bible-place-card');
+  assert.ok(omniSearchCode.includes('ATLAS BIBLIJNY &amp; GEOGRAFIA SACRA'), 'declares ATLAS BIBLIJNY header');
+  assert.ok(omniSearchCode.includes('.cc-bible-place-coords'), 'defines .cc-bible-place-coords');
+  assert.ok(omniSearchCode.includes('OPENBIBLE (R13)') || omniSearchCode.includes('OpenBible Geocoding Data'), 'cites OpenBible Geocoding');
+  assert.ok(omniSearchCode.includes('OSM (R20)') || omniSearchCode.includes('OpenStreetMap'), 'cites OpenStreetMap');
+  assert.ok(omniSearchCode.includes('openstreetmap.org'), 'links to OpenStreetMap coordinates');
+  assert.ok(omniSearchCode.includes('wikidata.org'), 'links to Wikidata archaeological IDs');
+});
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P3 contracts (Porównywarka 4 Przekładów UBG/BW/BT/BG i Weryfikacja Cytowań @777)', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const compareVerses = sandbox.window.CCOmniSearch.TOP_COMPARE_VERSES;
+  const verifyQuote = sandbox.window.CCOmniSearch.verifyBibleQuote;
+  const renderCompare = sandbox.window.CCOmniSearch.renderComparePanel;
+  const renderQuoteCard = sandbox.window.CCOmniSearch.renderQuoteVerificationCard;
+
+  assert.ok(typeof compareVerses === 'object', 'TOP_COMPARE_VERSES is exported');
+  assert.ok(typeof verifyQuote === 'function', 'verifyBibleQuote is exported');
+  assert.ok(typeof renderCompare === 'function', 'renderComparePanel is exported');
+  assert.ok(typeof renderQuoteCard === 'function', 'renderQuoteVerificationCard is exported');
+
+  // 1. Parallel translations data contract (UBG, BW, BT, BG)
+  assert.ok(compareVerses['JHN:3:16'], 'contains 4-translation dataset for JHN:3:16');
+  assert.equal(typeof compareVerses['JHN:3:16'].UBG, 'string');
+  assert.equal(typeof compareVerses['JHN:3:16'].BW, 'string');
+  assert.equal(typeof compareVerses['JHN:3:16'].BT, 'string');
+  assert.equal(typeof compareVerses['JHN:3:16'].BG, 'string');
+  assert.ok(compareVerses['JHN:3:16'].UBG.includes('Tak bowiem Bóg umiłował świat'));
+  assert.ok(compareVerses['JHN:3:16'].BW.includes('Albowiem tak Bóg umiłował świat'));
+
+  assert.ok(compareVerses['PSA:23:1'], 'contains 4-translation dataset for PSA:23:1');
+  assert.ok(compareVerses['ROM:8:28'], 'contains 4-translation dataset for ROM:8:28');
+  assert.ok(compareVerses['EXO:20:8'], 'contains 4-translation dataset for EXO:20:8');
+
+  // 2. Canonical UBG exact quote verification
+  const ubgQuote = verifyQuote('Tak bowiem Bóg umiłował świat');
+  assert.ok(ubgQuote, 'verifies UBG quote');
+  assert.equal(ubgQuote.status, 'VERIFIED_UBG');
+  assert.equal(ubgQuote.isExactUbg, true);
+  assert.equal(ubgQuote.matchedEdition, 'UBG');
+  assert.ok(ubgQuote.statusLabel.includes('ZGODNOŚĆ DOSŁOWNA Z UBG'));
+
+  // 3. Detection of alternative traditional translations (BW, BT, BG)
+  const bwQuote = verifyQuote('Albowiem tak Bóg umiłował świat');
+  assert.ok(bwQuote, 'detects BW quote');
+  assert.equal(bwQuote.status, 'DIFF_EDITION');
+  assert.equal(bwQuote.matchedEdition, 'BW');
+  assert.equal(bwQuote.isExactUbg, false);
+  assert.ok(bwQuote.statusLabel.includes('ROZPOZNANO PRZEKŁAD BW'));
+
+  // 4. Paraphrase detection
+  const paraphraseQuote = verifyQuote('Bóg tak ukochał świat że dał jedynego Syna żeby wierzący mieli życie');
+  assert.ok(paraphraseQuote, 'detects paraphrase');
+  assert.equal(paraphraseQuote.status, 'PARAPHRASE');
+  assert.equal(paraphraseQuote.isExactUbg, false);
+
+  // 5. Compare panel and UI contracts
+  const compareHtml = renderCompare('JHN:3:16');
+  assert.ok(compareHtml.includes('cc-scripture-compare-panel'), 'renders compare panel container');
+  assert.ok(compareHtml.includes('cc-badge-ubg'), 'renders UBG badge');
+  assert.ok(compareHtml.includes('cc-badge-bw'), 'renders BW badge');
+  assert.ok(compareHtml.includes('cc-badge-bt'), 'renders BT badge');
+  assert.ok(compareHtml.includes('cc-badge-bg'), 'renders BG badge');
+  assert.ok(compareHtml.includes('cc-btn-copy-trans'), 'renders copy buttons for each translation');
+
+  const quoteCardHtml = renderQuoteCard(bwQuote);
+  assert.ok(quoteCardHtml.includes('cc-quote-verification-card'), 'renders quote verification card');
+  assert.ok(quoteCardHtml.includes('PROTOKÓŁ @777'), 'declares PROTOKÓŁ @777 compliance');
+  assert.ok(quoteCardHtml.includes('cc-quote-diff-box'), 'renders diff box for non-UBG quote');
+  assert.ok(quoteCardHtml.includes('ccQuoteCopyCanonicalBtn'), 'renders copy canonical UBG CTA');
+});
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P4 contracts (Audio Player, Biblia Słuchana, Waveform Visualizer, Web Speech Engine)', async () => {
+  const vm = await import('node:vm');
+  let spokenText = null;
+  let synthCanceled = false;
+
+  class MockUtterance {
+    constructor(text) {
+      this.text = text;
+      this.lang = 'pl-PL';
+      this.rate = 1.0;
+    }
+  }
+
+  const mockSpeechSynthesis = {
+    speak: (utt) => { spokenText = utt.text; },
+    cancel: () => { synthCanceled = true; },
+    pause: () => {},
+    resume: () => {},
+    getVoices: () => [{ lang: 'pl-PL', name: 'Paulina PL' }]
+  };
+
+  const sandbox = {
+    window: {
+      location: { pathname: '/' },
+      speechSynthesis: mockSpeechSynthesis,
+      SpeechSynthesisUtterance: MockUtterance
+    },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const playAudio = sandbox.window.CCOmniSearch.playBibleAudio;
+  const stopAudio = sandbox.window.CCOmniSearch.stopBibleAudio;
+  const toggleAudio = sandbox.window.CCOmniSearch.toggleBibleAudio;
+  const renderAudioBar = sandbox.window.CCOmniSearch.renderScriptureAudioBar;
+  const getAudioState = sandbox.window.CCOmniSearch.getAudioState;
+
+  assert.ok(typeof playAudio === 'function', 'playBibleAudio is exported');
+  assert.ok(typeof stopAudio === 'function', 'stopBibleAudio is exported');
+  assert.ok(typeof toggleAudio === 'function', 'toggleBibleAudio is exported');
+  assert.ok(typeof renderAudioBar === 'function', 'renderScriptureAudioBar is exported');
+
+  // 1. Play audio utterance
+  const playResult = playAudio('Na początku Bóg stworzył niebo i ziemię.', 'Księga Rodzaju 1:1', 1.0);
+  assert.equal(playResult, true, 'playAudio returns true');
+  assert.ok(spokenText && spokenText.includes('Na początku Bóg stworzył'), 'speechSynthesis spoke the verse');
+  assert.ok(spokenText.includes('Księga Rodzaju 1:1'), 'speechSynthesis included ref title');
+
+  // 2. Stop audio
+  stopAudio();
+  assert.equal(synthCanceled, true, 'speechSynthesis cancelled');
+  assert.equal(getAudioState(), 'idle', 'state is idle after stop');
+
+  // 3. Render audio bar HTML contracts
+  const match = {
+    bookCode: 'JHN',
+    bookName: 'Ewangelia Jana',
+    chapter: 3,
+    verse: 16,
+    refTitle: 'Ewangelia Jana 3:16',
+    verseText: 'Tak bowiem Bóg umiłował świat...'
+  };
+  const audioBarHtml = renderAudioBar(match);
+  assert.ok(audioBarHtml.includes('cc-scripture-audio-bar'), 'renders audio bar container');
+  assert.ok(audioBarHtml.includes('cc-btn-play-verse'), 'renders play button');
+  assert.ok(audioBarHtml.includes('cc-waveform-visualizer'), 'renders radio waveform visualizer');
+  assert.ok(audioBarHtml.includes('cc-wave-bar'), 'renders wave bars');
+  assert.ok(audioBarHtml.includes('cc-audio-status-tag'), 'renders audio status tag');
+  assert.ok(audioBarHtml.includes('cc-audio-speed-selector'), 'renders speed selector');
+  assert.ok(audioBarHtml.includes('cc-btn-open-player'), 'renders CC Player link');
+
+  // 4. CSS contracts for Audio Bar & Waveform
+  assert.ok(omniSearchCode.includes('.cc-scripture-audio-bar'), 'defines .cc-scripture-audio-bar');
+  assert.ok(omniSearchCode.includes('.cc-btn-play-verse'), 'defines .cc-btn-play-verse');
+  assert.ok(omniSearchCode.includes('.cc-waveform-active'), 'defines .cc-waveform-active');
+  assert.ok(omniSearchCode.includes('@keyframes ccWavePulse'), 'defines @keyframes ccWavePulse');
+  assert.ok(omniSearchCode.includes('prefers-reduced-motion'), 'supports prefers-reduced-motion');
+});
+
+
+test('cc-omni-search.js: Biblia Intelligence CC — P5 contracts (Katalog 12 Tematów Pisma Świętego, Modlitewnik CC, UBG, Audio Modlitwy)', async () => {
+  const vm = await import('node:vm');
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, style: {} }),
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const topics = sandbox.window.CCOmniSearch.BIBLE_TOPICS;
+  const detectTopic = sandbox.window.CCOmniSearch.detectBibleTopic;
+  const renderTopicCard = sandbox.window.CCOmniSearch.renderBibleTopicCard;
+
+  assert.ok(typeof topics === 'object', 'BIBLE_TOPICS is exported');
+  assert.ok(typeof detectTopic === 'function', 'detectBibleTopic is exported');
+  assert.ok(typeof renderTopicCard === 'function', 'renderBibleTopicCard is exported');
+
+  // 1. 12 Canonical Thematic Topics presence
+  const expectedTopics = [
+    'wiara', 'usprawiedliwienie', 'pokoj', 'modlitwa', 'nadzieja', 'szabat',
+    'posrednik', 'proroctwa', 'przebaczenie', 'milosc', 'uzdrowienie', 'madrosc'
+  ];
+  for (const slug of expectedTopics) {
+    assert.ok(topics[slug], `contains topic ${slug}`);
+    assert.ok(topics[slug].prayerText, `topic ${slug} has prayer text`);
+    assert.ok(topics[slug].prayerTitle, `topic ${slug} has prayer title`);
+    assert.ok(Array.isArray(topics[slug].verses) && topics[slug].verses.length >= 2, `topic ${slug} has multiple verses`);
+  }
+
+  // 2. Thematic detection queries
+  const faithMatch = detectTopic('jak mieć silną wiarę');
+  assert.ok(faithMatch, 'detects wiara');
+  assert.equal(faithMatch.slug, 'wiara');
+
+  const peaceMatch = detectTopic('modlitwa o pokój w sercu i uwolnienie od lęku');
+  assert.ok(peaceMatch, 'detects pokoj');
+  assert.equal(peaceMatch.slug, 'pokoj');
+
+  const healingMatch = detectTopic('uzdrowienie z choroby');
+  assert.ok(healingMatch, 'detects uzdrowienie');
+  assert.equal(healingMatch.slug, 'uzdrowienie');
+
+  const wisdomMatch = detectTopic('mądrość Boża');
+  assert.ok(wisdomMatch, 'detects madrosc');
+  assert.equal(wisdomMatch.slug, 'madrosc');
+
+  const loveMatch = detectTopic('miłość Boża agape');
+  assert.ok(loveMatch, 'detects milosc');
+  assert.equal(loveMatch.slug, 'milosc');
+
+  const forgivenessMatch = detectTopic('przebaczenie grzechów');
+  assert.ok(forgivenessMatch, 'detects przebaczenie');
+  assert.equal(forgivenessMatch.slug, 'przebaczenie');
+
+  // 3. Render HTML contracts for Modlitewnik
+  const topicHtml = renderTopicCard(topics.pokoj);
+  assert.ok(topicHtml.includes('cc-bible-topic-card'), 'renders topic card container');
+  assert.ok(topicHtml.includes('cc-btn-prayer-trigger'), 'renders prayer trigger button');
+  assert.ok(topicHtml.includes('cc-thematic-prayer-box'), 'renders prayer box');
+  assert.ok(topicHtml.includes('cc-btn-prayer-audio'), 'renders prayer audio button');
+  assert.ok(topicHtml.includes('cc-btn-prayer-copy'), 'renders copy prayer button');
+  assert.ok(topicHtml.includes('cc-btn-topic-verse-audio'), 'renders per-verse audio button');
+
+  // 4. CSS contracts for Modlitewnik
+  assert.ok(omniSearchCode.includes('.cc-thematic-prayer-box'), 'defines .cc-thematic-prayer-box');
+  assert.ok(omniSearchCode.includes('.cc-btn-prayer-trigger'), 'defines .cc-btn-prayer-trigger');
+  assert.ok(omniSearchCode.includes('.cc-btn-prayer-audio'), 'defines .cc-btn-prayer-audio');
+});
+
+test('cc-omni-search.js: Biblia Intelligence CC — P6 contracts (Karty Dzielenia Social Media, Canvas 1080x1080, Social Deep Links)', async () => {
+  const vm = await import('node:vm');
+  let filledTextCalls = [];
+  const mockCtx = {
+    fillStyle: '',
+    strokeStyle: '',
+    lineWidth: 1,
+    font: '',
+    textAlign: '',
+    textBaseline: '',
+    fillRect: () => {},
+    strokeRect: () => {},
+    beginPath: () => {},
+    moveTo: () => {},
+    lineTo: () => {},
+    stroke: () => {},
+    arc: () => {},
+    fill: () => {},
+    measureText: (text) => ({ width: text.length * 15 }),
+    fillText: (text, x, y) => { filledTextCalls.push({ text, x, y }); },
+    createRadialGradient: () => ({ addColorStop: () => {} })
+  };
+
+  const mockCanvas = {
+    width: 0,
+    height: 0,
+    getContext: (type) => (type === '2d' ? mockCtx : null),
+    toDataURL: () => 'data:image/png;base64,MOCK'
+  };
+
+  const sandbox = {
+    window: { location: { pathname: '/' } },
+    document: {
+      head: { appendChild: () => {} },
+      body: { appendChild: () => {} },
+      createElement: (tag) => {
+        if (tag === 'canvas') return mockCanvas;
+        return {
+          setAttribute: () => {},
+          appendChild: () => {},
+          style: {},
+          querySelector: () => null,
+          addEventListener: () => {}
+        };
+      },
+      getElementById: () => null,
+      querySelectorAll: () => [],
+      querySelector: () => null,
+      addEventListener: () => {},
+      readyState: 'complete'
+    },
+    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    setTimeout: (fn) => fn(),
+    clearTimeout: () => {},
+    setInterval: () => {},
+    clearInterval: () => {},
+    fetch: async () => ({ ok: false })
+  };
+  sandbox.window.document = sandbox.document;
+  sandbox.window.localStorage = sandbox.localStorage;
+  vm.createContext(sandbox);
+  vm.runInContext(omniSearchCode, sandbox);
+
+  const drawCard = sandbox.window.CCOmniSearch.drawBibleShareCard;
+  const openModal = sandbox.window.CCOmniSearch.openShareModal;
+  const closeModal = sandbox.window.CCOmniSearch.closeShareModal;
+
+  assert.ok(typeof drawCard === 'function', 'drawBibleShareCard is exported');
+  assert.ok(typeof openModal === 'function', 'openShareModal is exported');
+  assert.ok(typeof closeModal === 'function', 'closeShareModal is exported');
+
+  // 1. Draw card execution and dimensions 1080x1080
+  drawCard(mockCanvas, 'Tak bowiem Bóg umiłował świat, że dał swego Jednorodzonego Syna...', 'J 3:16');
+  assert.equal(mockCanvas.width, 1080, 'canvas width is 1080');
+  assert.equal(mockCanvas.height, 1080, 'canvas height is 1080');
+  assert.ok(filledTextCalls.some(c => c.text.includes('S Ł O W O   B O Ż E   •   U B G')), 'renders UBG header');
+  assert.ok(filledTextCalls.some(c => c.text.includes('J 3:16 (UBG)')), 'renders reference siglum in UBG');
+  assert.ok(filledTextCalls.some(c => c.text.includes('polskieradio.cc')), 'renders brand watermark');
+
+  // 2. HTML & UI action contracts
+  assert.ok(omniSearchCode.includes('data-action="open-share-card"'), 'has data-action open-share-card');
+  assert.ok(omniSearchCode.includes('cc-btn-scripture-share'), 'has cc-btn-scripture-share class');
+  assert.ok(omniSearchCode.includes('cc-share-card-modal-backdrop'), 'defines modal backdrop');
+  assert.ok(omniSearchCode.includes('cc-share-verse-canvas'), 'defines share verse canvas');
+  assert.ok(omniSearchCode.includes('cc-btn-share-main'), 'defines download PNG button');
+  assert.ok(omniSearchCode.includes('Pobierz grafikę PNG'), 'contains Pobierz grafikę PNG text');
+  assert.ok(omniSearchCode.includes('Kopiuj tekst i link'), 'contains Kopiuj tekst i link text');
+
+  // 3. Social deep links contracts
+  assert.ok(omniSearchCode.includes('api.whatsapp.com/send?text='), 'integrates WhatsApp deep link');
+  assert.ok(omniSearchCode.includes('t.me/share/url?'), 'integrates Telegram deep link');
+  assert.ok(omniSearchCode.includes('facebook.com/sharer/sharer.php?'), 'integrates Facebook deep link');
+  assert.ok(omniSearchCode.includes('twitter.com/intent/tweet?'), 'integrates X deep link');
+  assert.ok(omniSearchCode.includes('/lumina-tablica?draft='), 'integrates LUMINA deep link');
+
+  // 4. CSS styling contracts
+  assert.ok(omniSearchCode.includes('.cc-btn-scripture-share'), 'defines .cc-btn-scripture-share style');
+  assert.ok(omniSearchCode.includes('.cc-share-social-grid'), 'defines .cc-share-social-grid style');
+  assert.ok(omniSearchCode.includes('.cc-share-wa:hover'), 'defines .cc-share-wa WhatsApp color');
+  assert.ok(omniSearchCode.includes('.cc-share-tg:hover'), 'defines .cc-share-tg Telegram color');
+});
+
+test('cc-omni-search.js: Tętniąca Życiem Wyszukiwarka EkoCC — dynamiczne okna propozycji (POLECANE NA DZIŚ, LIVE badge, pule rotacji)', () => {
+  assert.ok(omniSearchCode.includes('POLECANE DZIŚ W EKOCC') || omniSearchCode.includes('Polecane na dziś'), 'header renamed to POLECANE DZIŚ W EKOCC');
+  assert.ok(omniSearchCode.includes('cc-omni-live-badge'), 'defines cc-omni-live-badge');
+  assert.ok(omniSearchCode.includes('cc-live-pulse-dot'), 'defines cc-live-pulse-dot pulsing indicator');
+  assert.ok(omniSearchCode.includes('ccPulseLive'), 'defines animation ccPulseLive');
+  assert.ok(omniSearchCode.includes('cc-omni-featured-dots'), 'defines interactive pagination dots container');
+  assert.ok(omniSearchCode.includes('cc-omni-feat-dot'), 'defines individual interactive dots');
+  assert.ok(omniSearchCode.includes('cc-card-updating'), 'defines smooth card update transition');
+  assert.ok(omniSearchCode.includes('cc-card-entering'), 'defines premium 3D entering cascade transition');
+  assert.ok(omniSearchCode.includes('ccCardCascadeIn'), 'defines ccCardCascadeIn keyframe');
+  assert.ok(omniSearchCode.includes('ccCardShimmerSweep'), 'defines ccCardShimmerSweep golden sheen keyframe');
+  assert.ok(omniSearchCode.includes('FEATURED_MODES'), 'defines 8 thematic FEATURED_MODES');
+  assert.ok(omniSearchCode.includes('getSmartContextInfo'), 'defines intelligent time/date/holiday/user context engine');
+  assert.ok(omniSearchCode.includes('cc-omni-feat-modes'), 'defines interactive thematic mode strip');
+  assert.ok(omniSearchCode.includes('cc-omni-context-pill'), 'defines live context indicator pill');
+  assert.ok(omniSearchCode.includes('cc-omni-feat-listen-btn'), 'defines inline ▶ Słuchaj teraz button on audio/video cards');
+  assert.ok(omniSearchCode.includes('Słuchaj teraz'), 'contains Słuchaj teraz label on cards');
+  assert.ok(omniSearchCode.includes('toggleFeaturedStream'), 'defines toggleFeaturedStream inline stream playback');
+  assert.ok(omniSearchCode.includes('ccOmniStreamBar'), 'defines inline live stream bar inside featured section');
+  assert.ok(omniSearchCode.includes('FEATURED_POOLS'), 'defines FEATURED_POOLS rotation data');
+  assert.ok(omniSearchCode.includes('rotateFeaturedCards'), 'defines rotateFeaturedCards logic');
+  assert.ok(omniSearchCode.includes('startFeaturedRotation'), 'defines startFeaturedRotation timer');
+  assert.ok(omniSearchCode.includes('stopFeaturedRotation'), 'defines stopFeaturedRotation cleanup');
+  assert.ok(omniSearchCode.includes('isFeaturedHovered'), 'pauses rotation on user hover/touch interaction');
+});
+
+test('cc-omni-search.js: Wspieram To button in footer (#ccOmniSupport) linking to /wspieraj with heart icon', () => {
+  assert.ok(omniSearchCode.includes('id="ccOmniSupport"'), 'defines #ccOmniSupport in footer');
+  assert.ok(omniSearchCode.includes('href="https://polskieradio.cc/wspieraj"'), 'links to /wspieraj');
+  assert.ok(omniSearchCode.includes('cc-omni-support-btn'), 'defines cc-omni-support-btn class');
+  assert.ok(omniSearchCode.includes('Wspieram To'), 'contains Wspieram To label');
+  assert.ok(omniSearchCode.includes('#FF7A00'), 'uses canonical #FF7A00 orange action color');
+});
+

@@ -39,7 +39,12 @@ export const I18N = {
     'LATEST ARTICLES', // 36
     'View All Articles', // 37
     'Read the Article', // 38
-    'A New Bible Karaoke Initiative for the World' // 39
+    'A New Bible Karaoke Initiative for the World', // 39
+    'Featured Christian Artists & Showcases', // 40
+    'Explore Artist Showcase', // 41
+    'Planned Radio Premiere', // 42
+    'World War You — Planned Premiere Nov 20, 2026', // 43
+    'Artists' // 44
   ],
   pl: [
     'Wiara. Muzyka. Nadzieja.',
@@ -81,7 +86,12 @@ export const I18N = {
     'NAJNOWSZE ARTYKUŁY',
     'Wszystkie artykuły',
     'Czytaj artykuł',
-    'Nowa inicjatywa Biblijnego Karaoke dla Świata'
+    'Nowa inicjatywa Biblijnego Karaoke dla Świata',
+    'Wyróżnieni Twórcy i Świadectwa',
+    'Otwórz Wizytówkę i Świadectwo',
+    'Planowana Premiera Radiowa',
+    'World War You — Planowana Premiera 20.11.2026',
+    'Twórcy'
   ],
   es: [
     'Fe. Música. Esperanza.',
@@ -123,7 +133,12 @@ export const I18N = {
     'ÚLTIMOS ARTÍCULOS',
     'Ver todos los artículos',
     'Leer el artículo',
-    'Una nueva iniciativa de Karaoke Bíblico para el Mundo'
+    'Una nueva iniciativa de Karaoke Bíblico para el Mundo',
+    "Artistas y Testimonios Cristianos Destacados",
+    "Explorar Presentación del Artista",
+    "Estreno Radial Planificado",
+    "World War You — Estreno Planificado 20 Nov 2026",
+    "Artistas",
   ],
   pt: [
     'Fé. Música. Esperança.',
@@ -165,7 +180,12 @@ export const I18N = {
     'ÚLTIMOS ARTIGOS',
     'Ver todos os artigos',
     'Ler o artigo',
-    'Uma Nova Iniciativa de Karaokê Bíblico para o Mundo'
+    'Uma Nova Iniciativa de Karaokê Bíblico para o Mundo',
+    "Artistas e Testemunhos Cristãos em Destaque",
+    "Explorar Mostra do Artista",
+    "Estreia no Rádio Planejada",
+    "World War You — Estreia Planejada 20 Nov 2026",
+    "Artistas",
   ],
   fr: [
     'Foi. Musique. Espérance.',
@@ -207,7 +227,12 @@ export const I18N = {
     'DERNIERS ARTICLES',
     'Tous les articles',
     'Lire l’article',
-    'Une Nouvelle Initiative de Karaoké Biblique pour le Monde'
+    'Une Nouvelle Initiative de Karaoké Biblique pour le Monde',
+    "Artistes et Témoignages Chrétiens en Vedette",
+    "Explorer la Présentation de l’Artiste",
+    "Première Radio Planifiée",
+    "World War You — Première Planifiée 20 Nov 2026",
+    "Artistes",
   ],
   de: [
     'Glaube. Musik. Hoffnung.',
@@ -249,7 +274,12 @@ export const I18N = {
     'NEUESTE ARTIKEL',
     'Alle Artikel anzeigen',
     'Artikel lesen',
-    'Eine neue Bibel-Karaoke-Initiative für die Welt'
+    'Eine neue Bibel-Karaoke-Initiative für die Welt',
+    "Ausgewählte christliche Künstler & Zeugnisse",
+    "Künstler-Showcase entdecken",
+    "Geplante Radio-Premiere",
+    "World War You — Geplante Premiere 20. Nov. 2026",
+    "Künstler",
   ],
   hi: [
     'विश्वास। संगीत। आशा।',
@@ -291,7 +321,12 @@ export const I18N = {
     'नवीनतम लेख',
     'सभी लेख देखें',
     'लेख पढ़ें',
-    'दुनिया के लिए एक नई बाइबल कराओके पहल'
+    'दुनिया के लिए एक नई बाइबल कराओके पहल',
+    "विशेष मसीही कलाकार और गवाहियाँ",
+    "कलाकार शोकेस देखें",
+    "योजनाबद्ध रेडियो प्रीमियर",
+    "World War You — योजनाबद्ध प्रीमियर 20 नवंबर 2026",
+    "कलाकार",
   ],
   id: [
     'Iman. Musik. Harapan.',
@@ -333,7 +368,12 @@ export const I18N = {
     'ARTIKEL TERBARU',
     'Lihat Semua Artikel',
     'Baca Artikel',
-    'Inisiatif Baru Karaoke Alkitab untuk Dunia'
+    'Inisiatif Baru Karaoke Alkitab untuk Dunia',
+    "Artis & Kesaksian Kristen Pilihan",
+    "Jelajahi Showcase Artis",
+    "Penayangan Perdana Radio Direncanakan",
+    "World War You — Penayangan Perdana 20 Nov 2026",
+    "Artis",
   ],
   sw: [
     'Imani. Muziki. Tumaini.',
@@ -375,7 +415,12 @@ export const I18N = {
     'MAKALA MPYA',
     'Tazama Makala Yote',
     'Soma Makala',
-    'Mpango Mpya wa Karaoke ya Biblia kwa Ulimwengu'
+    'Mpango Mpya wa Karaoke ya Biblia kwa Ulimwengu',
+    "Wasanii na Ushuhuda wa Kikristo Walioangaziwa",
+    "Gundua Maonyesho ya Msanii",
+    "Onyesho la Kwanza la Redio Lililopangwa",
+    "World War You — Onyesho Lililopangwa 20 Nov 2026",
+    "Wasanii",
   ],
   zh: [
     '信仰 · 音乐 · 希望',
@@ -417,7 +462,12 @@ export const I18N = {
     '最新文章',
     '查看所有文章',
     '阅读全文',
-    '面向全球的圣经卡拉OK赞美新计划'
+    '面向全球的圣经卡拉OK赞美新计划',
+    "精选基督徒艺术家与信仰见证",
+    "探索艺术家展厅",
+    "电台首播计划",
+    "World War You — 计划于2026年11月20日首播",
+    "艺术家",
   ]
 };
 

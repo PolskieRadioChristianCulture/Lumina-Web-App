@@ -21,6 +21,9 @@ test('generator restores both missing debt pilot entries and preserves unrelated
   fs.writeFileSync(path.join(temp,'szukaj/catalog.json'),JSON.stringify({items:[other],contextGuides:{preserved:true},totalItems:1}));
   fs.writeFileSync(path.join(temp,'sitemap.xml'),'<urlset><url><loc>'+other.url+'</loc></url></urlset>');
   fs.writeFileSync(path.join(temp,'data/ecosystem-map.json'),JSON.stringify({nodes:[]}));
+  const existingDir=path.join(temp,topics[0].route);fs.mkdirSync(existingDir,{recursive:true});
+  const prelude='\n<!-- Existing integration -->\n<script defer src="/js/owned-extension.js"></script>\n';
+  fs.writeFileSync(path.join(existingDir,'index.html'),'<html><head>'+prelude+'<meta charset="utf-8"></head><body></body></html>');
   for(let run=0;run<2;run++){
    execFileSync(process.execPath,[path.join(temp,'scripts/build-cc-help-series.mjs')],{cwd:temp,windowsHide:true});
    const a=JSON.parse(fs.readFileSync(path.join(temp,'szukaj/catalog.json')));
@@ -28,6 +31,9 @@ test('generator restores both missing debt pilot entries and preserves unrelated
    assert.deepEqual(a.items.find(i=>i.url===other.url),other);assert.deepEqual(a.contextGuides,{preserved:true});
    for(const [slug,lang] of [['dlugi','pl'],['en/debt-help','en']]){const items=a.items.filter(i=>i.url==='https://polskieradio.cc/'+slug);assert.equal(items.length,1);assert.equal(items[0].lang,lang);assert.equal(items[0].access,'public');}
    assert.equal(a.items.length,topics.length*2+3);
+   const rendered=fs.readFileSync(path.join(existingDir,'index.html'),'utf8');assert(rendered.includes(prelude));assert.equal(rendered.split('/js/owned-extension.js').length-1,1);
+   if(run===0)fs.writeFileSync(path.join(temp,'sitemap.xml'),'<sitemapindex><sitemap><loc>https://polskieradio.cc/sitemaps/other.xml</loc></sitemap></sitemapindex>');
+   else {const index=fs.readFileSync(path.join(temp,'sitemap.xml'),'utf8');assert(index.includes('/sitemaps/other.xml'));assert(index.includes('/sitemaps/cc-pomoc.xml'));const helpMap=fs.readFileSync(path.join(temp,'sitemaps/cc-pomoc.xml'),'utf8');for(const url of ['https://polskieradio.cc/dlugi','https://polskieradio.cc/en/debt-help',...topics.flatMap(t=>['https://polskieradio.cc/'+t.route,'https://polskieradio.cc/en/'+t.enRoute])])assert(helpMap.includes('<loc>'+url+'</loc>'));}
   }
  }finally{fs.rmSync(temp,{recursive:true,force:true});}
 });
@@ -69,8 +75,8 @@ test('urgent help precedes the hero on both crisis pages and telephone targets h
  const css=read('cc-pomoc/series.css');const block=css.split('}').find(r=>r.includes('.urgent-help a[href^="tel:"]'));assert(block);assert(block.includes('a[href="https://czat.brpd.gov.pl/"]'));const rule=block.split('{')[1];assert(rule.includes('min-height:44px'));assert(rule.includes('min-width:44px'));
 });
 test('search surfaces agree and every language route appears once in search and sitemap',()=>{
- assert.equal(read('szukaj/catalog.json'),read('data/cc-search-index.json'));const cat=JSON.parse(read('szukaj/catalog.json'));assert.equal(cat.totalItems,cat.items.length);
- for(const t of topics)for(const lang of ['pl','en']){const url='https://polskieradio.cc/'+(lang==='pl'?t.route:'en/'+t.enRoute);const found=cat.items.filter(x=>x.url===url);assert.equal(found.length,1);assert.equal(found[0].lang,lang);assert.equal(found[0].access,'public');assert(read('sitemap.xml').includes('<loc>'+url+'</loc>'));}
+ assert.equal(read('szukaj/catalog.json'),read('data/cc-search-index.json'));const cat=JSON.parse(read('szukaj/catalog.json'));assert.equal(cat.totalItems,cat.items.length); const rootMap=read('sitemap.xml'); const helpMap=rootMap.includes('<sitemapindex')?(assert(rootMap.includes('<loc>https://polskieradio.cc/sitemaps/cc-pomoc.xml</loc>')),read('sitemaps/cc-pomoc.xml')):rootMap;
+ for(const t of topics)for(const lang of ['pl','en']){const url='https://polskieradio.cc/'+(lang==='pl'?t.route:'en/'+t.enRoute);const found=cat.items.filter(x=>x.url===url);assert.equal(found.length,1);assert.equal(found[0].lang,lang);assert.equal(found[0].access,'public');assert(helpMap.includes('<loc>'+url+'</loc>'));}
 });
 test('drawer is native modal; no browser storage or submission code',()=>{
  const js=read('cc-pomoc/series.js');assert(js.includes('.showModal()'));assert(js.includes("addEventListener('close'"));assert(!/fetch\(|localStorage|sessionStorage|sendBeacon|XMLHttpRequest/.test(js));assert(read('cc-pomoc/series.css').includes('prefers-reduced-motion'));

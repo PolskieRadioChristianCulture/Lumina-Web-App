@@ -20,6 +20,15 @@ for(const [route,lang] of routes)test(route+': full static catalogue, honest pla
  assert(h.includes('/cc-pomoc/catalog.css'));assert(h.includes('/cc-pomoc/catalog.js'));
 });
 test('debt pilot changes only navigation and the new catalogue assets',()=>{
- const strip=h=>h.replace(/<dialog\b[^>]*id="edge-panel"[^>]*>[\s\S]*?<\/dialog>/,'').replace(/<link rel="stylesheet" href="\/cc-pomoc\/catalog.css[^>]*>/,'').replace(/<script src="\/cc-pomoc\/catalog.js[^>]*><\/script>/,'').replace(/\s+/g,' ').trim();
+ const strip=h=>h.replace('/dlugi/help-page.js?v=20261027d','/dlugi/help-page.js?v=20261030_privacy').replace('Ten wzór strony nie ma bazy danych ani analityki.','Strona korzysta z Google Analytics do analizy odwiedzin; arkusz i szkic zgłoszenia nie są zapisywane w bazie CC.').replace('This template has no database or analytics.','This page uses Google Analytics for visit analytics; the worksheet and enquiry draft are not saved in a CC database.').replace(/<head>[\s\S]*?(?=<meta\s+charset=)/i,'<head>').replace(/<dialog\b[^>]*id="edge-panel"[^>]*>[\s\S]*?<\/dialog>/,'').replace(/<link rel="stylesheet" href="\/cc-pomoc\/catalog.css[^>]*>/,'').replace(/<script src="\/cc-pomoc\/catalog.js[^>]*><\/script>/,'').replace(/\s+/g,' ').trim();
  for(const route of ['dlugi','en/debt-help']){const before=execFileSync('git',['show','3fecd909:'+route+'/index.html'],{encoding:'utf8'});assert.equal(strip(fs.readFileSync(route+'/index.html','utf8')),strip(before));}
+});
+
+test('pilot discloses existing visit analytics consistently in HTML and runtime translations',()=>{
+ const runtime=fs.readFileSync('dlugi/help-page.js','utf8');
+ for(const [route,copy] of [['dlugi','Strona korzysta z Google Analytics do analizy odwiedzin'],['en/debt-help','This page uses Google Analytics for visit analytics']]){
+  const html=fs.readFileSync(route+'/index.html','utf8');assert(html.includes('googletagmanager.com/gtag/js'));assert(html.includes(copy));assert(runtime.includes(copy));
+  assert(!html.includes('nie ma bazy danych ani analityki'));assert(!html.includes('This template has no database or analytics'));
+ }
+ assert(!runtime.includes('nie ma bazy danych ani analityki'));assert(!runtime.includes('This template has no database or analytics'));
 });

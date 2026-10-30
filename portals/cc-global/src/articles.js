@@ -1,5 +1,20 @@
 export const ARTICLES = [
   {
+    slug: 'gerald-welch-the-call-rock-driven-wake-up-call',
+    title: 'Gerald Welch: THE CALL — A Rock-Driven Wake-Up Call',
+    category: 'Artist Spotlight',
+    image: 'gerald-welch-the-call-banner.webp',
+    excerpt: 'An in-depth editorial review of Gerald Welch’s debut album: 9 tracks challenging religious complacency and calling hearts to living faith in Christ.',
+    body: [
+      'Christian Culture Network presents an editorial review and theological reflection on Gerald Welch’s debut album, THE CALL.',
+      'Spanning nine hard-hitting compositions — including the instrumental WORSHIP — the album confronts modern religious hypocrisy and calls believers to personal repentance, courage, and genuine devotion.',
+      'Drawing upon Ezekiel’s vision of dry bones (Ezekiel 37) and the call to courageous testimony (Acts 1:8; Revelation 11), Welch’s music insists that faith must be living, authentic, and grounded in the grace of Jesus Christ.',
+      'Explore the official showcase, read the complete bilingual analysis, and download the official PDF publication at polskieradio.cc/Welch/en/.'
+    ],
+    source: 'https://polskieradio.cc/Welch/en/',
+    published: '2026-10-29'
+  },
+  {
     slug: 'biblical-worship-sing-the-word-of-god',
     title: 'Biblical Worship — Sing the Entire Word of God!',
     category: 'Bible in Music',

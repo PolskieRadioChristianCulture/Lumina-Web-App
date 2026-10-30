@@ -2007,7 +2007,7 @@
             const lmpCss = document.createElement('link');
             lmpCss.id = 'luminaMiniPlayerCSS';
             lmpCss.rel = 'stylesheet';
-            lmpCss.href = '/css/lumina-mini-player.css?v=20261013_fab_col_v1';
+            lmpCss.href = '/css/lumina-mini-player.css?v=20261029_fab_v2';
             document.head.appendChild(lmpCss);
         }
         if (!window.LuminaMiniPlayer && !document.querySelector('script[src*="lumina-mini-player.js"]')) {

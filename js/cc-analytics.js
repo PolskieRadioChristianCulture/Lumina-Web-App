@@ -11,7 +11,8 @@
  *  donate_click   klik w Wspieraj / Patronite / wpłatę                       — kluczowe
  *  contact_click  klik w telefon, e-mail, WhatsApp, Messenger                — kluczowe
  *  share          udostępnienie strony
- *  search         zapytanie w wyszukiwarce CC
+ *  search         zapytanie w wyszukiwarce CC (search_term; pauza 1,5 s, Enter lub wybór wyniku)
+ *  select_content klik w wynik wyszukiwarki (content_type=search_result, item_id=ścieżka)
  *
  * Ruch własny (traffic_type=internal) ustawia sam fragment GA — patrz scripts/apply-ga-internal-traffic.mjs.
  */
@@ -26,6 +27,37 @@
     } catch (_) {}
   }
   window.ccTrack = ccTrack;
+
+  // Detekcja osrodka Polonii na podstawie strefy czasowej urzadzenia (zero danych osobowych)
+  function ccGetPoloniaHub() {
+    try {
+      var tz = (typeof Intl !== 'undefined' && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : '';
+      if (!tz) return 'UNKNOWN';
+      if (/Warsaw|Poland/i.test(tz)) return 'PL_KRAJ';
+      if (/New_York|Detroit|Indiana|Kentucky|Toronto|Montreal/i.test(tz)) return 'POLONIA_US_EAST';
+      if (/Chicago|Menominee|Winnipeg/i.test(tz)) return 'POLONIA_US_CHICAGO';
+      if (/Denver|Phoenix|Edmonton/i.test(tz)) return 'POLONIA_US_MOUNTAIN';
+      if (/Los_Angeles|Vancouver|Tijuana/i.test(tz)) return 'POLONIA_US_WEST';
+      if (/London|Dublin|Belfast/i.test(tz)) return 'POLONIA_UK_IRELAND';
+      if (/Berlin|Paris|Rome|Madrid|Amsterdam|Brussels|Vienna|Stockholm|Oslo/i.test(tz)) return 'POLONIA_EUROPE_ZACH';
+      return tz.replace(/[^a-zA-Z0-9_\-\/]/g, '_').slice(0, 40);
+    } catch (_) {
+      return 'UNKNOWN';
+    }
+  }
+  window.ccGetPoloniaHub = ccGetPoloniaHub;
+
+  function ccTrackPolonia(action, extra) {
+    var hub = ccGetPoloniaHub();
+    var tz = '';
+    try { tz = (typeof Intl !== 'undefined' && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : ''; } catch (_) {}
+    ccTrack('polonia_engagement', Object.assign({
+      polonia_hub: hub,
+      user_tz: tz || 'unknown',
+      action: action || 'interaction'
+    }, extra || {}));
+  }
+  window.ccTrackPolonia = ccTrackPolonia;
 
   const path = location.pathname;
 
@@ -84,19 +116,33 @@
     }
   }, true);
 
-  // Wyszukiwarka CC: Enter w polu albo wybór wyniku (raz na zapytanie)
+  // Wyszukiwarka CC: pauza w pisaniu (1,5 s), Enter albo wybór wyniku — raz na zapytanie.
+  // Zapytań wyglądających na e-mail lub numer telefonu nie wysyłamy (zero danych osobowych w GA).
   let lastQuery = '';
+  let searchTimer = 0;
   function trackSearch() {
+    clearTimeout(searchTimer);
     const input = document.getElementById('ccOmniInput');
-    const q = input ? input.value.trim() : '';
-    if (q.length < 2 || q === lastQuery) return;
+    const q = input ? input.value.trim().replace(/\s+/g, ' ') : '';
+    if (q.length < 2 || q === lastQuery || /@|\d[\d\s-]{6,}\d/.test(q)) return;
     lastQuery = q;
     ccTrack('search', { search_term: q.slice(0, 100) });
   }
+  document.addEventListener('input', (e) => {
+    if (e.target && e.target.id === 'ccOmniInput') {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(trackSearch, 1500);
+    }
+  }, true);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && e.target && e.target.id === 'ccOmniInput') trackSearch();
   }, true);
   document.addEventListener('click', (e) => {
-    if (e.target.closest && e.target.closest('#ccOmniBody a')) trackSearch();
+    const a = e.target.closest && e.target.closest('#ccOmniBody a');
+    if (!a) return;
+    trackSearch();
+    let item = '';
+    try { const u = new URL(a.href, location.href); item = u.origin === location.origin ? u.pathname : u.hostname; } catch (_) {}
+    ccTrack('select_content', { content_type: 'search_result', item_id: item.slice(0, 100) });
   }, true);
 })();

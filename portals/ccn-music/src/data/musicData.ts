@@ -644,6 +644,30 @@ export const CHANNELS_41: ChannelArtist[] = [
 
 export const MUSIC_RELEASES: MusicRelease[] = [
   {
+    id: 'rel-gerald-welch-the-call',
+    title: 'THE CALL (Oficjalny Album & Analiza Redakcyjna)',
+    artist: 'Gerald Welch',
+    artistHandle: '@geraldwelch',
+    channelUrl: 'https://polskieradio.cc/Welch/pl/',
+    category: 'premiery',
+    categoryLabel: 'PREMIERA ALBUMU · ROCK CHRZEŚCIJAŃSKI',
+    releaseDate: '29 października 2026 r.',
+    duration: '42:15',
+    coverUrl: '/images/news/art-gerald-welch-the-call-1200.jpg',
+    youtubeVideoId: '',
+    description: 'Debiutancki album Geralda Welcha: 9 utworów tworzących bezkompromisowe wezwanie do przebudzenia sumienia, porzucenia religijnej obłudy i powrotu do żywej wiary w Chrystusa. Pełna analiza redakcyjna CCN oraz kompletny pakiet w wydaniu polskim i angielskim.',
+    tags: ['Gerald Welch', 'THE CALL', 'Christian Rock', 'Przebudzenie', 'Acts 29', 'Worship', 'Nowość 2026'],
+    isHero: true,
+    isTopSeven: true,
+    topRank: 1,
+    isNew: true,
+    author: AUTHORS.cezary,
+    scriptureReference: {
+      verse: 'Księga Ezechiela 37:4-5 / List do Efezjan 2:8-9',
+      text: 'Prorokuj nad tymi suchymi kośćmi i powiedz im: Suche kości, słuchajcie słowa PANA! Łaską bowiem jesteście zbawieni przez wiarę, i to nie z was: jest to dar Boga.',
+    },
+  },
+  {
     id: 'rel-what-a-beautiful-name',
     title: 'What A Beautiful Name (Official Live Performance)',
     artist: 'Hillsong Worship',

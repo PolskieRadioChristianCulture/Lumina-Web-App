@@ -39,17 +39,6 @@ const dailyLessons = [
     featured: true
   },
   {
-    title: "Z Biblią za Pan Brat: Dzień 22 — Jakub walczy z Bogiem: Przemiana człowieka i noc nad Jabbokiem (Rdz 31–32)",
-    category: "Wiadomości i artykuły",
-    url: "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok",
-    description: "Leksykon biblijny i publicystyka CCN News na 22 października 2026. Analiza teologiczna rozdziałów 31–32 Księgi Rodzaju — od samowystarczalności Jakuba do narodzin Izraela.",
-    tags: [
-      "z biblią za pan brat", "jakub", "jabbok", "rdz 31", "rdz 32", "izrael", "gilead",
-      "formacja", "artykuł", "ccn news", "22 października 2026"
-    ],
-    featured: false
-  },
-  {
     title: "Z Biblią za Pan Brat — Dzień 21: Bóg działa pośród niedoskonałych rodzin (Rdz 29:1–30:43)",
     category: "Biblia i formacja",
     url: "https://polskieradio.cc/akademia/kurscodzienny/dzien-21",

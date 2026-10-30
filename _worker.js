@@ -1,14 +1,19 @@
 import ccnArticleRoutes from './data/ccn-article-routes.js';
 import { handleBUApi } from './lib/bu-voting-worker.js';
+import { handleSearchRagApi } from './data/cc-search-rag-service.js';
+import { handleAiDlaJezusaApi } from './services/ai-dla-jezusa/api-v1.js';
+import { handleNewsletterApiRequest } from './services/cc-newsletter/newsletter-service.js';
 
 const BLOCKED_PREFIXES = [
   '/.agents/', '/.github/', '/.firebase/', '/.gemini/', '/.vscode/', '/.wrangler/',
   '/cloudflare/', '/cloudflare-worker/', '/lib/', '/tests/', '/firebase_functions/', '/functions/', '/scratch/', '/src/',
+  '/services/', '/migrations/',
   '/scripts/agent-matrix/.matrix_sessions/',
   '/tresci-18plus/',
 ];
 
 const BLOCKED_FILES = new Set([
+  '/data/whatsapp_zaczepki_log.json', '/data/whatsapp_zaczepki_state.json',
   '/.env', '/.env.example', '/.firebaserc', '/.gitignore', '/agents.md', '/claude.md',
   '/codex.md', '/firebase.json', '/firestore.indexes.json', '/firestore.rules', '/gemini.md',
   '/package-lock.json', '/package.json', '/playwright.config.ts', '/storage.rules',
@@ -16,13 +21,20 @@ const BLOCKED_FILES = new Set([
 ]);
 
 const BLOCKED_EXTENSIONS = [
-  '.bak', '.cjs', '.map', '.md', '.mjs', '.ps1', '.py', '.ts', '.vue', '.xlsx', '.yaml', '.yml',
+  '.bak', '.cjs', '.map', '.md', '.mjs', '.ps1', '.py', '.sql', '.ts', '.vue', '.xlsx', '.yaml', '.yml',
 ];
 
 function isBlocked(pathname) {
   let path;
   try {
-    path = decodeURIComponent(pathname).replace(/\\/g, '/').toLowerCase();
+    path = pathname;
+    for (let round=0; round<4; round++) {
+      const decoded = decodeURIComponent(path);
+      if (decoded === path) break;
+      path = decoded;
+    }
+    if (/%[0-9a-f]{2}/i.test(path)) return true;
+    path = path.replace(/\\/g, '/').replace(/\/{2,}/g, '/').toLowerCase();
   } catch {
     return true;
   }
@@ -1546,6 +1558,13 @@ async function handlePodcastsRoute(request, env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    // 1. Kanonizacja domeny www -> apex (SEO / P0 / Etap 3)
+    if (url.hostname === 'www.polskieradio.cc') {
+      const canonicalTarget = new URL(request.url);
+      canonicalTarget.hostname = 'polskieradio.cc';
+      return Response.redirect(canonicalTarget.toString(), 301);
+    }
     // Owner-authorized withdrawal of this public profile (2026-10-14).
     const removedProfilePaths = new Set(['/lumina.zbyszekgieron', '/lumina.zbyszekgieron.html', '/lumina/zbyszekgieron', '/lumina/zbyszek-gieron', '/lumina/gieron', '/zbyszekgieron', '/zbyszek-gieron', '/gieron']);
     const profileSlug = (url.searchParams.get('u') || '').toLowerCase().replace(/^u_/, '');
@@ -1561,6 +1580,15 @@ export default {
     }
     if (url.pathname.startsWith('/api/bu/v1/')) {
       return handleBUApi(request, env);
+    }
+    if (url.pathname.startsWith('/api/ai-dla-jezusa/v1')) {
+      return handleAiDlaJezusaApi(request, env);
+    }
+    if (url.pathname.startsWith('/api/newsletter')) {
+      return handleNewsletterApiRequest(request, env, (tok) => verifyFirebaseIdToken(tok));
+    }
+    if (url.pathname === '/api/answer' || url.pathname.startsWith('/api/search-rag')) {
+      return handleSearchRagApi(request, env);
     }
     if (isBlocked(url.pathname)) {
       return new Response('Not Found', {
@@ -1772,7 +1800,15 @@ export default {
     if (/^\/wyszukiwarka\/?$/i.test(decodedP)) {
       const targetUrl = new URL(request.url);
       targetUrl.pathname = '/wyszukiwarka/';
-      return env.ASSETS.fetch(new Request(targetUrl, request));
+      const assetRes = await env.ASSETS.fetch(new Request(targetUrl, request));
+      const res = new Response(assetRes.body, assetRes);
+      res.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+      if (url.searchParams.has('q') || url.searchParams.has('query')) {
+        res.headers.set('X-Robots-Tag', 'noindex, follow, noarchive');
+      } else {
+        res.headers.set('X-Robots-Tag', 'index, follow, max-image-preview:large');
+      }
+      return res;
     }
     if (decodedP === '/wizytówka' || decodedP === '/wizytowka') {
       const targetUrl = new URL(request.url);
@@ -2235,6 +2271,27 @@ export default {
 
     // CC Clean Routing & Case-Insensitive Aliases (P0 / P1)
     const lowerPath = url.pathname.toLowerCase().replace(/\/$/, '');
+    if (
+      lowerPath === '/newsletter' ||
+      lowerPath === '/newsletter/confirm' ||
+      lowerPath === '/newsletter/manage' ||
+      lowerPath === '/newsletter/unsubscribe' ||
+      lowerPath === '/newsletter/admin'
+    ) {
+      const nlUrl = new URL(request.url);
+      nlUrl.pathname = '/newsletter.html';
+      const assetResp = await env.ASSETS.fetch(new Request(nlUrl.toString(), { method: 'GET', headers: { Accept: 'text/html' } }));
+      const isSensitiveRoute = lowerPath !== '/newsletter' || url.searchParams.has('token');
+      return new Response(assetResp.body, {
+        status: assetResp.status === 404 ? 404 : 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': isSensitiveRoute ? 'private, no-store, no-cache, must-revalidate' : 'public, max-age=0, must-revalidate',
+          'X-Robots-Tag': isSensitiveRoute ? 'noindex, nofollow, noarchive' : 'index, follow',
+          'Referrer-Policy': 'no-referrer',
+        },
+      });
+    }
     if (lowerPath === '/yis') {
       const yisUrl = new URL(request.url);
       yisUrl.pathname = '/YIS.html';
@@ -2293,6 +2350,31 @@ export default {
       return env.ASSETS.fetch(new Request(targetUrl, request));
     }
 
+    if (
+      lowerPath === '/wioletta/pardon-czy-to-milosc' ||
+      lowerPath === '/pardon-czy-to-milosc'
+    ) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/Wioletta/pardon-czy-to-milosc/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
+    if (lowerPath.startsWith('/wioletta/pardon-czy-to-milosc/')) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/Wioletta/pardon-czy-to-milosc/' + url.pathname.slice('/wioletta/pardon-czy-to-milosc/'.length);
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
+    if (
+      lowerPath === '/wioletta' ||
+      lowerPath === '/violetta' ||
+      lowerPath === '/pardon'
+    ) {
+      const targetUrl = new URL(request.url);
+      targetUrl.pathname = '/Wioletta/';
+      return env.ASSETS.fetch(new Request(targetUrl, request));
+    }
+
     const assetResp = await env.ASSETS.fetch(request);
     if (assetResp.status === 404 && !url.pathname.includes('.')) {
       const dirUrl = new URL(request.url);
@@ -2317,6 +2399,12 @@ export default {
       }
     }
 
-    return assetResp;
+    const finalResp = assetResp;
+    if (url.searchParams.has('q') || url.searchParams.has('query')) {
+      const respWithHeader = new Response(finalResp.body, finalResp);
+      respWithHeader.headers.set('X-Robots-Tag', 'noindex, follow, noarchive');
+      return respWithHeader;
+    }
+    return finalResp;
   },
 };

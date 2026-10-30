@@ -10,10 +10,11 @@ const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, '.pages-release');
 const BLOCKED_DIRECTORIES = new Set([
   '.agents', '.firebase', '.gemini', '.github', '.vscode', '.wrangler', '_wydanie',
-  'cloudflare', 'cloudflare-worker', 'docs', 'firebase_functions', 'functions', 'node_modules',
+  'cloudflare', 'cloudflare-worker', 'docs', 'firebase_functions', 'functions', 'migrations', 'node_modules',
   'lib', 'scratch', 'scripts', 'src', 'test', 'tests', 'windows_tools',
 ]);
 const BLOCKED_FILES = new Set([
+  'whatsapp_zaczepki_log.json', 'whatsapp_zaczepki_state.json',
   '.env', '.env.example', '.firebaserc', '.gitignore', '.cc-frozen-approvals.json', 'wydanie-kanaly.log', 'agents.md', 'claude.md',
   'codex.md', 'database.rules.json', 'firebase.json', 'firebase.lumi-agent-test.json', 'firestore.indexes.json',
   'firestore.rules', 'gemini.md', 'package-lock.json', 'package.json',

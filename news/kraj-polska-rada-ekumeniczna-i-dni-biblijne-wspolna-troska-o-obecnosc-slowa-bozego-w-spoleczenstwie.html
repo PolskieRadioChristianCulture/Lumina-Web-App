@@ -9,6 +9,7 @@
       gtag('js', new Date());
       gtag('config','G-Y4EFTVBPE3',(function(){try{var s=location.search,k='cc_team';if(/[?&]cc_team=1/.test(s))localStorage.setItem(k,'1');if(/[?&]cc_team=0/.test(s))localStorage.removeItem(k);if(localStorage.getItem(k)==='1'||/[?&]in_mcr=1/.test(s)||window.obsstudio)return{traffic_type:'internal'}}catch(e){}return{}})());
     </script><script src="/js/cc-analytics.js?v=20261026_1" defer></script>
+    <script src="/js/cc-universal-tts.js?v=20261029_1" defer></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
@@ -472,6 +473,181 @@
         object-fit: cover;
         border: 3px solid var(--ccn-gold);
         flex-shrink: 0;
+      }
+      /* Patronage Box & Wspieram to */
+      .ccn-patronage-box {
+        margin: 3rem 0;
+        padding: 2.25rem 1.75rem;
+        background: linear-gradient(135deg, rgba(14, 18, 26, 0.96), rgba(24, 30, 44, 0.96));
+        border: 1.5px solid rgba(196, 163, 90, 0.45);
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+      }
+      .ccn-patronage-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.95rem;
+        border-radius: 9999px;
+        background: rgba(196, 163, 90, 0.18);
+        border: 1px solid rgba(196, 163, 90, 0.4);
+        color: #E2CC9A;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.85rem;
+      }
+      .ccn-patronage-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #FFFFFF;
+        margin-bottom: 0.65rem;
+        line-height: 1.35;
+      }
+      .ccn-patronage-desc {
+        font-size: 0.95rem;
+        color: #d1d5db;
+        max-width: 42rem;
+        margin: 0 auto 1.5rem auto;
+        line-height: 1.65;
+      }
+      .ccn-patronage-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 0.85rem;
+      }
+      .ccn-support-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1.85rem;
+        border-radius: 10px;
+        background: #FF7A00;
+        color: #FFFFFF !important;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        box-shadow: 0 4px 18px rgba(255, 122, 0, 0.45);
+        min-height: 44px;
+        transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      }
+      .ccn-support-btn-primary:hover {
+        background: #FF8C33;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 22px rgba(255, 122, 0, 0.6);
+        color: #FFFFFF !important;
+      }
+      .ccn-support-btn-primary:active {
+        background: #E66A00;
+        transform: translateY(0);
+      }
+      .ccn-support-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1.5rem;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #f4f4f5 !important;
+        font-weight: 600;
+        font-size: 0.92rem;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        min-height: 44px;
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+      }
+      .ccn-support-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+        color: #FFFFFF !important;
+      }
+
+      /* Omni Search Autopromotion Box */
+      .ccn-search-promo-box {
+        margin: 2.25rem 0;
+        padding: 1.5rem 1.75rem;
+        background: linear-gradient(135deg, rgba(10, 14, 24, 0.96), rgba(18, 25, 40, 0.96));
+        border: 1.5px solid rgba(196, 163, 90, 0.4);
+        border-radius: 16px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+      }
+      .ccn-search-promo-content {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+      }
+      .ccn-search-promo-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.2), rgba(196, 163, 90, 0.3));
+        border: 1.5px solid rgba(255, 122, 0, 0.5);
+        color: #FF7A00;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      .ccn-search-promo-text {
+        flex: 1;
+        min-width: 240px;
+      }
+      .ccn-search-promo-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.12rem;
+        font-weight: 700;
+        color: #C4A35A;
+        margin: 0 0 0.35rem 0;
+      }
+      .ccn-search-promo-desc {
+        font-size: 0.88rem;
+        line-height: 1.45;
+        color: rgba(244, 244, 245, 0.85);
+        margin: 0;
+      }
+      .ccn-search-promo-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.75rem 1.4rem;
+        border-radius: 10px;
+        background: #FF7A00;
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 0.92rem;
+        text-decoration: none;
+        border: 1px solid #FF8C33;
+        min-height: 44px;
+        box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+        transition: background 0.2s ease, transform 0.15s ease;
+        flex-shrink: 0;
+      }
+      .ccn-search-promo-btn:hover {
+        background: #FF8C33;
+        transform: translateY(-2px);
+      }
+      .ccn-search-promo-btn kbd {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        font-family: inherit;
+        font-size: 0.72rem;
+        color: #fff;
       }
 
       /* Related Section */
@@ -1023,6 +1199,47 @@
             </p>
           </div>
         </div>
+        <!-- CC Patronage Box with Classical Orange Wspieram to Button -->
+        <section class="ccn-patronage-box" aria-labelledby="ccnPatronageHeading">
+          <div class="ccn-patronage-badge">
+            <i class="fa-solid fa-heart" style="color: #FF7A00;" aria-hidden="true"></i>
+            <span>Misja Christian Culture • Wolne Media Boże</span>
+          </div>
+          <h3 id="ccnPatronageHeading" class="ccn-patronage-title">Razem niesiemy czystą Ewangelię i biblijną nadzieję dalej</h3>
+          <p class="ccn-patronage-desc">
+            Ten artykuł powstał bezpłatnie dla każdego czytelnika dzięki wsparciu naszych Darczyńców i Patronów. Jeśli ta treść wniosła pokój do Twojego serca, wesprzyj naszą misję, byśmy mogli docierać z biblijną prawdą do kolejnych tysięcy ludzi w Polsce i na świecie.
+          </p>
+          <div class="ccn-patronage-actions">
+            <a href="https://polskieradio.cc/wspieraj" class="ccn-support-btn-primary" aria-label="Wspieram to - przejdź do strony wsparcia">
+              <i class="fa-solid fa-heart" aria-hidden="true"></i>
+              <span>Wspieram to</span>
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+            <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="ccn-support-btn-secondary" aria-label="Zostań Patronem na Patronite">
+              <i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i>
+              <span>Zostań Patronem na Patronite</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- CC Omni Search Promotion Box -->
+        <section class="ccn-search-promo-box" aria-labelledby="ccnSearchPromoHeading">
+          <div class="ccn-search-promo-content">
+            <div class="ccn-search-promo-icon" aria-hidden="true">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div class="ccn-search-promo-text">
+              <h3 id="ccnSearchPromoHeading" class="ccn-search-promo-title">Szukasz konkretnego tematu, wersetu lub audycji?</h3>
+              <p class="ccn-search-promo-desc">
+                Skorzystaj z inteligentnej wyszukiwarki ekosystemu Christian Culture. Przeszukuj Pismo Święte (UBG), audycje radiowe, lekcje Akademii Biblijnej i artykuły — natychmiast od 1. litery.
+              </p>
+            </div>
+            <a href="https://polskieradio.cc/wyszukiwarka" class="ccn-search-promo-btn" aria-label="Otwórz Wyszukiwarkę Ekosystemu Christian Culture">
+              <span>Szukaj w EkoCC</span>
+              <kbd>Ctrl+K</kbd>
+            </a>
+          </div>
+        </section>
 
         <!-- Related Articles Grid -->
         
@@ -1030,30 +1247,30 @@
           <h2 class="ccn-related-title">Polecane Analizy i Artykuły</h2>
           <div class="ccn-related-grid">
             
-            <a href="/news/z-biblia-za-pan-brat-dzien-28-ja-jestem-jozef-przebaczenie-zamiast-zemsty" class="ccn-related-card">
-              <img src="/images/news/art-z-biblia-za-pan-brat-dzien-28-ja-jestem-jozef-przebaczenie-zamiast-zemsty.jpg" alt="Z Biblią za Pan Brat: Dzień 28 — „Ja jestem Józef”: Ofiarne poręczenie Judy, teologia opatrzności i pojednanie w Księdze Rodzaju 44–45" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
+            <a href="/news/bioetyka-edycja-genomu-syntetyczne-embriony-biblia" class="ccn-related-card">
+              <img src="/images/news/art-bioetyka-edycja-genomu-syntetyczne-embriony-biblia.jpg" alt="Bioetyka i granice ingerencji w ludzki genom. CRISPR, syntetyczne embriony a biblijna prawda o początku życia" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
               <div class="ccn-related-card-content">
-                <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">Wiara &amp; Rozwój</span>
-                <h4 class="ccn-related-card-title">Z Biblią za Pan Brat: Dzień 28 — „Ja jestem Józef”: Ofiarne poręczenie Judy, teologia opatrzności i pojednanie w Księdze Rodzaju 44–45</h4>
-                <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">28 października 2026</span>
+                <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">Nauka &amp; Bioetyka</span>
+                <h4 class="ccn-related-card-title">Bioetyka i granice ingerencji w ludzki genom. CRISPR, syntetyczne embriony a biblijna prawda o początku życia</h4>
+                <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">30 października 2026</span>
               </div>
             </a>
             
-            <a href="/news/z-biblia-za-pan-brat-dzien-27-gdy-przeszlosc-wraca-bracia-jozefa" class="ccn-related-card">
-              <img src="/images/news/art-z-biblia-za-pan-brat-dzien-27-gdy-przeszlosc-wraca-bracia-jozefa.jpg" alt="Z Biblią za Pan Brat: Dzień 27 — Gdy przeszłość wraca: Przebudzenie sumienia braci Józefa i odpowiedzialność Judy w Księdze Rodzaju 42–43" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
+            <a href="/news/oficjalny-start-newslettera-christian-culture-dolacz" class="ccn-related-card">
+              <img src="/images/news/art-oficjalny-start-newslettera-christian-culture-dolacz.jpg" alt="Oficjalny start Newslettera Christian Culture: Bądź na bieżąco ze Słowem, muzyką i misją" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
               <div class="ccn-related-card-content">
-                <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">Wiara &amp; Rozwój</span>
-                <h4 class="ccn-related-card-title">Z Biblią za Pan Brat: Dzień 27 — Gdy przeszłość wraca: Przebudzenie sumienia braci Józefa i odpowiedzialność Judy w Księdze Rodzaju 42–43</h4>
-                <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">27 października 2026</span>
+                <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">CC Inside &amp; Społeczność</span>
+                <h4 class="ccn-related-card-title">Oficjalny start Newslettera Christian Culture: Bądź na bieżąco ze Słowem, muzyką i misją</h4>
+                <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">30 października 2026</span>
               </div>
             </a>
             
-            <a href="/news/z-biblia-za-pan-brat-dzien-26-od-wiezienia-do-palacu" class="ccn-related-card">
-              <img src="/images/news/art-z-biblia-za-pan-brat-dzien-26-od-wiezienia-do-palacu.jpg" alt="Z Biblią za Pan Brat: Dzień 26 — Od więzienia do pałacu: Teologia oczekiwania, roztropności gospodarczej i opatrzności (Rdz 40–41)" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
+            <a href="/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj" class="ccn-related-card">
+              <img src="/images/news/art-cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj.jpg" alt="Cyfrowy detoks w chrześcijańskim domu: Jak odzyskać prawdziwą bliskość przy wspólnym stole" loading="lazy" onerror="this.src='/ccn-logo-square.png'">
               <div class="ccn-related-card-content">
-                <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">Wiara &amp; Rozwój</span>
-                <h4 class="ccn-related-card-title">Z Biblią za Pan Brat: Dzień 26 — Od więzienia do pałacu: Teologia oczekiwania, roztropności gospodarczej i opatrzności (Rdz 40–41)</h4>
-                <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">26 października 2026</span>
+                <span style="font-size:0.7rem; color:var(--ccn-primary); font-weight:800; text-transform:uppercase; margin-bottom:0.3rem;">Rodzina &amp; Relacje</span>
+                <h4 class="ccn-related-card-title">Cyfrowy detoks w chrześcijańskim domu: Jak odzyskać prawdziwą bliskość przy wspólnym stole</h4>
+                <span style="font-size:0.75rem; color:#a1a1aa; margin-top:auto;">30 października 2026</span>
               </div>
             </a>
           </div>

@@ -10,6 +10,7 @@
 
   gtag('config','G-Y4EFTVBPE3',(function(){try{var s=location.search,k='cc_team';if(/[?&]cc_team=1/.test(s))localStorage.setItem(k,'1');if(/[?&]cc_team=0/.test(s))localStorage.removeItem(k);if(localStorage.getItem(k)==='1'||/[?&]in_mcr=1/.test(s)||window.obsstudio)return{traffic_type:'internal'}}catch(e){}return{}})());
 </script><script src="/js/cc-analytics.js?v=20261026_1" defer></script>
+    <script src="/js/cc-polonia-hub.js?v=20261029_1" defer></script>
     <script>
         if (window.self !== window.top || window.location.search.includes('noticker') || window.location.search.includes('embed') || window.location.search.includes('muted')) {
             document.documentElement.classList.add('no-ticker', 'embedded-mode');
@@ -835,6 +836,9 @@
     </div>
 
     <!-- ── NEW CCN NEWS MASTER BROADCAST TICKER (OBS LOWER THIRD) ── -->
+    <!-- Zegar Polonii na Świecie -->
+    <div data-cc-polonia-clock style="position:fixed;bottom:94px;right:16px;z-index:9999;background:rgba(10,10,15,0.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:4px 12px;border-radius:24px;border:1px solid rgba(212,175,55,0.3);box-shadow:0 4px 20px rgba(0,0,0,0.6);"></div>
+
     <div class="ccn-master-ticker">
         <!-- 1. BRAND LOGO (Projekt bez nazwy (32).png) -->
         <a href="/news" class="ccn-ticker-brand" title="CCN News Christian Culture – Przejdź do strony głównej">
@@ -937,6 +941,7 @@
         </div>
 
         <!-- 4. RIGHT CLOCK & DATE BOX -->
+        <div data-cc-lang-switcher style="display:inline-flex;align-items:center;margin:0 8px;"></div>
         <div class="ccn-clock-box">
             <div class="ccn-clock-time" id="ccnClockTime">--:--:--</div>
             <div class="ccn-clock-date" id="ccnClockDate">-- ---</div>

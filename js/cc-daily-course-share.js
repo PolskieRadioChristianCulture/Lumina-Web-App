@@ -206,4 +206,11 @@
     themeScript.src = '/js/cc-course-theme.js?v=20261008_desktop_icons_v2';
     document.head.appendChild(themeScript);
   }
+  // Universal Multilingual TTS Reader (JOMA-D052 Orange #FF7A00 Button)
+  if (!document.getElementById('ccUniversalTtsScript') && !window.CCUniversalTTS) {
+    const ttsScript = document.createElement('script');
+    ttsScript.id = 'ccUniversalTtsScript';
+    ttsScript.src = '/js/cc-universal-tts.js?v=20261029_1';
+    document.head.appendChild(ttsScript);
+  }
 })();

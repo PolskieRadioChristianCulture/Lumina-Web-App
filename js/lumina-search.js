@@ -343,6 +343,30 @@ export const OMNI_BASE_PROFILES = [
         url: 'pawelmurawski',
         type: 'user',
         badge: '✨ Społeczność'
+    },
+    {
+        id: 'marekjakubowski',
+        slug: 'marekjakubowski',
+        name: 'Marek Jakubowski',
+        handle: '@marek',
+        aliases: ['marek', 'jakubowski', 'marek jakubowski', 'marekjakubowski', 'marusjakubowski', 'autor rozwazan'],
+        age: '',
+        city: 'Polska',
+        status: '',
+        gender: 'mezczyzna',
+        lookingFor: '',
+        job: 'Autor Rozważań Biblijnych',
+        role: 'Autor Rozważań & Społeczność LUMINA ✨',
+        bio: 'Dzielę się tym, co Pan kładzie na moje serce — przez codzienne rozważania Słowa Bożego.',
+        verse: '„Pan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.” (Psalm 28, 7 UBG)',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Chrześcijanin',
+        worshipDay: '',
+        tags: ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'],
+        avatar: 'avatar_marek_jakubowski.jpg',
+        url: 'lumina.marekjakubowski.html',
+        type: 'user',
+        badge: '✨ Społeczność'
     }
 ];
 

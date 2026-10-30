@@ -15,6 +15,7 @@ import {
   Search,
   Bookmark,
   Info,
+  Mail,
   User,
   LogIn,
   X
@@ -260,6 +261,12 @@ export const CCMobileEdgePanel: React.FC<CCMobileEdgePanelProps> = ({
         onOpenBookmarks?.();
       },
       badge: bookmarksCount > 0 ? bookmarksCount : undefined,
+    },
+    {
+      id: 'newsletter',
+      label: 'Newsletter EkoCC — Bądźmy w kontakcie',
+      icon: Mail,
+      href: '/newsletter',
     },
     {
       id: 'info',

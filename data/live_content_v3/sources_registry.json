@@ -1,0 +1,129 @@
+{
+  "version": "3.0.0",
+  "updatedAt": "2026-10-30T07:15:00Z",
+  "filarA_TrendRadar": {
+    "1_wojna_bezpieczenstwo": [
+      {
+        "name": "Ośrodek Studiów Wschodnich (OSW)",
+        "url": "https://www.osw.waw.pl",
+        "feed": "https://www.osw.waw.pl/pl/rss.xml",
+        "type": "analiza_geopolityczna",
+        "tier": "A",
+        "requiresCrossCheck": false
+      },
+      {
+        "name": "Polska Agencja Prasowa (PAP)",
+        "url": "https://www.pap.pl",
+        "type": "agencja_informacyjna",
+        "tier": "A",
+        "requiresCrossCheck": true
+      }
+    ],
+    "2_ai_technologie": [
+      {
+        "name": "Nauka w Polsce — PAP",
+        "url": "https://naukawpolsce.pl",
+        "feed": "https://naukawpolsce.pl/rss.xml",
+        "type": "nauka_technologia",
+        "tier": "A",
+        "requiresCrossCheck": false
+      },
+      {
+        "name": "ArXiv Computer Science & AI",
+        "url": "https://arxiv.org/archive/cs",
+        "type": "badania_naukowe",
+        "tier": "A",
+        "requiresCrossCheck": false
+      }
+    ],
+    "3_polska_swiat": [
+      {
+        "name": "Oficjalny Serwis Rzeczypospolitej Polskiej",
+        "url": "https://www.gov.pl",
+        "type": "komunikaty_panstwowe",
+        "tier": "A",
+        "requiresCrossCheck": false
+      }
+    ],
+    "4_gospodarka_finanse": [
+      {
+        "name": "Narodowy Bank Polski (NBP)",
+        "url": "https://www.nbp.pl",
+        "type": "bank_centralny",
+        "tier": "A",
+        "requiresCrossCheck": false
+      },
+      {
+        "name": "Główny Urząd Statystyczny (GUS)",
+        "url": "https://stat.gov.pl",
+        "feed": "https://stat.gov.pl/rss/",
+        "type": "dane_statystyczne",
+        "tier": "A",
+        "requiresCrossCheck": false
+      }
+    ],
+    "5_zdrowie_medycyna": [
+      {
+        "name": "Medycyna Praktyczna",
+        "url": "https://www.mp.pl",
+        "type": "wiedza_medyczna",
+        "tier": "A",
+        "requiresCrossCheck": false
+      },
+      {
+        "name": "Narodowy Instytut Zdrowia Publicznego (PZH)",
+        "url": "https://www.pzh.gov.pl",
+        "type": "instytucja_naukowa",
+        "tier": "A",
+        "requiresCrossCheck": false
+      }
+    ],
+    "6_rodzina_kuchnia_styl_zycia": [
+      {
+        "name": "Narodowe Centrum Edukacji Żywieniowej",
+        "url": "https://ncez.pzh.gov.pl",
+        "type": "zywienie_i_zdrowie",
+        "tier": "A",
+        "requiresCrossCheck": false
+      }
+    ],
+    "7_wiara_i_biblia": [
+      {
+        "name": "Uwspółcześniona Biblia Gdańska (UBG)",
+        "url": "https://polskieradio.cc/mojabiblia",
+        "type": "tekst_kanoniczny",
+        "tier": "A",
+        "requiresCrossCheck": false
+      }
+    ]
+  },
+  "filarB_CCInside": {
+    "official_internal_sources": [
+      {
+        "name": "Baza Rozważań Christian Culture",
+        "path": "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/rozwazania_baza.json",
+        "type": "devotionals"
+      },
+      {
+        "name": "Artykuły Portali CCN",
+        "path": "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/portals/ccn-news/src/data/articles.ts",
+        "type": "ccn_news"
+      },
+      {
+        "name": "Kurs Codzienny Akademii Biblijnej",
+        "path": "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/akademia/kurscodzienny/",
+        "type": "academy"
+      },
+      {
+        "name": "Repertuar Kina VOD",
+        "path": "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/vod.html",
+        "type": "vod"
+      },
+      {
+        "name": "Społeczność LUMINA",
+        "path": "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/lumina-tablica.html",
+        "type": "community"
+      }
+    ]
+  }
+}

@@ -5,6 +5,20 @@
   window.CCBackToTop = true;
   function mount() {
     if (!document.body) return;
+    var oldLumina = document.getElementById('luminaScrollTop');
+    if (oldLumina && typeof oldLumina.remove === 'function') oldLumina.remove();
+    else if (oldLumina && oldLumina.parentNode && typeof oldLumina.parentNode.removeChild === 'function') oldLumina.parentNode.removeChild(oldLumina);
+    try {
+      new MutationObserver(function(m) {
+        for (var i = 0; i < m.length; i++) {
+          var nodes = m[i].addedNodes;
+          for (var j = 0; j < nodes.length; j++) {
+            var n = nodes[j];
+            if (n && (n.id === 'luminaScrollTop' || (n.classList && n.classList.contains('lumina-scroll-top')))) n.remove();
+          }
+        }
+      }).observe(document.body, { childList: true });
+    } catch (_) {}
     var button = document.getElementById('backToTopBtn');
     if (!button) {
       button = document.createElement('button');
@@ -18,7 +32,7 @@
     button.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="m6 12 6-6 6 6M12 6v14"/></svg>';
     var style = document.createElement('style');
     // Jeden przycisk „do góry” na stronie: starszy moduł LUMINA (#luminaScrollTop) ustępuje standardowi CC.
-    style.textContent = '#luminaScrollTop{display:none!important}#backToTopBtn[data-cc-back-to-top]{position:fixed!important;right:max(16px,env(safe-area-inset-right))!important;left:auto!important;top:auto!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;margin:0!important;padding:0!important;border:1px solid #b08a3c!important;border-radius:50%!important;background:#fff!important;color:#63470e!important;box-shadow:0 3px 14px #0003!important;z-index:900!important;align-items:center!important;justify-content:center!important;opacity:1!important;visibility:visible!important;transform:none!important;cursor:pointer;touch-action:manipulation}#backToTopBtn[data-cc-back-to-top]:focus-visible{outline:3px solid #2563eb!important;outline-offset:3px}[data-lumina-theme="dark"] #backToTopBtn[data-cc-back-to-top],html.dark #backToTopBtn[data-cc-back-to-top]{background:#171923!important;color:#ffe2a1!important}';
+    style.textContent = '#luminaScrollTop{display:none!important}.lumina-scroll-top,.lumina-scroll-top-btn{display:none!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important}#backToTopBtn[data-cc-back-to-top]{position:fixed!important;right:max(16px,env(safe-area-inset-right))!important;left:auto!important;top:auto!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;margin:0!important;padding:0!important;border:1px solid #b08a3c!important;border-radius:50%!important;background:#fff!important;color:#63470e!important;box-shadow:0 3px 14px #0003!important;z-index:900!important;align-items:center!important;justify-content:center!important;opacity:1!important;visibility:visible!important;transform:none!important;cursor:pointer;touch-action:manipulation}#backToTopBtn[data-cc-back-to-top]:focus-visible{outline:3px solid #2563eb!important;outline-offset:3px}[data-lumina-theme="dark"] #backToTopBtn[data-cc-back-to-top],html.dark #backToTopBtn[data-cc-back-to-top]{background:#171923!important;color:#ffe2a1!important}';
     document.head.appendChild(style);
     // Capture prevents old book/course handlers from issuing a second scroll.
     button.addEventListener('click', function (event) {
@@ -169,10 +183,15 @@
       html body:has(#luminaThemeSwitchBtn) #ccChatFabBtn{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;max-width:48px!important;max-height:48px!important}
       html body:has(#luminaThemeSwitchBtn) #luminaThemeSwitchBtn{display:flex!important;bottom:calc(var(--cc-lumina-action-base) + 120px)!important;right:var(--cc-lumina-action-right)!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;box-sizing:border-box!important}
       html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized{display:flex!important;bottom:calc(var(--cc-lumina-action-base) + 180px)!important;right:var(--cc-lumina-action-right)!important;left:auto!important;width:48px!important;height:48px!important;box-sizing:border-box!important;transform:none!important}
+      @media (max-width:767px){
+        html body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized{bottom:calc(var(--cc-lumina-action-base) + 120px)!important}
+        html.cc-edge-theme-ready body:has(#luminaThemeSwitchBtn) #luminaMiniPlayerContainer.minimized{bottom:calc(var(--cc-lumina-action-base) + 120px)!important}
+      }
       html body:has(#luminaThemeSwitchBtn) #ccFabDockToggle,
       html body:has(#luminaThemeSwitchBtn):has(#ccGlobalChatFab) #luminaFloatingChatBtn{display:none!important}
       html body:has(#luminaThemeSwitchBtn):has(#directMessagesModal.open) #luminaMiniPlayerContainer,
       html body:has(#luminaThemeSwitchBtn):has(#messageModal.open) #luminaMiniPlayerContainer{display:none!important}
+      html body:has(#luminaThemeSwitchBtn) :is(.ekocc-info-trigger, #ekoccInfoTriggerBtn){display:none!important}
     `;
     document.head.appendChild(css);
   }

@@ -1,13 +1,13 @@
 {
   "standardVersion": "CCN Global SEO & AI Search 2026 v1.0",
-  "generatedAt": "2026-10-17T10:13:02.466Z",
+  "generatedAt": "2026-10-30T14:30:27.764Z",
   "zeroFakeDataPolicy": true,
   "counts": {
-    "totalValidatedUrls": 56,
-    "validUrls": 56,
+    "totalValidatedUrls": 78,
+    "validUrls": 78,
     "invalidUrls": 0,
-    "newsArticlesCount": 50,
-    "googleNews48hCount": 4,
+    "newsArticlesCount": 72,
+    "googleNews48hCount": 26,
     "akademiaUrlsCount": 45,
     "bibliaUrlsCount": 4,
     "muzykaUrlsCount": 9,
@@ -25,31 +25,31 @@
     {
       "path": "/sitemap.xml",
       "exists": true,
-      "sizeBytes": 45343,
+      "sizeBytes": 1187,
       "status": "OK"
     },
     {
       "path": "/feed.xml",
       "exists": true,
-      "sizeBytes": 23085,
+      "sizeBytes": 22460,
       "status": "OK"
     },
     {
       "path": "/news/feed.xml",
       "exists": true,
-      "sizeBytes": 31480,
+      "sizeBytes": 30162,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news.xml",
       "exists": true,
-      "sizeBytes": 24773,
+      "sizeBytes": 35730,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news-google.xml",
       "exists": true,
-      "sizeBytes": 3344,
+      "sizeBytes": 21456,
       "status": "OK"
     },
     {
@@ -92,8 +92,8 @@
   "indexNow": {
     "keyConfigured": false,
     "keyNote": "Brak klucza INDEXNOW_KEY w zmiennych środowiskowych.",
-    "totalQueued": 18,
-    "pendingCount": 18,
+    "totalQueued": 33,
+    "pendingCount": 33,
     "submittedCount": 0,
     "failedCount": 0,
     "recentItems": [
@@ -291,7 +291,7 @@
         "url": "https://polskieradio.cc/edukacja/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "edukacja",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-17T10:13:02.460Z",
+        "queuedAt": "2026-10-30T14:30:27.760Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -310,7 +310,7 @@
         "url": "https://polskieradio.cc/rodzina/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "rodzina",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-17T10:13:02.461Z",
+        "queuedAt": "2026-10-30T14:30:27.760Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -329,7 +329,7 @@
         "url": "https://polskieradio.cc/misje/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "misje",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-17T10:13:02.461Z",
+        "queuedAt": "2026-10-30T14:30:27.760Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -348,7 +348,7 @@
         "url": "https://polskieradio.cc/spoleczenstwo/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "spoleczenstwo",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-17T10:13:02.461Z",
+        "queuedAt": "2026-10-30T14:30:27.760Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -367,7 +367,7 @@
         "url": "https://polskieradio.cc/akademia/dzien-17",
         "section": "akademia",
         "publishedAt": "2026-10-17T04:00:00Z",
-        "queuedAt": "2026-10-17T10:13:02.461Z",
+        "queuedAt": "2026-10-30T14:30:27.760Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -399,8 +399,168 @@
   "alerts": [],
   "sampleValidatedPages": [
     {
+      "file": "news/bioetyka-edycja-genomu-syntetyczne-embriony-biblia.html",
+      "canonicalUrl": "https://polskieradio.cc/news/bioetyka-edycja-genomu-syntetyczne-embriony-biblia",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/oficjalny-start-newslettera-christian-culture-dolacz.html",
+      "canonicalUrl": "https://polskieradio.cc/news/oficjalny-start-newslettera-christian-culture-dolacz",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj.html",
+      "canonicalUrl": "https://polskieradio.cc/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/przeglad-ekosystemu-nowe-artykuly-i-lekcje-akademii.html",
+      "canonicalUrl": "https://polskieradio.cc/news/przeglad-ekosystemu-nowe-artykuly-i-lekcje-akademii",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski.html",
+      "canonicalUrl": "https://polskieradio.cc/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/z-biblia-za-pan-brat-dzien-30-blogoslawienstwo-obietnica-i-lew-z-judy.html",
+      "canonicalUrl": "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-30-blogoslawienstwo-obietnica-i-lew-z-judy",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/gerald-welch-the-call-rockowe-wezwanie-do-przebudzenia-sumienia-i-zywej-wiary.html",
+      "canonicalUrl": "https://polskieradio.cc/news/gerald-welch-the-call-rockowe-wezwanie-do-przebudzenia-sumienia-i-zywej-wiary",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/gerald-welch-the-call-a-rock-driven-wake-up-call-to-conscience-and-living-faith.html",
+      "canonicalUrl": "https://polskieradio.cc/news/gerald-welch-the-call-a-rock-driven-wake-up-call-to-conscience-and-living-faith",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/jaka-jest-twoja-poboznosc-wiara-czy-maska.html",
+      "canonicalUrl": "https://polskieradio.cc/news/jaka-jest-twoja-poboznosc-wiara-czy-maska",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/osobisty-sukces-chrzescijanina-w-perspektywie-wiecznosci.html",
+      "canonicalUrl": "https://polskieradio.cc/news/osobisty-sukces-chrzescijanina-w-perspektywie-wiecznosci",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/z-biblia-za-pan-brat-dzien-29-bog-prowadzi-swoj-lud-do-egiptu.html",
+      "canonicalUrl": "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-29-bog-prowadzi-swoj-lud-do-egiptu",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/z-biblia-za-pan-brat-dzien-28-ja-jestem-jozef-przebaczenie-zamiast-zemsty.html",
+      "canonicalUrl": "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-28-ja-jestem-jozef-przebaczenie-zamiast-zemsty",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/z-biblia-za-pan-brat-dzien-27-gdy-przeszlosc-wraca-bracia-jozefa.html",
+      "canonicalUrl": "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-27-gdy-przeszlosc-wraca-bracia-jozefa",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/z-biblia-za-pan-brat-dzien-26-od-wiezienia-do-palacu.html",
+      "canonicalUrl": "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-26-od-wiezienia-do-palacu",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/kim-jestem-gdy-nikt-nie-patrzy-uczciwosc-sumienie.html",
+      "canonicalUrl": "https://polskieradio.cc/eM",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok.html",
+      "canonicalUrl": "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-22-jakub-walczy-z-bogiem-jabbok",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/prosicie-a-bedzie-wam-dane-ale-co-gdy-nie-otrzymujesz.html",
+      "canonicalUrl": "https://polskieradio.cc/news/prosicie-a-bedzie-wam-dane-ale-co-gdy-nie-otrzymujesz",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/survival-christian-culture-przygotowanie-na-trudne-czasy.html",
+      "canonicalUrl": "https://polskieradio.cc/news/survival-christian-culture-przygotowanie-na-trudne-czasy",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/nie-czekaj-az-zycie-sie-zmieni-zacznij-od-siebie-z-bogiem-mozesz-wiecej.html",
+      "canonicalUrl": "https://polskieradio.cc/news/nie-czekaj-az-zycie-sie-zmieni-zacznij-od-siebie-z-bogiem-mozesz-wiecej",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "news/paryz-godzina-policyjna-protesty-francja-biblia.html",
+      "canonicalUrl": "https://polskieradio.cc/news/paryz-godzina-policyjna-protesty-francja-biblia",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
       "file": "news/cbdc-prawo-niedzielne-apokalipsa-13.html",
-      "canonicalUrl": "https://polskieradio.cc/news/cbdc-prawo-niedzielne-apokalipsa-13",
+      "canonicalUrl": "https://polskieradio.cc/finanse/cbdc-prawo-niedzielne-apokalipsa-13",
       "section": "news",
       "valid": true,
       "errors": [],
@@ -433,166 +593,6 @@
     {
       "file": "news/czy-jezus-istnial-dowody-historyczne.html",
       "canonicalUrl": "https://polskieradio.cc/news/czy-jezus-istnial-dowody-historyczne",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/czy-ai-zastapi-ludzka-madrosc.html",
-      "canonicalUrl": "https://polskieradio.cc/news/czy-ai-zastapi-ludzka-madrosc",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych.html",
-      "canonicalUrl": "https://polskieradio.cc/news/dlaczego-czuje-sie-samotny-choc-mam-setki-znajomych",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog.html",
-      "canonicalUrl": "https://polskieradio.cc/news/dziesiec-przykazan-bozych-biblia-jakub-wujek-bjw-dekalog",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna.html",
-      "canonicalUrl": "https://polskieradio.cc/news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/kultura-zycia-i-swiatlosci-kontra-komercyjny-kult-mroku-kultura-chrzescijanska.html",
-      "canonicalUrl": "https://polskieradio.cc/news/kultura-zycia-i-swiatlosci-kontra-komercyjny-kult-mroku-kultura-chrzescijanska",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/od-celtyckiego-samhain-do-amerykanskiego-przemyslu-strachu-fakty-i-mity.html",
-      "canonicalUrl": "https://polskieradio.cc/news/od-celtyckiego-samhain-do-amerykanskiego-przemyslu-strachu-fakty-i-mity",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/psychologia-strachu-i-oswajanie-z-makabra-uklad-nerwowy-emocje-biblia.html",
-      "canonicalUrl": "https://polskieradio.cc/news/psychologia-strachu-i-oswajanie-z-makabra-uklad-nerwowy-emocje-biblia",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/jak-rozmawiac-z-dziecmi-o-halloween-bez-straszenia-i-odrzucenia-poradnik-mamy.html",
-      "canonicalUrl": "https://polskieradio.cc/news/jak-rozmawiac-z-dziecmi-o-halloween-bez-straszenia-i-odrzucenia-poradnik-mamy",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/chrzescijanski-dom-jako-twierdza-pokoju-budowanie-tradycji-zycia.html",
-      "canonicalUrl": "https://polskieradio.cc/news/chrzescijanski-dom-jako-twierdza-pokoju-budowanie-tradycji-zycia",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/wychowanie-w-erze-popkulturowej-presji-ksztaltowanie-sumienia-u-nastolatkow.html",
-      "canonicalUrl": "https://polskieradio.cc/news/wychowanie-w-erze-popkulturowej-presji-ksztaltowanie-sumienia-u-nastolatkow",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/swiat-544-jezyki-oczekujace-na-przeklad-i-4457-aktywnych-projektow-raport-2025-wycliffe.html",
-      "canonicalUrl": "https://polskieradio.cc/news/swiat-544-jezyki-oczekujace-na-przeklad-i-4457-aktywnych-projektow-raport-2025-wycliffe",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/kraj-jesienna-mobilizacja-chrzescijanskich-organizacji-charytatywnych-w-polsce-wsparcie-dla-seniorow.html",
-      "canonicalUrl": "https://polskieradio.cc/news/kraj-jesienna-mobilizacja-chrzescijanskich-organizacji-charytatywnych-w-polsce-wsparcie-dla-seniorow",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/swiat-monumentalna-fosa-obronna-i-pieczec-z-okresu-pierwszej-swiatyni-w-jerozolimie-odkrycia-iaa.html",
-      "canonicalUrl": "https://polskieradio.cc/news/swiat-monumentalna-fosa-obronna-i-pieczec-z-okresu-pierwszej-swiatyni-w-jerozolimie-odkrycia-iaa",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/kraj-renesans-czytelnictwa-pisma-swietego-w-polsce-towarzystwo-biblijne-i-cyfrowe-studium.html",
-      "canonicalUrl": "https://polskieradio.cc/news/kraj-renesans-czytelnictwa-pisma-swietego-w-polsce-towarzystwo-biblijne-i-cyfrowe-studium",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/swiat-ponad-380-milionow-chrzescijan-doswiadcza-przesladowan-raport-open-doors-apel-o-solidarnosc.html",
-      "canonicalUrl": "https://polskieradio.cc/news/swiat-ponad-380-milionow-chrzescijan-doswiadcza-przesladowan-raport-open-doors-apel-o-solidarnosc",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/kraj-polska-rada-ekumeniczna-i-dni-biblijne-wspolna-troska-o-obecnosc-slowa-bozego-w-spoleczenstwie.html",
-      "canonicalUrl": "https://polskieradio.cc/news/kraj-polska-rada-ekumeniczna-i-dni-biblijne-wspolna-troska-o-obecnosc-slowa-bozego-w-spoleczenstwie",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/kod-zrodlowy-duszy-jak-zresetowac-wewnetrzny-system-i-odrzucic-falszywy-blysk-sukcesu.html",
-      "canonicalUrl": "https://polskieradio.cc/news/kod-zrodlowy-duszy-jak-zresetowac-wewnetrzny-system-i-odrzucic-falszywy-blysk-sukcesu",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/prawda-bez-filtra-dlaczego-kobiety-uciekaja-w-iluzje-relacji-i-jak-odzyskac-godnosc.html",
-      "canonicalUrl": "https://polskieradio.cc/news/prawda-bez-filtra-dlaczego-kobiety-uciekaja-w-iluzje-relacji-i-jak-odzyskac-godnosc",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/pokonac-goliata-8-krokow-zwyciezcy-z-doliny-leku-do-pelnej-wolnosci.html",
-      "canonicalUrl": "https://polskieradio.cc/news/pokonac-goliata-8-krokow-zwyciezcy-z-doliny-leku-do-pelnej-wolnosci",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/czy-bog-naprawde-jest-miloscia-odpowiedz-na-najtrudniejsze-pytania-o-cierpienie-i-charakter-ojca.html",
-      "canonicalUrl": "https://polskieradio.cc/news/czy-bog-naprawde-jest-miloscia-odpowiedz-na-najtrudniejsze-pytania-o-cierpienie-i-charakter-ojca",
       "section": "news",
       "valid": true,
       "errors": [],

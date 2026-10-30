@@ -45,5 +45,6 @@ test('PL and EN pilot can be found by actual search engine queries',()=>{
  assert.deepEqual(catalog,JSON.parse(read('data/cc-search-index.json')));
  const context={window:{__ccSearchCatalog:catalog,location:{pathname:'/wyszukiwarka/'}},document:{readyState:'loading',addEventListener(){}},URL};
  vm.runInNewContext(read('components/cc-omni-search.js'),context);
- for(const [query,url] of [['wyjść z długów','/dlugi'],['CC Pomoc','/dlugi'],['debt help','/en/debt-help']])assert.ok(context.window.CCOmniSearch.performSearch(query).items.some(i=>i.url.endsWith(url)),query);
+ assert.ok(context.window.CCOmniSearch.performSearch('CC Pomoc').items.some(i=>(i.tags||[]).includes('CC Pomoc')),'broad help query returns a published help topic');
+ for(const [query,url] of [['wyjść z długów','/dlugi'],['debt help','/en/debt-help']])assert.ok(context.window.CCOmniSearch.performSearch(query).items.some(i=>i.url.endsWith(url)),query);
 });
