@@ -7734,6 +7734,27 @@
       }
 
       /* /wyszukiwarka — pełna gotowość do natychmiastowego wyszukiwania (Spotlight/Raycast) */
+      /* 2-kolumnowy panel krawędziowy bez paska przewijania (Dyrektywa L0 30.10.2026) */
+      dialog.cc-mobile-edge, .cc-mobile-edge, .cc-mobile-edge[data-profile="search"] {
+        width: 122px !important; max-width: 90vw !important;
+        overflow-y: auto !important; overflow-x: hidden !important;
+        scrollbar-width: none !important; -ms-overflow-style: none !important;
+      }
+      dialog.cc-mobile-edge::-webkit-scrollbar, .cc-mobile-edge::-webkit-scrollbar, .cc-mobile-edge[data-profile="search"]::-webkit-scrollbar {
+        display: none !important; width: 0 !important; height: 0 !important;
+      }
+      dialog.cc-mobile-edge nav, .cc-mobile-edge nav, .cc-mobile-edge[data-profile="search"] nav {
+        display: grid !important; grid-template-columns: repeat(2, 44px) !important;
+        gap: 6px 8px !important; justify-content: center !important; align-content: start !important;
+        min-height: auto !important; width: 100% !important; box-sizing: border-box !important;
+        padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)) !important;
+      }
+      .cc-mobile-edge nav button[data-edge-key="close"] { grid-column: 1 / -1 !important; justify-self: center !important; margin-bottom: 2px !important; }
+      .cc-mobile-edge:not([data-profile="lumina"]) nav button[data-edge-key="menu"] { grid-column: 1 / -1 !important; justify-self: center !important; }
+      .cc-mobile-edge nav :is(a,button)[data-edge-key="heart"] { color: #FF7A00 !important; }
+      .cc-mobile-edge .cc-edge-lang-divider { grid-column: 1 / -1 !important; width: 100% !important; height: 1px !important; background: rgba(196, 163, 90, 0.25) !important; margin: 6px 0 2px 0 !important; }
+      .cc-mobile-edge .cc-edge-lang-group { grid-column: 1 / -1 !important; display: flex !important; flex-direction: row !important; justify-content: center !important; flex-wrap: wrap !important; gap: 6px 8px !important; width: 100% !important; }
+
 `;
     document.head.appendChild(style);
   }
@@ -8149,11 +8170,26 @@ ${isStandalonePage ? '' : `
     if (edgeBtn) {
       edgeBtn.addEventListener('click', (e) => {
         const dialog = document.getElementById('cc-mobile-edge-dialog');
-        if (dialog && !dialog.open && typeof dialog.showModal === 'function') {
-          e.stopPropagation();
-          dialog.showModal();
-          document.body.style.overflow = 'hidden';
-          edgeBtn.setAttribute('aria-expanded', 'true');
+        if (dialog) {
+          dialog.dataset.profile = 'search';
+          const nav = dialog.querySelector('nav');
+          if (nav && !nav.querySelector('[data-edge-key="heart"]')) {
+            const heartLink = document.createElement('a');
+            heartLink.href = '/wspieraj';
+            heartLink.dataset.edgeKey = 'heart';
+            heartLink.setAttribute('aria-label', 'Wspieram To — Wolne Media Boże');
+            heartLink.title = 'Wspieram To — Wolne Media Boże';
+            heartLink.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path></svg>';
+            const searchLink = nav.querySelector('[data-edge-key="search"]');
+            if (searchLink && searchLink.nextSibling) nav.insertBefore(heartLink, searchLink.nextSibling);
+            else nav.appendChild(heartLink);
+          }
+          if (!dialog.open && typeof dialog.showModal === 'function') {
+            e.stopPropagation();
+            dialog.showModal();
+            document.body.style.overflow = 'hidden';
+            edgeBtn.setAttribute('aria-expanded', 'true');
+          }
         }
       });
     }

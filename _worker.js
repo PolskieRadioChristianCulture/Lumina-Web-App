@@ -1789,6 +1789,7 @@ export default {
       targetUrl.pathname = '/wyszukiwarka/';
       const assetRes = await env.ASSETS.fetch(new Request(targetUrl, request));
       const res = new Response(assetRes.body, assetRes);
+      res.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
       if (url.searchParams.has('q') || url.searchParams.has('query')) {
         res.headers.set('X-Robots-Tag', 'noindex, follow, noarchive');
       } else {

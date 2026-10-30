@@ -1,10 +1,10 @@
 // Public web documents only: never alter broadcast, operational or embed screens.
 import { applyChannelNumbering } from './cc-channel-numbering.mjs';
 export const BACK_TO_TOP_SCRIPT = '/js/cc-back-to-top.js?v=20261029_playing2';
-export const OMNI_SEARCH_SCRIPT = '/components/cc-omni-search.js?v=20261029_edge4';
+export const OMNI_SEARCH_SCRIPT = '/components/cc-omni-search.js?v=20261030_edge7';
 export const FAVORITES_SCRIPT = '/js/cc-favorites.js?v=20261015_topbar1';
-export const MOBILE_EDGE_CSS = '/css/cc-mobile-edge.css?v=20261029_edge4';
-export const MOBILE_EDGE_SCRIPT = '/js/cc-mobile-edge.js?v=20261029_edge4';
+export const MOBILE_EDGE_CSS = '/css/cc-mobile-edge.css?v=20261030_edge7';
+export const MOBILE_EDGE_SCRIPT = '/js/cc-mobile-edge.js?v=20261030_edge7';
 
 export function applyPageStandard(file, html) {
   const name = file.replaceAll('\\', '/').toLowerCase();
@@ -18,10 +18,10 @@ export function applyPageStandard(file, html) {
   html = html.replace(/(src=["'])(\/?app\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261014_mockup4$3');
   html = html.replace(/(src=["'])(\/components\/cc-global-chat-button\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261014_shared4$3');
   html = html.replace(/(src=["'])(\/js\/cc-back-to-top\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261029_playing2$3');
-  html = html.replace(/(src=["'])(\/components\/cc-omni-search\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261029_edge4$3');
+  html = html.replace(/(src=["'])(\/components\/cc-omni-search\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261030_edge7$3');
   html = html.replace(/(src=["'])(\/js\/cc-favorites\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261015_topbar1$3');
-  html = html.replace(/(src=["'])(\/js\/cc-mobile-edge\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261029_edge4$3');
-  html = html.replace(/(href=["'])(\/css\/cc-mobile-edge\.css)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261029_edge4$3');
+  html = html.replace(/(src=["'])(\/js\/cc-mobile-edge\.js)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261030_edge7$3');
+  html = html.replace(/(href=["'])(\/css\/cc-mobile-edge\.css)(?:\?[^"']*)?(["'])/g, '$1$2?v=20261030_edge7$3');
 
   if (!html.includes('cc-mobile-edge.css') && html.includes('</head>')) {
     html = html.replace(/<\/head\s*>/i, `<link rel="stylesheet" href="${MOBILE_EDGE_CSS}">\n</head>`);

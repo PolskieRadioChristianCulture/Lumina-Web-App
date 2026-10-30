@@ -144,6 +144,32 @@
 
   function mount({legacy, placement = legacy, trigger: customTrigger, secondary = [], hideLegacy = true, profile = 'home', items = commonItems, canUseFullMenu = () => true}) {
     if (!(legacy instanceof HTMLElement) || !(placement instanceof HTMLElement) || legacy.dataset.ccEdgeMounted || document.getElementById('cc-mobile-edge-dialog') || typeof HTMLDialogElement === 'undefined' || !HTMLDialogElement.prototype.showModal) return null;
+    if (document.head && !document.getElementById('cc-mobile-edge-2col-style')) {
+      const s = document.createElement('style');
+      s.id = 'cc-mobile-edge-2col-style';
+      s.textContent = `
+        dialog.cc-mobile-edge, .cc-mobile-edge, .cc-mobile-edge[data-profile="search"] {
+          width: 122px !important; max-width: 90vw !important;
+          overflow-y: auto !important; overflow-x: hidden !important;
+          scrollbar-width: none !important; -ms-overflow-style: none !important;
+        }
+        dialog.cc-mobile-edge::-webkit-scrollbar, .cc-mobile-edge::-webkit-scrollbar, .cc-mobile-edge[data-profile="search"]::-webkit-scrollbar {
+          display: none !important; width: 0 !important; height: 0 !important;
+        }
+        dialog.cc-mobile-edge nav, .cc-mobile-edge nav, .cc-mobile-edge[data-profile="search"] nav {
+          display: grid !important; grid-template-columns: repeat(2, 44px) !important;
+          gap: 6px 8px !important; justify-content: center !important; align-content: start !important;
+          min-height: auto !important; width: 100% !important; box-sizing: border-box !important;
+          padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)) !important;
+        }
+        .cc-mobile-edge nav button[data-edge-key="close"] { grid-column: 1 / -1 !important; justify-self: center !important; margin-bottom: 2px !important; }
+        .cc-mobile-edge:not([data-profile="lumina"]) nav button[data-edge-key="menu"] { grid-column: 1 / -1 !important; justify-self: center !important; }
+        .cc-mobile-edge nav :is(a,button)[data-edge-key="heart"] { color: #FF7A00 !important; }
+        .cc-mobile-edge .cc-edge-lang-divider { grid-column: 1 / -1 !important; width: 100% !important; height: 1px !important; background: rgba(196, 163, 90, 0.25) !important; margin: 6px 0 2px 0 !important; }
+        .cc-mobile-edge .cc-edge-lang-group { grid-column: 1 / -1 !important; display: flex !important; flex-direction: row !important; justify-content: center !important; flex-wrap: wrap !important; gap: 6px 8px !important; width: 100% !important; }
+      `;
+      document.head.appendChild(s);
+    }
     const mobile = matchMedia('(max-width: 767px)');
     const dialog = document.createElement('dialog');
     dialog.id = 'cc-mobile-edge-dialog';
