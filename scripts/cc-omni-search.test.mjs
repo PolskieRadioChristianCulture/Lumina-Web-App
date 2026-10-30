@@ -998,4 +998,11 @@ test('cc-omni-search.js: Tętniąca Życiem Wyszukiwarka EkoCC — dynamiczne ok
   assert.ok(omniSearchCode.includes('isFeaturedHovered'), 'pauses rotation on user hover/touch interaction');
 });
 
+test('cc-omni-search.js: Wspieram To button in footer (#ccOmniSupport) linking to /wspieraj with heart icon', () => {
+  assert.ok(omniSearchCode.includes('id="ccOmniSupport"'), 'defines #ccOmniSupport in footer');
+  assert.ok(omniSearchCode.includes('href="https://polskieradio.cc/wspieraj"'), 'links to /wspieraj');
+  assert.ok(omniSearchCode.includes('cc-omni-support-btn'), 'defines cc-omni-support-btn class');
+  assert.ok(omniSearchCode.includes('Wspieram To'), 'contains Wspieram To label');
+  assert.ok(omniSearchCode.includes('#FF7A00'), 'uses canonical #FF7A00 orange action color');
+});
 

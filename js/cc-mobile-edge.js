@@ -38,6 +38,7 @@
       play: 'Kino VOD',
       yis: 'Your Imagination Studio (YIS)',
       search: 'Szukaj w ekosystemie',
+      heart: 'Wspieram To — Wolne Media Boże',
       close: 'Zamknij panel nawigacji',
       open: 'Otwórz panel nawigacji',
       star: 'Dodaj tę stronę do Ulubionych',
@@ -66,6 +67,7 @@
       play: 'Cinema VOD',
       yis: 'Your Imagination Studio (YIS)',
       search: 'Search Ecosystem',
+      heart: 'Support Us — Free Christian Media',
       close: 'Close navigation panel',
       open: 'Open navigation panel',
       star: 'Add to favorites',
@@ -94,6 +96,7 @@
       play: 'Kino VOD',
       yis: 'Your Imagination Studio (YIS)',
       search: 'Im Ökosystem suchen',
+      heart: 'Unterstützen — Freie Christliche Medien',
       close: 'Navigationspanel schließen',
       open: 'Navigationspanel öffnen',
       star: 'Zu Favoriten hinzufügen',
@@ -136,6 +139,7 @@
     ['book','Moja Biblia','/mojabiblia'], ['study','Akademia Biblijna','/akademia'],
     ['calendar','HOLOS — planer','/holos'], ['play','Kino VOD','/vod'],
     ['search','Szukaj w ekosystemie','/szukaj'],
+    ['heart','Wspieram To','/wspieraj'],
   ];
 
   function mount({legacy, placement = legacy, trigger: customTrigger, secondary = [], hideLegacy = true, profile = 'home', items = commonItems, canUseFullMenu = () => true}) {

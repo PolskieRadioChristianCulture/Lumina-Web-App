@@ -7505,6 +7505,20 @@
         gap: 6px;
         flex-shrink: 0;
       }
+      .cc-omni-support-btn {
+        color: #FF7A00 !important;
+        position: relative;
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, color 0.2s;
+      }
+      .cc-omni-support-btn:hover, .cc-omni-support-btn:focus-visible {
+        color: #FF8C33 !important;
+        background: rgba(255, 122, 0, 0.16) !important;
+        transform: scale(1.12);
+        outline: none;
+      }
+      .cc-omni-support-btn:active {
+        transform: scale(0.94);
+      }
       .cc-omni-iconbtn {
         width: 44px;
         height: 44px;
@@ -7847,6 +7861,9 @@ ${isStandalonePage ? '' : `
             </div>
             <div class="cc-omni-footer-right">
               <span id="ccOmniShareMsg" class="cc-omni-share-msg" role="status" aria-live="polite"></span>
+              <a href="https://polskieradio.cc/wspieraj" id="ccOmniSupport" class="cc-omni-iconbtn cc-omni-support-btn" aria-label="Wspieram To — Wolne Media Boże" title="Wspieram To">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+              </a>
               <button type="button" id="ccOmniShare" class="cc-omni-iconbtn" aria-label="Udostępnij wyszukiwarkę Christian Culture" title="Udostępnij">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
               </button>
