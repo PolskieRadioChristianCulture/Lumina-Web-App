@@ -440,3 +440,20 @@ test('T24: Bezpiecznik NEWSLETTER_DELIVERY_ENABLED=false gwarantuje tryb dry_run
   assert.match(confirmPageRes.headers.get('X-Robots-Tag') || '', /noindex/);
   assert.equal(confirmPageRes.headers.get('Referrer-Policy'), 'no-referrer');
 });
+
+test('T25: GET /api/newsletter/public-stats zwraca liczbę aktywnych subskrybentów bez danych osobowych PII i z cache 300s', async () => {
+  const req = new Request('https://polskieradio.cc/api/newsletter/public-stats', { method: 'GET' });
+  const res = await worker.fetch(req, {});
+  assert.equal(res.status, 200);
+  assert.match(res.headers.get('Content-Type') || '', /application\/json/);
+  assert.match(res.headers.get('Cache-Control') || '', /max-age=300/);
+
+  const data = await res.json();
+  assert.equal(typeof data.confirmed_active_subscribers, 'number');
+  assert.ok(data.confirmed_active_subscribers >= 0);
+  assert.ok(typeof data.updated_at === 'string');
+  // ZAKAZ PII w public-stats
+  assert.equal(data.email, undefined);
+  assert.equal(data.subscribers, undefined);
+  assert.equal(data.tokens, undefined);
+});

@@ -869,6 +869,25 @@ export class NewsletterRepository {
     await this.addSuppression(emailHash, 'gdpr_erasure', nowIso);
   }
 
+  async getPublicStats() {
+    await this.ensureInitialized();
+    let activeCount = 0;
+    if (this.d1) {
+      try {
+        const row = await this.d1.prepare("SELECT COUNT(*) AS active_count FROM newsletter_subscribers WHERE status = 'active'").first();
+        activeCount = Number(row?.active_count || 0);
+      } catch (err) {
+        activeCount = 0;
+      }
+    } else {
+      activeCount = [...this.mem.subscribers.values()].filter((s) => s.status === 'active').length;
+    }
+    return {
+      confirmed_active_subscribers: activeCount,
+      updated_at: new Date().toISOString(),
+    };
+  }
+
   async getStatsSummary() {
     await this.ensureInitialized();
     let subscribers = [];
@@ -1950,6 +1969,20 @@ export async function handleNewsletterApiRequest(request, env = {}, verifyAdminT
     userAgent: request.headers.get('User-Agent') || 'unknown',
     requestUrl: request.url,
   };
+
+  // 1a. GET /api/newsletter/public-stats (LIVE LETTER Community Counter)
+  if (path === '/api/newsletter/public-stats' && method === 'GET') {
+    const stats = await service.repo.getPublicStats();
+    return new Response(JSON.stringify(stats), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'public, max-age=300, s-maxage=600, stale-while-revalidate=900',
+        'X-Content-Type-Options': 'nosniff',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
+  }
 
   // 1. GET /api/newsletter/topics
   if (path === '/api/newsletter/topics' && method === 'GET') {
