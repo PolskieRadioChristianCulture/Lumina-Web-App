@@ -110,20 +110,22 @@ let auth = null;
 export const LUMINA_OFFICIAL_ACCOUNTS = Object.freeze({
     cezary: ['nazirczarkes@gmail.com', 'studiodees7@gmail.com', 'czarekrogowski3@gmail.com', 'osobowoscplus@gmail.com', 'yourimaginationstudio@gmail.com', 'polskiercctv@gmail.com'],
     radiocc: ['radiochristianculture@gmail.com'],
-    wiolettaLocalPart: 'wioletta1240'
+    wiolettaLocalPart: 'wioletta1240',
+    marek: ['marusjakubowski@gmail.com']
 });
 export const LUMINA_MASTER_ADMIN_EMAILS = Object.freeze([
     'nazirczarkes@gmail.com', 'radiochristianculture@gmail.com', 'czarekrogowski3@gmail.com',
     'polskieradiocc@gmail.com', 'studiodees7@gmail.com', 'polskiercctv@gmail.com'
 ]);
 export const LUMINA_RESERVED_PROFILE_SLUGS = Object.freeze([
-    'cezaryrgowski', 'wiolettarogowska', 'radiocc', 'andrzejthiel', 'christianculture', 'lumina'
+    'cezaryrgowski', 'wiolettarogowska', 'radiocc', 'andrzejthiel', 'christianculture', 'lumina', 'marekjakubowski'
 ]);
 const LUMINA_OFFICIAL_AVATARS = Object.freeze({
     'avatar_cezary_official.jpg': 'cezaryrgowski',
     'avatar_wioletta_official.jpg': 'wiolettarogowska',
     'avatar_wioletta_official.webp': 'wiolettarogowska',
-    'avatar_andrzej_thiel.jpg': 'andrzejthiel'
+    'avatar_andrzej_thiel.jpg': 'andrzejthiel',
+    'avatar_marek_jakubowski.jpg': 'marekjakubowski'
 });
 
 export function detectLuminaOfficialIdentity(user) {
@@ -133,6 +135,7 @@ export function detectLuminaOfficialIdentity(user) {
     if (LUMINA_OFFICIAL_ACCOUNTS.radiocc.includes(email)) return 'radiocc';
     if (LUMINA_OFFICIAL_ACCOUNTS.cezary.includes(email)) return 'cezary';
     if (email.split('@')[0] === LUMINA_OFFICIAL_ACCOUNTS.wiolettaLocalPart) return 'wioletta';
+    if (LUMINA_OFFICIAL_ACCOUNTS.marek && LUMINA_OFFICIAL_ACCOUNTS.marek.includes(email)) return 'marek';
     return null;
 }
 
@@ -764,11 +767,13 @@ if (auth) {
                     // Check if Cezary Rogowski / Christian Culture / Wioletta by email/name
                     const isCezary = detectLuminaOfficialIdentity(user) === 'cezary';
                     const isWioletta = detectLuminaOfficialIdentity(user) === 'wioletta';
+        const isMarek = detectLuminaOfficialIdentity(user) === 'marek' || (user.email && user.email.toLowerCase() === 'marusjakubowski@gmail.com');
                     
                     let cleanSlug;
                     if (isRadioCC) cleanSlug = 'radiocc';
                     else if (isCezary) cleanSlug = 'cezaryrgowski';
                     else if (isWioletta) cleanSlug = 'wiolettarogowska';
+        else if (isMarek) cleanSlug = 'marekjakubowski';
                     else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
                     
                     const isLetterAvatar = !user.photoURL || user.photoURL.includes('googleusercontent.com/a/');
@@ -779,7 +784,7 @@ if (auth) {
                     currentProfileState = {
                         uid: user.uid,
                         slug: cleanSlug,
-                        name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
+                        name: isMarek ? 'Marek Jakubowski' : (user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')))),
                         // 🛡️ e-mail NIE trafia do publicznego profilu (RODO) — jest w Firebase Auth
                         avatar: userAvatar,
                         age: isRadioCC ? 0 : (isCezary ? 51 : (isWioletta ? 50 : null)),
@@ -1047,6 +1052,26 @@ export async function syncUserAuthProfile(user, activeDb = db) {
         const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
         if (docSnap.exists()) {
             existingProfile = docSnap.data();
+            const userEmailLower = String(user.email || '').trim().toLowerCase();
+            const isMarekUser = userEmailLower === 'marusjakubowski@gmail.com' || (existingProfile && existingProfile.slug === 'marekjakubowski');
+            if (isMarekUser && (existingProfile.name === 'Użytkownik LUMINA' || !existingProfile.name || existingProfile.avatar === 'lumina_icon.jpg' || !existingProfile.hasRealPhoto)) {
+                existingProfile.slug = 'marekjakubowski';
+                existingProfile.name = 'Marek Jakubowski';
+                existingProfile.avatar = 'avatar_marek_jakubowski.jpg';
+                existingProfile.job = 'Autor Rozważań Biblijnych';
+                existingProfile.role = 'Autor Rozważań & Społeczność LUMINA ✨';
+                existingProfile.hasRealPhoto = true;
+                existingProfile.profileCompleted = true;
+                existingProfile.needsProfileCompletion = false;
+                existingProfile.verse = '„Pan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.”';
+                existingProfile.verseRef = '— Psalm 28, 7 (UBG)';
+                existingProfile.bio = 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce — przez codzienne rozważania Słowa Bożego.';
+                existingProfile.tags = ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'];
+                existingProfile.photos = ['avatar_marek_jakubowski.jpg', 'lumina_default_cover.jpg'];
+                try {
+                    await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
+                } catch(e) {}
+            }
             if (isRadioCC && existingProfile.slug === 'cezaryrgowski') {
                 existingProfile.slug = 'radiocc';
                 existingProfile.name = 'Christian Culture';
@@ -1077,9 +1102,9 @@ export async function syncUserAuthProfile(user, activeDb = db) {
         
         const isMission = isRadioCC || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
         const isLetterAvatar = !user.photoURL || user.photoURL.includes('googleusercontent.com/a/');
-        const userAvatar = (isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')));
-        const hasRealFace = isCezary || isWioletta || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
-        const isProfileDone = hasRealFace && (isCezary || isWioletta);
+        const userAvatar = isMarek ? 'avatar_marek_jakubowski.jpg' : ((isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg'))));
+        const hasRealFace = isCezary || isWioletta || isMarek || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
+        const isProfileDone = hasRealFace && (isCezary || isWioletta || isMarek);
         
         existingProfile = {
             uid: user.uid,
@@ -2108,6 +2133,29 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                     p.status = 'Chrześcijanin';
                     p.job = 'Cuda Każdego Dnia 📖✨';
                     p.profileUrl = 'lumina.andrzejthiel.html';
+                }
+
+                // Żelazne wymuszenie i samonaprawa danych Marka Jakubowskiego (Autor Rozważań Biblijnych)
+                if (slugLower === 'marekjakubowski' || slugLower === 'u_marekjakubowski' || d.id === 'marekjakubowski' || (p.email && p.email.toLowerCase() === 'marusjakubowski@gmail.com') || (nameLower.includes('jakubowski') && nameLower.includes('marek'))) {
+                    p.name = 'Marek Jakubowski';
+                    p.city = 'Polska';
+                    p.gender = 'mezczyzna';
+                    p.denom = 'Chrześcijanin';
+                    p.church = 'Wspólnota Chrześcijańska';
+                    p.job = 'Autor Rozważań Biblijnych';
+                    p.role = 'Autor Rozważań & Społeczność LUMINA ✨';
+                    p.verse = '„Pan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.”';
+                    p.verseRef = '— Psalm 28, 7 (UBG)';
+                    p.bio = 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce — przez codzienne rozważania Słowa Bożego.';
+                    p.tags = ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'];
+                    p.profileCompleted = true;
+                    p.needsProfileCompletion = false;
+                    p.slug = 'marekjakubowski';
+                    p.avatar = 'avatar_marek_jakubowski.jpg';
+                    p.photos = ['avatar_marek_jakubowski.jpg', 'lumina_default_cover.jpg'];
+                    p.carouselMediaUrl = 'avatar_marek_jakubowski.jpg';
+                    p.hasRealPhoto = true;
+                    p.profileUrl = 'lumina.marekjakubowski.html';
                 }
 
                 // Żelazne wymuszenie i samonaprawa danych Pawła Murawskiego (49 lat, Żywiec, Protestanckie, Nabożeństwa Sobotnie)
