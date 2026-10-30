@@ -115,7 +115,7 @@ export const INITIAL_ARTICLES: Article[] = [
     dateFormatted: '30 października 2026',
     author: AUTHORS.cezary,
     imageUrl: '/images/news/art-bioetyka-edycja-genomu-syntetyczne-embriony-biblia.jpg',
-    imageCaption: 'Podwójna helisa DNA i badania nad syntetyczną biologią — pytanie o granice ingerencji w ludzki genom i tajemnicę początku życia w świetle Psalmu 139 (ilustracja redakcyjna EkoCC / Christian Culture).',
+    imageCaption: 'Nowoczesne laboratorium inżynierii genetycznej: badaczka operująca mikropipetą nad kulturą komórkową — pytanie o etyczne granice ingerencji w ludzki genom i tajemnicę początku życia w świetle Psalmu 139 (ilustracja redakcyjna EkoCC / Christian Culture).',
     readTimeMinutes: 8,
     isHero: true,
     isPopular: true,
