@@ -4861,6 +4861,174 @@
         color: var(--omni-muted);
         line-height: 1.4;
       }
+      .cc-omni-feat-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .cc-omni-feat-listen-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 30px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: #FF7A00;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        color: #FFFFFF;
+        font-family: inherit;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(255, 122, 0, 0.35);
+        transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        position: relative;
+        z-index: 2;
+      }
+      .cc-omni-feat-listen-btn:hover, .cc-omni-feat-listen-btn:focus-visible {
+        background: #FF8C33;
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 5px 14px rgba(255, 122, 0, 0.5);
+        outline: none;
+      }
+      .cc-omni-feat-listen-btn:active {
+        background: #E66A00;
+        transform: translateY(0) scale(0.99);
+      }
+      .cc-omni-feat-listen-btn.cc-loading {
+        opacity: 0.8;
+        pointer-events: none;
+      }
+      .cc-omni-feat-listen-btn.is-playing {
+        background: #E66A00;
+        border-color: #FFD29D;
+        box-shadow: 0 0 0 2px rgba(255, 140, 51, 0.42), 0 5px 16px rgba(255, 122, 0, 0.55);
+      }
+      .cc-feat-listen-ico {
+        font-size: 0.72rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+      }
+      .cc-feat-eq {
+        display: none;
+        align-items: flex-end;
+        gap: 2px;
+        height: 11px;
+        margin-left: 2px;
+      }
+      .cc-omni-feat-listen-btn.is-playing .cc-feat-eq,
+      .cc-omni-stream-bar.is-playing .cc-feat-eq {
+        display: inline-flex;
+      }
+      .cc-feat-eq i {
+        display: inline-block;
+        width: 2.5px;
+        height: 10px;
+        border-radius: 2px;
+        background: #FFFFFF;
+        animation: ccFeatEqBounce 0.85s infinite ease-in-out;
+      }
+      .cc-feat-eq i:nth-child(2) {
+        animation-delay: 0.2s;
+        height: 7px;
+      }
+      .cc-feat-eq i:nth-child(3) {
+        animation-delay: 0.4s;
+        height: 11px;
+      }
+      @keyframes ccFeatEqBounce {
+        0%, 100% { transform: scaleY(0.35); }
+        50% { transform: scaleY(1); }
+      }
+      .cc-omni-stream-bar {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 9px 14px;
+        margin-bottom: 12px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(255, 122, 0, 0.18) 0%, rgba(196, 163, 90, 0.16) 100%);
+        border: 1px solid rgba(255, 122, 0, 0.5);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      }
+      .cc-omni-stream-bar.is-playing {
+        display: flex;
+      }
+      .cc-omni-stream-bar-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        flex: 1;
+      }
+      .cc-omni-stream-bar-tag {
+        font-size: 0.66rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #FF8C33;
+        white-space: nowrap;
+      }
+      .cc-omni-stream-bar-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cc-omni-stream-bar-actions {
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .cc-omni-stream-station-btn {
+        padding: 4px 9px;
+        border-radius: 999px;
+        border: 1px solid rgba(196, 163, 90, 0.3);
+        background: rgba(12, 16, 28, 0.78);
+        color: rgba(243, 229, 200, 0.85);
+        font-size: 0.68rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.16s, border-color 0.16s, color 0.16s;
+      }
+      .cc-omni-stream-station-btn:hover,
+      .cc-omni-stream-station-btn.active {
+        background: rgba(255, 122, 0, 0.25);
+        border-color: #FF7A00;
+        color: #FFFFFF;
+      }
+      .cc-omni-stream-stop-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        background: #FF7A00;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #FFFFFF;
+        font-size: 0.72rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.16s;
+      }
+      .cc-omni-stream-stop-btn:hover {
+        background: #FF8C33;
+      }
+      .cc-omni-stream-stop-btn:active {
+        background: #E66A00;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .cc-feat-eq i { animation: none; }
+      }
       .cc-omni-feat-arrow {
         width: 26px;
         height: 26px;
@@ -8188,6 +8356,33 @@ ${isStandalonePage ? '' : `
     const filterChips = overlay.querySelectorAll('.cc-omni-filter-chip');
 
     overlay.addEventListener('click', (e) => {
+      const featListenBtn = e.target.closest('.cc-omni-feat-listen-btn');
+      if (featListenBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const stationId = featListenBtn.getAttribute('data-feat-stream') || 'poland';
+        const streamTitle = featListenBtn.getAttribute('data-feat-stream-title') || '';
+        toggleFeaturedStream(stationId, streamTitle, featListenBtn);
+        return;
+      }
+      const streamStopBtn = e.target.closest('[data-feat-stream-stop]');
+      if (streamStopBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (window.CCChatRadio && window.CCChatRadio.state().playing) {
+          window.CCChatRadio.pause();
+        }
+        return;
+      }
+      const streamSwitchBtn = e.target.closest('[data-feat-station-switch]');
+      if (streamSwitchBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const stId = streamSwitchBtn.getAttribute('data-feat-station-switch') || 'poland';
+        const stLabel = streamSwitchBtn.getAttribute('data-feat-station-label') || '';
+        toggleFeaturedStream(stId, stLabel, streamSwitchBtn, true);
+        return;
+      }
       const featTrigger = e.target.closest('.cc-omni-feat-dot, .cc-omni-feat-mode-btn');
       if (featTrigger) {
         e.preventDefault();
@@ -8384,28 +8579,10 @@ ${isStandalonePage ? '' : `
     }
 
     const radioBtn = document.getElementById('ccOmniRadio');
-    const loadScript = (src) => new Promise((resolve, reject) => {
-      const s = document.createElement('script');
-      s.src = src;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-    let radioReady = null;
-    const ensureRadio = () => radioReady || (radioReady = (async () => {
-      if (!window.CCRadioStations) await loadScript('/js/cc-radio-catalog.js?v=20261025_repertoire');
-      if (!window.CCChatRadio) await loadScript('/js/cc-chat-radio.js?v=20261026_spectrum1');
-      if (!window.CCRadioMilion) await loadScript('/js/cc-radio-milion.js?v=20261011_2');
-      window.CCChatRadio.subscribe((st) => {
-        radioBtn.setAttribute('aria-pressed', String(!!st.playing));
-        radioBtn.setAttribute('aria-label', st.playing ? 'Zatrzymaj Radio Christian Culture' : 'Słuchaj Radia Christian Culture');
-      });
-      return window.CCChatRadio;
-    })());
     radioBtn.addEventListener('click', async () => {
       radioBtn.classList.add('cc-loading');
       try {
-        const radio = await ensureRadio();
+        const radio = await ensureOmniRadio();
         if (radio.state().playing) {
           radio.pause();
         } else {
@@ -8416,13 +8593,13 @@ ${isStandalonePage ? '' : `
         }
       } catch (_) {
         radioBtn.setAttribute('aria-label', 'Radio chwilowo niedostępne — spróbuj ponownie');
-        radioReady = null;
+        omniRadioReady = null;
       } finally {
         radioBtn.classList.remove('cc-loading');
       }
     });
     // Jeśli radio już gra na tej stronie, przycisk od razu pokazuje STOP
-    if (window.CCChatRadio) ensureRadio();
+    if (window.CCChatRadio) ensureOmniRadio();
 
     // Przełącznik G: Christian Culture ↔ Google (cały internet)
     const engineBtn = document.getElementById('ccOmniEngine');
@@ -9746,6 +9923,127 @@ ${isStandalonePage ? '' : `
   let activeFeaturedSet = 0;
   let featuredRotationTimer = null;
   let isFeaturedHovered = false;
+  let omniRadioReady = null;
+  let activeStreamCardTitle = '';
+
+  const OMNI_STATION_NAMES = {
+    poland: 'Radio Christian Culture 24/7',
+    biblia_audio: 'Radio Biblia Audio UBG',
+    biblia_spiewana: 'Biblia Śpiewana 24/7',
+    instrumental_worship: 'Pasmo Uwielbienia & Modlitwy',
+    global: 'Radio CC Global (EN)',
+    global_biblia: 'Global Bible Audio'
+  };
+
+  function resolveCardStream(card) {
+    if (!card) return '';
+    if (card.streamStation) return card.streamStation;
+    const url = String(card.url || '').toLowerCase();
+    const icon = String(card.icon || '').toLowerCase();
+    const title = String(card.title || '').toLowerCase();
+    if (url.includes('biblia-spiewana') || url.includes('biblijneuwielbienie') || url.includes('karaoke') || icon === 'worship' || icon === 'music') {
+      return 'biblia_spiewana';
+    }
+    if (url.includes('cctv24-worship') || url.includes('bcm24') || url.includes('modlitwa') || url.includes('zapolske') || icon === 'moon' || icon === 'pray') {
+      return 'instrumental_worship';
+    }
+    if (url.includes('werset-dnia') || url.includes('kurscodzienny') || url.includes('biblia-do-pobrania') || title.includes('biblia audio') || title.includes('rozważanie')) {
+      return 'biblia_audio';
+    }
+    if (url.includes('/player') || url.includes('/podcasty') || url.includes('apokalipsa') || url.includes('/vod') || url.includes('/shorts') || ['radio', 'mic', 'volume', 'play', 'tv', 'film', 'video', 'sun'].includes(icon)) {
+      return 'poland';
+    }
+    return '';
+  }
+
+  function loadOmniExternalScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  function syncFeaturedStreamUI(st) {
+    const state = st || (typeof window !== 'undefined' && window.CCChatRadio && typeof window.CCChatRadio.state === 'function'
+      ? window.CCChatRadio.state()
+      : { playing: false, stationId: '' });
+    const isPlaying = !!state.playing;
+    const currentStation = state.stationId || 'poland';
+
+    const radioBtn = typeof document !== 'undefined' ? document.getElementById('ccOmniRadio') : null;
+    if (radioBtn) {
+      radioBtn.setAttribute('aria-pressed', String(isPlaying));
+      radioBtn.setAttribute('aria-label', isPlaying ? 'Zatrzymaj Radio Christian Culture' : 'Słuchaj Radia Christian Culture');
+    }
+
+    if (typeof document === 'undefined') return;
+    const listenBtns = document.querySelectorAll('.cc-omni-feat-listen-btn');
+    listenBtns.forEach((btn) => {
+      const btnStation = btn.getAttribute('data-feat-stream') || '';
+      const activeForCard = isPlaying && btnStation === currentStation;
+      btn.classList.toggle('is-playing', activeForCard);
+      btn.setAttribute('aria-pressed', String(activeForCard));
+      const ico = btn.querySelector('.cc-feat-listen-ico');
+      const txt = btn.querySelector('.cc-feat-listen-txt');
+      if (ico) ico.textContent = activeForCard ? '⏸' : '▶';
+      if (txt) txt.textContent = activeForCard ? 'Odtwarzanie • Stop' : 'Słuchaj teraz';
+    });
+
+    const streamBar = document.getElementById('ccOmniStreamBar');
+    if (streamBar) {
+      streamBar.classList.toggle('is-playing', isPlaying);
+      const barTitle = streamBar.querySelector('.cc-omni-stream-bar-title');
+      if (barTitle && isPlaying) {
+        const stName = OMNI_STATION_NAMES[currentStation] || 'Radio Christian Culture';
+        barTitle.textContent = activeStreamCardTitle
+          ? `${stName} — ${activeStreamCardTitle}`
+          : stName;
+      }
+      streamBar.querySelectorAll('.cc-omni-stream-station-btn').forEach((sBtn) => {
+        const sId = sBtn.getAttribute('data-feat-station-switch');
+        sBtn.classList.toggle('active', isPlaying && sId === currentStation);
+      });
+    }
+  }
+
+  function ensureOmniRadio() {
+    if (omniRadioReady) return omniRadioReady;
+    omniRadioReady = (async () => {
+      if (!window.CCRadioStations) await loadOmniExternalScript('/js/cc-radio-catalog.js?v=20261025_repertoire');
+      if (!window.CCChatRadio) await loadOmniExternalScript('/js/cc-chat-radio.js?v=20261026_spectrum1');
+      if (!window.CCRadioMilion) await loadOmniExternalScript('/js/cc-radio-milion.js?v=20261011_2');
+      window.CCChatRadio.subscribe((st) => {
+        syncFeaturedStreamUI(st);
+      });
+      syncFeaturedStreamUI(window.CCChatRadio.state());
+      return window.CCChatRadio;
+    })();
+    return omniRadioReady;
+  }
+
+  async function toggleFeaturedStream(stationId, streamTitle = '', triggerBtn = null, forcePlay = false) {
+    if (triggerBtn) triggerBtn.classList.add('cc-loading');
+    try {
+      const radio = await ensureOmniRadio();
+      const st = radio.state();
+      if (!forcePlay && st.playing && st.stationId === stationId) {
+        radio.pause();
+      } else {
+        activeStreamCardTitle = streamTitle || OMNI_STATION_NAMES[stationId] || '';
+        await radio.prepare(stationId);
+        radio.select(stationId);
+        await radio.play();
+      }
+      syncFeaturedStreamUI(radio.state());
+    } catch (_) {
+      omniRadioReady = null;
+    } finally {
+      if (triggerBtn) triggerBtn.classList.remove('cc-loading');
+    }
+  }
 
   function getFeaturedCardData(slotIdx, setIdx) {
     // Zestaw 0 ("Dla Ciebie") łączy inteligentny kontekst pory dnia, daty/świąt i potrzeb użytkownika
@@ -9812,6 +10110,8 @@ ${isStandalonePage ? '' : `
           const badgeSpan = card.querySelector('.cc-omni-feat-badge');
           const titleEl = card.querySelector('.cc-omni-feat-title');
           const descSpan = card.querySelector('.cc-omni-feat-desc');
+          const actionsSpan = card.querySelector('.cc-omni-feat-actions');
+          const listenBtn = card.querySelector('.cc-omni-feat-listen-btn');
 
           if (iconSpan) iconSpan.innerHTML = svgIcon(item.icon || 'star', 20);
           if (tagSpan) tagSpan.textContent = item.tag || '';
@@ -9821,6 +10121,19 @@ ${isStandalonePage ? '' : `
           }
           if (titleEl) titleEl.textContent = item.title || '';
           if (descSpan) descSpan.textContent = item.desc || '';
+
+          const streamId = resolveCardStream(item);
+          if (actionsSpan && listenBtn) {
+            if (streamId) {
+              actionsSpan.style.display = 'flex';
+              listenBtn.setAttribute('data-feat-stream', streamId);
+              listenBtn.setAttribute('data-feat-stream-title', item.title || '');
+            } else {
+              actionsSpan.style.display = 'none';
+              listenBtn.setAttribute('data-feat-stream', '');
+            }
+          }
+          syncFeaturedStreamUI();
 
           card.classList.remove('cc-card-updating');
           card.classList.add('cc-card-entering');
@@ -9836,9 +10149,10 @@ ${isStandalonePage ? '' : `
     stopFeaturedRotation();
     if (typeof window === 'undefined') return;
     featuredRotationTimer = setInterval(() => {
-      if (isFeaturedHovered || (typeof document !== 'undefined' && document.hidden)) return;
+      const radioPlaying = !!(window.CCChatRadio && typeof window.CCChatRadio.state === 'function' && window.CCChatRadio.state().playing);
+      if (isFeaturedHovered || radioPlaying || (typeof document !== 'undefined' && document.hidden)) return;
       rotateFeaturedCards();
-    }, 4200);
+    }, 5600);
   }
 
   function stopFeaturedRotation() {
@@ -9928,8 +10242,24 @@ ${isStandalonePage ? '' : `
             </button>
           `).join('')}
         </div>
+        <div class="cc-omni-stream-bar" id="ccOmniStreamBar" role="region" aria-label="Odtwarzacz strumienia w wyszukiwarce" aria-live="polite">
+          <div class="cc-omni-stream-bar-info">
+            <span class="cc-feat-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="cc-omni-stream-bar-tag">NA ŻYWO:</span>
+            <span class="cc-omni-stream-bar-title">Radio Christian Culture 24/7</span>
+          </div>
+          <div class="cc-omni-stream-bar-actions">
+            <button type="button" class="cc-omni-stream-station-btn" data-feat-station-switch="poland" data-feat-station-label="Radio Christian Culture 24/7">Radio PL</button>
+            <button type="button" class="cc-omni-stream-station-btn" data-feat-station-switch="biblia_audio" data-feat-station-label="Nowy Testament & Słowo Boże">Biblia Audio</button>
+            <button type="button" class="cc-omni-stream-station-btn" data-feat-station-switch="biblia_spiewana" data-feat-station-label="Śpiewane Psalmy i Przypowieści">Biblia Śpiewana</button>
+            <button type="button" class="cc-omni-stream-station-btn" data-feat-station-switch="instrumental_worship" data-feat-station-label="Pasmo Bożej Obecności & Modlitwy">Uwielbienie</button>
+            <button type="button" class="cc-omni-stream-stop-btn" data-feat-stream-stop="true" aria-label="Zatrzymaj odtwarzanie">⏸ Zatrzymaj</button>
+          </div>
+        </div>
         <div class="cc-omni-featured-grid">
-          ${initialCards.map((card, i) => `
+          ${initialCards.map((card, i) => {
+            const streamId = resolveCardStream(card);
+            return `
             <a class="cc-omni-feat-card" href="${escapeHtml(card.url)}" data-slot-index="${i}">
               <span class="cc-omni-feat-icon">${svgIcon(card.icon, 20)}</span>
               <span class="cc-omni-feat-info">
@@ -9939,10 +10269,17 @@ ${isStandalonePage ? '' : `
                 </span>
                 <strong class="cc-omni-feat-title">${escapeHtml(card.title)}</strong>
                 <span class="cc-omni-feat-desc">${escapeHtml(card.desc)}</span>
+                <span class="cc-omni-feat-actions" style="${streamId ? 'display:flex' : 'display:none'}">
+                  <button type="button" class="cc-omni-feat-listen-btn" data-feat-stream="${escapeHtml(streamId)}" data-feat-stream-title="${escapeHtml(card.title)}" aria-pressed="false" title="Uruchom strumień bez opuszczania wyszukiwarki">
+                    <span class="cc-feat-listen-ico" aria-hidden="true">▶</span>
+                    <span class="cc-feat-listen-txt">Słuchaj teraz</span>
+                    <span class="cc-feat-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+                  </button>
+                </span>
               </span>
               <span class="cc-omni-feat-arrow" aria-hidden="true">→</span>
-            </a>
-          `).join('')}
+            </a>`;
+          }).join('')}
         </div>
       </section>`;
 

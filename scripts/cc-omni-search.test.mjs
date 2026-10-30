@@ -998,6 +998,10 @@ test('cc-omni-search.js: Tętniąca Życiem Wyszukiwarka EkoCC — dynamiczne ok
   assert.ok(omniSearchCode.includes('getSmartContextInfo'), 'defines intelligent time/date/holiday/user context engine');
   assert.ok(omniSearchCode.includes('cc-omni-feat-modes'), 'defines interactive thematic mode strip');
   assert.ok(omniSearchCode.includes('cc-omni-context-pill'), 'defines live context indicator pill');
+  assert.ok(omniSearchCode.includes('cc-omni-feat-listen-btn'), 'defines inline ▶ Słuchaj teraz button on audio/video cards');
+  assert.ok(omniSearchCode.includes('Słuchaj teraz'), 'contains Słuchaj teraz label on cards');
+  assert.ok(omniSearchCode.includes('toggleFeaturedStream'), 'defines toggleFeaturedStream inline stream playback');
+  assert.ok(omniSearchCode.includes('ccOmniStreamBar'), 'defines inline live stream bar inside featured section');
   assert.ok(omniSearchCode.includes('FEATURED_POOLS'), 'defines FEATURED_POOLS rotation data');
   assert.ok(omniSearchCode.includes('rotateFeaturedCards'), 'defines rotateFeaturedCards logic');
   assert.ok(omniSearchCode.includes('startFeaturedRotation'), 'defines startFeaturedRotation timer');
