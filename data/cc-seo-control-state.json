@@ -1,13 +1,13 @@
 {
   "standardVersion": "CCN Global SEO & AI Search 2026 v1.0",
-  "generatedAt": "2026-10-30T06:03:27.162Z",
+  "generatedAt": "2026-10-30T06:12:28.162Z",
   "zeroFakeDataPolicy": true,
   "counts": {
-    "totalValidatedUrls": 73,
-    "validUrls": 73,
+    "totalValidatedUrls": 74,
+    "validUrls": 74,
     "invalidUrls": 0,
-    "newsArticlesCount": 67,
-    "googleNews48hCount": 21,
+    "newsArticlesCount": 68,
+    "googleNews48hCount": 22,
     "akademiaUrlsCount": 45,
     "bibliaUrlsCount": 4,
     "muzykaUrlsCount": 9,
@@ -31,25 +31,25 @@
     {
       "path": "/feed.xml",
       "exists": true,
-      "sizeBytes": 21979,
+      "sizeBytes": 22169,
       "status": "OK"
     },
     {
       "path": "/news/feed.xml",
       "exists": true,
-      "sizeBytes": 29814,
+      "sizeBytes": 30064,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news.xml",
       "exists": true,
-      "sizeBytes": 33174,
+      "sizeBytes": 33694,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news-google.xml",
       "exists": true,
-      "sizeBytes": 17423,
+      "sizeBytes": 18240,
       "status": "OK"
     },
     {
@@ -92,8 +92,8 @@
   "indexNow": {
     "keyConfigured": false,
     "keyNote": "Brak klucza INDEXNOW_KEY w zmiennych środowiskowych.",
-    "totalQueued": 28,
-    "pendingCount": 28,
+    "totalQueued": 29,
+    "pendingCount": 29,
     "submittedCount": 0,
     "failedCount": 0,
     "recentItems": [
@@ -291,7 +291,7 @@
         "url": "https://polskieradio.cc/edukacja/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "edukacja",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-30T06:03:27.158Z",
+        "queuedAt": "2026-10-30T06:12:28.158Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -310,7 +310,7 @@
         "url": "https://polskieradio.cc/rodzina/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "rodzina",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-30T06:03:27.158Z",
+        "queuedAt": "2026-10-30T06:12:28.158Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -329,7 +329,7 @@
         "url": "https://polskieradio.cc/misje/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "misje",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-30T06:03:27.158Z",
+        "queuedAt": "2026-10-30T06:12:28.158Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -348,7 +348,7 @@
         "url": "https://polskieradio.cc/spoleczenstwo/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "spoleczenstwo",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-30T06:03:27.158Z",
+        "queuedAt": "2026-10-30T06:12:28.158Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -367,7 +367,7 @@
         "url": "https://polskieradio.cc/akademia/dzien-17",
         "section": "akademia",
         "publishedAt": "2026-10-17T04:00:00Z",
-        "queuedAt": "2026-10-30T06:03:27.158Z",
+        "queuedAt": "2026-10-30T06:12:28.158Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -398,6 +398,14 @@
   },
   "alerts": [],
   "sampleValidatedPages": [
+    {
+      "file": "news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski.html",
+      "canonicalUrl": "https://polskieradio.cc/news/gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
     {
       "file": "news/z-biblia-za-pan-brat-dzien-30-blogoslawienstwo-obietnica-i-lew-z-judy.html",
       "canonicalUrl": "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-30-blogoslawienstwo-obietnica-i-lew-z-judy",
@@ -585,14 +593,6 @@
     {
       "file": "news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna.html",
       "canonicalUrl": "https://polskieradio.cc/news/dlaczego-christian-culture-mowi-nie-kulturze-halloween-deklaracja-redakcyjna",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/kultura-zycia-i-swiatlosci-kontra-komercyjny-kult-mroku-kultura-chrzescijanska.html",
-      "canonicalUrl": "https://polskieradio.cc/news/kultura-zycia-i-swiatlosci-kontra-komercyjny-kult-mroku-kultura-chrzescijanska",
       "section": "news",
       "valid": true,
       "errors": [],

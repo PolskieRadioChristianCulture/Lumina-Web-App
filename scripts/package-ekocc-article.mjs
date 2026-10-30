@@ -253,6 +253,74 @@ Status w wyszukiwarce ekosystemu:
     );
   }
 
+  // CTA i Wezwanie do Działania
+  if (articleData.cta) {
+    docxChildren.push(
+      new Paragraph({
+        text: 'WEZWANIE DO DZIAŁANIA I MODLITWA',
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 350, after: 150 }
+      }),
+      new Paragraph({
+        text: articleData.cta,
+        spacing: { after: 250 },
+        alignment: AlignmentType.JUSTIFIED
+      })
+    );
+  }
+
+  // Tagi i Oznaczenia Misyjne (@ i #)
+  if (articleData.tags && articleData.tags.length > 0) {
+    docxChildren.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: 'Oznaczenia i słowa kluczowe: ', bold: true, size: 20 }),
+          new TextRun({ text: articleData.tags.join('  '), italics: true, size: 20, color: 'C4A35A' })
+        ],
+        spacing: { before: 200, after: 300 }
+      })
+    );
+  }
+
+  // Blok Patronatu Christian Culture (Wspieram to)
+  docxChildren.push(
+    new Paragraph({
+      text: 'MISJA CHRISTIAN CULTURE • WOLNE MEDIA BOŻE',
+      style: 'Header',
+      spacing: { before: 400, after: 100 },
+      alignment: AlignmentType.CENTER
+    }),
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: 'Razem niesiemy czystą Ewangelię i biblijną nadzieję dalej',
+          bold: true,
+          size: 24,
+          color: 'C4A35A'
+        })
+      ],
+      spacing: { after: 150 },
+      alignment: AlignmentType.CENTER
+    }),
+    new Paragraph({
+      text: 'Ten artykuł powstał dzięki wsparciu naszych Darczyńców i Patronów. Jeśli ta treść dotknęła Twojego serca, wesprzyj naszą misję i pomóż docierać z biblijną prawdą do kolejnych tysięcy ludzi.',
+      spacing: { after: 200 },
+      alignment: AlignmentType.CENTER
+    }),
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: '👉 [WSPผู้IERAM TO]: https://polskieradio.cc/wspieraj  |  Patronite: https://patronite.pl/osobowoscplus',
+          bold: true,
+          color: 'FF7A00',
+          size: 22
+        })
+      ],
+      spacing: { after: 350 },
+      alignment: AlignmentType.CENTER
+    })
+  );
+
   // Źródła i Biblia
   docxChildren.push(
     new Paragraph({

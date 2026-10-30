@@ -73,7 +73,56 @@ export const BREAKING_NEWS: string[] = [
   'Pokonać Goliata: 8 kroków zwycięzcy z doliny lęku do duchowego przełomu (Wydanie 2026)',
 ];
 
-export const INITIAL_ARTICLES: Article[] = [
+export const INITIAL_ARTICLES: Article[] = [  {
+    id: 'art-gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+    title: 'Gdy lęk o jutro odbiera ci pokój: 5 biblijnych zasad uciszenia burzy w sercu według Słowa Bożego',
+    slug: 'gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski',
+    excerpt: 'Żyjemy w epoce, w której niepewność stała się towarem powszechnym. Nagłówki serwisów informacyjnych, widmo kryzysów finansowych, wojen i technologicznego przyspieszenia sprawiają, że setki tysięcy ludzi budzą się w środku nocy z przyspieszonym tętnem i paraliżującym pytaniem: „Co będzie jutro?”. Jako chrześcijanie nie jesteśmy powołani do unikania rzeczywistości, ale do stanięcia w obliczu burzy z kotwicą, której ten świat nie jest w stanie zerwać. Oto pięć biblijnych filarów prawdziwego pokoju w Chrystusie.',
+    content: [
+      '1. Zrozumieć naturę lęku: Iluzja kontroli kontra Boża suwerenność',
+      'Większość naszego lęku nie wynika z tego, co dzieje się dzisiaj, lecz z prób kontrolowania tego, co może wydarzyć się jutro. Człowiek współczesny został wychowany w micie samowystarczalności. Kiedy jednak systemy geopolityczne, algorytmy czy zdrowie zawodzą, fundament z piasku pęka w ułamku sekundy.',
+      'W Ewangelii według św. Mateusza Jezus nie bagatelizuje ludzkich potrzeb, lecz wskazuje na ich prawdziwe źródło: „Dlatego mówię wam: Nie troszczcie się o wasze życie, co będziecie jeść albo co będziecie pić, ani o wasze ciało, w co się będziecie ubierać... Szukajcie najpierw królestwa Bożego i jego sprawiedliwości, a to wszystko będzie wam dodane” (Mt 6:25, 33 UBG). Uciszenie lęku zaczyna się w momencie, gdy zdejmujesz z własnych barków ciężar bycia bogiem swojego życia i oddajesz ster Temu, który stworzył galaktyki.',
+      'Nie jesteś wypadkiem przy pracy ani bezbronną cząstką rzuconą w wir historii. Jesteś odkupiony krwią Chrystusa, a Twój Ojciec w niebie doskonale wie, czego potrzebujesz zanim jeszcze otworzysz usta w modlitwie.',
+      '2. Pokój, którego świat nie daje: Dar Chrystusa ponad okolicznościami',
+      'Świat definiuje pokój jako „brak konfliktów” lub „bezpieczną sytuację na koncie bankowym”. Taki pokój jest jednak kruchy i ulotny. Biblijny pokój (hebr. szalom, gr. eirene) to stan duchowej pełni, ładu i niezachwianego bezpieczeństwa w Bogu, niezależnie od tego, jak groźne fale uderzają w burtę łodzi.',
+      'Tuż przed pójściem na krzyż Jezus zostawił swoim uczniom testament: „Pokój zostawiam wam, mój pokój daję wam; nie tak, jak daje świat, ja wam daję. Niech się nie trwoży wasze serce ani się nie lęka” (J 14:27 UBG). Zauważ, że Chrystus wypowiada te słowa w przededniu aresztowania i męki. Pokój Boży nie jest ucieczką od problemów, lecz obecnością Zbawiciela pośród ognia próby.',
+      'Gdy patrzysz na fale, toniesz jak Piotr na Jeziorze Galilejskim. Gdy kierujesz wzrok na Jezusa — zaczynasz stąpać po wodzie ponad lękiem, który wcześniej paraliżował Twoje życie.',
+      '3. Modlitwa wstawiennicza zamiast zamartwiania się: Recepta apostoła Pawła',
+      'Apostoł Paweł, pisząc z rzymskiego więzienia, w kajdanach i w cieniu wyroku śmierci, sformułował najpotężniejszą psychologiczno-duchową receptę w dziejach ludzkości: „O nic się zbytnio nie troszczcie, ale we wszystkim w modlitwie i błaganiu z dziękczynieniem niech wasze prośby będą wiadome Bogu. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie” (Flp 4:6–7 UBG).',
+      'Zwróć uwagę na słowo „strzegł” (gr. phroureo). To termin czysto wojskowy oznaczający garnizon żołnierzy strzegący twierdzy przed wrogim najazdem. Kiedy zamieniasz gonitwę myśli w żarliwą modlitwę z dziękczynieniem, Boży pokój stawia wartę wokół Twojego umysłu, odrzucając pociski lęku, paranoi i rozpaczy.',
+      'Zamartwianie się jest marnowaniem Bożej łaski na scenariusze, które w 90% nigdy się nie wydarzą. Modlitwa natomiast jest przeniesieniem Twojej sprawy przed Najwyższy Trybunał Wszechświata, gdzie orzeka łaskawy Bóg.',
+      '4. Przełamanie ducha bojaźni: Tożsamość zwycięzcy w Chrystusie',
+      'Wielu wierzących zapomina, skąd pochodzi paraliżujący strach. Pismo Święte stawia sprawę bezkompromisowo: „Nie dał nam bowiem Bóg ducha bojaźni, ale mocy, miłości i trzeźwego myślenia” (2 Tm 1:7 UBG). Strach, który odbiera siłę do życia i paraliżuje decyzje, nie jest od Boga.',
+      'Bożą odpowiedzią na lęk jest duch mocy (dunamis) — ta sama potęga, która wzbudziła Jezusa z martwych, mieszka w każdym prawdziwie nawróconym chrześcijaninie. To duch miłości, która „usuwa lęk” (1 J 4:18), oraz duch trzeźwego, zdyscyplinowanego umysłu, który potrafi ocenić fakty w świetle wieczności, a nie histerii mediów.',
+      'Gdy wróg szepcze do Twojego ucha: „Nie dasz rady, jutro wszystko runie”, odpowiedz mu Słowem Bożym: „Skoro Bóg jest za nami, któż może być przeciwko nam? Ten, który nawet własnego Syna nie oszczędził, ale wydał go za nas wszystkich, jakże nie miałby wraz z nim darować nam wszystkiego?” (Rz 8:31–32 UBG).',
+      '5. Ciemna dolina to nie cel podróży: Niezłomna obecność Pasterza',
+      'Król Dawid, który uciekał po jaskiniach przed mieczem Saula, znał smak samotności i śmiertelnego zagrożenia. W najsłynniejszym Psalmie zapisał: „Chociażbym nawet chodził doliną cienia śmierci, zła się nie ulęknę, bo ty jesteś ze mną; twoja laska i twój kij, one mnie pocieszają” (Ps 23:4 UBG).',
+      'Zwróć uwagę na jedno słowo: „chodził doliną”. Dawid nie zamieszkał w dolinie cienia. On przez nią przechodził! Ciemna dolina — choroba, bezrobocie, kryzys rodzinny — to tylko etap drogi, a nie jej koniec. Cel leży po drugiej stronie: zastawiony stół w obecności wrogów i wieczny dom w obecności Pana.',
+      'Laska Pasterza odpędza wilki, a Jego kij wyciąga owcę z przepaści. Jezus Chrystus jest Dobrym Pasterzem, który oddał swoje życie za owce (J 10:11). On nigdy nie spuści Cię z oka.',
+      'PODSUMOWANIE REDAKCYJNE',
+      'Lęk karmi się samotnością i ciemnością, ale traci całą swoją moc w świetle prawdy Ewangelii. Twoja przyszłość nie leży w rękach polityków, bankierów ani chwiejnych trendów tego świata. Twoja przyszłość została wykupiona na Golgocie i przypieczętowana pustym grobem Chrystusa. Zamiast karmić swój umysł kolejną porcją paniki, otwórz Słowo Boże, uklęknij w modlitwie i pozwól, aby pokój Boży uciszył burzę w Twoim sercu.',
+      'WEZWANIE DO DZIAŁANIA I MODLITWA',
+      'Zrób dzisiaj jeden konkretny krok wiary: 1. Wyłącz na resztę dnia powiadomienia z serwisów informacyjnych i mediów społecznościowych. 2. Weź do ręki Biblię, przeczytaj na głos Psalm 23 oraz List do Filipian 4:4–9. 3. Pomódl się prostymi słowami: „Panie Jezu Chryste, wyznaję, że sam nie dam rady. Oddaję Ci mój lęk o jutro, moje finanse, moją rodzinę i moje zdrowie. Dziękuję Ci za Twój pokój, który przewyższa wszelki rozum. Bądź Panem mojego serca dzisiaj i na wieki. Amen”.'
+    ],
+    category: 'Wiadomości i Społeczeństwo',
+    categoryLabel: 'Społeczeństwo & Wiara',
+    publishedAt: '2026-10-30T06:00:00+01:00',
+    dateFormatted: '30 października 2026',
+    author: AUTHORS.cezary,
+    imageUrl: '/images/news/art-gdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski.jpg',
+    imageCaption: 'Gdy lęk o jutro ustępuje przed światłem Bożej obietnicy — autorska ilustracja redakcyjna CCN News (2026)',
+    readTimeMinutes: 8,
+    isHero: true,
+    isPopular: true,
+    popularRank: 1,
+    tags: ["@CezaryRogowski","@MCC","@Lumina","@eM","@ChristianCulture","#Biblia","#Wiara","#JezusChrystus","#Nadzieja","#PokójBoży","#ZaufanieBogu","#SłowoBoże","#Zwycięstwo"],
+    scriptureReference: {
+      verse: 'Ewangelia według św. Jana 14:27',
+      text: 'Pokój zostawiam wam, mój pokój daję wam; nie tak, jak daje świat, ja wam daję. Niech się nie trwoży wasze serce ani się nie lęka.',
+      strongCode: 'G1515'
+    }
+  },
+
   {
     "id": "art-z-biblia-za-pan-brat-dzien-30",
     "title": "Z Biblią za Pan Brat: Dzień 30 — Błogosławieństwo Jakuba, proroctwo o berle Judy i Chrystus jako Lew i Baranek w Rdz 48–49",
