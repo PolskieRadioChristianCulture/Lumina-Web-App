@@ -945,15 +945,37 @@ export class NewsletterService {
   async _dispatchEmail({ to, subject, html, text, headers = {}, campaignId, subscriberId, deliveryType }) {
     const nowIso = this.nowFn().toISOString();
     const deliveryEnabled = this.isDeliveryEnabled();
-    const providerName = deliveryEnabled ? (this.env.NEWSLETTER_PROVIDER || 'cloudflare_email') : 'dry_run';
-    const status = deliveryEnabled ? 'sent' : 'dry_run_queued';
+    const providerName = deliveryEnabled ? (this.env.NEWSLETTER_PROVIDER || 'gmail_smtp') : 'dry_run';
+    let status = deliveryEnabled ? 'sent' : 'dry_run_queued';
+    let providerMessageId = `msg_${generateSecureToken(8)}`;
+
+    if (deliveryEnabled && (providerName === 'gmail_smtp' || !this.env.NEWSLETTER_PROVIDER)) {
+      try {
+        const { dispatchGmailEmail } = await import('./gmail-smtp-client.js');
+        const sendRes = await dispatchGmailEmail({
+          toEmail: to,
+          subject,
+          text,
+          html,
+          headers,
+          deliveryType,
+        }, this.env);
+        if (sendRes?.messageId) {
+          providerMessageId = sendRes.messageId;
+        }
+        status = 'delivered';
+      } catch (sendErr) {
+        console.error('[CC Newsletter] Gmail SMTP dispatch error:', sendErr.message);
+        status = 'failed';
+      }
+    }
 
     const recorded = await this.repo.recordDelivery({
       campaign_id: campaignId || `${deliveryType}_${Date.now()}`,
       subscriber_id: subscriberId,
       delivery_type: deliveryType,
       provider_name: providerName,
-      provider_message_id: `msg_${generateSecureToken(8)}`,
+      provider_message_id: providerMessageId,
       status,
       sent_at: nowIso,
       updated_at: nowIso,
