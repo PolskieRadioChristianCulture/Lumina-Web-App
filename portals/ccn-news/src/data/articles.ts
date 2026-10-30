@@ -41,6 +41,7 @@ export const AUTHORS: Record<string, Author> = {
 };
 
 export const BREAKING_NEWS: string[] = [
+  "OFICJALNY START NEWSLETTERA CC: Dołącz do Newslettera Christian Culture — wybierz interesujące Cię kategorie i bądź na bieżąco ze Słowem, muzyką i akcją #antyHALLOWEEN! (https://polskieradio.cc/newsletter)",
   "NOWY ARTYKUŁ RODZINA & WIARA: Cyfrowy detoks w chrześcijańskim domu — jak odzyskać prawdziwą bliskość przy wspólnym stole? Praktyczny poradnik Wioletty Rogowskiej (https://polskieradio.cc/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj)",
   "TĘTNO MISJI CC INSIDE: Przegląd ekosystemu Christian Culture — nowe artykuły, lekcje Akademii Biblijnej i narzędzia duchowego wzrostu (https://polskieradio.cc/news/przeglad-ekosystemu-nowe-artykuly-i-lekcje-akademii)",
   "NOWY ARTYKUŁ eM (@MCC): Jaka jest Twoja pobożność? Wiara czy religijna maska — mocny biblijny rachunek sumienia Cezarego Rogowskiego (https://polskieradio.cc/eM)",
@@ -76,6 +77,46 @@ export const BREAKING_NEWS: string[] = [
 ];
 
 export const INITIAL_ARTICLES: Article[] = [
+  {
+    id: 'art-oficjalny-start-newslettera-christian-culture-dolacz',
+    title: 'Oficjalny start Newslettera Christian Culture: Bądź na bieżąco ze Słowem, muzyką i misją',
+    slug: 'oficjalny-start-newslettera-christian-culture-dolacz',
+    excerpt: 'Dołącz do oficjalnego Newslettera Christian Culture. Wybierz interesujące Cię tematy — od codziennych rozważań i lekcji biblijnych, przez premiery muzyczne i kino VOD, po kulturę i akcję #antyHALLOWEEN. 100% bezpłatnie, z poszanowaniem prywatności.',
+    content: [
+      '1. Nowy most łączący naszą społeczność',
+      'W epoce algorytmów mediów społecznościowych, które arbitralnie decydują o tym, co widzisz, a czego nie, bezpośrednia komunikacja staje się bezcenna. Dlatego z radością ogłaszamy uruchomienie oficjalnego, w pełni niezależnego Newslettera Christian Culture (EkoCC Newsletter).',
+      'Od dzisiaj każdy słuchacz Polskiego Radia CC, widz telewizji CCTV24, uczestnik Akademii Biblijnej i czytelnik naszych portali może otrzymywać najważniejsze publikacje i duchowe inspiracje prosto do swojej skrzynki e-mail — bez cenzury, bez szumu i bez komercyjnych reklam.',
+      '2. Pięć tematycznych kategorii do wyboru',
+      'Szanujemy Twój czas i duchowe potrzeby. Zamiast masowego spamu, w naszym newsletterze sam decydujesz, jakie treści chcesz otrzymywać:',
+      '• Nowości EkoCC: Najważniejsze premiery, wydarzenia, komunikaty i podsumowania tygodnia z całego ekosystemu.',
+      '• Muzyka, Radio i TV: Premiery muzyczne PolskieRadio.cc, Biblijne Uwielbienie (Gerald Welch, JJ Beauvais), transmisje CCTV24 i nowości w Kinie VOD.',
+      '• Biblia, Rozważania i Akademia: Kurs Codzienny „Z Biblią za Pan Brat”, rozważania „Dobrze, że jesteś” oraz wykłady Akademii Biblijnej.',
+      '• Książki, Literatura i Kultura: Powieść „Pardon, Czy To Miłość?”, Biblioteka CC, Your Imagination Studio (YIS) i publicystyka kulturalna.',
+      '• Rodzina, Zdrowie, Kuchnia i Rozwój: Praktyczne artykuły o relacjach, wychowaniu, zdrowiu (ZiU), finansach domowych i planerze HOLOS.',
+      '3. Standard ZERO SPAMU i pełne poszanowanie prywatności',
+      'Nasz system działa w oparciu o rygorystyczny standard Double Opt-In (podwójne potwierdzenie zapisu). Oznacza to, że nikt nie zostanie dopisany wbrew swojej woli. W każdej chwili możesz jednym kliknięciem zmienić swoje preferencje tematyczne lub natychmiast wypisać się z listy.',
+      '4. Akcja #antyHALLOWEEN — pierwsza premierowa inicjatywa',
+      'Inauguracja newslettera zbiega się z ogólnopolską akcją #antyHALLOWEEN („My świętujemy inaczej!”). W pierwszym wydaniu newslettera nasi subskrybenci otrzymają bezpłatny pakiet grafik na social media oraz pełną chrześcijańską deklarację o wyborze Światłości, Życia i nadziei w Chrystusie.',
+      '5. Zapisz się już teraz!',
+      'Wystarczy wejść na stronę https://polskieradio.cc/newsletter (lub kliknąć ikonę koperty w panelu bocznym na smartfonie), wpisać swój adres e-mail, zaznaczyć interesujące Cię kategorie i potwierdzić link w odebranej wiadomości. Zapraszamy do wspólnego budowania Bożej kultury w Polsce i na świecie!'
+    ],
+    category: 'Wiadomości i Społeczeństwo',
+    categoryLabel: 'CC Inside & Społeczność',
+    publishedAt: '2026-10-30T10:50:00+01:00',
+    dateFormatted: '30 października 2026',
+    author: AUTHORS.cezary,
+    imageUrl: '/images/news/art-oficjalny-start-newslettera-christian-culture-dolacz.jpg',
+    imageCaption: 'Oficjalny start Newslettera Christian Culture — Słowo Boże, muzyka, kino i prawda wprost do Twojej skrzynki (CCN News 2026)',
+    readTimeMinutes: 4,
+    isPopular: true,
+    popularRank: 1,
+    tags: ["@CezaryRogowski","@NewsletterCC","@RadioCC","@Lumina","@antyHALLOWEEN","#Newsletter","#Chrześcijaństwo","#SłowoBoże","#DobraNowina","#WspieramTo"],
+    scriptureReference: {
+      verse: 'Księga Izajasza 52:7',
+      text: 'O jak piękne są na górach nogi tego, który zwiastuje dobrą nowinę, który ogłasza pokój, który zwiastuje dobro, który ogłasza zbawienie, który mówi do Syjonu: Twój Bóg króluje!',
+      strongCode: 'H1319'
+    }
+  },
   {
     id: 'art-cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj',
     title: 'Cyfrowy detoks w chrześcijańskim domu: Jak odzyskać prawdziwą bliskość przy wspólnym stole',

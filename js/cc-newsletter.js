@@ -732,4 +732,11 @@
     TOPICS,
     CONSENT_VERSION,
   });
+
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search || '');
+    if (params.has('newsletter') || window.location.hash === '#newsletter') {
+      setTimeout(() => open(), 300);
+    }
+  }
 })();
