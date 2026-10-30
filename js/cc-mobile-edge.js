@@ -607,6 +607,7 @@
         ['play','Kino VOD','/vod'],
         ['yis','Your Imagination Studio (YIS)','/yis'],
         ['search','Szukaj w ekosystemie','/szukaj'],
+        ['heart','Wspieram To','/wspieraj'],
       ] : commonItems;
 
       const burger = document.querySelector(

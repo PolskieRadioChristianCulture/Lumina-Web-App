@@ -4,18 +4,18 @@
 .cc-mobile-edge {
   --edge-bg:#090909; --edge-text:#f5e9d0; --edge-accent:#d4af37;
   position:fixed; inset:0 auto 0 0; margin:0; padding:0;
-  width:122px; max-width:90vw; height:100dvh; max-height:100dvh;
+  width:122px !important; max-width:90vw !important; height:100dvh; max-height:100dvh;
   box-sizing:border-box; color:var(--edge-text); background:var(--edge-bg);
   border:0; border-right:1px solid var(--edge-accent); border-radius:0 22px 22px 0;
   overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;
   box-shadow:8px 0 32px #0008;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
+  scrollbar-width:none !important;
+  -ms-overflow-style:none !important;
 }
 .cc-mobile-edge::-webkit-scrollbar {
-  display:none;
-  width:0;
-  height:0;
+  display:none !important;
+  width:0 !important;
+  height:0 !important;
 }
 .cc-mobile-edge::backdrop { background:#0009; backdrop-filter:blur(2px); }
 
@@ -116,24 +116,24 @@ body.theme-lumina-light .cc-mobile-edge[data-profile="lumina"] {
 
 /* Universal 2-Kolumnowy Układ Nawigacji Krawędziowej (Eliminacja Paska Przewijania — Dyrektywa L0 30.10.2026) */
 .cc-mobile-edge nav {
-  display:grid;
-  grid-template-columns:repeat(2, 44px);
-  gap:6px 8px;
-  justify-content:center;
-  align-content:start;
+  display:grid !important;
+  grid-template-columns:repeat(2, 44px) !important;
+  gap:6px 8px !important;
+  justify-content:center !important;
+  align-content:start !important;
   min-height:auto;
   box-sizing:border-box;
-  width:100%;
-  padding:max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));
+  width:100% !important;
+  padding:max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom)) !important;
 }
 .cc-mobile-edge nav button[data-edge-key="close"] {
-  grid-column:1 / -1;
-  justify-self:center;
+  grid-column:1 / -1 !important;
+  justify-self:center !important;
   margin-bottom:2px;
 }
 .cc-mobile-edge:not([data-profile="lumina"]) nav button[data-edge-key="menu"] {
-  grid-column:1 / -1;
-  justify-self:center;
+  grid-column:1 / -1 !important;
+  justify-self:center !important;
 }
 .cc-mobile-edge nav :is(a,button)[data-edge-key="heart"] {
   color:#FF7A00 !important;

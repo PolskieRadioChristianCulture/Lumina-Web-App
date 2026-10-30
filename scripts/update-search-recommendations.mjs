@@ -99,7 +99,7 @@ export async function updateSearchRecommendations() {
         icon: 'volume'
       }
     ],
-    // Slot 1: Akademia Biblijna & Narzędzia Pisma Świętego
+    // Slot 1: Akademia Biblijna & Narzędzia Pisma Świętego & Autopromocja Wyszukiwarki
     [
       {
         tag: 'Akademia Biblijna',
@@ -116,18 +116,18 @@ export async function updateSearchRecommendations() {
         icon: 'scroll'
       },
       {
+        tag: 'Wyszukiwarka Ekosystemu',
+        title: 'Błyskawiczne Odkrywanie w CC',
+        desc: 'Szukaj wersetów, lekcji, audycji i artykułów natychmiast od 1. litery.',
+        url: '/wyszukiwarka',
+        icon: 'search'
+      },
+      {
         tag: 'Kurs Proroctw Biblijnych',
         title: 'Księga Daniela — 2300 Wieczorów i Poranków',
         desc: 'Klucz do zrozumienia czasów ostatecznych i nadziei Zbawienia w Chrystusie.',
         url: '/akademia',
         icon: 'compass'
-      },
-      {
-        tag: 'Szkoła Uczniostwa',
-        title: 'Boże Zasady Zwycięskiego Życia',
-        desc: 'Praktyczne lekcje wiary, pokoju i zaufania Bogu w każdej próbie.',
-        url: '/akademia',
-        icon: 'bookmark'
       }
     ],
     // Slot 2: Aktualności CCN & Podcasty SDS & VOD
@@ -137,6 +137,13 @@ export async function updateSearchRecommendations() {
         title: latestArticle.title,
         desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
         url: latestArticle.url.replace('https://polskieradio.cc', ''),
+        icon: 'newspaper'
+      },
+      {
+        tag: 'Rodzina & Zdrowie • Nowość',
+        title: 'Cyfrowy detoks w chrześcijańskim domu',
+        desc: 'Jak odzyskać prawdziwą bliskość przy wspólnym stole (Wioletta Rogowska).',
+        url: '/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj',
         icon: 'newspaper'
       },
       {
@@ -152,13 +159,6 @@ export async function updateSearchRecommendations() {
         desc: 'Wartościowe kino chrześcijańskie bez reklam, opłat i subskrypcji.',
         url: '/vod',
         icon: 'film'
-      },
-      {
-        tag: 'Analizy & Społeczeństwo',
-        title: 'Wolność Sumienia i Prawo Boże',
-        desc: 'Głębokie analizy wyzwań współczesnego świata w świetle Pisma Świętego.',
-        url: '/prawo',
-        icon: 'scale'
       }
     ],
     // Slot 3: Live TV & Radio CC & Muzyka Uwielbienia & Społeczność
@@ -171,11 +171,11 @@ export async function updateSearchRecommendations() {
         icon: 'radio'
       },
       {
-        tag: 'Biblia Śpiewana Live 24/7',
-        title: 'Śpiewane Psalmy i Przypowieści',
-        desc: 'Transmisja telewizyjna na żywo z dynamicznym karaoke biblijnym non-stop.',
-        url: '/biblia-spiewana-live',
-        icon: 'tv'
+        tag: 'Przegląd Ekosystemu • Nowość',
+        title: 'Tętno Misji: Nowe Lekcje i Artykuły',
+        desc: 'Aktualne premiery, audycje i materiały w całym ekosystemie CC.',
+        url: '/news/przeglad-ekosystemu-nowe-artykuly-i-lekcje-akademii',
+        icon: 'sparkle'
       },
       {
         tag: 'Telewizja CCTV24 Worship',

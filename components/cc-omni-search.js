@@ -9829,7 +9829,7 @@ ${isStandalonePage ? '' : `
     featuredRotationTimer = setInterval(() => {
       if (isFeaturedHovered || (typeof document !== 'undefined' && document.hidden)) return;
       rotateFeaturedCards();
-    }, 5600);
+    }, 4200);
   }
 
   function stopFeaturedRotation() {

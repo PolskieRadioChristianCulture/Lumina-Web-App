@@ -10,6 +10,7 @@
       gtag('config','G-Y4EFTVBPE3',(function(){try{var s=location.search,k='cc_team';if(/[?&]cc_team=1/.test(s))localStorage.setItem(k,'1');if(/[?&]cc_team=0/.test(s))localStorage.removeItem(k);if(localStorage.getItem(k)==='1'||/[?&]in_mcr=1/.test(s)||window.obsstudio)return{traffic_type:'internal'}}catch(e){}return{}})());
     </script><script src="/js/cc-analytics.js?v=20261026_1" defer></script>
     <script src="/js/cc-universal-tts.js?v=20261029_1" defer></script>
+    <link rel="stylesheet" href="/css/cc-mobile-edge.css?v=20261030_edge9">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
@@ -1079,6 +1080,7 @@
         <a href="/biznes">Biznes</a>
         <a href="/psychologia">Psychologia</a>
         <a href="/live">Live</a>
+        <a href="/wspieraj" style="color:#FF7A00;font-weight:700;"><i class="fa-solid fa-heart" style="margin-right:4px;"></i>Wspieram To</a>
       </nav>
     </header>
 
@@ -1087,10 +1089,13 @@
       <a href="/news" class="ccn-brand-logo" title="CCN News – Strona Główna">
         <img src="/ccn-logo-horizontal.png" alt="CCN News Logo" width="160" height="42" onerror="this.src='/ccn-logo-square.png'">
       </a>
-      <a href="/news" class="ccn-back-btn">
-        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-        <span>Wróć do CCN News</span>
-      </a>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="/wspieraj" class="ccn-support-btn-pill" style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:9999px;background:#FF7A00;color:#ffffff;font-weight:700;font-size:13px;text-decoration:none;box-shadow:0 4px 14px rgba(255,122,0,0.4);"><i class="fa-solid fa-heart"></i><span>Wspieram To</span></a>
+        <a href="/news" class="ccn-back-btn">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          <span>Wróć do CCN News</span>
+        </a>
+      </div>
     </div>
 
     <!-- Main Content -->
@@ -1125,11 +1130,16 @@
             <i class="fa-regular fa-clock" aria-hidden="true"></i>
             <span>8 min czytania</span>
           </div>
+          <a href="/wspieraj" class="ccn-meta-wspieram" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:9999px;background:rgba(255,122,0,0.15);border:1px solid #FF7A00;color:#FF7A00;font-size:12px;font-weight:700;text-decoration:none;"><i class="fa-solid fa-heart"></i><span>Wspieram To</span></a>
         </div>
 
         <!-- Social Share Bar (44px target) -->
         <div class="ccn-share-bar">
           <span class="ccn-share-title"><i class="fa-solid fa-share-nodes"></i> Udostępnij:</span>
+          <a href="https://polskieradio.cc/wspieraj" class="ccn-share-btn" style="background:rgba(255,122,0,0.16);border:1.5px solid #FF7A00;color:#FF7A00;" title="Wesprzyj wolne media chrześcijańskie" aria-label="Wspieram To">
+            <i class="fa-solid fa-heart" aria-hidden="true"></i>
+            <span>Wspieram To</span>
+          </a>
           <a href="https://x.com/intent/tweet?url=https%3A%2F%2Fpolskieradio.cc%2Fnews%2Fgdy-lek-o-jutro-odbiera-ci-pokoj-5-zasad-cezary-rogowski&text=Gdy%20l%C4%99k%20o%20jutro%20odbiera%20ci%20pok%C3%B3j%3A%205%20biblijnych%20zasad%20uciszenia%20burzy%20w%20sercu%20wed%C5%82ug%20S%C5%82owa%20Bo%C5%BCego%20%E2%80%94%20CCN%20News%20%7C%20Christian%20Culture" target="_blank" rel="noopener noreferrer" class="ccn-share-btn ccn-btn-x" title="Udostępnij na platformie X" aria-label="Udostępnij na X">
             <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
             <span>X (Twitter)</span>
@@ -1304,6 +1314,7 @@
     <!-- Global Support Footer -->
     <script src="/components/cc-support-footer.js" defer></script>
     <script defer src="/components/ekocc-info.js?v=20261020_1"></script>
+    <script defer src="/js/cc-mobile-edge.js?v=20261030_edge9"></script>
 
     <!-- Floating Back to Top -->
     <button class="back-to-top" id="backToTopBtn" aria-label="Przewiń do góry" title="Przewiń do góry">

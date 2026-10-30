@@ -133,6 +133,15 @@ async function runCatchUp() {
     log('⚠️ Błąd orkiestracji cykli LIVE CONTENT V3: ' + err.message);
   }
 
+  // ─── 7. HARMONOGRAM ZACZEPEK WHATSAPP (co 15-30 min, cisza nocna 22:00-06:30) ───
+  try {
+    log('💬 Sprawdzanie i wysyłka motywacyjnej zaczepki do pokoju WhatsApp...');
+    execSync('node scripts/whatsapp_hooks/whatsapp-hooks-runner.mjs', { cwd: ROOT, stdio: 'inherit' });
+    log('✅ Zaczepki WhatsApp zsynchronizowane.');
+  } catch (err) {
+    log('⚠️ Błąd runnera zaczepek WhatsApp: ' + err.message);
+  }
+
 
 
   log(`🏁 Zakończono skanowanie autostartu. Wykonano nadrzędnych akcji: ${actionsTaken}.`);
