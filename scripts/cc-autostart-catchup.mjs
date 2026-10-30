@@ -107,6 +107,15 @@ async function runCatchUp() {
     }
   }
 
+  // ─── 4. KONTROLA I ODŚWIEŻENIE PASKÓW NADAWCZYCH TV ───
+  try {
+    log('📺 Odświeżanie pasków informacyjnych kanałów TV...');
+    execSync('node scripts/update-broadcast-tickers.mjs', { cwd: ROOT, stdio: 'inherit' });
+    log('✅ Paski informacyjne kanałów nadawczych zsynchronizowane.');
+  } catch (err) {
+    log(`⚠️ Błąd odświeżania pasków TV: ${err.message}`);
+  }
+
   log(`🏁 Zakończono skanowanie autostartu. Wykonano nadrzędnych akcji: ${actionsTaken}.`);
   log('═══════════════════════════════════════════════════════════════\n');
 }

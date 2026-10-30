@@ -93,6 +93,12 @@ async function run() {
     }
     console.log('✅ Sygnały discovery dla botów AI (GPTBot, ClaudeBot, PerplexityBot) aktywne.');
 
+    // ── KROK 4b: AKTUALIZACJA PASKÓW INFORMACYJNYCH TV (TICKER) ──
+    console.log('\n[4b/7] 📺 Aktualizacja pasków informacyjnych kanałów nadawczych TV (data/ccn-news-ticker.json, news.json)...');
+    execSync('node scripts/update-broadcast-tickers.mjs', { cwd: ROOT, stdio: 'inherit' });
+    results.broadcastTickers = true;
+    console.log('✅ Paski informacyjne kanałów nadawczych zsynchronizowane.');
+
     // ── KROK 5: AUDYT ZERO-QA — Bateria Testów Regresji ──
     if (!process.argv.includes('--skip-tests')) {
       console.log('\n[5/7] 🛡️ Uruchamianie baterii testów Zero-QA...');
@@ -112,7 +118,7 @@ async function run() {
       // Zapewnij czyste drzewo git przed budową pages-release
       try {
         execSync('git add -u', { cwd: ROOT, stdio: 'pipe' });
-        execSync('git add -A docs/ data/ szukaj/ sitemaps/ feed.xml news/ finanse/ historia/ nauka/ prawo/ biologia/ seks/ scripts/ robots.txt images/', { cwd: ROOT, stdio: 'pipe' });
+        execSync('git add -A docs/ data/ szukaj/ sitemaps/ feed.xml news.json news/ finanse/ historia/ nauka/ prawo/ biologia/ seks/ scripts/ robots.txt images/', { cwd: ROOT, stdio: 'pipe' });
         const status = execSync('git status --porcelain --untracked-files=no', { cwd: ROOT, encoding: 'utf8' }).trim();
         if (status) {
           execSync('git commit -m "chore(release): auto-sync tracked assets for pages-release"', { cwd: ROOT, stdio: 'inherit' });
