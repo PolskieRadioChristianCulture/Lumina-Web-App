@@ -4648,12 +4648,18 @@
       .cc-omni-feat-modes {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
         overflow-x: auto;
         scrollbar-width: none;
         -ms-overflow-style: none;
         padding: 2px 2px 12px;
         margin-bottom: 2px;
+      }
+      @media (min-width: 641px) {
+        .cc-omni-feat-modes {
+          flex-wrap: wrap;
+          overflow-x: visible;
+        }
       }
       .cc-omni-feat-modes::-webkit-scrollbar {
         display: none;
@@ -4661,13 +4667,13 @@
       .cc-omni-feat-mode-btn {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        padding: 5px 11px;
+        gap: 4px;
+        padding: 4px 10px;
         border-radius: 999px;
         border: 1px solid rgba(196, 163, 90, 0.22);
         background: rgba(14, 18, 30, 0.72);
         color: rgba(243, 229, 200, 0.78);
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 600;
         white-space: nowrap;
         cursor: pointer;
@@ -9249,7 +9255,7 @@ ${isStandalonePage ? '' : `
     if (hour >= 5 && hour < 12) {
       timeContextLabel = 'Poranek ze Słowem';
       timeCard = {
-        tag: 'PORANEK ZE SŁOWEM • NA DZIŚ',
+        tag: 'PORANEK ZE SŁOWEM',
         badge: 'PORANEK',
         title: 'Rozważanie „Dobrze, że jesteś” i Werset Dnia',
         desc: 'Rozpocznij dzień z Bożą obietnicą, modlitwą i pokojem serca na nowe wyzwania.',
@@ -9259,7 +9265,7 @@ ${isStandalonePage ? '' : `
     } else if (hour >= 12 && hour < 17) {
       timeContextLabel = 'Popołudnie z Radiem i Słowem';
       timeCard = {
-        tag: 'W CIĄGU DNIA • SŁUCHAJ NA ŻYWO',
+        tag: 'SŁUCHAJ W CIĄGU DNIA',
         badge: 'LIVE 24/7',
         title: 'Radio Christian Culture 24/7 & Audycje Dnia',
         desc: 'Muzyka uwielbienia, Biblia Audio i budujące pasma towarzyszące Ci w pracy i w drodze.',
@@ -9269,7 +9275,7 @@ ${isStandalonePage ? '' : `
     } else if (hour >= 17 && hour < 22) {
       timeContextLabel = 'Wieczorne Studium i Wyciszenie';
       timeCard = {
-        tag: 'WIECZÓR Z BOGIEM • STUDIUM & FILM',
+        tag: 'WIECZÓR Z BOGIEM',
         badge: 'WIECZÓR',
         title: 'Wieczorne Studium: Apokalipsa & Kino VOD',
         desc: 'Odpocznij po całym dniu przy profetycznym Słowie Bożym lub wartościowym filmie.',
@@ -9279,7 +9285,7 @@ ${isStandalonePage ? '' : `
     } else {
       timeContextLabel = 'Nocne Ukojenie i Boży Pokój';
       timeCard = {
-        tag: 'NOCNE PASMO • POKÓJ SERCA',
+        tag: 'NOCNE PASMO POKOJU',
         badge: 'NOC 24/7',
         title: 'Nocne Ukojenie: Psalmy, Ambient Sleep & Modlitwa',
         desc: 'Łagodne brzmienia uwielbienia i biblijne obietnice na spokojny, głęboki sen bez lęku.',
@@ -9301,7 +9307,7 @@ ${isStandalonePage ? '' : `
     if (isSabbath) {
       occasionLabel = 'Święty Czas Odpocznienia • Szabat';
       occasionCard = {
-        tag: 'ŚWIĘTY CZAS ODPOCZNIENIA • SZABAT',
+        tag: 'ŚWIĘTY CZAS ODPOCZNIENIA',
         badge: 'SZABAT',
         title: 'Błogosławiony Szabat: Odpocznij w Bożej Obecności',
         desc: 'Śpiewane Psalmy, uwielbienie i studium Słowa na święty dzień odpocznienia (Wj 20:8–11).',
@@ -9311,7 +9317,7 @@ ${isStandalonePage ? '' : `
     } else if (isReformationLightSeason) {
       occasionLabel = `Reformacja & Światło (${dateShort})`;
       occasionCard = {
-        tag: 'TEMAT OKOLICZNOŚCIOWY • PAŹDZIERNIK / LISTOPAD',
+        tag: 'WYDARZENIE SEZONU',
         badge: 'ŚWIATŁO vs MROK',
         title: 'Światło Zwycięża Mrok — Reformacja & Prawda Biblijna',
         desc: 'Dlaczego chrześcijanie wybierają Życie i Światłość Chrystusa? Biblijna odpowiedź na kulturę mroku.',
@@ -9321,7 +9327,7 @@ ${isStandalonePage ? '' : `
     } else if (isIndependenceSeason) {
       occasionLabel = `Modlitwa za Polskę (${dateShort})`;
       occasionCard = {
-        tag: 'WYDARZENIE NARODOWE • LISTOPAD',
+        tag: 'WYDARZENIE NARODOWE',
         badge: 'ZA POLSKĘ',
         title: 'Zjednoczeni za Polskę — Modlitwa o Naród i Pokój',
         desc: 'Wspólne wstawiennictwo o błogosławieństwo, mądrość i Bożą ochronę dla naszej Ojczyzny.',
@@ -9331,7 +9337,7 @@ ${isStandalonePage ? '' : `
     } else if (isNativitySeason) {
       occasionLabel = 'Proroctwa Mesjańskie • Immanuel';
       occasionCard = {
-        tag: 'CZAS ŚWIĄTECZNY • PROROCTWA BIBLIJNE',
+        tag: 'PROROCTWA MESJAŃSKIE',
         badge: 'IMMANUEL',
         title: 'Bóg z Nami — 300 Proroctw o Narodzeniu Mesjasza',
         desc: 'Odkryj niezwykłe wypełnienie starotestamentowych proroctw o przyjściu Zbawiciela Świata.',
@@ -9341,7 +9347,7 @@ ${isStandalonePage ? '' : `
     } else if (isPaschaSeason) {
       occasionLabel = 'Pascha & Zmartwychwstanie';
       occasionCard = {
-        tag: 'PASCHA & ZWYCIĘSTWO KRZYŻA',
+        tag: 'PASCHA & KRZYŻ',
         badge: 'ZMARTWYCHWSTANIE',
         title: 'Baranek Boży i Pusty Grób — Fundament Wiary',
         desc: 'Historyczne i biblijne świadectwa zmartwychwstania Jezusa Chrystusa oraz nowego życia.',
@@ -9351,7 +9357,7 @@ ${isStandalonePage ? '' : `
     } else if (isSummerMission) {
       occasionLabel = 'Misja Boże Wakacje';
       occasionCard = {
-        tag: 'CYKL LETNI • BOŻE WAKACJE',
+        tag: 'CYKL BOŻE WAKACJE',
         badge: 'LATO CC',
         title: 'Boże Wakacje — Odpoczynek, Misja i Ewangelizacja',
         desc: 'Inspiracje w podróży, Biblia Audio i codzienne umocnienie podczas letniego wypoczynku.',
@@ -9361,7 +9367,7 @@ ${isStandalonePage ? '' : `
     } else if (dayOfWeek === 0) {
       occasionLabel = `Niedziela dla Rodziny (${dateShort})`;
       occasionCard = {
-        tag: 'CZAS DLA RODZINY I BLISKICH',
+        tag: 'CZAS DLA RODZINY',
         badge: 'NIEDZIELA',
         title: 'Cyfrowy Detoks i Rodzinne Kino Chrześcijańskie',
         desc: 'Jak odzyskać prawdziwą bliskość przy wspólnym stole oraz budujące filmy dla całego domu.',
@@ -9370,7 +9376,7 @@ ${isStandalonePage ? '' : `
       };
     } else {
       occasionCard = {
-        tag: 'INTERLINEARNA BIBLIA • STUDIUM',
+        tag: 'INTERLINEARNA BIBLIA',
         badge: 'GREKA & HEBR',
         title: 'MojaBiblia: Kody Stronga & Greka',
         desc: 'Badaj oryginalne znaczenie słów hebrajskich i greckich z przekładami UBG, BW, BT i BG.',
@@ -9381,7 +9387,7 @@ ${isStandalonePage ? '' : `
 
     // 3. Karta Kalendarzowej Lekcji Dnia (Slot 2)
     const dailyLessonCard = {
-      tag: `LEKCJA NA DZIŚ • ${dateShort.toUpperCase()}`,
+      tag: 'LEKCJA NA DZIŚ',
       badge: `DZIEŃ ${lessonDay}`,
       title: `Kurs Codzienny (Dzień ${lessonDay}): Z Biblią za Pan Brat`,
       desc: 'Dzisiejsze rozważanie Pisma Świętego werset po wersecie przygotowane dokładnie na ten dzień.',
@@ -9391,7 +9397,7 @@ ${isStandalonePage ? '' : `
 
     // 4. Karta Dopasowana do Indywidualnych Potrzeb Użytkownika (Slot 3)
     let personalCard = {
-      tag: 'DOPASOWANE DO POTRZEB • POKÓJ SERCA',
+      tag: 'POKÓJ SERCA • NA DZIŚ',
       badge: 'DLA CIEBIE',
       title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
       desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
@@ -9408,9 +9414,12 @@ ${isStandalonePage ? '' : `
         favs = JSON.parse(localStorage.getItem('cc_user_favorites') || '[]');
         history = JSON.parse(localStorage.getItem('cc_user_visit_history') || '[]');
       }
+      favs = (Array.isArray(favs) ? favs : []).filter(f => f && f.url && f.title && !/^\/(wyszukiwarka|szukaj)\b/i.test(f.url));
+      history = (Array.isArray(history) ? history : []).filter(h => h && h.url && h.title && !/^\/(wyszukiwarka|szukaj)\b/i.test(h.url));
+
       if (/lęk|lek|strach|stres|depres|dług|dlug|kredyt|pomoc|kryzys|samotn|ból|bol/.test(joinedQueries)) {
         personalCard = {
-          tag: 'TWOJA POTRZEBA • WSPARCIE I RATUNEK',
+          tag: 'WSPARCIE I RATUNEK',
           badge: 'DOPASOWANE',
           title: 'Gdy lęk o jutro odbiera Ci pokój — 5 zasad',
           desc: 'Biblijne uciszenie burzy w sercu, wsparcie modlitewne 24/7 i wyjście z kryzysu.',
@@ -9419,8 +9428,8 @@ ${isStandalonePage ? '' : `
         };
       } else if (/apokalips|daniel|proroc|koniec|znak|besti|objawieni/.test(joinedQueries)) {
         personalCard = {
-          tag: 'TWOJE ZAINTERESOWANIA • PROROCTWA',
-          badge: 'DOPASOWANE',
+          tag: 'TWOJE ZAINTERESOWANIA',
+          badge: 'PROROCTWA',
           title: 'APOKALIPSA — Księga Nadziei (Wykłady SDS)',
           desc: 'Kontynuuj odkrywanie proroctw Księgi Daniela i Objawienia św. Jana w świetle Biblii.',
           url: '/apokalipsa-live',
@@ -9428,25 +9437,25 @@ ${isStandalonePage ? '' : `
         };
       } else if (/muzyk|śpiew|spiew|karaoke|uwielbieni|psalm|radio/.test(joinedQueries)) {
         personalCard = {
-          tag: 'TWOJE BRZMIENIE • UWIELBIENIE 24/7',
-          badge: 'DOPASOWANE',
+          tag: 'TWOJE BRZMIENIE 24/7',
+          badge: 'UWIELBIENIE',
           title: 'Śpiewane Psalmy i Przypowieści (Karaoke Live)',
           desc: 'Transmisja telewizyjna na żywo z dynamicznym karaoke biblijnym i pieśniami chwały.',
           url: '/biblia-spiewana-live',
           icon: 'music'
         };
-      } else if (Array.isArray(favs) && favs.length > 0 && favs[0] && favs[0].url && favs[0].title) {
+      } else if (favs.length > 0) {
         personalCard = {
-          tag: 'TWOJE ULUBIONE • SZYBKI POWRÓT',
+          tag: 'TWOJE ULUBIONE',
           badge: 'ULUBIONE ★',
           title: String(favs[0].title),
           desc: 'Wróć jednym kliknięciem do zapisanego przez Ciebie materiału w ekosystemie CC.',
           url: String(favs[0].url),
           icon: 'star'
         };
-      } else if (Array.isArray(history) && history.length > 0 && history[0] && history[0].url && history[0].title) {
+      } else if (history.length > 0) {
         personalCard = {
-          tag: 'KONTYNUUJ ODKRYWANIE • OSTATNIO',
+          tag: 'KONTYNUUJ ODKRYWANIE',
           badge: 'TWOJA ŚCIEŻKA',
           title: String(history[0].title),
           desc: 'Kontynuuj dokładnie tam, gdzie ostatnio zakończyłeś lekturę lub odsłuch.',
