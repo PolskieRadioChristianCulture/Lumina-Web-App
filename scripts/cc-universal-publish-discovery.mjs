@@ -111,7 +111,8 @@ async function run() {
       
       // Zapewnij czyste drzewo git przed budową pages-release
       try {
-        execSync('git add -A docs/ data/ szukaj/ sitemaps/ feed.xml news/ scripts/ robots.txt images/', { cwd: ROOT, stdio: 'pipe' });
+        execSync('git add -u', { cwd: ROOT, stdio: 'pipe' });
+        execSync('git add -A docs/ data/ szukaj/ sitemaps/ feed.xml news/ finanse/ historia/ nauka/ prawo/ biologia/ seks/ scripts/ robots.txt images/', { cwd: ROOT, stdio: 'pipe' });
         const status = execSync('git status --porcelain --untracked-files=no', { cwd: ROOT, encoding: 'utf8' }).trim();
         if (status) {
           execSync('git commit -m "chore(release): auto-sync tracked assets for pages-release"', { cwd: ROOT, stdio: 'inherit' });

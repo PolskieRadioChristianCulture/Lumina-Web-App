@@ -474,6 +474,102 @@
         border: 3px solid var(--ccn-gold);
         flex-shrink: 0;
       }
+      /* Patronage Box & Wspieram to */
+      .ccn-patronage-box {
+        margin: 3rem 0;
+        padding: 2.25rem 1.75rem;
+        background: linear-gradient(135deg, rgba(14, 18, 26, 0.96), rgba(24, 30, 44, 0.96));
+        border: 1.5px solid rgba(196, 163, 90, 0.45);
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+      }
+      .ccn-patronage-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.95rem;
+        border-radius: 9999px;
+        background: rgba(196, 163, 90, 0.18);
+        border: 1px solid rgba(196, 163, 90, 0.4);
+        color: #E2CC9A;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.85rem;
+      }
+      .ccn-patronage-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #FFFFFF;
+        margin-bottom: 0.65rem;
+        line-height: 1.35;
+      }
+      .ccn-patronage-desc {
+        font-size: 0.95rem;
+        color: #d1d5db;
+        max-width: 42rem;
+        margin: 0 auto 1.5rem auto;
+        line-height: 1.65;
+      }
+      .ccn-patronage-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 0.85rem;
+      }
+      .ccn-support-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1.85rem;
+        border-radius: 10px;
+        background: #FF7A00;
+        color: #FFFFFF !important;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        box-shadow: 0 4px 18px rgba(255, 122, 0, 0.45);
+        min-height: 44px;
+        transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      }
+      .ccn-support-btn-primary:hover {
+        background: #FF8C33;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 22px rgba(255, 122, 0, 0.6);
+        color: #FFFFFF !important;
+      }
+      .ccn-support-btn-primary:active {
+        background: #E66A00;
+        transform: translateY(0);
+      }
+      .ccn-support-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1.5rem;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #f4f4f5 !important;
+        font-weight: 600;
+        font-size: 0.92rem;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        min-height: 44px;
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+      }
+      .ccn-support-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+        color: #FFFFFF !important;
+      }
 
       /* Related Section */
       .ccn-related-section {
@@ -1022,6 +1118,28 @@
             </p>
           </div>
         </div>
+        <!-- CC Patronage Box with Classical Orange Wspieram to Button -->
+        <section class="ccn-patronage-box" aria-labelledby="ccnPatronageHeading">
+          <div class="ccn-patronage-badge">
+            <i class="fa-solid fa-heart" style="color: #FF7A00;" aria-hidden="true"></i>
+            <span>Misja Christian Culture • Wolne Media Boże</span>
+          </div>
+          <h3 id="ccnPatronageHeading" class="ccn-patronage-title">Razem niesiemy czystą Ewangelię i biblijną nadzieję dalej</h3>
+          <p class="ccn-patronage-desc">
+            Ten artykuł powstał bezpłatnie dla każdego czytelnika dzięki wsparciu naszych Darczyńców i Patronów. Jeśli ta treść wniosła pokój do Twojego serca, wesprzyj naszą misję, byśmy mogli docierać z biblijną prawdą do kolejnych tysięcy ludzi w Polsce i na świecie.
+          </p>
+          <div class="ccn-patronage-actions">
+            <a href="https://polskieradio.cc/wspieraj" class="ccn-support-btn-primary" aria-label="Wspieram to - przejdź do strony wsparcia">
+              <i class="fa-solid fa-heart" aria-hidden="true"></i>
+              <span>Wspieram to</span>
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+            <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="ccn-support-btn-secondary" aria-label="Zostań Patronem na Patronite">
+              <i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i>
+              <span>Zostań Patronem na Patronite</span>
+            </a>
+          </div>
+        </section>
 
         <!-- Related Articles Grid -->
         
