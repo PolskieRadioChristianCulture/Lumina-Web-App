@@ -5,6 +5,18 @@
 
 export const NEWSLETTER_TOPICS_V1 = [
   {
+    id: 'topic_codzienne_rozwazania',
+    slug: 'codzienne-rozwazania',
+    namePl: 'Codzienne Rozważania Biblijne',
+    nameEn: 'Daily Biblical Reflections',
+    nameDe: 'Tägliche Biblische Andachten',
+    descriptionPl: 'Codzienna poranna porcja Słowa Bożego i rozważań („Dobrze, że jesteś” / autorzy LUMINA) wysyłana o 06:00 rano na e-mail.',
+    descriptionEn: 'Daily morning scripture inspiration and biblical reflections delivered to your inbox at 6:00 AM.',
+    descriptionDe: 'Tägliche morgendliche biblische Impulse und geistliche Andachten um 06:00 Uhr direkt per E-Mail.',
+    isActive: true,
+    sortOrder: 5,
+  },
+  {
     id: 'topic_nowosci_ekocc',
     slug: 'nowosci-ekocc',
     namePl: 'Nowości EkoCC',

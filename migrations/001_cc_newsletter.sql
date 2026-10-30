@@ -156,6 +156,18 @@ INSERT OR IGNORE INTO newsletter_topics (
   id, slug, name_pl, name_en, name_de, description_pl, description_en, description_de, is_active, sort_order
 ) VALUES
 (
+  'topic_codzienne_rozwazania',
+  'codzienne-rozwazania',
+  'Codzienne Rozważania Biblijne',
+  'Daily Biblical Reflections',
+  'Tägliche Biblische Andachten',
+  'Codzienna poranna porcja Słowa Bożego i rozważań („Dobrze, że jesteś” / autorzy LUMINA) wysyłana o 06:00 rano na e-mail.',
+  'Daily morning scripture inspiration and biblical reflections delivered to your inbox at 6:00 AM.',
+  'Tägliche morgendliche biblische Impulse und geistliche Andachten um 06:00 Uhr direkt per E-Mail.',
+  1,
+  5
+),
+(
   'topic_nowosci_ekocc',
   'nowosci-ekocc',
   'Nowości EkoCC',

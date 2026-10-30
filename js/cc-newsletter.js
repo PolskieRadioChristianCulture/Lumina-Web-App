@@ -10,6 +10,12 @@
 
   const TOPICS = [
     {
+      slug: 'codzienne-rozwazania',
+      pl: ['Codzienne Rozważania Biblijne', 'Codzienna poranna porcja Słowa Bożego („Dobrze, że jesteś” / autorzy LUMINA) o 06:00 rano.'],
+      en: ['Daily Biblical Reflections', 'Daily morning scripture inspiration and reflections delivered at 6:00 AM.'],
+      de: ['Tägliche Biblische Andachten', 'Tägliche morgendliche biblische Impulse und Andachten um 06:00 Uhr per E-Mail.'],
+    },
+    {
       slug: 'nowosci-ekocc',
       pl: ['Nowości EkoCC', 'Najważniejsze publikacje, premiery i wydarzenia z całego ekosystemu.'],
       en: ['EkoCC Highlights & News', 'Top publications, premieres, and events across the ecosystem.'],
@@ -158,6 +164,7 @@
   }
 
   function defaultTopicsForPortal(sourcePortal) {
+    if (sourcePortal.includes('rozwazania') || sourcePortal.includes('cuda') || sourcePortal.includes('dobrzezejestes') || sourcePortal.includes('lumina')) return ['codzienne-rozwazania', 'nowosci-ekocc'];
     if (sourcePortal.includes('akademia') || sourcePortal.includes('mojabiblia')) return ['biblia-akademia', 'nowosci-ekocc'];
     if (sourcePortal.includes('wioletta') || sourcePortal.includes('biblioteka') || sourcePortal.includes('yis')) return ['ksiazki-literatura', 'nowosci-ekocc'];
     if (sourcePortal.includes('vod') || sourcePortal.includes('player') || sourcePortal.includes('music') || sourcePortal.includes('welch') || sourcePortal.includes('global')) return ['muzyka-radio-tv', 'nowosci-ekocc'];
