@@ -12239,6 +12239,7 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
             const isWioletta = _myOfficialId === 'wioletta';
             const isZbyszek = slug === 'zbyszekgieron';
             const isZofia = slug === 'zofiadudek';
+            const isMarek = _myOfficialId === 'marek' || email.toLowerCase() === 'marusjakubowski@gmail.com' || slug === 'marekjakubowski' || slug === 'u_marekjakubowski';
 
             if (isCezary) {
                 window.location.href = 'lumina.cezaryrgowski.html';
@@ -12248,6 +12249,8 @@ html[data-lumina-theme="light"] .mobile-auth-sep { color: #d6d3d1 !important; }
                 window.location.href = 'lumina.zbyszekgieron.html';
             } else if (isZofia) {
                 window.location.href = 'lumina.zofiadudek.html';
+            } else if (isMarek) {
+                window.location.href = 'lumina-profile.html?u=marekjakubowski';
             } else if (slug) {
                 window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(slug);
             } else if (user && user.uid) {
@@ -16828,6 +16831,7 @@ window.addEventListener('lumina-auth-state', () => {
                 else if (slug === 'andrzejthiel' || (slug === 'andrzej' && !slug.includes('hamera'))) window.location.href = 'lumina.andrzejthiel.html';
                 else if (slug === 'zbyszekgieron' || slug === 'zbyszek') window.location.href = 'lumina.zbyszekgieron.html';
                 else if (slug === 'zofiadudek' || slug === 'zofia') window.location.href = 'lumina.zofiadudek.html';
+                else if (slug === 'marekjakubowski' || slug === 'marek' || slug === 'u_marekjakubowski') window.location.href = 'lumina-profile.html?u=marekjakubowski';
                 else if (slug === 'magdalena') window.location.href = 'lumina.magdalena.html';
                 else window.location.href = 'lumina-profile.html?u=' + slug;
             }

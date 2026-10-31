@@ -9737,6 +9737,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const slug = window._currentModalProfileSlug || '';
             if (slug === 'cezaryrgowski') window.location.href = 'lumina.cezaryrgowski.html';
             else if (slug === 'wiolettarogowska') window.location.href = 'lumina.wiolettarogowska.html';
+            else if (slug === 'marekjakubowski' || slug === 'marek' || slug === 'u_marekjakubowski') window.location.href = 'lumina-profile.html?u=marekjakubowski';
             else if (slug === 'andrzejthiel' || slug === 'andrzej') window.location.href = 'lumina.andrzejthiel.html';
             else if (slug === 'zbyszekgieron' || slug === 'zbyszek') window.location.href = 'lumina.zbyszekgieron.html';
             else if (slug === 'zofiadudek' || slug === 'zofia') window.location.href = 'lumina.zofiadudek.html';
@@ -11460,11 +11461,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const _myOfficialId = ((window.LuminaDB && typeof window.LuminaDB.detectLuminaOfficialIdentity === 'function') ? window.LuminaDB.detectLuminaOfficialIdentity(window.LuminaDB.getCurrentUser && window.LuminaDB.getCurrentUser()) : null);
             const isCezary = _myOfficialId === 'cezary';
             const isWioletta = _myOfficialId === 'wioletta';
+            const isMarek = _myOfficialId === 'marek' || email.toLowerCase() === 'marusjakubowski@gmail.com' || slug === 'marekjakubowski' || slug === 'u_marekjakubowski';
 
             if (isCezary) {
                 window.location.href = 'lumina.cezaryrgowski.html';
             } else if (isWioletta) {
                 window.location.href = 'lumina.wiolettarogowska.html';
+            } else if (isMarek) {
+                window.location.href = 'lumina-profile.html?u=marekjakubowski';
             } else if (slug) {
                 window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(slug);
             } else if (user && user.uid) {

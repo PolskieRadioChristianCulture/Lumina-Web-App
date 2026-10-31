@@ -173,7 +173,7 @@ export function isCommunityAdmin(user = currentUserState, fromId = null, profile
     return false;
 }
 
-const OFFICIAL_ID_TO_SLUG = { cezary: 'cezaryrgowski', wioletta: 'wiolettarogowska', radiocc: 'radiocc' };
+const OFFICIAL_ID_TO_SLUG = { cezary: 'cezaryrgowski', wioletta: 'wiolettarogowska', radiocc: 'radiocc', marek: 'marekjakubowski' };
 
 /** Czy ZALOGOWANY (Firebase Auth) użytkownik może edytować dany profil. Bez PIN-ów i flag w localStorage. */
 export function canEditLuminaProfile(slugOrUid, profileData = null, user = currentUserState) {
@@ -789,6 +789,7 @@ if (auth) {
                         avatar: userAvatar,
                         age: isRadioCC ? 0 : (isCezary ? 51 : (isWioletta ? 50 : null)),
                         hasRealPhoto: hasRealFace,
+                        verified: isMarek || isCezary || isWioletta || isRadioCC,
                         profileCompleted: isProfileDone,
                         needsProfileCompletion: !isProfileDone,
                         city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : ''),
@@ -1063,6 +1064,7 @@ export async function syncUserAuthProfile(user, activeDb = db) {
                 existingProfile.hasRealPhoto = true;
                 existingProfile.profileCompleted = true;
                 existingProfile.needsProfileCompletion = false;
+                existingProfile.verified = true;
                 existingProfile.verse = '„Pan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.”';
                 existingProfile.verseRef = '— Psalm 28, 7 (UBG)';
                 existingProfile.bio = 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce — przez codzienne rozważania Słowa Bożego.';
@@ -1123,6 +1125,7 @@ export async function syncUserAuthProfile(user, activeDb = db) {
             status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : '')),
             isMissionAccount: isRadioCC || isMission || false,
             hasRealPhoto: hasRealFace,
+            verified: isMarek || isCezary || isWioletta || isRadioCC,
             profileCompleted: isProfileDone,
             needsProfileCompletion: !isProfileDone && !isRadioCC && !isMission,
             verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),

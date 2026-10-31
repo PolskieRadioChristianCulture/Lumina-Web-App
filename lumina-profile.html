@@ -165,10 +165,33 @@
                 // Sprawdzenie aktywnego użytkownika jeśli brak slug w URL lub wejście z ogólnego 'moj_profil'
                 if (!raw || raw === 'moj_profil') {
                     try {
-                        const curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || '{}');
-                        const curUser = JSON.parse(localStorage.getItem('lumina_current_user') || '{}');
-                        const uMail = (curUser.email || '').toLowerCase();
-                        const pSlug = (curProf.slug || '').toLowerCase();
+                        let curProf = null;
+                        let curUser = null;
+                        try {
+                            curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
+                        } catch(e) {}
+                        try {
+                            curUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
+                        } catch(e) {}
+                        
+                        // Sprawdź także token Firebase Auth w localStorage
+                        if (!curUser) {
+                            try {
+                                for (let i = 0; i < localStorage.length; i++) {
+                                    const k = localStorage.key(i);
+                                    if (k && k.startsWith('firebase:authUser:')) {
+                                        const fData = JSON.parse(localStorage.getItem(k));
+                                        if (fData && (fData.email || fData.uid)) {
+                                            curUser = fData;
+                                            break;
+                                        }
+                                    }
+                                }
+                            } catch(e) {}
+                        }
+
+                        const uMail = (curUser?.email || '').toLowerCase();
+                        const pSlug = (curProf?.slug || '').toLowerCase();
                         if (uMail === 'marusjakubowski@gmail.com' || pSlug === 'marekjakubowski' || pSlug === 'u_marekjakubowski') {
                             window.location.replace('lumina-profile.html?u=marekjakubowski' + (window.location.hash || ''));
                             return;
@@ -193,7 +216,40 @@
                             window.location.replace('lumina-profile.html?u=' + pSlug + (window.location.hash || ''));
                             return;
                         }
+                        if (curUser && curUser.uid) {
+                            window.location.replace('lumina-profile.html?u=' + curUser.uid + (window.location.hash || ''));
+                            return;
+                        }
                     } catch(e) {}
+
+                    // Rejestracja natychmiastowego przekierowania gdy Firebase Auth zgłosi zalogowanego użytkownika
+                    window.addEventListener('lumina-auth-state', function handleAuthRedirect(e) {
+                        const u = e.detail?.user;
+                        const p = e.detail?.profile;
+                        const em = (u?.email || '').toLowerCase();
+                        const sl = (p?.slug || '').toLowerCase();
+                        if (em === 'marusjakubowski@gmail.com' || sl === 'marekjakubowski' || sl === 'u_marekjakubowski') {
+                            window.location.replace('lumina-profile.html?u=marekjakubowski' + (window.location.hash || ''));
+                        } else if (sl === 'cezaryrgowski' || em === 'nazirczarkes@gmail.com') {
+                            window.location.replace('lumina.cezaryrgowski.html' + (window.location.hash || ''));
+                        } else if (sl === 'wiolettarogowska' || em.startsWith('wioletta1240')) {
+                            window.location.replace('lumina.wiolettarogowska.html' + (window.location.hash || ''));
+                        } else if (sl) {
+                            window.location.replace('lumina-profile.html?u=' + sl + (window.location.hash || ''));
+                        } else if (u && u.uid) {
+                            window.location.replace('lumina-profile.html?u=' + u.uid + (window.location.hash || ''));
+                        }
+                    }, { once: true });
+
+                    setTimeout(function() {
+                        const checkUser = window.LuminaDB?.getCurrentUser?.() || JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
+                        const curParams = new URLSearchParams(window.location.search);
+                        const hasSlug = curParams.get('u') || curParams.get('user') || curParams.get('slug');
+                        if (!checkUser && !hasSlug) {
+                            window.location.replace('lumina-tablica.html');
+                        }
+                    }, 1500);
+
                     return;
                 }
 
@@ -5772,9 +5828,16 @@
                 role: 'Autor Rozważań & Społeczność LUMINA ✨',
                 church: 'Wspólnota Chrześcijańska',
                 denom: 'Chrześcijanin',
-                status: '',                visibility: 'public',                verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
-                verseRef: '\u2014 Psalm 28, 7 (UBG)',
-                bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce \u2014 przez codzienne rozważania Słowa Bożego.',
+                status: '',
+                visibility: 'public',
+                verified: true,
+                hasRealPhoto: true,
+                profileCompleted: true,
+                needsProfileCompletion: false,
+                isMissionAccount: false,
+                verse: '„Pan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.”',
+                verseRef: '— Psalm 28, 7 (UBG)',
+                bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce — przez codzienne rozważania Słowa Bożego.',
                 tags: ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'],
                 photos: ['avatar_marek_jakubowski.jpg', 'lumina_default_cover.jpg'],
                 posts: []
@@ -5793,9 +5856,16 @@
                 role: 'Autor Rozważań & Społeczność LUMINA ✨',
                 church: 'Wspólnota Chrześcijańska',
                 denom: 'Chrześcijanin',
-                status: '',                visibility: 'public',                verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
-                verseRef: '\u2014 Psalm 28, 7 (UBG)',
-                bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce \u2014 przez codzienne rozważania Słowa Bożego.',
+                status: '',
+                visibility: 'public',
+                verified: true,
+                hasRealPhoto: true,
+                profileCompleted: true,
+                needsProfileCompletion: false,
+                isMissionAccount: false,
+                verse: '„Pan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.”',
+                verseRef: '— Psalm 28, 7 (UBG)',
+                bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce — przez codzienne rozważania Słowa Bożego.',
                 tags: ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'],
                 photos: ['avatar_marek_jakubowski.jpg', 'lumina_default_cover.jpg'],
                 posts: []
@@ -5816,7 +5886,7 @@
                 window.location.replace('pawelmurawski');
                 return 'pawelmurawski';
             }
-            if (slug === 'marekjakubowski' || slug === 'u_marekjakubowski' || slug.includes('marekjakubowski')) {
+            if (slug === 'marekjakubowski' || slug === 'u_marekjakubowski' || slug.includes('marekjakubowski') || slug.includes('marek')) {
                 return 'marekjakubowski';
             }
             return slug;
@@ -5981,7 +6051,7 @@
             }
 
             // 3. Statyczna baza znanych profili
-            if (slug === 'marekjakubowski' || slug === 'u_marekjakubowski') {
+            if (slug === 'marekjakubowski' || slug === 'u_marekjakubowski' || slug.includes('marek')) {
                 return PROFILES_DB['marekjakubowski'] || PROFILES_DB['u_marekjakubowski'];
             }
             if (slug.includes('robert') || slug === 'u_robertukaszpio_5668' || slug === 'robertlukaszpio' || slug === 'robertukaszpio') {
@@ -5993,6 +6063,11 @@
             }
 
             // 4. Czysty stan ładowania danych z Firestore
+            if (!slug || slug === 'u_user' || slug === 'user') {
+                if (typeof window !== 'undefined' && window.location) {
+                    window.location.replace('lumina-tablica.html');
+                }
+            }
             return {
                 uid: slug,
                 slug: slug,
@@ -6530,7 +6605,7 @@
                 blockBtnLabel.textContent = isBlocked ? 'Odblokuj Profil' : 'Zablokuj Profil';
             }
 
-            const isMarek = slug === 'marekjakubowski' || slug === 'u_marekjakubowski';
+            const isMarek = slug === 'marekjakubowski' || slug === 'u_marekjakubowski' || slug.includes('marek');
             const isCCWomen = (slug.includes('ccwomen') || slug.includes('women') || slug.includes('9055'));
             const isMission = data.isMissionAccount || data.isMission || isCCWomen || (slug && ['radiocc','cctv','ccmen','ccwomen','studiodobregoslowa','osobowoscplus','lumina','bibliaaudio','jolawojcik'].includes(slug.toLowerCase())) || (slug && (slug.startsWith('u_lumina') || slug.startsWith('u_bibliaaudio'))) || (data.name && (data.name.toLowerCase().includes('christian culture') || data.name.toLowerCase().includes('portal lumina') || data.name.toLowerCase().includes('studio dobrego słowa') || data.name.toLowerCase().includes('osobowość +')));
 
@@ -10680,13 +10755,33 @@ function renderPublicChatMessages(messages) {
             });
         }
 
-window.addEventListener('lumina-auth-state', () => {
+window.addEventListener('lumina-auth-state', (e) => {
             checkAndShowCommanderTab();
             const view = document.getElementById('messengerCommanderView');
-            const u = window.LuminaDB?.getFirebaseAuthUser?.();
+            const u = window.LuminaDB?.getFirebaseAuthUser?.() || e.detail?.user;
             if (view && view.style.display !== 'none' && u && !isUserCommanderAuthorized()) {
                 try { sessionStorage.removeItem('cc_commander_biometric_unlocked'); } catch(e) {}
                 switchMessengerMainTab('public');
+            }
+            const currentSlug = getRequestedUserSlug();
+            if (!currentSlug) {
+                const p = e.detail?.profile;
+                const em = (u?.email || '').toLowerCase();
+                const sl = (p?.slug || '').toLowerCase();
+                if (em === 'marusjakubowski@gmail.com' || sl === 'marekjakubowski' || sl === 'u_marekjakubowski') {
+                    window.location.replace('lumina-profile.html?u=marekjakubowski');
+                } else if (sl === 'cezaryrgowski' || em === 'nazirczarkes@gmail.com') {
+                    window.location.replace('lumina.cezaryrgowski.html');
+                } else if (sl === 'wiolettarogowska' || em.startsWith('wioletta1240')) {
+                    window.location.replace('lumina.wiolettarogowska.html');
+                } else if (sl) {
+                    window.location.replace('lumina-profile.html?u=' + sl);
+                } else if (u && u.uid) {
+                    window.location.replace('lumina-profile.html?u=' + u.uid);
+                }
+            } else {
+                checkOwnerAuthSession();
+                if (typeof renderProfile === 'function') renderProfile();
             }
         });
 
