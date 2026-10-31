@@ -1329,6 +1329,22 @@ ${JSON.stringify(jsonLd, null, 2)}
           ${article.imageCaption ? `<figcaption>${escapeHtml(article.imageCaption)}</figcaption>` : ''}
         </figure>
 
+        ${article.youtubeVideoId ? `
+        <!-- YouTube Video Embed -->
+        <div class="ccn-video-embed-box" style="margin:2rem 0; border-radius:16px; overflow:hidden; border:1px solid rgba(187,20,46,0.3); background:#0b0f17; box-shadow:0 12px 30px -10px rgba(0,0,0,0.5);">
+          <div style="padding:0.75rem 1rem; background:linear-gradient(to right, #18181b, #09090b); border-bottom:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:space-between; font-size:0.85rem;">
+            <span style="font-weight:700; color:#f87171; display:flex; align-items:center; gap:0.5rem;">
+              <i class="fa-solid fa-play" style="color:#ef4444;"></i> Film na kanale Christian Culture TV
+            </span>
+            <a href="https://youtu.be/${escapeAttribute(article.youtubeVideoId)}" target="_blank" rel="noopener noreferrer" style="color:#d4d4d8; text-decoration:none; font-size:0.75rem; font-weight:600;">
+              Otwórz na YouTube <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;"></i>
+            </a>
+          </div>
+          <div style="position:relative; padding-top:56.25%; width:100%;">
+            <iframe src="https://www.youtube-nocookie.com/embed/${escapeAttribute(article.youtubeVideoId)}?rel=0&modestbranding=1" title="${escapeAttribute(article.title)}" style="position:absolute; inset:0; width:100%; height:100%; border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+        </div>` : ''}
+
         ${baseSlug === 'news' && article.primaryPortalUrl ? `
         <!-- Primary Portal Banner -->
         <div class="ccn-primary-portal-banner">
@@ -1444,6 +1460,16 @@ ${JSON.stringify(jsonLd, null, 2)}
         <div class="ccn-content">
           ${article.content.map(p => {
             const trimmed = String(p || '').trim();
+            if (trimmed.startsWith('[KADR:') || trimmed.startsWith('[IMG:')) {
+              const match = trimmed.match(/^\[(?:KADR|IMG):\s*([^|]+)\s*\|\s*(.*?)\]$/);
+              if (match) {
+                const [, imgUrl, imgCaption] = match;
+                return `<figure class="ccn-inline-figure" style="margin:2rem 0; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb; background:#f9fafb; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                  <img src="${escapeAttribute(imgUrl.trim())}" alt="${escapeAttribute(imgCaption.trim())}" style="width:100%; height:auto; max-height:520px; object-fit:cover; display:block;" loading="lazy">
+                  ${imgCaption ? `<figcaption style="padding:0.75rem 1rem; font-size:0.85rem; color:#4b5563; background:#f3f4f6; border-top:1px solid #e5e7eb; font-style:italic; text-align:center;">${escapeHtml(imgCaption.trim())}</figcaption>` : ''}
+                </figure>`;
+              }
+            }
             if (
               /^\d+\.\s+/.test(trimmed) ||
               trimmed === 'Podsumowanie' ||

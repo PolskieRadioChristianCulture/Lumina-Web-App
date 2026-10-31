@@ -94,6 +94,14 @@ export async function updateBroadcastTickers() {
   // 4. Zbuduj dynamiczną listę WIADOMOŚCI CCN dla data/ccn-news-ticker.json
   const tickerItems = [
     {
+      topic: "DZIEŃ REFORMACJI 2026",
+      text: "509 lat od 1517 r. Powrót do Pisma Świętego i Ewangelii łaski (Sola Scriptura, Sola Gratia) — czytaj na polskieradio.cc"
+    },
+    {
+      topic: "KINO I HISTORIA",
+      text: "Premiera filmu „Luter” na kanale Christian Culture TV — zobacz poruszający dramat historyczny na polskieradio.cc"
+    },
+    {
       topic: "NAJNOWSZY ARTYKUŁ CCN",
       text: `${latestArticle.title} — czytaj na polskieradio.cc`
     }

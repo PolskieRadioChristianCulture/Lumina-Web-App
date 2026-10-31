@@ -133,10 +133,10 @@ export async function updateSearchRecommendations() {
     // Slot 2: Aktualności CCN & Podcasty SDS & VOD
     [
       {
-        tag: 'Aktualności CCN • Na Dziś',
-        title: latestArticle.title,
-        desc: 'Biblijne uciszenie burzy w sercu według Bożego Słowa (Cezary Rogowski).',
-        url: latestArticle.url.replace('https://polskieradio.cc', ''),
+        tag: 'Dzień Reformacji 2026 • Na Dziś',
+        title: 'Reformacja nie skończyła się w 1517 roku — film „Luter”',
+        desc: '509 lat od 1517 r. Sola Scriptura, Sola Gratia i odnowa sumienia (Cezary Rogowski).',
+        url: '/news/dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski',
         icon: 'newspaper'
       },
       {

@@ -388,7 +388,134 @@ const PORTALS = [
       'Inskrypcje: Stela z Tel Dan z IX w. p.n.e. ze wzmianką o „Domu Dawida” (BYTDWD) bezsprzecznie uciszyła krytyków biblijnych',
       'Nowy Testament: Papirus P52 z ok. 125 r. n.e. dowodzi szybkiego obiegu Ewangelii Jana w całym basenie Morza Śródziemnego'
     ],
-    articles: [      {
+    articles: [
+      {
+            "id": "art-dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski",
+            "title": "Reformacja nie skończyła się w 1517 roku — wróćmy do Pisma i Ewangelii łaski",
+            "slug": "dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski",
+            "excerpt": "Dziś, 31 października 2026 roku, przypada Dzień Reformacji. Mija 509 lat od 1517 roku, gdy Marcin Luter ogłosił 95 tez w Wittenberdze. Dlaczego Sola Scriptura i Sola Gratia pozostają żywym wezwaniem do przemiany serca i sumienia? Obejrzyj film „Luter” na Christian Culture TV.",
+            "category": "manuskrypty",
+            "categoryLabel": "CCN HISTORIA • BADANIA I ŹRÓDŁA",
+            "publishedAt": "2026-10-31T08:00:00Z",
+            "dateFormatted": "31 października 2026",
+            "imageUrl": "/images/news/art-dzien-reformacji-2026.jpg",
+            "imageCaption": "31 października: 509. rocznica Reformacji. Wittenberga 1517 r. i powrót do autorytetu Słowa Bożego.",
+            "readTimeMinutes": 8,
+            "isHero": true,
+            "isPopular": true,
+            "popularRank": 1,
+            "tags": [
+                  "Dzień Reformacji",
+                  "Reformacja",
+                  "Marcin Luter",
+                  "Sola Scriptura",
+                  "Sola Gratia",
+                  "Historia Kościoła",
+                  "Cezary Rogowski",
+                  "Wittenberga",
+                  "Wormacja",
+                  "Pismo Święte",
+                  "Film Luter"
+            ],
+            "author": {
+                  "id": "cezary-rogowski",
+                  "name": "Cezary Rogowski",
+                  "role": "Założyciel Christian Culture",
+                  "status": "Żonaty",
+                  "avatarUrl": "/avatar_cezary_official.jpg",
+                  "bio": "Założyciel ekosystemu Christian Culture oraz portalu Lumina i stacji Polskie Radio CC."
+            },
+            "youtubeVideoId": "lug1BNspb8k",
+            "videoUrl": "https://youtu.be/lug1BNspb8k",
+            "scriptureReference": {
+                  "verse": "List do Rzymian 1:16–17",
+                  "text": "Nie wstydzę się bowiem ewangelii Chrystusa, ponieważ jest ona mocą Boga ku zbawieniu dla każdego, kto wierzy (...) Sprawiedliwy zaś z wiary żyć będzie.",
+                  "strongCode": "G1343"
+            },
+            "lexiconTerms": [
+                  {
+                        "term": "Sola Scriptura (2 Tm 3:16–17)",
+                        "strongCode": "G2315",
+                        "definition": "Zasada nadrzędnego autorytetu natchnionego Pisma Świętego (theopneustos — tchnięte przez Boga) jako jedynej nieomylnej normy wiary i życia chrześcijańskiego."
+                  },
+                  {
+                        "term": "Sola Gratia (Ef 2:8–9)",
+                        "strongCode": "G5485",
+                        "definition": "Usprawiedliwienie i zbawienie człowieka jako całkowicie darmowy, niezasłużony dar Bożej łaski (charis) przyjmowany przez wiarę w Chrystusa, nie z ludzkich zasług."
+                  }
+            ],
+            "biblicalCommentary": {
+                  "thesis": "Prawdziwa Reformacja to powrót do Chrystusa i uświęcenie codziennego sumienia",
+                  "explanation": "Odnowa Kościoła i osobistej wiary nie polega na podtrzymywaniu plemiennych wojen religijnych sprzed stuleci, lecz na odwadze podporządkowania własnego życia i przekonań prawdzie Pisma Świętego.",
+                  "verses": [
+                        {
+                              "ref": "Rz 1:16–17",
+                              "text": "Sprawiedliwy z wiary żyć będzie."
+                        },
+                        {
+                              "ref": "Ef 2:8–10",
+                              "text": "Łaską bowiem jesteście zbawieni przez wiarę (...) stworzeni w Chrystusie Jezusie do dobrych uczynków."
+                        },
+                        {
+                              "ref": "2 Tm 3:16–17",
+                              "text": "Całe Pismo przez Boga jest natchnione i pożyteczne do nauki, do strofowania, do poprawy, do wychowania w sprawiedliwości."
+                        },
+                        {
+                              "ref": "Ap 14:6–7",
+                              "text": "I widziałem innego anioła lecącego środkiem nieba, mającego wieczną Ewangelię, aby ją zwiastować mieszkańcom ziemi."
+                        }
+                  ]
+            },
+            "resourceLinks": [
+                  {
+                        "label": "Obejrzyj pełnometrażowy film „Luter” na Christian Culture TV (YouTube)",
+                        "url": "https://youtu.be/lug1BNspb8k"
+                  },
+                  {
+                        "label": "Interlinearna MojaBiblia CC — Badaj teksty oryginalne ze Strongiem",
+                        "url": "https://polskieradio.cc/mojabiblia"
+                  },
+                  {
+                        "label": "Akademia Biblijna — Kurs Codzienny „Z Biblią za Pan Brat”",
+                        "url": "https://polskieradio.cc/akademia/kurscodzienny"
+                  }
+            ],
+            "content": [
+                  "Dziś, 31 października 2026 roku, przypada Dzień Reformacji. Mija 509 lat od 1517 roku, gdy Marcin Luter ogłosił 95 tez dotyczących odpustów. Dzień ten zwyczajowo upamiętnia początek ruchu, który zmienił oblicze zachodniego chrześcijaństwa. Czy jest to jednak tylko rocznica wydarzenia sprzed pięciu stuleci? A może również okazja, by postawić sobie pytanie, czy moja własna wiara potrzebuje odnowy?",
+                  "Wydaje mi się, że prawdziwe dziedzictwo Reformacji nie polega na nieustannym sporze o to, kto zwyciężył w XVI wieku. Polega na odwadze sprawdzania własnych przekonań w świetle Pisma i powracania do Jezusa Chrystusa. Nie potrzebujemy kolejnego święta religijnego pozbawionego przemiany serca. Potrzebujemy prawdy, która dotyka naszego codziennego postępowania.",
+                  "[KADR: /images/news/luter-film-plakat-pionowy.jpg | Film „Luter” (2003, reż. Eric Till) z Josephem Fiennesem w roli Marcina Lutra — opowieść o człowieku, który w poszukiwaniu pokoju z Bogiem zmienił bieg dziejów Europy.]",
+                  "1. Co naprawdę wydarzyło się w Wittenberdze?",
+                  "Luter był augustiańskim zakonnikiem i profesorem teologii. Jego 95 tez otworzyło dyskusję o odpustach, pokucie i nadużyciach religijnych. Początkowo nie były gotowym programem stworzenia osobnego Kościoła. Dzięki drukowi kontrowersja szybko rozprzestrzeniła się daleko poza Wittenbergę.",
+                  "Tradycyjna scena przybicia tez do drzwi kościoła stała się symbolem; szczegóły tego gestu pozostają przedmiotem historycznej dyskusji. Samo rozpowszechnienie tez i rosnący spór są dobrze poświadczone. Reformacja przyniosła szerszy dostęp do Biblii, nowe formy nauczania oraz istotną debatę o zbawieniu. Jej historia obejmowała także bolesne podziały i przemoc. Nie służy prawdzie przemilczanie ani osiągnięć, ani błędów ludzi po którejkolwiek stronie.",
+                  "[KADR: /images/news/luter-film-kadr-staupitz-klasztor.jpg | Zmagania młodego mnicha w murach klasztoru w Erfurcie: Johann von Staupitz kieruje uwagę udręczonego Lutra z własnej niedoskonałości ku miłości i ofierze Jezusa Chrystusa.]",
+                  "2. Sola Scriptura — czy Słowo naprawdę ma ostatnie słowo?",
+                  "Reformacyjna zasada Sola Scriptura nie oznacza lekceważenia historii czy mądrości innych chrześcijan. Oznacza, że Pismo pozostaje najwyższym autorytetem dla nauki wiary. Apostoł Paweł wskazuje na jego rolę w nauczaniu, napominaniu i wychowaniu w sprawiedliwości (2 Tm 3,16–17), a Berejczycy sprawdzają głoszone im nauczanie przez badanie Pism (Dz 17,11).",
+                  "Zadaję sobie trudne pytanie: czy otwieram Biblię po to, aby Bóg mógł skorygować moje poglądy, czy szukam jedynie wersetów, które je potwierdzą? Reformacja jest żywa tam, gdzie człowiek ma odwagę powiedzieć: „Panie, jeśli się mylę, naucz mnie Twojej prawdy”.",
+                  "[KADR: /images/news/luter-film-kadr-wormacja-1521.jpg | Słynna obrona na Sejmie w Wormacji w 1521 roku przed cesarzem Karolem V: „Moje sumienie jest pojmane w Słowie Bożym. Odwołać niczego nie mogę i nie chcę. Tu stoję, inaczej nie mogę, niech mi Bóg dopomoże. Amen”.]",
+                  "3. Solus Christus i Sola Gratia — centrum, którego nie wolno zgubić",
+                  "Lutrowi towarzyszyło pytanie, jak grzeszny człowiek może zostać uznany za sprawiedliwego przed Bogiem. Rz 1,16–17 ukazuje Ewangelię jako moc Bożą ku zbawieniu, a Rz 3,21–26 przedstawia usprawiedliwienie przez odkupienie w Jezusie Chrystusie.",
+                  "Ef 2,8–10 daje nam niezwykle ważną kolejność: zostajemy zbawieni łaską przez wiarę, nie na podstawie naszych uczynków; zostajemy jednak stworzeni w Chrystusie do dobrych czynów. Łaska nie jest więc nagrodą za religijną doskonałość. Jest niezasłużonym darem, który prowadzi do przemienionego życia.",
+                  "Nie uratują mnie pieniądze, dobre uczynki rozumiane jako zapłata za zbawienie ani opinia innych o mojej pobożności. Jedynym Pośrednikiem jest Chrystus (1 Tm 2,5). Tylko Jemu należy się chwała. A moja wiara powinna wydawać owoce uczciwości, miłości i odpowiedzialności.",
+                  "[KADR: /images/news/luter-film-kadr-fryderyk-madry.jpg | Książę saski Fryderyk Mądry (w filmie wybitna rola Sir Petera Ustinova) — władca, który chronił wolność myśli i dał schronienie Lutrowi na zamku w Wartburgu, umożliwiając przetłumaczenie Nowego Testamentu na język ojczysty.]",
+                  "4. Od reformy instytucji do reformy mojego sumienia",
+                  "Znacznie łatwiej oceniać pomyłki ludzi sprzed pięciuset lat niż własne. Jezus przypomina jednak, że można zachować religijną formę i zaniedbywać sprawiedliwość, miłosierdzie i wierność (Mt 23,23–28).",
+                  "Jeśli mówię o Biblii, a oszukuję w interesach, potrzebuję reformy. Jeśli głoszę miłość, a upokarzam bliskich, potrzebuję reformy. Jeśli wzywam innych do pokuty, ale sam nie chcę przyznać się do winy, moje hasła są puste.",
+                  "Prawdziwa odnowa oznacza przyznanie prawdy, zaprzestanie krzywdy i podjęcie odpowiedzialności. Nikt nie zostaje zbawiony przez własną moralną sprawność, ale łaska Chrystusa nigdy nie jest usprawiedliwieniem hipokryzji (Tt 2,11–14).",
+                  "[KADR: /images/news/luter-film-kadr-rebel-genius.jpg | Prawdziwe przesłanie Reformacji to nie spór polityczny, lecz osobista przemiana życia w blasku Bożej łaski.]",
+                  "5. Wieczna Ewangelia dla współczesnego świata",
+                  "Ap 14,6–7 przedstawia wieczną Ewangelię głoszoną wszystkim narodom, językom i ludom. W jej centrum jest wezwanie do oddawania czci Stwórcy. To ważne przypomnienie, że reforma wiary nie kończy się na nowych strukturach organizacyjnych i polemikach. Prowadzi do żywej relacji z Bogiem.",
+                  "Nie trzeba dopasowywać każdej bieżącej wiadomości do proroctwa, aby zachować biblijną czujność. Chrześcijanin ma szukać prawdy i żyć nią z miłością oraz nadzieją. Świat potrzebuje przede wszystkim Ewangelii Jezusa Chrystusa, a nie kolejnego religijnego konfliktu prowadzonego dla prestiżu.",
+                  "6. Obejrzyj film „Luter” na Christian Culture TV",
+                  "Z okazji Dnia Reformacji zapraszam Cię do obejrzenia filmu „Luter – człowiek, który zmienił oblicze Kościoła”, udostępnionego z polskim lektorem na kanale Christian Culture TV.",
+                  "Film „Luther” z 2003 roku, wyreżyserowany przez Erica Tilla, przedstawia duchowe zmagania reformatora i wydarzenia prowadzące do Reformacji. W roli tytułowej występuje Joseph Fiennes. Film jest dramatem historycznym, a nie dokumentem, dlatego warto traktować go jako zachętę do dalszego poznawania historii i Pisma Świętego.",
+                  "Zobacz cały film z polskim lektorem bezpośrednio pod adresem: https://youtu.be/lug1BNspb8k lub w powyższym oknie odtwarzacza.",
+                  "Zaproś rodzinę lub znajomych, a po seansie przeczytajcie razem Rz 1,16–17 oraz Ef 2,8–10. Zastanówcie się: na czym opieramy pewność zbawienia? Co oznacza wolność w Chrystusie? Czy moja religijność pozostaje otwarta na korektę Słowa Bożego?",
+                  "7. Reformacja zaczyna się dziś",
+                  "Nie chcę, żeby 31 października był tylko datą w kalendarzu. Chciałbym, aby stał się dniem osobistej decyzji. Wróćmy do Biblii. Nie udawajmy bezbłędnych. Przyjmijmy zbawienie z łaski, a następnie uczmy się żyć w sposób godny Ewangelii.",
+                  "Modlitwa na Dzień Reformacji: Panie Jezu, daj nam pokorę wobec Twojego Słowa, odwagę do odrzucenia obłudy, miłość do ludzi o innych przekonaniach i wdzięczność za Twoją łaskę. Niech odnowa zacznie się we mnie. Amen.",
+                  "Podsumowanie Redakcyjne CCN News: Dzień Reformacji 2026 to zaproszenie do osobistego rachunku sumienia i oparcia życia na niewzruszonym fundamencie Pisma Świętego. Wszystkie publikacje, słuchowiska i materiały Christian Culture są w 100% bezpłatne. Pełny film z polskim lektorem dostępny jest na Christian Culture TV (YouTube: lug1BNspb8k)."
+            ]
+      },      {
         id: 'art-co-dalej-z-ta-niedziela-szabat-bacchiocchi',
         title: "Co dalej z tą niedzielą? Szabat, pierwszy pełny dzień człowieka i pytanie o spotkanie ze Stwórcą",
         slug: 'co-dalej-z-ta-niedziela-szabat-bacchiocchi',
@@ -1142,6 +1269,133 @@ const PORTALS = [
       'Granice Władzy: Rzymian 13 a Dzieje Apostolskie 5:29 – państwo nie ma prawa nakazywać tego, czego zakazuje Bóg'
     ],
     articles: [
+      {
+            "id": "art-dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski",
+            "title": "Reformacja nie skończyła się w 1517 roku — wróćmy do Pisma i Ewangelii łaski",
+            "slug": "dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski",
+            "excerpt": "Dziś, 31 października 2026 roku, przypada Dzień Reformacji. Mija 509 lat od 1517 roku, gdy Marcin Luter ogłosił 95 tez w Wittenberdze. Dlaczego Sola Scriptura i Sola Gratia pozostają żywym wezwaniem do przemiany serca i sumienia? Obejrzyj film „Luter” na Christian Culture TV.",
+            "category": "prawonaturalne",
+            "categoryLabel": "CCN PRAWO • WOLNOŚĆ SUMIENIA I ŹRÓDŁA PRAWA",
+            "publishedAt": "2026-10-31T08:00:00Z",
+            "dateFormatted": "31 października 2026",
+            "imageUrl": "/images/news/art-dzien-reformacji-2026.jpg",
+            "imageCaption": "31 października: 509. rocznica Reformacji. Wittenberga 1517 r. i powrót do autorytetu Słowa Bożego.",
+            "readTimeMinutes": 8,
+            "isHero": true,
+            "isPopular": true,
+            "popularRank": 1,
+            "tags": [
+                  "Dzień Reformacji",
+                  "Reformacja",
+                  "Marcin Luter",
+                  "Sola Scriptura",
+                  "Sola Gratia",
+                  "Historia Kościoła",
+                  "Cezary Rogowski",
+                  "Wittenberga",
+                  "Wormacja",
+                  "Pismo Święte",
+                  "Film Luter"
+            ],
+            "author": {
+                  "id": "cezary-rogowski",
+                  "name": "Cezary Rogowski",
+                  "role": "Założyciel Christian Culture",
+                  "status": "Żonaty",
+                  "avatarUrl": "/avatar_cezary_official.jpg",
+                  "bio": "Założyciel ekosystemu Christian Culture oraz portalu Lumina i stacji Polskie Radio CC."
+            },
+            "youtubeVideoId": "lug1BNspb8k",
+            "videoUrl": "https://youtu.be/lug1BNspb8k",
+            "scriptureReference": {
+                  "verse": "List do Rzymian 1:16–17",
+                  "text": "Nie wstydzę się bowiem ewangelii Chrystusa, ponieważ jest ona mocą Boga ku zbawieniu dla każdego, kto wierzy (...) Sprawiedliwy zaś z wiary żyć będzie.",
+                  "strongCode": "G1343"
+            },
+            "lexiconTerms": [
+                  {
+                        "term": "Sola Scriptura (2 Tm 3:16–17)",
+                        "strongCode": "G2315",
+                        "definition": "Zasada nadrzędnego autorytetu natchnionego Pisma Świętego (theopneustos — tchnięte przez Boga) jako jedynej nieomylnej normy wiary i życia chrześcijańskiego."
+                  },
+                  {
+                        "term": "Sola Gratia (Ef 2:8–9)",
+                        "strongCode": "G5485",
+                        "definition": "Usprawiedliwienie i zbawienie człowieka jako całkowicie darmowy, niezasłużony dar Bożej łaski (charis) przyjmowany przez wiarę w Chrystusa, nie z ludzkich zasług."
+                  }
+            ],
+            "biblicalCommentary": {
+                  "thesis": "Prawdziwa Reformacja to powrót do Chrystusa i uświęcenie codziennego sumienia",
+                  "explanation": "Odnowa Kościoła i osobistej wiary nie polega na podtrzymywaniu plemiennych wojen religijnych sprzed stuleci, lecz na odwadze podporządkowania własnego życia i przekonań prawdzie Pisma Świętego.",
+                  "verses": [
+                        {
+                              "ref": "Rz 1:16–17",
+                              "text": "Sprawiedliwy z wiary żyć będzie."
+                        },
+                        {
+                              "ref": "Ef 2:8–10",
+                              "text": "Łaską bowiem jesteście zbawieni przez wiarę (...) stworzeni w Chrystusie Jezusie do dobrych uczynków."
+                        },
+                        {
+                              "ref": "2 Tm 3:16–17",
+                              "text": "Całe Pismo przez Boga jest natchnione i pożyteczne do nauki, do strofowania, do poprawy, do wychowania w sprawiedliwości."
+                        },
+                        {
+                              "ref": "Ap 14:6–7",
+                              "text": "I widziałem innego anioła lecącego środkiem nieba, mającego wieczną Ewangelię, aby ją zwiastować mieszkańcom ziemi."
+                        }
+                  ]
+            },
+            "resourceLinks": [
+                  {
+                        "label": "Obejrzyj pełnometrażowy film „Luter” na Christian Culture TV (YouTube)",
+                        "url": "https://youtu.be/lug1BNspb8k"
+                  },
+                  {
+                        "label": "Interlinearna MojaBiblia CC — Badaj teksty oryginalne ze Strongiem",
+                        "url": "https://polskieradio.cc/mojabiblia"
+                  },
+                  {
+                        "label": "Akademia Biblijna — Kurs Codzienny „Z Biblią za Pan Brat”",
+                        "url": "https://polskieradio.cc/akademia/kurscodzienny"
+                  }
+            ],
+            "content": [
+                  "Dziś, 31 października 2026 roku, przypada Dzień Reformacji. Mija 509 lat od 1517 roku, gdy Marcin Luter ogłosił 95 tez dotyczących odpustów. Dzień ten zwyczajowo upamiętnia początek ruchu, który zmienił oblicze zachodniego chrześcijaństwa. Czy jest to jednak tylko rocznica wydarzenia sprzed pięciu stuleci? A może również okazja, by postawić sobie pytanie, czy moja własna wiara potrzebuje odnowy?",
+                  "Wydaje mi się, że prawdziwe dziedzictwo Reformacji nie polega na nieustannym sporze o to, kto zwyciężył w XVI wieku. Polega na odwadze sprawdzania własnych przekonań w świetle Pisma i powracania do Jezusa Chrystusa. Nie potrzebujemy kolejnego święta religijnego pozbawionego przemiany serca. Potrzebujemy prawdy, która dotyka naszego codziennego postępowania.",
+                  "[KADR: /images/news/luter-film-plakat-pionowy.jpg | Film „Luter” (2003, reż. Eric Till) z Josephem Fiennesem w roli Marcina Lutra — opowieść o człowieku, który w poszukiwaniu pokoju z Bogiem zmienił bieg dziejów Europy.]",
+                  "1. Co naprawdę wydarzyło się w Wittenberdze?",
+                  "Luter był augustiańskim zakonnikiem i profesorem teologii. Jego 95 tez otworzyło dyskusję o odpustach, pokucie i nadużyciach religijnych. Początkowo nie były gotowym programem stworzenia osobnego Kościoła. Dzięki drukowi kontrowersja szybko rozprzestrzeniła się daleko poza Wittenbergę.",
+                  "Tradycyjna scena przybicia tez do drzwi kościoła stała się symbolem; szczegóły tego gestu pozostają przedmiotem historycznej dyskusji. Samo rozpowszechnienie tez i rosnący spór są dobrze poświadczone. Reformacja przyniosła szerszy dostęp do Biblii, nowe formy nauczania oraz istotną debatę o zbawieniu. Jej historia obejmowała także bolesne podziały i przemoc. Nie służy prawdzie przemilczanie ani osiągnięć, ani błędów ludzi po którejkolwiek stronie.",
+                  "[KADR: /images/news/luter-film-kadr-staupitz-klasztor.jpg | Zmagania młodego mnicha w murach klasztoru w Erfurcie: Johann von Staupitz kieruje uwagę udręczonego Lutra z własnej niedoskonałości ku miłości i ofierze Jezusa Chrystusa.]",
+                  "2. Sola Scriptura — czy Słowo naprawdę ma ostatnie słowo?",
+                  "Reformacyjna zasada Sola Scriptura nie oznacza lekceważenia historii czy mądrości innych chrześcijan. Oznacza, że Pismo pozostaje najwyższym autorytetem dla nauki wiary. Apostoł Paweł wskazuje na jego rolę w nauczaniu, napominaniu i wychowaniu w sprawiedliwości (2 Tm 3,16–17), a Berejczycy sprawdzają głoszone im nauczanie przez badanie Pism (Dz 17,11).",
+                  "Zadaję sobie trudne pytanie: czy otwieram Biblię po to, aby Bóg mógł skorygować moje poglądy, czy szukam jedynie wersetów, które je potwierdzą? Reformacja jest żywa tam, gdzie człowiek ma odwagę powiedzieć: „Panie, jeśli się mylę, naucz mnie Twojej prawdy”.",
+                  "[KADR: /images/news/luter-film-kadr-wormacja-1521.jpg | Słynna obrona na Sejmie w Wormacji w 1521 roku przed cesarzem Karolem V: „Moje sumienie jest pojmane w Słowie Bożym. Odwołać niczego nie mogę i nie chcę. Tu stoję, inaczej nie mogę, niech mi Bóg dopomoże. Amen”.]",
+                  "3. Solus Christus i Sola Gratia — centrum, którego nie wolno zgubić",
+                  "Lutrowi towarzyszyło pytanie, jak grzeszny człowiek może zostać uznany za sprawiedliwego przed Bogiem. Rz 1,16–17 ukazuje Ewangelię jako moc Bożą ku zbawieniu, a Rz 3,21–26 przedstawia usprawiedliwienie przez odkupienie w Jezusie Chrystusie.",
+                  "Ef 2,8–10 daje nam niezwykle ważną kolejność: zostajemy zbawieni łaską przez wiarę, nie na podstawie naszych uczynków; zostajemy jednak stworzeni w Chrystusie do dobrych czynów. Łaska nie jest więc nagrodą za religijną doskonałość. Jest niezasłużonym darem, który prowadzi do przemienionego życia.",
+                  "Nie uratują mnie pieniądze, dobre uczynki rozumiane jako zapłata za zbawienie ani opinia innych o mojej pobożności. Jedynym Pośrednikiem jest Chrystus (1 Tm 2,5). Tylko Jemu należy się chwała. A moja wiara powinna wydawać owoce uczciwości, miłości i odpowiedzialności.",
+                  "[KADR: /images/news/luter-film-kadr-fryderyk-madry.jpg | Książę saski Fryderyk Mądry (w filmie wybitna rola Sir Petera Ustinova) — władca, który chronił wolność myśli i dał schronienie Lutrowi na zamku w Wartburgu, umożliwiając przetłumaczenie Nowego Testamentu na język ojczysty.]",
+                  "4. Od reformy instytucji do reformy mojego sumienia",
+                  "Znacznie łatwiej oceniać pomyłki ludzi sprzed pięciuset lat niż własne. Jezus przypomina jednak, że można zachować religijną formę i zaniedbywać sprawiedliwość, miłosierdzie i wierność (Mt 23,23–28).",
+                  "Jeśli mówię o Biblii, a oszukuję w interesach, potrzebuję reformy. Jeśli głoszę miłość, a upokarzam bliskich, potrzebuję reformy. Jeśli wzywam innych do pokuty, ale sam nie chcę przyznać się do winy, moje hasła są puste.",
+                  "Prawdziwa odnowa oznacza przyznanie prawdy, zaprzestanie krzywdy i podjęcie odpowiedzialności. Nikt nie zostaje zbawiony przez własną moralną sprawność, ale łaska Chrystusa nigdy nie jest usprawiedliwieniem hipokryzji (Tt 2,11–14).",
+                  "[KADR: /images/news/luter-film-kadr-rebel-genius.jpg | Prawdziwe przesłanie Reformacji to nie spór polityczny, lecz osobista przemiana życia w blasku Bożej łaski.]",
+                  "5. Wieczna Ewangelia dla współczesnego świata",
+                  "Ap 14,6–7 przedstawia wieczną Ewangelię głoszoną wszystkim narodom, językom i ludom. W jej centrum jest wezwanie do oddawania czci Stwórcy. To ważne przypomnienie, że reforma wiary nie kończy się na nowych strukturach organizacyjnych i polemikach. Prowadzi do żywej relacji z Bogiem.",
+                  "Nie trzeba dopasowywać każdej bieżącej wiadomości do proroctwa, aby zachować biblijną czujność. Chrześcijanin ma szukać prawdy i żyć nią z miłością oraz nadzieją. Świat potrzebuje przede wszystkim Ewangelii Jezusa Chrystusa, a nie kolejnego religijnego konfliktu prowadzonego dla prestiżu.",
+                  "6. Obejrzyj film „Luter” na Christian Culture TV",
+                  "Z okazji Dnia Reformacji zapraszam Cię do obejrzenia filmu „Luter – człowiek, który zmienił oblicze Kościoła”, udostępnionego z polskim lektorem na kanale Christian Culture TV.",
+                  "Film „Luther” z 2003 roku, wyreżyserowany przez Erica Tilla, przedstawia duchowe zmagania reformatora i wydarzenia prowadzące do Reformacji. W roli tytułowej występuje Joseph Fiennes. Film jest dramatem historycznym, a nie dokumentem, dlatego warto traktować go jako zachętę do dalszego poznawania historii i Pisma Świętego.",
+                  "Zobacz cały film z polskim lektorem bezpośrednio pod adresem: https://youtu.be/lug1BNspb8k lub w powyższym oknie odtwarzacza.",
+                  "Zaproś rodzinę lub znajomych, a po seansie przeczytajcie razem Rz 1,16–17 oraz Ef 2,8–10. Zastanówcie się: na czym opieramy pewność zbawienia? Co oznacza wolność w Chrystusie? Czy moja religijność pozostaje otwarta na korektę Słowa Bożego?",
+                  "7. Reformacja zaczyna się dziś",
+                  "Nie chcę, żeby 31 października był tylko datą w kalendarzu. Chciałbym, aby stał się dniem osobistej decyzji. Wróćmy do Biblii. Nie udawajmy bezbłędnych. Przyjmijmy zbawienie z łaski, a następnie uczmy się żyć w sposób godny Ewangelii.",
+                  "Modlitwa na Dzień Reformacji: Panie Jezu, daj nam pokorę wobec Twojego Słowa, odwagę do odrzucenia obłudy, miłość do ludzi o innych przekonaniach i wdzięczność za Twoją łaskę. Niech odnowa zacznie się we mnie. Amen.",
+                  "Podsumowanie Redakcyjne CCN News: Dzień Reformacji 2026 to zaproszenie do osobistego rachunku sumienia i oparcia życia na niewzruszonym fundamencie Pisma Świętego. Wszystkie publikacje, słuchowiska i materiały Christian Culture są w 100% bezpłatne. Pełny film z polskim lektorem dostępny jest na Christian Culture TV (YouTube: lug1BNspb8k)."
+            ]
+      },
       {
         "id": "art-dekalog-dziesiec-przykazan-bozych-wujek-bjw",
         "title": "Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (BJW)",
@@ -1909,6 +2163,133 @@ const PORTALS = [
       'Czytelnictwo z Wartościami: Buduj mądrość serca na fundamencie natchnionego Słowa Bożego'
     ],
     articles: [
+      {
+            "id": "art-dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski",
+            "title": "Reformacja nie skończyła się w 1517 roku — wróćmy do Pisma i Ewangelii łaski",
+            "slug": "dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski",
+            "excerpt": "Dziś, 31 października 2026 roku, przypada Dzień Reformacji. Mija 509 lat od 1517 roku, gdy Marcin Luter ogłosił 95 tez w Wittenberdze. Dlaczego Sola Scriptura i Sola Gratia pozostają żywym wezwaniem do przemiany serca i sumienia? Obejrzyj film „Luter” na Christian Culture TV.",
+            "category": "klasyka",
+            "categoryLabel": "CCN BIBLIOTEKA • KLASYKA WIARY",
+            "publishedAt": "2026-10-31T08:00:00Z",
+            "dateFormatted": "31 października 2026",
+            "imageUrl": "/images/news/art-dzien-reformacji-2026.jpg",
+            "imageCaption": "31 października: 509. rocznica Reformacji. Wittenberga 1517 r. i powrót do autorytetu Słowa Bożego.",
+            "readTimeMinutes": 8,
+            "isHero": true,
+            "isPopular": true,
+            "popularRank": 1,
+            "tags": [
+                  "Dzień Reformacji",
+                  "Reformacja",
+                  "Marcin Luter",
+                  "Sola Scriptura",
+                  "Sola Gratia",
+                  "Historia Kościoła",
+                  "Cezary Rogowski",
+                  "Wittenberga",
+                  "Wormacja",
+                  "Pismo Święte",
+                  "Film Luter"
+            ],
+            "author": {
+                  "id": "cezary-rogowski",
+                  "name": "Cezary Rogowski",
+                  "role": "Założyciel Christian Culture",
+                  "status": "Żonaty",
+                  "avatarUrl": "/avatar_cezary_official.jpg",
+                  "bio": "Założyciel ekosystemu Christian Culture oraz portalu Lumina i stacji Polskie Radio CC."
+            },
+            "youtubeVideoId": "lug1BNspb8k",
+            "videoUrl": "https://youtu.be/lug1BNspb8k",
+            "scriptureReference": {
+                  "verse": "List do Rzymian 1:16–17",
+                  "text": "Nie wstydzę się bowiem ewangelii Chrystusa, ponieważ jest ona mocą Boga ku zbawieniu dla każdego, kto wierzy (...) Sprawiedliwy zaś z wiary żyć będzie.",
+                  "strongCode": "G1343"
+            },
+            "lexiconTerms": [
+                  {
+                        "term": "Sola Scriptura (2 Tm 3:16–17)",
+                        "strongCode": "G2315",
+                        "definition": "Zasada nadrzędnego autorytetu natchnionego Pisma Świętego (theopneustos — tchnięte przez Boga) jako jedynej nieomylnej normy wiary i życia chrześcijańskiego."
+                  },
+                  {
+                        "term": "Sola Gratia (Ef 2:8–9)",
+                        "strongCode": "G5485",
+                        "definition": "Usprawiedliwienie i zbawienie człowieka jako całkowicie darmowy, niezasłużony dar Bożej łaski (charis) przyjmowany przez wiarę w Chrystusa, nie z ludzkich zasług."
+                  }
+            ],
+            "biblicalCommentary": {
+                  "thesis": "Prawdziwa Reformacja to powrót do Chrystusa i uświęcenie codziennego sumienia",
+                  "explanation": "Odnowa Kościoła i osobistej wiary nie polega na podtrzymywaniu plemiennych wojen religijnych sprzed stuleci, lecz na odwadze podporządkowania własnego życia i przekonań prawdzie Pisma Świętego.",
+                  "verses": [
+                        {
+                              "ref": "Rz 1:16–17",
+                              "text": "Sprawiedliwy z wiary żyć będzie."
+                        },
+                        {
+                              "ref": "Ef 2:8–10",
+                              "text": "Łaską bowiem jesteście zbawieni przez wiarę (...) stworzeni w Chrystusie Jezusie do dobrych uczynków."
+                        },
+                        {
+                              "ref": "2 Tm 3:16–17",
+                              "text": "Całe Pismo przez Boga jest natchnione i pożyteczne do nauki, do strofowania, do poprawy, do wychowania w sprawiedliwości."
+                        },
+                        {
+                              "ref": "Ap 14:6–7",
+                              "text": "I widziałem innego anioła lecącego środkiem nieba, mającego wieczną Ewangelię, aby ją zwiastować mieszkańcom ziemi."
+                        }
+                  ]
+            },
+            "resourceLinks": [
+                  {
+                        "label": "Obejrzyj pełnometrażowy film „Luter” na Christian Culture TV (YouTube)",
+                        "url": "https://youtu.be/lug1BNspb8k"
+                  },
+                  {
+                        "label": "Interlinearna MojaBiblia CC — Badaj teksty oryginalne ze Strongiem",
+                        "url": "https://polskieradio.cc/mojabiblia"
+                  },
+                  {
+                        "label": "Akademia Biblijna — Kurs Codzienny „Z Biblią za Pan Brat”",
+                        "url": "https://polskieradio.cc/akademia/kurscodzienny"
+                  }
+            ],
+            "content": [
+                  "Dziś, 31 października 2026 roku, przypada Dzień Reformacji. Mija 509 lat od 1517 roku, gdy Marcin Luter ogłosił 95 tez dotyczących odpustów. Dzień ten zwyczajowo upamiętnia początek ruchu, który zmienił oblicze zachodniego chrześcijaństwa. Czy jest to jednak tylko rocznica wydarzenia sprzed pięciu stuleci? A może również okazja, by postawić sobie pytanie, czy moja własna wiara potrzebuje odnowy?",
+                  "Wydaje mi się, że prawdziwe dziedzictwo Reformacji nie polega na nieustannym sporze o to, kto zwyciężył w XVI wieku. Polega na odwadze sprawdzania własnych przekonań w świetle Pisma i powracania do Jezusa Chrystusa. Nie potrzebujemy kolejnego święta religijnego pozbawionego przemiany serca. Potrzebujemy prawdy, która dotyka naszego codziennego postępowania.",
+                  "[KADR: /images/news/luter-film-plakat-pionowy.jpg | Film „Luter” (2003, reż. Eric Till) z Josephem Fiennesem w roli Marcina Lutra — opowieść o człowieku, który w poszukiwaniu pokoju z Bogiem zmienił bieg dziejów Europy.]",
+                  "1. Co naprawdę wydarzyło się w Wittenberdze?",
+                  "Luter był augustiańskim zakonnikiem i profesorem teologii. Jego 95 tez otworzyło dyskusję o odpustach, pokucie i nadużyciach religijnych. Początkowo nie były gotowym programem stworzenia osobnego Kościoła. Dzięki drukowi kontrowersja szybko rozprzestrzeniła się daleko poza Wittenbergę.",
+                  "Tradycyjna scena przybicia tez do drzwi kościoła stała się symbolem; szczegóły tego gestu pozostają przedmiotem historycznej dyskusji. Samo rozpowszechnienie tez i rosnący spór są dobrze poświadczone. Reformacja przyniosła szerszy dostęp do Biblii, nowe formy nauczania oraz istotną debatę o zbawieniu. Jej historia obejmowała także bolesne podziały i przemoc. Nie służy prawdzie przemilczanie ani osiągnięć, ani błędów ludzi po którejkolwiek stronie.",
+                  "[KADR: /images/news/luter-film-kadr-staupitz-klasztor.jpg | Zmagania młodego mnicha w murach klasztoru w Erfurcie: Johann von Staupitz kieruje uwagę udręczonego Lutra z własnej niedoskonałości ku miłości i ofierze Jezusa Chrystusa.]",
+                  "2. Sola Scriptura — czy Słowo naprawdę ma ostatnie słowo?",
+                  "Reformacyjna zasada Sola Scriptura nie oznacza lekceważenia historii czy mądrości innych chrześcijan. Oznacza, że Pismo pozostaje najwyższym autorytetem dla nauki wiary. Apostoł Paweł wskazuje na jego rolę w nauczaniu, napominaniu i wychowaniu w sprawiedliwości (2 Tm 3,16–17), a Berejczycy sprawdzają głoszone im nauczanie przez badanie Pism (Dz 17,11).",
+                  "Zadaję sobie trudne pytanie: czy otwieram Biblię po to, aby Bóg mógł skorygować moje poglądy, czy szukam jedynie wersetów, które je potwierdzą? Reformacja jest żywa tam, gdzie człowiek ma odwagę powiedzieć: „Panie, jeśli się mylę, naucz mnie Twojej prawdy”.",
+                  "[KADR: /images/news/luter-film-kadr-wormacja-1521.jpg | Słynna obrona na Sejmie w Wormacji w 1521 roku przed cesarzem Karolem V: „Moje sumienie jest pojmane w Słowie Bożym. Odwołać niczego nie mogę i nie chcę. Tu stoję, inaczej nie mogę, niech mi Bóg dopomoże. Amen”.]",
+                  "3. Solus Christus i Sola Gratia — centrum, którego nie wolno zgubić",
+                  "Lutrowi towarzyszyło pytanie, jak grzeszny człowiek może zostać uznany za sprawiedliwego przed Bogiem. Rz 1,16–17 ukazuje Ewangelię jako moc Bożą ku zbawieniu, a Rz 3,21–26 przedstawia usprawiedliwienie przez odkupienie w Jezusie Chrystusie.",
+                  "Ef 2,8–10 daje nam niezwykle ważną kolejność: zostajemy zbawieni łaską przez wiarę, nie na podstawie naszych uczynków; zostajemy jednak stworzeni w Chrystusie do dobrych czynów. Łaska nie jest więc nagrodą za religijną doskonałość. Jest niezasłużonym darem, który prowadzi do przemienionego życia.",
+                  "Nie uratują mnie pieniądze, dobre uczynki rozumiane jako zapłata za zbawienie ani opinia innych o mojej pobożności. Jedynym Pośrednikiem jest Chrystus (1 Tm 2,5). Tylko Jemu należy się chwała. A moja wiara powinna wydawać owoce uczciwości, miłości i odpowiedzialności.",
+                  "[KADR: /images/news/luter-film-kadr-fryderyk-madry.jpg | Książę saski Fryderyk Mądry (w filmie wybitna rola Sir Petera Ustinova) — władca, który chronił wolność myśli i dał schronienie Lutrowi na zamku w Wartburgu, umożliwiając przetłumaczenie Nowego Testamentu na język ojczysty.]",
+                  "4. Od reformy instytucji do reformy mojego sumienia",
+                  "Znacznie łatwiej oceniać pomyłki ludzi sprzed pięciuset lat niż własne. Jezus przypomina jednak, że można zachować religijną formę i zaniedbywać sprawiedliwość, miłosierdzie i wierność (Mt 23,23–28).",
+                  "Jeśli mówię o Biblii, a oszukuję w interesach, potrzebuję reformy. Jeśli głoszę miłość, a upokarzam bliskich, potrzebuję reformy. Jeśli wzywam innych do pokuty, ale sam nie chcę przyznać się do winy, moje hasła są puste.",
+                  "Prawdziwa odnowa oznacza przyznanie prawdy, zaprzestanie krzywdy i podjęcie odpowiedzialności. Nikt nie zostaje zbawiony przez własną moralną sprawność, ale łaska Chrystusa nigdy nie jest usprawiedliwieniem hipokryzji (Tt 2,11–14).",
+                  "[KADR: /images/news/luter-film-kadr-rebel-genius.jpg | Prawdziwe przesłanie Reformacji to nie spór polityczny, lecz osobista przemiana życia w blasku Bożej łaski.]",
+                  "5. Wieczna Ewangelia dla współczesnego świata",
+                  "Ap 14,6–7 przedstawia wieczną Ewangelię głoszoną wszystkim narodom, językom i ludom. W jej centrum jest wezwanie do oddawania czci Stwórcy. To ważne przypomnienie, że reforma wiary nie kończy się na nowych strukturach organizacyjnych i polemikach. Prowadzi do żywej relacji z Bogiem.",
+                  "Nie trzeba dopasowywać każdej bieżącej wiadomości do proroctwa, aby zachować biblijną czujność. Chrześcijanin ma szukać prawdy i żyć nią z miłością oraz nadzieją. Świat potrzebuje przede wszystkim Ewangelii Jezusa Chrystusa, a nie kolejnego religijnego konfliktu prowadzonego dla prestiżu.",
+                  "6. Obejrzyj film „Luter” na Christian Culture TV",
+                  "Z okazji Dnia Reformacji zapraszam Cię do obejrzenia filmu „Luter – człowiek, który zmienił oblicze Kościoła”, udostępnionego z polskim lektorem na kanale Christian Culture TV.",
+                  "Film „Luther” z 2003 roku, wyreżyserowany przez Erica Tilla, przedstawia duchowe zmagania reformatora i wydarzenia prowadzące do Reformacji. W roli tytułowej występuje Joseph Fiennes. Film jest dramatem historycznym, a nie dokumentem, dlatego warto traktować go jako zachętę do dalszego poznawania historii i Pisma Świętego.",
+                  "Zobacz cały film z polskim lektorem bezpośrednio pod adresem: https://youtu.be/lug1BNspb8k lub w powyższym oknie odtwarzacza.",
+                  "Zaproś rodzinę lub znajomych, a po seansie przeczytajcie razem Rz 1,16–17 oraz Ef 2,8–10. Zastanówcie się: na czym opieramy pewność zbawienia? Co oznacza wolność w Chrystusie? Czy moja religijność pozostaje otwarta na korektę Słowa Bożego?",
+                  "7. Reformacja zaczyna się dziś",
+                  "Nie chcę, żeby 31 października był tylko datą w kalendarzu. Chciałbym, aby stał się dniem osobistej decyzji. Wróćmy do Biblii. Nie udawajmy bezbłędnych. Przyjmijmy zbawienie z łaski, a następnie uczmy się żyć w sposób godny Ewangelii.",
+                  "Modlitwa na Dzień Reformacji: Panie Jezu, daj nam pokorę wobec Twojego Słowa, odwagę do odrzucenia obłudy, miłość do ludzi o innych przekonaniach i wdzięczność za Twoją łaskę. Niech odnowa zacznie się we mnie. Amen.",
+                  "Podsumowanie Redakcyjne CCN News: Dzień Reformacji 2026 to zaproszenie do osobistego rachunku sumienia i oparcia życia na niewzruszonym fundamencie Pisma Świętego. Wszystkie publikacje, słuchowiska i materiały Christian Culture są w 100% bezpłatne. Pełny film z polskim lektorem dostępny jest na Christian Culture TV (YouTube: lug1BNspb8k)."
+            ]
+      },
       {
         "id": "art-dekalog-dziesiec-przykazan-bozych-wujek-bjw",
         "title": "Dziesięć przykazań Bożych wg Biblii w tł. ks. Jakuba Wujka (BJW)",

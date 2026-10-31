@@ -438,6 +438,22 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
           {/* Article Full Content */}
           <div className={`prose max-w-none text-gray-800 space-y-4 font-normal ${getFontSizeClass()}`}>
             {article.content.map((paragraph, index) => {
+              if (paragraph.startsWith('[KADR:') || paragraph.startsWith('[IMG:')) {
+                const match = paragraph.match(/^\[(?:KADR|IMG):\s*([^|]+)\s*\|\s*(.*?)\]$/);
+                if (match) {
+                  const [, imgUrl, imgCaption] = match;
+                  return (
+                    <figure key={index} className="my-6 rounded-xl overflow-hidden border border-zinc-200 shadow-sm bg-zinc-50">
+                      <img src={imgUrl.trim()} alt={imgCaption.trim()} className="w-full object-cover max-h-[500px]" loading="lazy" />
+                      {imgCaption && (
+                        <figcaption className="p-3 text-xs text-zinc-600 bg-zinc-100 border-t border-zinc-200 italic text-center">
+                          {imgCaption.trim()}
+                        </figcaption>
+                      )}
+                    </figure>
+                  );
+                }
+              }
               if (/^(\d+\. |PODSUMOWANIE REDAKCYJNE|Podsumowanie$|Źródła i teksty biblijne$|Kluczowe informacje$|Kontekst i analiza$|Refleksja biblijna$|Źródła$)/.test(paragraph)) {
                 return <h2 key={index} className="font-serif font-bold text-xl pt-4">{paragraph}</h2>;
               }
