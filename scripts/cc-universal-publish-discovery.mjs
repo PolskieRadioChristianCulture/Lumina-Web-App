@@ -173,6 +173,19 @@ async function run() {
     }
     results.preflightVerified = allOk;
 
+    // ── KROK 8: AUTOMATYCZNA DYSTRYBUCJA NA X (TWITTER) ──
+    console.log('\n[8/8] 🐦 Opcjonalna automatyzacja publikacji na platformę X (Free Tier)...');
+    try {
+      const xPublishOutput = execSync('node scripts/publish_to_x.mjs --auto', {
+        cwd: ROOT,
+        encoding: 'utf8',
+        stdio: 'pipe'
+      });
+      console.log(xPublishOutput.trim());
+    } catch (xErr) {
+      console.warn('⚠️ Publikacja na X zwróciła ostrzeżenie (nie blokuje deploymentu):', xErr.message);
+    }
+
     console.log('\n═══════════════════════════════════════════════════════════════');
     console.log('🎉 PIPELINE ZAKOŃCZONY SUKCESEM (STANDARD ZERO-QA)');
     console.log('Wszystkie publikacje aktywne na serwerze (200 OK), zindeksowane i chronione!');
