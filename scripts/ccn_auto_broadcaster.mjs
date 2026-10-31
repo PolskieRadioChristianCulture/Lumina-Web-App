@@ -245,6 +245,7 @@ function formatBroadcasterTweet(item) {
     .replace(/^CCN News\s*[-–—:]\s*/i, '')
     .replace(/\s*•\s*Polskie Radio CC.*$/i, '')
     .replace(/\s*–\s*CCN Historia.*$/i, '')
+    .replace(/\s*\(\/[a-z0-9_/-]+\)\s*$/i, '')
     .trim();
 
   // Buduj roboczy wpis
@@ -365,22 +366,19 @@ async function broadcastNext(dryRun = false) {
   const history = loadHistory();
   const state = loadState();
 
-  // Filtruj pozycje, które nie były publikowane w ostatnich 15 wpisach (rotacja)
+  // Filtruj pozycje, które nie były publikowane w ostatnich 20 wpisach (rotacja)
   const recentUrls = new Set(history.slice(0, 20).map(h => h.url));
-  let unpostedCandidates = candidates.filter(c => !recentUrls.has(c.url));
-
-  if (unpostedCandidates.length === 0) {
-    // Jeśli wszystkie były publikowane, bierzemy pełną rotację od nowa
-    unpostedCandidates = candidates;
+  let nextIndex = (state.lastIndex + 1) % candidates.length;
+  let attempts = 0;
+  while (recentUrls.has(candidates[nextIndex].url) && attempts < candidates.length) {
+    nextIndex = (nextIndex + 1) % candidates.length;
+    attempts++;
   }
-
-  // Wybierz kolejną pozycję w sekwencji
-  let nextIndex = (state.lastIndex + 1) % unpostedCandidates.length;
-  const chosen = unpostedCandidates[nextIndex];
+  const chosen = candidates[nextIndex];
 
   const tweetText = formatBroadcasterTweet(chosen);
 
-  console.log(`\n📢 Wybrana nowość z ekosystemu [${nextIndex + 1}/${unpostedCandidates.length}]:`);
+  console.log(`\n📢 Wybrana nowość z ekosystemu [${nextIndex + 1}/${candidates.length}]:`);
   console.log(`   Tytuł: "${chosen.title}"`);
   console.log(`   Link: ${chosen.url}`);
 
