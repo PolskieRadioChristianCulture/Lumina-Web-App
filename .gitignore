@@ -9,8 +9,8 @@ Thumbs.db
 
 # Large binary & build files
 downloads/
-audio/
-audio/worship_downloads/
+/audio/
+!/biblia-audio/audio/
 *.zip
 *.wav
 .firebase/
