@@ -398,6 +398,22 @@ X_ACCESS_SECRET=twoj_access_token_secret
       console.log(`💾 Zapisano w rejestrze data/x_published_history.json`);
     }
   } catch (err) {
+    if (err.message.includes('402') || err.message.includes('credits depleted')) {
+      console.warn('\n⚠️  X API wymaga płatnych kredytów (Error 402: credits depleted).');
+      console.log('🔄 Automatyczne przełączenie na 100% BEZPŁATNY silnik Playwright (0 PLN)...');
+      try {
+        const { execSync } = await import('node:child_process');
+        const passArgs = args.filter(a => a !== '--auto').join(' ');
+        execSync(`node scripts/publish_to_x_playwright.mjs ${passArgs}`, {
+          cwd: ROOT,
+          stdio: 'inherit'
+        });
+        process.exit(0);
+      } catch (pwErr) {
+        console.error('❌ Błąd silnika Playwright:', pwErr.message);
+        process.exit(1);
+      }
+    }
     console.error('\n❌ BŁĄD PODCZAS PUBLIKACJI NA X:', err.message);
     process.exit(1);
   }

@@ -32,6 +32,9 @@ commander_ai_state.json
 *.key
 .env*
 scripts/agent-matrix/.matrix_sessions/
+.x_browser_profile/
+data/x_session.json
+data/x_browser_profile/
 firebase_functions/node_modules/
 _downloads_backup/
 _audio_backup/
