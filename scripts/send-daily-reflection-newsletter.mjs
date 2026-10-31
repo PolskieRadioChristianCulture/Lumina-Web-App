@@ -24,10 +24,42 @@ export async function prepareDailyReflectionContent({ title, verse, verseRef, te
     day: 'numeric'
   });
 
-  const displayTitle = title || `Słowo na Dziś • ${dateFormatted}`;
-  const displayVerse = verse || '„Pan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.”';
-  const displayVerseRef = verseRef || '— Psalm 28, 7 (UBG)';
-  const displayText = text || 'Niech Boży pokój i łaska towarzyszą Ci przez cały dzisiejszy dzień. Rozpoczynaj każdy poranek w obecności Tego, który jest źródłem życia i wszelkiego dobra.';
+  let displayTitle = title;
+  let displayVerse = verse;
+  let displayVerseRef = verseRef;
+  let displayText = text;
+
+  if (!displayTitle || !displayText) {
+    try {
+      const todayIso = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Europe/Warsaw",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(now);
+      const bazaPath = path.resolve(ROOT, 'rozwazania_baza.json');
+      if (fs.existsSync(bazaPath)) {
+        const list = JSON.parse(fs.readFileSync(bazaPath, 'utf8'));
+        const found = list.find(x => x.date === todayIso) || list[0];
+        if (found) {
+          if (!displayTitle) displayTitle = found.title;
+          if (!displayText) displayText = found.contentWeb || found.fullText;
+          if (!displayVerse && found.contentWeb) {
+            const vMatch = found.contentWeb.match(/Jezus mówi dziś do Ciebie:\s*([^\n]+)/i);
+            if (vMatch) {
+              displayVerse = vMatch[1].trim();
+              displayVerseRef = '— UBG';
+            }
+          }
+        }
+      }
+    } catch (_) {}
+  }
+
+  if (!displayTitle) displayTitle = `Słowo na Dziś • ${dateFormatted}`;
+  if (!displayVerse) displayVerse = '„Pan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.”';
+  if (!displayVerseRef) displayVerseRef = '— Psalm 28, 7 (UBG)';
+  if (!displayText) displayText = 'Niech Boży pokój i łaska towarzyszą Ci przez cały dzisiejszy dzień. Rozpoczynaj każdy poranek w obecności Tego, który jest źródłem życia i wszelkiego dobra.';
 
   const htmlBody = `
     <div style="margin-bottom: 24px;">
