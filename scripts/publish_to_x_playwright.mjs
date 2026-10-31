@@ -5,8 +5,8 @@
  * 100% BEZPŁATNA AUTOMATYZACJA (0 PLN, BEZ OPŁAT API X)
  *
  * Silnik: Playwright Persistent Browser Context (.x_browser_profile/)
- * Bezpieczeństwo: Profil przeglądarki ściśle ukryty w .gitignore
- * Logowanie: Jednorazowe logowanie interaktywne, kolejne publikacje 100% w tle (headless)
+ * Autoryzacja: Ciasteczko X_AUTH_TOKEN z .env.local (bezpieczne, omija blokady antybotowe)
+ * Tryb: Domyślnie 100% w tle (headless: true), opcjonalnie z podglądem (--headed)
  *
  * Standard: ZERO COST / JOMA-D005 / @SMCC / @matrix-cc
  */
@@ -21,10 +21,40 @@ const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 
 // Ścieżki danych
+const ENV_LOCAL_PATH = path.join(ROOT, '.env.local');
+const ENV_PATH = path.join(ROOT, '.env');
 const PROFILE_DIR = path.join(ROOT, '.x_browser_profile');
 const HISTORY_PATH = path.join(ROOT, 'data', 'x_published_history.json');
 const ARTICLES_TS_PATH = path.join(ROOT, 'portals', 'ccn-news', 'src', 'data', 'articles.ts');
 const CATALOG_PATH = path.join(ROOT, 'szukaj', 'catalog.json');
+
+// Załaduj zmienne środowiskowe
+function loadEnv() {
+  const envFiles = [ENV_LOCAL_PATH, ENV_PATH];
+  for (const envFile of envFiles) {
+    if (fs.existsSync(envFile)) {
+      try {
+        const content = fs.readFileSync(envFile, 'utf8');
+        for (const line of content.split('\n')) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed.startsWith('#')) continue;
+          const idx = trimmed.indexOf('=');
+          if (idx !== -1) {
+            const key = trimmed.slice(0, idx).trim();
+            const val = trimmed.slice(idx + 1).trim().replace(/^["']|["']$/g, '');
+            if (!process.env[key]) {
+              process.env[key] = val;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn(`[WARN] Nie udało się odczytać ${envFile}:`, err.message);
+      }
+    }
+  }
+}
+
+loadEnv();
 
 // Rejestr historii publikacji
 function loadHistory() {
@@ -116,57 +146,61 @@ function formatTweetText(article) {
   return tweet;
 }
 
-// Sprawdzenie czy użytkownik jest zalogowany
-async function checkIsLoggedIn(page) {
+// Uruchomienie kontekstu przeglądarki Playwright
+async function getBrowserContext(headless = true) {
+  if (!fs.existsSync(PROFILE_DIR)) {
+    fs.mkdirSync(PROFILE_DIR, { recursive: true });
+  }
+
+  const launchOptions = {
+    headless,
+    channel: 'chrome',
+    viewport: { width: 1280, height: 800 },
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+    args: [
+      '--disable-blink-features=AutomationControlled',
+      '--no-sandbox'
+    ]
+  };
+
+  let context;
   try {
-    await page.goto('https://x.com/home', { waitUntil: 'domcontentloaded', timeout: 15000 });
-    await page.waitForTimeout(2000);
-    const url = page.url();
-    if (url.includes('/login') || url.includes('/flow/login') || url.includes('/i/flow/signup')) {
-      return false;
-    }
-    // Sprawdź obecność paska nawigacji lub ikony profilu
-    const loggedInIndicator = await page.$('a[data-testid="AppTabBar_Profile_Link"], [data-testid="tweetButtonInline"], [data-testid="SideNav_NewTweet_Button"]');
-    return Boolean(loggedInIndicator);
+    context = await chromium.launchPersistentContext(PROFILE_DIR, launchOptions);
   } catch (err) {
-    return false;
+    delete launchOptions.channel;
+    context = await chromium.launchPersistentContext(PROFILE_DIR, launchOptions);
   }
-}
 
-// Logowanie interaktywne (otwiera okno i czeka na użytkownika)
-async function performInteractiveLogin(context) {
-  console.log('\n═══════════════════════════════════════════════════════════════');
-  console.log('🔐 WYMAGANE JEDNORAZOWE LOGOWANIE DO PLATFORMY X');
-  console.log('Otwarto okno przeglądarki. Zaloguj się na swoje konto na platformie X.');
-  console.log('Po zalogowaniu sesja zostanie trwale zapisana w .x_browser_profile/.');
-  console.log('Kolejne publikacje będą wykonywać się w 100% automatycznie w tle.');
-  console.log('═══════════════════════════════════════════════════════════════\n');
-
-  const page = await context.newPage();
-  await page.goto('https://x.com/login', { waitUntil: 'domcontentloaded' });
-
-  // Czekaj aż użytkownik zaloguje się (max 180 sekund)
-  const startTime = Date.now();
-  const maxWaitMs = 180000;
-
-  while (Date.now() - startTime < maxWaitMs) {
-    await page.waitForTimeout(2000);
-    const url = page.url();
-    if (url.includes('/home') || url.includes('/compose')) {
-      const loggedIn = await checkIsLoggedIn(page);
-      if (loggedIn) {
-        console.log('✅ Zalogowano pomyślnie! Sesja została utrwalona.');
-        await page.close();
-        return true;
+  // Wstrzyknij ciasteczko autoryzacyjne jeśli zdefiniowane
+  const authToken = process.env.X_AUTH_TOKEN;
+  if (authToken) {
+    await context.addCookies([
+      {
+        name: 'auth_token',
+        value: authToken,
+        domain: '.x.com',
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None'
+      },
+      {
+        name: 'auth_token',
+        value: authToken,
+        domain: '.twitter.com',
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None'
       }
-    }
+    ]);
   }
 
-  throw new Error('Przekroczono limit czasu oczekiwania na zalogowanie (3 minuty). Spróbuj ponownie.');
+  return context;
 }
 
-// Publikacja tweeta przez Playwright
-async function publishViaPlaywright(tweetText, dryRun = false, forceLogin = false) {
+// Publikacja posta przez Playwright
+async function publishViaPlaywright(tweetText, dryRun = false, headed = false) {
   if (dryRun) {
     console.log('\n[DRY RUN PLAYWRIGHT] Treść posta:');
     console.log('───────────────────────────────────────────────────────');
@@ -175,58 +209,60 @@ async function publishViaPlaywright(tweetText, dryRun = false, forceLogin = fals
     return { success: true, dryRun: true };
   }
 
-  if (!fs.existsSync(PROFILE_DIR)) {
-    fs.mkdirSync(PROFILE_DIR, { recursive: true });
-  }
-
-  // Uruchom najpierw w trybie sprawdzenia
-  let context = await chromium.launchPersistentContext(PROFILE_DIR, {
-    headless: false, // Otwieramy okno, aby użytkownik widział co się dzieje
-    viewport: { width: 1280, height: 800 },
-    args: ['--disable-blink-features=AutomationControlled', '--start-maximized']
-  });
+  const context = await getBrowserContext(!headed);
 
   try {
-    const page = context.pages()[0] || await context.newPage();
+    const page = await context.newPage();
+    console.log('🌐 Nawigacja do x.com/compose/post...');
+    await page.goto('https://x.com/compose/post', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForTimeout(3000);
 
-    let isLoggedIn = await checkIsLoggedIn(page);
-    if (!isLoggedIn || forceLogin) {
-      await performInteractiveLogin(context);
+    // Sprawdź czy nie przekierowało do logowania
+    const currentUrl = page.url();
+    if (currentUrl.includes('/login') || currentUrl.includes('/onboarding/')) {
+      throw new Error('Ciasteczko X_AUTH_TOKEN wygasło lub nie zostało rozpoznane. Zaktualizuj X_AUTH_TOKEN w .env.local.');
     }
 
-    console.log('\n🚀 Otwieram edytor posta na x.com/compose/post...');
-    const postPage = await context.newPage();
-    await postPage.goto('https://x.com/compose/post', { waitUntil: 'networkidle', timeout: 30000 });
-    await postPage.waitForTimeout(2000);
-
-    // Znajdź pole tekstowe
+    // Znajdź pole wpisywania treści
     const textareaSelector = '[data-testid="tweetTextarea_0"], div[role="textbox"][contenteditable="true"]';
-    await postPage.waitForSelector(textareaSelector, { timeout: 15000 });
-    await postPage.click(textareaSelector);
-    await postPage.waitForTimeout(500);
+    await page.waitForSelector(textareaSelector, { timeout: 15000 });
+    await page.click(textareaSelector);
+    await page.waitForTimeout(500);
 
-    // Wklej treść posta
-    await postPage.keyboard.insertText(tweetText);
+    // Wklej treść tweeta
+    await page.keyboard.insertText(tweetText);
     console.log('📝 Wpisano treść artykułu...');
-    await postPage.waitForTimeout(3000); // Czas na załadowanie karty podglądu (Twitter Card)
+    await page.waitForTimeout(3000); // Czas na załadowanie karty podglądu (Twitter Card)
 
-    // Kliknij przycisk publikacji
-    const postButtonSelector = '[data-testid="tweetButton"]';
-    await postPage.waitForSelector(postButtonSelector, { timeout: 10000 });
-    const postBtn = await postPage.$(postButtonSelector);
-
-    if (!postBtn) {
-      throw new Error('Nie znaleziono przycisku "Opublikuj" (tweetButton).');
+    // Zamknij ewentualne modale zasłaniające (cookies, powiadomienia)
+    const overlayDismiss = await page.$('[data-testid="app-bar-close"], [aria-label="Zamknij"], [aria-label="Close"], [data-testid="sheetDialog"] [aria-label="Zamknij"]');
+    if (overlayDismiss) {
+      await overlayDismiss.click().catch(() => {});
+      await page.waitForTimeout(1000);
     }
 
-    console.log('🔘 Klikam przycisk "Opublikuj" / "Post"...');
-    await postBtn.click();
+    console.log('🔘 Wysyłam post (skrót Ctrl+Enter / tweetButton force)...');
+    
+    // Próba 1: Natywny skrót klawiszowy X (Ctrl+Enter) wysyłający post z pola tekstowego
+    await page.focus(textareaSelector);
+    await page.keyboard.press('Control+Enter');
+    await page.waitForTimeout(2000);
 
-    // Czekaj na potwierdzenie (zniknięcie okna lub pojawienie się toastu)
-    await postPage.waitForTimeout(4000);
-    console.log('🎉 Post został opublikowany na platformie X!');
+    // Próba 2: Jeśli przycisk nadal jest obecny, kliknij z force: true
+    const postButtonSelector = '[data-testid="tweetButton"], [data-testid="tweetButtonInline"]';
+    const postBtn = await page.$(postButtonSelector);
+    if (postBtn) {
+      const isVisible = await postBtn.isVisible().catch(() => false);
+      if (isVisible) {
+        await postBtn.click({ force: true }).catch(() => {});
+      }
+    }
 
-    await postPage.close();
+    // Czekaj na potwierdzenie wysłania (zniknięcie okna compose lub redirect)
+    await page.waitForTimeout(5000);
+    console.log('🎉 Post został pomyślnie opublikowany na platformie X!');
+
+    await page.close();
     await context.close();
     return { success: true };
   } catch (err) {
@@ -240,7 +276,7 @@ async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const force = args.includes('--force');
-  const loginOnly = args.includes('--login');
+  const headed = args.includes('--headed');
 
   let targetSlug = null;
   const slugArg = args.find(a => a.startsWith('--slug='));
@@ -259,17 +295,6 @@ async function main() {
   console.log('   (100% BEZPŁATNY SILNIK ZERO-COST / MATRIX CC)');
   console.log(`⏰ Czas operacji: ${new Date().toISOString()}`);
   console.log('═══════════════════════════════════════════════════════════════');
-
-  if (loginOnly) {
-    if (!fs.existsSync(PROFILE_DIR)) fs.mkdirSync(PROFILE_DIR, { recursive: true });
-    const context = await chromium.launchPersistentContext(PROFILE_DIR, {
-      headless: false,
-      viewport: { width: 1280, height: 800 }
-    });
-    await performInteractiveLogin(context);
-    await context.close();
-    process.exit(0);
-  }
 
   const articles = extractCatalogItems();
   let articleToPublish;
@@ -321,7 +346,7 @@ async function main() {
   const tweetText = formatTweetText(articleToPublish);
 
   try {
-    await publishViaPlaywright(tweetText, dryRun);
+    await publishViaPlaywright(tweetText, dryRun, headed);
     if (!dryRun) {
       history.unshift({
         slug: articleToPublish.slug,

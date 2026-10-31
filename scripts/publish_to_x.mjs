@@ -297,6 +297,23 @@ async function main() {
   console.log(`⏰ Czas operacji: ${new Date().toISOString()}`);
   console.log('═══════════════════════════════════════════════════════════════');
 
+  // Jeśli zdefiniowano X_AUTH_TOKEN lub wymuszono silnik Playwright, deleguj bezpośrednio do silnika Playwright
+  if (process.env.X_AUTH_TOKEN || args.includes('--playwright')) {
+    console.log('🔄 Wykryto sesję X_AUTH_TOKEN w .env.local — uruchamiam bezpłatny silnik Playwright (0 PLN)...');
+    try {
+      const { execSync } = await import('node:child_process');
+      const passArgs = args.join(' ');
+      execSync(`node scripts/publish_to_x_playwright.mjs ${passArgs}`, {
+        cwd: ROOT,
+        stdio: 'inherit'
+      });
+      process.exit(0);
+    } catch (pwErr) {
+      console.error('❌ Błąd silnika Playwright:', pwErr.message);
+      process.exit(1);
+    }
+  }
+
   const creds = getCredentials();
   const configured = hasCredentials(creds);
 
