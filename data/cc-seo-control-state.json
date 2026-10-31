@@ -1,13 +1,13 @@
 {
   "standardVersion": "CCN Global SEO & AI Search 2026 v1.0",
-  "generatedAt": "2026-10-31T08:22:55.409Z",
+  "generatedAt": "2026-10-31T13:08:33.274Z",
   "zeroFakeDataPolicy": true,
   "counts": {
-    "totalValidatedUrls": 80,
-    "validUrls": 80,
+    "totalValidatedUrls": 81,
+    "validUrls": 81,
     "invalidUrls": 0,
-    "newsArticlesCount": 74,
-    "googleNews48hCount": 28,
+    "newsArticlesCount": 75,
+    "googleNews48hCount": 29,
     "akademiaUrlsCount": 45,
     "bibliaUrlsCount": 4,
     "muzykaUrlsCount": 9,
@@ -31,25 +31,25 @@
     {
       "path": "/feed.xml",
       "exists": true,
-      "sizeBytes": 22449,
+      "sizeBytes": 23008,
       "status": "OK"
     },
     {
       "path": "/news/feed.xml",
       "exists": true,
-      "sizeBytes": 30048,
+      "sizeBytes": 30584,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news.xml",
       "exists": true,
-      "sizeBytes": 36737,
+      "sizeBytes": 37331,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news-google.xml",
       "exists": true,
-      "sizeBytes": 23068,
+      "sizeBytes": 24017,
       "status": "OK"
     },
     {
@@ -92,8 +92,8 @@
   "indexNow": {
     "keyConfigured": false,
     "keyNote": "Brak klucza INDEXNOW_KEY w zmiennych środowiskowych.",
-    "totalQueued": 35,
-    "pendingCount": 35,
+    "totalQueued": 36,
+    "pendingCount": 36,
     "submittedCount": 0,
     "failedCount": 0,
     "recentItems": [
@@ -291,7 +291,7 @@
         "url": "https://polskieradio.cc/edukacja/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "edukacja",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-31T08:22:55.401Z",
+        "queuedAt": "2026-10-31T13:08:33.267Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -310,7 +310,7 @@
         "url": "https://polskieradio.cc/rodzina/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "rodzina",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-31T08:22:55.401Z",
+        "queuedAt": "2026-10-31T13:08:33.267Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -329,7 +329,7 @@
         "url": "https://polskieradio.cc/misje/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "misje",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-31T08:22:55.401Z",
+        "queuedAt": "2026-10-31T13:08:33.267Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -348,7 +348,7 @@
         "url": "https://polskieradio.cc/spoleczenstwo/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "spoleczenstwo",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-31T08:22:55.401Z",
+        "queuedAt": "2026-10-31T13:08:33.267Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -367,7 +367,7 @@
         "url": "https://polskieradio.cc/akademia/dzien-17",
         "section": "akademia",
         "publishedAt": "2026-10-17T04:00:00Z",
-        "queuedAt": "2026-10-31T08:22:55.401Z",
+        "queuedAt": "2026-10-31T13:08:33.267Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -398,6 +398,14 @@
   },
   "alerts": [],
   "sampleValidatedPages": [
+    {
+      "file": "news/kryzys-infrastrukturalny-blackout-72-godziny-rodzina-roztropnosc.html",
+      "canonicalUrl": "https://polskieradio.cc/news/kryzys-infrastrukturalny-blackout-72-godziny-rodzina-roztropnosc",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
     {
       "file": "news/dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski.html",
       "canonicalUrl": "https://polskieradio.cc/news/dzien-reformacji-2026-wrocmy-do-pisma-i-ewangelii-laski",
@@ -585,14 +593,6 @@
     {
       "file": "news/wojna-ukraina-jezus-pokoj-znaki-czasow.html",
       "canonicalUrl": "https://polskieradio.cc/news/wojna-ukraina-jezus-pokoj-znaki-czasow",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/tragedia-szkola-wyszkow-przemoc-biblia.html",
-      "canonicalUrl": "https://polskieradio.cc/news/tragedia-szkola-wyszkow-przemoc-biblia",
       "section": "news",
       "valid": true,
       "errors": [],
