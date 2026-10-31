@@ -175,13 +175,30 @@ export async function dispatchNextZaczepka(options = { dryRun: false }) {
   const zaczepka = await generateZaczepka(selectedGroup.name, now.getHours());
   console.log(`[ZACZEPKI] Wygenerowano treść (źródło: ${zaczepka.source}):\n---\n${zaczepka.text}\n---`);
 
+  // Selekcja i kontrola częstotliwości grafiki (Anti-Overuse Cezary & Wioletta)
+  let finalMediaPath = zaczepka.mediaPath || null;
+  if (finalMediaPath && finalMediaPath.includes('cezary-wioletta-radiocc.jpg')) {
+    const minIntervalHours = 72; // Minimum 72h (3 dni) odstępu między użyciami zdjęcia z żoną
+    const lastPhotoTime = state.lastCezaryWiolettaPhotoTime || 0;
+    const elapsedHours = (Date.now() - lastPhotoTime) / (1000 * 60 * 60);
+
+    if (elapsedHours < minIntervalHours) {
+      console.log(`[ZACZEPKI] 📸 Zdjęcie z żoną użyte ${Math.round(elapsedHours)}h temu (<${minIntervalHours}h). Zamieniam na alternatywną grafikę ekosystemu.`);
+      finalMediaPath = 'C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/biblia-audio/assets/hero-biblia-audio.jpg';
+    } else {
+      console.log(`[ZACZEPKI] 📸 Dołączam oficjalną grafikę Cezarego i Wioletty Rogowskich (Radio CC) dla ugruntowania wiarygodności.`);
+      state.lastCezaryWiolettaPhotoTime = Date.now();
+    }
+  }
+
   const commandText = `wyślij celowane [${selectedGroup.groupId}]: ${zaczepka.text}`;
 
   if (options.dryRun) {
-    console.log('[ZACZEPKI] [DRY RUN] Pomijam zapis do CommandQueue.');
+    console.log(`[ZACZEPKI] [DRY RUN] Pomijam zapis do CommandQueue. Załącznik graficzny: ${finalMediaPath}`);
     return {
       status: 'dry_run_success',
       group: selectedGroup,
+      mediaPath: finalMediaPath,
       zaczepka
     };
   }
@@ -190,6 +207,7 @@ export async function dispatchNextZaczepka(options = { dryRun: false }) {
   const db = admin.firestore();
   const queueRef = await db.collection('CommandQueue').add({
     command: commandText,
+    mediaPath: finalMediaPath,
     status: 'pending',
     type: 'zaczepka',
     targetGroupId: selectedGroup.groupId,

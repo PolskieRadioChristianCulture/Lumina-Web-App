@@ -71,10 +71,11 @@ test('Zaczepki Dispatcher: precyzyjna kontrola ciszy nocnej (22:00 - 07:30)', ()
   assert.equal(isQuietHours(day3), false, '21:00 to okno aktywne');
 });
 
-test('Zaczepki Generator: generuje poprawny format z linkiem Wspieram To i autopromocją', async () => {
+test('Zaczepki Generator: generuje poprawny format z linkiem wsparcia/patronatu i dedykowaną grafiką', async () => {
   const result = await generateZaczepka('Buduj Swoją Wiarę', 11);
   assert.ok(result.text, 'Treść zaczepki nie może być pusta');
   assert.match(result.text, /polskieradio\.cc/i, 'Musi zawierać link do ekosystemu');
-  assert.match(result.text, /wspieraj/i, 'Musi promować akcję Wspieram To');
+  assert.match(result.text, /wspieraj|biblia-audio/i, 'Musi promować akcję Wspieram To lub patronat Biblii Audio');
   assert.ok(result.text.length > 50, 'Zaczepka musi być pełnym wpisem');
+  assert.ok(result.mediaPath, 'Zaczepka musi posiadać przypisaną dedykowaną ścieżkę do grafiki');
 });

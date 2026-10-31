@@ -2,7 +2,7 @@
  * EkoCC — WhatsApp Zaczepki Catalog & Thematic Mapping
  * 
  * Mapowanie grup i pokoi tematycznych na WhatsApp do profili treści,
- * rekomendowanych modułów EkoCC oraz pytań aktywizujących.
+ * dedykowanych grafik (mediaPath), rekomendowanych modułów EkoCC oraz pytań aktywizujących.
  */
 
 export const THEMATIC_ROOM_PROFILES = [
@@ -13,6 +13,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["Biblia Audio", "Księga Rodzaju", "słuchowisko", "patronat", "Słowo Boże", "dźwięk 3D"],
     recommendedUrl: "https://polskieradio.cc/biblia-audio",
     recommendedFeature: "Nowe słuchowisko Biblia Audio CC (Księga Rodzaju 1-9 on-demand)",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/biblia-audio/assets/rodzaju-hero.jpg",
     sampleQuestions: [
       "Czy mieliście już okazję posłuchać pierwszych rozdziałów Księgi Rodzaju w kinowej oprawie dźwiękowej?",
       "Jak słuchanie udźwiękowionego Pisma Świętego pomaga Wam w codziennym wyciszeniu i modlitwie?",
@@ -26,6 +27,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["reformacja", "95 tez", "Pismo Święte", "łaska", "historia", "Luter"],
     recommendedUrl: "https://polskieradio.cc/historia/95-tez-marcina-lutra-wittenberga-1517",
     recommendedFeature: "CCN Historia: Pełny tekst 95 tez Marcina Lutra z polskim przekładem",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/news/ccn-news-official-badge.jpg",
     sampleQuestions: [
       "Czy powrót do samego Pisma (Sola Scriptura) jest dziś tak samo aktualny jak w 1517 roku?",
       "Jakie wnioski z historii Kościoła pomagają nam dziś zachować wierność czystej Ewangelii łaski?",
@@ -39,8 +41,9 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["prawda", "fakty", "świat", "bezpieczeństwo", "roztropność", "analizy", "bez paniki"],
     recommendedUrl: "https://polskieradio.cc/news",
     recommendedFeature: "Portal CCN News & Wiarygodne Informacje bez sensacji",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/news/ccn-news-official-badge.jpg",
     sampleQuestions: [
-      "Jak zachować Boży pokój i trzeźwość myślenia w zalewie sensacyjnych i lękotwórczych nagłówków ze świata?",
+      "Jak zachować Boży spokój i trzeźwość myślenia w zalewie sensacyjnych i lękotwórczych nagłówków ze świata?",
       "Co według Was jest dziś największym wyzwaniem dla prawdy w mediach?",
       "Czy zapoznaliście się już z naszym najnowszym raportem o biblijnej roztropności i przygotowaniu na kryzys?"
     ]
@@ -52,6 +55,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["praca", "uczciwość", "odpowiedzialność", "zarządzanie", "błogosławieństwo"],
     recommendedUrl: "https://polskieradio.cc/news",
     recommendedFeature: "Portal CCN News & Etyka w Gospodarce",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/news/ccn-news-official-badge.jpg",
     sampleQuestions: [
       "Jak dziś w codziennym biznesie udaje Wam się zachować Boży spokój i czyste zasady?",
       "Co według Was jest największym sprawdzianem wiary w relacjach z klientami lub współpracownikami?",
@@ -65,6 +69,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["dzieci", "relacje", "cyfrowy detoks", "wspólny stół", "miłość", "małżeństwo"],
     recommendedUrl: "https://polskieradio.cc/news/cyfrowy-detoks-rodziny-jak-odzyskac-bliskosc-i-spokoj",
     recommendedFeature: "Cyfrowy detoks w chrześcijańskim domu",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/academy/hero_couple_cross.jpg",
     sampleQuestions: [
       "Jaki jest Wasz sprawdzony sposób na wyłączenie telefonów i prawdziwy wspólny czas przy stole?",
       "Jak budujecie w Waszym domu atmosferę, do której dzieci chcą wracać z radością?",
@@ -78,6 +83,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["zdrowie", "odpoczynek", "sen", "ciało świątynią", "pokój", "energia"],
     recommendedUrl: "https://polskieradio.cc/player",
     recommendedFeature: "Kanał Muzyki Wyciszenia & Ambient Sleep na Radio CC",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/brand/cezary-wioletta-radiocc.jpg",
     sampleQuestions: [
       "Pismo mówi, że ciało jest świątynią Ducha — jak dziś zadbaliście o regenerację i zdrowy odpoczynek?",
       "Czy pamiętacie dzisiaj o chwilach głębokiego oddechu i zatrzymania w Bożej obecności?",
@@ -91,6 +97,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["modlitwa", "wstawiennictwo", "pokój serca", "nadzieja", "Boża obecność"],
     recommendedUrl: "https://polskieradio.cc/player",
     recommendedFeature: "Codzienne Rozważanie „Dobrze, że jesteś” & Modlitewnik",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/og-swiadectwa.jpg",
     sampleQuestions: [
       "O co dzisiaj wspólnie podnosimy ręce w modlitwie? Kto potrzebuje Bożego umocnienia?",
       "Czy doświadczyliście w tym tygodniu małego Bożego cudu, za który warto dziś podziękować?",
@@ -104,6 +111,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["uwielbienie", "psalmy", "pieśni chwały", "pokój", "wdzięczność"],
     recommendedUrl: "https://polskieradio.cc/player",
     recommendedFeature: "Radio Christian Culture 24/7 & Biblia Śpiewana",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/brand/cezary-wioletta-radiocc.jpg",
     sampleQuestions: [
       "Jaka pieśń uwielbienia towarzyszy Wam dzisiaj od samego rana?",
       "Czy muzyka chwały pomaga Wam w pracy i domowych obowiązkach?",
@@ -117,6 +125,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["Pismo Święte", "werset dnia", "studium", "mądrość", "UBG", "poznanie"],
     recommendedUrl: "https://polskieradio.cc/akademia#kurscodzienny",
     recommendedFeature: "Akademia Biblijna CC & Interlinearna MojaBiblia",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/academy_hero_journey.jpg",
     sampleQuestions: [
       "Jaki werset ze Słowa Bożego dał Wam w tym tygodniu najwięcej światła?",
       "Jak łączycie codzienne czytanie Pisma z praktycznymi decyzjami w ciągu dnia?",
@@ -130,6 +139,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["dzień dobry", "nowy poranek", "łaska", "nowy początek", "energia"],
     recommendedUrl: "https://polskieradio.cc/wyszukiwarka",
     recommendedFeature: "Uniwersalna Wyszukiwarka EkoCC i Polecane Dziś",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/biblia-audio/assets/hero-biblia-audio.jpg",
     sampleQuestions: [
       "Z jakim nastawieniem serca wkraczacie w ten dzień? Pamiętajcie, że Boże miłosierdzie odnawia się co rano!",
       "Co dzisiaj jest Waszym najważniejszym celem, który powierzacie Bogu?",
@@ -143,6 +153,7 @@ export const THEMATIC_ROOM_PROFILES = [
     keywords: ["tożsamość", "wzrost", "odpowiedzialność", "czystość", "relacje"],
     recommendedUrl: "https://polskieradio.cc/player#apokalipsa",
     recommendedFeature: "Podcast Studio Dobrego Słowa & Osobowość+",
+    mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/images/brand/cezary-wioletta-radiocc.jpg",
     sampleQuestions: [
       "Co jest dziś największą siłą chrześcijanina w świecie pełnym powierzchowności?",
       "Jak budować głębokie, zdrowe relacje w erze powiadomień i pośpiechu?",
@@ -157,6 +168,7 @@ export const DEFAULT_ROOM_PROFILE = {
   keywords: ["nadzieja", "pokój", "wspólnota", "dobro", "świadectwo"],
   recommendedUrl: "https://polskieradio.cc",
   recommendedFeature: "Główny Portal Christian Culture 24/7",
+  mediaPath: "C:/Users/czark/Christian_Culture_Projekty/polskieradio.cc/biblia-audio/assets/hero-biblia-audio.jpg",
   sampleQuestions: [
     "Jak mija Wam dzisiejszy dzień? Pamiętajcie: Dobrze, że jesteście!",
     "Czy znaleźliście dziś choćby 3 minuty na chwilę wdzięczności przed Bogiem?",

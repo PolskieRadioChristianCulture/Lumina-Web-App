@@ -130,6 +130,7 @@ Wymogi techniczne:
           source: 'gemini_rotator',
           room: roomName,
           category: profile.category,
+          mediaPath: profile.mediaPath,
           text: generated
         };
       }
@@ -149,6 +150,7 @@ Wymogi techniczne:
     source: 'canonical_template',
     room: roomName,
     category: profile.category,
+    mediaPath: profile.mediaPath,
     text: fallbackText
   };
 }
