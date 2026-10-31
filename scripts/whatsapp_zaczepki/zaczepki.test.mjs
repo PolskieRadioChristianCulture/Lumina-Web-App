@@ -2,7 +2,29 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { resolveRoomProfile } from './zaczepki_catalog.mjs';
 import { isQuietHours } from './zaczepki_dispatcher.mjs';
-import { generateZaczepka } from './zaczepki_generator.mjs';
+import { generateZaczepka, getPolishGreeting } from './zaczepki_generator.mjs';
+
+test('Zaczepki Generator: precyzyjne powitania wg zachodu słońca w Polsce', () => {
+  // 31 października o 17:00 (po zachodzie słońca w Polsce) -> Wieczór!
+  const autumnEvening = new Date(2026, 9, 31, 17, 0);
+  const greeting1 = getPolishGreeting(autumnEvening);
+  assert.match(greeting1, /wieczór|wieczoru/i, 'O 17:00 po zachodzie słońca w październiku musi być wieczór');
+  assert.doesNotMatch(greeting1, /popołudnia/i, 'Nigdy nie może być "popołudnia" po zmroku');
+
+  // 15 listopada o 16:30 (po zachodzie słońca w Polsce) -> Wieczór!
+  const winterEvening = new Date(2026, 10, 15, 16, 30);
+  const greeting2 = getPolishGreeting(winterEvening);
+  assert.match(greeting2, /wieczór|wieczoru/i, 'W listopadzie o 16:30 musi być wieczór');
+
+  // 15 lipca o 17:00 (w lecie jest jeszcze jasno przed zachodem) -> Popołudnie
+  const summerAfternoon = new Date(2026, 6, 15, 17, 0);
+  const greeting3 = getPolishGreeting(summerAfternoon);
+  assert.match(greeting3, /popołudnia/i, 'W lipcu o 17:00 jest jeszcze popołudnie');
+
+  // Rano o 08:30 -> Dzień dobry
+  const morning = new Date(2026, 9, 31, 8, 30);
+  assert.match(getPolishGreeting(morning), /Dzień dobry/i);
+});
 
 test('Zaczepki Catalog: poprawnie mapuje tematykę pokojów', () => {
   const biznes = resolveRoomProfile('Chrześcijanin w Biznesie');

@@ -7,6 +7,45 @@
 
 export const THEMATIC_ROOM_PROFILES = [
   {
+    pattern: /(biblia audio|audiobook|słuchowisk|nagran|lektor)/i,
+    category: "biblia_audio_produkcja",
+    topic: "Biblia Audio CC — Kinowe Słuchowisko Pisma Świętego",
+    keywords: ["Biblia Audio", "Księga Rodzaju", "słuchowisko", "patronat", "Słowo Boże", "dźwięk 3D"],
+    recommendedUrl: "https://polskieradio.cc/biblia-audio",
+    recommendedFeature: "Nowe słuchowisko Biblia Audio CC (Księga Rodzaju 1-9 on-demand)",
+    sampleQuestions: [
+      "Czy mieliście już okazję posłuchać pierwszych rozdziałów Księgi Rodzaju w kinowej oprawie dźwiękowej?",
+      "Jak słuchanie udźwiękowionego Pisma Świętego pomaga Wam w codziennym wyciszeniu i modlitwie?",
+      "Trwa produkcja kolejnych rozdziałów — co sądzicie o idei zostania patronem konkretnej księgi biblijnej?"
+    ]
+  },
+  {
+    pattern: /(reformacj|histori|luter|dziedzictw)/i,
+    category: "historia_kosciola",
+    topic: "CCN Historia & Dziedzictwo Wiary",
+    keywords: ["reformacja", "95 tez", "Pismo Święte", "łaska", "historia", "Luter"],
+    recommendedUrl: "https://polskieradio.cc/historia/95-tez-marcina-lutra-wittenberga-1517",
+    recommendedFeature: "CCN Historia: Pełny tekst 95 tez Marcina Lutra z polskim przekładem",
+    sampleQuestions: [
+      "Czy powrót do samego Pisma (Sola Scriptura) jest dziś tak samo aktualny jak w 1517 roku?",
+      "Jakie wnioski z historii Kościoła pomagają nam dziś zachować wierność czystej Ewangelii łaski?",
+      "Czy czytaliście już oryginalne 95 tez Marcina Lutra w naszym nowym opracowaniu?"
+    ]
+  },
+  {
+    pattern: /(news|informacj|wiadomość|świat|polityk|redakcj)/i,
+    category: "wiadomosci_i_analizy",
+    topic: "CCN News — Rzetelne Wiadomości w Świetle Biblii",
+    keywords: ["prawda", "fakty", "świat", "bezpieczeństwo", "roztropność", "analizy", "bez paniki"],
+    recommendedUrl: "https://polskieradio.cc/news",
+    recommendedFeature: "Portal CCN News & Wiarygodne Informacje bez sensacji",
+    sampleQuestions: [
+      "Jak zachować Boży pokój i trzeźwość myślenia w zalewie sensacyjnych i lękotwórczych nagłówków ze świata?",
+      "Co według Was jest dziś największym wyzwaniem dla prawdy w mediach?",
+      "Czy zapoznaliście się już z naszym najnowszym raportem o biblijnej roztropności i przygotowaniu na kryzys?"
+    ]
+  },
+  {
     pattern: /biznes/i,
     category: "biznes_i_finanse",
     topic: "Chrześcijanin w Biznesie & Finanse",
