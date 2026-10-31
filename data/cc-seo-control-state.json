@@ -1,13 +1,13 @@
 {
   "standardVersion": "CCN Global SEO & AI Search 2026 v1.0",
-  "generatedAt": "2026-10-30T14:30:27.764Z",
+  "generatedAt": "2026-10-31T02:19:51.697Z",
   "zeroFakeDataPolicy": true,
   "counts": {
-    "totalValidatedUrls": 78,
-    "validUrls": 78,
+    "totalValidatedUrls": 79,
+    "validUrls": 79,
     "invalidUrls": 0,
-    "newsArticlesCount": 72,
-    "googleNews48hCount": 26,
+    "newsArticlesCount": 73,
+    "googleNews48hCount": 27,
     "akademiaUrlsCount": 45,
     "bibliaUrlsCount": 4,
     "muzykaUrlsCount": 9,
@@ -31,25 +31,25 @@
     {
       "path": "/feed.xml",
       "exists": true,
-      "sizeBytes": 22460,
+      "sizeBytes": 22441,
       "status": "OK"
     },
     {
       "path": "/news/feed.xml",
       "exists": true,
-      "sizeBytes": 30162,
+      "sizeBytes": 30068,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news.xml",
       "exists": true,
-      "sizeBytes": 35730,
+      "sizeBytes": 36270,
       "status": "OK"
     },
     {
       "path": "/sitemaps/news-google.xml",
       "exists": true,
-      "sizeBytes": 21456,
+      "sizeBytes": 22321,
       "status": "OK"
     },
     {
@@ -92,8 +92,8 @@
   "indexNow": {
     "keyConfigured": false,
     "keyNote": "Brak klucza INDEXNOW_KEY w zmiennych środowiskowych.",
-    "totalQueued": 33,
-    "pendingCount": 33,
+    "totalQueued": 34,
+    "pendingCount": 34,
     "submittedCount": 0,
     "failedCount": 0,
     "recentItems": [
@@ -291,7 +291,7 @@
         "url": "https://polskieradio.cc/edukacja/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "edukacja",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-30T14:30:27.760Z",
+        "queuedAt": "2026-10-31T02:19:51.692Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -310,7 +310,7 @@
         "url": "https://polskieradio.cc/rodzina/tragedia-szkola-wyszkow-przemoc-biblia",
         "section": "rodzina",
         "publishedAt": "2026-10-17T08:15:00Z",
-        "queuedAt": "2026-10-30T14:30:27.760Z",
+        "queuedAt": "2026-10-31T02:19:51.692Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -329,7 +329,7 @@
         "url": "https://polskieradio.cc/misje/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "misje",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-30T14:30:27.760Z",
+        "queuedAt": "2026-10-31T02:19:51.692Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -348,7 +348,7 @@
         "url": "https://polskieradio.cc/spoleczenstwo/wojna-ukraina-jezus-pokoj-znaki-czasow",
         "section": "spoleczenstwo",
         "publishedAt": "2026-10-17T08:00:00Z",
-        "queuedAt": "2026-10-30T14:30:27.760Z",
+        "queuedAt": "2026-10-31T02:19:51.692Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -367,7 +367,7 @@
         "url": "https://polskieradio.cc/akademia/dzien-17",
         "section": "akademia",
         "publishedAt": "2026-10-17T04:00:00Z",
-        "queuedAt": "2026-10-30T14:30:27.760Z",
+        "queuedAt": "2026-10-31T02:19:51.692Z",
         "attempts": 0,
         "maxRetries": 3,
         "lastAttemptAt": null,
@@ -398,6 +398,14 @@
   },
   "alerts": [],
   "sampleValidatedPages": [
+    {
+      "file": "news/z-biblia-za-pan-brat-dzien-31-bog-obrocil-to-w-dobro.html",
+      "canonicalUrl": "https://polskieradio.cc/news/z-biblia-za-pan-brat-dzien-31-bog-obrocil-to-w-dobro",
+      "section": "news",
+      "valid": true,
+      "errors": [],
+      "warnings": []
+    },
     {
       "file": "news/bioetyka-edycja-genomu-syntetyczne-embriony-biblia.html",
       "canonicalUrl": "https://polskieradio.cc/news/bioetyka-edycja-genomu-syntetyczne-embriony-biblia",
@@ -585,14 +593,6 @@
     {
       "file": "news/czy-swiat-potrzebuje-przebudzenia-duchowego.html",
       "canonicalUrl": "https://polskieradio.cc/news/czy-swiat-potrzebuje-przebudzenia-duchowego",
-      "section": "news",
-      "valid": true,
-      "errors": [],
-      "warnings": []
-    },
-    {
-      "file": "news/czy-jezus-istnial-dowody-historyczne.html",
-      "canonicalUrl": "https://polskieradio.cc/news/czy-jezus-istnial-dowody-historyczne",
       "section": "news",
       "valid": true,
       "errors": [],

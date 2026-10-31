@@ -79,6 +79,77 @@ export const BREAKING_NEWS: string[] = [
 
 export const INITIAL_ARTICLES: Article[] = [
   {
+    "id": "art-z-biblia-za-pan-brat-dzien-31",
+    "title": "Z Biblią za Pan Brat: Dzień 31 — Bóg obrócił to w dobro: pochówek Jakuba, wiara Józefa i Ewangelia Opatrzności w Rdz 50",
+    "slug": "z-biblia-za-pan-brat-dzien-31-bog-obrocil-to-w-dobro",
+    "excerpt": "Księga Rodzaju 50: Finał Księgi Rodzaju — pochówek Jakuba w Kanaanie, lęk braci przed zemstą, wyznanie Bożej Opatrzności i kości Józefa w świetle Chrystusa.",
+    "content": [
+      "W ramach ogólnopolskiego programu badań biblijnych „Z Biblią za Pan Brat”, redakcja leksykonu teologicznego portalu informacyjnego CCN publikuje analityczne podsumowanie pięćdziesiątego rozdziału Księgi Rodzaju. Stanowi on kanoniczne domknięcie pierwszej księgi Pentateuchu, integrując wątki żałoby dynastycznej patriarchów, mechanizmów psychologicznych poczucia winy oraz teologicznej doktryny Bożej Opatrzności (Gubernatio Dei) triumfującej nad ludzkim grzechem.",
+      "1. CEREMONIAŁ ŻAŁOBNY I POGRZEB W MACHPELA (RDZ 50:1–14)",
+      "Pierwsza część rozdziału dokumentuje proces balsamowania ciała Jakuba (40 dni) oraz siedemdziesięciodniową żałobę państwową w Egipcie (Rdz 50:2–3). Następnie narrator opisuje monumentalny konwój żałobny z udziałem elity dworskiej i wojskowej imperium (rydwany i jeźdźcy), który udaje się do Kanaanu. Siedmiodniowa żałoba na klepisku Atad (Abel-Micraim) oraz złożenie ciała patriarchy w grocie Machpela obok Abrahama i Izaaka (Rdz 50:13) potwierdzają nienaruszalność więzi z Ziemią Obiecaną mimo osiedlenia w Egipcie.",
+      "2. SYNDROM WINY I TEOLOGIA PRZEBACZENIA (RDZ 50:15–21)",
+      "Po śmierci ojca bracia Józefa ujawniają głęboki lęk przed odwetem, stosując projekcję własnej bezwzględności na postać namiestnika. Józef odpowiada płaczem i formułuje fundamentalną zasadę biblijnej teologii: „Czyż ja jestem na miejscu Boga?” (Rdz 50:19). Odrzucając uzurpację prawa do zemsty (por. Pwt 32:35; Rz 12:19), Józef wypowiada klasyczną formułę Opatrzności:",
+      "„Wy wprawdzie myśleliście o złu przeciwko mnie, ale Bóg obrócił to w dobro, aby uczynić to, co dziś widzimy, by zachować przy życiu liczny lud.” (Rdz 50:20)",
+      "Prawdziwe przebaczenie łączy się z konkretnym działaniem: obietnicą zaopatrzenia i ochrony braci oraz ich potomstwa (Rdz 50:21).",
+      "3. TESTAMENT JÓZEFA I ESCHATOLOGICZNA NADZIEJA WYJŚCIA (RDZ 50:22–26)",
+      "Końcowa perykopa ukazuje Józefa dożywającego 110 lat i oglądającego prawnuki z linii Efraima i Manassesa. Przed śmiercią Józef składa uroczyste proroctwo: „Bóg z pewnością nawiedzi was i wyprowadzi z tej ziemi” (Rdz 50:24) oraz zobowiązuje synów Izraela przysięgą do wywiezienia jego kości do Kanaanu (Rdz 50:25). Przysięga ta, zrealizowana przez Mojżesza (Wj 13:19) i Jozuego (Joz 24:32), zostaje w Nowym Testamencie uznana za szczytowy dowód jego wiary w Boże obietnice (Hbr 11:22).",
+      "4. CHRYSTUS W CENTRUM: ZWYCIĘSTWO KRZYŻA NAD ZŁEM",
+      "Wydarzenia z Rdz 50 znajdują pełną realizację w dziele odkupienia Jezusa Chrystusa. Krzyż Golgoty stanowi najdoskonalszą egzemplifikację zasady z Rdz 50:20: ludzki grzech i zdrada zostały przez Boga przekształcone w zbawienie świata (Dz 2:23; 4:27–28; Rz 8:28). Podobnie jak Józef, zmartwychwstały Chrystus usuwa lęk grzeszników, ogłasza pokój i karmi swój lud Chlebem Żywota.",
+      "PODSUMOWANIE REDAKCYJNE CCN",
+      "Księga Rodzaju zamyka się trumną w Egipcie, lecz jest to zawieszenie pełne nadziei. Śmierć patriarchów nie przerywa biegu historii zbawienia; Bóg przymierza czuwa nad swoim ludem, prowadząc go ku obietnicy, która w pełni objawia się w Jezusie Chrystusie."
+    ],
+    "category": "wiara",
+    "categoryLabel": "Wiara & Rozwój",
+    "author": AUTHORS.cezary,
+    "publishedAt": "2026-10-31T06:00:00.000Z",
+    "dateFormatted": "31 października 2026",
+    "imageUrl": "/images/news/art-z-biblia-za-pan-brat-dzien-31-bog-obrocil-to-w-dobro.jpg",
+    "imageCaption": "Bóg obrócił to w dobro — pojednanie Józefa z braćmi (Rdz 50:1–26). Z Biblią za Pan Brat Dzień 31",
+    "readTimeMinutes": 7,
+    "isHero": false,
+    "isPopular": true,
+    "popularRank": 1,
+    "tags": [
+      "Z Biblią za Pan Brat",
+      "Księga Rodzaju",
+      "Józef",
+      "Jakub",
+      "przebaczenie",
+      "Opatrzność",
+      "kości Józefa",
+      "Machpela",
+      "Rdz 50",
+      "Rz 8:28"
+    ],
+    "scriptureReference": {
+      "verse": "Rdz 50:1–26; Rz 8:28; Dz 2:23–24; Hbr 11:22 (UBG)",
+      "text": ""
+    },
+    "sourceCitation": {
+      "sourceName": "Z Biblią za Pan Brat",
+      "sourceUrl": "https://polskieradio.cc/akademia#kurscodzienny"
+    },
+    "relatedCourse": {
+      "title": "Kurs Codzienny Pisma Świętego — Dzień 31",
+      "lesson": "Dzień 31",
+      "url": "/akademia/kurscodzienny/dzien-31"
+    },
+    "resourceLinks": [
+      {
+        "label": "Otwórz Lekcję Dnia 31 w Akademii Biblijnej",
+        "url": "/akademia/kurscodzienny/dzien-31"
+      },
+      {
+        "label": "Interlinearna MojaBiblia CC (Rdz 50)",
+        "url": "/mojabiblia"
+      },
+      {
+        "label": "Akademia Biblijna LUMINA",
+        "url": "/akademia"
+      }
+    ]
+  },
+  {
     id: 'art-bioetyka-edycja-genomu-syntetyczne-embriony-biblia',
     title: 'Bioetyka i granice ingerencji w ludzki genom. CRISPR, syntetyczne embriony a biblijna prawda o początku życia',
     slug: 'bioetyka-edycja-genomu-syntetyczne-embriony-biblia',
