@@ -3,10 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07090e">
+  <meta name="theme-color" content="#05070b">
   <title>Biblia Audio Christian Culture — Słuchaj i czytaj Pismo Święte</title>
   <meta name="description" content="Oficjalna Biblia Audio Christian Culture. Słuchaj Pisma Świętego rozdział po rozdziale w najwyższej jakości radiowej EBU R128 (-16 LUFS). Całodobowe Radio Biblia na żywo.">
   <link rel="canonical" href="https://polskieradio.cc/biblia-audio">
+
+  <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -32,12 +37,12 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config','G-Y4EFTVBPE3',(function(){try{var s=location.search,k='cc_team';if(/[?&]cc_team=1/.test(s))localStorage.setItem(k,'1');if(/[?&]cc_team=0/.test(s))localStorage.removeItem(k);if(localStorage.getItem(k)==='1'||/[?&]in_mcr=1/.test(s)||window.obsstudio)return{traffic_type:'internal'}}catch(e){}return{}})());
-  </script>
+  </script><script src="/js/cc-analytics.js?v=20261026_1" defer></script>
   <script src="/js/cc-analytics.js?v=20261026_1" defer></script>
 
-  <!-- EkoCC Edge Panel Styles -->
+  <!-- EkoCC Edge Panel & Page Styles -->
   <link rel="stylesheet" href="/css/cc-mobile-edge.css?v=20261030_1">
-  <link rel="stylesheet" href="/biblia-audio/styles.css?v=20261031_hero_art">
+  <link rel="stylesheet" href="/biblia-audio/styles.css?v=20261031_cinema_v2">
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -71,48 +76,81 @@
       <a href="#radio">Radio na żywo</a>
       <a href="#o-projekcie">O Księdze Rodzaju</a>
       <a href="/mojabiblia" target="_blank" rel="noopener">MojaBiblia ↗</a>
-      <a class="btnSupportNav" href="https://polskieradio.cc/wspieraj">♡ Wesprzyj Misję</a>
     </nav>
-    <button id="shareTop" class="smallBtn" type="button" aria-label="Udostępnij stronę">Udostępnij</button>
+    <div class="navActions">
+      <a class="btnSupportNav" href="https://polskieradio.cc/wspieraj">♡ Wesprzyj Misję</a>
+      <button id="shareTop" class="smallBtn" type="button" aria-label="Udostępnij stronę">Udostępnij</button>
+    </div>
   </header>
 
   <main>
     <!-- Cinematic Fullscreen Hero -->
     <section class="hero" id="start">
-      <div class="heroBackdrop" role="img" aria-label="Księga Rodzaju — grafika przewodnia"></div>
-      <video id="heroVideo" autoplay muted loop playsinline poster="/biblia-audio/assets/hero-biblia-audio.jpg" preload="auto" aria-hidden="true">
-        <source src="/biblia-audio/assets/intro.mp4" type="video/mp4">
-      </video>
+      <div class="heroBackdrop" role="img" aria-label="Księga Rodzaju — grafika przewodnia ze złotą falą i światłem z nieba"></div>
       <div class="heroShade"></div>
 
-      <!-- Floating Cinema Mode Close Button -->
-      <button id="closeCinemaIntro" class="cinemaCloseBtn" type="button" aria-label="Wyjdź z trybu kinowego intro" hidden>
-        ✕ Zamknij intro wideo
-      </button>
-
       <div class="heroContent">
-        <p class="eyebrow">CHRISTIAN CULTURE • BIBLIA AUDIO</p>
-        <h1>Nie tylko czytaj.<br><em>Usłysz Słowo.</em></h1>
-        <p class="lead">Filmowa, majestatyczna opowieść o najważniejszej Księdze świata. Wybierz rozdział, słuchaj w jakości studyjnej i wracaj tam, gdzie skończyłeś.</p>
+        <div class="heroBadge">
+          <span class="heroBadgeDot"></span>
+          OFICJALNA BIBLIA AUDIO CHRISTIAN CULTURE
+        </div>
+        <h1>Nie tylko czytaj.<br><span class="heroGoldGradient">Usłysz Słowo.</span></h1>
+        <p class="lead">Monumentalna opowieść o najważniejszej Księdze świata rozdział po rozdziale. Studyjna jakość radiowa EBU R128 (-16 LUFS), muzyka filmowa i mistrzowska interpretacja lektorska.</p>
         <div class="actions">
           <a class="btnPrimary" href="#biblioteka">▶ Rozpocznij słuchanie</a>
-          <button id="unmuteHero" class="btnOutline btnHeroVideo" type="button">🎬 Obejrzyj filmowe intro (Wideo + Dźwięk)</button>
+          <button id="btnOpenCinema" class="btnCinemaTrigger" type="button">🎬 Zobacz filmowe intro (16:9 • Dźwięk)</button>
         </div>
-        <p class="micro">Filmowe intro 16:9 z pełnym udźwiękowieniem. Kliknij, aby obejrzeć w pełnej krasie.</p>
+        <div class="heroPills">
+          <span class="heroPill">🎙️ Standard EBU R128 (-16 LUFS)</span>
+          <span class="heroPill">📻 Radio LIVE 24/7</span>
+          <span class="heroPill">📖 Przekład UBG</span>
+          <span class="heroPill">🕊️ 100% Bezpłatnie (ZERO COST)</span>
+        </div>
       </div>
       <a class="scrollDown" href="#biblioteka" aria-label="Zjedź do biblioteki">↓ Odkryj bibliotekę</a>
     </section>
 
+    <!-- Dedicated Cinema Intro Modal (16:9 Theater) -->
+    <div id="cinemaModal" class="cinemaModal" hidden role="dialog" aria-modal="true" aria-label="Filmowe Intro Biblia Audio">
+      <div class="cinemaHeaderBar">
+        <div class="cinemaTitle">
+          <span class="cinemaTitleDot"></span>
+          BIBLIA AUDIO • OFICJALNE INTRO FILMOWE
+        </div>
+        <button id="closeCinemaModal" class="cinemaCloseBtn" type="button" aria-label="Zamknij intro wideo">
+          ✕ Zamknij intro (ESC)
+        </button>
+      </div>
+      <div class="cinemaPlayerWrapper">
+        <video id="cinemaVideo" src="/biblia-audio/assets/intro.mp4" playsinline controls preload="auto"></video>
+      </div>
+      <p class="cinemaHint">Oficjalne intro w proporcji 16:9 z pełnym udźwiękowieniem studyjnym. Naciśnij ✕ Zamknij lub klawisz ESC, aby powrócić.</p>
+    </div>
+
     <!-- Radio LIVE 24/7 Section -->
     <section class="section radioSection" id="radio">
-      <div class="radioInfo">
-        <p class="eyebrow">RADIO BIBLIA • TRANSMISJA NA ŻYWO</p>
-        <h2>Słowo Boże non-stop na antenie</h2>
-        <p>Całodobowy strumień radiowy Biblia Audio Christian Culture. Słuchaj ciągłej lektury Pisma Świętego z pieczołowicie dobraną oprawą muzyczną.</p>
-      </div>
-      <div class="radioControls">
-        <button id="radioToggle" class="btnPrimary" type="button" aria-pressed="false">▶ Włącz radio na żywo</button>
-        <span id="radioStatus" class="radioStatus" role="status">Strumień gotowy do odsłuchu</span>
+      <div class="radioCard">
+        <div class="radioInfo">
+          <div class="radioLiveBadge">
+            <span class="radioLiveDot"></span>
+            TRANSMISJA NA ŻYWO • 24/7
+          </div>
+          <h2>Radio Biblia Audio — Słowo Boże non-stop</h2>
+          <p>Całodobowy strumień radiowy Biblia Audio Christian Culture. Słuchaj ciągłej lektury Pisma Świętego z pieczołowicie dobraną, majestatyczną oprawą muzyczną.</p>
+          <div class="radioMeta">
+            <span>🎙️ Mastering: EBU R128 (-16 LUFS)</span>
+            <span>📡 Jakość: 320 kbps HD</span>
+          </div>
+        </div>
+        <div class="radioControls">
+          <button id="radioToggle" class="btnRadioToggle" type="button" aria-pressed="false">
+            ▶ Włącz radio na żywo
+          </button>
+          <div class="radioStatus">
+            <span class="radioStatusDot"></span>
+            <span id="radioStatus">Strumień gotowy do odsłuchu</span>
+          </div>
+        </div>
       </div>
       <audio id="radioAudio" preload="none" crossorigin="anonymous" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
     </section>
@@ -132,36 +170,38 @@
 
     <!-- YouTube Video Podcast Series Section -->
     <section class="section podcastSection" id="podcast">
-      <div class="podcastHeader">
-        <p class="eyebrow">OFICJALNY WIDEO-PODCAST YOUTUBE • SERIA STUDYJNA</p>
-        <h2>Księga Rodzaju — Oglądaj i słuchaj całej serii</h2>
-        <p class="podcastLead">Monumentalna opowieść o początkach świata i ludzkości w wersji filmowej. Oglądaj kolejne odcinki bezpośrednio na stronie lub w aplikacji YouTube.</p>
-      </div>
-
-      <div class="podcastCard">
-        <div class="podcastEmbedWrapper">
-          <iframe 
-            src="https://www.youtube.com/embed/videoseries?si=lkbgrD1idyNODbq1&amp;list=PLcU_14pQp0SY" 
-            title="Księga Rodzaju | Biblia Audio Christian Culture" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" 
-            allowfullscreen 
-            loading="lazy">
-          </iframe>
+      <div class="podcastContainer">
+        <div class="podcastHeader">
+          <p class="eyebrow">OFICJALNY WIDEO-PODCAST YOUTUBE • SERIA STUDYJNA</p>
+          <h2>Księga Rodzaju — Oglądaj i słuchaj całej serii</h2>
+          <p class="podcastLead">Monumentalna opowieść o początkach świata i ludzkości w wersji filmowej. Oglądaj kolejne odcinki bezpośrednio na stronie lub w aplikacji YouTube.</p>
         </div>
-        <div class="podcastFooter">
-          <div class="podcastMeta">
-            <span class="podcastBadge">OFICJALNA PLAYLISTA WIDEO</span>
-            <span class="podcastTitle">Księga Rodzaju | Biblia Audio Christian Culture</span>
+
+        <div class="podcastCard">
+          <div class="podcastEmbedWrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/videoseries?si=lkbgrD1idyNODbq1&amp;list=PLcU_14pQp0SY" 
+              title="Księga Rodzaju | Biblia Audio Christian Culture" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen 
+              loading="lazy">
+            </iframe>
           </div>
-          <div class="podcastButtons">
-            <a class="btnPrimary" href="https://www.youtube.com/playlist?list=PLcU_14pQp0SY" target="_blank" rel="noopener">
-              ▶ Otwórz playlistę w YouTube ↗
-            </a>
-            <a class="btnOutline" href="#biblioteka">
-              Odsłuchaj pliki studyjne MP3 ↓
-            </a>
+          <div class="podcastFooter">
+            <div class="podcastMeta">
+              <span class="podcastBadge">OFICJALNA PLAYLISTA WIDEO</span>
+              <span class="podcastTitle">Księga Rodzaju | Biblia Audio Christian Culture</span>
+            </div>
+            <div class="podcastButtons">
+              <a class="btnPrimary" href="https://www.youtube.com/playlist?list=PLcU_14pQp0SY" target="_blank" rel="noopener">
+                ▶ Otwórz playlistę w YouTube ↗
+              </a>
+              <a class="btnOutline" href="#biblioteka">
+                Odsłuchaj pliki studyjne MP3 ↓
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -169,42 +209,60 @@
 
     <!-- Library & Audio Player Section -->
     <section class="section librarySection" id="biblioteka">
-      <p class="eyebrow">BIBLIOTEKA SŁUCHANIA NA ŻĄDANIE</p>
-      <h2>Wybierz rozdział</h2>
-      <p>Nowe nagrania studyjne publikujemy sukcesywnie, idąc kanonicznie przez całą Biblię. Rozdziały 1–9 Księgi Rodzaju są już w pełni dostępne w jakości emisyjnej.</p>
+      <div class="libraryContainer">
+        <p class="eyebrow">BIBLIOTEKA SŁUCHANIA NA ŻĄDANIE</p>
+        <h2>Wybierz rozdział</h2>
+        <p>Nowe nagrania studyjne publikujemy sukcesywnie, idąc kanonicznie przez całą Biblię. Rozdziały 1–9 Księgi Rodzaju są już w pełni dostępne w jakości emisyjnej.</p>
 
-      <div class="filters">
-        <div class="filterItem">
-          <label for="book">Księga:</label>
-          <select id="book" class="filterSelect" aria-label="Wybierz księgę">
-            <option value="genesis" selected>Księga Rodzaju (Genesis)</option>
-          </select>
-        </div>
-        <div class="filterItem">
-          <label for="search">Szukaj:</label>
-          <input id="search" class="filterInput" type="search" placeholder="Wpisz numer (np. 3) lub temat..." autocomplete="off" aria-label="Szukaj rozdziału">
-        </div>
-      </div>
-
-      <div id="chapters" class="chaptersGrid" aria-live="polite"></div>
-
-      <!-- Selected Chapter Player Panel -->
-      <div class="chapterPanel" id="chapterPanel">
-        <div>
-          <p class="eyebrow">TERAZ ODTWARZANE</p>
-          <h3 id="chapterTitle">Księga Rodzaju — Rozdział 1</h3>
-          <p id="chapterDescription">Stworzenie świata i początek wszystkiego</p>
-          <p id="chapterState" class="status-published" role="status">Nagranie gotowe do odtworzenia.</p>
+        <div class="filters">
+          <div class="filterItem">
+            <label for="book">Księga:</label>
+            <select id="book" class="filterSelect" aria-label="Wybierz księgę">
+              <option value="genesis" selected>Księga Rodzaju (Genesis)</option>
+            </select>
+          </div>
+          <div class="filterItem">
+            <label for="search">Szukaj:</label>
+            <input id="search" class="filterInput" type="search" placeholder="Wpisz numer (np. 3) lub temat..." autocomplete="off" aria-label="Szukaj rozdziału">
+          </div>
         </div>
 
-        <!-- Optional Multi-part controls for segmented chapters -->
-        <div id="chapterParts" class="chapterParts" hidden></div>
+        <div id="chapters" class="chaptersGrid" aria-live="polite"></div>
 
-        <audio id="chapterAudio" class="chapterAudio" controls preload="none"></audio>
+        <!-- Selected Chapter Player Panel (Spotify-Grade) -->
+        <div class="chapterPanel" id="chapterPanel">
+          <div class="chapterPanelHeader">
+            <p class="eyebrow">TERAZ ODTWARZANE • JAKOŚĆ STUDYJNA -16 LUFS</p>
+            <h3 id="chapterTitle">Księga Rodzaju — Rozdział 1</h3>
+            <p id="chapterDescription">Stworzenie świata i początek wszystkiego</p>
+            <p id="chapterState" class="status-published" role="status">Nagranie studyjne gotowe do emisji.</p>
+          </div>
 
-        <div class="chapterActions">
-          <button id="readBtn" class="btnOutline" type="button">📖 Czytaj w MojaBiblia</button>
-          <button id="shareChapter" class="btnOutline" type="button">🔗 Udostępnij ten rozdział</button>
+          <!-- Multi-part selector for segmented chapters (e.g. Genesis 1 & 2) -->
+          <div id="chapterParts" class="chapterParts" hidden></div>
+
+          <!-- Spotify-Grade Custom Player Bar -->
+          <div class="customPlayerBar" id="customPlayerBar">
+            <div class="playerControlRow">
+              <button id="customPlayBtn" class="btnPlayMaster" type="button" aria-label="Odtwórz / Zatrzymaj">▶</button>
+              <button id="skipBackBtn" class="btnSkipSec" type="button" aria-label="Cofnij o 15 sekund">↺ 15s</button>
+              <button id="skipFwdBtn" class="btnSkipSec" type="button" aria-label="Przewiń o 15 sekund">↻ 15s</button>
+              
+              <div class="playerTimeline">
+                <span id="timeCurrent" class="timeCurrent">0:00</span>
+                <input id="seekSlider" class="seekSlider" type="range" min="0" max="100" value="0" aria-label="Pasek postępu odtwarzania">
+                <span id="timeTotal" class="timeTotal">0:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Native Audio element (controlled by custom bar) -->
+          <audio id="chapterAudio" class="nativeAudioHidden" preload="none"></audio>
+
+          <div class="chapterActions">
+            <button id="readBtn" class="btnOutline" type="button">📖 Czytaj w MojaBiblia ↗</button>
+            <button id="shareChapter" class="btnOutline" type="button">🔗 Udostępnij ten rozdział</button>
+          </div>
         </div>
       </div>
     </section>
@@ -241,6 +299,6 @@
   <!-- EkoCC Mobile Edge Panel Script -->
   <script src="/js/cc-mobile-edge.js?v=20261030_1" defer></script>
   <!-- Page Application Logic -->
-  <script type="module" src="/biblia-audio/app.js?v=20261031_hero_art"></script>
+  <script type="module" src="/biblia-audio/app.js?v=20261031_cinema_v2"></script>
 </body>
 </html>

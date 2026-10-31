@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * Biblia Audio Christian Culture — Oficjalny Odtwarzacz EkoCC
+ * Biblia Audio Christian Culture — Oficjalny Odtwarzacz EkoCC Premium
  * Standard: ZERO COST, EBU R128 (-16 LUFS), Single Active Audio Player
  * ============================================================================
  */
@@ -9,8 +9,21 @@ const $ = (s) => document.querySelector(s);
 const radioAudio = $('#radioAudio');
 const chapterAudio = $('#chapterAudio');
 const radioStatus = $('#radioStatus');
-const heroVideo = $('#heroVideo');
 const partsContainer = $('#chapterParts');
+
+// Cinema Modal Elements
+const cinemaModal = $('#cinemaModal');
+const cinemaVideo = $('#cinemaVideo');
+const btnOpenCinema = $('#btnOpenCinema');
+const closeCinemaModal = $('#closeCinemaModal');
+
+// Custom Chapter Player Elements
+const customPlayBtn = $('#customPlayBtn');
+const skipBackBtn = $('#skipBackBtn');
+const skipFwdBtn = $('#skipFwdBtn');
+const seekSlider = $('#seekSlider');
+const timeCurrent = $('#timeCurrent');
+const timeTotal = $('#timeTotal');
 
 const config = {
   supportUrl: 'https://polskieradio.cc/wspieraj',
@@ -19,6 +32,15 @@ const config = {
 
 let catalog = [];
 let selected = null;
+let isSeeking = false;
+
+// Format seconds into MM:SS
+function formatTime(sec) {
+  if (!sec || isNaN(sec)) return '0:00';
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
 
 async function init() {
   try {
@@ -34,14 +56,17 @@ async function init() {
       chooseChapter('genesis-1');
     }
   } catch (err) {
-    $('#chapters').textContent = 'Nie udało się wczytać katalogu nagrań. Odśwież stronę.';
+    const ch = $('#chapters');
+    if (ch) ch.textContent = 'Nie udało się wczytać katalogu nagrań. Odśwież stronę.';
     console.error('[Biblia Audio] Catalog init error:', err);
   }
 }
 
 function renderChapters() {
-  const query = $('#search').value.toLocaleLowerCase('pl').trim();
+  const searchInput = $('#search');
+  const query = searchInput ? searchInput.value.toLocaleLowerCase('pl').trim() : '';
   const container = $('#chapters');
+  if (!container) return;
   container.replaceChildren();
 
   const filtered = catalog.filter((item) => {
@@ -56,11 +81,11 @@ function renderChapters() {
     btn.className = 'chapter' + (isAct ? ' active' : '') + (item.status === 'published' ? ' has-audio' : ' in-prod');
     btn.setAttribute('aria-pressed', isAct ? 'true' : 'false');
 
-    const badge = item.status === 'published' ? '▶ Słuchaj' : 'Wkrótce';
+    const badgeText = item.status === 'published' ? '▶ Gotowy' : 'W produkcji';
     btn.innerHTML = `
       <div class="chapterHeader">
         <strong>Rozdział ${item.chapter}</strong>
-        <span class="badge ${item.status === 'published' ? 'badge-live' : 'badge-soon'}">${badge}</span>
+        <span class="badge ${item.status === 'published' ? 'badge-live' : 'badge-soon'}">${badgeText}</span>
       </div>
       <small>${item.description}</small>
     `;
@@ -78,18 +103,21 @@ function chooseChapter(id) {
   $('#chapterTitle').textContent = `Księga Rodzaju — Rozdział ${item.chapter}`;
   $('#chapterDescription').textContent = item.description;
 
-  // Stop any active radio
+  // Stop active radio
   pauseRadio();
 
   chapterAudio.pause();
   chapterAudio.removeAttribute('src');
+  updateCustomPlayerUI(false, 0, 0);
 
   if (partsContainer) {
     partsContainer.innerHTML = '';
   }
 
+  const customPlayerBar = $('#customPlayerBar');
+
   if (item.status === 'published') {
-    $('#chapterState').textContent = 'Nagranie studyjne gotowe do emisji. Naciśnij odtwarzanie poniżej.';
+    $('#chapterState').textContent = 'Nagranie studyjne EBU R128 (-16 LUFS) gotowe do emisji.';
     $('#chapterState').className = 'status-published';
 
     if (item.audioParts && item.audioParts.length > 0) {
@@ -100,11 +128,11 @@ function chooseChapter(id) {
       if (partsContainer) partsContainer.hidden = true;
       setAudioSource(item.audioUrl);
     }
-    chapterAudio.hidden = false;
+    if (customPlayerBar) customPlayerBar.hidden = false;
   } else {
     $('#chapterState').textContent = 'Ten rozdział jest obecnie w produkcji studyjnej Biblia Audio. Premiera wkrótce.';
     $('#chapterState').className = 'status-soon';
-    chapterAudio.hidden = true;
+    if (customPlayerBar) customPlayerBar.hidden = true;
     if (partsContainer) partsContainer.hidden = true;
   }
 
@@ -147,98 +175,202 @@ function setAudioSource(url, autoPlay = false) {
   chapterAudio.pause();
   chapterAudio.src = url;
   chapterAudio.load();
+  updateCustomPlayerUI(false, 0, 0);
+
   if (autoPlay) {
     pauseRadio();
     chapterAudio.play().catch(() => {});
   }
 }
 
+// Single active audio rule: Radio control
 function pauseRadio() {
   if (!radioAudio.paused) {
     radioAudio.pause();
-    $('#radioToggle').textContent = '▶ Włącz radio';
-    $('#radioToggle').setAttribute('aria-pressed', 'false');
-    radioStatus.textContent = 'Radio zatrzymane';
+    const btn = $('#radioToggle');
+    if (btn) {
+      btn.textContent = '▶ Włącz radio na żywo';
+      btn.setAttribute('aria-pressed', 'false');
+    }
+    if (radioStatus) radioStatus.textContent = 'Radio zatrzymane';
   }
 }
 
-const closeCinemaBtn = $('#closeCinemaIntro');
-
-function startCinemaIntro() {
-  pauseRadio();
-  chapterAudio.pause();
-
-  heroVideo.muted = false;
-  heroVideo.currentTime = 0;
-  heroVideo.loop = false;
-
-  const heroSection = $('#start');
-  if (heroSection) {
-    heroSection.classList.add('cinema-active');
-    heroSection.classList.add('intro-active');
+// Custom Player UI update
+function updateCustomPlayerUI(isPlaying, current, total) {
+  if (customPlayBtn) {
+    customPlayBtn.textContent = isPlaying ? 'Ⅱ' : '▶';
+    customPlayBtn.setAttribute('aria-label', isPlaying ? 'Zatrzymaj' : 'Odtwórz');
   }
-  document.body.classList.add('cinema-intro-open');
-  if (closeCinemaBtn) closeCinemaBtn.hidden = false;
+  if (!isSeeking && seekSlider) {
+    seekSlider.value = total > 0 ? (current / total) * 100 : 0;
+  }
+  if (timeCurrent) timeCurrent.textContent = formatTime(current);
+  if (timeTotal) timeTotal.textContent = formatTime(total);
+}
 
-  heroVideo.play().catch((err) => {
-    console.warn('[Biblia Audio] Hero video play error:', err);
+// Custom Chapter Player Event Listeners
+if (customPlayBtn) {
+  customPlayBtn.addEventListener('click', () => {
+    if (!chapterAudio.src) return;
+    if (chapterAudio.paused) {
+      pauseRadio();
+      closeCinemaIntro();
+      chapterAudio.play().catch((e) => console.warn('Play error:', e));
+    } else {
+      chapterAudio.pause();
+    }
   });
 }
 
-function stopCinemaIntro() {
-  heroVideo.muted = true;
-  heroVideo.loop = true;
-
-  const heroSection = $('#start');
-  if (heroSection) {
-    heroSection.classList.remove('cinema-active');
-    heroSection.classList.remove('intro-active');
-  }
-  document.body.classList.remove('cinema-intro-open');
-  if (closeCinemaBtn) closeCinemaBtn.hidden = true;
-
-  heroVideo.play().catch(() => {});
+if (skipBackBtn) {
+  skipBackBtn.addEventListener('click', () => {
+    if (chapterAudio.src) {
+      chapterAudio.currentTime = Math.max(0, chapterAudio.currentTime - 15);
+    }
+  });
 }
 
-function muteHero() {
-  stopCinemaIntro();
+if (skipFwdBtn) {
+  skipFwdBtn.addEventListener('click', () => {
+    if (chapterAudio.src) {
+      const max = chapterAudio.duration || 0;
+      chapterAudio.currentTime = Math.min(max, chapterAudio.currentTime + 15);
+    }
+  });
 }
 
-// Single active audio rule: Playing chapter pauses radio
+if (seekSlider) {
+  seekSlider.addEventListener('input', () => {
+    isSeeking = true;
+    if (chapterAudio.duration) {
+      const targetTime = (seekSlider.value / 100) * chapterAudio.duration;
+      if (timeCurrent) timeCurrent.textContent = formatTime(targetTime);
+    }
+  });
+
+  seekSlider.addEventListener('change', () => {
+    if (chapterAudio.duration) {
+      chapterAudio.currentTime = (seekSlider.value / 100) * chapterAudio.duration;
+    }
+    isSeeking = false;
+  });
+}
+
 chapterAudio.addEventListener('play', () => {
   pauseRadio();
-  muteHero();
+  closeCinemaIntro();
+  updateCustomPlayerUI(true, chapterAudio.currentTime, chapterAudio.duration);
 });
 
-// Single active audio rule: Playing radio pauses chapter
-$('#radioToggle').addEventListener('click', async () => {
-  if (!radioAudio.paused) {
-    pauseRadio();
-    return;
-  }
+chapterAudio.addEventListener('pause', () => {
+  updateCustomPlayerUI(false, chapterAudio.currentTime, chapterAudio.duration);
+});
 
+chapterAudio.addEventListener('timeupdate', () => {
+  if (!isSeeking) {
+    updateCustomPlayerUI(!chapterAudio.paused, chapterAudio.currentTime, chapterAudio.duration);
+  }
+});
+
+chapterAudio.addEventListener('loadedmetadata', () => {
+  updateCustomPlayerUI(!chapterAudio.paused, chapterAudio.currentTime, chapterAudio.duration);
+});
+
+chapterAudio.addEventListener('ended', () => {
+  updateCustomPlayerUI(false, 0, chapterAudio.duration);
+});
+
+// Radio Toggle Listener
+const radioToggleBtn = $('#radioToggle');
+if (radioToggleBtn) {
+  radioToggleBtn.addEventListener('click', async () => {
+    if (!radioAudio.paused) {
+      pauseRadio();
+      return;
+    }
+
+    chapterAudio.pause();
+    closeCinemaIntro();
+
+    try {
+      await radioAudio.play();
+      radioToggleBtn.textContent = 'Ⅱ Zatrzymaj radio';
+      radioToggleBtn.setAttribute('aria-pressed', 'true');
+      if (radioStatus) radioStatus.textContent = 'Radio gra na żywo (24/7)';
+    } catch (err) {
+      if (radioStatus) radioStatus.textContent = 'Nie udało się uruchomić strumienia. Spróbuj ponownie.';
+      console.error('[Radio LIVE] Error:', err);
+    }
+  });
+}
+
+// Dedicated Cinema Intro Modal Control
+function openCinemaIntro() {
+  pauseRadio();
   chapterAudio.pause();
-  muteHero();
 
-  try {
-    await radioAudio.play();
-    $('#radioToggle').textContent = 'Ⅱ Zatrzymaj radio';
-    $('#radioToggle').setAttribute('aria-pressed', 'true');
-    radioStatus.textContent = 'Radio gra na żywo (24/7)';
-  } catch (err) {
-    radioStatus.textContent = 'Nie udało się uruchomić strumienia. Spróbuj ponownie.';
-    console.error('[Radio LIVE] Error:', err);
+  if (cinemaModal) {
+    cinemaModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  if (cinemaVideo) {
+    cinemaVideo.currentTime = 0;
+    cinemaVideo.muted = false;
+    cinemaVideo.play().catch((err) => {
+      console.warn('[Biblia Audio] Cinema play autoplay notice:', err);
+    });
+  }
+}
+
+function closeCinemaIntro() {
+  if (cinemaVideo) {
+    cinemaVideo.pause();
+    cinemaVideo.currentTime = 0;
+  }
+  if (cinemaModal) {
+    cinemaModal.hidden = true;
+    document.body.style.overflow = '';
+  }
+}
+
+if (btnOpenCinema) {
+  btnOpenCinema.addEventListener('click', openCinemaIntro);
+}
+
+if (closeCinemaModal) {
+  closeCinemaModal.addEventListener('click', closeCinemaIntro);
+}
+
+if (cinemaVideo) {
+  cinemaVideo.addEventListener('ended', closeCinemaIntro);
+}
+
+// Escape key closes cinema modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && cinemaModal && !cinemaModal.hidden) {
+    closeCinemaIntro();
   }
 });
 
-$('#search').addEventListener('input', renderChapters);
+// Search input
+const searchInput = $('#search');
+if (searchInput) {
+  searchInput.addEventListener('input', renderChapters);
+}
 
-$('#readBtn').onclick = () => {
-  if (selected?.textUrl) {
-    window.open(selected.textUrl, '_blank', 'noopener,noreferrer');
-  }
-};
+// MojaBiblia Link
+const readBtn = $('#readBtn');
+if (readBtn) {
+  readBtn.onclick = () => {
+    if (selected?.textUrl) {
+      window.open(selected.textUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+}
 
+// Sharing URLs
 async function shareUrl(url, title) {
   if (navigator.share) {
     try {
@@ -278,46 +410,19 @@ for (const id of ['shareTop', 'shareBottom']) {
   }
 }
 
-$('#shareChapter').onclick = () => {
-  const shareTitle = selected
-    ? `Księga Rodzaju ${selected.chapter} — Biblia Audio Christian Culture`
-    : 'Biblia Audio Christian Culture';
-  shareUrl(window.location.href, shareTitle);
-};
-
-$('#unmuteHero').onclick = () => {
-  const heroSection = $('#start');
-  if (heroSection && heroSection.classList.contains('cinema-active')) {
-    stopCinemaIntro();
-  } else {
-    startCinemaIntro();
-  }
-};
-
-if (closeCinemaBtn) {
-  closeCinemaBtn.onclick = stopCinemaIntro;
+const shareChapterBtn = $('#shareChapter');
+if (shareChapterBtn) {
+  shareChapterBtn.onclick = () => {
+    const shareTitle = selected
+      ? `Księga Rodzaju ${selected.chapter} — Biblia Audio Christian Culture`
+      : 'Biblia Audio Christian Culture';
+    shareUrl(window.location.href, shareTitle);
+  };
 }
 
-if (heroVideo) {
-  heroVideo.addEventListener('ended', () => {
-    const heroSection = $('#start');
-    if (heroSection && heroSection.classList.contains('cinema-active')) {
-      stopCinemaIntro();
-    }
-  });
-}
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    const heroSection = $('#start');
-    if (heroSection && heroSection.classList.contains('cinema-active')) {
-      stopCinemaIntro();
-    }
-  }
-});
-
-if (config.supportUrl) {
-  $('#supportLink').href = config.supportUrl;
+const supportLink = $('#supportLink');
+if (supportLink && config.supportUrl) {
+  supportLink.href = config.supportUrl;
 }
 
 init();
