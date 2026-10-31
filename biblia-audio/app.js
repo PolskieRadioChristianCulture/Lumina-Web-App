@@ -162,13 +162,46 @@ function pauseRadio() {
   }
 }
 
-function muteHero() {
-  if (heroVideo && !heroVideo.muted) {
-    heroVideo.muted = true;
-    $('#unmuteHero').textContent = 'Włącz dźwięk intro';
-  }
+const closeCinemaBtn = $('#closeCinemaIntro');
+
+function startCinemaIntro() {
+  pauseRadio();
+  chapterAudio.pause();
+
+  heroVideo.muted = false;
+  heroVideo.currentTime = 0;
+  heroVideo.loop = false;
+
   const heroSection = $('#start');
-  if (heroSection) heroSection.classList.remove('intro-active');
+  if (heroSection) {
+    heroSection.classList.add('cinema-active');
+    heroSection.classList.add('intro-active');
+  }
+  document.body.classList.add('cinema-intro-open');
+  if (closeCinemaBtn) closeCinemaBtn.hidden = false;
+
+  heroVideo.play().catch((err) => {
+    console.warn('[Biblia Audio] Hero video play error:', err);
+  });
+}
+
+function stopCinemaIntro() {
+  heroVideo.muted = true;
+  heroVideo.loop = true;
+
+  const heroSection = $('#start');
+  if (heroSection) {
+    heroSection.classList.remove('cinema-active');
+    heroSection.classList.remove('intro-active');
+  }
+  document.body.classList.remove('cinema-intro-open');
+  if (closeCinemaBtn) closeCinemaBtn.hidden = true;
+
+  heroVideo.play().catch(() => {});
+}
+
+function muteHero() {
+  stopCinemaIntro();
 }
 
 // Single active audio rule: Playing chapter pauses radio
@@ -253,19 +286,35 @@ $('#shareChapter').onclick = () => {
 };
 
 $('#unmuteHero').onclick = () => {
-  if (!heroVideo) return;
-  heroVideo.muted = !heroVideo.muted;
-  $('#unmuteHero').textContent = heroVideo.muted ? 'Włącz dźwięk intro' : 'Wycisz intro';
   const heroSection = $('#start');
-  if (!heroVideo.muted) {
-    chapterAudio.pause();
-    pauseRadio();
-    if (heroSection) heroSection.classList.add('intro-active');
-    heroVideo.play().catch(() => {});
+  if (heroSection && heroSection.classList.contains('cinema-active')) {
+    stopCinemaIntro();
   } else {
-    if (heroSection) heroSection.classList.remove('intro-active');
+    startCinemaIntro();
   }
 };
+
+if (closeCinemaBtn) {
+  closeCinemaBtn.onclick = stopCinemaIntro;
+}
+
+if (heroVideo) {
+  heroVideo.addEventListener('ended', () => {
+    const heroSection = $('#start');
+    if (heroSection && heroSection.classList.contains('cinema-active')) {
+      stopCinemaIntro();
+    }
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const heroSection = $('#start');
+    if (heroSection && heroSection.classList.contains('cinema-active')) {
+      stopCinemaIntro();
+    }
+  }
+});
 
 if (config.supportUrl) {
   $('#supportLink').href = config.supportUrl;
