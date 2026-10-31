@@ -162,13 +162,19 @@ function pauseRadio() {
   }
 }
 
-// Single active audio rule: Playing chapter pauses radio
-chapterAudio.addEventListener('play', () => {
-  pauseRadio();
+function muteHero() {
   if (heroVideo && !heroVideo.muted) {
     heroVideo.muted = true;
     $('#unmuteHero').textContent = 'Włącz dźwięk intro';
   }
+  const heroSection = $('#start');
+  if (heroSection) heroSection.classList.remove('intro-active');
+}
+
+// Single active audio rule: Playing chapter pauses radio
+chapterAudio.addEventListener('play', () => {
+  pauseRadio();
+  muteHero();
 });
 
 // Single active audio rule: Playing radio pauses chapter
@@ -179,10 +185,7 @@ $('#radioToggle').addEventListener('click', async () => {
   }
 
   chapterAudio.pause();
-  if (heroVideo && !heroVideo.muted) {
-    heroVideo.muted = true;
-    $('#unmuteHero').textContent = 'Włącz dźwięk intro';
-  }
+  muteHero();
 
   try {
     await radioAudio.play();
@@ -253,12 +256,14 @@ $('#unmuteHero').onclick = () => {
   if (!heroVideo) return;
   heroVideo.muted = !heroVideo.muted;
   $('#unmuteHero').textContent = heroVideo.muted ? 'Włącz dźwięk intro' : 'Wycisz intro';
+  const heroSection = $('#start');
   if (!heroVideo.muted) {
     chapterAudio.pause();
     pauseRadio();
-  }
-  if (!heroVideo.paused) {
+    if (heroSection) heroSection.classList.add('intro-active');
     heroVideo.play().catch(() => {});
+  } else {
+    if (heroSection) heroSection.classList.remove('intro-active');
   }
 };
 
