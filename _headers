@@ -1,3 +1,19 @@
+
+/newsletter
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/newsletter/
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/newsletter/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/newsletter.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/js/cc-newsletter.js*
+  Cache-Control: no-cache, no-store, must-revalidate
+
 /*
   Access-Control-Allow-Origin: *
   X-Content-Type-Options: nosniff

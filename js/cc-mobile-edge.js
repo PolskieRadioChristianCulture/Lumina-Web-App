@@ -143,7 +143,7 @@
     ['book','Moja Biblia','/mojabiblia'], ['study','Akademia Biblijna','/akademia'],
     ['calendar','HOLOS — planer','/holos'], ['play','Kino VOD','/vod'],
     ['search','Szukaj w ekosystemie','/szukaj'],
-    ['mail','Newsletter — Bądźmy w kontakcie','/newsletter'],
+    ['mail','LIVE LETTER • Newsletter CC','/newsletter'],
     ['heart','Wspieram To','/wspieraj'],
   ];
 
@@ -620,7 +620,7 @@
         ['play','Kino VOD','/vod'],
         ['yis','Your Imagination Studio (YIS)','/yis'],
         ['search','Szukaj w ekosystemie','/szukaj'],
-        ['mail','Newsletter — Bądźmy w kontakcie','/newsletter'],
+        ['mail','LIVE LETTER • Newsletter CC','/newsletter'],
         ['heart','Wspieram To','/wspieraj'],
       ] : commonItems;
 

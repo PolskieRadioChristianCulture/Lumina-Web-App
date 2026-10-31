@@ -869,6 +869,20 @@ export class NewsletterRepository {
     await this.addSuppression(emailHash, 'gdpr_erasure', nowIso);
   }
 
+  async getPublicStats() {
+    // A public count must come from persistent storage, never a process-local demo.
+    // This read path does not create tables or mutate consent/subscription state.
+    if (!this.d1) throw new Error('PublicStatsUnavailable');
+    const row = await this.d1.prepare("SELECT COUNT(DISTINCT email_normalized) AS active_count FROM newsletter_subscribers WHERE status = 'active' AND confirmed_at IS NOT NULL AND confirmed_at <> '' AND unsubscribed_at IS NULL").first();
+    const count = row?.active_count;
+    if (!Number.isSafeInteger(count) || count < 0) throw new Error('PublicStatsUnavailable');
+    return {
+      confirmed_active_subscribers: count >= 10 ? count : null,
+      display: count >= 10 ? 'count' : 'community',
+      updated_at: new Date().toISOString(),
+    };
+  }
+
   async getStatsSummary() {
     await this.ensureInitialized();
     let subscribers = [];
@@ -927,12 +941,12 @@ export class NewsletterService {
 
   getNeutralSubscribeMessage(locale = 'pl') {
     if (locale === 'en') {
-      return 'If the provided email address can receive messages, we have sent a confirmation link. Please check your inbox and confirm your subscription.';
+      return 'Your request has been received. Check your inbox for a confirmation link. A subscription becomes active only after confirmation.';
     }
     if (locale === 'de') {
-      return 'Wenn die angegebene E-Mail-Adresse Nachrichten empfangen kann, haben wir einen Bestätigungslink gesendet. Bitte prüfen Sie Ihr Postfach.';
+      return 'Ihre Anfrage wurde angenommen. Prüfen Sie Ihr Postfach auf einen Bestätigungslink. Das Abonnement wird erst nach der Bestätigung aktiv.';
     }
-    return 'Jeśli podany adres e-mail może odbierać wiadomości, wysłaliśmy link potwierdzający. Sprawdź skrzynkę i potwierdź zapis.';
+    return 'Przyjęliśmy prośbę. Sprawdź skrzynkę w poszukiwaniu linku. Zapis staje się aktywny dopiero po potwierdzeniu.';
   }
 
   async hashClientContext(ip = '', userAgent = '') {
@@ -1950,6 +1964,18 @@ export async function handleNewsletterApiRequest(request, env = {}, verifyAdminT
     userAgent: request.headers.get('User-Agent') || 'unknown',
     requestUrl: request.url,
   };
+
+  // Aggregate-only public statistics; no subscriber metadata or arbitrary filters.
+  if (path === '/api/newsletter/public-stats') {
+    if (method !== 'GET') return new Response(JSON.stringify({ok:false}),{status:405,headers:{...jsonHeaders,Allow:'GET'}});
+    if (url.search) return new Response(JSON.stringify({ok:false}),{status:400,headers:jsonHeaders});
+    try {
+      const stats = await service.repo.getPublicStats();
+      return new Response(JSON.stringify(stats),{status:200,headers:{...jsonHeaders,'Cache-Control':'public, max-age=300, s-maxage=600'}});
+    } catch {
+      return new Response(JSON.stringify({ok:false,message:'Statystyki chwilowo niedostępne.'}),{status:503,headers:jsonHeaders});
+    }
+  }
 
   // 1. GET /api/newsletter/topics
   if (path === '/api/newsletter/topics' && method === 'GET') {

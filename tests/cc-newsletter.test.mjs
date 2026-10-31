@@ -388,7 +388,7 @@ test('T19 & T20: Kampania trafia wyłącznie do aktywnych subskrybentów danej k
 
 test('T21, T22 & T23: Integracja w panelu + (js/cc-mobile-edge.js), dostępność ARIA, responsywność 320px+ i i18n PL/EN/DE', () => {
   const edgeCode = fs.readFileSync(path.join(ROOT, 'js/cc-mobile-edge.js'), 'utf8');
-  assert.ok(edgeCode.includes("['mail','Newsletter — Bądźmy w kontakcie','/newsletter']"), 'Edge panel must include Newsletter item');
+  assert.ok(edgeCode.includes("['mail','LIVE LETTER • Newsletter CC','/newsletter']"), 'Edge panel must include Newsletter item');
   assert.ok(edgeCode.includes("mail: 'Newsletter — Stay in touch'"), 'Edge panel must include English translation');
   assert.ok(edgeCode.includes("mail: 'Newsletter — In Kontakt bleiben'"), 'Edge panel must include German translation');
 
@@ -439,4 +439,14 @@ test('T24: Bezpiecznik NEWSLETTER_DELIVERY_ENABLED=false gwarantuje tryb dry_run
   assert.match(confirmPageRes.headers.get('Cache-Control') || '', /no-store/);
   assert.match(confirmPageRes.headers.get('X-Robots-Tag') || '', /noindex/);
   assert.equal(confirmPageRes.headers.get('Referrer-Policy'), 'no-referrer');
+});
+
+test('T25: unavailable persistent statistics return 503, no fabricated zero and no PII', async()=>{
+ const res=await worker.fetch(new Request('https://polskieradio.cc/api/newsletter/public-stats'),{});
+ assert.equal(res.status,503);assert.match(res.headers.get('Cache-Control'),/no-store/);const data=await res.json();assert.equal(data.confirmed_active_subscribers,undefined);assert.equal(data.email,undefined);assert.equal(data.subscribers,undefined);assert.equal(data.tokens,undefined);
+});
+test('T26: public statistics expose only a validated confirmed aggregate with cache, and reject filters/methods',async()=>{
+ const newsletter_db={prepare(sql){assert.match(sql,/COUNT\(DISTINCT email_normalized\)/);assert.match(sql,/confirmed_at IS NOT NULL/);return {first:async()=>({active_count:12})};}};
+ const res=await worker.fetch(new Request('https://polskieradio.cc/api/newsletter/public-stats'),{newsletter_db});assert.equal(res.status,200);assert.match(res.headers.get('Cache-Control'),/max-age=300/);const data=await res.json();assert.equal(data.confirmed_active_subscribers,12);assert.deepEqual(Object.keys(data).sort(),['confirmed_active_subscribers','display','updated_at']);
+ for(const [suffix,method,status] of [['?email=synthetic@example.invalid','GET',400],['','POST',405]]){const result=await worker.fetch(new Request('https://polskieradio.cc/api/newsletter/public-stats'+suffix,{method}),{newsletter_db});assert.equal(result.status,status);}
 });

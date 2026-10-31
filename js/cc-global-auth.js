@@ -661,12 +661,14 @@
                 const isWioletta = userEmail.split('@')[0] === 'wioletta1240';
                 const isZbyszek = profile.slug === 'zbyszekgieron';
                 const isZofia = profile.slug === 'zofiadudek';
+                const isMarek = userEmail === 'marusjakubowski@gmail.com' || profile.slug === 'marekjakubowski' || profile.slug === 'u_marekjakubowski';
 
                 let avatar = profile.avatar || user.photoURL || '/lumina_icon.jpg';
                 if (isCezary && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_cezary_official.jpg';
                 else if (isWioletta && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_wioletta_official.jpg';
                 else if (isZbyszek && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_zbyszek_gieron.jpg';
                 else if (isZofia && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_zofia_dudek.jpg';
+                else if (isMarek && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = '/avatar_marek_jakubowski.jpg';
 
                 if (avatar && !avatar.startsWith('/') && !avatar.startsWith('http') && !avatar.startsWith('data:')) {
                     avatar = '/' + avatar;
@@ -677,6 +679,7 @@
                 else if (isWioletta) profileHref = '/lumina.wiolettarogowska.html';
                 else if (isZbyszek) profileHref = '/lumina.zbyszekgieron.html';
                 else if (isZofia) profileHref = '/lumina.zofiadudek.html';
+                else if (isMarek) profileHref = '/lumina.marekjakubowski.html';
                 else if (profile.slug) profileHref = `/lumina-profile.html?u=${profile.slug}`;
 
                 if (profileHref && !profileHref.startsWith('/') && !profileHref.startsWith('http')) {

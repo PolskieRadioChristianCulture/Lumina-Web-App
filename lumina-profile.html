@@ -161,8 +161,43 @@
             try {
                 const params = new URLSearchParams(window.location.search);
                 const raw = (params.get('u') || params.get('user') || params.get('slug') || '').toLowerCase();
-                if (!raw) return;
-                const slug = decodeURIComponent(raw).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l').replace(/Ł/g, 'l');
+                
+                // Sprawdzenie aktywnego użytkownika jeśli brak slug w URL lub wejście z ogólnego 'moj_profil'
+                if (!raw || raw === 'moj_profil') {
+                    try {
+                        const curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || '{}');
+                        const curUser = JSON.parse(localStorage.getItem('lumina_current_user') || '{}');
+                        const uMail = (curUser.email || '').toLowerCase();
+                        const pSlug = (curProf.slug || '').toLowerCase();
+                        if (uMail === 'marusjakubowski@gmail.com' || pSlug === 'marekjakubowski' || pSlug === 'u_marekjakubowski') {
+                            window.location.replace('lumina-profile.html?u=marekjakubowski' + (window.location.hash || ''));
+                            return;
+                        }
+                        if (pSlug === 'cezaryrgowski' || uMail === 'nazirczarkes@gmail.com') {
+                            window.location.replace('lumina.cezaryrgowski.html' + (window.location.hash || ''));
+                            return;
+                        }
+                        if (pSlug === 'wiolettarogowska' || uMail.startsWith('wioletta1240')) {
+                            window.location.replace('lumina.wiolettarogowska.html' + (window.location.hash || ''));
+                            return;
+                        }
+                        if (pSlug === 'zbyszekgieron') {
+                            window.location.replace('lumina.zbyszekgieron.html' + (window.location.hash || ''));
+                            return;
+                        }
+                        if (pSlug === 'zofiadudek') {
+                            window.location.replace('lumina.zofiadudek.html' + (window.location.hash || ''));
+                            return;
+                        }
+                        if (pSlug && pSlug !== 'moj_profil') {
+                            window.location.replace('lumina-profile.html?u=' + pSlug + (window.location.hash || ''));
+                            return;
+                        }
+                    } catch(e) {}
+                    return;
+                }
+
+                const slug = decodeURIComponent(raw).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l').replace(/Ł/g, 'l');
                 if (slug.includes('studiodobregoslowa') || slug.includes('studiods') || slug.includes('studiodobre')) {
                     window.location.replace('lumina.studiodobregoslowa.html' + (window.location.hash || ''));
                     return;
@@ -5737,12 +5772,7 @@
                 role: 'Autor Rozważań & Społeczność LUMINA ✨',
                 church: 'Wspólnota Chrześcijańska',
                 denom: 'Chrześcijanin',
-                status: '',
-                pin: '7777',
-                visibility: 'public',
-                match: '98%',
-                matchScore: '98%',
-                verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
+                status: '',                visibility: 'public',                verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
                 verseRef: '\u2014 Psalm 28, 7 (UBG)',
                 bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce \u2014 przez codzienne rozważania Słowa Bożego.',
                 tags: ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'],
@@ -5763,12 +5793,7 @@
                 role: 'Autor Rozważań & Społeczność LUMINA ✨',
                 church: 'Wspólnota Chrześcijańska',
                 denom: 'Chrześcijanin',
-                status: '',
-                pin: '7777',
-                visibility: 'public',
-                match: '98%',
-                matchScore: '98%',
-                verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
+                status: '',                visibility: 'public',                verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
                 verseRef: '\u2014 Psalm 28, 7 (UBG)',
                 bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce \u2014 przez codzienne rozważania Słowa Bożego.',
                 tags: ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'],
@@ -6505,11 +6530,13 @@
                 blockBtnLabel.textContent = isBlocked ? 'Odblokuj Profil' : 'Zablokuj Profil';
             }
 
+            const isMarek = slug === 'marekjakubowski' || slug === 'u_marekjakubowski';
             const isCCWomen = (slug.includes('ccwomen') || slug.includes('women') || slug.includes('9055'));
             const isMission = data.isMissionAccount || data.isMission || isCCWomen || (slug && ['radiocc','cctv','ccmen','ccwomen','studiodobregoslowa','osobowoscplus','lumina','bibliaaudio','jolawojcik'].includes(slug.toLowerCase())) || (slug && (slug.startsWith('u_lumina') || slug.startsWith('u_bibliaaudio'))) || (data.name && (data.name.toLowerCase().includes('christian culture') || data.name.toLowerCase().includes('portal lumina') || data.name.toLowerCase().includes('studio dobrego słowa') || data.name.toLowerCase().includes('osobowość +')));
 
             document.getElementById('pageTitle').textContent = `${data.name} – Profil LUMINA | Christian Culture`;
             document.getElementById('userNameEl').textContent = data.name;
+            if(isMarek) document.querySelector('.verified-badge').style.display=data.verified===true?'':'none';
             
             if (isCCWomen) {
                 document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city || 'Polska'} • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b>`;
@@ -6525,8 +6552,8 @@
             if (document.getElementById('userDenomEl')) document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom || 'Chrześcijanin'}`;
             if (document.getElementById('userJobEl')) document.getElementById('userJobEl').textContent = data.job || data.role || 'Społeczność LUMINA ✨';
             if (document.getElementById('userChurchEl')) document.getElementById('userChurchEl').textContent = data.church || 'Wspólnota Chrześcijańska';
-            if (document.getElementById('userStatusEl')) document.getElementById('userStatusEl').textContent = data.status || 'Panna / Kawaler';
-            if (document.getElementById('userGoalEl')) document.getElementById('userGoalEl').textContent = data.goal || (isCCWomen ? 'Ewangelizacja i wzrost duchowy kobiet 🌸' : 'Budowanie trwałej relacji opartej na Chrystusie');
+            if (document.getElementById('userStatusEl')) document.getElementById('userStatusEl').textContent = data.status || (isMarek ? 'Nie podano' : 'Panna / Kawaler');
+            if (document.getElementById('userGoalEl')) document.getElementById('userGoalEl').textContent = data.goal || (isMarek ? 'Nie podano' : isCCWomen ? 'Ewangelizacja i wzrost duchowy kobiet 🌸' : 'Budowanie trwałej relacji opartej na Chrystusie');
             if (document.getElementById('userVerseText')) document.getElementById('userVerseText').textContent = data.verse || '„Wszystko mogę w Tym, który mnie umacnia”';
             if (document.getElementById('userVerseRef')) document.getElementById('userVerseRef').textContent = data.verseRef || '— Flp 4, 13';
             if (document.getElementById('userMatchEl')) {
@@ -6601,20 +6628,21 @@
                     { type: 'bible', icon: 'fa-book-bible', text: data.bibleHabit || 'Czytanie Pisma Świętego' },
                     { type: 'marriage', icon: 'fa-ring', text: data.marriageGoal || (data.status === 'Żonaty' || data.status === 'Mężatka' ? 'Szczęśliwe małżeństwo w Chrystusie' : 'Małżeństwo w Bożej woli') }
                 ];
-                badgesBar.innerHTML = defaultBadges.map(b => `
+                badgesBar.innerHTML = defaultBadges.filter((b,i)=>!isMarek||Boolean(data[['prayerHabit','worshipDay','bibleHabit','marriageGoal'][i]])).map(b => `
                     <span class="faith-badge-pill ${b.type}"><i class="fa-solid ${b.icon}"></i> ${b.text}</span>
                 `).join('');
             }
 
             // ══════════ 3D FAITH & ENGAGEMENT BADGES RENDERING ══════════
+            const badgeProfile = isMarek && data.verified!==true ? {...data, avatar:''} : data;
             const badgesBox = document.getElementById('tab3DBadgesContainer');
             const sideBadgesBox = document.getElementById('sidebar3DBadgesBox');
             if (window.LuminaDB && typeof window.LuminaDB.render3DBadgesGridHtml === 'function') {
-                const badgesHtml = window.LuminaDB.render3DBadgesGridHtml(data, data.name);
+                const badgesHtml = window.LuminaDB.render3DBadgesGridHtml(badgeProfile, data.name);
                 if (badgesBox) badgesBox.innerHTML = badgesHtml;
                 if (sideBadgesBox) sideBadgesBox.innerHTML = badgesHtml;
             } else if (typeof render3DBadgesGridHtml === 'function') {
-                const badgesHtml = render3DBadgesGridHtml(data, data.name);
+                const badgesHtml = render3DBadgesGridHtml(badgeProfile, data.name);
                 if (badgesBox) badgesBox.innerHTML = badgesHtml;
                 if (sideBadgesBox) sideBadgesBox.innerHTML = badgesHtml;
             }

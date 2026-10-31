@@ -2,11 +2,1331 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0;url=/newsletter">
-  <title>Newsletter EkoCC | Christian Culture</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <title>LIVE LETTER • Centralny Newsletter Christian Culture (EkoCC)</title>
+  <meta name="description" content="Dołącz do LIVE LETTER — sygnału, który łączy. Codzienne rozważania biblijne o 06:00, muzyka, audycje, kultura i wartościowe wiadomości. Wybierz swój sygnał.">
+  <link rel="canonical" href="https://polskieradio.cc/newsletter">
+  <link rel="icon" type="image/png" href="/icon.png">
+  <link rel="apple-touch-icon" href="/icon.png">
+
+  <!-- Open Graph / Social Previews -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Christian Culture • EkoCC">
+  <meta property="og:title" content="LIVE LETTER — Sygnał, który łączy | Christian Culture">
+  <meta property="og:description" content="Codzienne rozważania biblijne o 06:00, nowe audycje, inspirujące historie, kultura i wartości. Wybierasz, co trafia do Twojej skrzynki.">
+  <meta property="og:image" content="https://polskieradio.cc/images/news/art-oficjalny-start-newslettera-christian-culture-dolacz.jpg">
+  <meta property="og:url" content="https://polskieradio.cc/newsletter">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LIVE LETTER — Sygnał, który łączy">
+  <meta name="twitter:description" content="Wybierz swój sygnał w ekosystemie Christian Culture. Zero spamu, wypis 1 kliknięciem.">
+  <meta name="twitter:image" content="https://polskieradio.cc/images/news/art-oficjalny-start-newslettera-christian-culture-dolacz.jpg">
+
+  <!-- Typography & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/cc-mobile-edge.css?v=20261030_edge10">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       LIVE LETTER DESIGN TOKENS (EDITORIAL RADIO & INTERACTIVE CULTURE)
+       Standard: WCAG 2.2 AA, ZERO-QA, ZERO-COST, 44x44px Touch Targets
+       ═══════════════════════════════════════════════════════════════ */
+    :root {
+      color-scheme: light dark;
+      --paper: #F6F2E9;
+      --paper-subtle: #ECE6D8;
+      --surface: #FFFFFF;
+      --surface-card: #FFFFFF;
+      --surface-elevated: #FFFFFF;
+      --ink: #1C1B18;
+      --ink-secondary: #484640;
+      --muted: #6B6860;
+      --line: #DDD5C5;
+      --line-focus: #C4A35A;
+      --signal: #FF7A00;
+      --signal-hover: #FF8C33;
+      --signal-active: #E66A00;
+      --signal-glow: rgba(255, 122, 0, 0.28);
+      --spark: #D8F36A;
+      --spark-dark: #70840A;
+      --champagne: #C4A35A;
+      --champagne-light: #E8D8B0;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --shadow-sm: 0 2px 8px rgba(28, 27, 24, 0.05);
+      --shadow-card: 0 16px 40px rgba(28, 27, 24, 0.07);
+      --shadow-elevated: 0 24px 60px rgba(28, 27, 24, 0.12);
+      --font-display: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #121317;
+        --paper-subtle: #191B22;
+        --surface: #181B22;
+        --surface-card: #1F232D;
+        --surface-elevated: #262B37;
+        --ink: #F7F5F0;
+        --ink-secondary: #D4D0C5;
+        --muted: #9E9B93;
+        --line: #2E3340;
+        --line-focus: #D4B578;
+        --signal: #FF7A00;
+        --signal-hover: #FF8C33;
+        --signal-active: #E66A00;
+        --signal-glow: rgba(255, 122, 0, 0.35);
+        --spark: #D8F36A;
+        --spark-dark: #B5D230;
+        --champagne: #C4A35A;
+        --champagne-light: #4A3E22;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+        --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.5);
+        --shadow-elevated: 0 24px 60px rgba(0, 0, 0, 0.65);
+      }
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.6;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Accessibility focus ring */
+    :focus-visible {
+      outline: 3px solid var(--signal);
+      outline-offset: 3px;
+    }
+
+    /* ══════════ TOPBAR ══════════ */
+    .ll-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(246, 242, 233, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    @media (prefers-color-scheme: dark) {
+      .ll-topbar {
+        background: rgba(18, 19, 23, 0.88);
+      }
+    }
+    .ll-topbar-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .ll-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      min-height: 44px;
+    }
+    .ll-brand-symbol {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--signal), #FF9933);
+      color: #FFFFFF;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px var(--signal-glow);
+    }
+    .ll-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #15803d;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    @media (prefers-color-scheme: dark) {
+      .ll-status-pill {
+        color: #4ade80;
+      }
+    }
+    .ll-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+    .ll-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ll-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      min-height: 44px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--ink-secondary);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .ll-nav-link:hover {
+      background: var(--paper-subtle);
+      color: var(--ink);
+    }
+
+    /* ══════════ HERO SECTION ══════════ */
+    .ll-hero {
+      position: relative;
+      padding: clamp(36px, 6vw, 72px) 20px clamp(28px, 4vw, 48px);
+      max-width: 1140px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .ll-hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(28px, 5vw, 64px);
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .ll-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+    .ll-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--signal);
+      background: rgba(255, 122, 0, 0.1);
+      border: 1px solid rgba(255, 122, 0, 0.25);
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+    .ll-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .ll-h1 span.highlight {
+      background: linear-gradient(135deg, var(--signal), #FF9933);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+    .ll-lead {
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+      line-height: 1.6;
+      color: var(--ink-secondary);
+      margin-bottom: 28px;
+      max-width: 580px;
+    }
+    .ll-hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    /* BUTTONS */
+    .ll-btn-signal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background-color: var(--signal);
+      color: #FFFFFF !important;
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      font-weight: 800;
+      min-height: 52px;
+      min-width: 44px;
+      padding: 0 28px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 8px 24px var(--signal-glow);
+      transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .ll-btn-signal:hover {
+      background-color: var(--signal-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px var(--signal-glow);
+    }
+    .ll-btn-signal:active {
+      background-color: var(--signal-active);
+      transform: translateY(0);
+    }
+    .ll-btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 0.98rem;
+      font-weight: 700;
+      min-height: 52px;
+      min-width: 44px;
+      padding: 0 22px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .ll-btn-ghost:hover {
+      border-color: var(--champagne);
+      background: var(--paper-subtle);
+    }
+
+    /* HERO SIGNAL VISUAL CARD */
+    .ll-signal-card {
+      background: var(--surface-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: clamp(24px, 4vw, 36px);
+      box-shadow: var(--shadow-elevated);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .ll-wave-graphic {
+      width: 100%;
+      height: 72px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ll-wave-svg {
+      width: 100%;
+      height: 100%;
+    }
+    .wave-line-1 {
+      animation: waveFloat 4s ease-in-out infinite alternate;
+    }
+    .wave-line-2 {
+      animation: waveFloat 3.2s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes waveFloat {
+      0% { transform: translateY(-2px); }
+      100% { transform: translateY(3px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .wave-line-1, .wave-line-2, .ll-status-dot {
+        animation: none !important;
+      }
+    }
+
+    /* ══════════ COMMUNITY COUNTER ══════════ */
+    .ll-counter-block {
+      background: var(--paper-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid var(--line);
+    }
+    .ll-counter-num-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+    .ll-counter-number {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--signal);
+      letter-spacing: -0.02em;
+    }
+    .ll-counter-label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+    }
+    .ll-badge-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--champagne);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ══════════ VALUE PREVIEW ("W TWOIM RYTMIE") ══════════ */
+    .ll-value-strip {
+      padding: 36px 20px;
+      background: var(--paper-subtle);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .ll-value-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+    .ll-section-head {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 36px;
+    }
+    .ll-section-tag {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .ll-section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .ll-section-desc {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .ll-values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .ll-val-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ll-val-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 122, 0, 0.1);
+      color: var(--signal);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+    }
+    .ll-val-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .ll-val-text {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    /* ══════════ FORM & TOPICS SECTION ══════════ */
+    .ll-form-section {
+      padding: clamp(40px, 6vw, 80px) 20px;
+      max-width: 960px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .ll-form-card {
+      background: var(--surface-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: clamp(24px, 5vw, 44px);
+      box-shadow: var(--shadow-elevated);
+    }
+    .ll-tabs-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 30px;
+      background: var(--paper-subtle);
+      padding: 6px;
+      border-radius: var(--radius-md);
+    }
+    .ll-tab-btn {
+      min-height: 44px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .ll-tab-btn[aria-selected="true"] {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* CATEGORIES GRID */
+    .ll-topics-fieldset {
+      border: none;
+      margin: 0 0 28px 0;
+      padding: 0;
+    }
+    .ll-topics-legend {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .ll-topics-hint {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .ll-topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .ll-topic-card {
+      background: var(--paper-subtle);
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      min-height: 52px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .ll-topic-card:hover {
+      background: var(--surface);
+      border-color: var(--champagne);
+    }
+    .ll-topic-card.selected {
+      background: var(--surface);
+      border-color: var(--signal);
+      box-shadow: 0 6px 18px var(--signal-glow);
+    }
+    .ll-topic-checkbox {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      accent-color: var(--signal);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .ll-topic-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .ll-topic-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .ll-topic-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* INPUT FIELDS */
+    .ll-input-group {
+      margin-bottom: 20px;
+    }
+    .ll-label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .ll-input {
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: var(--paper-subtle);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+    .ll-input:focus {
+      border-color: var(--signal);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px var(--signal-glow);
+    }
+
+    /* CONSENT ROW */
+    .ll-consent-box {
+      background: var(--paper-subtle);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 24px;
+    }
+    .ll-consent-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      min-height: 44px;
+    }
+    .ll-consent-checkbox {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      accent-color: var(--signal);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .ll-consent-legal-link {
+      color: var(--signal);
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .ll-consent-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      display: block;
+    }
+
+    /* STATUS FEEDBACK BOX */
+    .ll-status-feedback {
+      margin-top: 20px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.94rem;
+      display: none;
+    }
+    .ll-status-feedback.success {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #15803d;
+    }
+    @media (prefers-color-scheme: dark) {
+      .ll-status-feedback.success { color: #86efac; }
+    }
+    .ll-status-feedback.error {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #b91c1c;
+    }
+    @media (prefers-color-scheme: dark) {
+      .ll-status-feedback.error { color: #fca5a5; }
+    }
+
+    /* FOOTER */
+    .ll-footer {
+      margin-top: auto;
+      padding: 36px 20px;
+      border-top: 1px solid var(--line);
+      background: var(--paper-subtle);
+      font-size: 0.86rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    .ll-footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .ll-footer-link {
+      color: var(--ink-secondary);
+      text-decoration: none;
+      font-weight: 600;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .ll-footer-link:hover {
+      color: var(--signal);
+    }
+    @media(max-width:760px){.ll-topbar-inner{gap:8px}.ll-brand{min-width:0;gap:8px;font-size:11px}.ll-brand img{width:32px;height:32px;flex-shrink:0}.ll-status-pill{display:none}.ll-nav-links{gap:0}.ll-nav-links>a:not([href="/wspieraj"]){display:none}.ll-nav-link{padding:10px 8px;white-space:nowrap}.ll-topbar-inner>div{flex-shrink:0}}
+  </style>
 </head>
 <body>
-  <script>location.replace('/newsletter' + location.search + location.hash);</script>
+  <!-- ══════════ STICKY TOPBAR ══════════ -->
+  <header class="ll-topbar">
+    <div class="ll-topbar-inner">
+      <a class="ll-brand" href="/" title="Strona główna Christian Culture">
+        <img src="/dlugi/assets/cc-logo.webp" width="40" height="40" alt="Christian Culture" style="object-fit:contain">
+        <span>CHRISTIAN CULTURE • LIVE LETTER</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="ll-status-pill" title="Newsletter Christian Culture">
+          <span class="ll-status-dot"></span>
+          <span>W dobrym kontakcie</span>
+        </span>
+        <nav class="ll-nav-links" aria-label="Nawigacja nagłówka"><a class="ll-nav-link" href="/wspieraj">Wspieram to</a>
+          <a class="ll-nav-link" href="/wyszukiwarka" title="Wyszukiwarka Ekosystemu"><i class="fa-solid fa-magnifying-glass"></i> Szukaj</a>
+          <a class="ll-nav-link" href="/privacy#newsletter" title="Zasady RODO i Prywatności"><i class="fa-solid fa-shield-halved"></i> Prywatność</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ══════════ HERO SECTION ══════════ -->
+    <section class="ll-hero" aria-labelledby="heroTitle">
+      <div class="ll-hero-grid">
+        <div>
+          <div class="ll-kicker">
+            <i class="fa-solid fa-envelope-open-text"></i>
+            <span>Oficjalny Biuletyn Ekosystemu</span>
+          </div>
+          <h1 class="ll-h1" id="heroTitle">
+            Nie przegap tego, co <span class="highlight">naprawdę</span> ma znaczenie.
+          </h1>
+          <p class="ll-lead">
+            Nowe audycje, codzienne rozważania biblijne o 06:00 rano, inspirujące historie i ważne wiadomości z całego ekosystemu Christian Culture. Wybierasz dokładnie to, co trafia do Twojej skrzynki.
+          </p>
+          <div class="ll-hero-cta-group">
+            <a href="#zapiszSie" class="ll-btn-signal">
+              <span>Dołącz do newslettera</span>
+              <i class="fa-solid fa-arrow-down"></i>
+            </a>
+            <a href="#coOtrzymasz" class="ll-btn-ghost">
+              <span>Zobacz, co otrzymasz</span>
+              <i class="fa-solid fa-compass"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- SIGNAL & COMMUNITY COUNTER CARD -->
+        <div class="ll-signal-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-family:var(--font-display);font-weight:800;font-size:0.85rem;color:var(--champagne);text-transform:uppercase;letter-spacing:0.08em;">
+              ✦ Wybierasz swój sygnał
+            </span>
+            <span class="ll-badge-mark">
+              <i class="fa-solid fa-check-double"></i> Double Opt-In
+            </span>
+          </div>
+
+          <!-- WAVE GRAPHIC -->
+          <div class="ll-wave-graphic" aria-hidden="true">
+            <svg class="ll-wave-svg" viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="wave-line-1" d="M0 40 Q 50 10, 100 40 T 200 40 T 300 40 T 400 40" stroke="var(--signal)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9" />
+              <path class="wave-line-2" d="M0 40 Q 50 70, 100 40 T 200 40 T 300 40 T 400 40" stroke="var(--champagne)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6" />
+            </svg>
+          </div>
+
+          <!-- REAL COMMUNITY COUNTER -->
+          <div class="ll-counter-block">
+            <div class="ll-counter-num-wrap">
+              <span class="ll-counter-number" id="llActiveSubscribersCount">…</span>
+              <span class="ll-counter-label" id="llActiveSubscribersLabel">potwierdzonych subskrybentów</span>
+            </div>
+            <div style="text-align:right;">
+              <span style="display:block;font-size:0.78rem;font-weight:800;color:var(--ink);">Społeczność CC</span>
+              <span style="font-size:0.75rem;color:var(--muted);">I Ty możesz dołączyć</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ VALUE PREVIEW ("W TWOIM RYTMIE") ══════════ -->
+    <section class="ll-value-strip" id="coOtrzymasz" aria-labelledby="valTitle">
+      <div class="ll-value-inner">
+        <div class="ll-section-head">
+          <span class="ll-section-tag">W Twoim Rytmie</span>
+          <h2 class="ll-section-title" id="valTitle">Dlaczego warto odbierać LIVE LETTER?</h2>
+          <p class="ll-section-desc">Cenimy Twój czas i Twoją skrzynkę pocztową. Wysyłamy wyłącznie treści niosące realną wartość duchową, merytoryczną i kulturalną.</p>
+        </div>
+        <div class="ll-values-grid">
+          <div class="ll-val-card">
+            <div class="ll-val-icon"><i class="fa-solid fa-sun"></i></div>
+            <h3 class="ll-val-title">Słowo na Dziś o 06:00</h3>
+            <p class="ll-val-text">Codzienna poranna porcja natchnionych rozważań biblijnych, która pomaga rozpocząć dzień w Bożej obecności i pokoju serca.</p>
+          </div>
+          <div class="ll-val-card">
+            <div class="ll-val-icon"><i class="fa-solid fa-compact-disc"></i></div>
+            <h3 class="ll-val-title">Nowości Radia i Muzyki</h3>
+            <p class="ll-val-text">Premiery utworów uwielbienia, nowe odcinki audycji PolskieRadio.cc, słuchowiska biblijne i wyselekcjonowane filmy chrześcijańskie.</p>
+          </div>
+          <div class="ll-val-card">
+            <div class="ll-val-icon"><i class="fa-solid fa-sliders"></i></div>
+            <h3 class="ll-val-title">Pełna Kontrola & 1-Click Wypis</h3>
+            <p class="ll-val-text">Zero spamu i brak profilowania. W każdej chwili możesz zaktualizować swoje kategorie lub wypisać się jednym kliknięciem.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ FORM & TOPICS SECTION ══════════ -->
+    <section class="ll-form-section" id="zapiszSie" aria-labelledby="formTitle">
+      <div class="ll-form-card">
+
+        <!-- TABS: ZAPISZ SIĘ / ZARZĄDZAJ -->
+        <div class="ll-tabs-nav" role="tablist">
+          <button type="button" class="ll-tab-btn" id="llTabSubscribe" role="tab" aria-selected="true" onclick="switchMainTab('subscribe')">
+            <i class="fa-solid fa-paper-plane"></i> Zapisz się
+          </button>
+          <button type="button" class="ll-tab-btn" id="llTabManage" role="tab" aria-selected="false" onclick="switchMainTab('manage')">
+            <i class="fa-solid fa-gear"></i> Zarządzaj subskrypcją
+          </button>
+        </div>
+
+        <!-- 1. VIEW SUBSCRIBE (PRE-RENDERED SEMANTIC HTML) -->
+        <div id="llSubscribeView">
+          <div style="margin-bottom:24px;">
+            <h2 class="ll-section-title" id="formTitle">Wybierz swój sygnał</h2>
+            <p class="ll-section-desc">Zaznacz dziedziny, które Cię interesują. Subskrypcja aktywuje się po kliknięciu linku potwierdzającego (Double Opt-In).</p>
+          </div>
+
+          <noscript><p>Włącz JavaScript, aby bezpiecznie zapisać się lub zarządzać subskrypcją. Bez niego formularz nie wysyła danych.</p></noscript><form id="liveLetterForm" method="post" action="/api/newsletter/subscribe" novalidate><fieldset data-ll-controls disabled style="border:0;padding:0;margin:0;min-width:0"><legend style="position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden">Zapis do newslettera</legend>
+            <!-- TOPICS FIELDSET -->
+            <fieldset class="ll-topics-fieldset">
+              <legend class="ll-topics-legend">Kategorie tematyczne *</legend>
+              <span class="ll-topics-hint">Możesz wybrać jedną, kilka lub wszystkie:</span>
+              <div class="ll-topics-grid" id="llTopicsGrid">
+
+                <!-- 1. Codzienne Rozważania -->
+                <label class="ll-topic-card" for="top_codzienne_rozwazania">
+                  <input type="checkbox" id="top_codzienne_rozwazania" name="topics" value="codzienne-rozwazania" class="ll-topic-checkbox">
+                  <span class="ll-topic-text">
+                    <span class="ll-topic-title">🌅 Codzienne Rozważania</span>
+                    <span class="ll-topic-desc">Codzienna poranna porcja Słowa Bożego („Dobrze, że jesteś”) o 06:00 rano.</span>
+                  </span>
+                </label>
+
+                <!-- 2. Nowości EkoCC -->
+                <label class="ll-topic-card" for="top_nowosci_ekocc">
+                  <input type="checkbox" id="top_nowosci_ekocc" name="topics" value="nowosci-ekocc" class="ll-topic-checkbox">
+                  <span class="ll-topic-text">
+                    <span class="ll-topic-title">⚡ Nowości EkoCC</span>
+                    <span class="ll-topic-desc">Najważniejsze publikacje, premiery i wydarzenia z całego ekosystemu.</span>
+                  </span>
+                </label>
+
+                <!-- 3. Muzyka, Radio i TV -->
+                <label class="ll-topic-card" for="top_muzyka_radio_tv">
+                  <input type="checkbox" id="top_muzyka_radio_tv" name="topics" value="muzyka-radio-tv" class="ll-topic-checkbox">
+                  <span class="ll-topic-text">
+                    <span class="ll-topic-title">📻 Muzyka, Radio i TV</span>
+                    <span class="ll-topic-desc">PolskieRadio.cc, Uwielbienie, Gerald Welch, JJ Beauvais i Kino VOD.</span>
+                  </span>
+                </label>
+
+                <!-- 4. Biblia, Rozważania i Akademia -->
+                <label class="ll-topic-card" for="top_biblia_akademia">
+                  <input type="checkbox" id="top_biblia_akademia" name="topics" value="biblia-akademia" class="ll-topic-checkbox">
+                  <span class="ll-topic-text">
+                    <span class="ll-topic-title">📖 Biblia & Akademia</span>
+                    <span class="ll-topic-desc">MojaBiblia, Kurs Codzienny i wykłady Akademii Biblijnej.</span>
+                  </span>
+                </label>
+
+                <!-- 5. Książki, Literatura i Kultura -->
+                <label class="ll-topic-card" for="top_ksiazki_literatura">
+                  <input type="checkbox" id="top_ksiazki_literatura" name="topics" value="ksiazki-literatura" class="ll-topic-checkbox">
+                  <span class="ll-topic-text">
+                    <span class="ll-topic-title">📚 Książki & Kultura</span>
+                    <span class="ll-topic-desc">Powieść „Pardon, Czy To Miłość?”, Biblioteka CC i kultura chrześcijańska.</span>
+                  </span>
+                </label>
+
+                <!-- 6. Rodzina, Zdrowie, Kuchnia i Rozwój -->
+                <label class="ll-topic-card" for="top_rodzina_zdrowie_rozwoj">
+                  <input type="checkbox" id="top_rodzina_zdrowie_rozwoj" name="topics" value="rodzina-zdrowie-rozwoj" class="ll-topic-checkbox">
+                  <span class="ll-topic-text">
+                    <span class="ll-topic-title">🌿 Rodzina, Zdrowie & Rozwój</span>
+                    <span class="ll-topic-desc">Relacje, wychowanie, zdrowie (ZiU), kuchnia i finanse.</span>
+                  </span>
+                </label>
+
+              </div>
+            </fieldset>
+
+            <!-- INPUTS -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="ll-input-group">
+                <label class="ll-label" for="llEmailInput">Twój adres e-mail *</label>
+                <input class="ll-input" type="email" id="llEmailInput" name="email" placeholder="np. jan.kowalski@domena.pl" autocomplete="email" required>
+              </div>
+              <div class="ll-input-group">
+                <label class="ll-label" for="llNameInput">Imię (opcjonalnie)</label>
+                <input class="ll-input" type="text" id="llNameInput" name="name" placeholder="Jak mamy się do Ciebie zwracać?" autocomplete="given-name">
+              </div>
+            </div>
+
+            <!-- CONSENT BOX -->
+            <div class="ll-consent-box">
+              <label class="ll-consent-label" for="llConsentCheckbox">
+                <input type="checkbox" id="llConsentCheckbox" name="consent" class="ll-consent-checkbox" required>
+                <span>
+                  Wyrażam zgodę na otrzymywanie drogą elektroniczną newslettera ekosystemu Christian Culture (polskieradio.cc) w wybranych kategoriach tematycznych (zgodnie z art. 398 PKE i art. 6 ust. 1 lit. a RODO). Wiem, że zapis wymaga potwierdzenia linku (Double Opt-In), mam ukończone 16 lat, a zgodę mogę wycofać w każdej chwili 1 kliknięciem. <a href="/privacy#newsletter" class="ll-consent-legal-link" target="_blank" rel="noopener">Zobacz Politykę Prywatności i RODO</a>.
+                </span>
+              </label>
+              <span class="ll-consent-note">
+                <i class="fa-solid fa-lock"></i> Administratorem danych jest Christian Culture (radiochristianculture@gmail.com). Wiadomości obsługują także dostawcy poczty. Szczegóły przetwarzania opisuje polityka prywatności.
+              </span>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" class="ll-btn-signal" id="llSubmitBtn" style="width:100%;font-size:1.08rem;">
+              <span>Zapisz mnie i wyślij potwierdzenie</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <!-- FEEDBACK BOX -->
+            <div id="llFormFeedback" class="ll-status-feedback" role="alert" aria-live="polite"></div>
+          </fieldset></form>
+        </div>
+
+        <!-- 2. VIEW MANAGE PREFERENCES (TOKEN-BASED SAFE REQUEST) -->
+        <div id="llManageView" style="display:none;">
+          <div style="margin-bottom:24px;">
+            <h2 class="ll-section-title">Zarządzaj swoją subskrypcją</h2>
+            <p class="ll-section-desc">
+              Chcesz zmienić wybrane kategorie tematyczne lub wypisać się z newslettera? Wpisz swój adres e-mail, a wyślemy jednorazowy bezpieczny link do zarządzania.
+            </p>
+          </div>
+          <form id="llRequestManageForm" method="post" action="/api/newsletter/manage/request-link"><fieldset data-ll-controls disabled style="border:0;padding:0;margin:0;min-width:0"><legend style="position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden">Zarządzanie subskrypcją</legend>
+            <div class="ll-input-group">
+              <label class="ll-label" for="llManageEmailInput">Twój zarejestrowany adres e-mail *</label>
+              <input class="ll-input" type="email" id="llManageEmailInput" placeholder="Wpisz swój e-mail…" required>
+            </div>
+            <button type="submit" class="ll-btn-signal" id="llRequestManageBtn" style="width:100%;">
+              <span>Wyślij bezpieczny link do zarządzania</span>
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+            <div id="llManageFeedback" class="ll-status-feedback" role="alert" aria-live="polite"></div>
+          </fieldset></form>
+        </div>
+
+<section id="llTokenManageView" style="display:none" aria-labelledby="llPrefsTitle"><h2 class="ll-section-title" id="llPrefsTitle">Twoje zainteresowania</h2><p id="llTokenManageInfo" role="status">Sprawdzanie linku…</p><form id="llTokenPrefsForm" method="post" action="/api/newsletter/preferences"><fieldset id="llTokenPrefsControls" disabled style="border:0;margin:0;padding:0;min-width:0"><legend>Wybierz tematy newslettera</legend><div id="llTokenTopics" class="ll-topics-grid"></div><button class="ll-btn-signal" type="submit" id="llTokenPrefsSave">Zapisz zainteresowania</button></fieldset></form><button class="ll-btn-signal" type="button" id="llTokenUnsubscribe" disabled style="margin-top:16px;background:#a32b25;color:white">Wypisz mnie z newslettera</button><p id="llTokenPrefsStatus" class="ll-status-feedback" role="status" aria-live="polite"></p></section>
+        <!-- 3. VIEW TOKEN CONFIRMATION (/newsletter/confirm) -->
+        <div id="llConfirmView" style="display:none;">
+          <span class="ll-kicker"><i class="fa-solid fa-shield-check"></i> Double Opt-In</span>
+          <h2 class="ll-section-title">Potwierdź zapis na Newsletter EkoCC</h2>
+          <p class="ll-section-desc" id="llConfirmDesc">
+            Aby chronić Twoją skrzynkę przed automatycznymi skanerami pocztowymi, subskrypcja zostaje aktywowana dopiero po kliknięciu poniższego przycisku.
+          </p>
+          <div id="llConfirmDetails" class="ll-consent-box" style="margin:20px 0;">Sprawdzanie tokenu…</div>
+          <button type="button" class="ll-btn-signal" id="llConfirmActionBtn" style="width:100%;" disabled>
+            <span>Potwierdzam zapis na Newsletter</span>
+            <i class="fa-solid fa-check"></i>
+          </button>
+        </div>
+
+        <!-- 4. VIEW TOKEN UNSUBSCRIBE (/newsletter/unsubscribe) -->
+        <div id="llUnsubView" style="display:none;">
+          <span class="ll-kicker" style="color:#ef4444;background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.3);"><i class="fa-solid fa-user-xmark"></i> Wycofanie Zgody</span>
+          <h2 class="ll-section-title">Wypisz się z Newslettera EkoCC</h2>
+          <p class="ll-section-desc">
+            Kliknij poniższy przycisk, aby natychmiast i trwale wycofać zgodę na otrzymywanie newslettera. Operacja zatrzymuje wszelkie wysyłki (1 kliknięciem).
+          </p>
+          <button type="button" class="ll-btn-signal" id="llUnsubActionBtn" style="width:100%;background:#dc2626;box-shadow:0 8px 24px rgba(220,38,38,0.35);">
+            <span>Potwierdzam natychmiastowy wypis</span>
+            <i class="fa-solid fa-trash"></i>
+          </button>
+          <div id="llUnsubFeedback" class="ll-status-feedback" role="alert" aria-live="polite"></div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer class="ll-footer">
+    <div class="ll-footer-links">
+      <a class="ll-footer-link" href="/">Strona Główna PolskieRadio.cc</a>
+      <a class="ll-footer-link" href="/wyszukiwarka">Wyszukiwarka Ekosystemu</a>
+      <a class="ll-footer-link" href="/privacy#newsletter">Zasady Ochrony Danych i RODO</a>
+      <a class="ll-footer-link" href="/kontakt">Kontakt z Redakcją</a>
+    </div>
+    <p>© 2026 Christian Culture • Polskie Radio Christian Culture. Wszelkie prawa zastrzeżone.</p>
+  </footer>
+
+  <!-- ══════════ SCRIPTS ══════════ -->
+  <script src="/js/cc-newsletter.js?v=20261030_liveletter1"></script>
+  <script defer src="/js/cc-mobile-edge.js?v=20261030_edge10"></script>
+  <script>
+    // Tab switcher
+    window.switchMainTab = function(tabName) {
+      const subBtn = document.getElementById('llTabSubscribe');
+      const manBtn = document.getElementById('llTabManage');
+      const subView = document.getElementById('llSubscribeView');
+      const manView = document.getElementById('llManageView');
+
+      if (tabName === 'subscribe') {
+        subBtn.setAttribute('aria-selected', 'true');
+        manBtn.setAttribute('aria-selected', 'false');
+        subView.style.display = 'block';
+        manView.style.display = 'none';
+      } else {
+        subBtn.setAttribute('aria-selected', 'false');
+        manBtn.setAttribute('aria-selected', 'true');
+        subView.style.display = 'none';
+        manView.style.display = 'block';
+      }
+    };
+
+    // Topic card click styling
+    document.querySelectorAll('.ll-topic-card').forEach(card => {
+      const cb = card.querySelector('.ll-topic-checkbox');
+      if (cb) {
+        cb.addEventListener('change', () => {
+          if (cb.checked) card.classList.add('selected');
+          else card.classList.remove('selected');
+        });
+      }
+    });
+
+    // Public community counter fetch & count-up animation
+    async function loadPublicCommunityCounter() {
+      const countEl = document.getElementById('llActiveSubscribersCount');
+      const labelEl = document.getElementById('llActiveSubscribersLabel');
+      try {
+        const res = await fetch('/api/newsletter/public-stats');
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+        const target = data.confirmed_active_subscribers;
+        if (!Number.isSafeInteger(target) || target < 0) throw new Error('Stats unavailable');
+        if (target > 0 && target < 10) {countEl.textContent = '—'; labelEl.textContent = 'Dołącz do społeczności Christian Culture'; return;}
+
+        if (target <= 0) {
+          countEl.textContent = '0';
+          labelEl.textContent = 'Bądź pierwszą osobą, która dołączy';
+          return;
+        }
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+          countEl.textContent = String(target);
+          return;
+        }
+
+        // Count-up animation
+        const duration = 1200;
+        const start = performance.now();
+        function updateCounter(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const current = Math.floor(progress * target);
+          countEl.textContent = String(current);
+          if (progress < 1) requestAnimationFrame(updateCounter);
+          else countEl.textContent = String(target);
+        }
+        requestAnimationFrame(updateCounter);
+      } catch (err) {
+        countEl.textContent = '—';
+        labelEl.textContent = 'Społeczność Christian Culture';
+      }
+    }
+    loadPublicCommunityCounter();
+
+    // Live Letter Form Submission
+    const form = document.getElementById('liveLetterForm');
+    form.querySelector('[data-ll-controls]').disabled = false;
+    const feedback = document.getElementById('llFormFeedback');
+    const submitBtn = document.getElementById('llSubmitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (submitBtn.disabled) return;
+      feedback.style.removeProperty('display');
+      feedback.className = 'll-status-feedback';
+
+      const email = document.getElementById('llEmailInput').value.trim();
+      const name = document.getElementById('llNameInput').value.trim();
+      const consent = document.getElementById('llConsentCheckbox').checked;
+      const checkedTopics = [...form.querySelectorAll('input[name="topics"]:checked')].map(cb => cb.value);
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        feedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Podaj poprawny adres e-mail.';
+        feedback.classList.add('error');
+        document.getElementById('llEmailInput').focus();
+        return;
+      }
+      if (checkedTopics.length === 0) {
+        feedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Wybierz przynajmniej jedną kategorię tematyczną.';
+        feedback.classList.add('error');
+        return;
+      }
+      if (!consent) {
+        feedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Zaznacz zgodę na otrzymywanie newslettera.';
+        feedback.classList.add('error');
+        document.getElementById('llConsentCheckbox').focus();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Wysyłanie zgłoszenia…</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+
+      try {
+        const res = await fetch('/api/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            firstName: name || undefined,
+            topics: checkedTopics,
+            consentAccepted: true,
+            consentVersion: '2026-10-30-v1',
+            locale: 'pl',
+            sourcePortal: 'live-letter-standalone'
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+          feedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> <b>Sprawdź skrzynkę e-mail.</b> Potwierdź zapis otrzymanym linkiem (Double Opt-In). Do tego momentu zapis nie jest aktywny.';
+          feedback.classList.add('success');
+          form.reset();
+          document.querySelectorAll('.ll-topic-card').forEach(c => c.classList.remove('selected'));
+        } else {
+          feedback.textContent = (data.message || 'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.');
+          feedback.classList.add('error');
+        }
+      } catch (err) {
+        feedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Nie udało się połączyć z serwerem. Sprawdź połączenie z internetem.';
+        feedback.classList.add('error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Zapisz mnie i wyślij potwierdzenie</span> <i class="fa-solid fa-arrow-right"></i>';
+      }
+    });
+
+    // Request Manage Link Form
+    const reqForm = document.getElementById('llRequestManageForm');
+    reqForm.querySelector('[data-ll-controls]').disabled = false;
+    const reqFeedback = document.getElementById('llManageFeedback');
+    const reqBtn = document.getElementById('llRequestManageBtn');
+
+    reqForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (reqBtn.disabled) return;
+      reqFeedback.style.removeProperty('display');
+      reqFeedback.className = 'll-status-feedback';
+      const email = document.getElementById('llManageEmailInput').value.trim();
+
+      if (!email) {
+        reqFeedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Wpisz swój adres e-mail.';
+        reqFeedback.classList.add('error');
+        return;
+      }
+
+      reqBtn.disabled = true;
+      reqBtn.innerHTML = '<span>Wysyłanie linku…</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+
+      try {
+        const res = await fetch('/api/newsletter/manage/request-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, locale: 'pl' })
+        });
+        if (!res.ok) throw new Error('Request failed');
+        reqFeedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> Przyjęliśmy prośbę. Jeśli adres ma aktywną subskrypcję, sprawdź skrzynkę w poszukiwaniu bezpiecznego linku.';
+        reqFeedback.classList.add('success');
+        reqForm.reset();
+      } catch (err) {
+        reqFeedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Wystąpił błąd. Spróbuj ponownie za chwilę.';
+        reqFeedback.classList.add('error');
+      } finally {
+        reqBtn.disabled = false;
+        reqBtn.innerHTML = '<span>Wyślij bezpieczny link do zarządzania</span> <i class="fa-solid fa-paper-plane"></i>';
+      }
+    });
+
+    // Handle token routes (/newsletter/confirm & /newsletter/unsubscribe)
+    (() => {
+      const path = location.pathname.toLowerCase().replace(/\/$/, '');
+      const params = new URLSearchParams(location.search);
+      const token = params.get('token') || '';
+
+      if (['/confirm','/manage','/unsubscribe'].some(s=>path.endsWith(s))) {document.querySelector('.ll-hero').style.display='none';document.getElementById('coOtrzymasz').style.display='none';}
+      if (path.endsWith('/manage')) {
+        document.getElementById('llSubscribeView').style.display='none';document.getElementById('llManageView').style.display='none';document.getElementById('llTabSubscribe').parentElement.style.display='none';document.getElementById('llTokenManageView').style.display='block';
+        const info=document.getElementById('llTokenManageInfo'),controls=document.getElementById('llTokenPrefsControls'),form=document.getElementById('llTokenPrefsForm'),list=document.getElementById('llTokenTopics'),save=document.getElementById('llTokenPrefsSave'),unsub=document.getElementById('llTokenUnsubscribe'),notice=document.getElementById('llTokenPrefsStatus');
+        const show=(type,text)=>{notice.textContent=text;notice.className='ll-status-feedback '+type;};
+        if(!token){info.textContent='Link do zarządzania jest nieprawidłowy lub wygasł.';return;}
+        fetch('/api/newsletter/manage?token='+encodeURIComponent(token)).then(async res=>({ok:res.ok,data:await res.json()})).then(({ok,data})=>{
+          if(!ok||!data.valid)throw Error('Invalid link');info.textContent='Ustawienia subskrypcji: '+(data.maskedEmail||'potwierdzony adres');
+          for(const topic of window.CCNewsletter.TOPICS){const label=document.createElement('label');label.className='ll-topic-card';const input=document.createElement('input');input.type='checkbox';input.name='manage_topic';input.value=topic.slug;input.checked=(data.topics||[]).includes(topic.slug);const text=document.createElement('span');text.className='ll-topic-text';text.textContent=topic.pl[0];label.append(input,text);list.append(label);}
+          controls.disabled=false;unsub.disabled=false;
+        }).catch(()=>{info.textContent='Link jest nieprawidłowy, wygasł lub nie można go teraz sprawdzić.';});
+        form.addEventListener('submit',async e=>{e.preventDefault();if(save.disabled||controls.disabled)return;const topics=[...list.querySelectorAll('input:checked')].map(i=>i.value);if(!topics.length){show('error','Wybierz temat albo skorzystaj z przycisku wypisu.');return;}save.disabled=true;try{const res=await fetch('/api/newsletter/preferences',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,topics})});const data=await res.json();if(!res.ok||data.ok===false)throw Error('Save failed');show('success','Zapisano wybrane zainteresowania.');}catch{show('error','Nie udało się zapisać zmian. Wybrane tematy pozostają w formularzu.');}finally{save.disabled=false;}});
+        unsub.addEventListener('click',async()=>{if(unsub.disabled)return;unsub.disabled=true;try{const res=await fetch('/api/newsletter/unsubscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token})});const data=await res.json();if(!res.ok||data.ok===false)throw Error('Unsubscribe failed');controls.disabled=true;show('success','Subskrypcja została zakończona.');}catch{unsub.disabled=false;show('error','Nie udało się zakończyć subskrypcji. Spróbuj ponownie.');}});
+        return;
+      }
+
+      if (path.endsWith('/confirm')) {
+        document.getElementById('llSubscribeView').style.display = 'none';
+        document.getElementById('llConfirmView').style.display = 'block';
+        const detailsEl = document.getElementById('llConfirmDetails');
+        const actionBtn = document.getElementById('llConfirmActionBtn');
+
+        fetch('/api/newsletter/confirm?token=' + encodeURIComponent(token))
+          .then(r => r.json().then(d => ({ ok: r.ok, d })))
+          .then(({ ok, d }) => {
+            if (!ok || !d.valid) {
+              detailsEl.textContent = 'Link potwierdzający jest nieprawidłowy, wygasł lub został już wykorzystany.';
+              return;
+            }
+            detailsEl.textContent = 'Adres: ' + (d.maskedEmail || 'Twój adres') + ' • Wybrane kategorie: ' + ((d.topics || []).join(', ') || 'Wszystkie');
+            actionBtn.disabled = false;
+            actionBtn.onclick = async () => {
+              actionBtn.disabled = true;
+              const res = await fetch('/api/newsletter/confirm', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
+              });
+              const out = await res.json().catch(() => ({}));
+              if (res.ok && out.status === 'active') {
+                detailsEl.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#22c55e;"></i> <b>Dziękujemy!</b> Twoja subskrypcja została aktywowana. Od teraz będziesz otrzymywać wybrane treści.';
+                actionBtn.style.display = 'none';
+                loadPublicCommunityCounter();
+              } else {
+                detailsEl.textContent = out.message || 'Wystąpił błąd podczas aktywacji linku.';
+              }
+            };
+          }).catch(() => {
+            detailsEl.textContent = 'Błąd połączenia z serwerem weryfikacji tokenu.';
+          });
+      } else if (path.endsWith('/unsubscribe')) {
+        document.getElementById('llSubscribeView').style.display = 'none';
+        document.getElementById('llUnsubView').style.display = 'block';
+        const unsubBtn = document.getElementById('llUnsubActionBtn');
+        const unsubFeedback = document.getElementById('llUnsubFeedback');
+
+        unsubBtn.onclick = async () => {
+          unsubBtn.disabled = true;
+          try {
+            const res = await fetch('/api/newsletter/unsubscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token })
+            });
+            const out = await res.json().catch(() => ({}));
+            if (res.ok) {
+              unsubFeedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> Twoja subskrypcja została natychmiast zakończona. Nie wyślemy więcej wiadomości.';
+              unsubFeedback.className = 'll-status-feedback success';
+              unsubBtn.style.display = 'none';
+              loadPublicCommunityCounter();
+            } else {
+              unsubFeedback.textContent = (out.message || 'Link wypisu jest nieprawidłowy.');
+              unsubFeedback.className = 'll-status-feedback error';
+            }
+          } catch(err) {
+            unsubFeedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Wystąpił błąd połączenia.';
+            unsubFeedback.className = 'll-status-feedback error';
+          }
+        };
+      }
+    })();
+  </script>
 </body>
 </html>

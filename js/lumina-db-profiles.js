@@ -1401,7 +1401,7 @@ export const PROFILES_DB = {
     'marekjakubowski': {
         uid: 'marekjakubowski',
         slug: 'marekjakubowski',
-        profileUrl: 'lumina.marekjakubowski.html',
+        profileUrl: 'lumina-profile.html?u=marekjakubowski',
         name: 'Marek Jakubowski',
         age: '',
         city: 'Polska',
@@ -1414,11 +1414,7 @@ export const PROFILES_DB = {
         church: 'Wspólnota Chrześcijańska',
         denom: 'Chrześcijanin',
         status: '',
-        pin: '7777',
         visibility: 'public',
-        match: '98%',
-        matchScore: '98%',
-        verified: true,
         isMissionAccount: false,
         stats: { friends: '0', posts: '0', likes: '0' },
         verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
@@ -1426,26 +1422,13 @@ export const PROFILES_DB = {
         bio: 'Cieszę się, że jestem tutaj. Dzielę się tym, co Pan kładzie na moje serce \u2014 przez codzienne rozważania Słowa Bożego. Niech każda myśl przynosi chwałę Bogu i pokrzepienie dla Twojej duszy.',
         tags: ['Rozważania Biblijne', 'Słowo na Dziś', 'Wiara', 'Modlitwa', 'Społeczność LUMINA'],
         photos: ['avatar_marek_jakubowski.jpg', 'lumina_default_cover.jpg'],
-        posts: [
-            {
-                id: 'post_mj_1',
-                author: 'Marek Jakubowski',
-                authorSlug: 'marekjakubowski',
-                authorAvatar: 'avatar_marek_jakubowski.jpg',
-                authorRole: 'Autor Rozważań & Społeczność LUMINA ✨',
-                time: 'Dziś \u2022 \uD83C\uDF0D Publiczny',
-                text: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d (Psalm 28, 7 UBG)\n\nW każdej chwili próby mamy dokąd się zwrócić. Nie do okoliczności, nie do własnych sił \u2014 ale do Pana, który jest tarczą i mocą. Czy dzisiaj powierzasz Mu swoje serce?',
-                likes: 0,
-                amen: 0,
-                image: null
-            }
-        ]
+        posts: []
     },
     // Alias slug (redirect)
     'u_marekjakubowski': {
         uid: 'marekjakubowski',
         slug: 'marekjakubowski',
-        profileUrl: 'lumina.marekjakubowski.html',
+        profileUrl: 'lumina-profile.html?u=marekjakubowski',
         name: 'Marek Jakubowski',
         age: '',
         city: 'Polska',
@@ -1458,11 +1441,7 @@ export const PROFILES_DB = {
         church: 'Wspólnota Chrześcijańska',
         denom: 'Chrześcijanin',
         status: '',
-        pin: '7777',
         visibility: 'public',
-        match: '98%',
-        matchScore: '98%',
-        verified: true,
         isMissionAccount: false,
         stats: { friends: '0', posts: '0', likes: '0' },
         verse: '\u201ePan jest moją siłą i moją tarczą, w nim zaufało moje serce i otrzymałem pomoc.\u201d',
@@ -1512,9 +1491,7 @@ export function getLuminaProfile(slug) {
         church: 'Wspólnota Chrześcijańska',
         denom: 'Chrześcijanin',
         status: 'Kawaler / Panna',
-        pin: '7777',
         visibility: 'public',
-        match: '95%',
         verse: '„Wszystko mogę w Tym, który mnie umacnia.”',
         verseRef: '— Flp 4, 13',
         bio: 'Witaj na moim profilu w chrześcijańskiej społeczności LUMINA!',

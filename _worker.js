@@ -1559,6 +1559,11 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // One canonical renderer for this existing public profile.
+    if (['/lumina.marekjakubowski','/lumina.marekjakubowski.html'].includes(url.pathname.toLowerCase())) {
+      return Response.redirect(new URL('/lumina-profile.html?u=marekjakubowski',url).toString(),302);
+    }
+
     // 1. Kanonizacja domeny www -> apex (SEO / P0 / Etap 3)
     if (url.hostname === 'www.polskieradio.cc') {
       const canonicalTarget = new URL(request.url);
