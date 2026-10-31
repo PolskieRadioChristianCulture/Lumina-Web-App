@@ -5,6 +5,7 @@ import { handleAiDlaJezusaApi } from './services/ai-dla-jezusa/api-v1.js';
 import { handleNewsletterApiRequest } from './services/cc-newsletter/newsletter-service.js';
 
 const BLOCKED_PREFIXES = [
+  '/.git/', '/.codex/', '/.cursor/', '/.claude/', '/repozytoria-cc/', '/joma_shared_memory/',
   '/.agents/', '/.github/', '/.firebase/', '/.gemini/', '/.vscode/', '/.wrangler/',
   '/cloudflare/', '/cloudflare-worker/', '/lib/', '/tests/', '/firebase_functions/', '/functions/', '/scratch/', '/src/',
   '/services/', '/migrations/',
@@ -21,6 +22,7 @@ const BLOCKED_FILES = new Set([
 ]);
 
 const BLOCKED_EXTENSIONS = [
+  '.pem', '.key', '.p12', '.pfx',
   '.bak', '.cjs', '.map', '.md', '.mjs', '.ps1', '.py', '.sql', '.ts', '.vue', '.xlsx', '.yaml', '.yml',
 ];
 
@@ -39,6 +41,11 @@ function isBlocked(pathname) {
     return true;
   }
   if (path.includes('\0') || path.includes('/../')) return true;
+  // Deny before ASSETS: removed private files may still exist in an old CDN cache.
+  const basename = path.slice(path.lastIndexOf('/') + 1);
+  if (basename === '.env' || basename.startsWith('.env.')) return true;
+  if (/^service[-_]?account(?:key)?(?:[._-]|$)/.test(basename) || /(?:^|-)firebase-adminsdk(?:-|\.)/.test(basename)) return true;
+  if (/^\/data\/whatsapp_[^/]*\.json$/.test(path)) return true;
   if (BLOCKED_FILES.has(path)) return true;
   if (BLOCKED_PREFIXES.some((prefix) => path.startsWith(prefix))) return true;
   return BLOCKED_EXTENSIONS.some((extension) => path.endsWith(extension));

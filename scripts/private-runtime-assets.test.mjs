@@ -1,3 +1,4 @@
+import {isPublicFile} from './cc-release-files.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -15,5 +16,5 @@ test('private runtime is denied before any asset read for GET and HEAD, includin
 test('private runtime files are ignored, untracked and excluded from the public package',()=>{
  const ignored=readFileSync('.gitignore','utf8');const builder=readFileSync('scripts/build-pages-release.mjs','utf8');
  assert.equal(execFileSync('git',['ls-files','--','data/whatsapp_zaczepki_log.json','data/whatsapp_zaczepki_state.json'],{encoding:'utf8'}).trim(),'');
- for(const name of names){assert(ignored.includes('/data/'+name));assert(builder.includes("'"+name+"'"));}
+ for(const name of names){assert(ignored.includes('/data/'+name));assert.equal(isPublicFile('data/'+name),false);assert(builder.includes('isPublicFile'));}
 });
