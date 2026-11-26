@@ -10,6 +10,7 @@ import {
   getDocumentById,
   getTopicsCatalog
 } from './knowledge-hub.js';
+import { handlePilotChat } from './pilot-chat.js';
 import { openApiSpec } from './openapi.js';
 import { handleMcpRequest } from './mcp-server.js';
 
@@ -30,6 +31,8 @@ const JSON_HEADERS = {
 export async function handleAiDlaJezusaApi(request, env = {}) {
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/+$/, '') || '/';
+
+  if (path === '/api/ai-dla-jezusa/v1/pilot-chat') return handlePilotChat(request, env);
 
   // Obsługa CORS Preflight
   if (request.method === 'OPTIONS') {

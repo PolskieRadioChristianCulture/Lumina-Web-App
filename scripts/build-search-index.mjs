@@ -236,6 +236,18 @@ const CONTEXT_GUIDES = {
 
 // --- 2. GŁÓWNE PLATFORMY I MODUŁY EKOSYSTEMU ---
 const CORE_PROJECTS = [
+  {
+    "title": "AI dla Jezusa — Christian Culture AI",
+    "category": "Narzędzia i misja",
+    "url": "https://polskieradio.cc/ai",
+    "description": "Interaktywna demonstracja z gotowymi przykładami studium Biblii, modlitwy i twórczości. Odpowiedzi można zapisać w przeglądarce.",
+    "tags": [
+      "ai dla jezusa",
+      "christian culture ai",
+      "demonstracja",
+      "asystent"
+    ]
+  },
 {
   title: "THE JOURNAL — pamiętnik dla młodzieży na 90 dni",
   category: "Edukacja i rozwój",
