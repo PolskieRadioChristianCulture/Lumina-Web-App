@@ -2426,6 +2426,12 @@ export default {
       redirectUrl.pathname = '/si/ai-antychryst';
       return Response.redirect(redirectUrl.toString(), 301);
     }
+    if ((request.method === 'GET' || request.method === 'HEAD') && decodedP === '/test/ai') {
+      const asset = await env.ASSETS.fetch(new Request(new URL('/test/ai/pilot', request.url), request));
+      const response = new Response(asset.body, asset);
+      response.headers.set('Cache-Control', 'no-store');
+      return response;
+    }
     if ((request.method === 'GET' || request.method === 'HEAD') && decodedP === '/ai') {
       const assetUrl = new URL('/test/ai/', request.url);
       const asset = await env.ASSETS.fetch(new Request(assetUrl, request));

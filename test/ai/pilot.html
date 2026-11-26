@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <title>AI dla Jezusa — pilot Christian Culture</title>
+  <style>
+    :root { color-scheme: dark; font: 100%/1.6 system-ui,sans-serif; background: #151513; color: #f7f3e9; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { width: min(100% - 2rem, 54rem); margin: 2rem auto 4rem; }
+    header { border-bottom: 1px solid #484237; padding-bottom: 1rem; }
+    h1 { margin: 0; font-size: clamp(2.25rem, 8vw, 4rem); line-height: 1.12; letter-spacing: -.05em; }
+    h2 { margin: 0 0 .5rem; font-size: 1.25rem; }
+    p { margin: .65rem 0; }
+    .eyebrow { color: #e2cc9a; font-size: .85rem; font-weight: 700; letter-spacing: .04em; }
+    .control, article { background: #22211d; border: 1px solid #484237; border-radius: .8rem; padding: 1rem; margin: 1rem 0; }
+    label { display: block; font-weight: 600; }
+    textarea, select, input { font: inherit; max-width: 100%; }
+    textarea, select, input[type=password] { width: 100%; border: 1px solid #7f7666; border-radius: .45rem; background: #151513; color: inherit; padding: .55rem .7rem; min-height: 44px; }
+    textarea { resize: vertical; }
+    button { font: 700 1rem system-ui,sans-serif; min-height: 44px; padding: .65rem 1rem; border-radius: .5rem; border: 1px solid #776644; color: inherit; background: #27241e; cursor: pointer; }
+    .send { background: #ff7a00; color: #211201; border-color: transparent; }
+    .send:hover { background: #ff8c33; }
+    .send:active { background: #e66a00; }
+    .send:disabled { opacity: .55; cursor: wait; }
+    :focus-visible { outline: 2px solid #e2cc9a; outline-offset: 3px; }
+    a { color: #f4d299; overflow-wrap: anywhere; }
+    .actions { display: flex; gap: .55rem; flex-wrap: wrap; margin-top: .7rem; }
+    .consent { display: flex; align-items: center; gap: .6rem; min-height: 44px; }
+    .consent input { width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
+    .answer { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .sources { padding-left: 1.2rem; }
+    blockquote { margin: .25rem 0 1rem; color: #e8e0ce; }
+    summary { min-height: 44px; display: list-item; padding: .5rem 0; cursor: pointer; }
+    small { color: #ded6c4; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">CHRISTIAN CULTURE · PILOT</p>
+      <h1>AI dla Jezusa</h1>
+      <p>Rozmawiaj o Biblii i otwieraj przytoczone fragmenty w MojaBiblii.</p>
+    </header>
+    <form id="chat" class="control">
+      <label for="mode">Tryb rozmowy</label>
+      <select id="mode">
+        <option value="sources">Bezpłatny · źródła biblijne bez modelu</option>
+      </select>
+      <div id="provider" hidden>
+        <label for="key">Twój klucz Gemini API</label>
+        <input id="key" type="password" autocomplete="off" spellcheck="false" maxlength="160">
+        <p><small>Klucz pozostaje w tej karcie do odświeżenia lub rozłączenia. Google rozlicza użycie według planu Twojego projektu. Projekt w darmowym limicie pozwala przetestować model bez opłat dostawcy w granicach tego limitu.</small></p>
+        <label class="consent"><input id="consent" type="checkbox"> Zgadzam się wysłać pytanie, poprzednie pytanie i dobrane fragmenty do Google. Unikam danych osobowych.</label>
+        <button id="disconnect" type="button">Rozłącz model</button>
+      </div>
+      <p><label for="question">Twoje pytanie</label>
+      <textarea id="question" rows="3" maxlength="1000" required placeholder="Co Biblia mówi o przebaczeniu?"></textarea></p>
+      <div class="actions">
+        <button class="send" id="send" type="submit">Wyślij</button>
+        <button id="example" type="button">Wstaw J 3:16</button>
+        <button id="reset" type="button">Nowa rozmowa</button>
+      </div>
+      <p id="status" role="status"></p>
+    </form>
+    <section id="messages" aria-label="Rozmowa" aria-live="polite"></section>
+    <details>
+      <summary>Zasady Kodeksu Christian Culture używane w pilocie</summary>
+      <p id="code-title"></p>
+      <ul id="code-rules"></ul>
+      <small>Pilot pokazuje zasady rozmowy zaczerpnięte z Konstytucji CC i protokołu weryfikacji biblijnej.</small>
+    </details>
+  </main>
+  <script type="module" src="/test/ai/pilot.js"></script>
+</body>
+</html>
