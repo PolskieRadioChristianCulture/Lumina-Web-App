@@ -52,16 +52,62 @@ function render(questionText, payload) {
 
 const intro = byId('intro');
 const introVideo = byId('intro-video');
-byId('open-intro').onclick = () => {
-  intro.showModal();
-  if (!introVideo.hasAttribute('src')) introVideo.src = introVideo.dataset.src;
-  introVideo.play().catch(() => {});
-};
-introVideo.addEventListener('ended', () => intro.close());
-intro.addEventListener('close', () => {
+const replay = byId('open-intro');
+const skip = byId('skip-intro');
+const motto = byId('motto');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let introTimer;
+
+function finishIntro() {
+  clearTimeout(introTimer);
+  const restoreFocus = document.activeElement === skip;
   introVideo.pause();
   introVideo.currentTime = 0;
+  intro.hidden = true;
+  intro.classList.remove('closing');
+  replay.hidden = false;
+  if (restoreFocus) replay.focus({ preventScroll: true });
+  if (!reducedMotion.matches) {
+    motto.textContent = 'Twórcza rozmowa w służbie dobra.';
+    motto.classList.add('reveal');
+  }
+}
+
+function closeIntro() {
+  if (intro.hidden || intro.classList.contains('closing')) return;
+  if (reducedMotion.matches) {
+    finishIntro();
+    return;
+  }
+  intro.classList.add('closing');
+  introTimer = setTimeout(finishIntro, 320);
+}
+
+function startIntro(focusSkip = false) {
+  clearTimeout(introTimer);
+  motto.textContent = '';
+  motto.classList.remove('reveal');
+  intro.hidden = false;
+  replay.hidden = true;
+  if (focusSkip) skip.focus({ preventScroll: true });
+  if (!introVideo.hasAttribute('src')) introVideo.src = introVideo.dataset.src;
+  introTimer = setTimeout(closeIntro, 12000);
+  introVideo.play().catch(closeIntro);
+}
+
+replay.onclick = () => startIntro(true);
+skip.onclick = closeIntro;
+introVideo.addEventListener('ended', closeIntro);
+introVideo.addEventListener('error', closeIntro);
+intro.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeIntro();
 });
+introVideo.addEventListener('animationend', finishIntro);
+motto.addEventListener('animationend', () => {
+  motto.classList.remove('reveal');
+  motto.textContent = '';
+});
+if (!reducedMotion.matches) startIntro();
 
 mode.onchange = updateMode;
 byId('disconnect').onclick = () => {

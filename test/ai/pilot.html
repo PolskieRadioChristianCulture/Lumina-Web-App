@@ -7,15 +7,12 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
   <title>AI dla Jezusa — pilot Christian Culture</title>
   <style>
-    :root { color-scheme: dark; font: 100%/1.6 system-ui,sans-serif; background: #151513; color: #f7f3e9; }
+    :root { color-scheme: dark; font: 100%/1.6 system-ui,sans-serif; background: #050507; color: #f7f3e9; }
     * { box-sizing: border-box; }
     body { margin: 0; }
-    main { width: min(100% - 2rem, 54rem); margin: 2rem auto 4rem; }
-    header { border-bottom: 1px solid #484237; padding-bottom: 1rem; }
-    h1 { margin: 0; font-size: clamp(2.25rem, 8vw, 4rem); line-height: 1.12; letter-spacing: -.05em; }
+    main { width: min(100% - 2rem, 46rem); margin: clamp(1rem, 6vh, 4rem) auto 4rem; }
     h2 { margin: 0 0 .5rem; font-size: 1.25rem; }
     p { margin: .65rem 0; }
-    .eyebrow { color: #e2cc9a; font-size: .85rem; font-weight: 700; letter-spacing: .04em; }
     .control, article { background: #22211d; border: 1px solid #484237; border-radius: .8rem; padding: 1rem; margin: 1rem 0; }
     label { display: block; font-weight: 600; }
     textarea, select, input { font: inherit; max-width: 100%; }
@@ -36,23 +33,48 @@
     blockquote { margin: .25rem 0 1rem; color: #e8e0ce; }
     summary { min-height: 44px; display: list-item; padding: .5rem 0; cursor: pointer; }
     small { color: #ded6c4; }
-    dialog { width: min(92vw, 56rem); max-height: 92dvh; padding: 1rem; border: 1px solid #78623b; border-radius: .8rem; background: #050507; color: inherit; }
-    dialog::backdrop { background: #050507e8; }
-    .intro-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .7rem; }
-    .intro-toolbar h2 { margin: 0; color: #ffe599; }
-    video { width: 100%; aspect-ratio: 16 / 9; display: block; background: #050507; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .brand { position: relative; display: grid; justify-items: center; }
+    .intro { position: relative; width: min(100%, 28rem); }
+    .intro video { display: block; width: 100%; aspect-ratio: 16 / 9; }
+    .intro.closing video { animation: fold-logo .28s ease-in both; }
+    .skip { position: absolute; right: 0; bottom: 0; background: #151513; border-color: #49423a; }
+    .brand-replay { display: inline-flex; align-items: center; gap: .5rem; border-color: #49423a; background: transparent; }
+    .brand-replay img { width: 2.5rem; height: auto; display: block; }
+    .motto { text-align: center; margin: 0; min-height: 1.6rem; color: #e2cc9a; }
+    .motto.reveal { animation: motto 3s ease both; }
+    #chat p:has(#question) { margin-top: 0; }
+    #chat .control-settings { margin-top: .8rem; }
+    @keyframes fold-logo { to { transform: scale(.28); opacity: 0; } }
+    @keyframes motto { 0% { opacity: 0; transform: translateY(4px); } 18%, 76% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .intro.closing video, .motto.reveal { animation: none; }
+    }
     [hidden] { display: none !important; }
   </style>
 </head>
 <body>
   <main>
-    <header>
-      <p class="eyebrow">CHRISTIAN CULTURE · PILOT</p>
-      <h1>AI dla Jezusa</h1>
-      <p>Rozmawiaj o Biblii i otwieraj przytoczone fragmenty w MojaBiblii.</p>
-      <button id="open-intro" type="button">Zobacz intro</button>
+    <header class="brand">
+      <h1 class="sr-only">AI dla Jezusa — pilot Christian Culture</h1>
+      <div class="intro" id="intro" hidden>
+        <video id="intro-video" data-src="/test/ai/intro.mp4" poster="/test/ai/intro-poster.webp" muted playsinline preload="none" aria-hidden="true"></video>
+        <button class="skip" id="skip-intro" type="button">Pomiń intro</button>
+      </div>
+      <button class="brand-replay" id="open-intro" type="button" aria-label="Odtwórz intro AI dla Jezusa">
+        <img src="/test/ai/intro-poster.webp" alt="" width="480" height="270"> AI dla Jezusa
+      </button>
     </header>
+    <p class="motto" id="motto" aria-hidden="true"></p>
     <form id="chat" class="control">
+      <p><label for="question">Twoje pytanie</label>
+      <textarea id="question" rows="3" maxlength="1000" required placeholder="Co Biblia mówi o przebaczeniu?"></textarea></p>
+      <div class="actions">
+        <button class="send" id="send" type="submit">Wyślij</button>
+        <button id="example" type="button">Wstaw J 3:16</button>
+        <button id="reset" type="button">Nowa rozmowa</button>
+      </div>
+      <div class="control-settings">
       <label for="mode">Tryb rozmowy</label>
       <select id="mode">
         <option value="sources">Bezpłatny · źródła biblijne bez modelu</option>
@@ -64,12 +86,6 @@
         <label class="consent"><input id="consent" type="checkbox"> Zgadzam się wysłać pytanie, poprzednie pytanie i dobrane fragmenty do Google. Unikam danych osobowych.</label>
         <button id="disconnect" type="button">Rozłącz model</button>
       </div>
-      <p><label for="question">Twoje pytanie</label>
-      <textarea id="question" rows="3" maxlength="1000" required placeholder="Co Biblia mówi o przebaczeniu?"></textarea></p>
-      <div class="actions">
-        <button class="send" id="send" type="submit">Wyślij</button>
-        <button id="example" type="button">Wstaw J 3:16</button>
-        <button id="reset" type="button">Nowa rozmowa</button>
       </div>
       <p id="status" role="status"></p>
     </form>
@@ -81,13 +97,6 @@
       <small>Pilot pokazuje zasady rozmowy zaczerpnięte z Konstytucji CC i protokołu weryfikacji biblijnej.</small>
     </details>
   </main>
-  <dialog id="intro" aria-labelledby="intro-title">
-    <div class="intro-toolbar">
-      <h2 id="intro-title">AI dla Jezusa</h2>
-      <form method="dialog"><button autofocus type="submit">Pomiń intro</button></form>
-    </div>
-    <video id="intro-video" data-src="/test/ai/intro.mp4" controls playsinline preload="none" aria-label="Animacja otwarcia AI dla Jezusa"></video>
-  </dialog>
   <script type="module" src="/test/ai/pilot.js"></script>
 </body>
 </html>
