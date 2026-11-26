@@ -2426,7 +2426,14 @@ export default {
       redirectUrl.pathname = '/si/ai-antychryst';
       return Response.redirect(redirectUrl.toString(), 301);
     }
-    if (decodedP === '/technologia' || decodedP === '/ai' || decodedP === '/sztucznainteligencja' || decodedP === '/sztuczna-inteligencja' || decodedP === '/synthetic-intelligence' || decodedP === '/superintelligence') {
+    if ((request.method === 'GET' || request.method === 'HEAD') && decodedP === '/ai') {
+      const assetUrl = new URL('/test/ai/', request.url);
+      const asset = await env.ASSETS.fetch(new Request(assetUrl, request));
+      const response = new Response(asset.body, asset);
+      response.headers.set('Cache-Control', 'no-store');
+      return response;
+    }
+    if (decodedP === '/technologia' || decodedP === '/sztucznainteligencja' || decodedP === '/sztuczna-inteligencja' || decodedP === '/synthetic-intelligence' || decodedP === '/superintelligence') {
       const redirectUrl = new URL(request.url);
       redirectUrl.pathname = '/si';
       return Response.redirect(redirectUrl.toString(), 301);
