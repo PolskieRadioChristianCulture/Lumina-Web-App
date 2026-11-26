@@ -50,6 +50,19 @@ function render(questionText, payload) {
   messages.prepend(item);
 }
 
+const intro = byId('intro');
+const introVideo = byId('intro-video');
+byId('open-intro').onclick = () => {
+  intro.showModal();
+  if (!introVideo.hasAttribute('src')) introVideo.src = introVideo.dataset.src;
+  introVideo.play().catch(() => {});
+};
+introVideo.addEventListener('ended', () => intro.close());
+intro.addEventListener('close', () => {
+  introVideo.pause();
+  introVideo.currentTime = 0;
+});
+
 mode.onchange = updateMode;
 byId('disconnect').onclick = () => {
   pending?.abort();

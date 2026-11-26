@@ -36,6 +36,11 @@
     blockquote { margin: .25rem 0 1rem; color: #e8e0ce; }
     summary { min-height: 44px; display: list-item; padding: .5rem 0; cursor: pointer; }
     small { color: #ded6c4; }
+    dialog { width: min(92vw, 56rem); max-height: 92dvh; padding: 1rem; border: 1px solid #78623b; border-radius: .8rem; background: #050507; color: inherit; }
+    dialog::backdrop { background: #050507e8; }
+    .intro-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .7rem; }
+    .intro-toolbar h2 { margin: 0; color: #ffe599; }
+    video { width: 100%; aspect-ratio: 16 / 9; display: block; background: #050507; }
     [hidden] { display: none !important; }
   </style>
 </head>
@@ -45,6 +50,7 @@
       <p class="eyebrow">CHRISTIAN CULTURE · PILOT</p>
       <h1>AI dla Jezusa</h1>
       <p>Rozmawiaj o Biblii i otwieraj przytoczone fragmenty w MojaBiblii.</p>
+      <button id="open-intro" type="button">Zobacz intro</button>
     </header>
     <form id="chat" class="control">
       <label for="mode">Tryb rozmowy</label>
@@ -75,6 +81,13 @@
       <small>Pilot pokazuje zasady rozmowy zaczerpnięte z Konstytucji CC i protokołu weryfikacji biblijnej.</small>
     </details>
   </main>
+  <dialog id="intro" aria-labelledby="intro-title">
+    <div class="intro-toolbar">
+      <h2 id="intro-title">AI dla Jezusa</h2>
+      <form method="dialog"><button autofocus type="submit">Pomiń intro</button></form>
+    </div>
+    <video id="intro-video" data-src="/test/ai/intro.mp4" controls playsinline preload="none" aria-label="Animacja otwarcia AI dla Jezusa"></video>
+  </dialog>
   <script type="module" src="/test/ai/pilot.js"></script>
 </body>
 </html>
